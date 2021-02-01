@@ -1,0 +1,68 @@
+
+.FormLine {
+    margin: 4px 0px;
+    max-height: calc(100% - 8px);
+}
+
+.FormLine .row {
+    max-height: 100%;
+}
+
+.FormLine-label {
+    padding: 8px;
+}
+
+.FormLine-wrong-format {
+	border: 2px solid #e40613 !important;
+}
+
+.FormLine-wrong-format:focus {
+	border: 3px solid #e40613 !important;
+}
+
+.FormLine-right-format {
+	border: 2px solid #bcebff !important;
+}
+
+.FormLine-right-format:focus {
+	border: 3px solid #bcebff !important;
+}
+
+.FormLine-chips {
+	width: 100%;
+}
+
+.Formline-image {
+	max-width: 100%;
+	max-height: 440px;
+}
+
+.Formline-image-wrapper {
+	position: relative;
+	text-align: center;
+}
+
+.Formline-image-display-wrapper {
+	text-align: center;
+	min-height: 500px;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+}
+
+.Formline-image-display-wrapper .NoImage {
+	position: absolute;
+}
+
+.Formline-frame-wrapper {
+	margin: 0px auto;
+}
+
+.Formline-frame-display-wrapper {
+	text-align: center;
+}
+
+.Formline-frame-wrapper iframe {
+	max-width: 100%;
+	margin-top: 10px;
+}

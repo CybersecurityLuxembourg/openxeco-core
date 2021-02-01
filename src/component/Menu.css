@@ -1,0 +1,21 @@
+nav {
+	background: #009fe3 !important;
+	font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+}
+
+.Menu-log-out-nav-item {
+	position: absolute !important;
+	bottom: 10px !important;
+	width: 100%;
+}
+
+.Menu-profile-nav-item {
+	position: absolute !important;
+	bottom: 60px !important;
+	width: 100%;
+}
+
+nav i {
+	padding-top: 12px !important;
+}

@@ -1,0 +1,38 @@
+
+.DialogAddImage-content {
+	padding-bottom: 100px !important;
+}
+
+.DialogAddImage-dragdrop {
+	width: 100%;
+	max-height: calc(100vh - 300px);
+	min-height: 300px;
+    border: 7px dashed #8fddff;
+    border-radius: 8px;
+    display: table;
+}
+
+.DialogAddImage-cropper {
+	width: 100%;
+	max-height: calc(100vh - 300px);
+	min-height: 300px;
+}
+
+.DialogAddImage-dragdrop-textContent {
+	display: table-cell;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	color: #8fddff;
+	vertical-align: middle;
+}
+
+.DialogAddImage-dragdrop-textContent i {
+	font-size: 35px;
+}
+
+.DialogAddImage-cropped-image {
+	border: 7px dashed #8fddff;
+	max-width: 100%;
+	max-height: calc(100vh - 300px);
+}

@@ -1,0 +1,19 @@
+
+.SingleMarkerMap-company {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	top: 20px;
+	width: 80%;
+	max-width: 300px;
+	z-index: 995;
+	background-color: #bcebff;
+    padding: 10px 20px 10px 20px;
+    border-radius: 0.4rem;
+    font-size: 13px;
+}
+
+.SingleMarkerMap-company .Company {
+	z-index: 995;
+}

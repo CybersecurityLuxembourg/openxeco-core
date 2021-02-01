@@ -1,0 +1,24 @@
+.Lock {
+    width: 100%;
+    position: relative;
+    background: repeating-linear-gradient(
+      135deg,
+      lightgrey,
+      lightgrey 10px,
+      rgba(0, 0, 0, 0) 10px,
+      rgba(0, 0, 0, 0) 20px
+    );
+}
+
+.Lock-logo {
+    font-size: 50px;
+    position: absolute;
+    top: calc(50% - 40px);
+    left: calc(50% - 25px);
+}
+
+.Lock-logo i {
+    color: grey;
+    width: 50px;
+    height: 50px;
+}

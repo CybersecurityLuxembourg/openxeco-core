@@ -1,0 +1,15 @@
+
+.PageDashboard-analytic {
+	font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+	text-align: center;
+	font-size: 45px;
+}
+
+.PageDashboard-filters {
+	position: fixed;
+    bottom: 20px;
+    right: 30px;
+    max-width: 400px;
+    width: 40%;
+}
