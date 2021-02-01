@@ -1,0 +1,42 @@
+from test.BaseCase import BaseCase
+from datetime import datetime
+
+
+class TestGetArticles(BaseCase):
+
+    @BaseCase.login
+    def test_ok(self, token):
+        self.db.insert({"id": 1, "title": "TITLE"}, self.db.tables["Article"])
+        self.db.insert({
+                "id": 2,
+                "title": "TITLE2",
+                "publication_date": datetime.strptime('01-22-2021', '%m-%d-%Y').date()
+            }, self.db.tables["Article"])
+
+        response = self.application.get('/article/get_articles',
+                                        headers=self.get_standard_header(token))
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual([
+            {'abstract': None,
+                'handle': None,
+                'id': 2,
+                'image': None,
+                'media': 'ALL',
+                'publication_date': '2021-01-22',
+                'status': 'DRAFT',
+                'title': 'TITLE2',
+                'type': 'NEWS'
+            },
+            {
+                'abstract': None,
+                'handle': None,
+                'id': 1,
+                'image': None,
+                'media': 'ALL',
+                'publication_date': None,
+                'status': 'DRAFT',
+                'title': 'TITLE',
+                'type': 'NEWS'
+            }
+        ], response.json)
