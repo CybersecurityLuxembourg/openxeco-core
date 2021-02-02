@@ -1,7 +1,7 @@
-from sqlalchemy import MetaData, func
+from sqlalchemy import MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_
 import datetime
 
 
@@ -90,13 +90,18 @@ class DB:
         self.session.query(table).delete()
         self.session.commit()
 
-    def get(self, table, filters={}):
+    def get(self, table, filters={}, entities=None):
         q = self.session.query(table)
+
+        if entities is not None:
+            q = q.with_entities(*entities)
+
         for attr, value in filters.items():
             if type(value) == list:
                 q = q.filter(getattr(table, attr).in_(value))
             else:
                 q = q.filter(getattr(table, attr) == value)
+
         return q.all()
 
     def get_count(self, table, filters={}):
@@ -115,13 +120,19 @@ class DB:
     # COMPANY     #
     ###############
 
-    def get_filtered_companies(self, filters={}):
+    def get_filtered_companies(self, filters={}, entities=None):
 
         query = self.session.query(self.tables["Company"])
+
+        if entities is not None:
+            query = query.with_entities(*entities)
 
         if "name" in filters and filters['name'] is not None:
             name = func.lower(filters['name'])
             query = query.filter(func.lower(self.tables["Company"].name).like("%" + name + "%"))
+
+        if "type" in filters and filters['type'] == "true":
+            query = query.filter(self.tables["Company"].type == filters['type'])
 
         if "startup_only" in filters and filters['startup_only'] == "true":
             query = query.filter(self.tables["Company"].is_startup.is_(True))
