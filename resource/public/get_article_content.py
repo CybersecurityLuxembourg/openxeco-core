@@ -20,7 +20,8 @@ class GetArticleContent(Resource):
         # Fetch the info from the DB
 
         article = self.db.session.query(self.db.tables["Article"]) \
-            .filter(self.db.tables["Article"].handle == id) \
+            .filter((self.db.tables["Article"].id == (int(id) if id.isdigit() else id)) |
+                    (self.db.tables["Article"].handle == id)) \
             .filter(self.db.tables["Article"].status == "PUBLIC") \
             .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
             .all()
