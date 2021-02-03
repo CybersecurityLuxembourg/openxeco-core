@@ -19,6 +19,7 @@ from resource.article.delete_company_tag import DeleteCompanyTag
 from resource.article.delete_taxonomy_tag import DeleteTaxonomyTag
 from resource.article.set_article_version_as_main import SetArticleVersionAsMain
 from resource.article.update_article import UpdateArticle
+from resource.article.update_article_version import UpdateArticleVersion
 from resource.article.update_article_version_content import UpdateArticleVersionContent
 from resource.address.get_all_addresses import GetAllAddresses
 from resource.address.add_address import AddAddress
@@ -104,6 +105,7 @@ def set_routes(api, db, mail):
     api.add_resource(DeleteTaxonomyTag, '/article/delete_taxonomy_tag', resource_class_kwargs={"db": db})
     api.add_resource(SetArticleVersionAsMain, '/article/set_article_version_as_main', resource_class_kwargs={"db": db})
     api.add_resource(UpdateArticle, '/article/update_article', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateArticleVersion, '/article/update_article_version', resource_class_kwargs={"db": db})
     api.add_resource(UpdateArticleVersionContent, '/article/update_article_version_content', resource_class_kwargs={"db": db})
 
     api.add_resource(GetGlobalAnalytics, '/analytic/get_global_analytics', resource_class_kwargs={"db": db})
