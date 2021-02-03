@@ -6,6 +6,7 @@ import FormLine from '../button/FormLine';
 import Loading from '../box/Loading';
 import Table from '../table/Table';
 import DialogConfirmation from '../dialog/DialogConfirmation';
+import DialogConfirmationWithTextField from '../dialog/DialogConfirmationWithTextField';
 
 
 export default class ArticleVersion extends React.Component {
@@ -42,9 +43,10 @@ export default class ArticleVersion extends React.Component {
         });
     }
 
-    copyArticleVersion(id) {
+    copyArticleVersion(id, name) {
         let params = {
             article_version_id: id,
+            name: name
         }
 
         postRequest.call(this, "article/copy_article_version", params, response => {
@@ -153,7 +155,8 @@ export default class ArticleVersion extends React.Component {
                             }
                             afterConfirmation={() => this.deleteArticleVersion(value.id)}
                         />
-                        <DialogConfirmation
+                        <DialogConfirmationWithTextField
+                            fieldName={"Version name"}
                             text={"Choose a name for the new version:"}
                             trigger={
                                 <button
@@ -161,7 +164,7 @@ export default class ArticleVersion extends React.Component {
                                     <i className="far fa-copy"/>
                                 </button>
                             }
-                            afterConfirmation={() => this.copyArticleVersion(value.id)}
+                            afterConfirmation={(newName) => this.copyArticleVersion(value.id, newName)}
                         />
                         <DialogConfirmation
                             text={"Are you sure you want to set this version as the main one?"}
