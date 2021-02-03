@@ -45,7 +45,6 @@ export default class DialogConfirmationWithTextField extends React.Component {
                         label={this.props.fieldName}
                         value={this.state.value}
                         onChange={v => this.setState({ value: v})}
-                        labelWidth={4}
                     />
                     <div className={"bottom-right-buttons"}>
                         <button
@@ -67,5 +66,3 @@ export default class DialogConfirmationWithTextField extends React.Component {
         );
     }
 }
-
-
