@@ -131,7 +131,7 @@ class DB:
             name = func.lower(filters['name'])
             query = query.filter(func.lower(self.tables["Company"].name).like("%" + name + "%"))
 
-        if "type" in filters and filters['type'] == "true":
+        if "type" in filters and filters['type'] is not None:
             query = query.filter(self.tables["Company"].type == filters['type'])
 
         if "startup_only" in filters and filters['startup_only'] == "true":
