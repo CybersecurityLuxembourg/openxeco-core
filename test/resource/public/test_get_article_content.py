@@ -1,5 +1,4 @@
 from test.BaseCase import BaseCase
-import datetime
 import bs4
 import os
 import datetime

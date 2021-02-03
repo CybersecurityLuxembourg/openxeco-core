@@ -17,7 +17,7 @@ class GetImage(Resource):
 
         try:
             f = open(os.path.join(IMAGE_FOLDER, id), "rb")
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             raise ImageNotFound
 
         return send_file(f, attachment_filename=f"{id}.jpg", mimetype='image/JPG')

@@ -16,11 +16,13 @@ class TestGetArticle(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual({
             'abstract': None,
+            'end_date': None,
             'handle': None,
             'id': 1,
             'image': None,
             'media': 'ALL',
             'publication_date': None,
+            'start_date': None,
             'status': 'DRAFT',
             'title': 'TITLE',
             'type': 'NEWS'

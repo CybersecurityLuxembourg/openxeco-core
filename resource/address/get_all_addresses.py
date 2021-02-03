@@ -1,6 +1,5 @@
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
-from db.db import DB
 from utils.serializer import Serializer
 from utils.catch_exception import catch_exception
 from utils.log_request import log_request

@@ -54,22 +54,26 @@ class TestGetRelatedArticles(BaseCase):
         self.assertEqual([
             {
                 'abstract': None,
+                'end_date': None,
                 'handle': None,
                 'id': 2,
                 'image': None,
                 'media': 'ALL',
                 'publication_date': (datetime.date.today() - datetime.timedelta(days=2)).strftime("%Y-%m-%d"),
+                'start_date': None,
                 'status': 'PUBLIC',
                 'title': 'TITLE2',
                 'type': 'NEWS'
             },
             {
                 'abstract': None,
+                'end_date': None,
                 'handle': None,
                 'id': 3,
                 'image': None,
                 'media': 'ALL',
                 'publication_date': (datetime.date.today() - datetime.timedelta(days=3)).strftime("%Y-%m-%d"),
+                'start_date': None,
                 'status': 'PUBLIC',
                 'title': 'TITLE3',
                 'type': 'NEWS'
@@ -215,22 +219,26 @@ class TestGetRelatedArticles(BaseCase):
         self.assertEqual([
             {
                 'abstract': None,
+                'end_date': None,
                 'handle': None,
                 'id': 2,
                 'image': None,
                 'media': 'SECURITYMADEIN.LU',
                 'publication_date': (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
+                'start_date': None,
                 'status': 'PUBLIC',
                 'title': 'TITLE2',
                 'type': 'NEWS'
             },
             {
                 'abstract': None,
+                'end_date': None,
                 'handle': None,
                 'id': 3,
                 'image': None,
                 'media': 'ALL',
                 'publication_date': (datetime.date.today() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
+                'start_date': None,
                 'status': 'PUBLIC',
                 'title': 'TITLE3',
                 'type': 'NEWS'

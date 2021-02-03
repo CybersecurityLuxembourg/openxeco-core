@@ -18,23 +18,28 @@ class TestGetArticles(BaseCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual([
-            {'abstract': None,
+            {
+                'abstract': None,
+                'end_date': None,
                 'handle': None,
                 'id': 2,
                 'image': None,
                 'media': 'ALL',
                 'publication_date': '2021-01-22',
+                'start_date': None,
                 'status': 'DRAFT',
                 'title': 'TITLE2',
                 'type': 'NEWS'
             },
             {
                 'abstract': None,
+                'end_date': None,
                 'handle': None,
                 'id': 1,
                 'image': None,
                 'media': 'ALL',
                 'publication_date': None,
+                'start_date': None,
                 'status': 'DRAFT',
                 'title': 'TITLE',
                 'type': 'NEWS'
