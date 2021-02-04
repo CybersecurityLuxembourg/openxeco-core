@@ -52,11 +52,16 @@ from resource.public.get_public_actors import GetPublicActors
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.source.get_all_sources import GetAllSources
-from resource.user.get_user import GetUser
-from resource.user.get_my_user import GetMyUser
-from resource.user.get_all_users import GetAllUsers
 from resource.user.add_user import AddUser
+from resource.user.add_user_group import AddUserGroup
 from resource.user.delete_user import DeleteUser
+from resource.user.delete_user_group import DeleteUserGroup
+from resource.user.get_users import GetUsers
+from resource.user.get_my_user import GetMyUser
+from resource.user.get_user import GetUser
+from resource.user.get_user_groups import GetUserGroups
+from resource.user.get_user_group_assignments import GetUserGroupAssignments
+from resource.user.update_user_group_assignment import UpdateUserGroupAssignment
 from resource.taxonomy.add_taxonomy_assignment import AddTaxonomyAssignment
 from resource.taxonomy.add_taxonomy_category import AddTaxonomyCategory
 from resource.taxonomy.add_taxonomy_category_hierarchy import AddTaxonomyCategoryHierarchy
@@ -142,11 +147,16 @@ def set_routes(api, db, mail):
 
     api.add_resource(GetAllSources, '/source/get_all_sources', resource_class_kwargs={"db": db})
 
-    api.add_resource(GetAllUsers, '/user/get_all_users', resource_class_kwargs={"db": db})
-    api.add_resource(GetUser, '/user/get_user/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyUser, '/user/get_my_user', resource_class_kwargs={"db": db})
     api.add_resource(AddUser, '/user/add_user', resource_class_kwargs={"db": db, "mail": mail})
+    api.add_resource(AddUserGroup, '/user/add_user_group', resource_class_kwargs={"db": db})
     api.add_resource(DeleteUser, '/user/delete_user', resource_class_kwargs={"db": db})
+    api.add_resource(DeleteUserGroup, '/user/delete_user_group', resource_class_kwargs={"db": db})
+    api.add_resource(GetUsers, '/user/get_users', resource_class_kwargs={"db": db})
+    api.add_resource(GetUser, '/user/get_user/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetUserGroups, '/user/get_user_groups', resource_class_kwargs={"db": db})
+    api.add_resource(GetUserGroupAssignments, '/user/get_user_group_assignments', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyUser, '/user/get_my_user', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateUserGroupAssignment, '/user/update_user_group_assignment', resource_class_kwargs={"db": db})
 
     api.add_resource(AddTaxonomyAssignment, '/taxonomy/add_taxonomy_assignment', resource_class_kwargs={"db": db})
     api.add_resource(AddTaxonomyCategory, '/taxonomy/add_taxonomy_category', resource_class_kwargs={"db": db})

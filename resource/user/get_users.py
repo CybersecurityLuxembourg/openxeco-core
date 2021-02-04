@@ -1,12 +1,11 @@
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from db.db import DB
-from exception.object_not_found import ObjectNotFound
 from utils.catch_exception import catch_exception
 from utils.log_request import log_request
 
 
-class GetUser(Resource):
+class GetUsers(Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -14,15 +13,12 @@ class GetUser(Resource):
     @log_request
     @catch_exception
     @jwt_required
-    def get(self, id):
+    def get(self):
 
-        data = self.db.get(self.db.tables["User"], {"id": id})
-
-        if len(data) < 1:
-            raise ObjectNotFound
-
-        data = data[0].__dict__
-        del data["password"]
-        del data['_sa_instance_state']
+        query = self.db.session.query(self.db.tables["User"])\
+            .with_entities(self.db.tables["User"].id,
+                           self.db.tables["User"].email,
+                           self.db.tables["User"].is_admin)
+        data = [u._asdict() for u in query]
 
         return data, "200 "

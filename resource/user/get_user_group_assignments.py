@@ -3,9 +3,10 @@ from flask_jwt_extended import jwt_required
 from db.db import DB
 from utils.catch_exception import catch_exception
 from utils.log_request import log_request
+from utils.serializer import Serializer
 
 
-class GetAllUsers(Resource):
+class GetUserGroupAssignments(Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -15,8 +16,7 @@ class GetAllUsers(Resource):
     @jwt_required
     def get(self):
 
-        query = self.db.session.query(self.db.tables["User"])\
-            .with_entities(self.db.tables["User"].id, self.db.tables["User"].email)
-        data = [u._asdict() for u in query]
+        data = self.db.get(self.db.tables["UserGroupAssignment"])
+        data = Serializer.serialize(data, self.db.tables["UserGroupAssignment"])
 
         return data, "200 "
