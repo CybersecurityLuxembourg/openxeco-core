@@ -23,7 +23,7 @@ class UpdateUserGroupAssignment(Resource):
 
         self.db.delete(self.db.tables["UserGroupAssignment"], {"user_id": input_data["user"]})
 
-        self.db.add({
+        self.db.insert({
             "user_id": input_data["user"],
             "group_id": input_data["group"]
         }, self.db.tables["UserGroupAssignment"])
