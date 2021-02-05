@@ -1,10 +1,10 @@
 import React from 'react';
 import './ArticleGlobal.css';
 import {NotificationManager as nm} from 'react-notifications';
-import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
-import Loading from '../box/Loading';
-import {validateUrlHandle} from '../../utils/re';
+import {getRequest, postRequest} from '../../../utils/request';
+import FormLine from '../../button/FormLine';
+import Loading from '../../box/Loading';
+import {validateUrlHandle} from '../../../utils/re';
 
 
 export default class ArticleGlobal extends React.Component {

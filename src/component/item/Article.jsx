@@ -7,10 +7,10 @@ import FormLine from '../button/FormLine';
 import Loading from '../box/Loading';
 import DialogConfirmation from '../dialog/DialogConfirmation';
 import Tab from '../tab/Tab';
-import ArticleGlobal from './ArticleGlobal';
-import ArticleVersion from './ArticleVersion';
-import ArticleContent from './ArticleContent';
-import ArticleTag from './ArticleTag';
+import ArticleGlobal from './article/ArticleGlobal';
+import ArticleVersion from './article/ArticleVersion';
+import ArticleContent from './article/ArticleContent';
+import ArticleTag from './article/ArticleTag';
 
 
 export default class Article extends Component {

@@ -1,10 +1,10 @@
 import React from 'react';
 import './CompanyTaxonomy.css';
 import {NotificationManager as nm} from 'react-notifications';
-import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
-import Loading from '../box/Loading';
-import CheckBoxGrid from '../button/CheckBoxGrid';
+import {getRequest, postRequest} from '../../../utils/request';
+import FormLine from '../../button/FormLine';
+import Loading from '../../box/Loading';
+import CheckBoxGrid from '../../button/CheckBoxGrid';
 import Tree from 'react-d3-tree';
 
 

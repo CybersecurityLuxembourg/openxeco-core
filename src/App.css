@@ -397,7 +397,7 @@ textarea {
 
 /* DRAG'n'DROP */
 
-.Droppable-horizontal-bar {
+.Droppable-bar {
 	width: 100%;
 	min-height: 50px;
 	padding: 5px 10px;
@@ -406,7 +406,7 @@ textarea {
     border-radius: 0.4rem;
 }
 
-.Droppable-horizontal-bar-unassigned {
+.Droppable-bar-unassigned {
 	background-color: lightgrey !important;
 }
 
@@ -416,6 +416,10 @@ textarea {
 	margin: 2px 2px;
 	background-color: #8fddff;
     border-radius: 0.4rem;
+}
+
+.Droppable-element-block {
+	display: block !important;
 }
 
 /* TREE */

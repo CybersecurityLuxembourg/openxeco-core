@@ -1,9 +1,9 @@
 import React from 'react';
 import './CompanyGlobal.css';
 import {NotificationManager as nm} from 'react-notifications';
-import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
-import Loading from '../box/Loading';
+import {getRequest, postRequest} from '../../../utils/request';
+import FormLine from '../../button/FormLine';
+import Loading from '../../box/Loading';
 
 
 export default class CompanyGlobal extends React.Component {

@@ -1,12 +1,12 @@
 import React from 'react';
 import './ArticleVersion.css';
 import {NotificationManager as nm} from 'react-notifications';
-import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
-import Loading from '../box/Loading';
-import Table from '../table/Table';
-import DialogConfirmation from '../dialog/DialogConfirmation';
-import DialogConfirmationWithTextField from '../dialog/DialogConfirmationWithTextField';
+import {getRequest, postRequest} from '../../../utils/request';
+import FormLine from '../../button/FormLine';
+import Loading from '../../box/Loading';
+import Table from '../../table/Table';
+import DialogConfirmation from '../../dialog/DialogConfirmation';
+import DialogConfirmationWithTextField from '../../dialog/DialogConfirmationWithTextField';
 
 
 export default class ArticleVersion extends React.Component {

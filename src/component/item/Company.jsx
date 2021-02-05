@@ -7,10 +7,10 @@ import FormLine from '../button/FormLine';
 import Loading from '../box/Loading';
 import DialogConfirmation from '../dialog/DialogConfirmation';
 import Tab from '../tab/Tab';
-import CompanyGlobal from './CompanyGlobal';
-import CompanyAddress from './CompanyAddress';
-import CompanyTaxonomy from './CompanyTaxonomy';
-import CompanyWorkforce from './CompanyWorkforce';
+import CompanyGlobal from './company/CompanyGlobal';
+import CompanyAddress from './company/CompanyAddress';
+import CompanyTaxonomy from './company/CompanyTaxonomy';
+import CompanyWorkforce from './company/CompanyWorkforce';
 
 
 export default class Company extends Component {

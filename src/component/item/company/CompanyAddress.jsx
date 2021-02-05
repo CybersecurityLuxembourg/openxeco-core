@@ -1,13 +1,13 @@
 import React from 'react';
 import './CompanyAddress.css';
-import Loading from '../box/Loading';
-import Message from '../box/Message';
-import Address from '../button/Address';
-import {getRequest, postRequest, getForeignRequest} from '../../utils/request';
+import Loading from '../../box/Loading';
+import Message from '../../box/Message';
+import Address from '../../button/Address';
+import {getRequest, postRequest, getForeignRequest} from '../../../utils/request';
 import {NotificationManager as nm} from 'react-notifications';
 import _ from 'lodash';
 import Popup from "reactjs-popup";
-import FormLine from '../button/FormLine';
+import FormLine from '../../button/FormLine';
 
 
 export default class CompanyAddress extends React.Component {

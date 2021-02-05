@@ -1,11 +1,11 @@
 import React from 'react';
 import './CompanyWorkforce.css';
 import {NotificationManager as nm} from 'react-notifications';
-import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
-import Loading from '../box/Loading';
-import Table from '../table/Table';
-import DialogConfirmation from '../dialog/DialogConfirmation';
+import {getRequest, postRequest} from '../../../utils/request';
+import FormLine from '../../button/FormLine';
+import Loading from '../../box/Loading';
+import Table from '../../table/Table';
+import DialogConfirmation from '../../dialog/DialogConfirmation';
 
 
 export default class CompanyWorkforce extends React.Component {

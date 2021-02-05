@@ -1,15 +1,15 @@
 import React from 'react';
 import './ArticleContent.css';
 import {NotificationManager as nm} from 'react-notifications';
-import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
-import Loading from '../box/Loading';
-import Message from "../box/Message";
-import LogArticleVersion from "../item/LogArticleVersion";
-import DialogConfirmation from '../dialog/DialogConfirmation';
-import DialogSelectImage from '../dialog/DialogSelectImage';
+import {getRequest, postRequest} from '../../../utils/request';
+import FormLine from '../../button/FormLine';
+import Loading from '../../box/Loading';
+import Message from "../../box/Message";
+import LogArticleVersion from "../../item/LogArticleVersion";
+import DialogConfirmation from '../../dialog/DialogConfirmation';
+import DialogSelectImage from '../../dialog/DialogSelectImage';
 import RGL, { WidthProvider } from "react-grid-layout";
-import {getApiURL} from '../../utils/env';
+import {getApiURL} from '../../../utils/env';
 const ReactGridLayout = WidthProvider(RGL);
 
 

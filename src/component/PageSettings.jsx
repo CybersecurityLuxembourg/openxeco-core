@@ -1,7 +1,7 @@
 import React from 'react';
 import './PageSettings.css';
-import SettingMail from  './setting/SettingMail';
-import SettingTaxonomy from './setting/SettingTaxonomy';
+import SettingMail from  './pagesettings/SettingMail';
+import SettingTaxonomy from './pagesettings/SettingTaxonomy';
 import Tab from './tab/Tab';
 
 

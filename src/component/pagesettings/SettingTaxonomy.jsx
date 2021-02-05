@@ -571,7 +571,7 @@ export default class SettingTaxonomy extends React.Component {
 		                            			{(provided, snapshot) => (
 										            <div
 										            	ref={provided.innerRef}
-										            	className="Droppable-horizontal-bar Droppable-horizontal-bar-unassigned"
+										            	className="Droppable-bar Droppable-bar-unassigned"
 										            	{...provided.droppableProps}>
 										            	<div>Not assigned</div>
 										              	{this.state.valueHierarchy.child_values
@@ -606,7 +606,7 @@ export default class SettingTaxonomy extends React.Component {
 			                            			{(provided, snapshot) => (
 											            <div
 											            	ref={provided.innerRef}
-											            	className="Droppable-horizontal-bar"
+											            	className="Droppable-bar"
 											            	{...provided.droppableProps}>
 											            	<div>{pv.name}</div>
 											              	{this.state.valueHierarchy.value_hierarchy
