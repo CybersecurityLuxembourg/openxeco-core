@@ -66,6 +66,7 @@ from resource.user.get_user_group_rights import GetUserGroupRights
 from resource.user.get_user_groups import GetUserGroups
 from resource.user.get_user_group import GetUserGroup
 from resource.user.get_user_group_assignments import GetUserGroupAssignments
+from resource.user.update_user import UpdateUser
 from resource.user.update_user_group_assignment import UpdateUserGroupAssignment
 from resource.taxonomy.add_taxonomy_assignment import AddTaxonomyAssignment
 from resource.taxonomy.add_taxonomy_category import AddTaxonomyCategory
@@ -167,6 +168,7 @@ def set_routes(api, db, mail):
     api.add_resource(GetUserGroup, '/user/get_user_group/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetUserGroupAssignments, '/user/get_user_group_assignments', resource_class_kwargs={"db": db})
     api.add_resource(GetMyUser, '/user/get_my_user', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateUser, '/user/update_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateUserGroupAssignment, '/user/update_user_group_assignment', resource_class_kwargs={"db": db})
 
     api.add_resource(AddTaxonomyAssignment, '/taxonomy/add_taxonomy_assignment', resource_class_kwargs={"db": db})
