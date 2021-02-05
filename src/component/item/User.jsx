@@ -100,6 +100,29 @@ export default class User extends Component {
         });
     }
 
+    saveUserValue(prop, value) {
+        if (this.state.user[prop] !== value) {
+            let params = {
+                id: this.props.id,
+                [prop]: value,
+            }
+
+            postRequest.call(this, "user/update_user", params, response => {
+                let user = Object.assign({}, this.state.user);
+
+                user[prop] = value;
+                this.setState({user: user});
+                nm.info("The property has been updated");
+            }, response => {
+                this.refreshCompanyData();
+                nm.warning(response.statusText);
+            }, error => {
+                this.refreshCompanyData();
+                nm.error(error.message);
+            });
+        }
+    }
+
     render() {
         return (
             <Popup
@@ -147,6 +170,12 @@ export default class User extends Component {
                                     label={"Email"}
                                     value={this.state.user.email}
                                     disabled={true}
+                                />
+                                <FormLine
+                                    label="Is admin"
+                                    type={"checkbox"}
+                                    value={this.state.user.is_admin}
+                                    onChange={s => this.saveUserValue("is_admin", s)}
                                 />
                             </div>
                             :

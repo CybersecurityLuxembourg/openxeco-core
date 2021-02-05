@@ -66,7 +66,7 @@ export default class UserGroup extends React.Component {
 			admins: null
 		});
 		
-		getRequest.call(this, "user/get_users", data => {
+		getRequest.call(this, "user/get_users?admin_only=true", data => {
             this.setState({
                 admins: data,
             });
@@ -281,7 +281,11 @@ export default class UserGroup extends React.Component {
 											                    {...provided.draggableProps}
 											                    {...provided.dragHandleProps}
 											                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
-										                      	{this.state.admins.filter(v => v.id === item.user_id)[0].email}
+										                      	{this.state.admins.filter(v => v.id === item.user_id).length > 0 ?
+										                      		this.state.admins.filter(v => v.id === item.user_id)[0].email
+										                      		: 
+										                      		"Error"
+										                      	}
 										                    </div>
 										                )}
 									                </Draggable>
