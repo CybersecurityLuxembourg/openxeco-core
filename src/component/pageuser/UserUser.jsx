@@ -9,6 +9,7 @@ import {getRequest, postRequest} from '../../utils/request';
 import User from '../item/User';
 import FormLine from '../button/FormLine';
 import {validateEmail, validatePassword} from '../../utils/re';
+import _ from 'lodash';
 
 
 export default class UserUser extends React.Component {
@@ -35,7 +36,7 @@ export default class UserUser extends React.Component {
 
         getRequest.call(this, "user/get_users", data => {
             this.setState({
-                users: data,
+                users: _.orderBy(data, ['is_admin', 'email'], ['desc', 'asc'])
             });
         }, response => {
             nm.warning(response.statusText);
@@ -76,6 +77,13 @@ export default class UserUser extends React.Component {
                         email={value.email}
                         afterDeletion={() => this.refreshUsers()}
                     />
+                )
+              },
+              {
+                Header: 'Is admin',
+                accessor: x => { return x },
+                Cell: ({ cell: { value } }) => (
+                    value.is_admin === 1 ? "Yes" : ""
                 )
               }
         ];

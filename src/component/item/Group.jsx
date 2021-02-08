@@ -117,7 +117,7 @@ export default class Group extends Component {
 
         postRequest.call(this, "user/delete_user_group", params, response => {
             document.elementFromPoint(100, 0).click()
-            nm.info("The user has been deleted");
+            nm.info("The group has been deleted");
 
             if (typeof this.props.afterDeletion !== "undefined")
                 this.props.afterDeletion();
