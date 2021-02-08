@@ -7,12 +7,28 @@ def verify_admin_access(function):
     @functools.wraps(function)
     def wrapper(self, *args, **kwargs):
 
+        # Checking the user
+
+        users = getattr(self, "db").get(
+            getattr(self, "db").tables["User"],
+            {"id": int(get_jwt_identity()) if get_jwt_identity() is not None else None})
+
+        if len(users) == 0:
+            return "", f"401 The user has not been found"
+
+        if users[0].is_admin == 0:
+            return "", f"401 This user is not an admin"
+
+        # Checking the user group
+
         groups = getattr(self, "db").get(
             getattr(self, "db").tables["UserGroupAssignment"],
             {"user_id": int(get_jwt_identity()) if get_jwt_identity() is not None else None})
 
         if len(groups) == 0:
             return "", f"401 This user is not affected to a user group"
+
+        # Checking the right
 
         rights = getattr(self, "db").get(
             getattr(self, "db").tables["UserGroupRight"],
