@@ -6,6 +6,7 @@ from unittest.mock import patch
 class TestAddTaxonomyCategory(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category")
     def test_ok(self, token):
         payload = {
             "category": "CAT",
@@ -19,6 +20,7 @@ class TestAddTaxonomyCategory(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["TaxonomyCategory"]), 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category")
     def test_ko_duplicate_entry(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
 
@@ -34,6 +36,7 @@ class TestAddTaxonomyCategory(BaseCase):
         self.assertEqual("500 Object already existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category")
     @patch('db.db.DB.insert')
     def test_ko_force_integrity_error_out_of_duplicate(self, mock_db_insert, token):
         mock_db_insert.side_effect = IntegrityError(None, None, None)

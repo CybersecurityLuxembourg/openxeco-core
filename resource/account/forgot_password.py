@@ -5,7 +5,6 @@ import datetime
 from utils.mail import send_email
 from config.config import FRONTEND_URL
 from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 

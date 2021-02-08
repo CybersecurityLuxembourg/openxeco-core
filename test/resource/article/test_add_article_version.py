@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestAddArticleVersion(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_article_version")
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
 
@@ -24,6 +25,7 @@ class TestAddArticleVersion(BaseCase):
         self.assertEqual(article_versions[0].name, "Version 1")
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_article_version")
     def test_ko_unexisting_article_id(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
 

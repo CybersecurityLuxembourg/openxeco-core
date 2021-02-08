@@ -6,6 +6,7 @@ from unittest.mock import patch
 class TestAddTaxonomyValue(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value")
     def test_ok(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
 
@@ -22,6 +23,7 @@ class TestAddTaxonomyValue(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["TaxonomyValue"]), 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value")
     def test_ko_missing_category(self, token):
 
         payload = {
@@ -37,6 +39,7 @@ class TestAddTaxonomyValue(BaseCase):
         self.assertEqual("422 the provided category does not exist", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value")
     def test_ko_duplicate_entry(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
@@ -54,6 +57,7 @@ class TestAddTaxonomyValue(BaseCase):
         self.assertEqual("500 Object already existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value")
     @patch('db.db.DB.insert')
     def test_ko_force_integrity_error_out_of_duplicate(self, mock_db_insert, token):
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT1"}))

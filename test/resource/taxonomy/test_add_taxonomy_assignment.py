@@ -6,6 +6,7 @@ from unittest.mock import patch
 class TestAddTaxonomyAssignment(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     def test_ok(self, token):
         self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
@@ -24,6 +25,7 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["TaxonomyAssignment"]), 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     def test_ko_assign_from_parent_category(self, token):
         self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
@@ -44,6 +46,7 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.assertEqual("500 Cannot assign value from parent category", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     def test_ko_object_not_found(self, token):
 
         payload = {
@@ -59,6 +62,7 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.assertEqual("500 Object not found", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     def test_ko_duplicate_entry(self, token):
         self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
@@ -78,6 +82,7 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.assertEqual("500 Object already existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     @patch('db.db.DB.insert')
     def test_ko_force_integrity_error_out_of_duplicate(self, mock_db_insert, token):
         self.db.session.add(self.db.tables["Company"](**{"id": 1, "name": "My Company"}))

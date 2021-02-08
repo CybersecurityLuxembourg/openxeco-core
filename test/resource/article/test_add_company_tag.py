@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestAddCompanyTag(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_company_tag")
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "name": "COMPANY"}, self.db.tables["Company"])
@@ -25,6 +26,7 @@ class TestAddCompanyTag(BaseCase):
         self.assertEqual(tags[0].company, 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_company_tag")
     def test_ko_unexisting_article_id(self, token):
         self.db.insert({"id": 1, "name": "COMPANY"}, self.db.tables["Company"])
 
@@ -43,6 +45,7 @@ class TestAddCompanyTag(BaseCase):
         self.assertEqual(len(tags), 0)
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_company_tag")
     def test_ko_unexisting_taxonomy_value(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
 

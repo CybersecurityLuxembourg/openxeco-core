@@ -1,10 +1,10 @@
 from test.BaseCase import BaseCase
-import datetime
 
 
 class TestUpdateArticle(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/update_article_version")
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "TITLE"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "name"}, self.db.tables["ArticleVersion"])

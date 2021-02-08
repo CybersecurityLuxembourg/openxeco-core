@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestAddArticle(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_article")
     def test_ok(self, token):
 
         title = "Article title with-dig1ts-and-letters"

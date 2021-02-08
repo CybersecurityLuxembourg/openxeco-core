@@ -5,6 +5,7 @@ from unittest.mock import patch
 class TestChangePassword(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/account/change_password")
     def test_ok(self, token):
         payload = {
             "password": "12345678",
@@ -18,6 +19,7 @@ class TestChangePassword(BaseCase):
         self.assertEqual(200, response.status_code)
 
     @BaseCase.login
+    @BaseCase.grant_access("/account/change_password")
     def test_password_with_wrong_format(self, token):
         payload = {
             "password": "12345678",
@@ -47,8 +49,8 @@ class TestChangePassword(BaseCase):
         self.assertEqual("404 Requested user not found", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/account/change_password")
     def test_wrong_password(self, token):
-
         payload = {
             "password": "wrong_password",
             "new_password": "MyNewPass1!"

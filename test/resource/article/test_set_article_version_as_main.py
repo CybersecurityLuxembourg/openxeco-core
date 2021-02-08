@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestSetArticleVersionAsMain(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/set_article_version_as_main")
     def test_ok(self, token):
 
         self.db.insert({"id": 1, "title": "TITLE"}, self.db.tables["Article"])
@@ -30,6 +31,7 @@ class TestSetArticleVersionAsMain(BaseCase):
         self.assertEqual(article_version_one[0].is_main, 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/set_article_version_as_main")
     def test_ko(self, token):
         payload = {
             "id": 3,

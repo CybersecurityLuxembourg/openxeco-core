@@ -7,6 +7,7 @@ import base64
 class TestAddImage(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/media/add_image")
     @patch('resource.media.add_image.IMAGE_FOLDER', os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_add_image"))
     def test_ok(self, token):
 
@@ -35,6 +36,7 @@ class TestAddImage(BaseCase):
         os.remove(target_path)
 
     @BaseCase.login
+    @BaseCase.grant_access("/media/add_image")
     @patch('resource.media.add_image.IMAGE_FOLDER', "/unexisting/path")
     def test_ko_file_exception(self, token):
 

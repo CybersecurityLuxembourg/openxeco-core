@@ -6,6 +6,7 @@ import datetime
 class TestUpdateAddress(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/address/update_address")
     def test_ok(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({

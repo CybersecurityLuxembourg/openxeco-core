@@ -2,9 +2,10 @@ from test.BaseCase import BaseCase
 from unittest.mock import patch
 
 
-class TestForgotPassword(BaseCase):
+class TestResetPassword(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/account/reset_password")
     def test_ok(self, token):
         payload = {
             "new_password": "MyNewPass1!"
@@ -17,6 +18,7 @@ class TestForgotPassword(BaseCase):
         self.assertEqual(200, response.status_code)
 
     @BaseCase.login
+    @BaseCase.grant_access("/account/reset_password")
     def test_password_with_wrong_format(self, token):
         payload = {
             "new_password": "MyNewPass"

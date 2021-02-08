@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestAddWorkforce(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/workforce/add_workforce")
     def test_ok(self, token):
         self.db.insert({"name": "Newspaper"}, self.db.tables["Source"])
         self.db.insert({"id": 1, "name": "Company1"}, self.db.tables["Company"])
@@ -24,6 +25,7 @@ class TestAddWorkforce(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["Workforce"]), 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/workforce/add_workforce")
     def test_ko_missing_company(self, token):
         self.db.insert({"name": "Newspaper"}, self.db.tables["Source"])
 
@@ -43,6 +45,7 @@ class TestAddWorkforce(BaseCase):
         self.assertEqual("422 Provided company not existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/workforce/add_workforce")
     def test_ko_missing_source(self, token):
         self.db.insert({"id": 1, "name": "Company1"}, self.db.tables["Company"])
 
@@ -62,6 +65,7 @@ class TestAddWorkforce(BaseCase):
         self.assertEqual("422 Provided source not existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/workforce/add_workforce")
     def test_ko_wrong_date_format(self, token):
         payload = {
             "company": 1,

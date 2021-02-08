@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestUpdateArticleVersionContent(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/update_article_version_content")
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "TITLE"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "VERSION 0"}, self.db.tables["ArticleVersion"])
@@ -55,6 +56,7 @@ class TestUpdateArticleVersionContent(BaseCase):
         self.assertEqual(article_boxes[2].id, 5)
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/update_article_version_content")
     def test_ko_no_article_version_id(self, token):
 
         payload = {
@@ -82,6 +84,7 @@ class TestUpdateArticleVersionContent(BaseCase):
         self.assertEqual("422 The provided article version ID does not exist", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/update_article_version_content")
     def test_ko_wrong_type(self, token):
         self.db.insert({"id": 1, "title": "TITLE"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "VERSION 0"}, self.db.tables["ArticleVersion"])

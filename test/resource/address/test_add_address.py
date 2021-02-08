@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestAddAddress(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/address/add_address")
     def test_ok(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
 
@@ -28,6 +29,7 @@ class TestAddAddress(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["Company_Address"]), 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/address/add_address")
     def test_ko_missing_company(self, token):
         payload = {
             "company_id": 2,

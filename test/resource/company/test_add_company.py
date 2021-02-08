@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestAddCompany(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/company/add_company")
     def test_ok(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
 

@@ -18,7 +18,8 @@ class GetResources(Resource):
         routes = []
 
         for route in self.api.app.url_map.iter_rules():
-            if "/get_" not in str(route) and str(route) not in ["/static/<path:filename>", "/<generic>"]:
+            if "/get_" not in str(route) and str(route) not in ["/static/<path:filename>", "/<generic>",
+                                                                "/account/forgot_password"]:
                 routes.append('%s' % route)
 
         return routes, "200 "

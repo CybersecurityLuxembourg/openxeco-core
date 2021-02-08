@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestCopyArticleVersion(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/copy_article_version")
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "Version 0"}, self.db.tables["ArticleVersion"])
@@ -35,9 +36,8 @@ class TestCopyArticleVersion(BaseCase):
         self.assertEqual(article_boxes[1].type, "TITLE2")
         self.assertEqual(article_boxes[1].content, "title 2")
 
-
-
     @BaseCase.login
+    @BaseCase.grant_access("/article/copy_article_version")
     def test_ko_unexisting_article_id(self, token):
 
         payload = {

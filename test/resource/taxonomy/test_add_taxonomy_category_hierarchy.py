@@ -6,6 +6,7 @@ from unittest.mock import patch
 class TestAddTaxonomyCategoryHierarchy(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category_hierarchy")
     def test_ok(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -23,6 +24,7 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["TaxonomyCategoryHierarchy"]), 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category_hierarchy")
     def test_ko_same_categories(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
 
@@ -39,6 +41,7 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
         self.assertEqual("422 The provided categories cannot be the same one", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category_hierarchy")
     def test_ko_missing_category(self, token):
 
         payload = {
@@ -54,6 +57,7 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
         self.assertEqual("422 One of the provided category does not exist", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category_hierarchy")
     def test_ko_duplicate_entry(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -72,6 +76,7 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
         self.assertEqual("500 Object already existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_category_hierarchy")
     @patch('db.db.DB.insert')
     def test_ko_force_integrity_error_out_of_duplicate(self, mock_db_insert, token):
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT2"}))

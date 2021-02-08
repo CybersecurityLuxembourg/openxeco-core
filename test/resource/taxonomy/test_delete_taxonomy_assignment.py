@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestDeleteTaxonomyAssignment(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/delete_taxonomy_assignment")
     def test_ok(self, token):
         self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
@@ -20,6 +21,7 @@ class TestDeleteTaxonomyAssignment(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["TaxonomyAssignment"]), 0)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/delete_taxonomy_assignment")
     def test_delete_unexisting(self, token):
         payload = {"company": 1, "value": 1}
 

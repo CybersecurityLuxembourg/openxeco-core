@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestDeleteAddress(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/address/delete_address")
     def test_ok(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({
@@ -32,6 +33,7 @@ class TestDeleteAddress(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["Company_Address"]), 0)
 
     @BaseCase.login
+    @BaseCase.grant_access("/address/delete_address")
     def test_delete_unexisting(self, token):
         payload = {
             "id": 1

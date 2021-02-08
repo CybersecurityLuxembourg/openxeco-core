@@ -8,6 +8,7 @@ import os
 class TestAddUser(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/user/add_user")
     @patch('resource.user.add_user.send_email')
     def test_ok(self, mock_send_mail, token):
         mock_send_mail.return_value = None
@@ -33,6 +34,7 @@ class TestAddUser(BaseCase):
         self.assertEqual(mock_send_mail.call_count, 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/user/add_user")
     def test_bad_mail_format(self, token):
         self.db.insert({"email": "myemail@test.lu", "password": "MySecret"}, self.db.tables["User"])
 
@@ -46,6 +48,7 @@ class TestAddUser(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["User"]), 2)
 
     @BaseCase.login
+    @BaseCase.grant_access("/user/add_user")
     def test_bad_password_format(self, token):
         self.db.insert({"email": "myemail@test.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])
 
@@ -59,6 +62,7 @@ class TestAddUser(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["User"]), 2)
 
     @BaseCase.login
+    @BaseCase.grant_access("/user/add_user")
     def test_duplicate_error(self, token):
         self.db.insert({"email": "myemail@test.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])
 
@@ -71,6 +75,7 @@ class TestAddUser(BaseCase):
         self.assertEqual("500 Object already existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/user/add_user")
     @patch('resource.user.add_user.send_email')
     @patch('db.db.DB.insert')
     def test_force_integrity_error_out_of_duplicate(self, mock_db_insert, mock_send_mail, token):

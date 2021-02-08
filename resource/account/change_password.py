@@ -25,6 +25,7 @@ class ChangePassword(Resource):
         {'field': 'new_password', 'type': str}
     ])
     @jwt_required
+    @verify_admin_access
     def post(self):
         input_data = request.get_json()
 

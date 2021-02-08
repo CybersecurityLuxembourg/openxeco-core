@@ -76,10 +76,10 @@ Here --buffer or -b is used to discard the output on a successful test run
 
 Run the test coverage report (with the venv activated)
 ```
-> coverage run --source=resource,utils,db -m unittest discover && coverage report
+> coverage run --source=resource,utils,db,decorator -m unittest discover && coverage report
 ```
 
 Tun the test coverage report and generate in HTML ( with the venv activated)
 ```
-> coverage run --source=resource,utils,db -m unittest discover && coverage html
+> coverage run --source=resource,utils,db,decorator -m unittest discover && coverage html
 ```

@@ -6,6 +6,7 @@ from unittest.mock import patch
 class TestAddTaxonomyValueHierarchy(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value_hierarchy")
     def test_ok(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -26,6 +27,7 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["TaxonomyValueHierarchy"]), 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value_hierarchy")
     def test_ko_same_values(self, token):
 
         payload = {
@@ -41,6 +43,7 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
         self.assertEqual("422 The provided values cannot be the same one", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value_hierarchy")
     def test_ko_parent_value_not_existing(self, token):
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 2, "name": "VAL2", "category": "CAT2"}, self.db.tables["TaxonomyValue"])
@@ -58,6 +61,7 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
         self.assertEqual("422 Provided parent value not existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value_hierarchy")
     def test_ko_child_value_not_existing(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "VAL1", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
@@ -75,6 +79,7 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
         self.assertEqual("422 Provided child value not existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value_hierarchy")
     def test_ko_category_hierarchy_not_existing(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -94,6 +99,7 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
         self.assertEqual("422 Hierarchy between the categories of the values does not exist", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value_hierarchy")
     def test_ko_duplicate_entry(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -116,6 +122,7 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
         self.assertEqual("500 Object already existing", response.status)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/add_taxonomy_value_hierarchy")
     @patch('db.db.DB.insert')
     def test_ko_force_integrity_error_out_of_duplicate(self, mock_db_insert, token):
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT1"}))

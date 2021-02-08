@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestAddTaxonomyTag(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_taxonomy_tag")
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
@@ -26,6 +27,7 @@ class TestAddTaxonomyTag(BaseCase):
         self.assertEqual(tags[0].taxonomy_value, 1)
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_taxonomy_tag")
     def test_ko_unexisting_article_id(self, token):
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
@@ -45,6 +47,7 @@ class TestAddTaxonomyTag(BaseCase):
         self.assertEqual(len(tags), 0)
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/add_taxonomy_tag")
     def test_ko_unexisting_taxonomy_value(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
 

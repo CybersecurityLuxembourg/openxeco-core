@@ -5,6 +5,7 @@ import datetime
 class TestUpdateArticle(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/article/update_article")
     def test_ok(self, token):
         self.db.insert({
             "id": 1,

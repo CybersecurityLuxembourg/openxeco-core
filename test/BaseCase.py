@@ -19,11 +19,17 @@ class BaseCase(unittest.TestCase):
 
         self._truncate_database()
 
-        self.db.insert({"email": self.email, "password": generate_password_hash(self.password)}, self.db.tables["User"])
+        self.db.insert({
+            "id": 1,
+            "email": self.email,
+            "password": generate_password_hash(self.password)},
+            self.db.tables["User"]
+        )
 
     def tearDown(self):
         self._truncate_database()
 
+    @staticmethod
     def login(f):
         @functools.wraps(f)
         def wrapper(self, *args, **kwargs):
@@ -38,6 +44,31 @@ class BaseCase(unittest.TestCase):
             f(self, token=r.json['token'], *args, **kwargs)
 
         return wrapper
+
+    @staticmethod
+    def grant_access(resource=None):
+        def _grant_access(f):
+            @functools.wraps(f)
+            def wrapper(self, *args, **kwargs):
+                self.db.insert(
+                    {"id": 1, "name": "GROUPTEST"},
+                    self.db.tables["UserGroup"]
+                )
+
+                self.db.insert(
+                    {"group_id": 1, "user_id": 1},
+                    self.db.tables["UserGroupAssignment"]
+                )
+
+                self.db.insert(
+                    {"group_id": 1, "resource": resource},
+                    self.db.tables["UserGroupRight"]
+                )
+
+                f(self, *args, **kwargs)
+
+            return wrapper
+        return _grant_access
 
     def _truncate_database(self):
         self.db.session.execute(f'SET FOREIGN_KEY_CHECKS = 0;')

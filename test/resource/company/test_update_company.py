@@ -1,11 +1,11 @@
 from test.BaseCase import BaseCase
-from unittest.mock import patch
 import datetime
 
 
 class TestUpdateCompany(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/company/update_company")
     def test_ok(self, token):
         today = datetime.date.today()
 

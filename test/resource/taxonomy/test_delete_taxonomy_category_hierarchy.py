@@ -4,6 +4,7 @@ from test.BaseCase import BaseCase
 class TestDeleteTaxonomyCategoryHierarchy(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/delete_taxonomy_category_hierarchy")
     def test_ok(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -23,6 +24,7 @@ class TestDeleteTaxonomyCategoryHierarchy(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["TaxonomyCategoryHierarchy"]), 0)
 
     @BaseCase.login
+    @BaseCase.grant_access("/taxonomy/delete_taxonomy_category_hierarchy")
     def test_delete_unexisting(self, token):
         payload = {
             "parent_category": "CAT1",

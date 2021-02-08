@@ -5,6 +5,7 @@ from unittest.mock import patch, mock_open
 class TestSaveTemplate(BaseCase):
 
     @BaseCase.login
+    @BaseCase.grant_access("/mail/save_template")
     @patch("builtins.open", mock_open(read_data="data"))
     def test_ok(self, token):
 
@@ -20,6 +21,7 @@ class TestSaveTemplate(BaseCase):
         self.assertEqual(200, response.status_code)
 
     @BaseCase.login
+    @BaseCase.grant_access("/mail/save_template")
     @patch("builtins.open", mock_open(read_data="data"))
     def test_unknown_template(self, token):
 
