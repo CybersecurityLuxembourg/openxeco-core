@@ -3,8 +3,8 @@ from flask_jwt_extended import jwt_required
 from db.db import DB
 from utils.serializer import Serializer
 from exception.object_not_found import ObjectNotFound
-from utils.catch_exception import catch_exception
-from utils.log_request import log_request
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
 
 
 class GetArticle(Resource):

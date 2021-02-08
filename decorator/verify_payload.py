@@ -1,6 +1,5 @@
 import functools
 from flask import request
-import traceback
 
 
 def _check_payload(input_data, payload_format):
@@ -38,11 +37,7 @@ def verify_payload(format=None):
             if len(biased_value) > 0:
                 return "", f"422 Error with those params : {','.join(biased_value)}"
 
-            try:
-                return f(*args, **kwargs)
-            except Exception as e:
-                traceback.print_exc()
-                return "", f"500 {str(e)}"
+            return f(*args, **kwargs)
 
         return wrapper
     return _verify_payload

@@ -4,8 +4,10 @@ from flask_bcrypt import generate_password_hash
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from utils.re import has_password_format
-from utils.verify_payload import verify_payload
-from utils.log_request import log_request
+from decorator.verify_payload import verify_payload
+from decorator.verify_admin_access import verify_admin_access
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
 
 
 class ResetPassword(Resource):
@@ -16,10 +18,12 @@ class ResetPassword(Resource):
         self.db = db
 
     @log_request
+    @catch_exception
     @verify_payload(format=[
         {'field': 'new_password', 'type': str}
     ])
     @jwt_required
+    @verify_admin_access
     def post(self):
         input_data = request.get_json()
 

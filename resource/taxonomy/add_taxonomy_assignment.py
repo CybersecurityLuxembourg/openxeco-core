@@ -1,12 +1,14 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required
-from utils.verify_payload import verify_payload
+from decorator.verify_payload import verify_payload
+from decorator.verify_admin_access import verify_admin_access
+from decorator.catch_exception import catch_exception
 from sqlalchemy.exc import IntegrityError
 from exception.object_already_existing import ObjectAlreadyExisting
 from exception.object_not_found import ObjectNotFound
 from exception.cannot_assign_value_from_parent_category import CannotAssignValueFromParentCategory
-from utils.log_request import log_request
+from decorator.log_request import log_request
 
 
 class AddTaxonomyAssignment(Resource):
@@ -17,11 +19,13 @@ class AddTaxonomyAssignment(Resource):
         self.db = db
 
     @log_request
+    @catch_exception
     @verify_payload(format=[
         {'field': 'company', 'type': int},
         {'field': 'value', 'type': int}
     ])
     @jwt_required
+    @verify_admin_access
     def post(self):
         input_data = request.get_json()
 

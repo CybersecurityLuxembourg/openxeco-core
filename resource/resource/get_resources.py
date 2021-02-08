@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
-from utils.catch_exception import catch_exception
-from utils.log_request import log_request
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
 
 
 class GetResources(Resource):

@@ -4,8 +4,10 @@ from flask_restful import Resource
 import datetime
 from utils.mail import send_email
 from config.config import FRONTEND_URL
-from utils.verify_payload import verify_payload
-from utils.log_request import log_request
+from decorator.verify_payload import verify_payload
+from decorator.verify_admin_access import verify_admin_access
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
 
 
 class ForgotPassword(Resource):
@@ -18,6 +20,7 @@ class ForgotPassword(Resource):
         self.mail = mail
 
     @log_request
+    @catch_exception
     @verify_payload(format=[
         {'field': 'email', 'type': str}
     ])

@@ -3,8 +3,10 @@ from flask import request
 from flask_bcrypt import check_password_hash
 from flask_jwt_extended import create_access_token
 import datetime
-from utils.verify_payload import verify_payload
-from utils.log_request import log_request
+from decorator.verify_payload import verify_payload
+from decorator.verify_admin_access import verify_admin_access
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
 
 
 class Login(Resource):
@@ -15,6 +17,7 @@ class Login(Resource):
         self.db = db
 
     @log_request
+    @catch_exception
     @verify_payload(format=[
         {'field': 'email', 'type': str},
         {'field': 'password', 'type': str}

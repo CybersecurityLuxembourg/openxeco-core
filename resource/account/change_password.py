@@ -4,8 +4,10 @@ from flask_restful import Resource
 from flask_bcrypt import generate_password_hash
 from flask_jwt_extended import jwt_required
 from flask_bcrypt import check_password_hash
-from utils.log_request import log_request
-from utils.verify_payload import verify_payload
+from decorator.log_request import log_request
+from decorator.verify_payload import verify_payload
+from decorator.verify_admin_access import verify_admin_access
+from decorator.catch_exception import catch_exception
 from utils.re import has_password_format
 
 
@@ -17,6 +19,7 @@ class ChangePassword(Resource):
         self.db = db
 
     @log_request
+    @catch_exception
     @verify_payload(format=[
         {'field': 'password', 'type': str},
         {'field': 'new_password', 'type': str}

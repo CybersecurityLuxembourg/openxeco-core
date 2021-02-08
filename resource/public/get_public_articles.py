@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from db.db import DB
 from utils.serializer import Serializer
-from utils.catch_exception import catch_exception
+from decorator.catch_exception import catch_exception
 from flask import request
 
 

@@ -2,10 +2,12 @@ from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import IntegrityError
-from utils.verify_payload import verify_payload
+from decorator.verify_payload import verify_payload
+from decorator.verify_admin_access import verify_admin_access
+from decorator.catch_exception import catch_exception
 from exception.object_already_existing import ObjectAlreadyExisting
-from utils.log_request import log_request
-from utils.catch_exception import catch_exception
+from decorator.log_request import log_request
+from decorator.catch_exception import catch_exception
 
 
 class AddTaxonomyValue(Resource):
@@ -22,6 +24,7 @@ class AddTaxonomyValue(Resource):
         {'field': 'value', 'type': str}
     ])
     @jwt_required
+    @verify_admin_access
     def post(self):
         input_data = request.get_json()
 

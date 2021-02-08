@@ -1,5 +1,5 @@
 from test.BaseCase import BaseCase
-from utils.verify_payload import verify_payload, _check_payload
+from decorator.verify_payload import _check_payload
 
 
 class TestVerifyPayload(BaseCase):

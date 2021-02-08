@@ -6,9 +6,11 @@ from sqlalchemy.exc import IntegrityError
 from utils.re import has_mail_format, has_password_format
 from utils.mail import send_email
 from config.config import FRONTEND_URL
-from utils.verify_payload import verify_payload
+from decorator.verify_payload import verify_payload
+from decorator.verify_admin_access import verify_admin_access
+from decorator.catch_exception import catch_exception
 from exception.object_already_existing import ObjectAlreadyExisting
-from utils.log_request import log_request
+from decorator.log_request import log_request
 
 
 class AddUser(Resource):
@@ -21,11 +23,13 @@ class AddUser(Resource):
         self.mail = mail
 
     @log_request
+    @catch_exception
     @verify_payload(format=[
         {'field': 'email', 'type': str},
         {'field': 'password', 'type': str}
     ])
     @jwt_required
+    @verify_admin_access
     def post(self):
         input_data = request.get_json()
 
