@@ -60,10 +60,10 @@ export default class CompanyGlobal extends React.Component {
                 this.setState({company: company});
                 nm.info("The property has been updated");
             }, response => {
-                this.refreshCompanyData();
+                this.refresh();
                 nm.warning(response.statusText);
             }, error => {
-                this.refreshCompanyData();
+                this.refresh();
                 nm.error(error.message);
             });
         }
