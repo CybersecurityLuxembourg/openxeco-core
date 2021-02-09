@@ -1,13 +1,13 @@
-from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required
+from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+
 from decorator.catch_exception import catch_exception
-from exception.object_already_existing import ObjectAlreadyExisting
 from decorator.log_request import log_request
-from decorator.catch_exception import catch_exception
+from decorator.verify_admin_access import verify_admin_access
+from decorator.verify_payload import verify_payload
+from exception.object_already_existing import ObjectAlreadyExisting
 
 
 class AddTaxonomyValue(Resource):

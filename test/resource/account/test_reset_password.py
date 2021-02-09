@@ -43,4 +43,4 @@ class TestResetPassword(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("500 The user has not been found", response.status)
+        self.assertEqual("401 The user has not been found", response.status)

@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
 
 
 class GetArticleEnums(Resource):
@@ -13,6 +14,7 @@ class GetArticleEnums(Resource):
     @log_request
     @catch_exception
     @jwt_required
+    @verify_admin_access
     def get(self):
 
         data = {

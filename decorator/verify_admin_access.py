@@ -19,23 +19,28 @@ def verify_admin_access(function):
         if users[0].is_admin == 0:
             return "", f"401 This user is not an admin"
 
-        # Checking the user group
+        if flask.request.method != "GET":
 
-        groups = getattr(self, "db").get(
-            getattr(self, "db").tables["UserGroupAssignment"],
-            {"user_id": int(get_jwt_identity()) if get_jwt_identity() is not None else None})
+            # Checking the user group
 
-        if len(groups) == 0:
-            return "", f"401 This user is not affected to a user group"
+            groups = getattr(self, "db").get(
+                getattr(self, "db").tables["UserGroupAssignment"],
+                {"user_id": int(get_jwt_identity()) if get_jwt_identity() is not None else None})
 
-        # Checking the right
+            if len(groups) == 0:
+                return "", f"401 This user is not affected to a user group"
 
-        rights = getattr(self, "db").get(
-            getattr(self, "db").tables["UserGroupRight"],
-            {"group_id": groups[0].group_id, "resource": flask.request.path})
+            # Checking the right
 
-        if len(rights) == 0:
-            return "", f"401 This user is affected to a group without access to this resource"
+            rights = getattr(self, "db").get(
+                getattr(self, "db").tables["UserGroupRight"],
+                {"group_id": groups[0].group_id, "resource": flask.request.path})
+
+            if len(rights) == 0:
+                return "", f"401 This user is affected to a group without access to this resource"
+            else:
+                return function(self, *args, **kwargs)
+
         else:
             return function(self, *args, **kwargs)
 

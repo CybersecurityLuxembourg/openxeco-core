@@ -19,10 +19,13 @@ class BaseCase(unittest.TestCase):
 
         self._truncate_database()
 
-        self.db.insert({
-            "id": 1,
-            "email": self.email,
-            "password": generate_password_hash(self.password)},
+        self.db.insert(
+            {
+                "id": 1,
+                "email": self.email,
+                "password": generate_password_hash(self.password),
+                "is_admin": 1
+            },
             self.db.tables["User"]
         )
 

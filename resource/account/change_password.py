@@ -34,9 +34,6 @@ class ChangePassword(Resource):
 
         data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
 
-        if len(data) < 1:
-            return "", "404 Requested user not found"
-
         user = data[0]
 
         if not check_password_hash(user.password, input_data['password']):

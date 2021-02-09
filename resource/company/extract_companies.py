@@ -3,6 +3,8 @@ from flask import request, Response
 from flask_jwt_extended import jwt_required
 from io import BytesIO
 import pandas as pd
+
+from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 from datetime import datetime
 from openpyxl.styles import PatternFill, Color, Font
@@ -21,6 +23,7 @@ class ExtractCompanies(Resource):
     @log_request
     @catch_exception
     @jwt_required
+    @verify_admin_access
     def get(self):
         input_data = request.args.to_dict()
 

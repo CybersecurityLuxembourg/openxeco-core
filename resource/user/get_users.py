@@ -5,6 +5,8 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from flask import request
 
+from decorator.verify_admin_access import verify_admin_access
+
 
 class GetUsers(Resource):
 
@@ -14,6 +16,7 @@ class GetUsers(Resource):
     @log_request
     @catch_exception
     @jwt_required
+    @verify_admin_access
     def get(self):
 
         filters = request.args.to_dict()

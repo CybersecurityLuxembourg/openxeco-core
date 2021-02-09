@@ -19,4 +19,4 @@ class TestGetMyUser(BaseCase):
         response = self.application.get('/user/get_my_user',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual("500 Object not found", response.status)
+        self.assertEqual("401 The user has not been found", response.status)

@@ -46,7 +46,7 @@ class TestChangePassword(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("404 Requested user not found", response.status)
+        self.assertEqual("401 The user has not been found", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/account/change_password")
