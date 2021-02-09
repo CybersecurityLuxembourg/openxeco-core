@@ -5,6 +5,7 @@ from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from exception.object_not_found import ObjectNotFound
 
 
 class UpdateUserGroupAssignment(Resource):
@@ -24,6 +25,16 @@ class UpdateUserGroupAssignment(Resource):
     @verify_admin_access
     def post(self):
         input_data = request.get_json()
+
+        users = self.db.get(self.db.tables["User"], {"id": input_data["user"]})
+
+        if len(users) == 0:
+            raise ObjectNotFound("user")
+
+        groups = self.db.get(self.db.tables["UserGroup"], {"id": input_data["group"]})
+
+        if len(groups) == 0:
+            raise ObjectNotFound("group")
 
         self.db.delete(self.db.tables["UserGroupAssignment"], {"user_id": input_data["user"]})
 

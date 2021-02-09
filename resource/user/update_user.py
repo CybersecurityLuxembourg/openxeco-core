@@ -28,7 +28,7 @@ class UpdateUser(Resource):
         if "password" in input_data:
             raise CannotModifyThisAttribute("password")
         if "email" in input_data:
-            raise CannotModifyThisAttribute("mail")
+            raise CannotModifyThisAttribute("email")
 
         self.db.merge(input_data, self.db.tables["User"])
 
