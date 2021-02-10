@@ -44,11 +44,11 @@ from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent
-from resource.public.get_article_rss import GetArticleRSS
 from resource.public.get_public_articles import GetPublicArticles
 from resource.public.get_related_articles import GetRelatedArticles
 from resource.public.get_public_analytics import GetPublicAnalytics
-from resource.public.get_public_actors import GetPublicActors
+from resource.public.get_public_companies import GetPublicCompanies
+from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.source.get_all_sources import GetAllSources
@@ -131,14 +131,14 @@ def set_routes(api, db, mail):
     api.add_resource(GetImages, '/media/get_images', resource_class_kwargs={"db": db})
 
     api.add_resource(GetArticleContent, '/public/get_article_content/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleRSS, '/public/get_article_rss', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicAnalytics, '/public/get_public_analytics', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicArticles, '/public/get_public_articles', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompany, '/public/get_public_company/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetImage, '/public/get_image/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetRelatedArticles, '/public/get_related_articles/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicTaxonomyValues, '/public/get_public_taxonomy_values', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicActors, '/public/get_public_actors', resource_class_kwargs={"db": db})
+    api.add_resource(GetPublicCompanies, '/public/get_public_companies', resource_class_kwargs={"db": db})
+    api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations', resource_class_kwargs={"db": db})
 
     api.add_resource(GetAllSources, '/source/get_all_sources', resource_class_kwargs={"db": db})
 
