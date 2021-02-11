@@ -36,6 +36,7 @@ from resource.company.get_company_workforces import GetCompanyWorkforces
 from resource.company.update_company import UpdateCompany
 from resource.company.add_company import AddCompany
 from resource.company.delete_company import DeleteCompany
+from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
 from resource.mail.get_server_info import GetServerInfo
 from resource.mail.get_mail_content import GetMailContent
@@ -131,6 +132,8 @@ def set_routes(api, db, mail):
     api.add_resource(UpdateCompany, '/company/update_company', resource_class_kwargs={"db": db})
     api.add_resource(AddCompany, '/company/add_company', resource_class_kwargs={"db": db})
     api.add_resource(DeleteCompany, '/company/delete_company', resource_class_kwargs={"db": db})
+
+    api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
 
     api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id>', resource_class_kwargs={"db": db})
 

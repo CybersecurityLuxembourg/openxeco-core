@@ -117,6 +117,17 @@ class DB:
         return self.session.query(table).filter(table.id == id).one()
 
     ###############
+    # UTILS       #
+    ###############
+
+    @staticmethod
+    def are_objects_equal(a, b, table):
+        for c in table.__table__.columns.keys():
+            if getattr(a, c) != getattr(b, c):
+                return False
+        return True
+
+    ###############
     # COMPANY     #
     ###############
 
