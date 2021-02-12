@@ -17,9 +17,11 @@ class TestGetArticle(BaseCase):
         self.assertEqual({
             'abstract': None,
             'end_date': None,
+            'external_reference': None,
             'handle': None,
             'id': 1,
             'image': None,
+            'link': None,
             'media': 'ALL',
             'publication_date': None,
             'start_date': None,

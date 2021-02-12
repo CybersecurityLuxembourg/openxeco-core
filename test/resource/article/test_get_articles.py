@@ -21,9 +21,11 @@ class TestGetArticles(BaseCase):
             {
                 'abstract': None,
                 'end_date': None,
+                'external_reference': None,
                 'handle': None,
                 'id': 2,
                 'image': None,
+                'link': None,
                 'media': 'ALL',
                 'publication_date': '2021-01-22',
                 'start_date': None,
@@ -34,9 +36,11 @@ class TestGetArticles(BaseCase):
             {
                 'abstract': None,
                 'end_date': None,
+                'external_reference': None,
                 'handle': None,
                 'id': 1,
                 'image': None,
+                'link': None,
                 'media': 'ALL',
                 'publication_date': None,
                 'start_date': None,

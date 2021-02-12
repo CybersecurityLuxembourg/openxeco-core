@@ -41,7 +41,7 @@ class UpdateMoovijobJobOffers(Resource):
             db_articles = self.db.get(self.db.tables["Article"], {"external_reference": external_references})
 
             for source_article in data["data"]:
-                db_article = [a for a in db_articles if source_article["id"] == a.external_reference]
+                db_article = [a for a in db_articles if str(source_article["id"]) == a.external_reference]
                 db_article = db_article[0] if len(db_article) > 0 else self.db.tables["Article"]()
 
                 nb_reviewed += 1
@@ -131,6 +131,6 @@ class UpdateMoovijobJobOffers(Resource):
         elif "de" in lang_dict and lang_dict["de"] is not None:
             return lang_dict["de"]
         elif len(lang_dict.keys()) > 0:
-            return lang_dict[lang_dict.keys()[0]]
+            return lang_dict[list(lang_dict.keys())[0]]
         else:
             return None

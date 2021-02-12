@@ -7,7 +7,7 @@ class TestGetPublicActors(BaseCase):
     def test_ok(self, token):
         self.db.insert({"id": 2, "name": "My Company", "type": "ACTOR"}, self.db.tables["Company"])
         self.db.insert({"id": 3, "name": "My Compan2", "type": "ACTOR"}, self.db.tables["Company"])
-        self.db.insert({"id": 4, "name": "My Compan3", "type": "OPERATOR"}, self.db.tables["Company"])
+        self.db.insert({"id": 4, "name": "My Compan3", "type": "JOB PLATFORM"}, self.db.tables["Company"])
 
         response = self.application.get('/public/get_public_actors',
                                         headers=self.get_standard_header(token))

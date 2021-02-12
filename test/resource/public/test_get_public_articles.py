@@ -38,9 +38,11 @@ class TestGetPublicArticles(BaseCase):
             {
                 'abstract': None,
                 'end_date': None,
+                'external_reference': None,
                 'handle': 'handle-2',
                 'id': 2,
                 'image': None,
+                'link': None,
                 'media': 'ALL',
                 'publication_date': '2021-01-22',
                 'start_date': None,
