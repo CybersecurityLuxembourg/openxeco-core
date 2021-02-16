@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_apscheduler import APScheduler
 from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
@@ -9,7 +8,6 @@ from config import config
 from sqlalchemy.engine.url import URL
 from db.db import DB
 from routes import set_routes
-from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
 
 
 # Manage DB connection
@@ -42,10 +40,6 @@ cors = CORS(application)
 bcrypt = Bcrypt(application)
 jwt = JWTManager(application)
 mail = Mail(application)
-"""scheduler = APScheduler()
-scheduler.init_app(application)
-scheduler.add_job(id="UpdateMoovijobJobOffers", func=UpdateMoovijobJobOffers.post, trigger='cron', hour=14, minute=22)
-scheduler.start()"""
 
 # Init and set the resources for Flask
 api = Api(application)
