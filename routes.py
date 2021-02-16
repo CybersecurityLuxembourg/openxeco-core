@@ -47,6 +47,7 @@ from resource.privatespace.add_request import AddRequest
 from resource.privatespace.is_logged import IsLogged
 from resource.privatespace.get_my_companies import GetMyCompanies
 from resource.privatespace.get_my_user import GetMyUser
+from resource.privatespace.update_my_user import UpdateMyUser
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent
 from resource.public.get_public_articles import GetPublicArticles
@@ -152,6 +153,7 @@ def set_routes(api, db, mail):
     api.add_resource(IsLogged, '/privatespace/is_logged', resource_class_kwargs={"db": db})
     api.add_resource(GetMyCompanies, '/privatespace/get_my_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetMyUser, '/privatespace/get_my_user', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateMyUser, '/privatespace/update_my_user', resource_class_kwargs={"db": db})
 
     api.add_resource(GetArticleContent, '/public/get_article_content/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicAnalytics, '/public/get_public_analytics', resource_class_kwargs={"db": db})

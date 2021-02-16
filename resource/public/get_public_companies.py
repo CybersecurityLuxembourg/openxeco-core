@@ -23,8 +23,6 @@ class GetPublicCompanies(Resource):
         else:
             filters["type"] = ["ACTOR", "PUBLIC SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
 
-        print(filters)
-
         actors = [o._asdict() for o in self.db.get_filtered_companies(filters, entities)]
 
         for a in actors:

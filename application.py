@@ -24,7 +24,7 @@ application.config["JWT_COOKIE_SECURE"] = True if config.ENVIRONMENT != "dev" el
 application.config["JWT_COOKIE_SECURE"] = True if config.ENVIRONMENT != "dev" else False
 application.config['CORS_HEADERS'] = 'Content-Type'
 application.config["CORS_SUPPORTS_CREDENTIALS"] = True
-application.config["CORS_ORIGINS"] = config.FRONTEND_URL[config.ENVIRONMENT]
+application.config["CORS_ORIGINS"] = [config.FRONTEND_URL, "http://localhost:3002"]
 application.config['MAIL_SERVER'] = config.MAIL_SERVER
 application.config['MAIL_PORT'] = config.MAIL_PORT
 application.config['MAIL_USERNAME'] = config.MAIL_USERNAME
