@@ -43,6 +43,7 @@ from resource.mail.get_mail_content import GetMailContent
 from resource.mail.save_template import SaveTemplate
 from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
+from resource.privatespace.is_logged import IsLogged
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent
 from resource.public.get_public_articles import GetPublicArticles
@@ -143,6 +144,8 @@ def set_routes(api, db, mail):
 
     api.add_resource(AddImage, '/media/add_image', resource_class_kwargs={"db": db})
     api.add_resource(GetImages, '/media/get_images', resource_class_kwargs={"db": db})
+
+    api.add_resource(IsLogged, '/privatespace/is_logged', resource_class_kwargs={"db": db})
 
     api.add_resource(GetArticleContent, '/public/get_article_content/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicAnalytics, '/public/get_public_analytics', resource_class_kwargs={"db": db})
