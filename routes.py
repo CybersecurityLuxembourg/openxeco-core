@@ -43,7 +43,10 @@ from resource.mail.get_mail_content import GetMailContent
 from resource.mail.save_template import SaveTemplate
 from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
+from resource.privatespace.add_request import AddRequest
 from resource.privatespace.is_logged import IsLogged
+from resource.privatespace.get_my_companies import GetMyCompanies
+from resource.privatespace.get_my_user import GetMyUser
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent
 from resource.public.get_public_articles import GetPublicArticles
@@ -62,7 +65,7 @@ from resource.user.delete_user import DeleteUser
 from resource.user.delete_user_group import DeleteUserGroup
 from resource.user.delete_user_group_right import DeleteUserGroupRight
 from resource.user.get_users import GetUsers
-from resource.user.get_my_user import GetMyUser
+from resource.user.get_my_admin_user import GetMyAdminUser
 from resource.user.get_user import GetUser
 from resource.user.get_user_group_rights import GetUserGroupRights
 from resource.user.get_user_groups import GetUserGroups
@@ -145,7 +148,10 @@ def set_routes(api, db, mail):
     api.add_resource(AddImage, '/media/add_image', resource_class_kwargs={"db": db})
     api.add_resource(GetImages, '/media/get_images', resource_class_kwargs={"db": db})
 
+    api.add_resource(AddRequest, '/privatespace/add_request', resource_class_kwargs={"db": db})
     api.add_resource(IsLogged, '/privatespace/is_logged', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyCompanies, '/privatespace/get_my_companies', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyUser, '/privatespace/get_my_user', resource_class_kwargs={"db": db})
 
     api.add_resource(GetArticleContent, '/public/get_article_content/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicAnalytics, '/public/get_public_analytics', resource_class_kwargs={"db": db})
@@ -173,7 +179,7 @@ def set_routes(api, db, mail):
     api.add_resource(GetUserGroups, '/user/get_user_groups', resource_class_kwargs={"db": db})
     api.add_resource(GetUserGroup, '/user/get_user_group/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetUserGroupAssignments, '/user/get_user_group_assignments', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyUser, '/user/get_my_user', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyAdminUser, '/user/get_my_admin_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateUser, '/user/update_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateUserGroupAssignment, '/user/update_user_group_assignment', resource_class_kwargs={"db": db})
 

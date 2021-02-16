@@ -24,7 +24,7 @@ application.config["JWT_COOKIE_SECURE"] = True if config.ENVIRONMENT != "dev" el
 application.config["JWT_COOKIE_SECURE"] = True if config.ENVIRONMENT != "dev" else False
 application.config['CORS_HEADERS'] = 'Content-Type'
 application.config["CORS_SUPPORTS_CREDENTIALS"] = True
-application.config["CORS_ORIGINS"] = ["https://test-db-cy.lu"] if config.ENVIRONMENT != "dev" else ["https://localhost:3002"]
+application.config["CORS_ORIGINS"] = config.FRONTEND_URL[config.ENVIRONMENT]
 application.config['MAIL_SERVER'] = config.MAIL_SERVER
 application.config['MAIL_PORT'] = config.MAIL_PORT
 application.config['MAIL_USERNAME'] = config.MAIL_USERNAME
@@ -52,4 +52,4 @@ def undefined_route(_):
 
 
 if __name__ == '__main__':
-    application.run(ssl_context=None if config.ENVIRONMENT != "dev" else 'adhoc')
+    application.run()#ssl_context=None if config.ENVIRONMENT != "dev" else 'adhoc')

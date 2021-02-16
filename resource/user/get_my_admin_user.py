@@ -6,7 +6,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class GetMyUser(Resource):
+class GetMyAdminUser(Resource):
 
     def __init__(self, db: DB):
         self.db = db
