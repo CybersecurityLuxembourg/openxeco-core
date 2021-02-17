@@ -14,7 +14,7 @@ class GetPublicCompany(Resource):
 
         c = self.db.tables["Company"]
         entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.rscl_number, c.creation_date, \
-            c.description, c.website
+            c.description, c.website, c.image
         data = [o._asdict() for o in self.db.get(c, {"id": id}, entities)]
 
         if len(data) < 1:

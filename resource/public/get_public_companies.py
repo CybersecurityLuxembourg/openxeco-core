@@ -14,7 +14,7 @@ class GetPublicCompanies(Resource):
 
         allowed_types = ["ACTOR", "PUBLIC SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
         c = self.db.tables["Company"]
-        entities = c.id, c.name, c.type, c.is_startup, c.is_cybersecurity_core_business, c.creation_date
+        entities = c.id, c.name, c.type, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image
 
         filters = request.args.to_dict()
 

@@ -24,8 +24,13 @@ MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "alexis.prunier@securitym
 IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', "C:/image_folder")
 
 FRONTEND_URL = {
-    'dev': 'localhost:3000',
+    'dev': 'http://localhost:3000',
     'test': 'https://test-db.cy.lu',
     'production': 'https://db.cy.lu'
 }[ENVIRONMENT]
 
+PUBLIC_FRONTEND_URL = {
+    'dev': 'http://localhost:3002',
+    'test': 'https://test-secin.cy.lu',
+    'production': 'https://cybersecurity-luxembourg.com'
+}[ENVIRONMENT]
