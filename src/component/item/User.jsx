@@ -3,9 +3,11 @@ import './User.css';
 import Popup from "reactjs-popup";
 import {NotificationManager as nm} from 'react-notifications';
 import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
 import Loading from '../box/Loading';
 import DialogConfirmation from '../dialog/DialogConfirmation';
+import Tab from '../tab/Tab';
+import UserGlobal from './user/UserGlobal';
+import UserCompany from './user/UserCompany';
 
 
 export default class User extends Component {
@@ -16,26 +18,11 @@ export default class User extends Component {
         this.onClick = this.onClick.bind(this);
         this.onClose = this.onClose.bind(this);
         this.onOpen = this.onOpen.bind(this);
-        this.refreshUserData = this.refreshUserData.bind(this);
-        this.saveUserValue = this.saveUserValue.bind(this);
         this.confirmUserDeletion = this.confirmUserDeletion.bind(this);
 
         this.state = {
             isDetailOpened: false,
-            user: null,
         }
-    }
-
-    refreshUserData() {
-        getRequest.call(this, "user/get_user/" + this.props.id, data => {
-            this.setState({
-                user: data,
-            });
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
     }
 
     onClick() {
@@ -49,35 +36,17 @@ export default class User extends Component {
     };
 
     onClose() {
-        this.setState({ isDetailOpened: false });
+        this.setState({ isDetailOpened: false }, () => {
+            if (this.props.onClose !== undefined)
+                this.props.onClose()
+        });
     }
 
     onOpen() {
-        this.setState({ isDetailOpened: true });
-        this.refreshUserData();
-    }
-
-    saveUserValue(prop, value) {
-        if (this.state.user[prop] !== value) {
-            let params = {
-                id: this.props.id,
-                [prop]: value,
-            }
-
-            postRequest.call(this, "user/update_user", params, response => {
-                let user = Object.assign({}, this.state.user);
-
-                user[prop] = value;
-                this.setState({user: user});
-                nm.info("The property has been updated");
-            }, response => {
-                this.refreshUserData();
-                nm.warning(response.statusText);
-            }, error => {
-                this.refreshUserData();
-                nm.error(error.message);
-            });
-        }
+        this.setState({ isDetailOpened: true }, () => {
+            if (this.props.onOpen !== undefined)
+                this.props.onOpen()
+        });
     }
 
     confirmUserDeletion() {
@@ -98,29 +67,6 @@ export default class User extends Component {
             this.refreshUserData();
             nm.error(error.message);
         });
-    }
-
-    saveUserValue(prop, value) {
-        if (this.state.user[prop] !== value) {
-            let params = {
-                id: this.props.id,
-                [prop]: value,
-            }
-
-            postRequest.call(this, "user/update_user", params, response => {
-                let user = Object.assign({}, this.state.user);
-
-                user[prop] = value;
-                this.setState({user: user});
-                nm.info("The property has been updated");
-            }, response => {
-                this.refreshCompanyData();
-                nm.warning(response.statusText);
-            }, error => {
-                this.refreshCompanyData();
-                nm.error(error.message);
-            });
-        }
     }
 
     render() {
@@ -156,31 +102,21 @@ export default class User extends Component {
                             />
                         </div>
                         <h1 className="User-title">
-                            {this.state.user !== null ? this.state.user.email : this.props.id}
+                            {this.props.email}
                         </h1>
 
-                        {this.state.user !== null ?
-                            <div>
-                                <FormLine
-                                    label={"ID"}
-                                    value={this.state.user.id}
-                                    disabled={true}
-                                />
-                                <FormLine
-                                    label={"Email"}
-                                    value={this.state.user.email}
-                                    disabled={true}
-                                />
-                                <FormLine
-                                    label="Is admin"
-                                    type={"checkbox"}
-                                    value={this.state.user.is_admin}
-                                    onChange={s => this.saveUserValue("is_admin", s)}
-                                />
-                            </div>
-                            :
-                            <Loading/>
-                        }
+                        <Tab
+                            menu={["Global", "Company"]}
+                            content={[
+                                <UserGlobal
+                                    id={this.props.id}
+                                />,
+                                <UserCompany
+                                    id={this.props.id}
+                                    name={this.props.name}
+                                />,
+                            ]}
+                        />
                     </div>
                 </div>
             </Popup>

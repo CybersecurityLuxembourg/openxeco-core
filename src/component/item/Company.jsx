@@ -127,7 +127,8 @@ export default class Company extends Component {
                                 />,
                                 <CompanyWorkforce
                                     id={this.props.id}
-                                />]}
+                                />
+                            ]}
                         />
                     </div>
                 </div>

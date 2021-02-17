@@ -7,7 +7,6 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
         headers: new Headers({
             "Authorization": "Bearer " + window.token,
             Accept: "application/json, text/html",
-            credentials: "include",
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
         })
@@ -36,7 +35,6 @@ export async function getBlobRequest(url, callback, catchBadResponse, catchError
         headers: new Headers({
             "Authorization": "Bearer " + window.token,
             Accept: "application/json, text/html",
-            credentials: "include",
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
         })
