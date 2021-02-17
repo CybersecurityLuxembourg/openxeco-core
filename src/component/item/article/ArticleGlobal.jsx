@@ -165,6 +165,26 @@ export default class ArticleGlobal extends React.Component {
                         />
                     </div>
                 : ""}
+
+                {this.state.article.type === "JOB OFFER" ?
+                        <div className="col-md-12">
+                            <h2>Additional job offer fields</h2>
+                        </div>
+                : ""}
+                {this.state.article.type === "JOB OFFER" ?
+                    <div className="col-md-12">
+                        <FormLine
+                            label={"External reference"}
+                            value={this.state.article.external_reference}
+                            disabled={true}
+                        />
+                        <FormLine
+                            label={"Link"}
+                            value={this.state.article.link}
+                            onBlur={v => this.saveArticleValue("link", v)}
+                        />
+                    </div>
+                : ""}
 			</div>
 		);
 	}

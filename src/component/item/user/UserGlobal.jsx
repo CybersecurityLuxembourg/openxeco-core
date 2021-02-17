@@ -83,11 +83,16 @@ export default class UserGlobal extends React.Component {
                             value={this.state.user.is_admin}
                             onChange={s => this.saveUserValue("is_admin", s)}
                         />
+                        <FormLine
+                            label="Is active"
+                            type={"checkbox"}
+                            value={this.state.user.is_active}
+                            onChange={s => this.saveUserValue("is_active", s)}
+                        />
                     </div>
                     :
                     <Loading/>
                 }
-
 			</div>
 		);
 	}
