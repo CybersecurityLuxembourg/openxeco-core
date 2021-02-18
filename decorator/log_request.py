@@ -17,6 +17,9 @@ def log_request(function):
             if "password" in params:
                 params["password"] = "[SERVER] ANONYMISED"
 
+            if "new_password" in params:
+                params["new_password"] = "[SERVER] ANONYMISED"
+
             if "image" in params:
                 params["image"] = "[SERVER] NOT LOGGED"
 

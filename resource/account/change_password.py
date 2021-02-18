@@ -6,7 +6,6 @@ from flask_jwt_extended import jwt_required
 from flask_bcrypt import check_password_hash
 from decorator.log_request import log_request
 from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from utils.re import has_password_format
 
