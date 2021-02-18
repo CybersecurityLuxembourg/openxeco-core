@@ -5,6 +5,7 @@ import PageDashboard from "./PageDashboard";
 import PageMap from "./PageMap";
 import PageCompany from "./PageCompany";
 import PageArticle from "./PageArticle";
+import PageTask from "./PageTask";
 import PageUser from "./PageUser";
 import PageMedia from "./PageMedia";
 import PageSettings from "./PageSettings";
@@ -46,6 +47,7 @@ export default class InsideApp extends React.Component {
                         <Route path="/media" render={(props) => <PageMedia {...props} />}/>
                         <Route path="/settings" render={(props) => <PageSettings {...props} />}/>
                         <Route path="/profile" render={(props) => <PageProfile {...props} />}/>
+                        <Route path="/task" render={(props) => <PageTask {...props} />}/>
                         <Route path="/" render={(props) => <PageDashboard {...props} />}/>
                     </Switch>
                 </div>

@@ -64,7 +64,15 @@ export default class Menu extends React.Component {
 			        </NavItem>
 			        <NavItem>
 			            <NavIcon>
-			                <Link to="/media"><i className="fas fa-icons" style={{ fontSize: '1.75em' }} /></Link>
+			                <Link to="/task"><i className="fas fa-tasks" style={{ fontSize: '1.75em' }} /></Link>
+			            </NavIcon>
+			            <NavText>
+			                <Link to="/task">Tasks</Link>
+			            </NavText>
+			        </NavItem>
+			        <NavItem>
+			            <NavIcon>
+			                <Link to="/media"><i className="fas fa-photo-video" style={{ fontSize: '1.75em' }} /></Link>
 			            </NavIcon>
 			            <NavText>
 			                <Link to="/media">Media</Link>
