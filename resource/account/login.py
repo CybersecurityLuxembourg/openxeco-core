@@ -29,6 +29,9 @@ class Login(Resource):
         if len(data) < 1 or not check_password_hash(data[0].password, input_data['password']):
             return "", "401 Wrong email/password combinaison"
 
+        if not data[0].is_active:
+            return "", "401 The account is not active. Please contact the administrator"
+
         expires = datetime.timedelta(days=7)
         access_token = create_access_token(identity=str(data[0].id), expires_delta=expires)
 

@@ -53,7 +53,7 @@ class AddUser(Resource):
                 raise e
 
         send_email(self.mail,
-                   subject='[CY-DB] New account',
+                   subject='[CYBERSECURITY LUXEMBOURG] New account',
                    recipients=[input_data["email"]],
                    html_body=render_template('new_account.html', url=FRONTEND_URL, password=old_password))
 
