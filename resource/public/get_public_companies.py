@@ -12,7 +12,7 @@ class GetPublicCompanies(Resource):
     @catch_exception
     def get(self):
 
-        allowed_types = ["ACTOR", "PUBLIC SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
+        allowed_types = ["ACTOR", "PUBLIC SECTOR", "PRIVATE SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
         c = self.db.tables["Company"]
         entities = c.id, c.name, c.type, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image
 
@@ -21,7 +21,7 @@ class GetPublicCompanies(Resource):
         if "type" in filters and filters["type"] in allowed_types:
             filters["type"] = [filters["type"]]
         else:
-            filters["type"] = ["ACTOR", "PUBLIC SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
+            filters["type"] = ["ACTOR", "PUBLIC SECTOR", "PRIVATE SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
 
         actors = [o._asdict() for o in self.db.get_filtered_companies(filters, entities)]
 
