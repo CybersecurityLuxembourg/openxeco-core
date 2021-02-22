@@ -21,7 +21,9 @@ export default class Request extends Component {
         this.onOpen = this.onOpen.bind(this);
 
         this.state = {
+            request: null,
             user: null,
+            requestStatus: null,
         }
     }
 
@@ -40,7 +42,11 @@ export default class Request extends Component {
     }
 
     onOpen() {
-        this.setState({ isDetailOpened: true, user: null });
+        this.setState({ 
+            request: this.props.info,
+            isDetailOpened: true, 
+            user: null 
+        });
 
         getRequest.call(this, "user/get_user/" + this.props.info.user_id, data => {
             this.setState({
@@ -51,6 +57,37 @@ export default class Request extends Component {
         }, error => {
             nm.error(error.message);
         });
+
+        getRequest.call(this, "request/get_request_enums", data => {
+            this.setState({
+                requestStatus: data["status"]
+            });
+        }, response => {
+            nm.warning(response.statusText);
+        }, error => {
+            nm.error(error.message);
+        });
+    }
+
+    updateRequest(prop, value) {
+        if (this.state.request[prop] !== value) {
+            let params = {
+                id: this.props.info.id,
+                [prop]: value,
+            }
+
+            postRequest.call(this, "request/update_request", params, response => {
+                let request = Object.assign({}, this.state.request);
+
+                request[prop] = value;
+                this.setState({ request: request });
+                nm.info("The property has been updated");
+            }, response => {
+                nm.warning(response.statusText);
+            }, error => {
+                nm.error(error.message);
+            });
+        }
     }
 
     render() {
@@ -90,6 +127,26 @@ export default class Request extends Component {
                             }
                         </h2>
                     </div>
+
+                    <div className="col-md-12">
+                        {this.state.user !== null ?
+                            <FormLine
+                                label={"Status"}
+                                type={"select"}
+                                value={this.state.request.status}
+                                options={this.state.requestStatus !== null ?
+                                    this.state.requestStatus.map(v => { return {label: v, value: v}})
+                                    : []}
+                                onChange={v => this.updateRequest("status", v)}
+                            />
+                        : 
+                            <Loading
+                                height={100}
+                            />
+                        }
+                        
+                    </div>
+
                     <div className="col-md-12">
                         <h3>User</h3>
                         {this.state.user !== null ?
