@@ -1,0 +1,65 @@
+
+.Request {
+    position: relative;
+    height: 20px;
+    overflow: visible;
+    margin: 2px 0px;
+    line-height: 1.0;
+    animation: halfFixedPopEffect 0.5s ease;
+    -moz-animation: halfFixedPopEffect 0.5s ease;
+    -webkit-animation: halfFixedPopEffect 0.5s ease;
+    -o-animation: halfFixedPopEffect 0.5s ease;
+}
+
+.Request {
+    font-size: 15px;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding: 3px 5px 3px 7px;
+    height: 22px;
+}
+
+.Request:hover {
+    background-color: rgba(0, 159, 227, 0.1);
+}
+
+.Request-name {
+    display:inline-block;
+    width: calc(100% - 14px);
+    padding-left: 7px;
+    padding-top: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+    color: #009fe3;
+}
+
+.Request-status {
+    position: absolute;
+    top: 3px;
+    right: 7px;
+    padding-left: 7px;
+    padding-top: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+    color: #009fe3;
+}
+
+.Request i {
+    display:inline;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #009fe3;
+}
+
+.Request-title {
+    width: calc(100% - 80px);
+}
+
+.Request-image {
+    max-width: 100%;
+}

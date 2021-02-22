@@ -1,0 +1,11 @@
+
+.TaskRequest-buttons {
+	width: 100%;
+	text-align: right;
+	margin: 15px 0px;
+}
+
+.TaskRequest-buttons > div {
+	margin: 0px 2px;
+	display: inline;
+}
