@@ -40,14 +40,6 @@ export default class Menu extends React.Component {
 			        </NavItem>
 			        <NavItem>
 			            <NavIcon>
-			                <Link to="/map"><i className="fas fa-globe-europe" style={{ fontSize: '1.75em' }} /></Link>
-			            </NavIcon>
-			            <NavText>
-			                <Link to="/map">Map</Link>
-			            </NavText>
-			        </NavItem>
-			        <NavItem>
-			            <NavIcon>
 			                <Link to="/companies"><i className="fas fa-building" style={{ fontSize: '1.75em' }} /></Link>
 			            </NavIcon>
 			            <NavText>

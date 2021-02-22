@@ -10,6 +10,7 @@ import Website from './item/Website';
 import FormLine from './button/FormLine';
 import DialogCompanyFilter from './dialog/DialogCompanyFilter';
 import {dictToURI} from '../utils/url';
+import CompanyMap from './map/CompanyMap';
 
 
 export default class PageCompany extends React.Component {
@@ -29,6 +30,8 @@ export default class PageCompany extends React.Component {
 			include_address: false,
 			include_taxonomy: false,
 			include_workforce: false,
+
+			showMap: false,
 		}
 	}
 
@@ -113,6 +116,12 @@ export default class PageCompany extends React.Component {
     }
 
 	render() {
+		if (this.state.showMap) {
+			return <CompanyMap
+				onClose={() => this.setState({ showMap: false })}
+			/>
+		}
+
 		let columns = [
 	          {
 	            Header: 'Name',
@@ -149,6 +158,10 @@ export default class PageCompany extends React.Component {
 					<div className="col-md-12">
 						<h1>{this.state.companies !== null ? this.state.companies.length: 0} Compan{this.state.companies !== null && this.state.companies.length > 1 ? "ies": "y"}</h1>
 						<div className="top-right-buttons">
+							<button
+								onClick={() => this.setState({ showMap: true })}>
+								<i className="fas fa-map-marked-alt"/>
+							</button>
 							<button
 								onClick={() => this.refreshCompanies()}>
 								<i className="fas fa-redo-alt"/>

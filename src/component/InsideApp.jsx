@@ -2,7 +2,6 @@ import React from "react";
 import "./InsideApp.css";
 import Menu from "./Menu";
 import PageDashboard from "./PageDashboard";
-import PageMap from "./PageMap";
 import PageCompany from "./PageCompany";
 import PageArticle from "./PageArticle";
 import PageTask from "./PageTask";
@@ -40,7 +39,6 @@ export default class InsideApp extends React.Component {
                 <div id="InsideApp-content">
                     <Switch>
                         <Route path="/home" render={(props) => <PageDashboard {...props} />}/>
-                        <Route path="/map" render={(props) => <PageMap {...props} />}/>
                         <Route path="/companies/:id?" render={(props) => <PageCompany {...props} />}/>
                         <Route path="/articles/:id?" render={(props) => <PageArticle {...props} />}/>
                         <Route path="/users" render={(props) => <PageUser {...props} />}/>

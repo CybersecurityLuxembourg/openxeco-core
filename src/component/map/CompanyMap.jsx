@@ -1,13 +1,13 @@
 import React from 'react';
-import './PageMap.css';
-import GlobalMap from './map/GlobalMap';
-import {getRequest} from '../utils/request';
+import './CompanyMap.css';
+import GlobalMap from './GlobalMap';
+import {getRequest} from '../../utils/request';
 import {NotificationManager as nm} from 'react-notifications';
-import Loading from "./box/Loading";
-import DialogCompanyFilter from './dialog/DialogCompanyFilter';
+import Loading from "../box/Loading";
+import DialogCompanyFilter from '../dialog/DialogCompanyFilter';
 
 
-export default class PageMap extends React.Component {
+export default class CompanyMap extends React.Component {
 
 	constructor(props){
 		super(props);
@@ -100,16 +100,24 @@ export default class PageMap extends React.Component {
 
 	render() {
 		return (
-			<div id="PageMap" className="full-page">
+			<div id="CompanyMap" className="full-page">
 				<GlobalMap
 					addresses={this.state.filteredAddresses}
 				/>
 				{this.state.loading ?
-					<div className="PageMap-Loading">
+					<div className="CompanyMap-Loading">
 						<Loading/>
 					</div>
 				: ""}
-                <div className="PageMap-buttons">
+                <div className="CompanyMap-buttons">
+                	<button
+                        className={"red-background"}
+                        data-hover="Close"
+                        data-active=""
+                        onClick={this.props.onClose}>
+                        <span><i className="fas fa-times"/></span>
+                    </button>
+                    <br/>
                     <button
                         className={"blue-background"}
                         data-hover="Refresh"
@@ -130,7 +138,7 @@ export default class PageMap extends React.Component {
                     />
                 </div>
                 {this.state.filteredCompanies !== null && this.state.filteredAddresses !== null ?
-	                <div className="PageMap-company-count">
+	                <div className="CompanyMap-company-count">
 	                    <h2>
 	                    	{this.state.filteredCompanies.length} Compan{this.state.filteredCompanies.length > 1 ? "ies": "y"}
 	                    	<br/>

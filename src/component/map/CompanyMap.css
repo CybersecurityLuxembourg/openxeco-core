@@ -1,5 +1,5 @@
 
-.PageMap-Loading {
+.CompanyMap-Loading {
 	position: absolute;
 	top: 0px;
 	width: 100%;
@@ -7,14 +7,14 @@
 	z-index: 500;
 }
 
-.PageMap-buttons {
+.CompanyMap-buttons {
 	z-index: 994;
 	position: absolute;
 	top: 20px;
 	right: 20px;
 }
 
-.PageMap-company-count {
+.CompanyMap-company-count {
 	z-index: 994;
 	position: absolute;
 	bottom: 0px;
