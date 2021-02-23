@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable, usePagination } from 'react-table';
+import { useTable, usePagination, useFlexLayout } from 'react-table';
 import './Table.css';
 
 export default function Table({ columns, data, height, showBottomBar }) {
@@ -31,7 +31,8 @@ export default function Table({ columns, data, height, showBottomBar }) {
       showBottomBar,
       initialState: { pageIndex: 0 },
     },
-    usePagination
+    usePagination,
+    useFlexLayout
   )
 
   return (

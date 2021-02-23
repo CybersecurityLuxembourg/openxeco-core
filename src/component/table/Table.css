@@ -4,6 +4,7 @@ table {
     background: #fff;
     border-radius: 10px;
     overflow: hidden;
+    max-width: 100%;
     width: 100%;
     margin: 0 auto;
     position: relative;
@@ -11,7 +12,7 @@ table {
 }
 
 thead {
-	display: table-header-group;
+	  display: table-header-group;
     vertical-align: middle;
     border-color: inherit;
     margin: 6px 0px;

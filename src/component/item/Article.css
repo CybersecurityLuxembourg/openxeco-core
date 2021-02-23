@@ -1,5 +1,6 @@
 
 .Article {
+    width: 100%;
     position: relative;
     height: 20px;
     overflow: visible;
