@@ -51,6 +51,7 @@ from resource.public.get_public_companies import GetPublicCompanies
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
+from resource.public.is_alive import IsAlive
 from resource.source.get_all_sources import GetAllSources
 from resource.user.get_user import GetUser
 from resource.user.get_my_user import GetMyUser
@@ -139,6 +140,7 @@ def set_routes(api, db, mail):
     api.add_resource(GetPublicTaxonomyValues, '/public/get_public_taxonomy_values', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanies, '/public/get_public_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations', resource_class_kwargs={"db": db})
+    api.add_resource(IsAlive, '/public/is_alive', resource_class_kwargs={"db": db})
 
     api.add_resource(GetAllSources, '/source/get_all_sources', resource_class_kwargs={"db": db})
 
