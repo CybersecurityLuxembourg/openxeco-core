@@ -58,6 +58,8 @@ from resource.public.get_public_company_geolocations import GetPublicCompanyGeol
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.request.get_requests import GetRequests
+from resource.request.get_request_enums import GetRequestEnums
+from resource.request.update_request import UpdateRequest
 from resource.resource.get_resources import GetResources
 from resource.source.get_all_sources import GetAllSources
 from resource.user.add_user import AddUser
@@ -170,6 +172,8 @@ def set_routes(api, db, mail):
     api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations', resource_class_kwargs={"db": db})
 
     api.add_resource(GetRequests, '/request/get_requests', resource_class_kwargs={"db": db})
+    api.add_resource(GetRequestEnums, '/request/get_request_enums', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateRequest, '/request/update_request', resource_class_kwargs={"db": db})
 
     api.add_resource(GetResources, '/resource/get_resources', resource_class_kwargs={"db": db, "api": api})
 
