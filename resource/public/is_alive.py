@@ -13,4 +13,4 @@ class IsAlive(Resource):
 
         self.db.session.execute("select 1 as is_alive;")
 
-        return True, "200 "
+        return "True", "200 "
