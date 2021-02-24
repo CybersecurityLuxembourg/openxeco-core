@@ -85,6 +85,13 @@ export default class UserUser extends React.Component {
                 Cell: ({ cell: { value } }) => (
                     value.is_admin === 1 ? "Yes" : ""
                 )
+              },
+              {
+                Header: 'Is active',
+                accessor: x => { return x },
+                Cell: ({ cell: { value } }) => (
+                    value.is_active === 1 ? "Yes" : ""
+                )
               }
         ];
 

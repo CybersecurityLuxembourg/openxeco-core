@@ -1,6 +1,7 @@
 import React from 'react';
 import './TaskRequest.css';
 import Loading from "../box/Loading";
+import Message from "../box/Message";
 import Table from '../table/Table';
 import Request from '../item/Request';
 import {NotificationManager as nm} from 'react-notifications';
@@ -111,6 +112,15 @@ export default class TaskRequest extends React.Component {
 						</div>
 					</div>
 				</div>
+
+				{this.state.requests !== null && this.state.requests.length === 0 ?
+					<div className={"row row-spaced"}>
+						<Message
+							text={"No request found"}
+							height={300}
+						/>
+					</div>
+				: ""}
 
 				{this.state.requests !== null && this.state.requests
 					.filter(r => r.submission_date > this.state.today).length > 0 ?

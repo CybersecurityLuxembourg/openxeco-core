@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { getRequest, postRequest } from '../../utils/request';
 import {NotificationManager as nm} from 'react-notifications';
 import Loading from '../box/Loading';
+import Message from '../box/Message';
 
 
 export default class DialogSelectImage extends React.Component {
