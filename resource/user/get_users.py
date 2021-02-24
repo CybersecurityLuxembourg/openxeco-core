@@ -24,7 +24,8 @@ class GetUsers(Resource):
         query = self.db.session.query(self.db.tables["User"])\
             .with_entities(self.db.tables["User"].id,
                            self.db.tables["User"].email,
-                           self.db.tables["User"].is_admin)
+                           self.db.tables["User"].is_admin,
+                           self.db.tables["User"].is_active)
 
         if "admin_only" in filters and filters["admin_only"] == "true":
             query = query.filter(self.db.tables["User"].is_admin == True)

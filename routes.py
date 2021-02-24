@@ -44,9 +44,11 @@ from resource.mail.save_template import SaveTemplate
 from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
 from resource.privatespace.add_request import AddRequest
-from resource.privatespace.is_logged import IsLogged
+from resource.privatespace.delete_my_request import DeleteMyRequest
 from resource.privatespace.get_my_companies import GetMyCompanies
+from resource.privatespace.get_my_requests import GetMyRequests
 from resource.privatespace.get_my_user import GetMyUser
+from resource.privatespace.is_logged import IsLogged
 from resource.privatespace.update_my_user import UpdateMyUser
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent
@@ -157,8 +159,10 @@ def set_routes(api, db, mail):
     api.add_resource(GetImages, '/media/get_images', resource_class_kwargs={"db": db})
 
     api.add_resource(AddRequest, '/privatespace/add_request', resource_class_kwargs={"db": db})
+    api.add_resource(DeleteMyRequest, '/privatespace/delete_my_request', resource_class_kwargs={"db": db})
     api.add_resource(IsLogged, '/privatespace/is_logged', resource_class_kwargs={"db": db})
     api.add_resource(GetMyCompanies, '/privatespace/get_my_companies', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyRequests, '/privatespace/get_my_requests', resource_class_kwargs={"db": db})
     api.add_resource(GetMyUser, '/privatespace/get_my_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateMyUser, '/privatespace/update_my_user', resource_class_kwargs={"db": db})
 

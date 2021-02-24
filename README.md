@@ -1,7 +1,9 @@
 # Outlines
+
 All the versions mentioned are the recommended ones.
 
 # Install local mySQL server
+
 Version 8.0.22
 https://dev.mysql.com/downloads/installer/
 
@@ -19,9 +21,11 @@ Then, you can run the SQL script with the DB structure in db/structure/001_init.
 Hint: You can use PHPMyAdmin or MySQL Workbench to administrate your server.
 
 # Install Python 3.8.6
+
 https://www.python.org/downloads/release/python-386/
 
 # Create Python virtual environment and install dependencies
+
 For Linux:
 ```
 $ cd ~/project/bo-api
@@ -41,6 +45,7 @@ For Windows
 ```
 
 # Run environment
+
 You have to make sure that the python environment is active
 If not:
 ```
