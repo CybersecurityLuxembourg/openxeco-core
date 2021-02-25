@@ -63,7 +63,7 @@ export default class TaskRequest extends React.Component {
 
         getRequest.call(this, "request/get_requests?" + dictToURI(filters), data => {
             this.setState({
-                requests: data
+                requests: data.reverse()
             });
         }, response => {
             nm.warning(response.statusText);

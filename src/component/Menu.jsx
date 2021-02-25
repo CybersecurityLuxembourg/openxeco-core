@@ -3,6 +3,7 @@ import './Menu.css';
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { Link } from "react-router-dom";
+import {getRequest} from '../utils/request';
 
 
 export default class Menu extends React.Component {
@@ -11,11 +12,20 @@ export default class Menu extends React.Component {
 		super(props);
 
 		this.state = {
+			requestCount: null,
 		}
 	}
 
 	componentDidMount(){
-
+		getRequest.call(this, "request/get_new_request_count", data => {
+            this.setState({
+                requestCount: data
+            });
+        }, response => {
+            nm.warning(response.statusText);
+        }, error => {
+            nm.error(error.message);
+        });
 	}
 
 	render(){
@@ -61,6 +71,9 @@ export default class Menu extends React.Component {
 			            <NavText>
 			                <Link to="/task">Tasks</Link>
 			            </NavText>
+			            {this.state.requestCount !== null && this.state.requestCount > 0 ?
+			            	<Link to="/task"><div className={"Menu-notification"}>{this.state.requestCount}</div></Link>
+			            : ""}
 			        </NavItem>
 			        <NavItem>
 			            <NavIcon>

@@ -128,7 +128,7 @@ export default class Request extends Component {
                         </h2>
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12 row-spaced">
                         {this.state.user !== null ?
                             <FormLine
                                 label={"Status"}
@@ -147,7 +147,7 @@ export default class Request extends Component {
                         
                     </div>
 
-                    <div className="col-md-12">
+                    <div className="col-md-12 row-spaced">
                         <h3>User</h3>
                         {this.state.user !== null ?
                             <User
@@ -159,10 +159,14 @@ export default class Request extends Component {
                                 height={100}
                             />
                         }
+                    </div>
 
+                    <div className="col-md-12">
                         <h3>Content</h3>
                         {this.props.info !== undefined && this.props.info !== null ?
-                            this.props.info.request 
+                            <div dangerouslySetInnerHTML={
+                                { __html: this.props.info.request.replaceAll("\n", "<br />","g") }
+                            }/>
                             : 
                             <Message
                                 text={"Unfound request content"}

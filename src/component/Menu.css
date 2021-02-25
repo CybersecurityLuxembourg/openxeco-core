@@ -19,3 +19,15 @@ nav {
 nav i {
 	padding-top: 12px !important;
 }
+
+.Menu-notification {
+	color: white;
+	height: 22px;
+	line-height: 15px;
+	border-radius: 20px;
+	background-color: #e40613;
+	padding: 3px 7px;
+	position: absolute;
+	top: 23px;
+	right: 10px;
+}
