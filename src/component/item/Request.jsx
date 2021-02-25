@@ -9,6 +9,7 @@ import Loading from '../box/Loading';
 import DialogConfirmation from '../dialog/DialogConfirmation';
 import Message from "../box/Message";
 import { getApiURL } from '../../utils/env';
+import RequestModification from './request/RequestModification';
 
 
 export default class Request extends Component {
@@ -141,13 +142,12 @@ export default class Request extends Component {
                             />
                         : 
                             <Loading
-                                height={100}
+                                height={50}
                             />
                         }
-                        
                     </div>
 
-                    <div className="col-md-12 row-spaced">
+                    <div className="col-md-6 row-spaced">
                         <h3>User</h3>
                         {this.state.user !== null ?
                             <User
@@ -156,7 +156,23 @@ export default class Request extends Component {
                             />
                         : 
                             <Loading
-                                height={100}
+                                height={50}
+                            />
+                        }
+                    </div>
+
+                    <div className="col-md-6 row-spaced">
+                        <h3>Action</h3>
+                        {this.props.info.request.startsWith("[COMPANY MODIFICATION]") ?
+                            <RequestModification
+                                request={this.props.info.request}
+                            />
+                        : this.props.info.request.startsWith("[COMPANY INSERTION]") ?
+                            "dd"
+                        :
+                            <Message
+                                text={"No action suggested"}
+                                height={50}
                             />
                         }
                     </div>

@@ -22,7 +22,8 @@ nav i {
 
 .Menu-notification {
 	color: white;
-	height: 22px;
+	font-size: 12px;
+	height: 20px;
 	line-height: 15px;
 	border-radius: 20px;
 	background-color: #e40613;
