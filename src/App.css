@@ -76,6 +76,19 @@ h3 {
     text-align: left !important;
 }
 
+h4 {
+	color: #010101;
+    font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    padding: 0px 10px;
+    margin: 10px 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    text-align: left !important;
+}
+
 a {
 	color: #009fe3;
 }

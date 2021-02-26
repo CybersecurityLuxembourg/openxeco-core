@@ -168,7 +168,9 @@ export default class Request extends Component {
                                 request={this.props.info.request}
                             />
                         : this.props.info.request.startsWith("[COMPANY INSERTION]") ?
-                            "dd"
+                            <RequestModification
+                                request={this.props.info.request}
+                            />
                         :
                             <Message
                                 text={"No action suggested"}
