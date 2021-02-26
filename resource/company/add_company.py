@@ -24,6 +24,11 @@ class AddCompany(Resource):
     def post(self):
         input_data = request.get_json()
 
+        companies = self.db.get(self.db.tables["Company"], {"name": input_data["name"]})
+
+        if len(companies) > 0:
+            return "", "422 A company is already existing with that name"
+
         self.db.insert(input_data, self.db.tables["Company"])
 
         return "", "200 "

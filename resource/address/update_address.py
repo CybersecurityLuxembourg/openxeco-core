@@ -18,15 +18,15 @@ class UpdateAddress(Resource):
     @catch_exception
     @verify_payload(format=[
         {'field': 'id', 'type': int},
-        {'field': 'address_1', 'type': str},
-        {'field': 'address_2', 'type': str, 'nullable': True},
-        {'field': 'number', 'type': str, 'nullable': True},
-        {'field': 'postal_code', 'type': str, 'nullable': True},
-        {'field': 'city', 'type': str},
-        {'field': 'administrative_area', 'type': str, 'nullable': True},
-        {'field': 'country', 'type': str},
-        {'field': 'latitude', 'type': [int, float], 'nullable': True},
-        {'field': 'longitude', 'type': [int, float], 'nullable': True},
+        {'field': 'address_1', 'type': str, 'optional': True},
+        {'field': 'address_2', 'type': str, 'nullable': True, 'optional': True},
+        {'field': 'number', 'type': str, 'nullable': True, 'optional': True},
+        {'field': 'postal_code', 'type': str, 'nullable': True, 'optional': True},
+        {'field': 'city', 'type': str, 'optional': True},
+        {'field': 'administrative_area', 'type': str, 'nullable': True, 'optional': True},
+        {'field': 'country', 'type': str, 'optional': True},
+        {'field': 'latitude', 'type': [int, float], 'nullable': True, 'optional': True},
+        {'field': 'longitude', 'type': [int, float], 'nullable': True, 'optional': True},
     ])
     @jwt_required
     @verify_admin_access
