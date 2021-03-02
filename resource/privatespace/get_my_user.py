@@ -16,6 +16,9 @@ class GetMyUser(Resource):
     def get(self):
         data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
 
+        if len(data) == 0:
+            return "", "401 The user has not been found"
+
         data = data[0].__dict__
         del data["password"]
         del data['_sa_instance_state']

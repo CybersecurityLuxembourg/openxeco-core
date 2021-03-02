@@ -11,7 +11,7 @@ class TestGetArticleEnums(BaseCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual({
-            'status': ['DRAFT', 'PUBLIC'],
+            'status': ['DRAFT', 'PUBLIC', 'ARCHIVE'],
             'media': ['ALL', 'CYBERLUX', 'SECURITYMADEIN.LU'],
             'type': ['NEWS', 'EVENT', 'TOOL', 'SERVICE', 'RESOURCE', 'JOB OFFER']
         }, response.json)

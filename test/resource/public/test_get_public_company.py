@@ -13,6 +13,7 @@ class TestGetPublicCompany(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.json, {
             'id': 2,
+            'image': None,
             'name': 'My Company',
             'is_startup': 0,
             'is_cybersecurity_core_business': 0,

@@ -30,6 +30,9 @@ class ResetPassword(Resource):
 
         data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
 
+        if len(data) == 0:
+            return "", "401 The user has not been found"
+
         user = data[0]
         user.password = generate_password_hash(input_data["new_password"])
 

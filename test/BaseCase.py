@@ -24,7 +24,8 @@ class BaseCase(unittest.TestCase):
                 "id": 1,
                 "email": self.email,
                 "password": generate_password_hash(self.password),
-                "is_admin": 1
+                "is_admin": 1,
+                "is_active": 1
             },
             self.db.tables["User"]
         )
@@ -85,4 +86,7 @@ class BaseCase(unittest.TestCase):
 
     @staticmethod
     def get_standard_post_header(token):
-        return {"Authorization": f"Bearer {token}"}
+        return {
+            "Origin": "localhost",
+            "Authorization": f"Bearer {token}"
+        }
