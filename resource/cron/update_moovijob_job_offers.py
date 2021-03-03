@@ -82,7 +82,7 @@ class UpdateMoovijobJobOffers(Resource):
         a.media = "CYBERLUX" if a.media is None else a.media
         a.link = self._get_preferred_lang_info(source["urls"]) if a.link is None else a.link
 
-        # Save modifs in DB
+        # Save modifications in DB
 
         article = self.db.merge(a, self.db.tables["Article"])
         is_modified = not self.db.are_objects_equal(a, copied_a, self.db.tables["Article"])

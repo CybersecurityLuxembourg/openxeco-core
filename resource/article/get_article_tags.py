@@ -17,7 +17,6 @@ class GetArticleTags(Resource):
     @jwt_required
     @verify_admin_access
     def get(self, id):
-
         taxonomy_sub_query = self.db.session.query(self.db.tables["ArticleTaxonomyTag"]) \
             .with_entities(self.db.tables["ArticleTaxonomyTag"].taxonomy_value) \
             .filter(self.db.tables["ArticleTaxonomyTag"].article == id) \
@@ -30,11 +29,11 @@ class GetArticleTags(Resource):
 
         data = {
             "company_tags": Serializer.serialize(self.db.session.query(self.db.tables["Company"])
-                .filter(self.db.tables["Company"].id.in_(company_sub_query))
-                .all(), self.db.tables["Company"]),
+                                                 .filter(self.db.tables["Company"].id.in_(company_sub_query))
+                                                 .all(), self.db.tables["Company"]),
             "taxonomy_tags": Serializer.serialize(self.db.session.query(self.db.tables["TaxonomyValue"])
-                .filter(self.db.tables["TaxonomyValue"].id.in_(taxonomy_sub_query))
-                .all(), self.db.tables["TaxonomyValue"]),
+                                                  .filter(self.db.tables["TaxonomyValue"].id.in_(taxonomy_sub_query))
+                                                  .all(), self.db.tables["TaxonomyValue"]),
         }
 
         return data, "200 "

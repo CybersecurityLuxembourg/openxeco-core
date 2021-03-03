@@ -27,7 +27,7 @@ class Login(Resource):
         data = self.db.get(self.db.tables["User"], {"email": input_data["email"]})
 
         if len(data) < 1 or not check_password_hash(data[0].password, input_data['password']):
-            return "", "401 Wrong email/password combinaison"
+            return "", "401 Wrong email/password combination"
 
         if not data[0].is_active:
             return "", "401 The account is not active. Please contact the administrator"

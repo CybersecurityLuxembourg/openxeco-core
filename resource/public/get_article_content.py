@@ -74,7 +74,8 @@ class GetArticleContent(Resource):
                 data = "<article>"
 
                 if article[0].image is not None:
-                    data += f"<div class='Article-content-cover'><img src='http://localhost:5000/public/get_image/{article[0].image}'/></div>"
+                    data += f"<div class='Article-content-cover'><img src='http://localhost:5000/public/get_image/" \
+                            f"{article[0].image}'/></div>"
 
                 data += f"<h1>{article[0].title}</h1>"
 
@@ -88,7 +89,8 @@ class GetArticleContent(Resource):
                     elif c.type == "PARAGRAPH":
                         data += f"{c.content}"
                     elif c.type == "IMAGE":
-                        data += f"<div class='Article-content-image'><img src='http://localhost:5000/public/get_image/{c.content}'/></div>"
+                        data += f"<div class='Article-content-image'><img src='http://localhost:5000/public/" \
+                                f"get_image/{c.content}'/></div>"
                     elif c.type == "FRAME":
                         data += f"{c.content}"
 

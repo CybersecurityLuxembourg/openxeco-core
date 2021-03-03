@@ -17,7 +17,6 @@ class GetGlobalAnalytics(Resource):
     @jwt_required
     @verify_admin_access
     def get(self):
-
         u = self.db.tables["User"]
         c = self.db.tables["Company"]
         tc = self.db.tables["TaxonomyCategory"]
@@ -28,21 +27,21 @@ class GetGlobalAnalytics(Resource):
 
         data = {
             "actors": [o._asdict() for o in self.db.session.query(c)
-                .with_entities(c.id, c.is_startup, c.is_cybersecurity_core_business, c.creation_date)
-                .filter(c.type == "ACTOR")
-                .all()],
+                        .with_entities(c.id, c.is_startup, c.is_cybersecurity_core_business, c.creation_date)
+                        .filter(c.type == "ACTOR")
+                        .all()],
 
             "workforces": Serializer.serialize(self.db.get_latest_workforce(), self.db.tables["Workforce"]),
 
             "total_users": self.db.get_count(self.db.tables["User"]),
             "last_companies": [o._asdict() for o in self.db.session.query(c)
-                .with_entities(c.id, c.name)
-                .order_by(c.id.desc()).limit(5)
-                .all()],
+                                .with_entities(c.id, c.name)
+                                .order_by(c.id.desc()).limit(5)
+                                .all()],
             "last_users": [o._asdict() for o in self.db.session.query(u)
-                .with_entities(u.id, u.email)
-                .order_by(u.id.desc()).limit(5)
-                .all()],
+                           .with_entities(u.id, u.email)
+                           .order_by(u.id.desc()).limit(5)
+                           .all()],
 
             "taxonomy_categories": Serializer.serialize(self.db.get(tc), tc),
             "taxonomy_category_hierarchy": Serializer.serialize(self.db.get(tch), tch),

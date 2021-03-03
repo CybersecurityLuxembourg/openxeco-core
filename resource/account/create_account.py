@@ -1,16 +1,15 @@
 from flask import request, render_template
-from flask_restful import Resource
 from flask_bcrypt import generate_password_hash
-from utils.password import generate_password
-from flask_jwt_extended import jwt_required
-from decorator.log_request import log_request
-from decorator.verify_payload import verify_payload
-from decorator.catch_exception import catch_exception
-from utils.re import has_mail_format
-from exception.object_already_existing import ObjectAlreadyExisting
-from utils.mail import send_email
+from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from config.config import FRONTEND_URL
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
+from decorator.verify_payload import verify_payload
+from exception.object_already_existing import ObjectAlreadyExisting
+from utils.mail import send_email
+from utils.password import generate_password
+from utils.re import has_mail_format
 
 
 class CreateAccount(Resource):
