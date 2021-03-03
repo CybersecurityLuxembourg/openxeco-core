@@ -1,6 +1,4 @@
 from test.BaseCase import BaseCase
-from unittest.mock import patch
-import datetime
 
 
 class TestUpdateAddress(BaseCase):

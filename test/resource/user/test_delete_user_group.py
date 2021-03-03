@@ -30,7 +30,7 @@ class TestDeleteUserGroup(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        #Post-verification
+        # Post-verification
 
         groups = self.db.get(self.db.tables["UserGroup"])
         deleted_group_rights = self.db.get(self.db.tables["UserGroupRight"], {"group_id": 14})

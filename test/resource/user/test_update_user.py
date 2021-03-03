@@ -1,5 +1,4 @@
 from test.BaseCase import BaseCase
-import datetime
 
 
 class TestUpdateUser(BaseCase):

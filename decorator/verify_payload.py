@@ -2,7 +2,7 @@ import functools
 from flask import request
 
 
-def _check_payload(input_data, payload_format):
+def check_payload(input_data, payload_format):
     biased_value = []
 
     for v in payload_format:
@@ -33,7 +33,7 @@ def verify_payload(format=None):
             if request.get_json() is None:
                 return "", "422 No payload found"
 
-            biased_value = _check_payload(request.get_json(), format)
+            biased_value = check_payload(request.get_json(), format)
             if len(biased_value) > 0:
                 return "", f"422 Error with those params : {','.join(biased_value)}"
 

@@ -25,4 +25,4 @@ class TestLogin(BaseCase):
                                          headers=self.get_standard_post_header(None),
                                          json=payload)
 
-        self.assertEqual("401 Wrong email/password combinaison", response.status)
+        self.assertEqual("401 Wrong email/password combination", response.status)

@@ -6,7 +6,7 @@ class TestExtractCompanies(BaseCase):
     @BaseCase.login
     def test_ok_basic(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Compan2"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
 
         response = self.application.get('/company/extract_companies?format=json',
                                         headers=self.get_standard_header(token))
@@ -20,9 +20,9 @@ class TestExtractCompanies(BaseCase):
     @BaseCase.login
     def test_ok_with_filter(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Compan2"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
 
-        response = self.application.get('/company/extract_companies?format=json&name=Compan2&include_address=true',
+        response = self.application.get('/company/extract_companies?format=json&name=Company 2&include_address=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(1, len(response.json))
@@ -34,7 +34,7 @@ class TestExtractCompanies(BaseCase):
     @BaseCase.login
     def test_ok_with_address(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Compan2"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
         self.db.insert({
             "id": 1,
             "company_id": 2,
@@ -62,7 +62,7 @@ class TestExtractCompanies(BaseCase):
     @BaseCase.login
     def test_ok_with_workforce(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Compan2"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
 
         self.db.insert({"name": "Newspaper"}, self.db.tables["Source"])
         self.db.insert({
@@ -103,7 +103,7 @@ class TestExtractCompanies(BaseCase):
     @BaseCase.login
     def test_ok_with_taxonomy(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Compan2"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"company": 2, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
@@ -119,7 +119,7 @@ class TestExtractCompanies(BaseCase):
     @BaseCase.login
     def test_ok_with_taxonomy_and_hierarchy(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Compan2"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
 
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -148,7 +148,7 @@ class TestExtractCompanies(BaseCase):
     @BaseCase.login
     def test_ok_xlsx(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Compan2"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
 
         response = self.application.get('/company/extract_companies',
                                         headers=self.get_standard_header(token))

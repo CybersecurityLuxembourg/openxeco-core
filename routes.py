@@ -121,7 +121,8 @@ def set_routes(api, db, mail):
     api.add_resource(GetArticleEnums, '/article/get_article_enums', resource_class_kwargs={"db": db})
     api.add_resource(GetArticleTags, '/article/get_article_tags/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetArticleVersions, '/article/get_article_versions/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleVersionContent, '/article/get_article_version_content/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetArticleVersionContent, '/article/get_article_version_content/<id>',
+                     resource_class_kwargs={"db": db})
     api.add_resource(AddArticle, '/article/add_article', resource_class_kwargs={"db": db})
     api.add_resource(AddArticleVersion, '/article/add_article_version', resource_class_kwargs={"db": db})
     api.add_resource(AddCompanyTag, '/article/add_company_tag', resource_class_kwargs={"db": db})
@@ -133,7 +134,8 @@ def set_routes(api, db, mail):
     api.add_resource(SetArticleVersionAsMain, '/article/set_article_version_as_main', resource_class_kwargs={"db": db})
     api.add_resource(UpdateArticle, '/article/update_article', resource_class_kwargs={"db": db})
     api.add_resource(UpdateArticleVersion, '/article/update_article_version', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateArticleVersionContent, '/article/update_article_version_content', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateArticleVersionContent, '/article/update_article_version_content',
+                     resource_class_kwargs={"db": db})
 
     api.add_resource(GetGlobalAnalytics, '/analytic/get_global_analytics', resource_class_kwargs={"db": db})
 
@@ -150,7 +152,8 @@ def set_routes(api, db, mail):
 
     api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
 
-    api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id>',
+                     resource_class_kwargs={"db": db})
 
     api.add_resource(GetServerInfo, '/mail/get_server_info', resource_class_kwargs={"db": db})
     api.add_resource(GetMailContent, '/mail/get_mail_content/<name>', resource_class_kwargs={"db": db})
@@ -175,7 +178,8 @@ def set_routes(api, db, mail):
     api.add_resource(GetRelatedArticles, '/public/get_related_articles/<id>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicTaxonomyValues, '/public/get_public_taxonomy_values', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanies, '/public/get_public_companies', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations', resource_class_kwargs={"db": db})
+    api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations',
+                     resource_class_kwargs={"db": db})
     api.add_resource(IsAlive, '/public/is_alive', resource_class_kwargs={"db": db})
 
     api.add_resource(GetRequests, '/request/get_requests', resource_class_kwargs={"db": db})
@@ -208,19 +212,26 @@ def set_routes(api, db, mail):
 
     api.add_resource(AddTaxonomyAssignment, '/taxonomy/add_taxonomy_assignment', resource_class_kwargs={"db": db})
     api.add_resource(AddTaxonomyCategory, '/taxonomy/add_taxonomy_category', resource_class_kwargs={"db": db})
-    api.add_resource(AddTaxonomyCategoryHierarchy, '/taxonomy/add_taxonomy_category_hierarchy', resource_class_kwargs={"db": db})
+    api.add_resource(AddTaxonomyCategoryHierarchy, '/taxonomy/add_taxonomy_category_hierarchy',
+                     resource_class_kwargs={"db": db})
     api.add_resource(AddTaxonomyValue, '/taxonomy/add_taxonomy_value', resource_class_kwargs={"db": db})
-    api.add_resource(AddTaxonomyValueHierarchy, '/taxonomy/add_taxonomy_value_hierarchy', resource_class_kwargs={"db": db})
+    api.add_resource(AddTaxonomyValueHierarchy, '/taxonomy/add_taxonomy_value_hierarchy',
+                     resource_class_kwargs={"db": db})
     api.add_resource(DeleteTaxonomyAssignment, '/taxonomy/delete_taxonomy_assignment', resource_class_kwargs={"db": db})
     api.add_resource(DeleteTaxonomyCategory, '/taxonomy/delete_taxonomy_category', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyCategoryHierarchy, '/taxonomy/delete_taxonomy_category_hierarchy', resource_class_kwargs={"db": db})
+    api.add_resource(DeleteTaxonomyCategoryHierarchy, '/taxonomy/delete_taxonomy_category_hierarchy',
+                     resource_class_kwargs={"db": db})
     api.add_resource(DeleteTaxonomyValue, '/taxonomy/delete_taxonomy_value', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyValueHierarchy, '/taxonomy/delete_taxonomy_value_hierarchy', resource_class_kwargs={"db": db})
+    api.add_resource(DeleteTaxonomyValueHierarchy, '/taxonomy/delete_taxonomy_value_hierarchy',
+                     resource_class_kwargs={"db": db})
     api.add_resource(GetTaxonomyCategories, '/taxonomy/get_taxonomy_categories', resource_class_kwargs={"db": db})
-    api.add_resource(GetTaxonomyCategoryHierarchy, '/taxonomy/get_taxonomy_category_hierarchy', resource_class_kwargs={"db": db})
+    api.add_resource(GetTaxonomyCategoryHierarchy, '/taxonomy/get_taxonomy_category_hierarchy',
+                     resource_class_kwargs={"db": db})
     api.add_resource(GetTaxonomyValues, '/taxonomy/get_taxonomy_values', resource_class_kwargs={"db": db})
-    api.add_resource(GetTaxonomyValueHierarchy, '/taxonomy/get_taxonomy_value_hierarchy', resource_class_kwargs={"db": db})
-    api.add_resource(GetAllTaxonomyValueHierarchy, '/taxonomy/get_all_taxonomy_value_hierarchy', resource_class_kwargs={"db": db})
+    api.add_resource(GetTaxonomyValueHierarchy, '/taxonomy/get_taxonomy_value_hierarchy',
+                     resource_class_kwargs={"db": db})
+    api.add_resource(GetAllTaxonomyValueHierarchy, '/taxonomy/get_all_taxonomy_value_hierarchy',
+                     resource_class_kwargs={"db": db})
 
     api.add_resource(AddWorkforce, '/workforce/add_workforce', resource_class_kwargs={"db": db})
     api.add_resource(DeleteWorkforce, '/workforce/delete_workforce', resource_class_kwargs={"db": db})

@@ -30,7 +30,8 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
-        self.db.insert({"parent_category": "CAT1", "child_category": "CAT1"}, self.db.tables["TaxonomyCategoryHierarchy"])
+        self.db.insert({"parent_category": "CAT1", "child_category": "CAT1"},
+                       self.db.tables["TaxonomyCategoryHierarchy"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
 
         payload = {

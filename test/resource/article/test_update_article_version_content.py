@@ -105,7 +105,7 @@ class TestUpdateArticleVersionContent(BaseCase):
                     "content": "42"
                 },
                 {
-                    "type": "WRONGTYPE",
+                    "type": "WRONG TYPE",
                     "content": "My title 3"
                 },
             ]
@@ -117,5 +117,5 @@ class TestUpdateArticleVersionContent(BaseCase):
 
         article_boxes = self.db.get(self.db.tables["ArticleBox"])
 
-        self.assertEqual("422 Wrong content type found: 'WRONGTYPE'", response.status)
+        self.assertEqual("422 Wrong content type found: 'WRONG TYPE'", response.status)
         self.assertEqual(len(article_boxes), 2)

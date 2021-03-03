@@ -31,7 +31,7 @@ class TestSaveTemplate(BaseCase):
         }
 
         response = self.application.post('/mail/save_template',
-                                        headers=self.get_standard_post_header(token),
-                                        json=payload)
+                                         headers=self.get_standard_post_header(token),
+                                         json=payload)
 
         self.assertEqual("404 This mail template does not exist", response.status)

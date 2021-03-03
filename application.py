@@ -52,4 +52,4 @@ def undefined_route(_):
 
 
 if __name__ == '__main__':
-    application.run()#ssl_context=None if config.ENVIRONMENT != "dev" else 'adhoc')
+    application.run()

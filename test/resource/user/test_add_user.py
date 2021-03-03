@@ -38,7 +38,7 @@ class TestAddUser(BaseCase):
     def test_bad_mail_format(self, token):
         self.db.insert({"email": "myemail@test.lu", "password": "MySecret"}, self.db.tables["User"])
 
-        payload = {"email": "myemailtest.lu", "password": "MySecret2!"}
+        payload = {"email": "email-test.lu", "password": "MySecret2!"}
 
         response = self.application.post('/user/add_user',
                                          headers=self.get_standard_post_header(token),

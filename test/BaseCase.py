@@ -55,7 +55,7 @@ class BaseCase(unittest.TestCase):
             @functools.wraps(f)
             def wrapper(self, *args, **kwargs):
                 self.db.insert(
-                    {"id": 1, "name": "GROUPTEST"},
+                    {"id": 1, "name": "GROUP TEST"},
                     self.db.tables["UserGroup"]
                 )
 

@@ -1,11 +1,11 @@
 from test.BaseCase import BaseCase
-from decorator.verify_payload import _check_payload
+from decorator.verify_payload import check_payload
 
 
 class TestVerifyPayload(BaseCase):
 
     def test_check_payload_ok(self):
-        res = _check_payload(
+        res = check_payload(
             {
                 'title': "My Title"
             },
@@ -17,7 +17,7 @@ class TestVerifyPayload(BaseCase):
         self.assertEqual(res, [])
 
     def test_check_payload_ok_optional(self):
-        res = _check_payload(
+        res = check_payload(
             {
             },
             [
@@ -29,7 +29,7 @@ class TestVerifyPayload(BaseCase):
 
     def test_check_payload_missing_biased(self):
 
-        res = _check_payload(
+        res = check_payload(
             {},
             [
                 {'field': 'title', 'type': str}
@@ -39,7 +39,7 @@ class TestVerifyPayload(BaseCase):
         self.assertEqual(res, ['title'])
 
     def test_check_payload_nullable_biased(self):
-        res = _check_payload(
+        res = check_payload(
             {
                 'title': None
             },
@@ -51,7 +51,7 @@ class TestVerifyPayload(BaseCase):
         self.assertEqual(res, ['title'])
 
     def test_check_payload_nullable_and_missing_biased(self):
-        res = _check_payload(
+        res = check_payload(
             {
             },
             [

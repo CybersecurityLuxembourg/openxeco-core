@@ -61,7 +61,8 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
     def test_ko_duplicate_entry(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
-        self.db.insert({"parent_category": "CAT1", "child_category": "CAT2"}, self.db.tables["TaxonomyCategoryHierarchy"])
+        self.db.insert({"parent_category": "CAT1", "child_category": "CAT2"},
+                       self.db.tables["TaxonomyCategoryHierarchy"])
 
         payload = {
             "parent_category": "CAT1",

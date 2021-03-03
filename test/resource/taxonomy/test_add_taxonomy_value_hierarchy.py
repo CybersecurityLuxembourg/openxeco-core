@@ -10,7 +10,8 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
     def test_ok(self, token):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
-        self.db.insert({"parent_category": "CAT1", "child_category": "CAT2"}, self.db.tables["TaxonomyCategoryHierarchy"])
+        self.db.insert({"parent_category": "CAT1", "child_category": "CAT2"},
+                       self.db.tables["TaxonomyCategoryHierarchy"])
         self.db.insert({"id": 1, "name": "VAL1", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"id": 2, "name": "VAL2", "category": "CAT2"}, self.db.tables["TaxonomyValue"])
 
@@ -107,7 +108,7 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
                        self.db.tables["TaxonomyCategoryHierarchy"])
         self.db.insert({"id": 1, "name": "VAL1", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"id": 2, "name": "VAL2", "category": "CAT2"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"parent_value": 1, "child_value": 2,}, self.db.tables["TaxonomyValueHierarchy"])
+        self.db.insert({"parent_value": 1, "child_value": 2}, self.db.tables["TaxonomyValueHierarchy"])
 
         payload = {
             "parent_value": 1,
@@ -128,7 +129,8 @@ class TestAddTaxonomyValueHierarchy(BaseCase):
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT1"}))
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT2"}))
         self.db.session.commit()
-        self.db.session.add(self.db.tables["TaxonomyCategoryHierarchy"](**{"parent_category": "CAT1", "child_category": "CAT2"}))
+        self.db.session.add(self.db.tables["TaxonomyCategoryHierarchy"]
+                            (**{"parent_category": "CAT1", "child_category": "CAT2"}))
         self.db.session.add(self.db.tables["TaxonomyValue"](**{"id": 1, "name": "My Value", "category": "CAT1"}))
         self.db.session.add(self.db.tables["TaxonomyValue"](**{"id": 2, "name": "My Value2", "category": "CAT2"}))
         self.db.session.commit()

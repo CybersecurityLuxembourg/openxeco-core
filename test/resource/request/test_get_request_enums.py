@@ -1,5 +1,4 @@
 from test.BaseCase import BaseCase
-from unittest.mock import patch, Mock
 
 
 class TestGetRequestEnums(BaseCase):

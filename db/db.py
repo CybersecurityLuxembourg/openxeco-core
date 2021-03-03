@@ -90,7 +90,8 @@ class DB:
         self.session.query(table).delete()
         self.session.commit()
 
-    def get(self, table, filters={}, entities=None):
+    def get(self, table, filters=None, entities=None):
+        filters = {} if filters is None else filters
         q = self.session.query(table)
 
         if entities is not None:
@@ -104,7 +105,8 @@ class DB:
 
         return q.all()
 
-    def get_count(self, table, filters={}):
+    def get_count(self, table, filters=None):
+        filters = {} if filters is None else filters
         q = self.session.query(table)
         for attr, value in filters.items():
             if type(value) == list:
@@ -131,7 +133,8 @@ class DB:
     # COMPANY     #
     ###############
 
-    def get_filtered_companies(self, filters={}, entities=None):
+    def get_filtered_companies(self, filters=None, entities=None):
+        filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Company"])
 
@@ -155,7 +158,8 @@ class DB:
             query = query.filter(self.tables["Company"].is_cybersecurity_core_business.is_(True))
 
         if "taxonomy_values" in filters:
-            taxonomy_values = [int(value_id) for value_id in filters["taxonomy_values"].split(",") if value_id.isdigit()]
+            taxonomy_values = [int(value_id) for value_id in filters["taxonomy_values"].split(",")
+                               if value_id.isdigit()]
 
             if len(taxonomy_values) > 0:
                 tch = taxonomy_values
@@ -182,7 +186,8 @@ class DB:
     # ARTICLE     #
     ###############
 
-    def get_filtered_articles(self, filters={}):
+    def get_filtered_articles(self, filters=None):
+        filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Article"])
 

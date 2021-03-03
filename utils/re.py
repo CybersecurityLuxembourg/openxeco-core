@@ -6,7 +6,7 @@ def has_password_format(value):
 
 
 def has_mail_format(value):
-    return re.fullmatch(r'^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]{2,}$', value)
+    return re.fullmatch(r'^[A-Za-z0-9.+_-]+@[A-Za-z0-9._-]+\.[a-zA-Z]{2,}$', value)
 
 
 def has_date_format(value):
