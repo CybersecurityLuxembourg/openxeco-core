@@ -100,5 +100,5 @@ To run the PyCQA/prospector
 To run the PyCQA/bandit 
 ```
 > npm install bandit
-> bandit -r ./
+> bandit -r ./ -x ./venv/*,./test/*
 ```

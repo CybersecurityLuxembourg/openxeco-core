@@ -16,10 +16,10 @@ def log_request(function):
             params = flask.request.json
 
             if "password" in params:
-                params["password"] = "[SERVER] ANONYMISED"
+                params["password"] = "[SERVER] ANONYMISED"  # nosec
 
             if "new_password" in params:
-                params["new_password"] = "[SERVER] ANONYMISED"
+                params["new_password"] = "[SERVER] ANONYMISED"  # nosec
 
             if "image" in params:
                 params["image"] = "[SERVER] NOT LOGGED"
