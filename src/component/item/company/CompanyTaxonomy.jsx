@@ -167,9 +167,10 @@ export default class CompanyTaxonomy extends React.Component {
                     shape: 'circle',
                     shapeProps: {
                         r: 10, 
-                        fill: this.state.companyAssignment
-                            .filter(a => a.taxonomy_value === childValues[i].id).length > 0 ? 
-                                "#bcebff": "#fed7da"
+                        fill: this.state.companyAssignment === null ? "lightgrey" :
+                            this.state.companyAssignment
+                                .filter(a => a.taxonomy_value === childValues[i].id).length > 0 ? 
+                                    "#bcebff": "#fed7da"
                     }
                 }
             }
