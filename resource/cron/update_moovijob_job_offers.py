@@ -25,7 +25,7 @@ class UpdateMoovijobJobOffers(Resource):
         base_url = "https://www.moovijob.com/api/job-offers/search?job_categories[]=informatique-consulting" \
                    "&job_categories[]=informatique-dev&job_categories[]=informatique-infra-reseau&q=security"
 
-        response = request.urlopen(base_url)
+        response = request.urlopen(base_url)  # nosec
         data = json.loads(response.read())
 
         nb_pages = data["last_page"] if "last_page" in data and isinstance(data["last_page"], int) else None
@@ -58,7 +58,7 @@ class UpdateMoovijobJobOffers(Resource):
             current_page += 1
 
             if current_page <= nb_pages:
-                response = request.urlopen(f"{base_url}&page={current_page}")
+                response = request.urlopen(f"{base_url}&page={current_page}")  # nosec
                 data = json.loads(response.read())
 
         return "", f"200 Success: {nb_reviewed} treated, {nb_created} created, {nb_modified} modified"
