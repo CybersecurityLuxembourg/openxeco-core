@@ -35,12 +35,12 @@ class DB:
     ###############
 
     def merge(self, data, table, commit=True):
-        if type(data) == dict:
+        if isinstance(data, dict):
             data = table(**data)
             data = self.session.merge(data)
-        elif type(data) == list:
+        elif isinstance(data, list):
             for row in data:
-                if type(row) == dict:
+                if isinstance(row, dict):
                     row = table(**row)
                 self.session.merge(row)
         else:
@@ -52,12 +52,12 @@ class DB:
         return data
 
     def insert(self, data, table, commit=True):
-        if type(data) == dict:
+        if isinstance(data, dict):
             data = table(**data)
             self.session.add(data)
         else:
             for row in data:
-                if type(row) == dict:
+                if isinstance(row, dict):
                     row = table(**row)
                 self.session.add(row)
 
@@ -67,13 +67,10 @@ class DB:
         return data
 
     def delete(self, table, filters=None, commit=True):
-        if filters is None:
-            # We don't take the risk to have to filter on delete, truncate() is made for that
-            return
-        else:
+        if filters is not None:
             q = self.session.query(table)
             for attr, value in filters.items():
-                if type(value) == list:
+                if isinstance(value, list):
                     q = q.filter(getattr(table, attr).in_(value))
                 else:
                     q = q.filter(getattr(table, attr) == value)
@@ -82,8 +79,8 @@ class DB:
             if commit:
                 self.session.commit()
 
-    def delete_by_id(self, id, table):
-        self.session.query(table).filter(table.id == id).delete()
+    def delete_by_id(self, id_, table):
+        self.session.query(table).filter(table.id == id_).delete()
         self.session.commit()
 
     def truncate(self, table):
@@ -98,7 +95,7 @@ class DB:
             q = q.with_entities(*entities)
 
         for attr, value in filters.items():
-            if type(value) == list:
+            if isinstance(value, list):
                 q = q.filter(getattr(table, attr).in_(value))
             else:
                 q = q.filter(getattr(table, attr) == value)
@@ -109,14 +106,14 @@ class DB:
         filters = {} if filters is None else filters
         q = self.session.query(table)
         for attr, value in filters.items():
-            if type(value) == list:
+            if isinstance(value, list):
                 q = q.filter(getattr(table, attr).in_(value))
             else:
                 q = q.filter(getattr(table, attr) == value)
         return q.count()
 
-    def get_by_id(self, id, table):
-        return self.session.query(table).filter(table.id == id).one()
+    def get_by_id(self, id_, table):
+        return self.session.query(table).filter(table.id == id_).one()
 
     ###############
     # UTILS       #
@@ -146,7 +143,7 @@ class DB:
             query = query.filter(func.lower(self.tables["Company"].name).like("%" + name + "%"))
 
         if "type" in filters and filters['type'] is not None:
-            if type(filters['type']) == list:
+            if isinstance(filters['type'], list):
                 query = query.filter(self.tables["Company"].type.in_(filters['type']))
             else:
                 query = query.filter(self.tables["Company"].type == filters['type'])
@@ -206,12 +203,12 @@ class DB:
             query = query.filter(self.tables["Article"].media.in_(["ALL", filters["media"]]))
 
         if "public_only" in filters and filters["public_only"] == "true":
-            query = query.filter(self.tables["Article"].handle != None)
+            query = query.filter(self.tables["Article"].handle.isnot(None))
             query = query.filter(self.tables["Article"].status == "PUBLIC")
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
 
         if "taxonomy_values" in filters:
-            tmp_taxonomy_values = [value_id for value_id in filters["taxonomy_values"].split(",")]
+            tmp_taxonomy_values = filters["taxonomy_values"].split(",")
             taxonomy_values = []
 
             for tv in tmp_taxonomy_values:

@@ -21,7 +21,7 @@ class CreateAccount(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'email', 'type': str},
     ])
     def post(self):
@@ -50,8 +50,7 @@ class CreateAccount(Resource):
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
                 raise ObjectAlreadyExisting
-            else:
-                raise e
+            raise e
 
         send_email(self.mail,
                    subject='[CYBERSECURITY LUXEMBOURG] New account',

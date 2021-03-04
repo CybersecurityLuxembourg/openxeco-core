@@ -2,6 +2,7 @@ import functools
 import flask
 import json
 from flask_jwt_extended import get_jwt_identity
+from flask import Response
 
 
 def log_request(function):
@@ -30,8 +31,8 @@ def log_request(function):
             "request": flask.request.path,
             "request_method": flask.request.method,
             "params": params,
-            "status_code": 200 if type(a) != tuple else int(str(a[1][0:3])),
-            "status_description": "" if type(a) != tuple else a[1][4:][:150]
+            "status_code": a.status_code if isinstance(a, Response) else int(str(a[1][0:3])),
+            "status_description": a.status if isinstance(a, Response) else a[1][4:][:150]
         }
 
         getattr(self, "db").insert(log, getattr(self, "db").tables["Log"])

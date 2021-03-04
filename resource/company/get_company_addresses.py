@@ -16,9 +16,9 @@ class GetCompanyAddresses(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
-        data = self.db.get(self.db.tables["Company_Address"], {"company_id": id})
+        data = self.db.get(self.db.tables["Company_Address"], {"company_id": id_})
         data = Serializer.serialize(data, self.db.tables["Company_Address"])
 
         return data, "200 "

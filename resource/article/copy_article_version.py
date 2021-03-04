@@ -18,7 +18,7 @@ class CopyArticleVersion(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'name', 'type': str, 'optional': True},
         {'field': 'article_version_id', 'type': int}
     ])
@@ -29,10 +29,10 @@ class CopyArticleVersion(Resource):
 
         article_version = self.db.get(self.db.tables["ArticleVersion"], {"id": input_data["article_version_id"]})
 
-        if len(article_version) < 1:
-            return "", "422 The provided article version ID does not exist"
-        else:
+        if len(article_version) > 0:
             article_version = article_version[0]
+        else:
+            return "", "422 The provided article version ID does not exist"
 
         copied_version = Serializer.serialize(article_version, self.db.tables["ArticleVersion"])
         del copied_version["id"]

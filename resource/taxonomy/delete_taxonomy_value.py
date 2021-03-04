@@ -17,7 +17,7 @@ class DeleteTaxonomyValue(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'category', 'type': str},
         {'field': 'name', 'type': str}
     ])
@@ -31,12 +31,12 @@ class DeleteTaxonomyValue(Resource):
             {"name": input_data["name"], "category": input_data["category"]}
         )
 
-        if len(values) == 0:
-            raise ObjectNotFound
-        else:
+        if len(values) > 0:
             self.db.delete(
                 self.db.tables["TaxonomyValue"],
                 {"name": input_data["name"], "category": input_data["category"]}
             )
+        else:
+            raise ObjectNotFound
 
         return "", "200 "

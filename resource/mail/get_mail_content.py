@@ -17,10 +17,10 @@ class GetMailContent(Resource):
     @verify_admin_access
     def get(self, name):
 
-        if name not in ["new_account", "reset_password"]:
-            return "", "404 This mail template does not exist"
-        else:
+        if name in ["new_account", "reset_password"]:
             with open(os.path.join(os.path.dirname(__file__), "..", "..", "template", f"{name}.html"), "r") as f:
                 data = f.read()
+        else:
+            return "", "404 This mail template does not exist"
 
         return data, "200 "

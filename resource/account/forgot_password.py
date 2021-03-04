@@ -19,7 +19,7 @@ class ForgotPassword(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'email', 'type': str}
     ])
     def post(self):

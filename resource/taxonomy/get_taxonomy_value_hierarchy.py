@@ -21,15 +21,15 @@ class GetTaxonomyValueHierarchy(Resource):
         args = request.args.to_dict()
         row = {}
 
-        if "parent_category" not in args:
-            return "", "422 Parent category is missing as parameter"
-        else:
+        if "parent_category" in args:
             row["parent_category"] = args["parent_category"]
-
-        if "child_category" not in args:
-            return "", "422 Child category is missing as parameter"
         else:
+            return "", "422 Parent category is missing as parameter"
+
+        if "child_category" in args:
             row["child_category"] = args["child_category"]
+        else:
+            return "", "422 Child category is missing as parameter"
 
         if len(self.db.get(self.db.tables["TaxonomyCategoryHierarchy"], row)) < 1:
             return "", "422 The relation between those two categories does not exist"

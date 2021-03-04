@@ -15,7 +15,7 @@ class DeleteUserCompany(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'user', 'type': int},
         {'field': 'company', 'type': int},
     ])
@@ -31,9 +31,9 @@ class DeleteUserCompany(Resource):
 
         rights = self.db.get(self.db.tables["UserCompanyAssignment"], row)
 
-        if len(rights) == 0:
-            raise ObjectNotFound
-        else:
+        if len(rights) > 0:
             self.db.delete(self.db.tables["UserCompanyAssignment"], row)
+        else:
+            raise ObjectNotFound
 
         return "", "200 "

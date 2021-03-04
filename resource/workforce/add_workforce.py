@@ -17,7 +17,7 @@ class AddWorkforce(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'company', 'type': int},
         {'field': 'workforce', 'type': int},
         {'field': 'date', 'type': str},

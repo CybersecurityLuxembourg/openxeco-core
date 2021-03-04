@@ -66,75 +66,78 @@ class ExtractCompanies(Resource):
         # Manage taxonomy
 
         if 'include_taxonomy' in input_data and input_data['include_taxonomy'] == "true":
-
-            assignments = self.db.get(self.db.tables["TaxonomyAssignment"],
-                                      {"company": company_ids} if company_ids is not None else {})
-
-            categories = self.db.get(self.db.tables["TaxonomyCategory"])
-            values = self.db.get(self.db.tables["TaxonomyValue"])
-            category_hierarchy = self.db.get(self.db.tables["TaxonomyCategoryHierarchy"])
-            value_hierarchy = self.db.get(self.db.tables["TaxonomyValueHierarchy"])
-
-            parent_categories = [c.parent_category for c in category_hierarchy]
-            child_categories = [c.name for c in categories if c.name not in parent_categories]
-            child_values = [v.id for v in values if v.category in child_categories]
-            assignments = [a for a in assignments if a.taxonomy_value in child_values]
-
-            taxonomy = {}
-
-            for a in assignments:
-                value = [v for v in values if v.id == a.taxonomy_value][0]
-                self.add_taxonomy_value(taxonomy, a.company, value)
-
-                while value.id in [vh.child_value for vh in value_hierarchy]:
-                    vh = [vh for vh in value_hierarchy if vh.child_value == value.id][0]
-                    value = [v for v in values if v.id == vh.parent_value][0]
-                    self.add_taxonomy_value(taxonomy, a.company, value)
-
-            taxonomy = pd.DataFrame(taxonomy).transpose()
-            taxonomy = taxonomy.applymap(lambda x: ";".join(x) if type(x) == list else x)
-            taxonomy = taxonomy.reset_index()
-            taxonomy = taxonomy.add_prefix('Taxonomy|')
-
-            if len(taxonomy) > 0:
-                taxonomy = pd.DataFrame(taxonomy)
-                df = df.merge(taxonomy, left_on='Global|id', right_on='Taxonomy|index', how='left')
-                df = df.drop(['Taxonomy|index'], axis=1)
+            df = self.include_taxonomy(company_ids, df)
 
         # Prepare final export
 
-        if 'format' in input_data and input_data['format'] == "json":
-            return json.loads(df.to_json(orient="records")), "200 "
-        else:
-
-            # Clean DF
-
-            df = df.drop('Global|id', axis=1)
-            df = df.rename({'Global|rscl_number': "rscl_number"}, axis=1)
-            df = df.set_index("rscl_number")
-            df.columns = df.columns.str.split('|', expand=True)
-
-            # Build the XLS file
-
+        if 'format' not in input_data or input_data['format'] != "json":
             filename = f"Export - Companies - {datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.xlsx"
 
-            xlsx = BytesIO()
-            writer = pd.ExcelWriter(xlsx, engine='openpyxl')
-            df.to_excel(writer, startrow=0, sheet_name="Companies")
-            sheet = writer.sheets["Companies"]
-            self.apply_style(sheet)
-            writer.save()
-            xlsx.seek(0)
-
-            # Prepare response
-
             res = Response(
-                xlsx,
+                self.prepare_xlsx(df),
                 mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 headers={"Content-Disposition": f"attachment;filename={filename}"}
             )
 
             return res
+        return json.loads(df.to_json(orient="records")), "200 "
+
+    def include_taxonomy(self, company_ids, df):
+        assignments = self.db.get(self.db.tables["TaxonomyAssignment"],
+                                  {"company": company_ids} if company_ids is not None else {})
+
+        categories = self.db.get(self.db.tables["TaxonomyCategory"])
+        values = self.db.get(self.db.tables["TaxonomyValue"])
+        category_hierarchy = self.db.get(self.db.tables["TaxonomyCategoryHierarchy"])
+        value_hierarchy = self.db.get(self.db.tables["TaxonomyValueHierarchy"])
+
+        parent_categories = [c.parent_category for c in category_hierarchy]
+        child_categories = [c.name for c in categories if c.name not in parent_categories]
+        child_values = [v.id for v in values if v.category in child_categories]
+        assignments = [a for a in assignments if a.taxonomy_value in child_values]
+
+        taxonomy = {}
+
+        for a in assignments:
+            value = [v for v in values if v.id == a.taxonomy_value][0]
+            self.add_taxonomy_value(taxonomy, a.company, value)
+
+            while value.id in [vh.child_value for vh in value_hierarchy]:
+                vh = [vh for vh in value_hierarchy if vh.child_value == value.id][0]
+                value = [v for v in values if v.id == vh.parent_value][0]
+                self.add_taxonomy_value(taxonomy, a.company, value)
+
+        taxonomy = pd.DataFrame(taxonomy).transpose()
+        taxonomy = taxonomy.applymap(lambda x: ";".join(x) if isinstance(x, list) else x)
+        taxonomy = taxonomy.reset_index()
+        taxonomy = taxonomy.add_prefix('Taxonomy|')
+
+        if len(taxonomy) > 0:
+            taxonomy = pd.DataFrame(taxonomy)
+            df = df.merge(taxonomy, left_on='Global|id', right_on='Taxonomy|index', how='left')
+            df = df.drop(['Taxonomy|index'], axis=1)
+
+        return df
+
+    def prepare_xlsx(self, df):
+        # Clean DF
+
+        df = df.drop('Global|id', axis=1)
+        df = df.rename({'Global|rscl_number': "rscl_number"}, axis=1)
+        df = df.set_index("rscl_number")
+        df.columns = df.columns.str.split('|', expand=True)
+
+        # Build the XLS file
+
+        xlsx = BytesIO()
+        writer = pd.ExcelWriter(xlsx, engine='openpyxl')  # pylint: disable=abstract-class-instantiated
+        df.to_excel(writer, startrow=0, sheet_name="Companies")
+        sheet = writer.sheets["Companies"]
+        self.apply_style(sheet)
+        writer.save()
+        xlsx.seek(0)
+
+        return xlsx
 
     @staticmethod
     def apply_style(sheet):

@@ -13,7 +13,7 @@ def generate_password():
 
     all_chars = string.ascii_lowercase + string.ascii_uppercase + string.digits + special_chars
 
-    for i in range(0, 12):
+    for _ in range(0, 12):
         pwd.append(random.choice(all_chars))
 
     random.shuffle(pwd)

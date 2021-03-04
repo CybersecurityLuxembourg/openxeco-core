@@ -17,14 +17,14 @@ class GetArticleVersionContent(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
-        data = self.db.get(self.db.tables["ArticleVersion"], {"id": id})
+        data = self.db.get(self.db.tables["ArticleVersion"], {"id": id_})
 
         if len(data) < 1:
             raise ObjectNotFound
 
-        data = self.db.get(self.db.tables["ArticleBox"], {"article_version_id": id})
+        data = self.db.get(self.db.tables["ArticleBox"], {"article_version_id": id_})
         data = Serializer.serialize(data, self.db.tables["ArticleBox"])
 
         return data, "200 "

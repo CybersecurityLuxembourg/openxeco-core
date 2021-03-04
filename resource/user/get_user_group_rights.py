@@ -16,9 +16,9 @@ class GetUserGroupRights(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
-        data = self.db.get(self.db.tables["UserGroupRight"], {"group_id": id})
+        data = self.db.get(self.db.tables["UserGroupRight"], {"group_id": id_})
         data = Serializer.serialize(data, self.db.tables["UserGroupRight"])
 
         return data, "200 "

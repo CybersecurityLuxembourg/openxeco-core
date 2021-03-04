@@ -13,11 +13,11 @@ class GetImage(Resource):
         self.db = db
 
     @catch_exception
-    def get(self, id):
+    def get(self, id_):
 
         try:
-            f = open(os.path.join(IMAGE_FOLDER, id), "rb")
+            f = open(os.path.join(IMAGE_FOLDER, id_), "rb")
         except FileNotFoundError:
             raise ImageNotFound
 
-        return send_file(f, attachment_filename=f"{id}.jpg", mimetype='image/JPG')
+        return send_file(f, attachment_filename=f"{id_}.jpg", mimetype='image/JPG')

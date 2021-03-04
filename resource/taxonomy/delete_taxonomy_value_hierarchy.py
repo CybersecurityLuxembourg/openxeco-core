@@ -17,7 +17,7 @@ class DeleteTaxonomyValueHierarchy(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'parent_value', 'type': int},
         {'field': 'child_value', 'type': int}
     ])
@@ -33,9 +33,9 @@ class DeleteTaxonomyValueHierarchy(Resource):
 
         values = self.db.get(self.db.tables["TaxonomyValueHierarchy"], row)
 
-        if len(values) == 0:
-            raise ObjectNotFound
-        else:
+        if len(values) > 0:
             self.db.delete(self.db.tables["TaxonomyValueHierarchy"], row)
+        else:
+            raise ObjectNotFound
 
         return "", "200 "

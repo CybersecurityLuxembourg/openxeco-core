@@ -13,7 +13,7 @@ class GetRelatedArticles(Resource):
         self.db = db
 
     @catch_exception
-    def get(self, id):
+    def get(self, id_):
 
         filters = request.args.to_dict()
 
@@ -23,7 +23,7 @@ class GetRelatedArticles(Resource):
         # Fetch the info from the DB
 
         article = self.db.session.query(self.db.tables["Article"]) \
-            .filter(self.db.tables["Article"].handle == id) \
+            .filter(self.db.tables["Article"].handle == id_) \
             .filter(self.db.tables["Article"].status == "PUBLIC") \
             .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
             .all()

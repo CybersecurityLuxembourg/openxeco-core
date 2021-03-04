@@ -15,7 +15,7 @@ class SaveTemplate(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'name', 'type': str},
         {'field': 'content', 'type': str}
     ])
@@ -24,14 +24,14 @@ class SaveTemplate(Resource):
     def post(self):
         input_data = request.get_json()
 
-        if input_data['name'] not in ["new_account", "reset_password"]:
-            return "", "404 This mail template does not exist"
-        else:
+        if input_data['name'] in ["new_account", "reset_password"]:
             name = input_data['name']
             with open(os.path.join(os.path.dirname(__file__), "..", "..", "template", f"{name}.html"), "r+") as f:
                 f.read()
                 f.seek(0)
                 f.write(input_data['content'])
                 f.truncate()
+        else:
+            return "", "404 This mail template does not exist"
 
         return "", "200 "

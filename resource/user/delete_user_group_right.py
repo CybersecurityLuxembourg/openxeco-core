@@ -15,7 +15,7 @@ class DeleteUserGroupRight(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'group', 'type': int},
         {'field': 'resource', 'type': str},
     ])
@@ -31,9 +31,9 @@ class DeleteUserGroupRight(Resource):
 
         rights = self.db.get(self.db.tables["UserGroupRight"], row)
 
-        if len(rights) == 0:
-            raise ObjectNotFound
-        else:
+        if len(rights) > 0:
             self.db.delete(self.db.tables["UserGroupRight"], row)
+        else:
+            raise ObjectNotFound
 
         return "", "200 "

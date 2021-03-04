@@ -4,7 +4,6 @@ from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from flask import request
-
 from decorator.verify_admin_access import verify_admin_access
 
 
@@ -28,7 +27,7 @@ class GetUsers(Resource):
                            self.db.tables["User"].is_active)
 
         if "admin_only" in filters and filters["admin_only"] == "true":
-            query = query.filter(self.db.tables["User"].is_admin == True)
+            query = query.filter(self.db.tables["User"].is_admin.is_(True))
 
         data = [u._asdict() for u in query]
 

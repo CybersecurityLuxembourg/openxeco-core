@@ -103,7 +103,7 @@ from resource.workforce.add_workforce import AddWorkforce
 from resource.workforce.delete_workforce import DeleteWorkforce
 
 
-def set_routes(api, db, mail):
+def set_routes(api, db, mail):  # pylint: disable=too-many-statements
 
     api.add_resource(Login, '/account/login', resource_class_kwargs={"db": db})
     api.add_resource(ChangePassword, '/account/change_password', resource_class_kwargs={"db": db})
@@ -117,11 +117,11 @@ def set_routes(api, db, mail):
 
     api.add_resource(CopyArticleVersion, '/article/copy_article_version', resource_class_kwargs={"db": db})
     api.add_resource(GetArticles, '/article/get_articles', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticle, '/article/get_article/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetArticle, '/article/get_article/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetArticleEnums, '/article/get_article_enums', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleTags, '/article/get_article_tags/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleVersions, '/article/get_article_versions/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleVersionContent, '/article/get_article_version_content/<id>',
+    api.add_resource(GetArticleTags, '/article/get_article_tags/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetArticleVersions, '/article/get_article_versions/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetArticleVersionContent, '/article/get_article_version_content/<id_>',
                      resource_class_kwargs={"db": db})
     api.add_resource(AddArticle, '/article/add_article', resource_class_kwargs={"db": db})
     api.add_resource(AddArticleVersion, '/article/add_article_version', resource_class_kwargs={"db": db})
@@ -141,18 +141,18 @@ def set_routes(api, db, mail):
 
     api.add_resource(ExtractCompanies, '/company/extract_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetCompanies, '/company/get_companies', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompany, '/company/get_company/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyAddresses, '/company/get_company_addresses/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetCompany, '/company/get_company/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetCompanyAddresses, '/company/get_company_addresses/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetCompanyEnums, '/company/get_company_enums', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyTaxonomy, '/company/get_company_taxonomy/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyWorkforces, '/company/get_company_workforces/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetCompanyTaxonomy, '/company/get_company_taxonomy/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetCompanyWorkforces, '/company/get_company_workforces/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(UpdateCompany, '/company/update_company', resource_class_kwargs={"db": db})
     api.add_resource(AddCompany, '/company/add_company', resource_class_kwargs={"db": db})
     api.add_resource(DeleteCompany, '/company/delete_company', resource_class_kwargs={"db": db})
 
     api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
 
-    api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id>',
+    api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id_>',
                      resource_class_kwargs={"db": db})
 
     api.add_resource(GetServerInfo, '/mail/get_server_info', resource_class_kwargs={"db": db})
@@ -170,12 +170,12 @@ def set_routes(api, db, mail):
     api.add_resource(GetMyUser, '/privatespace/get_my_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateMyUser, '/privatespace/update_my_user', resource_class_kwargs={"db": db})
 
-    api.add_resource(GetArticleContent, '/public/get_article_content/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetArticleContent, '/public/get_article_content/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicAnalytics, '/public/get_public_analytics', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicArticles, '/public/get_public_articles', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicCompany, '/public/get_public_company/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetImage, '/public/get_image/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetRelatedArticles, '/public/get_related_articles/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetPublicCompany, '/public/get_public_company/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetImage, '/public/get_image/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetRelatedArticles, '/public/get_related_articles/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicTaxonomyValues, '/public/get_public_taxonomy_values', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanies, '/public/get_public_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations',
@@ -200,11 +200,11 @@ def set_routes(api, db, mail):
     api.add_resource(DeleteUserGroup, '/user/delete_user_group', resource_class_kwargs={"db": db})
     api.add_resource(DeleteUserGroupRight, '/user/delete_user_group_right', resource_class_kwargs={"db": db})
     api.add_resource(GetUsers, '/user/get_users', resource_class_kwargs={"db": db})
-    api.add_resource(GetUser, '/user/get_user/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserCompanies, '/user/get_user_companies/<id>', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserGroupRights, '/user/get_user_group_rights/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetUser, '/user/get_user/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetUserCompanies, '/user/get_user_companies/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetUserGroupRights, '/user/get_user_group_rights/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetUserGroups, '/user/get_user_groups', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserGroup, '/user/get_user_group/<id>', resource_class_kwargs={"db": db})
+    api.add_resource(GetUserGroup, '/user/get_user_group/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetUserGroupAssignments, '/user/get_user_group_assignments', resource_class_kwargs={"db": db})
     api.add_resource(GetMyAdminUser, '/user/get_my_admin_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateUser, '/user/update_user', resource_class_kwargs={"db": db})

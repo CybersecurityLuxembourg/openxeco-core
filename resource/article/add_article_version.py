@@ -16,7 +16,7 @@ class AddArticleVersion(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'name', 'type': str},
         {'field': 'article_id', 'type': int}
     ])

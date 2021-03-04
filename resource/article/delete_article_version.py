@@ -17,7 +17,7 @@ class DeleteArticleVersion(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'id', 'type': int}
     ])
     @jwt_required
@@ -29,9 +29,10 @@ class DeleteArticleVersion(Resource):
 
         if len(companies) == 0:
             raise ObjectNotFound
-        elif companies[0].is_main:
-            return "", "422 Cannot delete a version defined as a main version"
-        else:
+
+        if not companies[0].is_main:
             self.db.delete(self.db.tables["ArticleVersion"], {"id": input_data["id"]})
+        else:
+            return "", "422 Cannot delete a version defined as a main version"
 
         return "", "200 "

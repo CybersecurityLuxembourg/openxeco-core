@@ -16,7 +16,7 @@ class UpdateAddress(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'id', 'type': int},
         {'field': 'address_1', 'type': str, 'optional': True},
         {'field': 'address_2', 'type': str, 'nullable': True, 'optional': True},

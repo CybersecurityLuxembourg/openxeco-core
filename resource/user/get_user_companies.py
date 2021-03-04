@@ -16,12 +16,12 @@ class GetUserCompanies(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
         subquery = self.db.session \
             .query(self.db.tables["UserCompanyAssignment"]) \
             .with_entities(self.db.tables["UserCompanyAssignment"].company_id) \
-            .filter(self.db.tables["UserCompanyAssignment"].user_id == int(id)) \
+            .filter(self.db.tables["UserCompanyAssignment"].user_id == int(id_)) \
             .subquery()
 
         data = self.db.session \

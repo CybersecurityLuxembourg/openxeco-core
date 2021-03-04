@@ -18,7 +18,7 @@ class AddTaxonomyValueHierarchy(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'parent_value', 'type': int},
         {'field': 'child_value', 'type': int}
     ])
@@ -63,7 +63,6 @@ class AddTaxonomyValueHierarchy(Resource):
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
                 raise ObjectAlreadyExisting
-            else:
-                raise e
+            raise e
 
         return "", "200 "

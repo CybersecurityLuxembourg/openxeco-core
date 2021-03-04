@@ -15,7 +15,7 @@ class AddUserGroupRight(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'group', 'type': int},
         {'field': 'resource', 'type': str},
     ])

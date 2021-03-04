@@ -16,7 +16,7 @@ class GetPublicCompanyGeolocations(Resource):
 
         c = self.db.tables["Company"]
         ca = self.db.tables["Company_Address"]
-        entities = c.id,
+        entities = (c.id, )
 
         filters = request.args.to_dict()
 
@@ -28,8 +28,8 @@ class GetPublicCompanyGeolocations(Resource):
         geolocations = self.db.session.query(ca) \
             .with_entities(ca.company_id, ca.latitude, ca.longitude) \
             .filter(ca.company_id.in_(company_ids)) \
-            .filter(ca.latitude != None) \
-            .filter(ca.longitude != None) \
+            .filter(ca.latitude.isnot(None)) \
+            .filter(ca.longitude.isnot(None)) \
             .all()
 
         geolocations = [g._asdict() for g in geolocations]

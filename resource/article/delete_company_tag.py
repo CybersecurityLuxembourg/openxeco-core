@@ -17,7 +17,7 @@ class DeleteCompanyTag(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'article', 'type': int},
         {'field': 'company', 'type': int}
     ])
@@ -33,9 +33,9 @@ class DeleteCompanyTag(Resource):
 
         companies = self.db.get(self.db.tables["ArticleCompanyTag"], row)
 
-        if len(companies) == 0:
-            raise ObjectNotFound
-        else:
+        if len(companies) > 0:
             self.db.delete(self.db.tables["ArticleCompanyTag"], row)
+        else:
+            raise ObjectNotFound
 
         return "", "200 "

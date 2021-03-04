@@ -17,9 +17,9 @@ class GetUserGroup(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
-        data = self.db.get(self.db.tables["UserGroup"], {"id": id})
+        data = self.db.get(self.db.tables["UserGroup"], {"id": id_})
 
         if len(data) < 1:
             raise ObjectNotFound

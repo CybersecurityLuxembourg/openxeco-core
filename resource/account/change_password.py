@@ -19,7 +19,7 @@ class ChangePassword(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'password', 'type': str},
         {'field': 'new_password', 'type': str}
     ])

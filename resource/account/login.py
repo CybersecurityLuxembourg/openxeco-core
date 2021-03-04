@@ -17,7 +17,7 @@ class Login(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'email', 'type': str},
         {'field': 'password', 'type': str}
     ])

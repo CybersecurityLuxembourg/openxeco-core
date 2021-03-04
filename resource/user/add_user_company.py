@@ -15,7 +15,7 @@ class AddUserCompany(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'user', 'type': int},
         {'field': 'company', 'type': int},
     ])

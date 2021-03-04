@@ -16,7 +16,7 @@ class SetArticleVersionAsMain(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'id', 'type': int}
     ])
     @jwt_required

@@ -17,17 +17,17 @@ class GetUpdateArticleVersionLogs(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
-        data = self.db.get(self.db.tables["ArticleVersion"], {"id": id})
+        data = self.db.get(self.db.tables["ArticleVersion"], {"id": id_})
 
         if len(data) < 1:
             raise ObjectNotFound
 
         data = self.db.session.query(self.db.tables["Log"]) \
             .filter(self.db.tables["Log"].request == "/article/update_article_version_content") \
-            .filter(self.db.tables["Log"].params.like(f'%"article_version_id": {id},%') |
-                    self.db.tables["Log"].params.like(f'%"article_version_id": {id}}}%')) \
+            .filter(self.db.tables["Log"].params.like(f'%"article_version_id": {id_},%') |
+                    self.db.tables["Log"].params.like(f'%"article_version_id": {id_}}}%')) \
             .filter(self.db.tables["Log"].status_code == 200) \
             .all()
 

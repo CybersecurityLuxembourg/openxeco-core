@@ -20,7 +20,7 @@ class AddTaxonomyAssignment(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'company', 'type': int},
         {'field': 'value', 'type': int}
     ])
@@ -51,7 +51,6 @@ class AddTaxonomyAssignment(Resource):
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
                 raise ObjectAlreadyExisting
-            else:
-                raise e
+            raise e
 
         return "", "200 "

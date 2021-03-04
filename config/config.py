@@ -9,7 +9,7 @@ DB_CONFIG = {
     'username': os.getenv('DB_USERNAME', 'root'),
     'password': os.getenv('DB_PASSWORD', 'DBDevSMILE20'),
     'host': os.getenv('DB_HOSTNAME', 'localhost'),
-    'port': os.getenv('DB_PORT', 3306),
+    'port': os.getenv('DB_PORT', '3306'),
     'database': os.getenv('DB_NAME', 'CYBERLUX'),
 }
 

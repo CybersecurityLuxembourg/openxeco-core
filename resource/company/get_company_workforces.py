@@ -16,9 +16,9 @@ class GetCompanyWorkforces(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
-        data = self.db.get(self.db.tables["Workforce"], {"company": id})
+        data = self.db.get(self.db.tables["Workforce"], {"company": id_})
         data = Serializer.serialize(data, self.db.tables["Workforce"])
 
         return data, "200 "

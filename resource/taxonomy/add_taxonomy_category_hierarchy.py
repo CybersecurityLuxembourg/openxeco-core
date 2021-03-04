@@ -18,7 +18,7 @@ class AddTaxonomyCategoryHierarchy(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'parent_category', 'type': str},
         {'field': 'child_category', 'type': str}
     ])
@@ -45,7 +45,6 @@ class AddTaxonomyCategoryHierarchy(Resource):
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
                 raise ObjectAlreadyExisting
-            else:
-                raise e
+            raise e
 
         return "", "200 "

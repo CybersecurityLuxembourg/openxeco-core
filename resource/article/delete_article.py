@@ -17,7 +17,7 @@ class DeleteArticle(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'id', 'type': int}
     ])
     @jwt_required
@@ -27,9 +27,9 @@ class DeleteArticle(Resource):
 
         companies = self.db.get(self.db.tables["Article"], {"id": input_data["id"]})
 
-        if len(companies) == 0:
-            raise ObjectNotFound
-        else:
+        if len(companies) > 0:
             self.db.delete(self.db.tables["Article"], {"id": input_data["id"]})
+        else:
+            raise ObjectNotFound
 
         return "", "200 "

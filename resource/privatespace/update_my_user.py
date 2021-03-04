@@ -16,7 +16,7 @@ class UpdateMyUser(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[])
+    @verify_payload([])
     @jwt_required
     def post(self):
         input_data = request.get_json()

@@ -14,10 +14,10 @@ def verify_admin_access(function):
             {"id": int(get_jwt_identity()) if get_jwt_identity() is not None else None})
 
         if len(users) == 0:
-            return "", f"401 The user has not been found"
+            return "", "401 The user has not been found"
 
         if users[0].is_admin == 0:
-            return "", f"401 This user is not an admin"
+            return "", "401 This user is not an admin"
 
         if flask.request.method != "GET":
 
@@ -28,7 +28,7 @@ def verify_admin_access(function):
                 {"user_id": int(get_jwt_identity()) if get_jwt_identity() is not None else None})
 
             if len(groups) == 0:
-                return "", f"401 This user is not affected to a user group"
+                return "", "401 This user is not affected to a user group"
 
             # Checking the right
 
@@ -37,11 +37,10 @@ def verify_admin_access(function):
                 {"group_id": groups[0].group_id, "resource": flask.request.path})
 
             if len(rights) == 0:
-                return "", f"401 This user is affected to a group without access to this resource"
-            else:
-                return function(self, *args, **kwargs)
+                return "", "401 This user is affected to a group without access to this resource"
 
-        else:
             return function(self, *args, **kwargs)
+
+        return function(self, *args, **kwargs)
 
     return wrapper

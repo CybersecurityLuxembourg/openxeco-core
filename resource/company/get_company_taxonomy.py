@@ -16,9 +16,9 @@ class GetCompanyTaxonomy(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
 
         ta = self.db.tables["TaxonomyAssignment"]
-        data = Serializer.serialize(self.db.get(ta, {"company": id}), ta)
+        data = Serializer.serialize(self.db.get(ta, {"company": id_}), ta)
 
         return data, "200 "

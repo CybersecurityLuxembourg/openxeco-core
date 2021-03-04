@@ -88,3 +88,17 @@ Tun the test coverage report and generate in HTML ( with the venv activated)
 ```
 > coverage run --source=resource,utils,db,decorator -m unittest discover && coverage html
 ```
+
+# Run the code analysers
+
+To run the PyCQA/prospector 
+```
+> npm install prospector
+> prospector -i venv/ --no-autodetect
+```
+
+To run the PyCQA/bandit 
+```
+> npm install bandit
+> bandit -r ./
+```

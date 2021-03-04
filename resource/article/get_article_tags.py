@@ -16,15 +16,15 @@ class GetArticleTags(Resource):
     @catch_exception
     @jwt_required
     @verify_admin_access
-    def get(self, id):
+    def get(self, id_):
         taxonomy_sub_query = self.db.session.query(self.db.tables["ArticleTaxonomyTag"]) \
             .with_entities(self.db.tables["ArticleTaxonomyTag"].taxonomy_value) \
-            .filter(self.db.tables["ArticleTaxonomyTag"].article == id) \
+            .filter(self.db.tables["ArticleTaxonomyTag"].article == id_) \
             .subquery('t1')
 
         company_sub_query = self.db.session.query(self.db.tables["ArticleCompanyTag"]) \
             .with_entities(self.db.tables["ArticleCompanyTag"].company) \
-            .filter(self.db.tables["ArticleCompanyTag"].article == id) \
+            .filter(self.db.tables["ArticleCompanyTag"].article == id_) \
             .subquery('t2')
 
         data = {

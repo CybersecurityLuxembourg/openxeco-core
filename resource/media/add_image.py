@@ -25,7 +25,7 @@ class AddImage(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'image', 'type': str}
     ])
     @jwt_required

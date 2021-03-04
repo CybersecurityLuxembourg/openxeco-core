@@ -17,7 +17,7 @@ class AddArticle(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'title', 'type': str}
     ])
     @jwt_required

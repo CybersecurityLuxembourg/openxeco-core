@@ -13,15 +13,15 @@ class GetArticleContent(Resource):
         self.db = db
 
     @catch_exception
-    def get(self, id):
+    def get(self, id_):
 
         filters = request.args.to_dict()
 
         # Fetch the info from the DB
 
         article = self.db.session.query(self.db.tables["Article"]) \
-            .filter((self.db.tables["Article"].id == (int(id) if id.isdigit() else id)) |
-                    (self.db.tables["Article"].handle == id)) \
+            .filter((self.db.tables["Article"].id == (int(id_) if id_.isdigit() else id_)) |
+                    (self.db.tables["Article"].handle == id_)) \
             .filter(self.db.tables["Article"].status == "PUBLIC") \
             .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
             .all()
@@ -45,57 +45,9 @@ class GetArticleContent(Resource):
 
         if "format" in filters:
             if filters["format"] == "markdown":
-                tags = Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables['TaxonomyValue'])
-                data = "---\n"
-                data += f"title: {article[0].title}\n"
-                data += f"type: {article[0].type}\n"
-                data += f"date: {article[0].publication_date}\n"
-                data += f"abstract: {article[0].abstract}\n"
-                data += f"tag: {', '.join([t.name for t in tags])}\n"
-                data += "---\n"
-
-                for c in article_content:
-                    if c.type == "TITLE1":
-                        data += f"#{c.content}\n"
-                    elif c.type == "TITLE2":
-                        data += f"##{c.content}\n"
-                    elif c.type == "TITLE3":
-                        data += f"###{c.content}\n"
-                    elif c.type == "PARAGRAPH":
-                        data += f"{html2markdown.convert(c.content)}\n"
-                    elif c.type == "IMAGE":
-                        data += f"![sample image](http://localhost:5000/public/get_image/{c.content})\n"
-                    elif c.type == "FRAME":
-                        data += f"{c.content}\n"
-
-                return data, "200 "
-
-            elif filters["format"] == "html":
-                data = "<article>"
-
-                if article[0].image is not None:
-                    data += f"<div class='Article-content-cover'><img src='http://localhost:5000/public/get_image/" \
-                            f"{article[0].image}'/></div>"
-
-                data += f"<h1>{article[0].title}</h1>"
-
-                for c in article_content:
-                    if c.type == "TITLE1":
-                        data += f"<h2>{c.content}</h2>"
-                    elif c.type == "TITLE2":
-                        data += f"<h3>{c.content}</h3>"
-                    elif c.type == "TITLE3":
-                        data += f"<h4>{c.content}</h4>"
-                    elif c.type == "PARAGRAPH":
-                        data += f"{c.content}"
-                    elif c.type == "IMAGE":
-                        data += f"<div class='Article-content-image'><img src='http://localhost:5000/public/" \
-                                f"get_image/{c.content}'/></div>"
-                    elif c.type == "FRAME":
-                        data += f"{c.content}"
-
-                data += "</article>"
-                return data, "200 "
+                return self.build_markdown(article, article_content), "200 "
+            if filters["format"] == "html":
+                return self.build_html(article, article_content), "200 "
 
         data = {
             "title": article[0].title,
@@ -108,3 +60,57 @@ class GetArticleContent(Resource):
         }
 
         return data, "200 "
+
+    def build_markdown(self, article, article_content):
+        tags = Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables['TaxonomyValue'])
+        data = "---\n"
+        data += f"title: {article[0].title}\n"
+        data += f"type: {article[0].type}\n"
+        data += f"date: {article[0].publication_date}\n"
+        data += f"abstract: {article[0].abstract}\n"
+        data += f"tag: {', '.join([t.name for t in tags])}\n"
+        data += "---\n"
+
+        for c in article_content:
+            if c.type == "TITLE1":
+                data += f"#{c.content}\n"
+            elif c.type == "TITLE2":
+                data += f"##{c.content}\n"
+            elif c.type == "TITLE3":
+                data += f"###{c.content}\n"
+            elif c.type == "PARAGRAPH":
+                data += f"{html2markdown.convert(c.content)}\n"
+            elif c.type == "IMAGE":
+                data += f"![sample image](http://localhost:5000/public/get_image/{c.content})\n"
+            elif c.type == "FRAME":
+                data += f"{c.content}\n"
+
+        return data
+
+    def build_html(self, article, article_content):
+        data = "<article>"
+
+        if article[0].image is not None:
+            data += f"<div class='Article-content-cover'><img src='http://localhost:5000/public/get_image/" \
+                    f"{article[0].image}'/></div>"
+
+        data += f"<h1>{article[0].title}</h1>"
+
+        for c in article_content:
+            if c.type == "TITLE1":
+                data += f"<h2>{c.content}</h2>"
+            elif c.type == "TITLE2":
+                data += f"<h3>{c.content}</h3>"
+            elif c.type == "TITLE3":
+                data += f"<h4>{c.content}</h4>"
+            elif c.type == "PARAGRAPH":
+                data += f"{c.content}"
+            elif c.type == "IMAGE":
+                data += f"<div class='Article-content-image'><img src='http://localhost:5000/public/" \
+                        f"get_image/{c.content}'/></div>"
+            elif c.type == "FRAME":
+                data += f"{c.content}"
+
+        data += "</article>"
+
+        return data

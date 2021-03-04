@@ -9,7 +9,6 @@ def check_payload(input_data, payload_format):
         if v['field'] not in input_data:
             if 'optional' not in v or v['optional'] is not True:
                 biased_value.append(v['field'])
-            continue
         elif not isinstance(v['type'], list):
             if 'nullable' not in v or v['nullable'] is False:
                 if not isinstance(input_data[v['field']], v['type']):
@@ -26,14 +25,14 @@ def check_payload(input_data, payload_format):
     return biased_value
 
 
-def verify_payload(format=None):
+def verify_payload(format_=None):
     def _verify_payload(f):
         @functools.wraps(f)
         def wrapper(*args, **kwargs):
             if request.get_json() is None:
                 return "", "422 No payload found"
 
-            biased_value = check_payload(request.get_json(), format)
+            biased_value = check_payload(request.get_json(), format_)
             if len(biased_value) > 0:
                 return "", f"422 Error with those params : {','.join(biased_value)}"
 

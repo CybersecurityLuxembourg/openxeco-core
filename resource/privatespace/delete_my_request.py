@@ -16,7 +16,7 @@ class DeleteMyRequest(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'id', 'type': int}
     ])
     @jwt_required
@@ -28,12 +28,12 @@ class DeleteMyRequest(Resource):
             "user_id": int(get_jwt_identity())
         })
 
-        if len(companies) == 0:
-            raise ObjectNotFound
-        else:
+        if len(companies) > 0:
             self.db.delete(self.db.tables["UserRequest"], {
                 "id": input_data["id"],
                 "user_id": int(get_jwt_identity())
             })
+        else:
+            raise ObjectNotFound
 
         return "", "200 "

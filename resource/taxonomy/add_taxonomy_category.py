@@ -18,7 +18,7 @@ class AddTaxonomyCategory(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'category', 'type': str},
     ])
     @jwt_required
@@ -34,7 +34,6 @@ class AddTaxonomyCategory(Resource):
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
                 raise ObjectAlreadyExisting
-            else:
-                raise e
+            raise e
 
         return "", "200 "

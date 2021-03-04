@@ -16,7 +16,7 @@ class UpdateArticleVersionContent(Resource):
 
     @log_request
     @catch_exception
-    @verify_payload(format=[
+    @verify_payload([
         {'field': 'article_version_id', 'type': int},
         {'field': 'content', 'type': list},
     ])
