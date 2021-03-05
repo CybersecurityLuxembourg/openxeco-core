@@ -1,15 +1,13 @@
-import React from 'react';
-import './Login.css';
+import React from "react";
+import "./Login.css";
+import { NotificationManager as nm } from "react-notifications";
 import FormLine from "./button/FormLine";
-import {NotificationManager as nm} from 'react-notifications';
-import {postRequest} from '../utils/request';
-import {validatePassword} from '../utils/re';
-import Info from './box/Info';
-import {getUrlParameter} from '../utils/url';
-
+import { postRequest } from "../utils/request";
+import { validatePassword } from "../utils/re";
+import Info from "./box/Info";
+import { getUrlParameter } from "../utils/url";
 
 export default class Login extends React.Component {
-
 	constructor(props) {
 		super(props);
 
@@ -23,93 +21,89 @@ export default class Login extends React.Component {
 			password: null,
 			passwordConfirmation: null,
 			view: getUrlParameter("action") === "reset_password" ? "reset" : "login",
-		}
+		};
 	}
 
 	componentDidMount() {
-
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
-			window.token = getUrlParameter("token")
-			let splitedElements = window.location.pathname.split("?");
+			window.token = getUrlParameter("token");
+			const splitedElements = window.location.pathname.split("?");
 		}
 
 		// This function to notify if the password has been reset correctly
 
-		this.notifyForPasswordReset()
+		this.notifyForPasswordReset();
 	}
 
 	async notifyForPasswordReset() {
-        if (getUrlParameter("reset_password") === "true") {
-        	await new Promise(r => setTimeout(r, 500));
+		if (getUrlParameter("reset_password") === "true") {
+        	await new Promise((r) => setTimeout(r, 500));
         	window.history.replaceState({}, document.title, "/");
         	nm.info("The password has been reset with success");
         	nm.emitChange();
-        }
+		}
 	}
 
 	login() {
-		let params = {
-            email: this.state.email,
-            password: this.state.password
-        }
+		const params = {
+			email: this.state.email,
+			password: this.state.password,
+		};
 
-        postRequest.call(this, "account/login", params, response => {
-        	window.token = response["token"];
-            this.props.connect();
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+		postRequest.call(this, "account/login", params, (response) => {
+        	window.token = response.token;
+			this.props.connect();
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	requestReset() {
-		let params = {
-            email: this.state.email
-        }
+		const params = {
+			email: this.state.email,
+		};
 
-        postRequest.call(this, "account/forgot_password", params, response => {
-            nm.info("An email has been sent with a link to reset your password");
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+		postRequest.call(this, "account/forgot_password", params, (response) => {
+			nm.info("An email has been sent with a link to reset your password");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	resetPassword() {
-		let params = {
-            new_password: this.state.password
-        }
+		const params = {
+			new_password: this.state.password,
+		};
 
-        postRequest.call(this, "account/reset_password", params, response => {
-        	document.location.href="/?reset_password=true";
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+		postRequest.call(this, "account/reset_password", params, (response) => {
+        	document.location.href = "/?reset_password=true";
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
-	    if (event.key === 'Enter' || event.code === "NumpadEnter") {
-	        if (this.state.view === "login")
-	        	this.login()
-	        if (this.state.view === "forgot")
-	        	this.requestReset()
-	        if (this.state.view === "reset")
-	        	this.resetPassword()
+	    if (event.key === "Enter" || event.code === "NumpadEnter") {
+	        if (this.state.view === "login") this.login();
+	        if (this.state.view === "forgot") this.requestReset();
+	        if (this.state.view === "reset") this.resetPassword();
 	   	}
-    }
+	}
 
 	changeState(field, value) {
-        this.setState({[field]: value});
-    }
+		this.setState({ [field]: value });
+	}
 
 	render() {
-		return(
+		return (
 			<div id="Login">
 				<div id="Login-area">
 					<ul className="Login-circles">
@@ -127,8 +121,8 @@ export default class Login extends React.Component {
 		        </div>
 		        <div id="Login-box" className="resize-animation">
 		        	<div id="Login-inner-box" className={"fade-in"}>
-		        		{this.state.view === "login" ?
-		        			<div>
+		        		{this.state.view === "login"
+		        			? <div>
 		        				<div className="Login-title">
 				        			<h1>
 				        				Welcome to CY-DB
@@ -141,7 +135,7 @@ export default class Login extends React.Component {
 				        			label="Email"
 				        			fullWidth={true}
 				        			value={this.state.email}
-				        			onChange={v => this.changeState("email", v)}
+				        			onChange={(v) => this.changeState("email", v)}
 				        			autofocus={true}
 				        			onKeyDown={this.onKeyDown}
 				        		/>
@@ -150,7 +144,7 @@ export default class Login extends React.Component {
 				        			type={"password"}
 				        			fullWidth={true}
 				        			value={this.state.password}
-				        			onChange={v => this.changeState("password", v)}
+				        			onChange={(v) => this.changeState("password", v)}
 				        			onKeyDown={this.onKeyDown}
 				        		/>
 				        		<div className="bottom-right-buttons">
@@ -170,8 +164,8 @@ export default class Login extends React.Component {
 					        		</button>
 					        	</div>
 					       	</div>
-		        		: this.state.view === "forgot" ?
-		        			<div>
+		        		: this.state.view === "forgot"
+		        			? <div>
 		        				<div className="Login-title">
 				        			<h1>
 				        				Forgot password
@@ -181,7 +175,7 @@ export default class Login extends React.Component {
 				        			label="Email"
 				        			fullWidth={true}
 				        			value={this.state.email}
-				        			onChange={v => this.changeState("email", v)}
+				        			onChange={(v) => this.changeState("email", v)}
 				        			autofocus={true}
 				        			onKeyDown={this.onKeyDown}
 				        		/>
@@ -202,8 +196,8 @@ export default class Login extends React.Component {
 					        		</button>
 					        	</div>
 					        </div>
-		        		: this.state.view === "reset" ?
-		        			<div>
+		        		: this.state.view === "reset"
+		        			? <div>
 		        				<div className="Login-title">
 				        			<h1>
 				        				Reset password
@@ -214,11 +208,11 @@ export default class Login extends React.Component {
 		                        		<div>
 		                        			The password must:<br/>
 			                        		<li>contain at least 1 lowercase alphabetical character</li>
-											<li>contain at least 1 uppercase alphabetical character</li>
-											<li>contain at least 1 numeric character</li>
-											<li>contain at least 1 special character such as !@#$%^&*</li>
-											<li>be between 8 and 30 characters long</li>
-										</div>
+													<li>contain at least 1 uppercase alphabetical character</li>
+													<li>contain at least 1 numeric character</li>
+													<li>contain at least 1 special character such as !@#$%^&*</li>
+													<li>be between 8 and 30 characters long</li>
+												</div>
 		                        	}
 		                        />
 			        			<FormLine
@@ -226,7 +220,7 @@ export default class Login extends React.Component {
 				        			type={"password"}
 				        			fullWidth={true}
 				        			value={this.state.password}
-				        			onChange={v => this.changeState("password", v)}
+				        			onChange={(v) => this.changeState("password", v)}
 				        			format={validatePassword}
 				        			onKeyDown={this.onKeyDown}
 				        			autofocus={true}
@@ -236,7 +230,7 @@ export default class Login extends React.Component {
 				        			type={"password"}
 				        			fullWidth={true}
 				        			value={this.state.passwordConfirmation}
-				        			onChange={v => this.changeState("passwordConfirmation", v)}
+				        			onChange={(v) => this.changeState("passwordConfirmation", v)}
 				        			format={validatePassword}
 				        			onKeyDown={this.onKeyDown}
 				        		/>
@@ -244,9 +238,9 @@ export default class Login extends React.Component {
 					        		<button
 					        			className="blue-button"
 					        			onClick={this.resetPassword}
-					        			disabled={!validatePassword(this.state.password) ||
-					        				!validatePassword(this.state.passwordConfirmation) ||
-					        				this.state.password !== this.state.passwordConfirmation
+					        			disabled={!validatePassword(this.state.password)
+					        				|| !validatePassword(this.state.passwordConfirmation)
+					        				|| this.state.password !== this.state.passwordConfirmation
 					        			}
 					        		>
 					        			Change password

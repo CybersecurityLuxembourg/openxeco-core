@@ -22,28 +22,28 @@
 }
 
 @-webkit-keyframes rotate {
-    from { 
+    from {
         -webkit-transform: rotate(0deg);
-    } 
-    to { 
+    }
+    to {
         -webkit-transform: rotate(360deg);
     }
 }
 
 @keyframes rotate {
-    from { 
+    from {
         transform: rotate(0deg);
-    } 
-    to { 
+    }
+    to {
         transform: rotate(360deg);
     }
 }
 
 @-moz-keyframes rotate {
-    from { 
+    from {
         -moz-transform: rotate(0deg);
-    } 
-    to { 
+    }
+    to {
         -moz-transform: rotate(360deg);
     }
 }

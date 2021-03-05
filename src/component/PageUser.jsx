@@ -1,17 +1,14 @@
-import React from 'react';
-import './PageUser.css';
-import UserUser from  './pageuser/UserUser';
-import UserGroup from './pageuser/UserGroup';
-import Tab from './tab/Tab';
-
+import React from "react";
+import "./PageUser.css";
+import UserUser from "./pageuser/UserUser";
+import UserGroup from "./pageuser/UserGroup";
+import Tab from "./tab/Tab";
 
 export default class PageUser extends React.Component {
-
-	constructor(props){
+	constructor(props) {
 		super(props);
 
-
-		this.state = {}
+		this.state = {};
 	}
 
 	render() {

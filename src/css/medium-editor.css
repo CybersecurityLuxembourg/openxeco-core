@@ -1,52 +1,52 @@
 @-webkit-keyframes medium-editor-image-loading {
   0% {
-    -webkit-transform: scale(0);
-            transform: scale(0); }
+\t-webkit-transform: scale(0);
+\t\t\ttransform: scale(0); }
   100% {
-    -webkit-transform: scale(1);
-            transform: scale(1); } }
+\t-webkit-transform: scale(1);
+\t\t\ttransform: scale(1); } }
 
 @keyframes medium-editor-image-loading {
   0% {
-    -webkit-transform: scale(0);
-            transform: scale(0); }
+\t-webkit-transform: scale(0);
+\t\t\ttransform: scale(0); }
   100% {
-    -webkit-transform: scale(1);
-            transform: scale(1); } }
+\t-webkit-transform: scale(1);
+\t\t\ttransform: scale(1); } }
 
 @-webkit-keyframes medium-editor-pop-upwards {
   0% {
-    opacity: 0;
-    -webkit-transform: matrix(0.97, 0, 0, 1, 0, 12);
-            transform: matrix(0.97, 0, 0, 1, 0, 12); }
+\topacity: 0;
+\t-webkit-transform: matrix(0.97, 0, 0, 1, 0, 12);
+\t\t\ttransform: matrix(0.97, 0, 0, 1, 0, 12); }
   20% {
-    opacity: .7;
-    -webkit-transform: matrix(0.99, 0, 0, 1, 0, 2);
-            transform: matrix(0.99, 0, 0, 1, 0, 2); }
+\topacity: .7;
+\t-webkit-transform: matrix(0.99, 0, 0, 1, 0, 2);
+\t\t\ttransform: matrix(0.99, 0, 0, 1, 0, 2); }
   40% {
-    opacity: 1;
-    -webkit-transform: matrix(1, 0, 0, 1, 0, -1);
-            transform: matrix(1, 0, 0, 1, 0, -1); }
+\topacity: 1;
+\t-webkit-transform: matrix(1, 0, 0, 1, 0, -1);
+\t\t\ttransform: matrix(1, 0, 0, 1, 0, -1); }
   100% {
-    -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
-            transform: matrix(1, 0, 0, 1, 0, 0); } }
+\t-webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+\t\t\ttransform: matrix(1, 0, 0, 1, 0, 0); } }
 
 @keyframes medium-editor-pop-upwards {
   0% {
-    opacity: 0;
-    -webkit-transform: matrix(0.97, 0, 0, 1, 0, 12);
-            transform: matrix(0.97, 0, 0, 1, 0, 12); }
+\topacity: 0;
+\t-webkit-transform: matrix(0.97, 0, 0, 1, 0, 12);
+\t\t\ttransform: matrix(0.97, 0, 0, 1, 0, 12); }
   20% {
-    opacity: .7;
-    -webkit-transform: matrix(0.99, 0, 0, 1, 0, 2);
-            transform: matrix(0.99, 0, 0, 1, 0, 2); }
+\topacity: .7;
+\t-webkit-transform: matrix(0.99, 0, 0, 1, 0, 2);
+\t\t\ttransform: matrix(0.99, 0, 0, 1, 0, 2); }
   40% {
-    opacity: 1;
-    -webkit-transform: matrix(1, 0, 0, 1, 0, -1);
-            transform: matrix(1, 0, 0, 1, 0, -1); }
+\topacity: 1;
+\t-webkit-transform: matrix(1, 0, 0, 1, 0, -1);
+\t\t\ttransform: matrix(1, 0, 0, 1, 0, -1); }
   100% {
-    -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
-            transform: matrix(1, 0, 0, 1, 0, 0); } }
+\t-webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+\t\t\ttransform: matrix(1, 0, 0, 1, 0, 0); } }
 
 .medium-editor-anchor-preview {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -62,9 +62,9 @@
   visibility: hidden;
   z-index: 2000; }
   .medium-editor-anchor-preview a {
-    color: #fff;
-    display: inline-block;
-    margin: 5px 5px 10px; }
+\tcolor: #fff;
+\tdisplay: inline-block;
+\tmargin: 5px 5px 10px; }
 
 .medium-editor-anchor-preview-active {
   visibility: visible; }
@@ -74,7 +74,7 @@
 
 .medium-editor-image-loading {
   -webkit-animation: medium-editor-image-loading 1s infinite ease-in-out;
-          animation: medium-editor-image-loading 1s infinite ease-in-out;
+\t\t  animation: medium-editor-image-loading 1s infinite ease-in-out;
   background-color: #333;
   border-radius: 100%;
   display: inline-block;
@@ -84,24 +84,24 @@
 .medium-editor-placeholder {
   position: relative; }
   .medium-editor-placeholder:after {
-    content: attr(data-placeholder) !important;
-    font-style: italic;
-    position: absolute;
-    left: 0;
-    top: 0;
-    white-space: pre;
-    padding: inherit;
-    margin: inherit; }
+\tcontent: attr(data-placeholder) !important;
+\tfont-style: italic;
+\tposition: absolute;
+\tleft: 0;
+\ttop: 0;
+\twhite-space: pre;
+\tpadding: inherit;
+\tmargin: inherit; }
 
 .medium-editor-placeholder-relative {
   position: relative; }
   .medium-editor-placeholder-relative:after {
-    content: attr(data-placeholder) !important;
-    font-style: italic;
-    position: relative;
-    white-space: pre;
-    padding: inherit;
-    margin: inherit; }
+\tcontent: attr(data-placeholder) !important;
+\tfont-style: italic;
+\tposition: relative;
+\twhite-space: pre;
+\tpadding: inherit;
+\tmargin: inherit; }
 
 .medium-toolbar-arrow-under:after, .medium-toolbar-arrow-over:before {
   border-style: solid;
@@ -129,31 +129,31 @@
   visibility: hidden;
   z-index: 2000; }
   .medium-editor-toolbar ul {
-    margin: 0;
-    padding: 0; }
+\tmargin: 0;
+\tpadding: 0; }
   .medium-editor-toolbar li {
-    float: left;
-    list-style: none;
-    margin: 0;
-    padding: 0; }
-    .medium-editor-toolbar li button {
-      box-sizing: border-box;
-      cursor: pointer;
-      display: block;
-      font-size: 14px;
-      line-height: 1.33;
-      margin: 0;
-      padding: 15px;
-      text-decoration: none; }
-      .medium-editor-toolbar li button:focus {
-        outline: none; }
-    .medium-editor-toolbar li .medium-editor-action-underline {
-      text-decoration: underline; }
-    .medium-editor-toolbar li .medium-editor-action-pre {
-      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-      font-size: 12px;
-      font-weight: 100;
-      padding: 15px 0; }
+\tfloat: left;
+\tlist-style: none;
+\tmargin: 0;
+\tpadding: 0; }
+\t.medium-editor-toolbar li button {
+\t  box-sizing: border-box;
+\t  cursor: pointer;
+\t  display: block;
+\t  font-size: 14px;
+\t  line-height: 1.33;
+\t  margin: 0;
+\t  padding: 15px;
+\t  text-decoration: none; }
+\t  .medium-editor-toolbar li button:focus {
+\t\toutline: none; }
+\t.medium-editor-toolbar li .medium-editor-action-underline {
+\t  text-decoration: underline; }
+\t.medium-editor-toolbar li .medium-editor-action-pre {
+\t  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+\t  font-size: 12px;
+\t  font-weight: 100;
+\t  padding: 15px 0; }
 
 .medium-editor-toolbar-active {
   visibility: visible; }
@@ -167,7 +167,7 @@
 
 .medium-editor-toolbar-active.medium-editor-stalker-toolbar {
   -webkit-animation: medium-editor-pop-upwards 160ms forwards linear;
-          animation: medium-editor-pop-upwards 160ms forwards linear; }
+\t\t  animation: medium-editor-pop-upwards 160ms forwards linear; }
 
 .medium-editor-action-bold {
   font-weight: bolder; }
@@ -179,34 +179,34 @@
   display: none; }
   .medium-editor-toolbar-form input,
   .medium-editor-toolbar-form a {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+\tfont-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
   .medium-editor-toolbar-form .medium-editor-toolbar-form-row {
-    line-height: 14px;
-    margin-left: 5px;
-    padding-bottom: 5px; }
+\tline-height: 14px;
+\tmargin-left: 5px;
+\tpadding-bottom: 5px; }
   .medium-editor-toolbar-form .medium-editor-toolbar-input,
   .medium-editor-toolbar-form label {
-    border: none;
-    box-sizing: border-box;
-    font-size: 14px;
-    margin: 0;
-    padding: 6px;
-    width: 316px;
-    display: inline-block; }
-    .medium-editor-toolbar-form .medium-editor-toolbar-input:focus,
-    .medium-editor-toolbar-form label:focus {
-      -webkit-appearance: none;
-         -moz-appearance: none;
-              appearance: none;
-      border: none;
-      box-shadow: none;
-      outline: 0; }
+\tborder: none;
+\tbox-sizing: border-box;
+\tfont-size: 14px;
+\tmargin: 0;
+\tpadding: 6px;
+\twidth: 316px;
+\tdisplay: inline-block; }
+\t.medium-editor-toolbar-form .medium-editor-toolbar-input:focus,
+\t.medium-editor-toolbar-form label:focus {
+\t  -webkit-appearance: none;
+\t\t -moz-appearance: none;
+\t\t\t  appearance: none;
+\t  border: none;
+\t  box-shadow: none;
+\t  outline: 0; }
   .medium-editor-toolbar-form a {
-    display: inline-block;
-    font-size: 24px;
-    font-weight: bolder;
-    margin: 0 10px;
-    text-decoration: none; }
+\tdisplay: inline-block;
+\tfont-size: 24px;
+\tfont-weight: bolder;
+\tmargin: 0 10px;
+\ttext-decoration: none; }
 
 .medium-editor-toolbar-form-active {
   display: block; }
@@ -220,11 +220,11 @@
   word-wrap: break-word;
   min-height: 30px; }
   .medium-editor-element img {
-    max-width: 100%; }
+\tmax-width: 100%; }
   .medium-editor-element sub {
-    vertical-align: sub; }
+\tvertical-align: sub; }
   .medium-editor-element sup {
-    vertical-align: super; }
+\tvertical-align: super; }
 
 .medium-editor-hidden {
   display: none; }

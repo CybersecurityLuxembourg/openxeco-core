@@ -1,18 +1,16 @@
-import React from 'react';
-import './SettingTaxonomy.css';
+import React from "react";
+import "./SettingTaxonomy.css";
+import { NotificationManager as nm } from "react-notifications";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Loading from "../box/Loading";
-import Table from '../table/Table';
-import {NotificationManager as nm} from 'react-notifications';
-import {getRequest, postRequest} from '../../utils/request';
-import FormLine from '../button/FormLine';
-import DialogConfirmation from '../dialog/DialogConfirmation';
-import {dictToURI} from '../../utils/url';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
+import Table from "../table/Table";
+import { getRequest, postRequest } from "../../utils/request";
+import FormLine from "../button/FormLine";
+import DialogConfirmation from "../dialog/DialogConfirmation";
+import { dictToURI } from "../../utils/url";
 
 export default class SettingTaxonomy extends React.Component {
-
-	constructor(props){
+	constructor(props) {
 		super(props);
 
 		this.refresh = this.refresh.bind(this);
@@ -38,7 +36,7 @@ export default class SettingTaxonomy extends React.Component {
 			newCategory: null,
 			newParentCategory: null,
 			newChildCategory: null,
-		}
+		};
 	}
 
 	componentDidMount() {
@@ -49,7 +47,7 @@ export default class SettingTaxonomy extends React.Component {
 		if (prevState.selectedCategory !== this.state.selectedCategory) {
 			if (this.state.selectedCategory === null) {
 				this.setState({
-					values: null
+					values: null,
 				});
 			} else {
 				this.getValues();
@@ -59,7 +57,7 @@ export default class SettingTaxonomy extends React.Component {
 		if (prevState.selectedCategoryHierarchy !== this.state.selectedCategoryHierarchy) {
 			if (this.state.selectedCategoryHierarchy === null) {
 				this.setState({
-					valueHierarchy: null
+					valueHierarchy: null,
 				});
 			} else {
 				this.getValueHierarchy();
@@ -77,325 +75,324 @@ export default class SettingTaxonomy extends React.Component {
 			valueHierarchy: null,
 		});
 
-		getRequest.call(this, "taxonomy/get_taxonomy_categories", data => {
-            this.setState({
-                categories: data,
-            }, () => {
-            	getRequest.call(this, "taxonomy/get_taxonomy_category_hierarchy", data => {
+		getRequest.call(this, "taxonomy/get_taxonomy_categories", (data) => {
+			this.setState({
+				categories: data,
+			}, () => {
+            	getRequest.call(this, "taxonomy/get_taxonomy_category_hierarchy", (data) => {
 		            this.setState({
 		                categoryHierarchy: data,
 		            });
-		        }, response => {
+		        }, (response) => {
 		            nm.warning(response.statusText);
-		        }, error => {
+		        }, (error) => {
 		            nm.error(error.message);
 		        });
-            });
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 
-        if (this.state.selectedCategory !== null) {
+		if (this.state.selectedCategory !== null) {
         	this.getValues(this.state.selectedCategory);
-        }
+		}
 	}
 
 	getValues() {
 		this.setState({
-			values: null
+			values: null,
 		});
-		
-		getRequest.call(this, "taxonomy/get_taxonomy_values?" + dictToURI({"category": this.state.selectedCategory}), data => {
-            this.setState({
-                values: data,
-            });
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+
+		getRequest.call(this, "taxonomy/get_taxonomy_values?" + dictToURI({ category: this.state.selectedCategory }), (data) => {
+			this.setState({
+				values: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	getValueHierarchy() {
 		this.setState({
-			valueHierarchy: null
+			valueHierarchy: null,
 		});
 
-		let args = dictToURI({
+		const args = dictToURI({
 			parent_category: this.state.selectedCategoryHierarchy.split(" - ")[0],
 			child_category: this.state.selectedCategoryHierarchy.split(" - ")[1],
-		})
-		
-		getRequest.call(this, "taxonomy/get_taxonomy_value_hierarchy?" + args, data => {
-            this.setState({
-                valueHierarchy: data,
-            });
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+		});
+
+		getRequest.call(this, "taxonomy/get_taxonomy_value_hierarchy?" + args, (data) => {
+			this.setState({
+				valueHierarchy: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	addCategory() {
-		let params = {
+		const params = {
 			category: this.state.newCategory,
-    	}
+    	};
 
-    	postRequest.call(this, "taxonomy/add_taxonomy_category", params, response => {
-            this.refresh();
-            this.setState({ newCategory: null });
-            nm.info("The category has been added");
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+    	postRequest.call(this, "taxonomy/add_taxonomy_category", params, (response) => {
+			this.refresh();
+			this.setState({ newCategory: null });
+			nm.info("The category has been added");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	addCategoryHierarchy() {
-		let params = {
+		const params = {
 			parent_category: this.state.newParentCategory,
 			child_category: this.state.newChildCategory,
-    	}
+    	};
 
-    	postRequest.call(this, "taxonomy/add_taxonomy_category_hierarchy", params, response => {
-            this.refresh();
-            this.setState({ 
+    	postRequest.call(this, "taxonomy/add_taxonomy_category_hierarchy", params, (response) => {
+			this.refresh();
+			this.setState({
             	newParentCategory: null,
-            	newChildCategory: null
-            });
-            nm.info("The hierarchy has been added");
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+            	newChildCategory: null,
+			});
+			nm.info("The hierarchy has been added");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	addValue() {
-		let params = {
+		const params = {
 			category: this.state.selectedCategory,
-    		value: this.state.newValue
-    	}
+    		value: this.state.newValue,
+    	};
 
-    	postRequest.call(this, "taxonomy/add_taxonomy_value", params, response => {
-            this.getValues();
-            this.setState({ newValue: null });
-            nm.info("The value has been added");
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
+    	postRequest.call(this, "taxonomy/add_taxonomy_value", params, (response) => {
+			this.getValues();
+			this.setState({ newValue: null });
+			nm.info("The value has been added");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	deleteCategory(value) {
-        let params = {
+		const params = {
 			category: value,
-    	}
+    	};
 
-        postRequest.call(this, "taxonomy/delete_taxonomy_category", params, response => {
-            document.elementFromPoint(100, 0).click();
-            this.refresh();
-            nm.info("The value has been deleted");
-        }, response => {
-            this.refresh();
-            nm.warning(response.statusText);
-        }, error => {
-            this.refresh();
-            nm.error(error.message);
-        });
-    }
+		postRequest.call(this, "taxonomy/delete_taxonomy_category", params, (response) => {
+			document.elementFromPoint(100, 0).click();
+			this.refresh();
+			nm.info("The value has been deleted");
+		}, (response) => {
+			this.refresh();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.refresh();
+			nm.error(error.message);
+		});
+	}
 
-    deleteCategoryHierarchy(parent, child) {
-        let params = {
+	deleteCategoryHierarchy(parent, child) {
+		const params = {
 			parent_category: parent,
-    		child_category: child
-    	}
+    		child_category: child,
+    	};
 
-        postRequest.call(this, "taxonomy/delete_taxonomy_category_hierarchy", params, response => {
-            document.elementFromPoint(100, 0).click();
-            this.refresh();
-            nm.info("The value has been deleted");
-        }, response => {
-            this.refresh();
-            nm.warning(response.statusText);
-        }, error => {
-            this.refresh();
-            nm.error(error.message);
-        });
-    }
+		postRequest.call(this, "taxonomy/delete_taxonomy_category_hierarchy", params, (response) => {
+			document.elementFromPoint(100, 0).click();
+			this.refresh();
+			nm.info("The value has been deleted");
+		}, (response) => {
+			this.refresh();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.refresh();
+			nm.error(error.message);
+		});
+	}
 
 	deleteValue(value, category) {
-        let params = {
-			category: category,
-    		name: value
-    	}
+		const params = {
+			category,
+    		name: value,
+    	};
 
-        postRequest.call(this, "taxonomy/delete_taxonomy_value", params, response => {
-            document.elementFromPoint(100, 0).click();
-            this.getValues();
-            nm.info("The value has been deleted");
-        }, response => {
-            this.refresh();
-            nm.warning(response.statusText);
-        }, error => {
-            this.refresh();
-            nm.error(error.message);
-        });
-    }
+		postRequest.call(this, "taxonomy/delete_taxonomy_value", params, (response) => {
+			document.elementFromPoint(100, 0).click();
+			this.getValues();
+			nm.info("The value has been deleted");
+		}, (response) => {
+			this.refresh();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.refresh();
+			nm.error(error.message);
+		});
+	}
 
-    saveValueHierarchy() {
-    	let params = {
+	saveValueHierarchy() {
+    	const params = {
 			parent_category: this.state.selectedCategoryHierarchy.split(" - ")[0],
 			child_category: this.state.selectedCategoryHierarchy.split(" - ")[1],
-    		value_hierarchy: this.state.valueHierarchy.value_hierarchy
-    	}
+    		value_hierarchy: this.state.valueHierarchy.value_hierarchy,
+    	};
 
-    	postRequest.call(this, "taxonomy/save_value_hierarchy", params, response => {
-            this.getValueHierarchy();
-            nm.info("The value hierarchy has been saved");
-        }, response => {
-            nm.warning(response.statusText);
-        }, error => {
-            nm.error(error.message);
-        });
-    }
+    	postRequest.call(this, "taxonomy/save_value_hierarchy", params, (response) => {
+			this.getValueHierarchy();
+			nm.info("The value hierarchy has been saved");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
 
-    onDragEnd(result) {
+	onDragEnd(result) {
 	    if (!result.destination) {
 	      	return;
 	    }
 
-	    let params = {
+	    const params = {
 			parent_value: parseInt(result.destination.droppableId),
-    		child_value: parseInt(result.draggableId)
-    	}
+    		child_value: parseInt(result.draggableId),
+    	};
 
-	    let valueHierarchy = _.cloneDeep(this.state.valueHierarchy);
+	    const valueHierarchy = _.cloneDeep(this.state.valueHierarchy);
 
-	    valueHierarchy["value_hierarchy"] = valueHierarchy["value_hierarchy"]
-	    	.filter(h => h.child_value !== parseInt(result.draggableId));
+	    valueHierarchy.value_hierarchy = valueHierarchy.value_hierarchy
+	    	.filter((h) => h.child_value !== parseInt(result.draggableId));
 
 	    if (result.destination.droppableId !== "null") {
-
-		    postRequest.call(this, "taxonomy/add_taxonomy_value_hierarchy", params, response => {
+		    postRequest.call(this, "taxonomy/add_taxonomy_value_hierarchy", params, (response) => {
 	            nm.info("The modification has been saved");
 
-	            valueHierarchy["value_hierarchy"] = valueHierarchy["value_hierarchy"]
-	    			.filter(h => h.child_value !== parseInt(result.draggableId));
+	            valueHierarchy.value_hierarchy = valueHierarchy.value_hierarchy
+	    			.filter((h) => h.child_value !== parseInt(result.draggableId));
 
-	            valueHierarchy["value_hierarchy"].push(params);
+	            valueHierarchy.value_hierarchy.push(params);
 
-			    this.setState({ valueHierarchy: valueHierarchy });
-	        }, response => {
+			    this.setState({ valueHierarchy });
+	        }, (response) => {
 	            nm.warning(response.statusText);
-	        }, error => {
+	        }, (error) => {
 	            nm.error(error.message);
 	        });
 		} else {
-			postRequest.call(this, "taxonomy/delete_taxonomy_value_hierarchy", params, response => {
+			postRequest.call(this, "taxonomy/delete_taxonomy_value_hierarchy", params, (response) => {
 	            nm.info("The modification has been saved");
 
-	            valueHierarchy["value_hierarchy"] = valueHierarchy["value_hierarchy"]
-	    			.filter(h => h.child_value !== parseInt(result.draggableId));
+	            valueHierarchy.value_hierarchy = valueHierarchy.value_hierarchy
+	    			.filter((h) => h.child_value !== parseInt(result.draggableId));
 
-			    this.setState({ valueHierarchy: valueHierarchy });
-	        }, response => {
+			    this.setState({ valueHierarchy });
+	        }, (response) => {
 	            nm.warning(response.statusText);
-	        }, error => {
+	        }, (error) => {
 	            nm.error(error.message);
 	        });
 		}
 	}
 
 	changeState(field, value) {
-        this.setState({[field]: value});
-    }
+		this.setState({ [field]: value });
+	}
 
 	render() {
 		const getItemStyle = (isDragging, draggableStyle) => ({
 			...draggableStyle,
 		});
 
-		let categoryColumns = [
-            {
-              Header: 'Category',
-              accessor: 'name',
+		const categoryColumns = [
+			{
+				Header: "Category",
+				accessor: "name",
           	},
           	{
-                Header: ' ',
-                accessor: x => { return x },
-                Cell: ({ cell: { value } }) => (
-                    <DialogConfirmation
-                        text={"Are you sure you want to delete this category?"}
-                        trigger={
-                            <button
-                                className={"small-button red-background Table-right-button"}>
-                                <i className="fas fa-trash-alt"/>
-                            </button>
-                        }
-                        afterConfirmation={() => this.deleteCategory(value.name)}
-                    />
-                ),
-                width: 50,
-            },
-        ];
+				Header: " ",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<DialogConfirmation
+						text={"Are you sure you want to delete this category?"}
+						trigger={
+							<button
+								className={"small-button red-background Table-right-button"}>
+								<i className="fas fa-trash-alt"/>
+							</button>
+						}
+						afterConfirmation={() => this.deleteCategory(value.name)}
+					/>
+				),
+				width: 50,
+			},
+		];
 
-        let categoryHierarchyColumns = [
+		const categoryHierarchyColumns = [
 	          {
-	            Header: 'Parent category',
-	            accessor: 'parent_category',
+	            Header: "Parent category",
+	            accessor: "parent_category",
 	          },
 	          {
-	            Header: 'Child category',
-	            accessor: 'child_category',
+	            Header: "Child category",
+	            accessor: "child_category",
 	          },
 	          {
-                Header: ' ',
-                accessor: x => { return x },
-                Cell: ({ cell: { value } }) => (
-                    <DialogConfirmation
-                        text={"Are you sure you want to delete this hierarchy?"}
-                        trigger={
-                            <button
-                                className={"small-button red-background Table-right-button"}>
-                                <i className="fas fa-trash-alt"/>
-                            </button>
-                        }
-                        afterConfirmation={() => this.deleteCategoryHierarchy(value.parent_category, value.child_category)}
-                    />
-                ),
-                width: 50,
+				Header: " ",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<DialogConfirmation
+						text={"Are you sure you want to delete this hierarchy?"}
+						trigger={
+							<button
+								className={"small-button red-background Table-right-button"}>
+								<i className="fas fa-trash-alt"/>
+							</button>
+						}
+						afterConfirmation={() => this.deleteCategoryHierarchy(value.parent_category, value.child_category)}
+					/>
+				),
+				width: 50,
 	           },
-        ];
+		];
 
-        let valueColumns = [
+		const valueColumns = [
 	          {
-	            Header: 'Name',
-	            accessor: 'name',
+	            Header: "Name",
+	            accessor: "name",
 	          },
 	          {
-                Header: ' ',
-                accessor: x => { return x },
-                Cell: ({ cell: { value } }) => (
-                    <DialogConfirmation
-                        text={"Are you sure you want to delete this value?"}
-                        trigger={
-                            <button
-                                className={"small-button red-background Table-right-button"}>
-                                <i className="fas fa-trash-alt"/>
-                            </button>
-                        }
-                        afterConfirmation={() => this.deleteValue(value.name, value.category)}
-                    />
-                ),
-                width: 50,
-              },
-        ];
+				Header: " ",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<DialogConfirmation
+						text={"Are you sure you want to delete this value?"}
+						trigger={
+							<button
+								className={"small-button red-background Table-right-button"}>
+								<i className="fas fa-trash-alt"/>
+							</button>
+						}
+						afterConfirmation={() => this.deleteValue(value.name, value.category)}
+					/>
+				),
+				width: 50,
+			},
+		];
 
 		return (
 			<div id="SettingCompanyValues" className="max-sized-page fade-in">
@@ -414,13 +411,13 @@ export default class SettingTaxonomy extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className="col-md-6">
 						<h2>Categories</h2>
-						{this.state.categories !== null ?
-							<div className="row">
+						{this.state.categories !== null
+							? <div className="row">
 	                            <div className="col-xl-12">
 	                                <FormLine
 	                                    label={"New category"}
 	                                    value={this.state.newCategory}
-	                                    onChange={v => this.changeState("newCategory", v)}
+	                                    onChange={(v) => this.changeState("newCategory", v)}
 	                                />
 	                            </div>
 	                            <div className="col-xl-12 right-buttons">
@@ -437,32 +434,31 @@ export default class SettingTaxonomy extends React.Component {
 									/>
 								</div>
 	                        </div>
-	                    :
-	                    	<Loading
+	                    : <Loading
 	                    		height={100}
 	                    	/>
 	                    }
 					</div>
 					<div className="col-md-6">
 						<h2>Category hierarchy</h2>
-						{this.state.categoryHierarchy !== null ?
-							<div className="row">
+						{this.state.categoryHierarchy !== null
+							? <div className="row">
 	                            <div className="col-xl-12">
 	                                <FormLine
 			                            label={"New parent category"}
 			                            type={"select"}
-			                            options={this.state.categories.map(c => { return { "label": c.name, "value": c.name }})}
+			                            options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
 			                            value={this.state.newParentCategory}
-			                            onChange={v => this.changeState("newParentCategory", v)}
+			                            onChange={(v) => this.changeState("newParentCategory", v)}
 			                        />
 	                            </div>
 	                            <div className="col-xl-12">
 	                                <FormLine
 			                            label={"New child category"}
 			                            type={"select"}
-			                            options={this.state.categories.map(c => { return { "label": c.name, "value": c.name }})}
+			                            options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
 			                            value={this.state.newChildCategory}
-			                            onChange={v => this.changeState("newChildCategory", v)}
+			                            onChange={(v) => this.changeState("newChildCategory", v)}
 			                        />
 	                            </div>
 	                            <div className="col-xl-12 right-buttons">
@@ -479,8 +475,7 @@ export default class SettingTaxonomy extends React.Component {
 									/>
 								</div>
 	                        </div>
-	                    :
-	                    	<Loading
+	                    : <Loading
 	                    		height={300}
 	                    	/>
 	                    }
@@ -490,24 +485,24 @@ export default class SettingTaxonomy extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>Category values</h2>
-						{this.state.categories !== null ?
-							<div className="row">
+						{this.state.categories !== null
+							? <div className="row">
 	                            <div className="col-xl-12">
 	                                <FormLine
 			                            label={"Category"}
 			                            type={"select"}
-			                            options={this.state.categories.map(c => { return { "label": c.name, "value": c.name }})}
+			                            options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
 			                            value={this.state.selectedCategory}
-			                            onChange={v => this.changeState("selectedCategory", v)}
+			                            onChange={(v) => this.changeState("selectedCategory", v)}
 			                        />
 	                            </div>
-	                            {this.state.selectedCategory !== null ?
-	                            	(this.state.values !== null ?
-			                            <div className="col-xl-12">
+	                            {this.state.selectedCategory !== null
+	                            	? (this.state.values !== null
+			                            ? <div className="col-xl-12">
 				                            <FormLine
 					                            label={"Add a new value"}
 					                            value={this.state.newValue}
-					                            onChange={v => this.changeState("newValue", v)}
+					                            onChange={(v) => this.changeState("newValue", v)}
 					                        />
 					                        <div className="col-xl-12 right-buttons">
 				                                <button
@@ -521,14 +516,12 @@ export default class SettingTaxonomy extends React.Component {
 												data={this.state.values}
 											/>
 										</div>
-									: 
-									<Loading
+										:									<Loading
 			                    		height={300}
 			                    	/>)
-								: ""}
+									: ""}
 	                        </div>
-	                    :
-	                    	<Loading
+	                    : <Loading
 	                    		height={300}
 	                    	/>
 	                    }
@@ -538,35 +531,32 @@ export default class SettingTaxonomy extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>Value hierarchy</h2>
-						{this.state.categoryHierarchy !== null ?
-							<div className="row row-spaced">
+						{this.state.categoryHierarchy !== null
+							? <div className="row row-spaced">
 	                            <div className="col-xl-12">
 	                                <FormLine
 			                            label={"Category relation"}
 			                            type={"select"}
-			                            options={this.state.categoryHierarchy.map(c => { 
-			                            	return { 
-			                            		"label": c.parent_category + " - " + c.child_category, 
-			                            		"value": c.parent_category + " - " + c.child_category 
-			                            	}
-			                            })}
+			                            options={this.state.categoryHierarchy.map((c) => ({
+			                            		label: c.parent_category + " - " + c.child_category,
+			                            		value: c.parent_category + " - " + c.child_category,
+			                            	}))}
 			                            value={this.state.selectedCategoryHierarchy}
-			                            onChange={v => this.changeState("selectedCategoryHierarchy", v)}
+			                            onChange={(v) => this.changeState("selectedCategoryHierarchy", v)}
 			                        />
 	                            </div>
 	                        </div>
-	                       :
-	                    	<Loading
+	                       : <Loading
 	                    		height={300}
 	                    	/>
 	                    }
-                        {this.state.selectedCategoryHierarchy !== null ?
-	                        (this.state.valueHierarchy !== null ?
-                        		<div className="row row-spaced">
+						{this.state.selectedCategoryHierarchy !== null
+	                        ? (this.state.valueHierarchy !== null
+                        		? <div className="row row-spaced">
                             		<div className="col-xl-12">
 			                            <DragDropContext onDragEnd={this.onDragEnd}>
-			                            	<Droppable 
-		                            			droppableId="null" 
+			                            	<Droppable
+		                            			droppableId="null"
 		                            			direction="horizontal">
 		                            			{(provided, snapshot) => (
 										            <div
@@ -575,13 +565,13 @@ export default class SettingTaxonomy extends React.Component {
 										            	{...provided.droppableProps}>
 										            	<div>Not assigned</div>
 										              	{this.state.valueHierarchy.child_values
-										              		.filter(v => this.state.valueHierarchy.value_hierarchy
-										              			.map(h => { return h.child_value })
+										              		.filter((v) => this.state.valueHierarchy.value_hierarchy
+										              			.map((h) => h.child_value)
 										              			.indexOf(v.id) < 0)
-										              		.map((item, index) => { return (
-											                <Draggable 
-											                	key={"" + item.id} 
-											                	draggableId={"" + item.id} 
+										              		.map((item, index) => (
+											                <Draggable
+											                	key={"" + item.id}
+											                	draggableId={"" + item.id}
 											                	index={index}>
 											                	{(provided, snapshot) => (
 												                    <div
@@ -594,13 +584,13 @@ export default class SettingTaxonomy extends React.Component {
 												                    </div>
 												                )}
 											                </Draggable>
-										              	)})}
+										              	))}
 										              	{provided.placeholder}
 										            </div>
 										        )}
 									        </Droppable>
-			                            	{this.state.valueHierarchy.parent_values.map(pv => { return (
-			                            		<Droppable 
+			                            	{this.state.valueHierarchy.parent_values.map((pv) => (
+			                            		<Droppable
 			                            			droppableId={"" + pv.id}
 			                            			direction="horizontal">
 			                            			{(provided, snapshot) => (
@@ -610,11 +600,11 @@ export default class SettingTaxonomy extends React.Component {
 											            	{...provided.droppableProps}>
 											            	<div>{pv.name}</div>
 											              	{this.state.valueHierarchy.value_hierarchy
-											              		.filter(v => pv.id === v.parent_value)
-											              		.map((item, index) => { return (
-												                <Draggable 
-												                	key={"" + item.child_value} 
-												                	draggableId={"" + item.child_value} 
+											              		.filter((v) => pv.id === v.parent_value)
+											              		.map((item, index) => (
+												                <Draggable
+												                	key={"" + item.child_value}
+												                	draggableId={"" + item.child_value}
 												                	index={index}>
 												                	{(provided, snapshot) => (
 													                    <div
@@ -623,25 +613,24 @@ export default class SettingTaxonomy extends React.Component {
 														                    {...provided.draggableProps}
 														                    {...provided.dragHandleProps}
 														                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
-													                      	{this.state.valueHierarchy.child_values.filter(v => v.id === item.child_value)[0].name}
+													                      	{this.state.valueHierarchy.child_values.filter((v) => v.id === item.child_value)[0].name}
 													                    </div>
 													                )}
 												                </Draggable>
-											              	)})}
+											              	))}
 											              	{provided.placeholder}
 											            </div>
 											        )}
 										        </Droppable>
-			                            	)})}
+			                            	))}
 									    </DragDropContext>
 									</div>
 								</div>
-							: 
-								<Loading
+								:								<Loading
 		                    		height={300}
 		                    	/>
 		                    )
-						: ""}
+							: ""}
 					</div>
 				</div>
 			</div>

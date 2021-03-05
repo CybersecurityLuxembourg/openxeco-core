@@ -1,0 +1,20 @@
+{
+	"parser": "babel-eslint",
+	"extends": ["airbnb-base", "plugin:react/recommended"],
+  	"env": {
+    	"node": true,
+    	"es6": true,
+    	"browser": true
+  	},
+  	"rules": {
+    	"no-console": "off",
+    	"linebreak-style": 0,
+    	"indent": [2, "tab"],
+      "quotes": [2, "double", { "avoidEscape": true }],
+      "no-tabs": 0,
+      "no-plusplus": 0,
+      "prefer-template": 0,
+      "react/prop-types": 0
+  	},
+  	"ignorePatterns": ["/node_modules/*", "/build/*", "/public/*"],
+}

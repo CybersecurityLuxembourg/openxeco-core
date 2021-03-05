@@ -1,16 +1,13 @@
-import React from 'react';
-import './PageTask.css';
-import TaskRequest from  './pagetask/TaskRequest';
-import Tab from './tab/Tab';
-
+import React from "react";
+import "./PageTask.css";
+import TaskRequest from "./pagetask/TaskRequest";
+import Tab from "./tab/Tab";
 
 export default class PageTask extends React.Component {
-
-	constructor(props){
+	constructor(props) {
 		super(props);
 
-
-		this.state = {}
+		this.state = {};
 	}
 
 	render() {
