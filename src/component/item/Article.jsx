@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import "./Article.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
-import Loading from "../box/Loading";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import Tab from "../tab/Tab";
-import ArticleGlobal from "./article/ArticleGlobal";
-import ArticleVersion from "./article/ArticleVersion";
-import ArticleContent from "./article/ArticleContent";
-import ArticleTag from "./article/ArticleTag";
+import { postRequest } from "../../utils/request.jsx";
+import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import Tab from "../tab/Tab.jsx";
+import ArticleGlobal from "./article/ArticleGlobal.jsx";
+import ArticleVersion from "./article/ArticleVersion.jsx";
+import ArticleContent from "./article/ArticleContent.jsx";
+import ArticleTag from "./article/ArticleTag.jsx";
 
 export default class Article extends Component {
 	constructor(props) {
@@ -52,7 +50,7 @@ export default class Article extends Component {
 			id: this.props.id,
 		};
 
-		postRequest.call(this, "article/delete_article", params, (response) => {
+		postRequest.call(this, "article/delete_article", params, () => {
 			document.elementFromPoint(100, 0).click();
 			nm.info("The article has been deleted");
 
@@ -104,15 +102,19 @@ export default class Article extends Component {
 							menu={["Global", "Version", "Content", "Tag"]}
 							content={[
 								<ArticleGlobal
+									key={this.props.id}
 									id={this.props.id}
 								/>,
 								<ArticleVersion
+									key={this.props.id}
 									id={this.props.id}
 								/>,
 								<ArticleContent
+									key={this.props.id}
 									id={this.props.id}
 								/>,
 								<ArticleTag
+									key={this.props.id}
 									id={this.props.id}
 								/>]}
 						/>

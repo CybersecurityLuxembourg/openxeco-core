@@ -1,9 +1,9 @@
 import React from "react";
 import "./UserGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
 
 export default class UserGlobal extends React.Component {
 	constructor(props) {
@@ -40,7 +40,7 @@ export default class UserGlobal extends React.Component {
 				[prop]: value,
 			};
 
-			postRequest.call(this, "user/update_user", params, (response) => {
+			postRequest.call(this, "user/update_user", params, () => {
 				const user = { ...this.state.user };
 
 				user[prop] = value;

@@ -17,17 +17,23 @@ export default class CheckBox extends Component {
 		const additionalClassName = (typeof this.props.className !== "undefined" ? " " + this.props.className + " " : " ");
 		const disableClassName = (typeof this.props.disabled !== "undefined" && this.props.disabled ? " CheckBox-disabled " : "");
 		const statusClassName = (this.props.value ? " CheckBox-on" : " CheckBox-off")
-            + (this.props.background === false ? "-no-background " : " ");
+			+ (this.props.background === false ? "-no-background " : " ");
 
 		return (
 			<div
 				className={"CheckBox" + additionalClassName + disableClassName + statusClassName}
 				onClick={this.onClick}>
-				{typeof this.props.label === "undefined"
-					? this.props.value
-						? <i className="fas fa-check CheckBox-icon"/>
-						: <i className="fas fa-times CheckBox-icon"/>
-					: this.props.label
+				{this.props.label === undefined && this.props.value
+					? <i className="fas fa-check CheckBox-icon"/>
+					: ""
+				}
+				{this.props.label === undefined && !this.props.value
+					? <i className="fas fa-times CheckBox-icon"/>
+					: ""
+				}
+				{this.props.label !== undefined
+					? this.props.label
+					: ""
 				}
 			</div>
 		);

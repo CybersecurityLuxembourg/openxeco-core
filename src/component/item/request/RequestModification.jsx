@@ -2,12 +2,8 @@ import React, { Component } from "react";
 import "./RequestModification.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
-import DialogConfirmation from "../../dialog/DialogConfirmation";
-import Message from "../../box/Message";
-import { getApiURL } from "../../../utils/env";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import Message from "../../box/Message.jsx";
 
 export default class RequestModification extends Component {
 	constructor(props) {
@@ -31,7 +27,7 @@ export default class RequestModification extends Component {
 		};
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.company !== this.state.company
             || prevState.addresses !== this.state.addresses) this.refresh();
 	}
@@ -117,7 +113,7 @@ export default class RequestModification extends Component {
 				[prop]: value,
 			};
 
-			postRequest.call(this, "company/update_company", params, (response) => {
+			postRequest.call(this, "company/update_company", params, () => {
 				this.refresh();
 				nm.info("The company has been updated");
 			}, (response) => {
@@ -136,7 +132,7 @@ export default class RequestModification extends Component {
 			[prop]: value,
 		};
 
-		postRequest.call(this, "address/update_address", params, (response) => {
+		postRequest.call(this, "address/update_address", params, () => {
 			this.refresh();
 			nm.info("The address has been updated");
 		}, (response) => {
@@ -150,7 +146,7 @@ export default class RequestModification extends Component {
 		if (this.state.company !== null && this.state.company.id === undefined) {
 			const params = this.state.company;
 
-			postRequest.call(this, "company/add_company", params, (response) => {
+			postRequest.call(this, "company/add_company", params, () => {
 				this.refresh();
 				nm.info("The company has been added");
 			}, (response) => {
@@ -169,7 +165,7 @@ export default class RequestModification extends Component {
 
 			params.company_id = this.state.company.id;
 
-			postRequest.call(this, "address/add_address", params, (response) => {
+			postRequest.call(this, "address/add_address", params, () => {
 				this.refresh();
 				nm.info("The address has been added");
 			}, (response) => {
@@ -182,10 +178,10 @@ export default class RequestModification extends Component {
 		}
 	}
 
-	getModifiedFields(c1, c2) {
+	static getModifiedFields(c1, c2) {
 		const fields = [];
 
-		Object.entries(c1).forEach(([key, value]) => {
+		Object.entries(c1).forEach(([key]) => {
 			if (c1[key] !== c2[key]) fields.push(key);
 		});
 
@@ -193,7 +189,7 @@ export default class RequestModification extends Component {
 	}
 
 	getUpdateCompanyBlock() {
-		if (this.state.databaseCompany === null) return;
+		if (this.state.databaseCompany === null) return null;
 
 		const modifiedFields = this.getModifiedFields(this.state.company, this.state.databaseCompany);
 
@@ -214,7 +210,7 @@ export default class RequestModification extends Component {
 				<h3>Update an existing company</h3>
 
 				{modifiedFields.map((f) => (
-					<div className="row row-spaced">
+					<div className="row row-spaced" key={f}>
 						<div className="col-md-12">
 							<h4>{f}</h4>
 						</div>
@@ -242,14 +238,14 @@ export default class RequestModification extends Component {
 	}
 
 	getAddCompanyBlock() {
-		if (this.state.company.id !== undefined) return;
+		if (this.state.company.id !== undefined) return null;
 
 		return (
 			<div className="col-md-12 row-spaced">
 				<h3>Add a new company</h3>
 
 				{Object.keys(this.state.company).map((key) => (
-					<div className="row">
+					<div className="row" key={key}>
 						<div className="col-md-6">
 							{key}
 						</div>
@@ -274,12 +270,15 @@ export default class RequestModification extends Component {
 	}
 
 	getUpdateAddressBlock(address) {
-		if (this.state.databaseAddresses === null) return;
+		if (this.state.databaseAddresses === null) return null;
 
-		let databaseAddress = this.state.databaseAddresses.filter((d) => d.id === address.id);
+		const databaseAddresses = this.state.databaseAddresses.filter((d) => d.id === address.id);
 
-		if (databaseAddress.length === 0) return;
-		databaseAddress = databaseAddress[0];
+		if (databaseAddresses.length === 0) {
+			return null;
+		}
+
+		const databaseAddress = databaseAddresses[0];
 
 		const modifiedFields = this.getModifiedFields(address, databaseAddress);
 
@@ -300,7 +299,7 @@ export default class RequestModification extends Component {
 				<h3>Update an existing address</h3>
 
 				{modifiedFields.map((f) => (
-					<div className="row">
+					<div className="row" key={f}>
 						<div className="col-md-12">
 							<h4>{f}</h4>
 						</div>
@@ -328,14 +327,14 @@ export default class RequestModification extends Component {
 	}
 
 	getAddAddressBlock(address) {
-		if (this.state.address.id !== undefined) return;
+		if (this.state.address.id !== undefined) return null;
 
 		return (
 			<div className="col-md-12 row-spaced">
 				<h3>Add a new address</h3>
 
 				{Object.keys(address).map((key) => (
-					<div className="row">
+					<div className="row" key={key}>
 						<div className="col-md-6">
 							{key}
 						</div>
@@ -357,10 +356,6 @@ export default class RequestModification extends Component {
 				</div>
 			</div>
 		);
-	}
-
-	getDeleteAddressBlock(address) {
-		// TODO
 	}
 
 	render() {

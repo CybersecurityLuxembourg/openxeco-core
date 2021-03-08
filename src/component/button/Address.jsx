@@ -3,13 +3,13 @@ import "./Address.css";
 import _ from "lodash";
 import { NotificationManager as nm } from "react-notifications";
 import Popup from "reactjs-popup";
-import FormLine from "./FormLine";
-import { getRequest, postRequest, getForeignRequest } from "../../utils/request";
-import { validateNotNull } from "../../utils/re";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import SingleMarkerMap from "../map/SingleMarkerMap";
-import Geolocation from "../item/Geolocation";
-import Loading from "../box/Loading";
+import FormLine from "./FormLine.jsx";
+import { postRequest, getForeignRequest } from "../../utils/request.jsx";
+import { validateNotNull } from "../../utils/re.jsx";
+import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import SingleMarkerMap from "../map/SingleMarkerMap.jsx";
+import Geolocation from "../item/Geolocation.jsx";
+import Loading from "../box/Loading.jsx";
 
 export default class Address extends React.Component {
 	constructor(props) {
@@ -33,7 +33,7 @@ export default class Address extends React.Component {
 		};
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps) {
 		if (prevProps.info !== this.props.info) {
 			this.setState({
 				info: this.props.info,
@@ -47,7 +47,7 @@ export default class Address extends React.Component {
 			const params = _.cloneDeep(this.state.info);
 			delete params.company_id;
 
-			postRequest.call(this, "address/update_address", params, (response) => {
+			postRequest.call(this, "address/update_address", params, () => {
 				if (typeof this.props.afterAction !== "undefined") {
 					this.props.afterAction();
 				}
@@ -59,7 +59,7 @@ export default class Address extends React.Component {
 				nm.error(error.message);
 			});
 		} else {
-			postRequest.call(this, "address/add_address", this.state.info, (response) => {
+			postRequest.call(this, "address/add_address", this.state.info, () => {
 				if (typeof this.props.afterAction !== "undefined") {
 					this.props.afterAction();
 				}
@@ -79,7 +79,7 @@ export default class Address extends React.Component {
 				id: this.state.info.id,
 			};
 
-			postRequest.call(this, "address/delete_address", params, (response) => {
+			postRequest.call(this, "address/delete_address", params, () => {
 				if (typeof this.props.afterAction !== "undefined") {
 					this.props.afterAction();
 				}
@@ -272,12 +272,16 @@ export default class Address extends React.Component {
 										{this.state.geolocations !== null
 											? this.state.geolocations.map((g) => (
 												<Geolocation
+													key={g.id}
 													lat={g.latitude}
 													lon={g.longitude}
-													selected={this.state.selectedGeolocation !== null
-                                                            && this.state.selectedGeolocation.latitude === g.latitude
-                                                            && this.state.selectedGeolocation !== null
-                                                            && this.state.selectedGeolocation.longitude === g.longitude}
+													selected={this.state.selectedGeolocation
+															!== null
+														&& this.state.selectedGeolocation.latitude
+															=== g.latitude
+														&& this.state.selectedGeolocation !== null
+														&& this.state.selectedGeolocation.longitude
+															=== g.longitude}
 													onClick={() => this.setState({
 														selectedGeolocation: {
 															latitude: g.latitude,

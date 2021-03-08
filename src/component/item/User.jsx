@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import "./User.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request";
-import Loading from "../box/Loading";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import Tab from "../tab/Tab";
-import UserGlobal from "./user/UserGlobal";
-import UserCompany from "./user/UserCompany";
+import { postRequest } from "../../utils/request.jsx";
+import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import Tab from "../tab/Tab.jsx";
+import UserGlobal from "./user/UserGlobal.jsx";
+import UserCompany from "./user/UserCompany.jsx";
 
 export default class User extends Component {
 	constructor(props) {
@@ -49,7 +48,7 @@ export default class User extends Component {
 			id: this.props.id,
 		};
 
-		postRequest.call(this, "user/delete_user", params, (response) => {
+		postRequest.call(this, "user/delete_user", params, () => {
 			document.elementFromPoint(100, 0).click();
 			nm.info("The user has been deleted");
 
@@ -103,9 +102,11 @@ export default class User extends Component {
 							menu={["Global", "Company"]}
 							content={[
 								<UserGlobal
+									key={this.props.id}
 									id={this.props.id}
 								/>,
 								<UserCompany
+									key={this.props.id}
 									id={this.props.id}
 									name={this.props.name}
 								/>,

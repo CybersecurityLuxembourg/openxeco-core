@@ -1,15 +1,12 @@
-import React, { useRef } from "react";
+import React from "react";
 import "./DialogAddImage.css";
 import Popup from "reactjs-popup";
-import _ from "lodash";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "../box/Loading";
 import Dropzone from "react-dropzone";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { Breadcrumb } from "react-bootstrap";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
+import { postRequest } from "../../utils/request.jsx";
 
 export default class DialogAddImage extends React.Component {
 	constructor(props) {
@@ -32,9 +29,6 @@ export default class DialogAddImage extends React.Component {
 
 			croppedImageContent: null,
 		};
-	}
-
-	componentDidUpdate(prevProps, prevState, snapshot) {
 	}
 
 	onDrop(files) {
@@ -75,7 +69,7 @@ export default class DialogAddImage extends React.Component {
 			image: this.state.croppedImageContent,
 		};
 
-		postRequest.call(this, "media/add_image", params, (response) => {
+		postRequest.call(this, "media/add_image", params, () => {
 			if (this.props.afterValidate !== undefined) this.props.afterValidate();
 
 			this.backToImageSelection();
@@ -101,7 +95,7 @@ export default class DialogAddImage extends React.Component {
 		});
 	}
 
-	cancel() {
+	static cancel() {
 		document.elementFromPoint(100, 0).click();
 	}
 
@@ -130,13 +124,13 @@ export default class DialogAddImage extends React.Component {
 								onClick={this.backToImageSelection}>
                                 Choose Image
 							</Breadcrumb.Item>
-                            &nbsp;>&nbsp;
+                            &nbsp;&gt;&nbsp;
 							<Breadcrumb.Item
 								active={this.state.imageContent === null}
 								onClick={this.backToImageCropping}>
                                 Crop Image
 							</Breadcrumb.Item>
-                            &nbsp;>&nbsp;
+                            &nbsp;&gt;&nbsp;
 							<Breadcrumb.Item
 								active={this.state.croppedImageContent === null}>
                                 Upload Image
@@ -144,7 +138,7 @@ export default class DialogAddImage extends React.Component {
 						</Breadcrumb>
 
 						{this.state.imageContent === null
-							? <Dropzone
+							&& <Dropzone
 								accept=".png,.jpg,.jpeg"
 								disabled={false}
 								onDrop={this.onDrop}
@@ -162,24 +156,29 @@ export default class DialogAddImage extends React.Component {
 									</div>
 								)}
 							</Dropzone>
-							: this.state.croppedImageContent === null
-								? <Cropper
-									className={"DialogAddImage-cropper"}
-									src={this.state.imageContent}
-									initialAspectRatio={16 / 9}
-									guides={false}
-									onInitialized={(instance) => this.changeState("cropper", instance) }
-								/>
-								: <img
-									className={"DialogAddImage-cropped-image"}
-									src={this.state.croppedImageContent}
-								/>
+						}
+
+						{this.state.imageContent !== null && this.state.croppedImageContent === null
+							&& <Cropper
+								className={"DialogAddImage-cropper"}
+								src={this.state.imageContent}
+								initialAspectRatio={16 / 9}
+								guides={false}
+								onInitialized={(instance) => this.changeState("cropper", instance) }
+							/>
+						}
+
+						{this.state.imageContent !== null && this.state.croppedImageContent !== null
+							&& <img
+								className={"DialogAddImage-cropped-image"}
+								src={this.state.croppedImageContent}
+							/>
 						}
 					</div>
 				</div>
 
 				{this.state.croppedImageContent !== null
-					? <div className={"bottom-right-buttons"}>
+					&& <div className={"bottom-right-buttons"}>
 						<button
 							className={"grey-background"}
 							data-hover="Back to image cropping"
@@ -194,31 +193,36 @@ export default class DialogAddImage extends React.Component {
 							<span><i className="far fa-check-circle"/> Upload</span>
 						</button>
 					</div>
-					: this.state.imageContent !== null
-						? <div className={"bottom-right-buttons"}>
-							<button
-								className={"grey-background"}
-								data-hover="Back to image selection"
-								data-active=""
-								onClick={this.backToImageSelection}>
-								<span><i className="far fa-arrow-alt-circle-left"/> Back to image selection</span>
-							</button>
-							<button
-								data-hover="Crop image"
-								data-active=""
-								onClick={this.onCrop}>
-								<span><i className="far fa-check-circle"/> Crop</span>
-							</button>
-						</div>
-						: <div className={"bottom-right-buttons"}>
-							<button
-								className={"grey-background"}
-								data-hover="Close"
-								data-active=""
-								onClick={this.cancel}>
-								<span><i className="far fa-times-circle"/> Close</span>
-							</button>
-						</div>
+				}
+
+				{this.state.croppedImageContent === null && this.state.imageContent !== null
+					&& <div className={"bottom-right-buttons"}>
+						<button
+							className={"grey-background"}
+							data-hover="Back to image selection"
+							data-active=""
+							onClick={this.backToImageSelection}>
+							<span><i className="far fa-arrow-alt-circle-left"/> Back to image selection</span>
+						</button>
+						<button
+							data-hover="Crop image"
+							data-active=""
+							onClick={this.onCrop}>
+							<span><i className="far fa-check-circle"/> Crop</span>
+						</button>
+					</div>
+				}
+
+				{this.state.croppedImageContent === null && this.state.imageContent === null
+					&& <div className={"bottom-right-buttons"}>
+						<button
+							className={"grey-background"}
+							data-hover="Close"
+							data-active=""
+							onClick={this.cancel}>
+							<span><i className="far fa-times-circle"/> Close</span>
+						</button>
+					</div>
 				}
 			</Popup>
 		);

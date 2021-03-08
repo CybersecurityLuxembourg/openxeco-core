@@ -3,16 +3,16 @@ import "./PageDashboard.css";
 import { NotificationManager as nm } from "react-notifications";
 import CountUp from "react-countup";
 import { Bar } from "react-chartjs-2";
-import { getRequest } from "../utils/request";
-import Loading from "./box/Loading";
-import Filter from "./box/Filter";
-import Message from "./box/Message";
-import Company from "./item/Company";
-import User from "./item/User";
-import BarActorAge from "./chart/BarActorAge";
-import BarWorkforceRange from "./chart/BarWorkforceRange";
-import TreeMap from "./chart/TreeMap";
-import { getPastDate } from "../utils/date";
+import { getRequest } from "../utils/request.jsx";
+import Loading from "./box/Loading.jsx";
+import Filter from "./box/Filter.jsx";
+import Message from "./box/Message.jsx";
+import Company from "./item/Company.jsx";
+import User from "./item/User.jsx";
+import BarActorAge from "./chart/BarActorAge.jsx";
+import BarWorkforceRange from "./chart/BarWorkforceRange.jsx";
+import TreeMap from "./chart/TreeMap.jsx";
+import { getPastDate } from "../utils/date.jsx";
 
 export default class PageDashboard extends React.Component {
 	constructor(props) {
@@ -27,7 +27,7 @@ export default class PageDashboard extends React.Component {
 		this.state = {
 			analytics: null,
 			filters: {},
-			filtered_actors: null,
+			filteredActors: null,
 		};
 	}
 
@@ -35,7 +35,7 @@ export default class PageDashboard extends React.Component {
 		this.getAnalytics();
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.filters !== this.state.filters
 			|| prevState.analytics !== this.state.analytics) {
 			this.filterActors();
@@ -94,21 +94,21 @@ export default class PageDashboard extends React.Component {
 
 	/**
 	 * Filter the actors according to the selection defined in this.state.filters
-	 * The result is set in this.state.filtered_actors
+	 * The result is set in this.state.filteredActors
 	 */
 	filterActors() {
 		if (this.state.analytics === null) return;
 
-		let filtered_actors = this.state.analytics.actors.map((o) => o);
+		let filteredActors = this.state.analytics.actors.map((o) => o);
 
-		for (const key in Object.keys(this.state.filters)) {
+		for (let key = 0; key < Object.keys(this.state.filters).length; key++) {
 			const axis = Object.keys(this.state.filters)[key];
 
 			if (axis === "taxonomy_values") {
 				// Filter taxonomy values
 
-				for (const i in this.state.filters[axis]) {
-					const tmp_filtered_actors = [];
+				for (let i = 0; i < this.state.filters[axis].length; i++) {
+					const tmpFilteredActors = [];
 
 					const valueName = this.state.filters[axis][i];
 					const value = this.state.analytics.taxonomy_values
@@ -137,46 +137,52 @@ export default class PageDashboard extends React.Component {
 
 					const acceptedValueIDs = values.map((v) => v.id);
 
-					for (const i in filtered_actors) {
+					for (let y = 0; y < filteredActors.length; y++) {
 						const companyValues = this.state.analytics.taxonomy_assignments
-							.filter((a) => a.company === filtered_actors[i].id)
+							.filter((a) => a.company === filteredActors[y].id)
 							.map((a) => a.taxonomy_value);
 
-						if (acceptedValueIDs.filter((e) => companyValues.indexOf(e) >= 0).length > 0) tmp_filtered_actors.push(filtered_actors[i]);
+						if (acceptedValueIDs.filter((e) => companyValues.indexOf(e) >= 0).length > 0) {
+							tmpFilteredActors.push(filteredActors[y]);
+						}
 					}
 
-					filtered_actors = tmp_filtered_actors;
+					filteredActors = tmpFilteredActors;
 				}
 			} else if (axis === "size_range") {
 				// Filter the selected size range
-				const tmp_filtered_actors = [];
+				const tmpFilteredActors = [];
 
-				for (const k in filtered_actors) {
+				for (let k = 0; k < filteredActors.length; k++) {
 					const workforces = this.state.analytics.workforces
-						.filter((w) => w.company === filtered_actors[k].id);
+						.filter((w) => w.company === filteredActors[k].id);
 
 					if (workforces.length > 0
 						&& this.state.filters.size_range[0] <= workforces[0].workforce
-						&& workforces[0].workforce <= this.state.filters.size_range[1]) tmp_filtered_actors.push(filtered_actors[k]);
+						&& workforces[0].workforce <= this.state.filters.size_range[1]) {
+						tmpFilteredActors.push(filteredActors[k]);
+					}
 				}
 
-				filtered_actors = tmp_filtered_actors;
+				filteredActors = tmpFilteredActors;
 			} else if (axis === "age_range") {
 				// Filter the selected age range
 
-				const max_date = getPastDate(this.state.filters.age_range[0]);
-				const min_date = getPastDate(this.state.filters.age_range[1] + 1);
+				const maxDate = getPastDate(this.state.filters.age_range[0]);
+				const minDate = getPastDate(this.state.filters.age_range[1] + 1);
 
-				filtered_actors = filtered_actors.filter((o) => min_date < o.creation_date && o.creation_date <= max_date);
+				filteredActors = filteredActors
+					.filter((o) => minDate < o.creation_date && o.creation_date <= maxDate);
 			} else {
 				// Filter the selected company attribute such as is_cybersecurity_core_business, ...
 
-				filtered_actors = filtered_actors.filter((o) => o[axis] === (this.state.filters[axis] ? 1 : 0));
+				filteredActors = filteredActors
+					.filter((o) => o[axis] === (this.state.filters[axis] ? 1 : 0));
 			}
 		}
 
 		this.setState({
-			filtered_actors,
+			filteredActors,
 		});
 	}
 
@@ -185,16 +191,16 @@ export default class PageDashboard extends React.Component {
 	 * @param {category} Name of the taxonomy category of the tree chart
 	 */
 	getTreeValues(category) {
-		if (this.state.analytics === null || this.state.filtered_actors === null) return [];
+		if (this.state.analytics === null || this.state.filteredActors === null) return [];
 
 		const output = [];
 		const dictOutput = {};
 
-		const parent_categories = this.state.analytics.taxonomy_category_hierarchy
+		const parentCategories = this.state.analytics.taxonomy_category_hierarchy
 			.map((h) => h.parent_category);
 
-		if (parent_categories.indexOf(category) < 0) {
-			const companyIDs = this.state.filtered_actors.map((o) => o.id);
+		if (parentCategories.indexOf(category) < 0) {
+			const companyIDs = this.state.filteredActors.map((o) => o.id);
 			const values = this.state.analytics.taxonomy_values
 				.filter((v) => v.category === category);
 			const valueIDs = values.map((v) => v.id);
@@ -202,7 +208,7 @@ export default class PageDashboard extends React.Component {
 				.filter((a) => valueIDs.indexOf(a.taxonomy_value) >= 0)
 				.filter((a) => companyIDs.indexOf(a.company) >= 0);
 
-			for (const i in assignments) {
+			for (let i = 0; i < assignments.length; i++) {
 				if (assignments[i].taxonomy_value in dictOutput) {
 					dictOutput[assignments[i].taxonomy_value] += 1;
 				} else {
@@ -210,9 +216,10 @@ export default class PageDashboard extends React.Component {
 				}
 			}
 
-			for (const key in dictOutput) {
+			for (let k = 0; k < Object.keys(dictOutput).length; k++) {
+				const key = Object.keys(dictOutput)[k];
 				output.push({
-					value: values.filter((v) => v.id === parseInt(key))[0].name,
+					value: values.filter((v) => v.id === parseInt(key, 10))[0].name,
 					amount: dictOutput[key],
 				});
 			}
@@ -223,15 +230,13 @@ export default class PageDashboard extends React.Component {
 
 			const values = this.state.analytics.taxonomy_values
 				.filter((v) => v.category === category);
-			const valueIDs = values.map((v) => v.id);
 
 			let childReached = false;
 			let currentCategory = category;
-			let currentCategoryValues = null;
 
 			// Build the dict with the children values of category
 
-			for (const i in values) {
+			for (let i = 0; i < values.length; i++) {
 				dictOutput[values[i].id] = [values[i].id];
 			}
 
@@ -241,10 +246,9 @@ export default class PageDashboard extends React.Component {
 
 				if (childCategories.length > 0) {
 					currentCategory = childCategories[0].child_category;
-					currentCategoryValues = this.state.analytics.taxonomy_values
-						.filter((v) => v.category === currentCategory);
 
-					for (const key in dictOutput) {
+					for (let k = 0; k < Object.keys(dictOutput).length; k++) {
+						const key = Object.keys(dictOutput)[k];
 						dictOutput[key] = this.state.analytics.taxonomy_value_hierarchy
 							.filter((h) => dictOutput[key].indexOf(h.parent_value) >= 0)
 							.map((h) => h.child_value);
@@ -257,17 +261,18 @@ export default class PageDashboard extends React.Component {
 			// Build the distribution per company
 
 			const companyDistribution = {};
-			const companyIDs = this.state.filtered_actors.map((o) => o.id);
+			const companyIDs = this.state.filteredActors.map((o) => o.id);
 
-			for (const i in companyIDs) {
+			for (let i = 0; i < companyIDs.length; i++) {
 				companyDistribution[companyIDs[i]] = [];
 				const companyAssignments = this.state.analytics.taxonomy_assignments
 					.filter((a) => a.company === companyIDs[i]);
 
-				for (const y in companyAssignments) {
-					for (const k in dictOutput) {
+				for (let y = 0; y < companyAssignments.length; y++) {
+					for (let k = 0; k < dictOutput.length; k++) {
 						if (dictOutput[k].indexOf(companyAssignments[y].taxonomy_value) >= 0
-							&& companyDistribution[companyAssignments[y].company].indexOf(k) < 0) companyDistribution[companyAssignments[y].company].push(k);
+							&& companyDistribution[companyAssignments[y].company]
+								.indexOf(k) < 0) companyDistribution[companyAssignments[y].company].push(k);
 					}
 				}
 			}
@@ -276,19 +281,19 @@ export default class PageDashboard extends React.Component {
 
 			const companyDistributionCount = {};
 
-			for (const i in values) {
+			for (let i = 0; i < values.length; i++) {
 				companyDistributionCount[values[i].id] = 0;
 			}
 
-			for (const k in companyDistribution) {
-				for (const i in companyDistribution[k]) {
+			for (let k = 0; k < companyDistribution.length; k++) {
+				for (let i = 0; i < companyDistribution[k].length; i++) {
 					companyDistributionCount[companyDistribution[k][i]] += 1;
 				}
 			}
 
-			for (const k in companyDistributionCount) {
+			for (let k = 0; k < companyDistributionCount.length; k++) {
 				output.push({
-					value: values.filter((v) => v.id === parseInt(k))[0].name,
+					value: values.filter((v) => v.id === parseInt(k, 10))[0].name,
 					amount: companyDistributionCount[k],
 				});
 			}
@@ -302,9 +307,9 @@ export default class PageDashboard extends React.Component {
 	 */
 	getTotalEmployees() {
 		let total = 0;
-		const acceptedIDs = this.state.filtered_actors.map((a) => a.id);
+		const acceptedIDs = this.state.filteredActors.map((a) => a.id);
 
-		for (const i in this.state.analytics.workforces) {
+		for (let i = 0; i < this.state.analytics.workforces.length; i++) {
 			if (acceptedIDs.indexOf(this.state.analytics.workforces[i].company) >= 0) {
 				total += this.state.analytics.workforces[i].workforce;
 			}
@@ -337,6 +342,7 @@ export default class PageDashboard extends React.Component {
 							{this.state.analytics !== null && "last_companies" in this.state.analytics
 								? this.state.analytics.last_companies.map((o) => (
 									<Company
+										key={o.id}
 										id={o.id}
 										name={o.name}
 										afterDeletion={() => this.getAnalytics()}
@@ -354,6 +360,7 @@ export default class PageDashboard extends React.Component {
 							{this.state.analytics !== null && "last_users" in this.state.analytics
 								? this.state.analytics.last_users.map((o) => (
 									<User
+										key={o.id}
 										id={o.id}
 										email={o.email}
 										afterDeletion={() => this.getAnalytics()}
@@ -376,13 +383,13 @@ export default class PageDashboard extends React.Component {
 							<div className="col-md-12">
 								<h2>Total actors</h2>
 								<div>
-									{this.state.filtered_actors !== null
+									{this.state.filteredActors !== null
 										? <div className={"PageDashboard-analytic "
-											+ (this.state.filtered_actors.length === this.state.analytics.actors.length
+											+ (this.state.filteredActors.length === this.state.analytics.actors.length
 												? "red-font" : "blue-font")}>
 											<CountUp
-											 	start={0}
-												end={this.state.filtered_actors.length}
+												start={0}
+												end={this.state.filteredActors.length}
 												duration={1}
 												delay={0}
 											/>
@@ -396,12 +403,12 @@ export default class PageDashboard extends React.Component {
 							<div className="col-md-12">
 								<h2>Core business</h2>
 								<div>
-									{this.state.filtered_actors !== null
+									{this.state.filteredActors !== null
 										? <div className={"PageDashboard-analytic "
 											+ (this.state.filters.is_cybersecurity_core_business ? "red-font" : "blue-font")}>
 											<CountUp
-											 	start={0}
-												end={this.state.filtered_actors
+												start={0}
+												end={this.state.filteredActors
 													.filter((o) => o.is_cybersecurity_core_business).length}
 												duration={1.6}
 												delay={0}
@@ -416,12 +423,12 @@ export default class PageDashboard extends React.Component {
 							<div className="col-md-12">
 								<h2>Startups</h2>
 								<div>
-									{this.state.filtered_actors !== null
+									{this.state.filteredActors !== null
 										? <div className={"PageDashboard-analytic "
 											+ (this.state.filters.is_startup ? "red-font" : "blue-font")}>
 											<CountUp
-											 	start={0}
-												end={this.state.filtered_actors.filter((o) => o.is_startup).length}
+												start={0}
+												end={this.state.filteredActors.filter((o) => o.is_startup).length}
 												duration={1.6}
 												delay={0}
 											/>
@@ -437,50 +444,59 @@ export default class PageDashboard extends React.Component {
 					<div className="col-md-8">
 						<div className={"row"}>
 							<div className="col-md-12">
-								{this.state.filtered_actors !== null
+								{this.state.filteredActors !== null
 									? <Bar
 										data={{
-										  labels: ["Total actors", "Core business", "Startups"],
-										  datasets: [{
-										      label: [null, "is_cybersecurity_core_business", "is_startup"],
-										      data: [this.state.filtered_actors.length,
-										      	this.state.filtered_actors.filter((o) => o.is_cybersecurity_core_business).length,
-										      	this.state.filtered_actors.filter((o) => o.is_startup).length],
-										      backgroundColor: [
-										      	this.state.filtered_actors.length === this.state.analytics.actors.length ? "#fed7da" : "#bcebff",
-										      	this.state.filters.is_cybersecurity_core_business ? "#fed7da" : "#bcebff",
-										      	this.state.filters.is_startup ? "#fed7da" : "#bcebff"],
-										      borderColor: [
-										      	this.state.filtered_actors.length === this.state.analytics.actors.length ? "#e40613" : "#009fe3",
-										      	this.state.filters.is_cybersecurity_core_business ? "#e40613" : "#009fe3",
-										      	this.state.filters.is_startup ? "#e40613" : "#009fe3"],
-										      borderWidth: 1,
-										  }],
+											labels: ["Total actors", "Core business", "Startups"],
+											datasets: [{
+												label: [null, "is_cybersecurity_core_business", "is_startup"],
+												data: [
+													this.state.filteredActors.length,
+													this.state.filteredActors
+														.filter((o) => o.is_cybersecurity_core_business).length,
+													this.state.filteredActors.filter((o) => o.is_startup).length,
+												],
+												backgroundColor: [
+													this.state.filteredActors.length === this.state.analytics.actors.length ? "#fed7da" : "#bcebff",
+													this.state.filters.is_cybersecurity_core_business ? "#fed7da" : "#bcebff",
+													this.state.filters.is_startup ? "#fed7da" : "#bcebff",
+												],
+												borderColor: [
+													this.state.filteredActors.length === this.state.analytics.actors.length ? "#e40613" : "#009fe3",
+													this.state.filters.is_cybersecurity_core_business ? "#e40613" : "#009fe3",
+													this.state.filters.is_startup ? "#e40613" : "#009fe3",
+												],
+												borderWidth: 1,
+											}],
 										}}
 										options={{
 											legend: {
-										        display: false,
-										    },
+												display: false,
+											},
 											scales: {
-											    yAxes: [
-											      {
-											        ticks: {
-											          beginAtZero: true,
-											        },
-											      },
-											    ],
-											  },
+												yAxes: [
+													{
+														ticks: {
+															beginAtZero: true,
+														},
+													},
+												],
+											},
 											onClick: (mouseEvent, data) => {
 												if (data.length > 0) {
-											    	const label = data[0]._chart.config.data.datasets[0].label[data[0]._index];
+													// eslint-disable-next-line no-underscore-dangle
+													const l = data[0]._chart.config.data.datasets[0].label[data[0]._index];
 
-											    	if (label === null) {
-											    		this.manageFilter("is_cybersecurity_core_business", null, false);
-											    		this.manageFilter("is_startup", null, false);
-											    	} else if (!this.state.filters[label]) this.manageFilter(label, true, true);
-											    		else this.manageFilter(label, null, false);
+													if (l === null) {
+														this.manageFilter("is_cybersecurity_core_business", null, false);
+														this.manageFilter("is_startup", null, false);
+													} else if (!this.state.filters[l]) {
+														this.manageFilter(l, true, true);
+													} else {
+														this.manageFilter(l, null, false);
+													}
 												}
-										    },
+											},
 										}}
 									/>
 									:									<Loading
@@ -499,11 +515,11 @@ export default class PageDashboard extends React.Component {
 					<div className="col-md-6">
 						<h2>Total employees</h2>
 						<div>
-							{this.state.filtered_actors !== null
+							{this.state.filteredActors !== null
 								? <div className={"PageDashboard-analytic blue-font"}>
 									<i className="fas fa-user-tie"/><br/>
 									<CountUp
-									 	start={0}
+										start={0}
 										end={this.getTotalEmployees()}
 										duration={1.6}
 										delay={0}
@@ -517,9 +533,9 @@ export default class PageDashboard extends React.Component {
 					</div>
 					<div className="col-md-6">
 						<h2>Employees per company size ranges</h2>
-						{this.state.filtered_actors !== null
+						{this.state.filteredActors !== null
 							? <BarWorkforceRange
-								actors={this.state.filtered_actors}
+								actors={this.state.filteredActors}
 								workforces={this.state.analytics.workforces}
 								addRangeFilter={(v) => this.manageFilter("size_range", v, "true")}
 								selected={this.state.filters.size_range}
@@ -531,9 +547,9 @@ export default class PageDashboard extends React.Component {
 					</div>
 					<div className="col-md-6">
 						<h2>Age of companies</h2>
-						{this.state.filtered_actors !== null
+						{this.state.filteredActors !== null
 							? <BarActorAge
-								actors={this.state.filtered_actors}
+								actors={this.state.filteredActors}
 								addRangeFilter={(v) => this.manageFilter("age_range", v, "true")}
 								selected={this.state.filters.age_range}
 							/>
@@ -544,9 +560,9 @@ export default class PageDashboard extends React.Component {
 					</div>
 					<div className="col-md-6">
 						<h2>Companies per size ranges</h2>
-						{this.state.filtered_actors !== null
+						{this.state.filteredActors !== null
 							? <BarWorkforceRange
-								actors={this.state.filtered_actors}
+								actors={this.state.filteredActors}
 								workforces={this.state.analytics.workforces}
 								companiesAsGranularity={true}
 								addRangeFilter={(v) => this.manageFilter("size_range", v, "true")}
@@ -563,9 +579,12 @@ export default class PageDashboard extends React.Component {
 					<div className="col-md-12">
 						<h1>Taxonomy</h1>
 					</div>
-					{this.state.filtered_actors !== null
+					{this.state.filteredActors !== null
 						? this.state.analytics.taxonomy_categories.map((category) => (
-							<div className="col-md-12">
+							<div
+								className="col-md-12"
+								key={category.name}
+							>
 								<h2>{category.name}</h2>
 								{this.getTreeValues(category.name) !== null
 									? <TreeMap
@@ -575,51 +594,55 @@ export default class PageDashboard extends React.Component {
 												key: "amount",
 												groups: ["value"],
 												fontColor: "grey",
-									        borderColor: (ctx) => (
-									        		ctx.dataset.data.length > 0
-									        		&& this.state.filters.taxonomy_values
-									        		&& this.state.filters.taxonomy_values
-									        			.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
-									        		? "#e40613" : "#8fddff"
-									        	),
-									        backgroundColor: (ctx) => (
-									        		ctx.dataset.data.length > 0
-									        		&& this.state.filters.taxonomy_values
-									        		&& this.state.filters.taxonomy_values
-									        			.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
-									        		? "#fed7da" : "#bcebff"
-									        	),
-									        borderWidth: 1,
+												borderColor: (ctx) => (
+													ctx.dataset.data.length > 0
+													&& this.state.filters.taxonomy_values
+													&& this.state.filters.taxonomy_values
+														.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
+														? "#e40613" : "#8fddff"
+												),
+												backgroundColor: (ctx) => (
+													ctx.dataset.data.length > 0
+													&& this.state.filters.taxonomy_values
+													&& this.state.filters.taxonomy_values
+														.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
+														? "#fed7da" : "#bcebff"
+												),
+												borderWidth: 1,
 											}],
 										}}
 										options={{
-									    legend: {
-									      display: false,
-									    },
-									    tooltips: {
-									      callbacks: {
-									        title(item, data) {
-									          return data.datasets[item[0].datasetIndex].key;
-									        },
-									        label(item, data) {
-									          const dataset = data.datasets[item.datasetIndex];
-									          const dataItem = dataset.data[item.index];
-									          const obj = dataItem._data;
-									          const label = obj.value;
-									          return label + ": " + dataItem.v;
-									        },
-									      },
-									    },
-									    onClick: (mouseEvent, data) => {
-									    	const dataset = data[0]._chart.config.data.datasets[data[0]._datasetIndex];
-									        const dataItem = dataset.data[data[0]._index];
-									        const obj = dataItem._data;
-									        const label = obj.value;
+											legend: {
+												display: false,
+											},
+											tooltips: {
+												callbacks: {
+													title(item, data) {
+														return data.datasets[item[0].datasetIndex].key;
+													},
+													label(item, data) {
+														const dataset = data.datasets[item.datasetIndex];
+														const dataItem = dataset.data[item.index];
+														// eslint-disable-next-line no-underscore-dangle
+														const obj = dataItem._data;
+														const label = obj.value;
+														return label + ": " + dataItem.v;
+													},
+												},
+											},
+											onClick: (mouseEvent, data) => {
+												// eslint-disable-next-line no-underscore-dangle
+												const dataset = data[0]._chart.config.data.datasets[data[0]._datasetIndex];
+												// eslint-disable-next-line no-underscore-dangle
+												const dataItem = dataset.data[data[0]._index];
+												// eslint-disable-next-line no-underscore-dangle
+												const obj = dataItem._data;
+												const label = obj.value;
 
-									        if (this.state.filters.taxonomy_values
-									        	&& this.state.filters.taxonomy_values.indexOf(label) >= 0) this.manageFilter("taxonomy_values", label, false);
-									        else this.manageFilter("taxonomy_values", label, true);
-									    },
+												if (this.state.filters.taxonomy_values
+												&& this.state.filters.taxonomy_values.indexOf(label) >= 0) this.manageFilter("taxonomy_values", label, false);
+												else this.manageFilter("taxonomy_values", label, true);
+											},
 										}}
 									/>
 									:								<Message
@@ -640,6 +663,7 @@ export default class PageDashboard extends React.Component {
 							Object.keys(this.state.analytics).indexOf(axis) >= 0
 								? this.state.filters[axis].map((value) => (
 									<Filter
+										key={axis + value}
 										content={
 											<div>{axis}: {value}</div>
 										}

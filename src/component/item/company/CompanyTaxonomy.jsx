@@ -2,10 +2,8 @@ import React from "react";
 import "./CompanyTaxonomy.css";
 import { NotificationManager as nm } from "react-notifications";
 import Tree from "react-d3-tree";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
-import CheckBoxGrid from "../../button/CheckBoxGrid";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import Loading from "../../box/Loading.jsx";
 
 export default class CompanyTaxonomy extends React.Component {
 	constructor(props) {
@@ -92,7 +90,7 @@ export default class CompanyTaxonomy extends React.Component {
 			status,
 		};
 
-		postRequest.call(this, "taxonomy/add_taxonomy_assignment", params, (response) => {
+		postRequest.call(this, "taxonomy/add_taxonomy_assignment", params, () => {
 			const companyProfile = { ...this.state.companyProfile };
 
 			if (status) companyProfile[prop].push(value);
@@ -145,7 +143,7 @@ export default class CompanyTaxonomy extends React.Component {
 
 		const children = [];
 
-		for (const i in childValues) {
+		for (let i = 0; i < childValues.length; i++) {
 			const child = {
 				child_id: childValues[i].id,
 				name: childValues[i].name,
@@ -154,14 +152,22 @@ export default class CompanyTaxonomy extends React.Component {
 			};
 
 			if (parentLevel + 2 === levels.length) {
+				let fillColor = null;
+
+				if (this.state.companyAssignment === null) {
+					fillColor = "lightgrey";
+				} else if (this.state.companyAssignment
+					.filter((a) => a.taxonomy_value === childValues[i].id).length > 0) {
+					fillColor = "#bcebff";
+				} else {
+					fillColor = "#fed7da";
+				}
+
 				child.nodeSvgShape = {
 					shape: "circle",
 					shapeProps: {
 						r: 10,
-						fill: this.state.companyAssignment === null ? "lightgrey"
-							: this.state.companyAssignment
-								.filter((a) => a.taxonomy_value === childValues[i].id).length > 0
-								? "#bcebff" : "#fed7da",
+						fill: fillColor,
 					},
 				};
 			}
@@ -183,10 +189,9 @@ export default class CompanyTaxonomy extends React.Component {
 		return levels;
 	}
 
-	onNodeClick(info, mouseEvent) {
+	onNodeClick(info) {
 		if (info.depth === info.leafLevel) {
 			const childId = info.child_id;
-			const parentId = info.parent.child_id;
 
 			const matchingCompanyAssignment = this.state.companyAssignment
 				.filter((vh) => vh.company === this.props.id && vh.taxonomy_value === childId);
@@ -197,7 +202,7 @@ export default class CompanyTaxonomy extends React.Component {
 			};
 
 			if (matchingCompanyAssignment.length === 0) {
-				postRequest.call(this, "taxonomy/add_taxonomy_assignment", params, (response) => {
+				postRequest.call(this, "taxonomy/add_taxonomy_assignment", params, () => {
 					getRequest.call(this, "company/get_company_taxonomy/" + this.props.id, (data) => {
 						this.setState({
 							companyAssignment: data,
@@ -214,7 +219,7 @@ export default class CompanyTaxonomy extends React.Component {
 					nm.error(error.message);
 				});
 			} else {
-				postRequest.call(this, "taxonomy/delete_taxonomy_assignment", params, (response) => {
+				postRequest.call(this, "taxonomy/delete_taxonomy_assignment", params, () => {
 					getRequest.call(this, "company/get_company_taxonomy/" + this.props.id, (data) => {
 						this.setState({
 							companyAssignment: data,
@@ -254,7 +259,7 @@ export default class CompanyTaxonomy extends React.Component {
 				</div>
 				<div className="col-md-12">
 					{this.getChildCategories().map((c) => (
-						<div className={"row row-spaced"}>
+						<div className={"row row-spaced"} key={c.name}>
 							<div
 								className="col-md-12"
 								style={{ height: 200 + 200 * this.getLevelsOfCategory(c.name).length }}>

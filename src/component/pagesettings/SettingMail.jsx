@@ -1,10 +1,10 @@
 import React from "react";
 import "./SettingMail.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
-import Loading from "../box/Loading";
-import Info from "../box/Info";
+import { getRequest, postRequest } from "../../utils/request.jsx";
+import FormLine from "../button/FormLine.jsx";
+import Loading from "../box/Loading.jsx";
+import Info from "../box/Info.jsx";
 
 export default class SettingMail extends React.Component {
 	constructor(props) {
@@ -52,12 +52,12 @@ export default class SettingMail extends React.Component {
 	}
 
 	saveTemplate(name) {
-    	const params = {
-    		name,
-    		content: name === "new_account" ? this.state.newAccountMail : this.state.resetPasswordMail,
-    	};
+		const params = {
+			name,
+			content: name === "new_account" ? this.state.newAccountMail : this.state.resetPasswordMail,
+		};
 
-    	postRequest.call(this, "mail/save_template", params, (response) => {
+		postRequest.call(this, "mail/save_template", params, () => {
 			this.refresh();
 			nm.info("The template has been saved");
 		}, (response) => {
@@ -90,9 +90,9 @@ export default class SettingMail extends React.Component {
 						<h2>New account mail</h2>
 					</div>
 					<div className="col-md-6">
-                        This mail is sent when you create a new user from the 'Users' page.
-                        The recipient of the mail is the provided email address in the form.
-                        The mail notify the new user of his/her account and his/her provisory password.
+						This mail is sent when you create a new user from the &#39;Users&#39; page.
+						The recipient of the mail is the provided email address in the form.
+						The mail notify the new user of his/her account and his/her provisory password.
 					</div>
 					<div className="col-md-6">
 						<Info
@@ -115,7 +115,7 @@ export default class SettingMail extends React.Component {
 							<div className="right-buttons">
 								<button
 									onClick={() => this.saveTemplate("new_account")}>
-                                    Save template
+									Save template
 								</button>
 							</div>
 						</div>
@@ -129,9 +129,10 @@ export default class SettingMail extends React.Component {
 						<h2>Reset password mail</h2>
 					</div>
 					<div className="col-md-6">
-                        This mail is sent when a user has forgotten his/her password.
-                        The recipient of the mail is the provided email address in the "I forgot my password" from the login page.
-                        The mail contains a URL leading to a form to define a new password.
+						This mail is sent when a user has forgotten his/her password.
+						{// eslint-disable-next-line
+						}The recipient of the mail is the provided email address in the "I forgot my password" from the login page.
+						The mail contains a URL leading to a form to define a new password.
 					</div>
 					<div className="col-md-6">
 						<Info
@@ -154,7 +155,7 @@ export default class SettingMail extends React.Component {
 							<div className="right-buttons">
 								<button
 									onClick={() => this.saveTemplate("reset_password")}>
-                                    Save template
+									Save template
 								</button>
 							</div>
 						</div>

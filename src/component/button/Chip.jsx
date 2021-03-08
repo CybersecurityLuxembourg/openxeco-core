@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./Chip.css";
-import CheckBox from "./CheckBox";
 
 export default class Chip extends Component {
 	constructor(props) {

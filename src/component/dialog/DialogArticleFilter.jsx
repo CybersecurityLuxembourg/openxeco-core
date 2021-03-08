@@ -3,9 +3,9 @@ import "./DialogArticleFilter.css";
 import Popup from "reactjs-popup";
 import _ from "lodash";
 import { NotificationManager as nm } from "react-notifications";
-import FormLine from "../button/FormLine";
-import { getRequest } from "../../utils/request";
-import Loading from "../box/Loading";
+import FormLine from "../button/FormLine.jsx";
+import { getRequest } from "../../utils/request.jsx";
+import Loading from "../box/Loading.jsx";
 
 export default class DialogArticleFilter extends React.Component {
 	constructor(props) {
@@ -37,7 +37,7 @@ export default class DialogArticleFilter extends React.Component {
 		this.state = _.cloneDeep(this.initialState);
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (!prevState.open && this.state.open) {
 			this.fetchData();
 		}
@@ -80,7 +80,7 @@ export default class DialogArticleFilter extends React.Component {
 		document.elementFromPoint(100, 0).click();
 	}
 
-	cancel() {
+	static cancel() {
 		document.elementFromPoint(100, 0).click();
 	}
 
@@ -96,10 +96,12 @@ export default class DialogArticleFilter extends React.Component {
 		this.state.allowedFilters.map((filter) => {
 			if (typeof this.state[filter] === "boolean" && this.state[filter]) n += 1;
 			if (typeof this.state[filter] === "string" && this.state[filter].length > 0) n += 1;
-			if (Array.isArray(this.state[filter]) && this.state[filter] > 0) n += this.state[filter].length;
+			if (Array.isArray(this.state[filter]) && this.state[filter] > 0) {
+				n += this.state[filter].length;
+			}
 		});
 
-		for (const i in this.state.categories) {
+		for (let i = 0; i < this.state.categories.length; i++) {
 			if (Array.isArray(this.state[this.state.categories[i].name])) {
 				n += this.state[this.state.categories[i].name].length;
 			}
@@ -118,7 +120,7 @@ export default class DialogArticleFilter extends React.Component {
 
 		let values = [];
 
-		for (const i in this.state.categories) {
+		for (let i = 0; i < this.state.categories.length; i++) {
 			if (Array.isArray(this.state[this.state.categories[i].name])) {
 				values = values.concat(this.state[this.state.categories[i].name]);
 			}
@@ -205,6 +207,7 @@ export default class DialogArticleFilter extends React.Component {
 					{this.state.categories !== null && this.state.taxonomy_values !== null
 						? this.state.categories.map((c) => (
 							<FormLine
+								key={c.name}
 								label={c.name}
 								type={"multiselect"}
 								fullWidth={true}

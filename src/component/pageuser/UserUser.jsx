@@ -2,14 +2,13 @@ import React from "react";
 import "./UserUser.css";
 import { NotificationManager as nm } from "react-notifications";
 import _ from "lodash";
-import Lock from "../box/Lock";
-import Loading from "../box/Loading";
-import Info from "../box/Info";
-import Table from "../table/Table";
-import { getRequest, postRequest } from "../../utils/request";
-import User from "../item/User";
-import FormLine from "../button/FormLine";
-import { validateEmail, validatePassword } from "../../utils/re";
+import Loading from "../box/Loading.jsx";
+import Info from "../box/Info.jsx";
+import Table from "../table/Table.jsx";
+import { getRequest, postRequest } from "../../utils/request.jsx";
+import User from "../item/User.jsx";
+import FormLine from "../button/FormLine.jsx";
+import { validateEmail, validatePassword } from "../../utils/re.jsx";
 
 export default class UserUser extends React.Component {
 	constructor(props) {
@@ -48,7 +47,7 @@ export default class UserUser extends React.Component {
 			password: this.state.provisoryPassword,
 		};
 
-		postRequest.call(this, "user/add_user", params, (response) => {
+		postRequest.call(this, "user/add_user", params, () => {
 			this.refreshUsers();
 			this.setState({ email: null });
 			nm.info("The user has been added");
@@ -149,7 +148,8 @@ export default class UserUser extends React.Component {
 						<Info
 							content={
 								<div>
-                                    A mail will be sent to the new user's address with the provisory password
+									{// eslint-disable-next-line
+									}A mail will be sent to the new user&#39;s address with the provisory password
 								</div>
 							}
 						/>

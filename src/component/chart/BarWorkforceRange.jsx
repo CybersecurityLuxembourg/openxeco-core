@@ -14,12 +14,12 @@ export default class BarWorkforceRange extends React.Component {
 	}
 
 	getData() {
-		const data = this.state.ranges.map((o) => 0);
+		const data = this.state.ranges.map(() => 0);
 		const acceptedIDs = this.props.actors.map((a) => a.id);
 
-		for (const i in this.props.workforces) {
+		for (let i = 0; i < this.props.workforces.length; i++) {
 			if (acceptedIDs.indexOf(this.props.workforces[i].company) >= 0) {
-				for (const y in this.state.ranges) {
+				for (let y = 0; y < this.state.ranges.length; y++) {
 					if (this.props.workforces[i].workforce <= this.state.ranges[y]) {
 						if (this.props.companiesAsGranularity) {
 							data[y] += 1;
@@ -35,7 +35,7 @@ export default class BarWorkforceRange extends React.Component {
 		return data;
 	}
 
-	getPastDate(years) {
+	static getPastDate(years) {
 		const date = new Date();
 		date.setFullYear(date.getFullYear() - years);
 		return date.toISOString().split("T")[0];
@@ -45,37 +45,39 @@ export default class BarWorkforceRange extends React.Component {
 		return (
 			<Bar
 				data={{
-				  labels: this.state.labels,
-				  datasets: [{
-				      data: this.getData(),
-				      borderWidth: 1,
-				       borderColor: this.state.ranges.map((o) => (typeof this.props.selected !== "undefined"
-				      		&& this.props.selected[1] === o ? "#e40613" : "#009fe3")),
-			          backgroundColor: this.state.ranges.map((o) => (typeof this.props.selected !== "undefined"
-				      		&& this.props.selected[1] === o ? "#fed7da" : "#bcebff")),
-				  }],
+					labels: this.state.labels,
+					datasets: [{
+						data: this.getData(),
+						borderWidth: 1,
+						borderColor: this.state.ranges.map((o) => (typeof this.props.selected !== "undefined"
+							&& this.props.selected[1] === o ? "#e40613" : "#009fe3")),
+						backgroundColor: this.state.ranges.map((o) => (typeof this.props.selected !== "undefined"
+							&& this.props.selected[1] === o ? "#fed7da" : "#bcebff")),
+					}],
 				}}
 				options={{
 					legend: {
-				        display: false,
-				    },
+						display: false,
+					},
 					scales: {
-					    yAxes: [
-					      {
-					        ticks: {
-					          beginAtZero: true,
-					        },
-					      },
-					    ],
-					  },
+						yAxes: [
+							{
+								ticks: {
+									beginAtZero: true,
+								},
+							},
+						],
+					},
 					onClick: (mouseEvent, data) => {
 						if (data.length > 0) {
-					    	this.props.addRangeFilter([
-					    		data[0]._index > 0 ? this.state.ranges[data[0]._index - 1] + 1 : 0,
-					    		this.state.ranges[data[0]._index],
-					    	]);
+							this.props.addRangeFilter([
+								// eslint-disable-next-line no-underscore-dangle
+								data[0]._index > 0 ? this.state.ranges[data[0]._index - 1] + 1 : 0,
+								// eslint-disable-next-line no-underscore-dangle
+								this.state.ranges[data[0]._index],
+							]);
 						}
-				    },
+					},
 				}}
 			/>
 		);

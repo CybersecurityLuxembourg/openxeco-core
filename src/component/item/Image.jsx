@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import "./Image.css";
 import Popup from "reactjs-popup";
-import { NotificationManager as nm } from "react-notifications";
-import FormLine from "../button/FormLine";
-import Loading from "../box/Loading";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import { getApiURL } from "../../utils/env";
+import FormLine from "../button/FormLine.jsx";
+import Loading from "../box/Loading.jsx";
+import { getApiURL } from "../../utils/env.jsx";
 
 export default class Image extends Component {
 	constructor(props) {

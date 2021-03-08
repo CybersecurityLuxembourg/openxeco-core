@@ -10,16 +10,12 @@ export default class DialogConfirmation extends React.Component {
 		this.cancel = this.cancel.bind(this);
 	}
 
-	componentDidMount() {
-
-	}
-
 	afterConfirmation() {
 		this.props.afterConfirmation();
 		document.elementFromPoint(100, 0).click();
 	}
 
-	cancel() {
+	static cancel() {
 		document.elementFromPoint(100, 0).click();
 	}
 

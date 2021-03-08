@@ -1,9 +1,9 @@
 import React from "react";
 import "./CompanyGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
 
 export default class CompanyGlobal extends React.Component {
 	constructor(props) {
@@ -51,7 +51,7 @@ export default class CompanyGlobal extends React.Component {
 				[prop]: value,
 			};
 
-			postRequest.call(this, "company/update_company", params, (response) => {
+			postRequest.call(this, "company/update_company", params, () => {
 				const company = { ...this.state.company };
 
 				company[prop] = value;
@@ -68,7 +68,9 @@ export default class CompanyGlobal extends React.Component {
 	}
 
 	render() {
-		if (this.state.company === null || this.state.companyEnums === null) return <Loading height={300}/>;
+		if (this.state.company === null || this.state.companyEnums === null) {
+			return <Loading height={300}/>;
+		}
 
 		return (
 			<div className={"row"}>

@@ -1,10 +1,10 @@
 import React from "react";
 import "./ArticleGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
-import { validateUrlHandle } from "../../../utils/re";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
+import { validateUrlHandle } from "../../../utils/re.jsx";
 
 export default class ArticleGlobal extends React.Component {
 	constructor(props) {
@@ -29,9 +29,9 @@ export default class ArticleGlobal extends React.Component {
 				article: data,
 			});
 
-			getRequest.call(this, "article/get_article_enums", (data) => {
+			getRequest.call(this, "article/get_article_enums", (data2) => {
 				this.setState({
-					articleEnums: data,
+					articleEnums: data2,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -52,7 +52,7 @@ export default class ArticleGlobal extends React.Component {
 				[prop]: value,
 			};
 
-			postRequest.call(this, "article/update_article", params, (response) => {
+			postRequest.call(this, "article/update_article", params, () => {
 				const article = { ...this.state.article };
 
 				article[prop] = value;
@@ -69,7 +69,9 @@ export default class ArticleGlobal extends React.Component {
 	}
 
 	render() {
-		if (this.state.article === null || this.state.articleEnums === null) return <Loading height={300}/>;
+		if (this.state.article === null || this.state.articleEnums === null) {
+			return <Loading height={300}/>;
+		}
 
 		return (
 			<div className={"row"}>

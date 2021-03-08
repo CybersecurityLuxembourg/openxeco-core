@@ -2,14 +2,12 @@ import React from "react";
 import "./ArticleContent.css";
 import { NotificationManager as nm } from "react-notifications";
 import RGL, { WidthProvider } from "react-grid-layout";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
-import Message from "../../box/Message";
-import LogArticleVersion from "../../item/LogArticleVersion";
-import DialogConfirmation from "../../dialog/DialogConfirmation";
-import DialogSelectImage from "../../dialog/DialogSelectImage";
-import { getApiURL } from "../../../utils/env";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
+import LogArticleVersion from "../LogArticleVersion.jsx";
+import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -40,7 +38,7 @@ export default class ArticleContent extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.selectedVersion !== this.state.selectedVersion
             && this.state.selectedVersion !== null) this.getContent(this.state.selectedVersion);
 
@@ -70,7 +68,7 @@ export default class ArticleContent extends React.Component {
 
 	getContent(versionId) {
 		getRequest.call(this, "article/get_article_version_content/" + versionId, (data) => {
-			for (const i in data) {
+			for (let i = 0; i < data.length; i++) {
 				data[i].i = i;
 				data[i].y = 0;
 				data[i].x = data[i].position;
@@ -86,9 +84,9 @@ export default class ArticleContent extends React.Component {
 			}, () => {
 				this.resizeBoxes();
 
-				getRequest.call(this, "log/get_update_article_version_logs/" + versionId, (data) => {
+				getRequest.call(this, "log/get_update_article_version_logs/" + versionId, (data2) => {
 					this.setState({
-						logs: data.reverse(),
+						logs: data2.reverse(),
 					});
 				}, (response) => {
 					nm.warning(response.statusText);
@@ -109,7 +107,7 @@ export default class ArticleContent extends React.Component {
 			content: this.state.content.sort((first, second) => first.y - second.y),
 		};
 
-		postRequest.call(this, "article/update_article_version_content", params, (response) => {
+		postRequest.call(this, "article/update_article_version_content", params, () => {
 			this.getContent(this.state.selectedVersion);
 			nm.info("The content has been updated");
 		}, (response) => {
@@ -157,9 +155,9 @@ export default class ArticleContent extends React.Component {
 		const content = this.state.content.map((c) => c);
 		content.splice(i, 1);
 
-		for (const i in content) {
-			content[i].position = parseInt(i) + 1;
-			content[i].i = i + "";
+		for (let y = 0; y < content.length; y++) {
+			content[y].position = parseInt(y, 10) + 1;
+			content[y].y = y + "";
 		}
 
 		this.setState({ content });
@@ -174,7 +172,9 @@ export default class ArticleContent extends React.Component {
 		content.map((c) => {
 			const tag = document.querySelector(".ArticleContent-layout .item-" + c.i + " .col-md-12 .FormLine");
 
-			if (tag === null) return;
+			if (tag === null) {
+				return;
+			}
 
 			const newSize = Math.ceil(tag.offsetHeight + 8) / 10;
 
@@ -222,7 +222,8 @@ export default class ArticleContent extends React.Component {
 			return "ArticleContent-item-new";
 		}
 
-		if (JSON.stringify(this.state.content[i].content) !== JSON.stringify(this.state.originalContent[i].content)) {
+		if (JSON.stringify(this.state.content[i].content)
+			!== JSON.stringify(this.state.originalContent[i].content)) {
 			return "ArticleContent-item-modified";
 		}
 
@@ -239,11 +240,11 @@ export default class ArticleContent extends React.Component {
 		return (
 			<div className={"row"}>
 				<div className="col-md-12">
-        			<div className={"row row-spaced"}>
+					<div className={"row row-spaced"}>
 						<div className="col-md-12">
 							<h2>Content</h2>
 						</div>
-        				<div className="col-md-12">
+						<div className="col-md-12">
 							<FormLine
 								label={"Select version to edit"}
 								type={"select"}
@@ -255,163 +256,170 @@ export default class ArticleContent extends React.Component {
 							/>
 						</div>
 					</div>
-					{this.state.selectedVersion !== null
-						? this.state.content !== null
-							? <div className={"row"}>
-								<div className="col-md-12 right-buttons">
-									<button
-										onClick={this.saveContent}
-										disabled={JSON.stringify(this.state.content)
-                                            === JSON.stringify(this.state.originalContent)}>
-										<i className="fas fa-save"/> Save content
-									</button>
-									<DialogConfirmation
-										text={"Are you sure to discard changes? You will lose the current modification"}
-										trigger={
-											<button
-												disabled={JSON.stringify(this.state.content)
-                                                    === JSON.stringify(this.state.originalContent)}>
-												<i className="fas fa-undo-alt"/> Discard changes
-											</button>
-										}
-										afterConfirmation={() => this.getContent(this.state.selectedVersion)}
-									/>
-								</div>
-								<div className="col-md-12">
-									{this.state.content.length === 0
-										? <Message
-											text={"This version has no content yet"}
-										/>
-										: ""}
-									<ReactGridLayout
-										className="ArticleContent-layout layout"
-										layout={this.state.content}
-										isDraggable={true}
-										isResizable={false}
-										onDragStop={(e) => this.moveBox(e)}
-										draggableHandle={".FormLine-label"}
-										containerPadding={[0, 0]}
-										margin={[0, 0]}
-										cols={1}
-										rowHeight={10}
-									>
-										{this.state.content.map((item, index) => (
-											<div className={"ArticleContent-item row item-" + index + " "
-                                                    + this.getItemStatusClassname(index)}
-											key={index}
-											data-grid={item}>
-												<div className="ArticleContent-item-remove-button">
-													<span
-														className="tooltip--left"
-														data-tooltip="Remove this block"
-														onClick={() => this.removeBox(index)}>
-														<i className="fas fa-times hoverEffect pageReporting-grid-button"/>
-													</span>
-												</div>
-												<div className={"col-md-12"}>
-													{item.type === "TITLE1"
-														? <FormLine
-															labelWidth={3}
-															label={item.type}
-															value={item.content}
-															onBlur={(v) => this.updateComponent(index, "content", v)}
-														/>
-														: ""}
-													{item.type === "TITLE2"
-														? <FormLine
-															labelWidth={3}
-															label={item.type}
-															value={item.content}
-															onBlur={(v) => this.updateComponent(index, "content", v)}
-														/>
-														: ""}
-													{item.type === "PARAGRAPH"
-														? <FormLine
-															type="editor"
-															label={item.type}
-															labelWidth={3}
-															value={item.content}
-															onChange={(v) => this.updateComponent(index, "content", v)}
-														/>
-														: ""}
-													{item.type === "IMAGE"
-														? <div className="ArticleContent-image-wrapper">
-															<FormLine
-																type="image"
-																label={item.type}
-																labelWidth={3}
-																value={item.content}
-																onChange={(v) => this.updateComponent(index, "content", v)}
-																onLoad={this.resizeBoxes}
-															/>
-														</div>
-														: ""}
-													{item.type === "FRAME"
-														? <FormLine
-															type="frame"
-															label={item.type}
-															labelWidth={3}
-															value={item.content}
-															onChange={(v) => this.updateComponent(index, "content", v)}
-														/>
-														: ""}
-												</div>
-											</div>
-										))}
-									</ReactGridLayout>
-								</div>
-								<div className="col-md-12 ArticleContent-block-buttons">
-									<button
-										onClick={() => this.addBox("TITLE1")}>
-										<i className="fas fa-plus"/> Title 1
-									</button>
-									<button
-										onClick={() => this.addBox("TITLE2")}>
-										<i className="fas fa-plus"/> Title 2
-									</button>
-									<button
-										onClick={() => this.addBox("PARAGRAPH")}>
-										<i className="fas fa-plus"/> Paragraph
-									</button>
-									<button
-										onClick={() => this.addBox("IMAGE")}>
-										<i className="fas fa-plus"/> Image
-									</button>
-									<button
-										onClick={() => this.addBox("FRAME")}>
-										<i className="fas fa-plus"/> Frame
-									</button>
-								</div>
-							</div>
-							: <Loading
-								height={250}
-							/>
-						: ""}
-					{this.state.selectedVersion !== null
-						? this.state.logs !== null
-							? <div className={"row"}>
-								<div className="col-md-12">
-									<h2>History</h2>
-								</div>
-								<div className="col-md-12">
-									{this.state.logs.length > 0
-										? this.state.logs.map((l, i) => (
-											<LogArticleVersion
-												log={l}
-												previousLog={this.state.logs[i + 1]}
-											/>
-										))
-										: <Message
-											height={100}
-											text={"No log in history"}
-										/>
+
+					{this.state.selectedVersion !== null && this.state.content !== null
+						&& <div className={"row"}>
+							<div className="col-md-12 right-buttons">
+								<button
+									onClick={this.saveContent}
+									disabled={JSON.stringify(this.state.content)
+										=== JSON.stringify(this.state.originalContent)}>
+									<i className="fas fa-save"/> Save content
+								</button>
+								<DialogConfirmation
+									text={"Are you sure to discard changes? You will lose the current modification"}
+									trigger={
+										<button
+											disabled={JSON.stringify(this.state.content)
+                                                === JSON.stringify(this.state.originalContent)}>
+											<i className="fas fa-undo-alt"/> Discard changes
+										</button>
 									}
-								</div>
+									afterConfirmation={() => this.getContent(this.state.selectedVersion)}
+								/>
 							</div>
-							: <Loading
-								height={250}
-							/>
-						: ""}
+							<div className="col-md-12">
+								{this.state.content.length === 0
+									? <Message
+										text={"This version has no content yet"}
+									/>
+									: ""}
+								<ReactGridLayout
+									className="ArticleContent-layout layout"
+									layout={this.state.content}
+									isDraggable={true}
+									isResizable={false}
+									onDragStop={(e) => this.moveBox(e)}
+									draggableHandle={".FormLine-label"}
+									containerPadding={[0, 0]}
+									margin={[0, 0]}
+									cols={1}
+									rowHeight={10}
+								>
+									{this.state.content.map((item, index) => (
+										<div className={"ArticleContent-item row item-" + index + " "
+                                                + this.getItemStatusClassname(index)}
+										key={index}
+										data-grid={item}>
+											<div className="ArticleContent-item-remove-button">
+												<span
+													className="tooltip--left"
+													data-tooltip="Remove this block"
+													onClick={() => this.removeBox(index)}>
+													<i className="fas fa-times hoverEffect pageReporting-grid-button"/>
+												</span>
+											</div>
+											<div className={"col-md-12"}>
+												{item.type === "TITLE1"
+													? <FormLine
+														labelWidth={3}
+														label={item.type}
+														value={item.content}
+														onBlur={(v) => this.updateComponent(index, "content", v)}
+													/>
+													: ""}
+												{item.type === "TITLE2"
+													? <FormLine
+														labelWidth={3}
+														label={item.type}
+														value={item.content}
+														onBlur={(v) => this.updateComponent(index, "content", v)}
+													/>
+													: ""}
+												{item.type === "PARAGRAPH"
+													? <FormLine
+														type="editor"
+														label={item.type}
+														labelWidth={3}
+														value={item.content}
+														onChange={(v) => this.updateComponent(index, "content", v)}
+													/>
+													: ""}
+												{item.type === "IMAGE"
+													? <div className="ArticleContent-image-wrapper">
+														<FormLine
+															type="image"
+															label={item.type}
+															labelWidth={3}
+															value={item.content}
+															onChange={(v) => this.updateComponent(index, "content", v)}
+															onLoad={this.resizeBoxes}
+														/>
+													</div>
+													: ""}
+												{item.type === "FRAME"
+													? <FormLine
+														type="frame"
+														label={item.type}
+														labelWidth={3}
+														value={item.content}
+														onChange={(v) => this.updateComponent(index, "content", v)}
+													/>
+													: ""}
+											</div>
+										</div>
+									))}
+								</ReactGridLayout>
+							</div>
+							<div className="col-md-12 ArticleContent-block-buttons">
+								<button
+									onClick={() => this.addBox("TITLE1")}>
+									<i className="fas fa-plus"/> Title 1
+								</button>
+								<button
+									onClick={() => this.addBox("TITLE2")}>
+									<i className="fas fa-plus"/> Title 2
+								</button>
+								<button
+									onClick={() => this.addBox("PARAGRAPH")}>
+									<i className="fas fa-plus"/> Paragraph
+								</button>
+								<button
+									onClick={() => this.addBox("IMAGE")}>
+									<i className="fas fa-plus"/> Image
+								</button>
+								<button
+									onClick={() => this.addBox("FRAME")}>
+									<i className="fas fa-plus"/> Frame
+								</button>
+							</div>
+						</div>
+					}
+
+					{this.state.selectedVersion !== null && this.state.content === null
+						&& <Loading
+							height={250}
+						/>
+					}
+
+					{this.state.selectedVersion !== null && this.state.logs !== null
+						&& <div className={"row"}>
+							<div className="col-md-12">
+								<h2>History</h2>
+							</div>
+							<div className="col-md-12">
+								{this.state.logs.length > 0
+									? this.state.logs.map((l, i) => (
+										<LogArticleVersion
+											key={l.id}
+											log={l}
+											previousLog={this.state.logs[i + 1]}
+										/>
+									))
+									: <Message
+										height={100}
+										text={"No log in history"}
+									/>
+								}
+							</div>
+						</div>
+					}
+
+					{this.state.selectedVersion !== null && this.state.logs === null
+						&& <Loading
+							height={250}
+						/>
+					}
 				</div>
 			</div>
 		);

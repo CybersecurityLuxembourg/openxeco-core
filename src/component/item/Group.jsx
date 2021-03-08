@@ -3,10 +3,10 @@ import "./Group.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
-import Loading from "../box/Loading";
-import DialogConfirmation from "../dialog/DialogConfirmation";
+import { getRequest, postRequest } from "../../utils/request.jsx";
+import FormLine from "../button/FormLine.jsx";
+import Loading from "../box/Loading.jsx";
+import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 
 export default class Group extends Component {
 	constructor(props) {
@@ -91,7 +91,7 @@ export default class Group extends Component {
 				[prop]: value,
 			};
 
-			postRequest.call(this, "user/update_user_group", params, (response) => {
+			postRequest.call(this, "user/update_user_group", params, () => {
 				const user = { ...this.state.user };
 
 				user[prop] = value;
@@ -112,7 +112,7 @@ export default class Group extends Component {
 			id: this.props.id,
 		};
 
-		postRequest.call(this, "user/delete_user_group", params, (response) => {
+		postRequest.call(this, "user/delete_user_group", params, () => {
 			document.elementFromPoint(100, 0).click();
 			nm.info("The group has been deleted");
 
@@ -137,7 +137,7 @@ export default class Group extends Component {
 		};
 
 		if (result.destination.droppableId === "yes") {
-			postRequest.call(this, "user/add_user_group_right", params, (response) => {
+			postRequest.call(this, "user/add_user_group_right", params, () => {
 				nm.info("The right has been granted");
 				this.refresh();
 			}, (response) => {
@@ -146,7 +146,7 @@ export default class Group extends Component {
 				nm.error(error.message);
 			});
 		} else {
-			postRequest.call(this, "user/delete_user_group_right", params, (response) => {
+			postRequest.call(this, "user/delete_user_group_right", params, () => {
 				nm.info("The right has been revoked");
 				this.refresh();
 			}, (response) => {
@@ -234,7 +234,7 @@ export default class Group extends Component {
 										<Droppable
 											droppableId="no"
 											direction="vertical">
-											{(provided, snapshot) => (
+											{(provided) => (
 												<div
 													ref={provided.innerRef}
 													className="Droppable-bar Droppable-bar-unassigned"
@@ -247,13 +247,16 @@ export default class Group extends Component {
 																key={"" + resource}
 																draggableId={"" + resource}
 																index={index}>
-																{(provided, snapshot) => (
+																{(provided2, snapshot2) => (
 																	<div
 																		className="Droppable-element Droppable-element-block"
-																		ref={provided.innerRef}
-																		{...provided.draggableProps}
-																		{...provided.dragHandleProps}
-																		style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
+																		ref={provided2.innerRef}
+																		{...provided2.draggableProps}
+																		{...provided2.dragHandleProps}
+																		style={getItemStyle(
+																			snapshot2.isDragging,
+																			provided2.draggableProps.style,
+																		)}>
 																		{resource}
 																	</div>
 																)}
@@ -268,7 +271,7 @@ export default class Group extends Component {
 										<Droppable
 											droppableId="yes"
 											direction="vertical">
-											{(provided, snapshot) => (
+											{(provided) => (
 												<div
 													ref={provided.innerRef}
 													className="Droppable-bar"
@@ -281,13 +284,16 @@ export default class Group extends Component {
 																key={"" + resource}
 																draggableId={"" + resource}
 																index={index}>
-																{(provided, snapshot) => (
+																{(provided2, snapshot2) => (
 																	<div
 																		className="Droppable-element Droppable-element-block"
-																		ref={provided.innerRef}
-																		{...provided.draggableProps}
-																		{...provided.dragHandleProps}
-																		style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
+																		ref={provided2.innerRef}
+																		{...provided2.draggableProps}
+																		{...provided2.dragHandleProps}
+																		style={getItemStyle(
+																			snapshot2.isDragging,
+																			provided2.draggableProps.style,
+																		)}>
 																		{resource}
 																	</div>
 																)}

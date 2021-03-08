@@ -4,8 +4,8 @@ import {
 	Map, TileLayer, Marker, Popup,
 } from "react-leaflet";
 import { NotificationManager as nm } from "react-notifications";
-import Company from "../item/Company";
-import { getRequest } from "../../utils/request";
+import Company from "../item/Company.jsx";
+import { getRequest } from "../../utils/request.jsx";
 
 export default class GlobalMap extends React.Component {
 	constructor(props) {
@@ -20,7 +20,7 @@ export default class GlobalMap extends React.Component {
 		};
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.selectedCompanyId !== this.state.selectedCompanyId
             && this.state.selectedCompanyId !== null) {
 			getRequest.call(this, "company/get_company/" + this.state.selectedCompanyId, (data) => {
@@ -57,7 +57,7 @@ export default class GlobalMap extends React.Component {
 						? this.props.addresses
 							.filter((a) => a.latitude !== null && a.longitude !== null)
 							.map((a) => (
-								<div>
+								<div key={a.id}>
 									<Marker position={[a.latitude, a.longitude]}>
 										<Popup
 											companyId={a.company_id}

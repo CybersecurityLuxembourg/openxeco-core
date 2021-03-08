@@ -1,7 +1,7 @@
 import React from "react";
 import "./SingleMarkerMap.css";
 import {
-	Map, TileLayer, Marker, Popup,
+	Map, TileLayer, Marker,
 } from "react-leaflet";
 
 export default class SingleMarkerMap extends React.Component {
@@ -15,7 +15,7 @@ export default class SingleMarkerMap extends React.Component {
 		};
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps) {
 		if (prevProps.lat !== this.props.lat) this.setState({ lat: this.props.lat });
 		if (prevProps.lon !== this.props.lon) this.setState({ lon: this.props.lon });
 	}

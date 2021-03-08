@@ -1,13 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 import "./DialogSelectImage.css";
 import Popup from "reactjs-popup";
-import _ from "lodash";
 import { NotificationManager as nm } from "react-notifications";
-import FormLine from "../button/FormLine";
-import Image from "../item/Image";
-import { getRequest, postRequest } from "../../utils/request";
-import Loading from "../box/Loading";
-import Message from "../box/Message";
+import Image from "../item/Image.jsx";
+import { getRequest } from "../../utils/request.jsx";
+import Loading from "../box/Loading.jsx";
+import Message from "../box/Message.jsx";
 
 export default class DialogSelectImage extends React.Component {
 	constructor(props) {
@@ -49,7 +47,7 @@ export default class DialogSelectImage extends React.Component {
 		}
 	}
 
-	cancel() {
+	static cancel() {
 		const elements = document.getElementsByClassName("DialogSelectImage-overlay");
 		elements[0].click();
 	}
@@ -83,33 +81,40 @@ export default class DialogSelectImage extends React.Component {
 					</div>
 					<div className={"col-md-12"}>
 						{this.state.images === null
-							? <Loading
+							&& <Loading
 								height={300}
 							/>
-							: this.state.images.length === 0
-								? <Message
-									text={"No media in the library"}
-									height={300}
-								/>
-								: <div className="row">
-									{this.state.images.reverse().map((i) => (
-										<div className="col-xl-2 col-md-4 col-sm-6 DialogSelectImage-content-image">
-											<Image
-												id={i.id}
-												thumbnail={i.thumbnail}
-												height={i.height}
-												width={i.width}
-												creationDate={i.creation_date}
-											/>
-											<button
-												data-hover="Select"
-												data-active=""
-												onClick={() => this.onSelect(i.id)}>
-												<span>Select</span>
-											</button>
-										</div>
-									))}
-								</div>
+						}
+
+						{this.state.images !== null && this.state.images.length === 0
+							&& <Message
+								text={"No media in the library"}
+								height={300}
+							/>
+						}
+
+						{this.state.images !== null && this.state.images.length > 0
+							&& <div className="row">
+								{this.state.images.reverse().map((i) => (
+									<div
+										key={i.id}
+										className="col-xl-2 col-md-4 col-sm-6 DialogSelectImage-content-image">
+										<Image
+											id={i.id}
+											thumbnail={i.thumbnail}
+											height={i.height}
+											width={i.width}
+											creationDate={i.creation_date}
+										/>
+										<button
+											data-hover="Select"
+											data-active=""
+											onClick={() => this.onSelect(i.id)}>
+											<span>Select</span>
+										</button>
+									</div>
+								))}
+							</div>
 						}
 					</div>
 				</div>

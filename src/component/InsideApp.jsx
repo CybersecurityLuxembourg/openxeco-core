@@ -1,15 +1,15 @@
 import React from "react";
 import "./InsideApp.css";
 import { Route, Switch } from "react-router-dom";
-import Menu from "./Menu";
-import PageDashboard from "./PageDashboard";
-import PageCompany from "./PageCompany";
-import PageArticle from "./PageArticle";
-import PageTask from "./PageTask";
-import PageUser from "./PageUser";
-import PageMedia from "./PageMedia";
-import PageSettings from "./PageSettings";
-import PageProfile from "./PageProfile";
+import Menu from "./Menu.jsx";
+import PageDashboard from "./PageDashboard.jsx";
+import PageCompany from "./PageCompany.jsx";
+import PageArticle from "./PageArticle.jsx";
+import PageTask from "./PageTask.jsx";
+import PageUser from "./PageUser.jsx";
+import PageMedia from "./PageMedia.jsx";
+import PageSettings from "./PageSettings.jsx";
+import PageProfile from "./PageProfile.jsx";
 
 export default class InsideApp extends React.Component {
 	constructor(props) {

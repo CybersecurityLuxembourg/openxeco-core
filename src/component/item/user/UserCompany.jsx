@@ -1,15 +1,11 @@
 import React from "react";
 import "./UserCompany.css";
 import { NotificationManager as nm } from "react-notifications";
-import _ from "lodash";
-import Popup from "reactjs-popup";
-import Loading from "../../box/Loading";
-import Message from "../../box/Message";
-import Address from "../../button/Address";
-import { getRequest, postRequest, getForeignRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Table from "../../table/Table";
-import DialogConfirmation from "../../dialog/DialogConfirmation";
+import Loading from "../../box/Loading.jsx";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Table from "../../table/Table.jsx";
+import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 
 export default class UserCompany extends React.Component {
 	constructor(props) {
@@ -53,12 +49,12 @@ export default class UserCompany extends React.Component {
 	}
 
 	addUserCompany() {
-    	 const params = {
+		const params = {
 			user: this.props.id,
 			company: this.state.selectedCompany,
 		};
 
-		postRequest.call(this, "user/add_user_company", params, (response) => {
+		postRequest.call(this, "user/add_user_company", params, () => {
 			this.refresh();
 			nm.info("The company has been added to the user");
 		}, (response) => {
@@ -76,7 +72,7 @@ export default class UserCompany extends React.Component {
 			company: id,
 		};
 
-		postRequest.call(this, "user/delete_user_company", params, (response) => {
+		postRequest.call(this, "user/delete_user_company", params, () => {
 			this.refresh();
 			nm.info("The row has been deleted");
 		}, (response) => {

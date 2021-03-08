@@ -1,11 +1,11 @@
 import React from "react";
 import "./CompanyWorkforce.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
-import Table from "../../table/Table";
-import DialogConfirmation from "../../dialog/DialogConfirmation";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
+import Table from "../../table/Table.jsx";
+import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 
 export default class CompanyWorkforce extends React.Component {
 	constructor(props) {
@@ -56,16 +56,16 @@ export default class CompanyWorkforce extends React.Component {
 		});
 	}
 
-	addWorkforce(prop, value) {
+	addWorkforce() {
 		const params = {
 			company: this.props.id,
-			workforce: parseInt(this.state.workforce),
+			workforce: parseInt(this.state.workforce, 10),
 			source: this.state.source,
 			date: this.state.date,
 			is_estimated: this.state.is_estimated,
 		};
 
-		postRequest.call(this, "workforce/add_workforce", params, (response) => {
+		postRequest.call(this, "workforce/add_workforce", params, () => {
 			this.refresh();
 			nm.info("The property has been added");
 		}, (response) => {
@@ -82,7 +82,7 @@ export default class CompanyWorkforce extends React.Component {
 			id,
 		};
 
-		postRequest.call(this, "workforce/delete_workforce", params, (response) => {
+		postRequest.call(this, "workforce/delete_workforce", params, () => {
 			this.refresh();
 			nm.info("The row has been deleted");
 		}, (response) => {
@@ -99,7 +99,9 @@ export default class CompanyWorkforce extends React.Component {
 	}
 
 	render() {
-		if (this.state.workforces === null || this.state.sources === null) return <Loading height={300}/>;
+		if (this.state.workforces === null || this.state.sources === null) {
+			return <Loading height={300}/>;
+		}
 
 		const columns = [
 			{
@@ -139,7 +141,7 @@ export default class CompanyWorkforce extends React.Component {
 
 		return (
 			<div>
-    			<div className={"row row-spaced"}>
+				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>Workforce</h2>
 					</div>
@@ -152,7 +154,7 @@ export default class CompanyWorkforce extends React.Component {
 							onChange={(v) => this.changeState("workforce", v)}
 						/>
 					</div>
-    				<div className="col-md-3">
+					<div className="col-md-3">
 						<FormLine
 							label={"Date"}
 							type={"date"}

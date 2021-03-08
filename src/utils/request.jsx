@@ -1,4 +1,4 @@
-import { getApiURL } from "./env";
+import { getApiURL } from "./env.jsx";
 
 export async function getRequest(url, callback, catchBadResponse, catchError) {
 	fetch(getApiURL() + url, {
@@ -14,8 +14,12 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 			return response.json();
 		} if (response.status === 403) {
 			window.location.replace("/?status=expiredSession");
-		} else if (catchBadResponse != null) catchBadResponse(response);
-		else this.props.alert.error(response.statusText);
+		} else if (catchBadResponse != null) {
+			catchBadResponse(response);
+		} else {
+			this.props.alert.error(response.statusText);
+		}
+		return null;
 	}).then((jsonBody) => {
 		if (typeof jsonBody !== "undefined") callback(jsonBody);
 	}).catch((error) => {
@@ -37,8 +41,12 @@ export async function getBlobRequest(url, callback, catchBadResponse, catchError
 			return response.blob();
 		} if (response.status === 403) {
 			window.location.replace("/?status=expiredSession");
-		} else if (catchBadResponse != null) catchBadResponse(response);
-		else this.props.alert.error(response.statusText);
+		} else if (catchBadResponse != null) {
+			catchBadResponse(response);
+		} else {
+			this.props.alert.error(response.statusText);
+		}
+		return null;
 	}).then((blob) => {
 		if (typeof blob !== "undefined") callback(blob);
 	}).catch((error) => {
@@ -61,8 +69,12 @@ export async function postRequest(url, params, callback, catchBadResponse, catch
 			return response.json();
 		} if (response.status === 403 && !url.includes("analytics")) {
 			window.location.replace("/?status=expiredSession");
-		} else if (catchBadResponse != null) catchBadResponse(response);
-		else this.props.alert.error(response.statusText);
+		} else if (catchBadResponse != null) {
+			catchBadResponse(response);
+		} else {
+			this.props.alert.error(response.statusText);
+		}
+		return null;
 	}).then((jsonBody) => {
 		if (typeof jsonBody !== "undefined") callback(jsonBody);
 	}).catch((error) => {
@@ -93,8 +105,12 @@ export async function getForeignRequest(url, callback, catchBadResponse, catchEr
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.json();
-		} if (catchBadResponse != null) catchBadResponse(response);
-		else this.props.alert.error(response.statusText);
+		} if (catchBadResponse != null) {
+			catchBadResponse(response);
+		} else {
+			this.props.alert.error(response.statusText);
+		}
+		return null;
 	}).then((jsonBody) => {
 		if (typeof jsonBody !== "undefined") callback(jsonBody);
 	}).catch((error) => {

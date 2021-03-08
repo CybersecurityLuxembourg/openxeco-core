@@ -1,9 +1,9 @@
 import React from "react";
 import "./ArticleTag.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
-import Loading from "../../box/Loading";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
 
 export default class ArticleTag extends React.Component {
 	constructor(props) {
@@ -28,25 +28,30 @@ export default class ArticleTag extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.selectedCompanies !== this.state.selectedCompanies
             && prevState.selectedCompanies !== null && this.state.selectedCompanies !== null) {
 			if (prevState.selectedCompanies.length > this.state.selectedCompanies.length) {
-				const removedEl = prevState.selectedCompanies.filter((x) => !this.state.selectedCompanies.includes(x));
+				const removedEl = prevState.selectedCompanies
+					.filter((x) => !this.state.selectedCompanies.includes(x));
 				this.deleteCompanyTag(removedEl[0]);
 			} else {
-				const removedEl = this.state.selectedCompanies.filter((x) => !prevState.selectedCompanies.includes(x));
+				const removedEl = this.state.selectedCompanies
+					.filter((x) => !prevState.selectedCompanies.includes(x));
 				this.addCompanyTag(removedEl[0]);
 			}
 		}
 
 		if (prevState.selectedTaxonomyValues !== this.state.selectedTaxonomyValues
-            && prevState.selectedTaxonomyValues !== null && this.state.selectedTaxonomyValues !== null) {
+            && prevState.selectedTaxonomyValues !== null
+            && this.state.selectedTaxonomyValues !== null) {
 			if (prevState.selectedTaxonomyValues.length > this.state.selectedTaxonomyValues.length) {
-				const removedEl = prevState.selectedTaxonomyValues.filter((x) => !this.state.selectedTaxonomyValues.includes(x));
+				const removedEl = prevState.selectedTaxonomyValues
+					.filter((x) => !this.state.selectedTaxonomyValues.includes(x));
 				this.deleteTaxonomyTag(removedEl[0]);
 			} else {
-				const removedEl = this.state.selectedTaxonomyValues.filter((x) => !prevState.selectedTaxonomyValues.includes(x));
+				const removedEl = this.state.selectedTaxonomyValues
+					.filter((x) => !prevState.selectedTaxonomyValues.includes(x));
 				this.addTaxonomyTag(removedEl[0]);
 			}
 		}
@@ -92,13 +97,13 @@ export default class ArticleTag extends React.Component {
 		});
 	}
 
-	addTaxonomyTag(taxonomy_value_id) {
+	addTaxonomyTag(taxonomyValueID) {
 		const params = {
 			article: this.props.id,
-			taxonomy_value: taxonomy_value_id,
+			taxonomy_value: taxonomyValueID,
 		};
 
-		postRequest.call(this, "article/add_taxonomy_tag", params, (data) => {
+		postRequest.call(this, "article/add_taxonomy_tag", params, () => {
 			this.refresh();
 		}, (response) => {
 			this.refresh();
@@ -109,13 +114,13 @@ export default class ArticleTag extends React.Component {
 		});
 	}
 
-	addCompanyTag(company_id) {
+	addCompanyTag(companyID) {
 		const params = {
 			article: this.props.id,
-			company: company_id,
+			company: companyID,
 		};
 
-		postRequest.call(this, "article/add_company_tag", params, (data) => {
+		postRequest.call(this, "article/add_company_tag", params, () => {
 			this.refresh();
 		}, (response) => {
 			this.refresh();
@@ -126,13 +131,13 @@ export default class ArticleTag extends React.Component {
 		});
 	}
 
-	deleteTaxonomyTag(taxonomy_value_id) {
+	deleteTaxonomyTag(taxonomyValueID) {
 		const params = {
 			article: this.props.id,
-			taxonomy_value: taxonomy_value_id,
+			taxonomy_value: taxonomyValueID,
 		};
 
-		postRequest.call(this, "article/delete_taxonomy_tag", params, (data) => {
+		postRequest.call(this, "article/delete_taxonomy_tag", params, () => {
 			this.refresh();
 		}, (response) => {
 			this.refresh();
@@ -143,13 +148,13 @@ export default class ArticleTag extends React.Component {
 		});
 	}
 
-	deleteCompanyTag(company_id) {
+	deleteCompanyTag(companyID) {
 		const params = {
 			article: this.props.id,
-			company: company_id,
+			company: companyID,
 		};
 
-		postRequest.call(this, "article/delete_company_tag", params, (data) => {
+		postRequest.call(this, "article/delete_company_tag", params, () => {
 			this.refresh();
 		}, (response) => {
 			this.refresh();

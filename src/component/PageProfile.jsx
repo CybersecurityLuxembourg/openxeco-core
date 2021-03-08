@@ -1,11 +1,11 @@
 import React from "react";
 import "./PageProfile.css";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "./box/Loading";
-import Info from "./box/Info";
-import FormLine from "./button/FormLine";
-import { getRequest, postRequest } from "../utils/request";
-import { validatePassword } from "../utils/re";
+import Loading from "./box/Loading.jsx";
+import Info from "./box/Info.jsx";
+import FormLine from "./button/FormLine.jsx";
+import { getRequest, postRequest } from "../utils/request.jsx";
+import { validatePassword } from "../utils/re.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
@@ -48,7 +48,7 @@ export default class PageProfile extends React.Component {
 			new_password: this.state.newPassword,
 		};
 
-		postRequest.call(this, "account/change_password", params, (data) => {
+		postRequest.call(this, "account/change_password", params, () => {
 			this.setState({
 				password: null,
 				newPassword: null,
@@ -92,7 +92,7 @@ export default class PageProfile extends React.Component {
 								/>
 							</div>
 							: <Loading
-                            	height={100}
+								height={100}
 							/>
 						}
 					</div>
@@ -106,13 +106,13 @@ export default class PageProfile extends React.Component {
 									label={"Current password"}
 									value={this.state.password}
 									onChange={(v) => this.changeState("password", v)}
-                            		format={validatePassword}
-                            		type={"password"}
+									format={validatePassword}
+									type={"password"}
 								/>
 								<Info
 									content={
 										<div>
-                                            The password must:<br/>
+											The password must:<br/>
 											<li>contain at least 1 lowercase alphabetical character</li>
 											<li>contain at least 1 uppercase alphabetical character</li>
 											<li>contain at least 1 numeric character</li>
@@ -125,29 +125,29 @@ export default class PageProfile extends React.Component {
 									label={"New password"}
 									value={this.state.newPassword}
 									onChange={(v) => this.changeState("newPassword", v)}
-                            		format={validatePassword}
-                            		type={"password"}
+									format={validatePassword}
+									type={"password"}
 								/>
 								<FormLine
 									label={"New password confirmation"}
 									value={this.state.newPasswordConfirmation}
 									onChange={(v) => this.changeState("newPasswordConfirmation", v)}
-                            		format={validatePassword}
-                            		type={"password"}
+									format={validatePassword}
+									type={"password"}
 								/>
 								<div className="right-buttons">
-		                        	<button
-		                        		onClick={() => this.changePassword()}
-		                        		disabled={!validatePassword(this.state.password)
-		                        			|| !validatePassword(this.state.newPassword)
-		                        			|| !validatePassword(this.state.newPasswordConfirmation)
-		                        			|| this.state.newPassword !== this.state.newPasswordConfirmation}>
-		                        		Change password
-		                        	</button>
-		                        </div>
+									<button
+										onClick={() => this.changePassword()}
+										disabled={!validatePassword(this.state.password)
+											|| !validatePassword(this.state.newPassword)
+											|| !validatePassword(this.state.newPasswordConfirmation)
+											|| this.state.newPassword !== this.state.newPasswordConfirmation}>
+										Change password
+									</button>
+								</div>
 							</div>
 							: <Loading
-                            	height={150}
+								height={150}
 							/>
 						}
 					</div>

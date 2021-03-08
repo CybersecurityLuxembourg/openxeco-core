@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import "./LogArticleVersion.css";
 import Popup from "reactjs-popup";
-import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
-import Loading from "../box/Loading";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import Message from "../box/Message";
-import { getApiURL } from "../../utils/env";
+import FormLine from "../button/FormLine.jsx";
+import Message from "../box/Message.jsx";
+import { getApiURL } from "../../utils/env.jsx";
 
 export default class LogArticleVersion extends Component {
 	constructor(props) {
@@ -83,8 +79,8 @@ export default class LogArticleVersion extends Component {
 									value={this.props.previousLog.user_id}
 									disabled={true}
 								/>
-								{JSON.parse(this.props.previousLog.params).content.map((item, index) => (
-									<div>
+								{JSON.parse(this.props.previousLog.params).content.map((item) => (
+									<div key={item.id}>
 										{item.type === "TITLE1"
 											? <h4>{item.content}</h4>
 											: ""}
@@ -136,8 +132,8 @@ export default class LogArticleVersion extends Component {
 									value={this.props.log.user_id}
 									disabled={true}
 								/>
-								{JSON.parse(this.props.log.params).content.map((item, index) => (
-									<div>
+								{JSON.parse(this.props.log.params).content.map((item) => (
+									<div key={item.id}>
 										{item.type === "TITLE1"
 											? <h4>{item.content}</h4>
 											: ""}

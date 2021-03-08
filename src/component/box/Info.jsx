@@ -9,7 +9,7 @@ export default class Info extends React.Component {
 					<i className="fas fa-info-circle"/>
 				</div>
 				<div className="Info-content">
-                	{this.props.content}
+					{this.props.content}
 				</div>
 			</div>
 		);

@@ -3,11 +3,11 @@ import "./CompanyAddress.css";
 import { NotificationManager as nm } from "react-notifications";
 import _ from "lodash";
 import Popup from "reactjs-popup";
-import Loading from "../../box/Loading";
-import Message from "../../box/Message";
-import Address from "../../button/Address";
-import { getRequest, postRequest, getForeignRequest } from "../../../utils/request";
-import FormLine from "../../button/FormLine";
+import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
+import Address from "../../button/Address.jsx";
+import { getRequest, getForeignRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
 
 export default class CompanyAddress extends React.Component {
 	constructor(props) {
@@ -71,7 +71,7 @@ export default class CompanyAddress extends React.Component {
 	}
 
 	addAddress() {
-    	const addresses = _.cloneDeep(this.state.addresses);
+		const addresses = _.cloneDeep(this.state.addresses);
 		addresses.push({
 			company_id: this.props.id,
 			address_1: null,
@@ -104,9 +104,9 @@ export default class CompanyAddress extends React.Component {
                 && data.facets.addresses.values !== undefined) {
 				this.setState({
 					scrapedAddresses:
-                        this.highlightAddressElements(
-                        	data.facets.addresses.values.map((a) => a.label),
-                        ),
+						this.highlightAddressElements(
+							data.facets.addresses.values.map((a) => a.label),
+						),
 				});
 			} else {
 				this.setState({
@@ -153,12 +153,12 @@ export default class CompanyAddress extends React.Component {
 	highlightAddressElements(rawAddresses) {
 		const output = [];
 
-		for (const i in rawAddresses) {
+		for (let i = 0; i < rawAddresses.length; i++) {
 			let address = rawAddresses[i];
 			let highlightedAddress = rawAddresses[i];
 			const o = { rawAddress: rawAddresses[i] };
 
-			for (const y in this.state.elements) {
+			for (let y = 0; y < this.state.elements.length; y++) {
 				if (address.match(this.state.elements[y].regex) !== null) {
 					o[this.state.elements[y].field] = address.match(this.state.elements[y].regex)[0];
 					address = address.replace(this.state.elements[y].regex, "");
@@ -225,37 +225,43 @@ export default class CompanyAddress extends React.Component {
 								</div>
 								<div className="col-md-12">
 									{Array.isArray(this.state.scrapedAddresses)
-										? (this.state.scrapedAddresses.length === 0
-											? <Message
-												text="No address found, try another company name"
-											/>
-											: <div>
-												<div className="row row-spaced">
-													{this.state.elements.map((e) => (
-														<div className="col-md-3">
-															<span className="dot" style={{ backgroundColor: e.color }}/>
-															{e.name}
-														</div>
-													))}
-												</div>
-												{this.state.scrapedAddresses.map((a) => (
-													<div className="row">
-														<div
-															className="col-md-10"
-															dangerouslySetInnerHTML={{ __html: a.highlightedAddress }}
-														/>
-														<div className="col-md-2">
-															<button
-																className={"blue-background small-button"}
-																onClick={() => this.addRawAddress(a)}>
-																<i className="far fa-check-circle"/>
-															</button>
-														</div>
+										&& this.state.scrapedAddresses.length === 0
+										&& <Message
+											text="No address found, try another company name"
+										/>
+									}
+
+									{Array.isArray(this.state.scrapedAddresses)
+										&& this.state.scrapedAddresses.length > 0
+										&& <div>
+											<div className="row row-spaced">
+												{this.state.elements.map((e) => (
+													<div className="col-md-3" key={e.name}>
+														<span className="dot" style={{ backgroundColor: e.color }}/>
+														{e.name}
 													</div>
 												))}
 											</div>
-										)
-										: <Loading
+											{this.state.scrapedAddresses.map((a) => (
+												<div className="row" key={a}>
+													<div
+														className="col-md-10"
+														dangerouslySetInnerHTML={{ __html: a.highlightedAddress }}
+													/>
+													<div className="col-md-2">
+														<button
+															className={"blue-background small-button"}
+															onClick={() => this.addRawAddress(a)}>
+															<i className="far fa-check-circle"/>
+														</button>
+													</div>
+												</div>
+											))}
+										</div>
+									}
+
+									{!Array.isArray(this.state.scrapedAddresses)
+										&& <Loading
 											height={100}
 										/>
 									}
@@ -273,11 +279,12 @@ export default class CompanyAddress extends React.Component {
 				<div className="col-md-12">
 					{this.state.addresses.length > 0
 						? this.state.addresses.map((a) => (
-                        		<Address
-                        			info={a}
+							<Address
+								key={a.id}
+								info={a}
 								afterAction={this.refresh}
-                        		/>
-                        	))
+							/>
+						))
 						: <Message
 							text={"No address found on the database"}
 							height={250}

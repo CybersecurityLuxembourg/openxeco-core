@@ -1,15 +1,11 @@
 import React from "react";
 import "./TaskRequest.css";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "../box/Loading";
-import Message from "../box/Message";
-import Table from "../table/Table";
-import Request from "../item/Request";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import CheckBox from "../button/CheckBox";
-import { dictToURI } from "../../utils/url";
+import Message from "../box/Message.jsx";
+import Request from "../item/Request.jsx";
+import { getRequest } from "../../utils/request.jsx";
+import CheckBox from "../button/CheckBox.jsx";
+import { dictToURI } from "../../utils/url.jsx";
 
 export default class TaskRequest extends React.Component {
 	constructor(props) {
@@ -35,7 +31,7 @@ export default class TaskRequest extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.showNew !== this.state.showNew
 			|| prevState.showInProcess !== this.state.showInProcess
 			|| prevState.showProcessed !== this.state.showProcessed) {
@@ -49,7 +45,7 @@ export default class TaskRequest extends React.Component {
 		});
 
 		const filters = {
-        	status: [],
+			status: [],
 		};
 
 		if (this.state.showNew) filters.status.push("NEW");
@@ -92,17 +88,17 @@ export default class TaskRequest extends React.Component {
 							<CheckBox
 								label={"NEW"}
 								value={this.state.showNew}
-								onClick={(v) => this.changeState("showNew", !this.state.showNew)}
+								onClick={() => this.changeState("showNew", !this.state.showNew)}
 							/>
 							<CheckBox
-                            	label={"IN PROCESS"}
+								label={"IN PROCESS"}
 								value={this.state.showInProcess}
-								onClick={(v) => this.changeState("showInProcess", !this.state.showInProcess)}
+								onClick={() => this.changeState("showInProcess", !this.state.showInProcess)}
 							/>
 							<CheckBox
-                            	label={"PROCESSED"}
+								label={"PROCESSED"}
 								value={this.state.showProcessed}
-								onClick={(v) => this.changeState("showProcessed", !this.state.showProcessed)}
+								onClick={() => this.changeState("showProcessed", !this.state.showProcessed)}
 							/>
 						</div>
 					</div>
@@ -127,9 +123,10 @@ export default class TaskRequest extends React.Component {
 									.filter((r) => r.submission_date > this.state.today)
 									.map((r) => (
 										<Request
+											key={r.id}
 											info={r}
 										/>
-				           		))}
+									))}
 							</div>
 							: ""}
 					</div>
@@ -147,9 +144,10 @@ export default class TaskRequest extends React.Component {
 									.filter((r) => r.submission_date > this.state.yesterday)
 									.map((r) => (
 										<Request
+											key={r.id}
 											info={r}
 										/>
-				           		))}
+									))}
 							</div>
 							: ""}
 					</div>
@@ -167,9 +165,10 @@ export default class TaskRequest extends React.Component {
 									.filter((r) => r.submission_date > this.state.lastWeek)
 									.map((r) => (
 										<Request
+											key={r.id}
 											info={r}
 										/>
-				           		))}
+									))}
 							</div>
 							: ""}
 					</div>
@@ -185,9 +184,10 @@ export default class TaskRequest extends React.Component {
 									.filter((r) => r.submission_date < this.state.lastWeek)
 									.map((r) => (
 										<Request
+											key={r.id}
 											info={r}
 										/>
-				           		))}
+									))}
 							</div>
 							: ""}
 					</div>

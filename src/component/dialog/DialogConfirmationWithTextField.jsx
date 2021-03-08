@@ -1,7 +1,7 @@
 import React from "react";
 import "./DialogConfirmationWithTextField.css";
 import Popup from "reactjs-popup";
-import FormLine from "../button/FormLine";
+import FormLine from "../button/FormLine.jsx";
 
 export default class DialogConfirmationWithTextField extends React.Component {
 	constructor(props) {
@@ -16,16 +16,12 @@ export default class DialogConfirmationWithTextField extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-
-	}
-
 	afterConfirmation() {
 		this.props.afterConfirmation(this.state.value);
 		document.elementFromPoint(100, 0).click();
 	}
 
-	cancel() {
+	static cancel() {
 		document.elementFromPoint(100, 0).click();
 	}
 

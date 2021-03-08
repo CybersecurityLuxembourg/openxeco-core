@@ -2,13 +2,11 @@ import React from "react";
 import "./UserGroup.css";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Loading from "../box/Loading";
-import Table from "../table/Table";
-import Group from "../item/Group";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import { dictToURI } from "../../utils/url";
+import Loading from "../box/Loading.jsx";
+import Table from "../table/Table.jsx";
+import Group from "../item/Group.jsx";
+import { getRequest, postRequest } from "../../utils/request.jsx";
+import FormLine from "../button/FormLine.jsx";
 
 export default class UserGroup extends React.Component {
 	constructor(props) {
@@ -32,9 +30,6 @@ export default class UserGroup extends React.Component {
 
 	componentDidMount() {
 		this.refresh();
-	}
-
-	componentDidUpdate(prevProps, prevState, snapshot) {
 	}
 
 	refresh() {
@@ -96,7 +91,7 @@ export default class UserGroup extends React.Component {
 			name: this.state.newGroup,
 		};
 
-    	postRequest.call(this, "user/add_user_group", params, (response) => {
+		postRequest.call(this, "user/add_user_group", params, () => {
 			this.getGroups();
 			nm.info("The value has been added");
 		}, (response) => {
@@ -111,7 +106,7 @@ export default class UserGroup extends React.Component {
 			id,
 		};
 
-		postRequest.call(this, "user/delete_user_group", params, (response) => {
+		postRequest.call(this, "user/delete_user_group", params, () => {
 			this.getGroups();
 			nm.info("The value has been deleted");
 		}, (response) => {
@@ -124,16 +119,16 @@ export default class UserGroup extends React.Component {
 	}
 
 	onDragEnd(result) {
-	    if (!result.destination) {
-	      	return;
-	    }
+		if (!result.destination) {
+			return;
+		}
 
-	    const params = {
-			group: parseInt(result.destination.droppableId),
-    		user: parseInt(result.draggableId),
-    	};
+		const params = {
+			group: parseInt(result.destination.droppableId, 10),
+			user: parseInt(result.draggableId, 10),
+		};
 
-	    postRequest.call(this, "user/update_user_group_assignment", params, (response) => {
+		postRequest.call(this, "user/update_user_group_assignment", params, () => {
 			nm.info("The modification has been saved");
 			this.getAssignments();
 		}, (response) => {
@@ -153,7 +148,7 @@ export default class UserGroup extends React.Component {
 		});
 
 		const columns = [
-          	{
+			{
 				Header: "Name",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
@@ -196,7 +191,7 @@ export default class UserGroup extends React.Component {
 							<i className="fas fa-plus"/> Add group
 						</button>
 					</div>
-				    <div className="col-md-12 PageCompany-table">
+					<div className="col-md-12 PageCompany-table">
 						{this.state.groups !== null
 							? <div className="fade-in">
 								<Table
@@ -219,84 +214,94 @@ export default class UserGroup extends React.Component {
 				</div>
 
 				{this.state.groups !== null && this.state.admins !== null && this.state.assignments !== null
-            		? <div className="row row-spaced">
-                		<div className="col-xl-12">
+					? <div className="row row-spaced">
+						<div className="col-xl-12">
 							<DragDropContext onDragEnd={this.onDragEnd}>
-                            	<Droppable
-                        			droppableId="null"
-                        			direction="horizontal">
-                        			{(provided, snapshot) => (
-							            <div
-							            	ref={provided.innerRef}
-							            	className="Droppable-bar Droppable-bar-unassigned"
-							            	{...provided.droppableProps}>
-							            	<div>Not assigned</div>
-							              	{this.state.admins
-							              		.filter((v) => this.state.assignments.map((a) => a.user_id).indexOf(v.id) < 0)
-							              		.map((item, index) => (
-								                <Draggable
-								                	key={"" + item.id}
-								                	draggableId={"" + item.id}
-								                	index={index}>
-								                	{(provided, snapshot) => (
-									                    <div
-									                    	className="Droppable-element"
-									                    	ref={provided.innerRef}
-										                    {...provided.draggableProps}
-										                    {...provided.dragHandleProps}
-										                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
-									                      	{item.email}
-									                    </div>
-									                )}
-								                </Draggable>
-							              	))}
-							              	{provided.placeholder}
-							            </div>
-							        )}
-						        </Droppable>
-                            	{this.state.groups.map((g) => (
-                            		<Droppable
-                            			droppableId={"" + g.id}
-                            			direction="horizontal">
-                            			{(provided, snapshot) => (
-								            <div
-								            	ref={provided.innerRef}
-								            	className="Droppable-bar"
-								            	{...provided.droppableProps}>
-								            	<div>{g.name}</div>
-								              	{this.state.assignments
-								              		.filter((v) => g.id === v.group_id)
-								              		.map((item, index) => (
-									                <Draggable
-									                	key={"" + item.id}
-									                	draggableId={"" + item.id}
-									                	index={index}>
-									                	{(provided, snapshot) => (
-										                    <div
-										                    	className="Droppable-element"
-										                    	ref={provided.innerRef}
-											                    {...provided.draggableProps}
-											                    {...provided.dragHandleProps}
-											                    style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
-										                      	{this.state.admins.filter((v) => v.id === item.user_id).length > 0
-										                      		? this.state.admins.filter((v) => v.id === item.user_id)[0].email
-										                      		: "Error"
-										                      	}
-										                    </div>
-										                )}
-									                </Draggable>
-								              	))}
-								              	{provided.placeholder}
-								            </div>
-								        )}
-							        </Droppable>
-                            	))}
-						    </DragDropContext>
+								<Droppable
+									droppableId="null"
+									direction="horizontal">
+									{(provided) => (
+										<div
+											ref={provided.innerRef}
+											className="Droppable-bar Droppable-bar-unassigned"
+											{...provided.droppableProps}>
+											<div>Not assigned</div>
+											{this.state.admins
+												.filter((v) => this.state.assignments.map((a) => a.user_id)
+													.indexOf(v.id) < 0)
+												.map((item, index) => (
+													<Draggable
+														key={"" + item.id}
+														draggableId={"" + item.id}
+														index={index}>
+														{(provided2, snapshot2) => (
+															<div
+																className="Droppable-element"
+																ref={provided2.innerRef}
+																{...provided2.draggableProps}
+																{...provided2.dragHandleProps}
+																style={getItemStyle(
+																	snapshot2.isDragging,
+																	provided2.draggableProps.style,
+																)}>
+																{item.email}
+															</div>
+														)}
+													</Draggable>
+												))}
+											{provided.placeholder}
+										</div>
+									)}
+								</Droppable>
+								{this.state.groups.map((g) => (
+									<Droppable
+										key={g.id}
+										droppableId={"" + g.id}
+										direction="horizontal">
+										{(provided) => (
+											<div
+												ref={provided.innerRef}
+												className="Droppable-bar"
+												{...provided.droppableProps}>
+												<div>{g.name}</div>
+												{this.state.assignments
+													.filter((v) => g.id === v.group_id)
+													.map((item, index) => (
+														<Draggable
+															key={"" + item.id}
+															draggableId={"" + item.id}
+															index={index}>
+															{(provided2, snapshot2) => (
+																<div
+																	className="Droppable-element"
+																	ref={provided2.innerRef}
+																	{...provided2.draggableProps}
+																	{...provided2.dragHandleProps}
+																	style={getItemStyle(
+																		snapshot2.isDragging,
+																		provided2.draggableProps.style,
+																	)}>
+																	{this.state.admins.filter((v) => v.id === item.user_id).length > 0
+																		? this.state.admins.filter(
+																			(v) => v.id === item.user_id,
+																		)[0].email
+																		: "Error"
+																	}
+																</div>
+															)}
+														</Draggable>
+													))}
+												{provided.placeholder}
+											</div>
+										)}
+									</Droppable>
+								))}
+							</DragDropContext>
 						</div>
 					</div>
 					:					<Loading
-                		height={300}
-                	/>
+						height={300}
+					/>
 				}
 			</div>
 		);

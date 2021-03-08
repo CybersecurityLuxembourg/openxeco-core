@@ -5,17 +5,12 @@ import "./Table.css";
 export default function Table({
 	columns, data, height, showBottomBar,
 }) {
-	// Use the state and functions returned from useTable to build your UI
-
 	const {
 		getTableProps,
 		getTableBodyProps,
 		headerGroups,
 		prepareRow,
-		page, // Instead of using 'rows', we'll use page,
-		// which has only the rows for the active page
-
-		// The rest of these things are super handy, too ;)
+		page,
 		canPreviousPage,
 		canNextPage,
 		pageOptions,
@@ -41,10 +36,10 @@ export default function Table({
 		<div>
 			<table {...getTableProps()}>
 				<thead>
-					{headerGroups.map((headerGroup) => (
-						<tr {...headerGroup.getHeaderGroupProps()}>
+					{headerGroups.map((headerGroup, i) => (
+						<tr {...headerGroup.getHeaderGroupProps()} key={i}>
 							{headerGroup.headers.map((column) => (
-								<th {...column.getHeaderProps()}>{column.render("Header")}</th>
+								<th {...column.getHeaderProps()} key={i}>{column.render("Header")}</th>
 							))}
 						</tr>
 					))}
@@ -53,8 +48,10 @@ export default function Table({
 					{page.map((row, i) => {
 						prepareRow(row);
 						return (
-							<tr {...row.getRowProps()}>
-								{row.cells.map((cell) => <td {...cell.getCellProps()}>{cell.render("Cell")}</td>)}
+							<tr {...row.getRowProps()} key={i}>
+								{row.cells.map((cell) => <td {...cell.getCellProps()} key={i}>
+									{cell.render("Cell")}
+								</td>)}
 							</tr>
 						);
 					})}
@@ -76,8 +73,8 @@ export default function Table({
 								type="number"
 								defaultValue={pageIndex + 1}
 								onChange={(e) => {
-									const page = e.target.value ? Number(e.target.value) - 1 : 0;
-									gotoPage(page);
+									const page2 = e.target.value ? Number(e.target.value) - 1 : 0;
+									gotoPage(page2);
 								}}
 								style={{ width: "100px" }}
 							/>
@@ -90,12 +87,14 @@ export default function Table({
 								setPageSize(Number(e.target.value));
 							}}
 						>
-              [10, 20, 50].map(pageSize => (
-							<option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-							</option>
-              ))
-
+							{// eslint-disable-next-line arrow-body-style
+							}{[10, 20, 50].map((ps) => {
+								return (
+									<option key={ps} value={ps}>
+				                  		Show {ps}
+									</option>
+								);
+							})}
 						</select>
 						: ""}
 				</div>

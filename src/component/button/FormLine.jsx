@@ -1,13 +1,27 @@
 import React from "react";
 import "./FormLine.css";
 import Select from "react-select";
-import { CountryDropdown, RegionDropdown, CountryRegionData } from "react-country-region-selector";
-import Editor from "react-medium-editor";
-import Chip from "../button/Chip";
-import CheckBox from "./CheckBox";
-import DialogSelectImage from "../dialog/DialogSelectImage";
-import { getApiURL } from "../../utils/env";
-import NoImage from "../box/NoImage";
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
+import _ from "lodash";
+import Chip from "./Chip.jsx";
+import CheckBox from "./CheckBox.jsx";
+
+function getSelectStyle() {
+	return {
+		input: () => ({
+			height: "32px !important",
+		}),
+		control: (base, state) => ({
+			...base,
+			border: state.isFocused ? "2px solid #000 !important" : "2px solid lightgrey !important",
+			boxShadow: 0,
+		}),
+		singleValue: (base) => ({
+			...base,
+			color: "inherit !important",
+		}),
+	};
+}
 
 export default class FormLine extends React.Component {
 	constructor(props) {
@@ -19,13 +33,14 @@ export default class FormLine extends React.Component {
 		this.getFormatClassName = this.getFormatClassName.bind(this);
 		this.addValue = this.addValue.bind(this);
 		this.deleteValue = this.deleteValue.bind(this);
+		this.getField = this.getField.bind(this);
 
 		this.state = {
 			value: props.value,
 		};
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps) {
 		if (prevProps.value !== this.props.value) {
 			this.setState({ value: this.props.value });
 		}
@@ -63,35 +78,101 @@ export default class FormLine extends React.Component {
 	}
 
 	getFormatClassName() {
-		if (typeof this.props.format === "undefined"
-            || this.state.value === null
-            || this.state.value.length === 0) {
+		if (this.props.format === undefined) {
 			return "";
 		}
 		if (this.props.format(this.state.value)) return "FormLine-right-format";
 		return "FormLine-wrong-format";
 	}
 
-	getSelectStyle() {
-		return {
-			input: () => ({
-				height: "32px !important",
-			}),
-			control: (base, state) => ({
-				...base,
-				border: state.isFocused ? "2px solid #000 !important" : "2px solid lightgrey !important",
-				boxShadow: 0,
-			}),
-			singleValue: (base, state) => ({
-				...base,
-				color: "inherit !important",
-			}),
-		};
+	getField() {
+		switch (this.props.type) {
+		case "textarea":
+			return <textarea
+				value={this.state.value}
+				onChange={(v) => this.onChange(v.target.value)}
+				onBlur={(v) => this.onBlur(v.target.value)}
+				disabled={this.props.disabled}
+				autoFocus={this.props.autofocus}
+				onKeyDown={this.props.onKeyDown}
+			/>;
+		case "checkbox":
+			return <CheckBox
+				value={this.state.value}
+				onClick={(v) => this.onChange(v)}
+				disabled={this.props.disabled}
+				background={this.props.background}
+			/>;
+		case "select":
+			return <Select
+				value={{
+					label: this.props.options
+						.filter((o) => o.value === this.state.value).length > 0
+						? this.props.options.filter((o) => o.value === this.state.value)[0].label
+						: this.state.value,
+					value: this.state.value,
+				}}
+				styles={this.getSelectStyle()}
+				options={this.props.options}
+				onChange={(v) => this.onChange(v.value)}
+			/>;
+		case "multiselect":
+			return <div>
+				<Select
+					value={null}
+					styles={getSelectStyle()}
+					options={this.props.options}
+					onChange={(v) => this.addValue(v.value)}
+				/>
+				<div className="FormLine-chips">
+					{(Array.isArray(this.state.value) ? this.state.value : []).map((o) => (
+						<Chip
+							key={o}
+							label={this.props.options.filter((op) => op.value === o)[0].label}
+							value={o}
+							onClick={(v) => this.deleteValue(v)}
+						/>
+					))}
+				</div>
+			</div>;
+		case "country":
+			return <CountryDropdown
+				className={this.getFormatClassName()}
+				value={this.state.value}
+				onChange={(value) => this.onChange(value)}
+			/>;
+		case "region":
+			return <RegionDropdown
+				className={this.getFormatClassName()}
+				country={this.props.country}
+				value={this.state.value}
+				onChange={(value) => this.onChange(value)}
+			/>;
+		default:
+			return <input
+				className={this.getFormatClassName()}
+				type={typeof this.props.type !== "undefined" ? this.props.type : "text"}
+				value={this.state.value}
+				onChange={(v) => this.onChange(v.target.value)}
+				onBlur={(v) => this.onBlur(v.target.value)}
+				disabled={this.props.disabled}
+				autoFocus={this.props.autofocus}
+				onKeyDown={this.props.onKeyDown}
+			/>;
+		}
 	}
 
 	render() {
-		const labelWidth = "col-md-" + (this.props.fullWidth ? 12 : (this.props.labelWidth ? this.props.labelWidth : 6));
-		const fieldWidth = "col-md-" + (this.props.fullWidth ? 12 : (this.props.labelWidth ? 12 - this.props.labelWidth : 6));
+		let labelWidth = null;
+		let fieldWidth = null;
+
+		if (this.props.fullWidth) {
+			labelWidth = "col-md-12";
+			fieldWidth = "col-md-12";
+		} else {
+			labelWidth = "col-md-" + (this.props.labelWidth ? this.props.labelWidth : 6);
+			fieldWidth = "col-md-" + (this.props.labelWidth ? 12 - this.props.labelWidth : 6);
+		}
 
 		return (
 			<div className={"FormLine"}>
@@ -102,130 +183,7 @@ export default class FormLine extends React.Component {
 						</div>
 					</div>
 					<div className={fieldWidth}>
-						{this.props.type === "textarea"
-							? <textarea
-								value={this.state.value}
-								onChange={(v) => this.onChange(v.target.value)}
-								onBlur={(v) => this.onBlur(v.target.value)}
-								disabled={this.props.disabled}
-								autoFocus={this.props.autofocus}
-								onKeyDown={this.props.onKeyDown}
-							/>
-							: this.props.type === "editor"
-								? <Editor
-									text={this.state.value}
-									onChange={(v) => this.onChange(v)}
-									options={{ toolbar: { buttons: ["bold", "italic", "underline", "anchor"] } }}
-								/>
-								: this.props.type === "checkbox"
-									? <CheckBox
-										value={this.state.value}
-										onClick={(v) => this.onChange(v)}
-										background={false}
-										disabled={this.props.disabled}
-									/>
-									: this.props.type === "select"
-										? <Select
-											value={{
-												label: this.props.options.filter((o) => o.value === this.state.value).length > 0
-													? this.props.options.filter((o) => o.value === this.state.value)[0].label
-													: this.state.value,
-												value: this.state.value,
-											}}
-											styles={this.getSelectStyle()}
-											options={this.props.options}
-											onChange={(v) => this.onChange(v.value)}
-										/>
-										: this.props.type === "multiselect"
-											? <div>
-												<Select
-													value={null}
-													styles={this.getSelectStyle()}
-													options={this.props.options}
-													onChange={(v) => this.addValue(v.value)}
-												/>
-												<div className="FormLine-chips">
-													{(Array.isArray(this.state.value) ? this.state.value : []).map((o) => (
-														<Chip
-															label={this.props.options.filter((op) => op.value === o)[0].label}
-															value={o}
-															onClick={(v) => this.deleteValue(v)}
-														/>
-													))}
-												</div>
-											</div>
-											: this.props.type === "country"
-												? <CountryDropdown
-													className={this.getFormatClassName()}
-													value={this.state.value}
-													onChange={(value) => this.onChange(value)}
-												/>
-												: this.props.type === "region"
-													? <RegionDropdown
-														className={this.getFormatClassName()}
-														country={this.props.country}
-														value={this.state.value}
-														onChange={(value) => this.onChange(value)}
-													/>
-													: this.props.type === "image"
-														? <div className={"Formline-image-wrapper"}>
-															<div className="Formline-image-display-wrapper"
-																style={{ minHeight: this.props.height !== undefined ? this.props.height : 500 }}>
-																{this.state.value !== null
-																	? <img
-																		className={"Formline-image"}
-																		src={getApiURL() + "public/get_image/" + this.state.value}
-																		onLoad={this.props.onLoad}
-																	/>
-																	: <NoImage/>
-																}
-															</div>
-															<div className={"right-buttons"}>
-																<button
-																	className={"red-background"}
-																	value={this.state.value}
-																	onClick={() => this.onChange(null)}
-																	disabled={this.state.value === null}>
-																	<i className="fas fa-trash-alt"/> Remove
-																</button>
-																<DialogSelectImage
-																	trigger={
-																		<button>
-																			<i className="fas fa-plus"/> {this.state.value === null ? "Select" : "Change"} image
-																		</button>
-																	}
-																	validateSelection={(value) => this.onChange(value)}
-																/>
-															</div>
-														</div>
-														: this.props.type === "frame"
-															? <div className={"Formline-frame-wrapper"}>
-																<Editor
-																	text={this.state.value}
-																	onChange={(v) => this.onChange(v)}
-																/>
-																<div className="Formline-frame-display-wrapper">
-																	<div
-																		dangerouslySetInnerHTML={
-																			{
-																				__html: this.state.value !== null
-																					? this.state.value.replace("&lt;", "<").replace("&gt;", ">") : "",
-																			}
-																		}
-																	/>
-																</div>
-															</div>
-															: <input
-																className={this.getFormatClassName()}
-																type={typeof this.props.type !== "undefined" ? this.props.type : "text"}
-																value={this.state.value}
-																onChange={(v) => this.onChange(v.target.value)}
-																onBlur={(v) => this.onBlur(v.target.value)}
-																disabled={this.props.disabled}
-																autoFocus={this.props.autofocus}
-																onKeyDown={this.props.onKeyDown}
-															/>
-						}
+						{this.getField()}
 					</div>
 				</div>
 			</div>

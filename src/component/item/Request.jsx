@@ -2,14 +2,12 @@ import React, { Component } from "react";
 import "./Request.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request";
-import User from "../item/User";
-import FormLine from "../button/FormLine";
-import Loading from "../box/Loading";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import Message from "../box/Message";
-import { getApiURL } from "../../utils/env";
-import RequestModification from "./request/RequestModification";
+import { getRequest, postRequest } from "../../utils/request.jsx";
+import User from "./User.jsx";
+import FormLine from "../button/FormLine.jsx";
+import Loading from "../box/Loading.jsx";
+import Message from "../box/Message.jsx";
+import RequestModification from "./request/RequestModification.jsx";
 
 export default class Request extends Component {
 	constructor(props) {
@@ -74,7 +72,7 @@ export default class Request extends Component {
 				[prop]: value,
 			};
 
-			postRequest.call(this, "request/update_request", params, (response) => {
+			postRequest.call(this, "request/update_request", params, () => {
 				const request = { ...this.state.request };
 
 				request[prop] = value;
@@ -156,17 +154,21 @@ export default class Request extends Component {
 					<div className="col-md-6 row-spaced">
 						<h3>Action</h3>
 						{this.props.info.request.startsWith("[COMPANY MODIFICATION]")
-							? <RequestModification
+							&& <RequestModification
 								request={this.props.info.request}
 							/>
-							: this.props.info.request.startsWith("[COMPANY INSERTION]")
-								? <RequestModification
-									request={this.props.info.request}
-								/>
-								: <Message
-									text={"No action suggested"}
-									height={50}
-								/>
+						}
+						{this.props.info.request.startsWith("[COMPANY INSERTION]")
+							&& <RequestModification
+								request={this.props.info.request}
+							/>
+						}
+						{!this.props.info.request.startsWith("[COMPANY INSERTION]")
+							&& !this.props.info.request.startsWith("[COMPANY MODIFICATION]")
+							&& <Message
+								text={"No action suggested"}
+								height={50}
+							/>
 						}
 					</div>
 

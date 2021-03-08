@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "./CheckBoxGrid.css";
 import { NotificationManager as nm } from "react-notifications";
-import CheckBox from "./CheckBox";
-import { getRequest } from "../../utils/request";
-import Loading from "../box/Loading";
+import CheckBox from "./CheckBox.jsx";
+import { getRequest } from "../../utils/request.jsx";
+import Loading from "../box/Loading.jsx";
 
 export default class CheckBoxGrid extends Component {
 	constructor(props) {

@@ -1,14 +1,11 @@
 import React from "react";
 import "./PageMedia.css";
 import { NotificationManager as nm } from "react-notifications";
-import Lock from "./box/Lock";
-import Loading from "./box/Loading";
-import Message from "./box/Message";
-import Info from "./box/Info";
-import Table from "./table/Table";
-import Image from "./item/Image";
-import { getRequest, postRequest } from "../utils/request";
-import DialogAddImage from "./dialog/DialogAddImage";
+import Loading from "./box/Loading.jsx";
+import Message from "./box/Message.jsx";
+import Image from "./item/Image.jsx";
+import { getRequest } from "../utils/request.jsx";
+import DialogAddImage from "./dialog/DialogAddImage.jsx";
 
 export default class PageMedia extends React.Component {
 	constructor(props) {
@@ -57,42 +54,49 @@ export default class PageMedia extends React.Component {
 								<i className="fas fa-redo-alt"/>
 							</button>
 							<DialogAddImage
-		                        trigger={
-		                            <button
-		                                className={"blue-background"}
-		                                data-hover="Filter">
-		                                <span><i className="fas fa-plus"/></span>
-		                            </button>
-		                        }
-		                        afterValidate={this.refresh}
-		                    />
+								trigger={
+									<button
+										className={"blue-background"}
+										data-hover="Filter">
+										<span><i className="fas fa-plus"/></span>
+									</button>
+								}
+								afterValidate={this.refresh}
+							/>
 						</div>
 					</div>
 				</div>
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						{this.state.images === null
-							? <Loading
+							&& <Loading
 								height={300}
 							/>
-							: this.state.images.length === 0
-								? <Message
-									text={"No media in the library"}
-									height={300}
-								/>
-								:							<div className="row">
-									{this.state.images.map((i) => i).reverse().map((i) => (
-										<div className="col-md-2 col-sm-3">
-											<Image
-												id={i.id}
-												thumbnail={i.thumbnail}
-												height={i.height}
-												width={i.width}
-												creationDate={i.creation_date}
-											/>
-										</div>
-									))}
-								</div>
+						}
+
+						{this.state.images !== null && this.state.images.length === 0
+							&& <Message
+								text={"No media in the library"}
+								height={300}
+							/>
+						}
+
+						{this.state.images !== null && this.state.images.length !== 0
+							&& <div className="row">
+								{this.state.images.map((i) => i).reverse().map((i) => (
+									<div
+										key={i.id}
+										className="col-md-2 col-sm-3">
+										<Image
+											id={i.id}
+											thumbnail={i.thumbnail}
+											height={i.height}
+											width={i.width}
+											creationDate={i.creation_date}
+										/>
+									</div>
+								))}
+							</div>
 						}
 					</div>
 				</div>

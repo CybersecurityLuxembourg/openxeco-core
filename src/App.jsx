@@ -4,8 +4,8 @@ import "./css/medium-editor.css";
 import { NotificationContainer } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { BrowserRouter } from "react-router-dom";
-import InsideApp from "./component/InsideApp";
-import Login from "./component/Login";
+import InsideApp from "./component/InsideApp.jsx";
+import Login from "./component/Login.jsx";
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -16,12 +16,6 @@ export default class App extends React.Component {
 		this.state = {
 			logged: false,
 		};
-	}
-
-	componentDidMount() {
-	}
-
-	componentDidUpdate(prevProps, prevState, snapshot) {
 	}
 
 	connect() {

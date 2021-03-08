@@ -1,16 +1,15 @@
 import React from "react";
 import "./PageArticle.css";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "./box/Loading";
-import Lock from "./box/Lock";
-import Table from "./table/Table";
-import { getRequest, postRequest, getBlobRequest } from "../utils/request";
-import Article from "./item/Article";
-import Website from "./item/Website";
-import FormLine from "./button/FormLine";
-import { dictToURI } from "../utils/url";
-import { getApiURL } from "../utils/env";
-import DialogArticleFilter from "./dialog/DialogArticleFilter";
+import Loading from "./box/Loading.jsx";
+import Table from "./table/Table.jsx";
+import { getRequest, postRequest } from "../utils/request.jsx";
+import Article from "./item/Article.jsx";
+import Website from "./item/Website.jsx";
+import FormLine from "./button/FormLine.jsx";
+import { dictToURI } from "../utils/url.jsx";
+import { getApiURL } from "../utils/env.jsx";
+import DialogArticleFilter from "./dialog/DialogArticleFilter.jsx";
 
 export default class PageArticle extends React.Component {
 	constructor(props) {
@@ -30,7 +29,7 @@ export default class PageArticle extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.filters !== this.state.filters) this.refresh();
 	}
 
@@ -48,20 +47,20 @@ export default class PageArticle extends React.Component {
 				loading: false,
 			});
 		}, (response) => {
-        	this.setState({ loading: false });
+			this.setState({ loading: false });
 			nm.warning(response.statusText);
 		}, (error) => {
-        	this.setState({ loading: false });
+			this.setState({ loading: false });
 			nm.error(error.message);
 		});
 	}
 
 	addArticle() {
-    	const params = {
-    		title: this.state.newArticleTitle,
-    	};
+		const params = {
+			title: this.state.newArticleTitle,
+		};
 
-    	postRequest.call(this, "article/add_article", params, (response) => {
+		postRequest.call(this, "article/add_article", params, () => {
 			this.refresh();
 			this.setState({ newArticleTitle: null });
 			nm.info("The article has been added");
@@ -78,46 +77,46 @@ export default class PageArticle extends React.Component {
 
 	render() {
 		const columns = [
-	        {
-	            Header: "Title",
-	            accessor: (x) => x,
-	            Cell: ({ cell: { value } }) => (
-		        	<Article
-	                    id={value.id}
-	                    name={value.title}
-	                    afterDeletion={() => this.refresh()}
-	                    onOpen={() => this.props.history.push("/articles/" + value.id)}
+			{
+				Header: "Title",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<Article
+						id={value.id}
+						name={value.title}
+						afterDeletion={() => this.refresh()}
+						onOpen={() => this.props.history.push("/articles/" + value.id)}
 						onClose={() => this.props.history.push("/articles")}
 						open={value.id.toString() === this.props.match.params.id}
-	                />
-		      	),
-	        },
-	        {
-	            Header: "TYPE",
-	            accessor: "type",
-	        },
-	        {
-	            Header: "Publication date",
-	            accessor: "publication_date",
-	        },
-	        {
-	            Header: "Status",
-	            accessor: "status",
-	        },
-	        {
-	            Header: "Media",
-	            accessor: "media",
-	        },
-	        {
-	            Header: "Preview",
-	            accessor: (x) => x,
-	            Cell: ({ cell: { value } }) => (
-		        	<Website
-	                    url={getApiURL() + "public/get_article_content/" + value.handle + "?format=html"}
-	                    label="Preview"
-	                />
-		      	),
-	        },
+					/>
+				),
+			},
+			{
+				Header: "TYPE",
+				accessor: "type",
+			},
+			{
+				Header: "Publication date",
+				accessor: "publication_date",
+			},
+			{
+				Header: "Status",
+				accessor: "status",
+			},
+			{
+				Header: "Media",
+				accessor: "media",
+			},
+			{
+				Header: "Preview",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<Website
+						url={getApiURL() + "public/get_article_content/" + value.handle + "?format=html"}
+						label="Preview"
+					/>
+				),
+			},
 		];
 
 		return (
@@ -131,15 +130,15 @@ export default class PageArticle extends React.Component {
 								<i className="fas fa-redo-alt"/>
 							</button>
 							<DialogArticleFilter
-		                        trigger={
-		                            <button
-		                                className={"blue-background"}
-		                                data-hover="Filter">
-		                                <span><i className="fas fa-shapes"/></span>
-		                            </button>
-		                        }
-		                        applyFilter={(filters) => this.changeState("filters", filters)}
-		                    />
+								trigger={
+									<button
+										className={"blue-background"}
+										data-hover="Filter">
+										<span><i className="fas fa-shapes"/></span>
+									</button>
+								}
+								applyFilter={(filters) => this.changeState("filters", filters)}
+							/>
 						</div>
 					</div>
 					<div className="col-md-12">
@@ -168,11 +167,12 @@ export default class PageArticle extends React.Component {
 							onChange={(v) => this.changeState("newArticleTitle", v)}
 						/>
 						<div className="right-buttons">
-                        	<button
-                        		onClick={() => this.addArticle()}
-                        		disabled={this.state.newArticleTitle === null || this.state.newArticleTitle.length < 3}>
-                        		<i className="fas fa-plus"/> Add a new article
-                        	</button>
+							<button
+								onClick={() => this.addArticle()}
+								disabled={this.state.newArticleTitle === null
+									|| this.state.newArticleTitle.length < 3}>
+								<i className="fas fa-plus"/> Add a new article
+							</button>
 						</div>
 					</div>
 				</div>

@@ -2,15 +2,13 @@ import React, { Component } from "react";
 import "./Company.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request";
-import FormLine from "../button/FormLine";
-import Loading from "../box/Loading";
-import DialogConfirmation from "../dialog/DialogConfirmation";
-import Tab from "../tab/Tab";
-import CompanyGlobal from "./company/CompanyGlobal";
-import CompanyAddress from "./company/CompanyAddress";
-import CompanyTaxonomy from "./company/CompanyTaxonomy";
-import CompanyWorkforce from "./company/CompanyWorkforce";
+import { postRequest } from "../../utils/request.jsx";
+import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import Tab from "../tab/Tab.jsx";
+import CompanyGlobal from "./company/CompanyGlobal.jsx";
+import CompanyAddress from "./company/CompanyAddress.jsx";
+import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
+import CompanyWorkforce from "./company/CompanyWorkforce.jsx";
 
 export default class Company extends Component {
 	constructor(props) {
@@ -52,7 +50,7 @@ export default class Company extends Component {
 			id: this.props.id,
 		};
 
-		postRequest.call(this, "company/delete_company", params, (response) => {
+		postRequest.call(this, "company/delete_company", params, () => {
 			document.elementFromPoint(100, 0).click();
 			nm.info("The company has been deleted");
 
@@ -110,16 +108,20 @@ export default class Company extends Component {
 							menu={["Global", "Address", "Taxonomy", "Workforce"]}
 							content={[
 								<CompanyGlobal
+									key={this.props.id}
 									id={this.props.id}
 								/>,
 								<CompanyAddress
+									key={this.props.id}
 									id={this.props.id}
 									name={this.props.name}
 								/>,
 								<CompanyTaxonomy
+									key={this.props.id}
 									id={this.props.id}
 								/>,
 								<CompanyWorkforce
+									key={this.props.id}
 									id={this.props.id}
 								/>,
 							]}
