@@ -13,7 +13,6 @@ export default class DialogCompanyFilter extends React.Component {
 
 		this.state = {};
 		this.afterConfirmation = this.afterConfirmation.bind(this);
-		this.cancel = this.cancel.bind(this);
 		this.changeState = this.changeState.bind(this);
 		this.getNumberOfFilter = this.getNumberOfFilter.bind(this);
 		this.eraseFilters = this.eraseFilters.bind(this);
@@ -90,9 +89,11 @@ export default class DialogCompanyFilter extends React.Component {
 			}
 		});
 
-		for (let i = 0; i < this.state.categories.length; i++) {
-			if (Array.isArray(this.state[this.state.categories[i].name])) {
-				n += this.state[this.state.categories[i].name].length;
+		if (this.state.categories !== null) {
+			for (let i = 0; i < this.state.categories.length; i++) {
+				if (Array.isArray(this.state[this.state.categories[i].name])) {
+					n += this.state[this.state.categories[i].name].length;
+				}
 			}
 		}
 
@@ -119,7 +120,7 @@ export default class DialogCompanyFilter extends React.Component {
 		filters.taxonomy_values = values;
 
 		this.props.applyFilter(filters);
-		this.cancel();
+		DialogCompanyFilter.cancel();
 	}
 
 	changeState(field, value) {
@@ -198,7 +199,7 @@ export default class DialogCompanyFilter extends React.Component {
 						className={"grey-background"}
 						data-hover="Close"
 						data-active=""
-						onClick={this.cancel}>
+						onClick={DialogCompanyFilter.cancel}>
 						<span><i className="far fa-times-circle"/> Close</span>
 					</button>
 					<button

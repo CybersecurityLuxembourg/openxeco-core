@@ -43,7 +43,7 @@ export default class DialogSelectImage extends React.Component {
 	onSelect(id) {
 		if (this.props.validateSelection !== undefined) {
 			this.props.validateSelection(id);
-			this.cancel();
+			DialogSelectImage.cancel();
 		}
 	}
 
@@ -73,7 +73,7 @@ export default class DialogSelectImage extends React.Component {
 								className={"grey-background"}
 								data-hover="Close"
 								data-active=""
-								onClick={this.cancel}>
+								onClick={DialogSelectImage.cancel}>
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>

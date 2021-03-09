@@ -24,7 +24,7 @@ export default class Login extends React.Component {
 		};
 	}
 
-	componentDidMount() {
+	static componentDidMount() {
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
@@ -33,7 +33,7 @@ export default class Login extends React.Component {
 
 		// This function to notify if the password has been reset correctly
 
-		this.notifyForPasswordReset();
+		Login.notifyForPasswordReset();
 	}
 
 	static async notifyForPasswordReset() {

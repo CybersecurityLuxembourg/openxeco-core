@@ -13,7 +13,6 @@ export default class DialogArticleFilter extends React.Component {
 
 		this.state = {};
 		this.afterConfirmation = this.afterConfirmation.bind(this);
-		this.cancel = this.cancel.bind(this);
 		this.changeState = this.changeState.bind(this);
 		this.getNumberOfFilter = this.getNumberOfFilter.bind(this);
 		this.eraseFilters = this.eraseFilters.bind(this);
@@ -108,9 +107,11 @@ export default class DialogArticleFilter extends React.Component {
 			}
 		}
 
-		for (let i = 0; i < this.state.categories.length; i++) {
-			if (Array.isArray(this.state[this.state.categories[i].name])) {
-				n += this.state[this.state.categories[i].name].length;
+		if (this.state.categories !== null) {
+			for (let i = 0; i < this.state.categories.length; i++) {
+				if (Array.isArray(this.state[this.state.categories[i].name])) {
+					n += this.state[this.state.categories[i].name].length;
+				}
 			}
 		}
 
@@ -137,7 +138,7 @@ export default class DialogArticleFilter extends React.Component {
 		filters.taxonomy_values = values;
 
 		this.props.applyFilter(filters);
-		this.cancel();
+		DialogArticleFilter.cancel();
 	}
 
 	changeState(field, value) {
@@ -164,7 +165,7 @@ export default class DialogArticleFilter extends React.Component {
 				className={"slide-in DialogArticleFilter"}
 			>
 				<div className={"DialogArticleFilter-form"}>
-					<h2>Filter companies</h2>
+					<h2>Filter articles</h2>
 					<button
 						className={"link-button"}
 						data-hover="Cancel"
@@ -236,7 +237,7 @@ export default class DialogArticleFilter extends React.Component {
 						className={"grey-background"}
 						data-hover="Close"
 						data-active=""
-						onClick={this.cancel}>
+						onClick={DialogArticleFilter.cancel}>
 						<span><i className="far fa-times-circle"/> Close</span>
 					</button>
 					<button

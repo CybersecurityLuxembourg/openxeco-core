@@ -7,7 +7,6 @@ export default class DialogConfirmation extends React.Component {
 		super(props);
 		this.state = {};
 		this.afterConfirmation = this.afterConfirmation.bind(this);
-		this.cancel = this.cancel.bind(this);
 	}
 
 	afterConfirmation() {
@@ -34,7 +33,7 @@ export default class DialogConfirmation extends React.Component {
 							className={"grey-background"}
 							data-hover="Cancel"
 							data-active=""
-							onClick={this.cancel}>
+							onClick={DialogConfirmation.cancel}>
 							<span><i className="far fa-times-circle"/> Cancel</span>
 						</button>
 						<button

@@ -73,7 +73,7 @@ export default class DialogAddImage extends React.Component {
 			if (this.props.afterValidate !== undefined) this.props.afterValidate();
 
 			this.backToImageSelection();
-			this.cancel();
+			DialogAddImage.cancel();
 			nm.info("The image has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -219,7 +219,7 @@ export default class DialogAddImage extends React.Component {
 							className={"grey-background"}
 							data-hover="Close"
 							data-active=""
-							onClick={this.cancel}>
+							onClick={DialogAddImage.cancel}>
 							<span><i className="far fa-times-circle"/> Close</span>
 						</button>
 					</div>

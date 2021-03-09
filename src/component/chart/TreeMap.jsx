@@ -7,10 +7,11 @@ export default class TreeMap extends React.Component {
 		return (
 			<ChartComponent
 				{...this.props}
-				ref={(ref) => {
+				ref={(ref) => { this.chartInstance = ref && ref.chartInstance; }}
+				/* ref={(ref) => {
 					this.chartInstance = ref;
 					return ref.chartInstance;
-				}}
+				}} */
 				type='treemap'
 			/>
 		);

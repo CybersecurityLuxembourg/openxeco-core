@@ -112,7 +112,7 @@ export default class FormLine extends React.Component {
 						: this.state.value,
 					value: this.state.value,
 				}}
-				styles={this.getSelectStyle()}
+				styles={getSelectStyle()}
 				options={this.props.options}
 				onChange={(v) => this.onChange(v.value)}
 			/>;
