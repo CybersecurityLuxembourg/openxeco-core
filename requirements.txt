@@ -1,4 +1,5 @@
 cryptography==3.2.1
+coverage==5.3
 dateparser==1.0.0
 Flask==1.1.2
 flask-apscheduler==1.11.0
