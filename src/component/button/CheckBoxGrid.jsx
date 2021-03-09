@@ -32,7 +32,9 @@ export default class CheckBoxGrid extends Component {
 				<div className={"row"}>
 					{this.state.values !== null
 						? this.state.values.map((v) => (
-							<div className={"CheckBoxGrid-grid col-xl-4 col-lg-6"}>
+							<div
+								className={"CheckBoxGrid-grid col-xl-4 col-lg-6"}
+								key={v}>
 								<CheckBox
 									label={v}
 									value={this.props.selectedValues !== null
