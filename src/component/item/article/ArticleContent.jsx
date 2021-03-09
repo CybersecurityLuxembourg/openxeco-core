@@ -169,8 +169,9 @@ export default class ArticleContent extends React.Component {
 		const content = this.state.content.map((c) => c);
 		let modified = false;
 
-		content.map((c) => {
-			const tag = document.querySelector(".ArticleContent-layout .item-" + c.i + " .col-md-12 .FormLine");
+		for (let i = 0; i < content.length; i++) {
+			const tag = document.querySelector(".ArticleContent-layout .item-" + content[i].i
+				+ " .col-md-12 .FormLine");
 
 			if (tag === null) {
 				return;
@@ -178,11 +179,11 @@ export default class ArticleContent extends React.Component {
 
 			const newSize = Math.ceil(tag.offsetHeight + 8) / 10;
 
-			if (content[c.i].h !== newSize) {
-				content[c.i].h = newSize;
+			if (content[i].h !== newSize) {
+				content[i].h = newSize;
 				modified = true;
 			}
-		});
+		}
 
 		// This way to save the new layout because the RReact Grid Layout is buggy on refreshing
 

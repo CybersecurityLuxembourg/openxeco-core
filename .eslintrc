@@ -15,7 +15,8 @@
       "no-plusplus": 0,
       "prefer-template": 0,
       "react/prop-types": 0,
-      "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["data"] }]
+      "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["data"] }],
+      "prefer-destructuring": ["error", {"object": true, "array": false}]
   	},
   	"ignorePatterns": ["/node_modules/*", "/build/*", "/public/*"],
 }

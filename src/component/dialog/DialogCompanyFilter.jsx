@@ -82,7 +82,7 @@ export default class DialogCompanyFilter extends React.Component {
 	getNumberOfFilter() {
 		let n = 0;
 
-		this.state.allowedFilters.map((filter) => {
+		this.state.allowedFilters.forEach((filter) => {
 			if (typeof this.state[filter] === "boolean" && this.state[filter]) n += 1;
 			if (typeof this.state[filter] === "string" && this.state[filter].length > 0) n += 1;
 			if (Array.isArray(this.state[filter]) && this.state[filter] > 0) {
@@ -103,6 +103,7 @@ export default class DialogCompanyFilter extends React.Component {
 		const filters = Object.keys(this.state)
 			.filter((key) => this.state.allowedFilters.includes(key))
 			.reduce((obj, key) => {
+				// eslint-disable-next-line no-param-reassign
 				obj[key] = this.state[key];
 				return obj;
 			}, {});

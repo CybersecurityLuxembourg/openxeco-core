@@ -182,6 +182,7 @@ export default class CompanyTaxonomy extends React.Component {
 		let levels = [category];
 
 		while (this.state.categoryHierarchy.map((ch) => ch.child_category).indexOf(levels[0]) >= 0) {
+			// eslint-disable-next-line no-loop-func
 			const link = this.state.categoryHierarchy.filter((ch) => ch.child_category === levels[0])[0];
 			levels = [link.parent_category].concat(levels);
 		}

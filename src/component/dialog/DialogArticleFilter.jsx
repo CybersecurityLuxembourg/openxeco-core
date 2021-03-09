@@ -93,13 +93,20 @@ export default class DialogArticleFilter extends React.Component {
 	getNumberOfFilter() {
 		let n = 0;
 
-		this.state.allowedFilters.map((filter) => {
-			if (typeof this.state[filter] === "boolean" && this.state[filter]) n += 1;
-			if (typeof this.state[filter] === "string" && this.state[filter].length > 0) n += 1;
-			if (Array.isArray(this.state[filter]) && this.state[filter] > 0) {
-				n += this.state[filter].length;
+		for (let i = 0; i < this.state.allowedFilters.length; i++) {
+			if (typeof this.state[this.state.allowedFilters[i]] === "boolean"
+				&& this.state[this.state.allowedFilters[i]]) {
+				n += 1;
 			}
-		});
+			if (typeof this.state[this.state.allowedFilters[i]] === "string"
+				&& this.state[this.state.allowedFilters[i]].length > 0) {
+				n += 1;
+			}
+			if (Array.isArray(this.state[this.state.allowedFilters[i]])
+				&& this.state[this.state.allowedFilters[i]] > 0) {
+				n += this.state[this.state.allowedFilters[i]].length;
+			}
+		}
 
 		for (let i = 0; i < this.state.categories.length; i++) {
 			if (Array.isArray(this.state[this.state.categories[i].name])) {
@@ -114,8 +121,9 @@ export default class DialogArticleFilter extends React.Component {
 		const filters = Object.keys(this.state)
 			.filter((key) => this.state.allowedFilters.includes(key))
 			.reduce((obj, key) => {
-				obj[key] = this.state[key];
-				return obj;
+				const obj2 = _.cloneDeep(obj);
+				obj2[key] = this.state[key];
+				return obj2;
 			}, {});
 
 		let values = [];

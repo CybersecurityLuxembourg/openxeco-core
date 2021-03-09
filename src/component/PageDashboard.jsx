@@ -137,15 +137,15 @@ export default class PageDashboard extends React.Component {
 
 					const acceptedValueIDs = values.map((v) => v.id);
 
-					for (let y = 0; y < filteredActors.length; y++) {
+					filteredActors.forEach((filteredActor) => {
 						const companyValues = this.state.analytics.taxonomy_assignments
-							.filter((a) => a.company === filteredActors[y].id)
+							.filter((a) => a.company === filteredActor.id)
 							.map((a) => a.taxonomy_value);
 
 						if (acceptedValueIDs.filter((e) => companyValues.indexOf(e) >= 0).length > 0) {
-							tmpFilteredActors.push(filteredActors[y]);
+							tmpFilteredActors.push(filteredActor);
 						}
-					}
+					});
 
 					filteredActors = tmpFilteredActors;
 				}
@@ -153,16 +153,16 @@ export default class PageDashboard extends React.Component {
 				// Filter the selected size range
 				const tmpFilteredActors = [];
 
-				for (let k = 0; k < filteredActors.length; k++) {
+				filteredActors.forEach((filteredActor) => {
 					const workforces = this.state.analytics.workforces
-						.filter((w) => w.company === filteredActors[k].id);
+						.filter((w) => w.company === filteredActor.id);
 
 					if (workforces.length > 0
 						&& this.state.filters.size_range[0] <= workforces[0].workforce
 						&& workforces[0].workforce <= this.state.filters.size_range[1]) {
-						tmpFilteredActors.push(filteredActors[k]);
+						tmpFilteredActors.push(filteredActor);
 					}
-				}
+				});
 
 				filteredActors = tmpFilteredActors;
 			} else if (axis === "age_range") {
@@ -241,8 +241,14 @@ export default class PageDashboard extends React.Component {
 			}
 
 			while (!childReached) {
-				const childCategories = this.state.analytics.taxonomy_category_hierarchy
-					.filter((h) => h.parent_category === currentCategory);
+				const childCategories = [];
+
+				for (let i = 0; i < this.state.analytics.taxonomy_category_hierarchy.length; i++) {
+					if (this.state.analytics.taxonomy_category_hierarchy[i].parent_category
+						=== currentCategory) {
+						childCategories.push(this.state.analytics.taxonomy_category_hierarchy[i]);
+					}
+				}
 
 				if (childCategories.length > 0) {
 					currentCategory = childCategories[0].child_category;
