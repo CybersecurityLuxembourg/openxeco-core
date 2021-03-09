@@ -191,7 +191,8 @@ export default class RequestModification extends Component {
 	getUpdateCompanyBlock() {
 		if (this.state.databaseCompany === null) return null;
 
-		const modifiedFields = this.getModifiedFields(this.state.company, this.state.databaseCompany);
+		const modifiedFields = RequestModification
+			.getModifiedFields(this.state.company, this.state.databaseCompany);
 
 		if (modifiedFields.length === 0) {
 			return (
@@ -280,7 +281,7 @@ export default class RequestModification extends Component {
 
 		const databaseAddress = databaseAddresses[0];
 
-		const modifiedFields = this.getModifiedFields(address, databaseAddress);
+		const modifiedFields = RequestModification.getModifiedFields(address, databaseAddress);
 
 		if (modifiedFields.length === 0) {
 			return (
@@ -388,13 +389,13 @@ export default class RequestModification extends Component {
 						? this.state.addresses.map((a) => this.getUpdateAddressBlock(a))
 						: ""}
 
-					{this.state.addresses !== null
+					{/* this.state.addresses !== null
 						? this.state.addresses.map((a) => this.getAddAddressBlock(a))
-						: ""}
+						: "" */}
 
-					{this.state.addresses !== null
+					{/* this.state.addresses !== null
 						? this.state.addresses.map((a) => this.getDeleteAddressBlock(a))
-						: ""}
+						: "" */}
 				</div>
 			</Popup>
 		);

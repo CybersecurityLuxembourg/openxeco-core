@@ -9,7 +9,6 @@ export default class DialogConfirmationWithTextField extends React.Component {
 
 		this.state = {};
 		this.afterConfirmation = this.afterConfirmation.bind(this);
-		this.cancel = this.cancel.bind(this);
 
 		this.state = {
 			value: null,
@@ -45,7 +44,7 @@ export default class DialogConfirmationWithTextField extends React.Component {
 							className={"grey-background"}
 							data-hover="Cancel"
 							data-active=""
-							onClick={this.cancel}>
+							onClick={DialogConfirmationWithTextField.cancel}>
 							<span><i className="far fa-times-circle"/> Cancel</span>
 						</button>
 						<button

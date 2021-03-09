@@ -2,6 +2,7 @@ import React from "react";
 import "./CompanyAddress.css";
 import { NotificationManager as nm } from "react-notifications";
 import _ from "lodash";
+import dompurify from "dompurify";
 import Popup from "reactjs-popup";
 import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
@@ -246,7 +247,9 @@ export default class CompanyAddress extends React.Component {
 												<div className="row" key={a}>
 													<div
 														className="col-md-10"
-														dangerouslySetInnerHTML={{ __html: a.highlightedAddress }}
+														dangerouslySetInnerHTML={{
+															__html: dompurify.sanitize(a.highlightedAddress),
+														}}
 													/>
 													<div className="col-md-2">
 														<button

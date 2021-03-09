@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./LogArticleVersion.css";
 import Popup from "reactjs-popup";
+import dompurify from "dompurify";
 import FormLine from "../button/FormLine.jsx";
 import Message from "../box/Message.jsx";
 import { getApiURL } from "../../utils/env.jsx";
@@ -94,7 +95,7 @@ export default class LogArticleVersion extends Component {
 											? <div>
 												<div
 													dangerouslySetInnerHTML={{
-														__html: item.content,
+														__html: dompurify.sanitize(item.content),
 													}}>
 												</div>
 											</div>
@@ -147,7 +148,7 @@ export default class LogArticleVersion extends Component {
 											? <div>
 												<div
 													dangerouslySetInnerHTML={{
-														__html: item.content,
+														__html: dompurify.sanitize(item.content),
 													}}>
 												</div>
 											</div>

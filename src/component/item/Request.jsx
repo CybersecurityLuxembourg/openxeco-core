@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./Request.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
+import dompurify from "dompurify";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import User from "./User.jsx";
 import FormLine from "../button/FormLine.jsx";
@@ -176,7 +177,10 @@ export default class Request extends Component {
 						<h3>Content</h3>
 						{this.props.info !== undefined && this.props.info !== null
 							? <div dangerouslySetInnerHTML={
-								{ __html: this.props.info.request.replaceAll("\n", "<br />", "g") }
+								{
+									__html:
+									dompurify.sanitize(this.props.info.request.replaceAll("\n", "<br />", "g")),
+								}
 							}/>
 							: <Message
 								text={"Unfound request content"}
