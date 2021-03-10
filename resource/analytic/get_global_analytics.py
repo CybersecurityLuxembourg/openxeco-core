@@ -25,11 +25,17 @@ class GetGlobalAnalytics(Resource):
         tvh = self.db.tables["TaxonomyValueHierarchy"]
         tv = self.db.tables["TaxonomyValue"]
 
+        print(self.db.get_filtered_companies(
+                    {"ecosystem_role": "ACTOR"},
+                    [c.id, c.is_startup, c.is_cybersecurity_core_business, c.creation_date]
+                ))
+
         data = {
-            "actors": [o._asdict() for o in self.db.session.query(c)
-                        .with_entities(c.id, c.is_startup, c.is_cybersecurity_core_business, c.creation_date)
-                        .filter(c.type == "ACTOR")
-                        .all()],
+            "actors": [o._asdict() for o in self.db.get_filtered_companies(
+                    {"ecosystem_role": "ACTOR"},
+                    [c.id, c.is_startup, c.is_cybersecurity_core_business, c.creation_date]
+                )
+            ],
 
             "workforces": Serializer.serialize(self.db.get_latest_workforce(), self.db.tables["Workforce"]),
 

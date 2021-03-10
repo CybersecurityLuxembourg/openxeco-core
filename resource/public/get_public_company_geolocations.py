@@ -12,16 +12,11 @@ class GetPublicCompanyGeolocations(Resource):
     @catch_exception
     def get(self):
 
-        allowed_types = ["ACTOR", "PUBLIC SECTOR", "PRIVATE SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
-
         c = self.db.tables["Company"]
         ca = self.db.tables["Company_Address"]
         entities = (c.id, )
 
         filters = request.args.to_dict()
-
-        if "type" not in filters or filters["type"] not in allowed_types:
-            filters["type"] = ["ACTOR", "PUBLIC SECTOR", "PRIVATE SECTOR", "CIVIL SOCIETY", "JOB PLATFORM"]
 
         company_ids = [o.id for o in self.db.get_filtered_companies(filters, entities)]
 
