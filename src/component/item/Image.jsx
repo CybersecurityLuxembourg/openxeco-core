@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Image.css";
 import Popup from "reactjs-popup";
-import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import { getApiURL } from "../../utils/env.jsx";
 
@@ -68,21 +67,6 @@ export default class Image extends Component {
 								<div className={"Image-image"}>
 									<img src={getApiURL() + "public/get_image/" + this.props.id}/>
 								</div>
-								<FormLine
-									label={"Width"}
-									value={this.props.width}
-									disabled={true}
-								/>
-								<FormLine
-									label={"Height"}
-									value={this.props.height}
-									disabled={true}
-								/>
-								<FormLine
-									label={"Creation date"}
-									value={this.props.creationDate}
-									disabled={true}
-								/>
 							</div>
 							: <Loading/>
 						}

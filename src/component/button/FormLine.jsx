@@ -3,8 +3,11 @@ import "./FormLine.css";
 import Select from "react-select";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import _ from "lodash";
+import DialogSelectImage from "../dialog/DialogSelectImage.jsx";
 import Chip from "./Chip.jsx";
 import CheckBox from "./CheckBox.jsx";
+import NoImage from "../box/NoImage.jsx";
+import { getApiURL } from "../../utils/env.jsx";
 
 function getSelectStyle() {
 	return {
@@ -148,6 +151,37 @@ export default class FormLine extends React.Component {
 				value={this.state.value}
 				onChange={(value) => this.onChange(value)}
 			/>;
+		case "image":
+			return <div className={"Formline-image-wrapper"}>
+				<div className="Formline-image-display-wrapper"
+					style={{ minHeight: this.props.height !== undefined ? this.props.height : 500 }}>
+					{this.state.value !== null
+						? <img
+							className={"Formline-image"}
+							src={getApiURL() + "public/get_image/" + this.state.value}
+							onLoad={this.props.onLoad}
+						/>
+						: <NoImage/>
+					}
+				</div>
+				<div className={"right-buttons"}>
+					<button
+						className={"red-background"}
+						value={this.state.value}
+						onClick={() => this.onChange(null)}
+						disabled={this.state.value === null}>
+						<i className="fas fa-trash-alt"/> Remove
+					</button>
+					<DialogSelectImage
+						trigger={
+							<button>
+								<i className="fas fa-plus"/> {this.state.value === null ? "Select" : "Change"} image
+							</button>
+						}
+						validateSelection={(value) => this.onChange(value)}
+					/>
+				</div>
+			</div>;
 		default:
 			return <input
 				className={this.getFormatClassName()}
