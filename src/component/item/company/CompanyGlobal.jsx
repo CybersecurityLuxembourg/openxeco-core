@@ -96,15 +96,6 @@ export default class CompanyGlobal extends React.Component {
 						onBlur={(v) => this.saveCompanyValue("name", v)}
 					/>
 					<FormLine
-						label={"Type"}
-						type={"select"}
-						value={this.state.company.type}
-						options={this.state.companyEnums === null
-                            || typeof this.state.companyEnums.type === "undefined" ? []
-							: this.state.companyEnums.type.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveCompanyValue("type", v)}
-					/>
-					<FormLine
 						label={"Description"}
 						type={"textarea"}
 						value={this.state.company.description}
