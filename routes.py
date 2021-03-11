@@ -59,6 +59,7 @@ from resource.public.get_public_companies import GetPublicCompanies
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
+from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.public.is_alive import IsAlive
 from resource.request.get_new_request_count import GetNewRequestCount
 from resource.request.get_requests import GetRequests
@@ -176,6 +177,7 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
     api.add_resource(GetPublicCompany, '/public/get_public_company/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetImage, '/public/get_image/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetRelatedArticles, '/public/get_related_articles/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetPublicTaxonomy, '/public/get_public_taxonomy', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicTaxonomyValues, '/public/get_public_taxonomy_values', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanies, '/public/get_public_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations',

@@ -2,6 +2,7 @@ from flask_restful import Resource
 from db.db import DB
 from exception.object_not_found import ObjectNotFound
 from decorator.catch_exception import catch_exception
+from utils.serializer import Serializer
 
 
 class GetPublicCompany(Resource):
@@ -22,5 +23,10 @@ class GetPublicCompany(Resource):
 
         data = data[0]
         data["creation_date"] = None if data["creation_date"] is None else str(data["creation_date"])
+
+        data["taxonomy_assignment"] = Serializer.serialize(self.db.get(
+            self.db.tables["TaxonomyAssignment"],
+            {"company": data['id']}
+        ), self.db.tables["TaxonomyAssignment"])
 
         return data, "200 "

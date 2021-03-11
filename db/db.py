@@ -174,7 +174,7 @@ class DB:
             entity_type_values = self.session \
                 .query(self.tables["TaxonomyValue"]) \
                 .with_entities(self.tables["TaxonomyValue"].id) \
-                .filter(self.tables["TaxonomyValue"].category == "ECOSYSTEM ROLE") \
+                .filter(self.tables["TaxonomyValue"].category == "ENTITY TYPE") \
                 .filter(self.tables["TaxonomyValue"].name.in_(entity_types)) \
                 .subquery()
 
