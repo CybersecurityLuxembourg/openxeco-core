@@ -12,18 +12,21 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.json();
-		} if (response.status === 403) {
-			window.location.replace("/?status=expiredSession");
-		} else if (catchBadResponse != null) {
-			catchBadResponse(response);
-		} else {
-			this.props.alert.error(response.statusText);
 		}
-		return null;
+		if (response.status === 403) {
+			window.location.replace("/?status=expiredSession");
+		}
+		if (catchBadResponse !== null) {
+			catchBadResponse(response);
+			throw new Error(null);
+		}
+		throw new Error("An error happened while requesting the server");
 	}).then((jsonBody) => {
 		if (typeof jsonBody !== "undefined") callback(jsonBody);
 	}).catch((error) => {
-		catchError(error);
+		if (error.message !== "null") {
+			catchError(error);
+		}
 	});
 }
 
@@ -39,22 +42,26 @@ export async function getBlobRequest(url, callback, catchBadResponse, catchError
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.blob();
-		} if (response.status === 403) {
-			window.location.replace("/?status=expiredSession");
-		} else if (catchBadResponse != null) {
-			catchBadResponse(response);
-		} else {
-			this.props.alert.error(response.statusText);
 		}
-		return null;
+		if (response.status === 403) {
+			window.location.replace("/?status=expiredSession");
+		}
+		if (catchBadResponse !== null) {
+			catchBadResponse(response);
+			throw new Error(null);
+		}
+		throw new Error("An error happened while requesting the server");
 	}).then((blob) => {
 		if (typeof blob !== "undefined") callback(blob);
 	}).catch((error) => {
-		catchError(error);
+		if (error.message !== "null") {
+			catchError(error);
+		}
 	});
 }
 
 export async function postRequest(url, params, callback, catchBadResponse, catchError) {
+	console.log(window.token);
 	fetch(getApiURL() + url, {
 		method: "POST",
 		body: JSON.stringify(params),
@@ -67,18 +74,21 @@ export async function postRequest(url, params, callback, catchBadResponse, catch
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.json();
-		} if (response.status === 403 && !url.includes("analytics")) {
-			window.location.replace("/?status=expiredSession");
-		} else if (catchBadResponse != null) {
-			catchBadResponse(response);
-		} else {
-			this.props.alert.error(response.statusText);
 		}
-		return null;
+		if (response.status === 403) {
+			window.location.replace("/?status=expiredSession");
+		}
+		if (catchBadResponse !== null) {
+			catchBadResponse(response);
+			throw new Error(null);
+		}
+		throw new Error("An error happened while requesting the server");
 	}).then((jsonBody) => {
 		if (typeof jsonBody !== "undefined") callback(jsonBody);
 	}).catch((error) => {
-		catchError(error);
+		if (error.message !== "null") {
+			catchError(error);
+		}
 	});
 }
 
@@ -105,12 +115,15 @@ export async function getForeignRequest(url, callback, catchBadResponse, catchEr
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.json();
-		} if (catchBadResponse != null) {
-			catchBadResponse(response);
-		} else {
-			this.props.alert.error(response.statusText);
 		}
-		return null;
+		if (response.status === 403) {
+			window.location.replace("/?status=expiredSession");
+		}
+		if (catchBadResponse !== null) {
+			catchBadResponse(response);
+			throw new Error(response.error);
+		}
+		throw new Error("An error happened while requesting the server");
 	}).then((jsonBody) => {
 		if (typeof jsonBody !== "undefined") callback(jsonBody);
 	}).catch((error) => {
