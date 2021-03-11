@@ -24,7 +24,8 @@ export default class Login extends React.Component {
 		};
 	}
 
-	static componentDidMount() {
+	// eslint-disable-next-line class-methods-use-this
+	componentDidMount() {
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
