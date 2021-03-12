@@ -24,9 +24,12 @@ class GetPublicCompany(Resource):
         data = data[0]
         data["creation_date"] = None if data["creation_date"] is None else str(data["creation_date"])
 
-        data["taxonomy_assignment"] = Serializer.serialize(self.db.get(
+        data["taxonomy_assignment"] = [v[0] for v in self.db.get(
             self.db.tables["TaxonomyAssignment"],
-            {"company": data['id']}
-        ), self.db.tables["TaxonomyAssignment"])
+            {"company": data['id']},
+            [self.db.tables["TaxonomyAssignment"].taxonomy_value],
+        )]
+
+        print(data)
 
         return data, "200 "

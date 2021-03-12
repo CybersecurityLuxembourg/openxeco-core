@@ -26,8 +26,8 @@ class GetPublicTaxonomy(Resource):
                 self.db.tables["TaxonomyCategoryHierarchy"]
             ),
             "value_hierarchy": Serializer.serialize(
-                self.db.get(self.db.tables["TaxonomyCategoryHierarchy"]),
-                self.db.tables["TaxonomyCategoryHierarchy"]
+                self.db.get(self.db.tables["TaxonomyValueHierarchy"]),
+                self.db.tables["TaxonomyValueHierarchy"]
             )
         }
 
