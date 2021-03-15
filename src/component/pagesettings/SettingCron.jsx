@@ -71,6 +71,9 @@ export default class SettingCron extends React.Component {
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
+			this.setState({
+				isTaskRunning: false,
+			});
 		}, (error) => {
 			nm.error(error.message);
 		});
