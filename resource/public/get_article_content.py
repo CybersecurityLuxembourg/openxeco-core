@@ -55,6 +55,7 @@ class GetArticleContent(Resource):
             "image": article[0].image,
             "publication_date": str(article[0].publication_date),
             "type": article[0].type,
+            "link": article[0].link,
             "content": Serializer.serialize(article_content, self.db.tables["ArticleBox"]),
             "tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables["TaxonomyValue"])
         }
