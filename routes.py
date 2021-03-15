@@ -37,6 +37,7 @@ from resource.company.update_company import UpdateCompany
 from resource.company.add_company import AddCompany
 from resource.company.delete_company import DeleteCompany
 from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
+from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
 from resource.mail.get_server_info import GetServerInfo
 from resource.mail.get_mail_content import GetMailContent
@@ -153,6 +154,7 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
 
     api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
 
+    api.add_resource(GetLogs, '/log/get_logs', resource_class_kwargs={"db": db})
     api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id_>',
                      resource_class_kwargs={"db": db})
 
