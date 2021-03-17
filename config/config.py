@@ -23,6 +23,11 @@ MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "alexis.prunier@securitym
 
 IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', "C:/image_folder")
 
+JOBADDER_CLIENT_ID = "See JobAdder account"
+JOBADDER_CLIENT_SECRET = "See JobAdder account"
+JOBADDER_REFRESH_TOKEN = os.getenv('JOBADDER_REFRESH_TOKEN', None)
+JOBADDER_ACCESS_TOKEN = os.getenv('JOBADDER_ACCESS_TOKEN', None)
+
 FRONTEND_URL = {
     'dev': 'http://localhost:3000',
     'test': 'https://test-db.cy.lu',
