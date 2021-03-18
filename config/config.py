@@ -31,11 +31,17 @@ JOBADDER_ACCESS_TOKEN = os.getenv('JOBADDER_ACCESS_TOKEN', None)
 FRONTEND_URL = {
     'dev': 'http://localhost:3000',
     'test': 'https://test-db.cy.lu',
-    'production': 'https://db.cy.lu'
+    'production': None
 }[ENVIRONMENT]
 
 PUBLIC_FRONTEND_URL = {
     'dev': 'http://localhost:3002',
     'test': 'https://test-secin.cy.lu',
-    'production': 'https://cybersecurity-luxembourg.com'
+    'production': None
+}[ENVIRONMENT]
+
+PUBLIC_ECOSYSTEM_FRONTEND_URL = {
+    'dev': 'http://localhost:3003',
+    'test': 'https://ecosystem.cybersecurity-luxembourg.com',
+    'production': 'https://ecosystem.cybersecurity-luxembourg.com'
 }[ENVIRONMENT]
