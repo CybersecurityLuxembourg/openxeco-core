@@ -194,7 +194,7 @@ To take in count the new configuration, we need to run the following:
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator apache, Installer apache
 Enter email address (used for urgent renewal and security notices) (Enter 'c' to
-cancel): alexis.prunier@securitymadein.lu
+cancel): cyberlux@securitymadein.lu
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Please read the Terms of Service at

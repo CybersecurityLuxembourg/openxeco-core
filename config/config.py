@@ -37,11 +37,11 @@ FRONTEND_URL = {
 PUBLIC_FRONTEND_URL = {
     'dev': 'http://localhost:3002',
     'test': 'https://test-secin.cy.lu',
-    'production': None
+    'production': None,
 }[ENVIRONMENT]
 
 PUBLIC_ECOSYSTEM_FRONTEND_URL = {
-    'dev': 'http://localhost:3003',
-    'test': 'https://ecosystem.cybersecurity-luxembourg.com',
-    'production': 'https://ecosystem.cybersecurity-luxembourg.com'
+    'dev': ['http://localhost:3003'],
+    'test': ['https://ecosystem.cybersecurity-luxembourg.com', 'https://test-eco.cy.lu'],
+    'production': ['https://ecosystem.cybersecurity-luxembourg.com', 'https://eco.cy.lu'],
 }[ENVIRONMENT]
