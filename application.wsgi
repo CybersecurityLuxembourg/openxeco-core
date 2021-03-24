@@ -2,10 +2,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-activate_this = '/var/www/bo-api/venv/bin/activate_this.py'
-with open(activate_this) as file_:
-    exec(file_.read(), dict(__file__=activate_this))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'venv', 'lib', 'python3.8', 'site-packages'))
 
 os.environ["ENVIRONMENT"] = "test"
 os.environ["JWT_SECRET_KEY"] = "set_a_true_jwt_secret_key"
