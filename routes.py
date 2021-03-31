@@ -30,12 +30,17 @@ from resource.company.extract_companies import ExtractCompanies
 from resource.company.get_companies import GetCompanies
 from resource.company.get_company import GetCompany
 from resource.company.get_company_addresses import GetCompanyAddresses
+from resource.company.get_company_contacts import GetCompanyContacts
 from resource.company.get_company_enums import GetCompanyEnums
 from resource.company.get_company_taxonomy import GetCompanyTaxonomy
 from resource.company.get_company_workforces import GetCompanyWorkforces
 from resource.company.update_company import UpdateCompany
 from resource.company.add_company import AddCompany
 from resource.company.delete_company import DeleteCompany
+from resource.contact.add_contact import AddContact
+from resource.contact.delete_contact import DeleteContact
+from resource.contact.get_contact_enums import GetContactEnums
+from resource.contact.update_contact import UpdateContact
 from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
 from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
@@ -145,12 +150,18 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
     api.add_resource(GetCompanies, '/company/get_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetCompany, '/company/get_company/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetCompanyAddresses, '/company/get_company_addresses/<id_>', resource_class_kwargs={"db": db})
+    api.add_resource(GetCompanyContacts, '/company/get_company_contacts/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetCompanyEnums, '/company/get_company_enums', resource_class_kwargs={"db": db})
     api.add_resource(GetCompanyTaxonomy, '/company/get_company_taxonomy/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetCompanyWorkforces, '/company/get_company_workforces/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(UpdateCompany, '/company/update_company', resource_class_kwargs={"db": db})
     api.add_resource(AddCompany, '/company/add_company', resource_class_kwargs={"db": db})
     api.add_resource(DeleteCompany, '/company/delete_company', resource_class_kwargs={"db": db})
+
+    api.add_resource(AddContact, '/contact/add_contact', resource_class_kwargs={"db": db})
+    api.add_resource(DeleteContact, '/contact/delete_contact', resource_class_kwargs={"db": db})
+    api.add_resource(GetContactEnums, '/contact/get_contact_enums', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateContact, '/contact/update_contact', resource_class_kwargs={"db": db})
 
     api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
 

@@ -142,12 +142,6 @@ class DB:
             name = func.lower(filters['name'])
             query = query.filter(func.lower(self.tables["Company"].name).like("%" + name + "%"))
 
-        if "type" in filters and filters['type'] is not None:
-            if isinstance(filters['type'], list):
-                query = query.filter(self.tables["Company"].type.in_(filters['type']))
-            else:
-                query = query.filter(self.tables["Company"].type == filters['type'])
-
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
             ecosystem_roles = filters['ecosystem_role'].split(',') \
                 if isinstance(filters['ecosystem_role'], str) else filters['ecosystem_role']

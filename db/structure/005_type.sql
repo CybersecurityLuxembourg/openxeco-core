@@ -64,3 +64,15 @@ INSERT INTO TaxonomyAssignment (company, taxonomy_value)
 
 ALTER TABLE Company
   DROP COLUMN type;
+
+-- CONTACT ADDRESS
+
+CREATE TABLE CompanyContact (
+	id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	company_id INT NOT NULL,
+	type ENUM('EMAIL ADDRESS', 'PHONE NUMBER') NOT NULL,
+	representative ENUM('ENTITY', 'PHYSICAL PERSON') NOT NULL,
+	name VARCHAR(255),
+	value VARCHAR(255) NOT NULL,
+	FOREIGN KEY (company_id) REFERENCES Company (id) ON DELETE CASCADE
+);
