@@ -6,6 +6,7 @@ import { postRequest } from "../../utils/request.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Tab from "../tab/Tab.jsx";
 import CompanyGlobal from "./company/CompanyGlobal.jsx";
+import CompanyContact from "./company/CompanyContact.jsx";
 import CompanyAddress from "./company/CompanyAddress.jsx";
 import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
 import CompanyWorkforce from "./company/CompanyWorkforce.jsx";
@@ -105,9 +106,13 @@ export default class Company extends Component {
 						</h1>
 
 						<Tab
-							menu={["Global", "Address", "Taxonomy", "Workforce"]}
+							menu={["Global", "Contact", "Address", "Taxonomy", "Workforce"]}
 							content={[
 								<CompanyGlobal
+									key={this.props.id}
+									id={this.props.id}
+								/>,
+								<CompanyContact
 									key={this.props.id}
 									id={this.props.id}
 								/>,
