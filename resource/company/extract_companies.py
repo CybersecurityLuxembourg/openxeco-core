@@ -51,6 +51,21 @@ class ExtractCompanies(Resource):
                 df = df.merge(addresses, left_on='Global|id', right_on='Address|company_id', how='left')
                 df = df.drop(['Address|id', 'Address|company_id'], axis=1)
 
+        # Manage contacts
+
+        if 'include_contact' in input_data and input_data['include_contact'] == "true":
+            if company_ids is not None:
+                contacts = self.db.get(self.db.tables["CompanyContact"], {"company_id": company_ids})
+            else:
+                contacts = self.db.get(self.db.tables["CompanyContact"])
+            contacts = Serializer.serialize(contacts, self.db.tables["CompanyContact"])
+            contacts = pd.DataFrame(contacts)
+            contacts = contacts.add_prefix('Contact|')
+
+            if len(contacts) > 0:
+                df = df.merge(contacts, left_on='Global|id', right_on='Contact|company_id', how='left')
+                df = df.drop(['Contact|id', 'Contact|company_id'], axis=1)
+
         # Manage workforces
 
         if 'include_workforce' in input_data and input_data['include_workforce'] == "true":

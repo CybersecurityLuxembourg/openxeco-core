@@ -65,7 +65,7 @@ INSERT INTO TaxonomyAssignment (company, taxonomy_value)
 ALTER TABLE Company
   DROP COLUMN type;
 
--- CONTACT ADDRESS
+-- COMPANY CONTACT
 
 CREATE TABLE CompanyContact (
 	id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
