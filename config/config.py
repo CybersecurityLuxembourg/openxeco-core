@@ -42,6 +42,6 @@ PUBLIC_FRONTEND_URL = {
 
 PUBLIC_ECOSYSTEM_FRONTEND_URL = {
     'dev': ['http://localhost:3003'],
-    'test': ['https://ecosystem.cybersecurity-luxembourg.com', 'https://test-eco.cy.lu'],
+    'test': ['https://test-eco.cy.lu'],
     'production': ['https://ecosystem.cybersecurity-luxembourg.com', 'https://eco.cy.lu'],
 }[ENVIRONMENT]

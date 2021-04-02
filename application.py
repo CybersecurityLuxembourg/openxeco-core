@@ -33,6 +33,8 @@ application.config['MAIL_SERVER'] = config.MAIL_SERVER
 application.config['MAIL_PORT'] = config.MAIL_PORT
 application.config['MAIL_USERNAME'] = config.MAIL_USERNAME
 application.config['MAIL_PASSWORD'] = config.MAIL_PASSWORD
+application.config['MAIL_USE_TLS'] = config.MAIL_USE_TLS == "True"
+application.config['MAIL_USE_SSL'] = config.MAIL_USE_SSL == "True"
 application.config['MAIL_DEFAULT_SENDER'] = config.MAIL_DEFAULT_SENDER
 
 application.config['SCHEDULER_API_ENABLED'] = False
