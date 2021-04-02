@@ -13,8 +13,8 @@ os.environ["DB_PORT"] = "3306"
 os.environ["DB_NAME"] = "CYBERLUX"
 os.environ["MAIL_SERVER"] = "127.0.0.1"
 os.environ["MAIL_PORT"] = "25"
-os.environ["MAIL_USERNAME"] = "alexis.prunier@securitymadein.lu"
-os.environ["MAIL_DEFAULT_SENDER"] = "alexis.prunier@securitymadein.lu"
+os.environ["MAIL_USERNAME"] = "cyberlux-app@securitymadein.lu"
+os.environ["MAIL_DEFAULT_SENDER"] = "cyberlux-app@securitymadein.lu"
 os.environ["IMAGE_FOLDER"] = "/cydb_image_folder"
 
 from application import application

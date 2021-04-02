@@ -15,11 +15,11 @@ DB_CONFIG = {
 
 MAIL_SERVER = os.getenv('MAIL_SERVER', "localhost")
 MAIL_PORT = os.getenv('MAIL_PORT', "1025")
-MAIL_USERNAME = os.getenv('MAIL_USERNAME', "alexis.prunier@securitymadein.lu")
+MAIL_USERNAME = os.getenv('MAIL_USERNAME', "cyberlux-app@securitymadein.lu")
 MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', None)
 MAIL_USE_TLS = os.getenv('MAIL_USE_TLS', "False")
 MAIL_USE_SSL = os.getenv('MAIL_USE_SSL', "False")
-MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "alexis.prunier@securitymadein.lu")
+MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "cyberlux-app@securitymadein.lu")
 
 IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', "C:/image_folder")
 
@@ -29,15 +29,15 @@ JOBADDER_REFRESH_TOKEN = os.getenv('JOBADDER_REFRESH_TOKEN', None)
 JOBADDER_ACCESS_TOKEN = os.getenv('JOBADDER_ACCESS_TOKEN', None)
 
 FRONTEND_URL = {
-    'dev': 'http://localhost:3000',
-    'test': 'https://test-db.cy.lu',
-    'production': None
+    'dev': ['http://localhost:3000'],
+    'test': ['https://test-db.cy.lu'],
+    'production': ['https://db.cy.lu']
 }[ENVIRONMENT]
 
 PUBLIC_FRONTEND_URL = {
-    'dev': 'http://localhost:3002',
-    'test': 'https://test-secin.cy.lu',
-    'production': None,
+    'dev': ['http://localhost:3002'],
+    'test': ['https://test-secin.cy.lu'],
+    'production': ['https://cy.lu', 'https://cybersecurity-luxembourg.com'],
 }[ENVIRONMENT]
 
 PUBLIC_ECOSYSTEM_FRONTEND_URL = {

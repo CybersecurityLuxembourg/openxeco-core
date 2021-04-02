@@ -22,14 +22,12 @@ application.config["ERROR_404_HELP"] = False
 application.config["JWT_SECRET_KEY"] = config.JWT_SECRET_KEY
 application.config["JWT_TOKEN_LOCATION"] = ['headers', 'cookies']
 application.config["JWT_COOKIE_SECURE"] = config.ENVIRONMENT != "dev"
-application.config["JWT_COOKIE_SECURE"] = config.ENVIRONMENT != "dev"
 
 application.config['CORS_HEADERS'] = 'Content-Type'
 application.config["CORS_SUPPORTS_CREDENTIALS"] = True
-application.config["CORS_ORIGINS"] = [
-    config.FRONTEND_URL,
-    config.PUBLIC_FRONTEND_URL,
-] + config.PUBLIC_ECOSYSTEM_FRONTEND_URL
+application.config["CORS_ORIGINS"] = config.FRONTEND_URL \
+                                     + config.PUBLIC_FRONTEND_URL \
+                                     + config.PUBLIC_ECOSYSTEM_FRONTEND_URL
 
 application.config['MAIL_SERVER'] = config.MAIL_SERVER
 application.config['MAIL_PORT'] = config.MAIL_PORT
