@@ -1,5 +1,6 @@
 from resource.account.login import Login
 from resource.account.change_password import ChangePassword
+from resource.account.create_account import CreateAccount
 from resource.account.forgot_password import ForgotPassword
 from resource.account.reset_password import ResetPassword
 from resource.article.copy_article_version import CopyArticleVersion
@@ -114,6 +115,7 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
 
     api.add_resource(Login, '/account/login', resource_class_kwargs={"db": db})
     api.add_resource(ChangePassword, '/account/change_password', resource_class_kwargs={"db": db})
+    api.add_resource(CreateAccount, '/account/create_account', resource_class_kwargs={"db": db, "mail": mail})
     api.add_resource(ForgotPassword, '/account/forgot_password', resource_class_kwargs={"db": db, "mail": mail})
     api.add_resource(ResetPassword, '/account/reset_password', resource_class_kwargs={"db": db})
 

@@ -33,6 +33,11 @@ class AddUser(Resource):
     def post(self):
         input_data = request.get_json()
 
+        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
+            origin = request.environ['HTTP_ORIGIN']
+        else:
+            return "", "500 Impossible to find the origin. Please contact the administrator"
+
         if not has_mail_format(input_data["email"]):
             return "", "422 The email does not have the right format"
 
@@ -54,6 +59,6 @@ class AddUser(Resource):
         send_email(self.mail,
                    subject='[CYBERSECURITY LUXEMBOURG] New account',
                    recipients=[input_data["email"]],
-                   html_body=render_template('new_account.html', url=FRONTEND_URL, password=old_password))
+                   html_body=render_template('new_account.html', url=origin, password=old_password))
 
         return "", "200 "

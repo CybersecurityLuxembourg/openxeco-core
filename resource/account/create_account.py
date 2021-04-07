@@ -15,9 +15,11 @@ from utils.re import has_mail_format
 class CreateAccount(Resource):
 
     db = None
+    mail = None
 
-    def __init__(self, db):
+    def __init__(self, db, mail):
         self.db = db
+        self.mail = mail
 
     @log_request
     @catch_exception
@@ -26,20 +28,25 @@ class CreateAccount(Resource):
     ])
     def post(self):
         input_data = request.get_json()
+        email = input_data["email"].lower()
 
-        if not has_mail_format(input_data["email"]):
+        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
+            origin = request.environ['HTTP_ORIGIN']
+        else:
+            return "", "500 Impossible to find the origin. Please contact the administrator"
+
+        if not has_mail_format(email):
             return "", "422 The provided email does not have the right format"
 
-        data = self.db.get(self.db.tables["User"], {"email": input_data["email"]})
+        data = self.db.get(self.db.tables["User"], {"email": email})
 
         if len(data) > 0:
             return "", "403 An account already exists with this email address"
 
-        input_data["email"] = input_data["email"].lower()
         generated_password = generate_password()
 
         user = {
-            "email": input_data["email"].lower(),
+            "email": email,
             "password": generate_password_hash(generated_password),
             "is_active": 1
         }
@@ -54,7 +61,7 @@ class CreateAccount(Resource):
 
         send_email(self.mail,
                    subject='[CYBERSECURITY LUXEMBOURG] New account',
-                   recipients=[input_data["email"]],
-                   html_body=render_template('new_account.html', url=FRONTEND_URL, password=generated_password))
+                   recipients=[email],
+                   html_body=render_template('new_account.html', url=origin + "/login", password=generated_password))
 
         return "", "200 "
