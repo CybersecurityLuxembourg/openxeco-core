@@ -2,7 +2,7 @@ import os
 
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'dev')
 
-JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', "my_secret_developer_key")
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', "my_$secret_D3v3lop3r_k3Y")
 
 DB_CONFIG = {
     'drivername': 'mysql+pymysql',

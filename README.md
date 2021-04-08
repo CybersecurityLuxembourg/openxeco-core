@@ -28,8 +28,9 @@ https://www.python.org/downloads/release/python-386/
 
 For Linux:
 ```
+$ sudo apt install mariadb-server python3-venv
 $ cd ~/project/bo-api
-$ python -m venv venv
+$ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -U pip setuptools
 $ pip install -r requirements.txt

@@ -161,7 +161,7 @@ You can edit bo-api.conf as follow:
 
 ```
 <VirtualHost *:80>
-    ServerAdmin admin@cybersecurity.lu
+    ServerAdmin adminあcybersecurity.lu
     ServerName api.test-db.cy.lu
     DocumentRoot /var/www/bo-api/
 </VirtualHost>
@@ -171,7 +171,7 @@ and bo-front as follow:
 
 ```
 <VirtualHost *:80>
-    ServerAdmin admin@cybersecurity.lu
+    ServerAdmin adminあcybersecurity.lu
     ServerName test-db.cy.lu
     DocumentRoot /var/www/bo-front/
 </VirtualHost>
@@ -188,13 +188,13 @@ To take in count the new configuration, we need to run the following:
 # Install 'Let's encrypt' and setup HTTPS virtual hosts
 
 ```
-> sudo add-apt-repository ppa:certbot/certbot
+> #sudo add-apt-repository ppa:certbot/certbot # Not needed on recent versions of Ubuntu
 > sudo apt install python3-certbot-apache
 > sudo certbot --apache -d test-db.cy.lu
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator apache, Installer apache
 Enter email address (used for urgent renewal and security notices) (Enter 'c' to
-cancel): cyberlux@securitymadein.lu
+cancel): cyberluxあsecuritymadein.lu
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Please read the Terms of Service at
