@@ -28,7 +28,7 @@ https://www.python.org/downloads/release/python-386/
 
 For Linux:
 ```
-$ sudo apt install mariadb-server python3-venv
+$ sudo apt install mysql-server python3-venv -y
 $ cd ~/project/bo-api
 $ python3 -m venv venv
 $ source venv/bin/activate
@@ -57,7 +57,9 @@ If not:
 
 Then:
 ```
-> python application.py
+# Copy and edit sample config
+$ cp config/config.py.sample config/config.py
+$ python application.py
 ```
 
 # Simulate SMTP server
@@ -71,7 +73,7 @@ Some resources of the API requires a SMTP server, you can simulate in local envi
 
 To run a single test
 ```
-> python -m unittest test/get_company.py
+> python -m unittest test/resource/company/test_get_company.py
 ```
 
 To run the whole set
@@ -92,6 +94,12 @@ Tun the test coverage report and generate in HTML ( with the venv activated)
 
 # Run the code analysers
 
+## npm is needed
+
+```
+$ sudo apt install npm -y
+```
+
 To run the PyCQA/prospector 
 ```
 > npm install prospector
@@ -100,6 +108,6 @@ To run the PyCQA/prospector
 
 To run the PyCQA/bandit 
 ```
-> npm install bandit
-> bandit -r ./ -x ./venv/*,./test/*
+> sudo apt install bandit
+> bandit -r .
 ```
