@@ -15,7 +15,7 @@ jobs:
         image: mysql:8.0.23
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: CYBERLUX
+          MYSQL_DATABASE: CYBERLUX_TEST
         ports:
           - 33306:3306
         options: >-
@@ -43,7 +43,7 @@ jobs:
           
       - name: Run unit tests with coverage
         env:
-          DB_NAME: CYBERLUX
+          DB_NAME: CYBERLUX_TEST
           DB_PORT: 33306
           DB_USER: root
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
