@@ -11,7 +11,7 @@
 </tr>
 <tr>
   <td>Unittest Workflow</td>
-  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml/badge.svg"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml/badge.svg" /></a></td>
+  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml/badge.svg" /></a></td>
 </tr>
 <tr>
   <td>Twitter</td>
