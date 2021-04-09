@@ -1,11 +1,11 @@
 name: Run Python Unit Tests
 on:
   push:
-    branches-ignore:
-      - '**'
+    branches:
+      - main
   pull_request:
-    branches-ignore:
-      - '**'
+    branches:
+      - main
 
 jobs:
   build:
