@@ -22,4 +22,4 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run PyCQA Bandit
-        run: bandit -r .
+        run: bandit -r . -x ./test/,./venv/
