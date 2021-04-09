@@ -1,3 +1,24 @@
+![logo](./doc/ecosystem-logo.jpg?raw=true "EcoSystem CYBERSECLUX")
+
+<table>
+<tr>
+  <td>Bandit Workflow</td>
+  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-bandit.yml"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-bandit.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+  <td>Prospector Workflow</td>
+  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-prospector.yml"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-prospector.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+  <td>Unittest Workflow</td>
+  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml/badge.svg"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+  <td>Twitter</td>
+  <td><a href="https://twitter.com/CybersecLux"><img src="https://img.shields.io/twitter/follow/CybersecLux.svg?style=social&label=Follow" /></a></td>
+</tr>
+</table>
+
 # Outlines
 
 All the versions mentioned are the recommended ones.
