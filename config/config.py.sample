@@ -26,8 +26,8 @@ MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "cyberlux-app@securitymad
 # FIXME: Remove if not needed, make sure directories are POSIX
 IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', "/tmp/image_folder")
 
-JOBADDER_CLIENT_ID = "See JobAdder account"
-JOBADDER_CLIENT_SECRET = "See JobAdder account"
+JOBADDER_CLIENT_ID = os.getenv('JOBADDER_CLIENT_ID', "See JobAdder account")
+JOBADDER_CLIENT_SECRET = os.getenv('JOBADDER_CLIENT_SECRET', "See JobAdder account")
 JOBADDER_REFRESH_TOKEN = os.getenv('JOBADDER_REFRESH_TOKEN', None)
 JOBADDER_ACCESS_TOKEN = os.getenv('JOBADDER_ACCESS_TOKEN', None)
 
