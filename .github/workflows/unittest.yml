@@ -8,7 +8,8 @@ on:
       - '**'
 
 jobs:
-  laravel-test-withdb:
+  build:
+    runs-on: ubuntu-latest
     # Service container to run with "laravel-test-withdb"
     services:
       # Label used to access the service container
@@ -27,8 +28,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-  build:
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install Python 3
