@@ -2,10 +2,10 @@ name: Run PyCQA Bandit
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -22,4 +22,4 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run PyCQA Bandit
-        run: bandit -r ./ -x ./venv/*,./test/*
+        run: bandit -r .
