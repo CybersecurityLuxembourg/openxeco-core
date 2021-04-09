@@ -1,5 +1,6 @@
 # IDE Ignores
 .idea
+*.swp
 
 # Project config files
 config/config.py
