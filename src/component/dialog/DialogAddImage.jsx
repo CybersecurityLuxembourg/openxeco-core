@@ -162,8 +162,8 @@ export default class DialogAddImage extends React.Component {
 							&& <Cropper
 								className={"DialogAddImage-cropper"}
 								src={this.state.imageContent}
-								initialAspectRatio={16 / 9}
-								guides={false}
+								guides={true}
+								autoCropArea={1}
 								onInitialized={(instance) => this.changeState("cropper", instance) }
 							/>
 						}
