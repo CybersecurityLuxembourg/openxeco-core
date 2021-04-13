@@ -83,7 +83,6 @@ from resource.user.delete_user_company import DeleteUserCompany
 from resource.user.delete_user_group import DeleteUserGroup
 from resource.user.delete_user_group_right import DeleteUserGroupRight
 from resource.user.get_users import GetUsers
-from resource.user.get_my_admin_user import GetMyAdminUser
 from resource.user.get_user import GetUser
 from resource.user.get_user_companies import GetUserCompanies
 from resource.user.get_user_group_rights import GetUserGroupRights
@@ -223,7 +222,6 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
     api.add_resource(GetUserGroups, '/user/get_user_groups', resource_class_kwargs={"db": db})
     api.add_resource(GetUserGroup, '/user/get_user_group/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetUserGroupAssignments, '/user/get_user_group_assignments', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyAdminUser, '/user/get_my_admin_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateUser, '/user/update_user', resource_class_kwargs={"db": db})
     api.add_resource(UpdateUserGroupAssignment, '/user/update_user_group_assignment', resource_class_kwargs={"db": db})
 
