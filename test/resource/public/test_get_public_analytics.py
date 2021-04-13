@@ -8,17 +8,14 @@ class TestGetPublicAnalytics(BaseCase):
         self.db.insert({
             "name": "My company",
             "creation_date": "2020-06-06",
-            "type": "ACTOR"
         }, self.db.tables["Company"])
         self.db.insert({
             "name": "My company 2",
             "creation_date": None,
-            "type": "ACTOR"
         }, self.db.tables["Company"])
         self.db.insert({
             "name": "My company 3",
             "creation_date": None,
-            "type": None
         }, self.db.tables["Company"])
 
         response = self.application.get('/public/get_public_analytics',

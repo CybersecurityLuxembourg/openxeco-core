@@ -9,6 +9,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
     @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
     def test_ok(self, mock_urlopen, token):
+        self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
         a = Mock()
         a.read.side_effect = [
@@ -60,6 +61,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
     @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
     def test_ok_with_2_pages(self, mock_urlopen, token):
+        self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
         a = Mock()
         a.read.side_effect = [
@@ -86,6 +88,8 @@ class TestUpdateMoovijobJobOffers(BaseCase):
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
     @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
     def test_ok_with_existing_articles(self, mock_urlopen, token):
+        self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
+
         self.db.insert({"id": 1, "title": "TITLE", "external_reference": "26870", "type": "JOB OFFER",
                         "media": "CYBERLUX", "status": "PUBLIC"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
@@ -150,6 +154,8 @@ class TestUpdateMoovijobJobOffers(BaseCase):
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
     @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
     def test_ok_with_existing_articles_2(self, mock_urlopen, token):
+        self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
+
         self.db.insert({"id": 1, "title": "TITLE", "external_reference": "26870", "type": "JOB OFFER",
                         "media": "CYBERLUX", "status": "PUBLIC"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
@@ -218,6 +224,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
     @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
     def test_ko_no_article(self, mock_urlopen, token):
+        self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
         a = Mock()
         a.read.side_effect = [

@@ -87,6 +87,7 @@ class TestGetArticleContent(BaseCase):
                 }
             ],
             'image': None,
+            'link': None,
             'publication_date': '2021-01-24',
             'tags': [],
             'title': 'TITLE',

@@ -5,9 +5,9 @@ class TestGetPublicCompanies(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company", "type": "ACTOR"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2", "type": "ACTOR"}, self.db.tables["Company"])
-        self.db.insert({"id": 4, "name": "My Company 3", "type": "JOB PLATFORM"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 4, "name": "My Company 3"}, self.db.tables["Company"])
 
         response = self.application.get('/public/get_public_companies',
                                         headers=self.get_standard_header(token))
@@ -22,7 +22,6 @@ class TestGetPublicCompanies(BaseCase):
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
-                'type': 'ACTOR'
             },
             {
                 'id': 3,
@@ -31,7 +30,6 @@ class TestGetPublicCompanies(BaseCase):
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
-                'type': 'ACTOR'
             },
             {
                 'id': 4,
@@ -40,17 +38,21 @@ class TestGetPublicCompanies(BaseCase):
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
-                'type': 'JOB PLATFORM'
             }
         ])
 
     @BaseCase.login
     def test_ok_with_type(self, token):
-        self.db.insert({"id": 2, "name": "My Company", "type": "ACTOR"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2", "type": "ACTOR"}, self.db.tables["Company"])
-        self.db.insert({"id": 4, "name": "My Company 3", "type": "JOB PLATFORM"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 4, "name": "My Company 3"}, self.db.tables["Company"])
 
-        response = self.application.get('/public/get_public_companies?type=ACTOR',
+        self.db.insert({"name": "ECOSYSTEM ROLE"}, self.db.tables["TaxonomyCategory"])
+        self.db.insert({"id": 1, "name": "ACTOR", "category": "ECOSYSTEM ROLE"}, self.db.tables["TaxonomyValue"])
+        self.db.insert({"company": 2, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"company": 3, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
+
+        response = self.application.get('/public/get_public_companies?ecosystem_role=ACTOR',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(2, len(response.json))
@@ -63,7 +65,6 @@ class TestGetPublicCompanies(BaseCase):
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
-                'type': 'ACTOR'
             },
             {
                 'id': 3,
@@ -72,6 +73,5 @@ class TestGetPublicCompanies(BaseCase):
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
-                'type': 'ACTOR'
             }
         ])

@@ -20,6 +20,7 @@ class TestGetPublicCompany(BaseCase):
             'rscl_number': None,
             'creation_date': None,
             'description': None,
+            'taxonomy_assignment': [],
             'website': None
         })
 

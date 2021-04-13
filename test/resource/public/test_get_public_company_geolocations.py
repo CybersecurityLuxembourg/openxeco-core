@@ -5,9 +5,9 @@ class TestGetPublicCompanyGeolocations(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company", "type": "ACTOR"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2", "type": "ACTOR"}, self.db.tables["Company"])
-        self.db.insert({"id": 4, "name": "My Company 3", "type": "JOB PLATFORM"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 4, "name": "My Company 3"}, self.db.tables["Company"])
 
         self.db.insert({
             "id": 1,

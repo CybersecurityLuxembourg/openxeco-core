@@ -10,7 +10,6 @@ class TestSerializer(BaseCase):
             "name": "My company",
             "creation_date": "2020-06-06",
             "is_startup": True,
-            "type": "ACTOR"
         }, self.db.tables["Company"])
 
         company = self.db.get(self.db.tables["Company"])[0]
@@ -20,14 +19,12 @@ class TestSerializer(BaseCase):
         self.assertEqual(res["name"], "My company")
         self.assertEqual(res["creation_date"], "2020-06-06")
         self.assertEqual(res["is_startup"], True)
-        self.assertEqual(res["type"], "ACTOR")
 
     def test_ok_serialize_with_object(self):
         self.db.insert({
             "name": "My company",
             "creation_date": "2020-06-06",
             "is_startup": True,
-            "type": "ACTOR"
         }, self.db.tables["Company"])
 
         company = self.db.get(self.db.tables["Company"])[0]
@@ -37,20 +34,17 @@ class TestSerializer(BaseCase):
         self.assertEqual(res["name"], "My company")
         self.assertEqual(res["creation_date"], "2020-06-06")
         self.assertEqual(res["is_startup"], True)
-        self.assertEqual(res["type"], "ACTOR")
 
     def test_ok_serialize_with_list(self):
         self.db.insert({
             "name": "My company",
             "creation_date": "2020-06-06",
             "is_startup": True,
-            "type": "ACTOR"
         }, self.db.tables["Company"])
         self.db.insert({
             "name": "My company 2",
             "creation_date": "2020-06-06",
             "is_startup": True,
-            "type": "ACTOR"
         }, self.db.tables["Company"])
 
         companies = self.db.get(self.db.tables["Company"])
@@ -61,11 +55,9 @@ class TestSerializer(BaseCase):
         self.assertEqual(res[0]["name"], "My company")
         self.assertEqual(res[0]["creation_date"], "2020-06-06")
         self.assertEqual(res[0]["is_startup"], True)
-        self.assertEqual(res[0]["type"], "ACTOR")
         self.assertEqual(res[1]["name"], "My company 2")
         self.assertEqual(res[1]["creation_date"], "2020-06-06")
         self.assertEqual(res[1]["is_startup"], True)
-        self.assertEqual(res[1]["type"], "ACTOR")
 
     def test_ok_serialize_with_bytes(self):
         self.db.insert({

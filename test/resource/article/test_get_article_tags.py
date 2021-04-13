@@ -33,7 +33,6 @@ class TestGetArticleTags(BaseCase):
                     'is_targeting_sme': 0,
                     'name': 'COMPANY',
                     'rscl_number': None,
-                    'type': None,
                     'website': None
                 },
                 {
@@ -47,7 +46,6 @@ class TestGetArticleTags(BaseCase):
                     'is_targeting_sme': 0,
                     'name': 'COMPANY2',
                     'rscl_number': None,
-                    'type': None,
                     'website': None
                 }],
             'taxonomy_tags': [
