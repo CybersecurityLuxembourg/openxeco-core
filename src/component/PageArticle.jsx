@@ -134,7 +134,7 @@ export default class PageArticle extends React.Component {
 									<button
 										className={"blue-background"}
 										data-hover="Filter">
-										<span><i className="fas fa-shapes"/></span>
+										<span><i className="fas fa-search"/></span>
 									</button>
 								}
 								applyFilter={(filters) => this.changeState("filters", filters)}
