@@ -1,3 +1,24 @@
+![logo](./doc/ecosystem-logo.jpg?raw=true "EcoSystem CYBERSECLUX")
+
+<table>
+<tr>
+  <td>Bandit Workflow</td>
+  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-bandit.yml"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-bandit.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+  <td>Prospector Workflow</td>
+  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-prospector.yml"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/pycqa-prospector.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+  <td>Unittest Workflow</td>
+  <td><a href="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml"><img src="https://github.com/CybersecLux/bo-api/actions/workflows/unittest.yml/badge.svg" /></a></td>
+</tr>
+<tr>
+  <td>Twitter</td>
+  <td><a href="https://twitter.com/CybersecLux"><img src="https://img.shields.io/twitter/follow/CybersecLux.svg?style=social&label=Follow" /></a></td>
+</tr>
+</table>
+
 # Outlines
 
 All the versions mentioned are the recommended ones.
@@ -28,8 +49,9 @@ https://www.python.org/downloads/release/python-386/
 
 For Linux:
 ```
+$ sudo apt install mysql-server python3-venv -y
 $ cd ~/project/bo-api
-$ python -m venv venv
+$ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -U pip setuptools
 $ pip install -r requirements.txt
@@ -56,7 +78,9 @@ If not:
 
 Then:
 ```
-> python application.py
+# Copy and edit sample config
+$ cp config/config.py.sample config/config.py
+$ python application.py
 ```
 
 # Simulate SMTP server
@@ -70,7 +94,7 @@ Some resources of the API requires a SMTP server, you can simulate in local envi
 
 To run a single test
 ```
-> python -m unittest test/get_company.py
+> python -m unittest test/resource/company/test_get_company.py
 ```
 
 To run the whole set
@@ -91,6 +115,12 @@ Tun the test coverage report and generate in HTML ( with the venv activated)
 
 # Run the code analysers
 
+## npm is needed
+
+```
+$ sudo apt install npm -y
+```
+
 To run the PyCQA/prospector 
 ```
 > npm install prospector
@@ -99,6 +129,6 @@ To run the PyCQA/prospector
 
 To run the PyCQA/bandit 
 ```
-> npm install bandit
-> bandit -r ./ -x ./venv/*,./test/*
+> sudo apt install bandit
+> bandit -r .
 ```

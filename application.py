@@ -1,11 +1,19 @@
+import sys
+
 from flask import Flask
-from flask_cors import CORS
-from flask_restful import Api
-from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from flask_mail import Mail
-from config import config
+from flask_restful import Api
 from sqlalchemy.engine.url import URL
+
+try:
+    from config import config
+except ImportError:
+    print("Please copy config.py.sample to config.py")
+    sys.exit(1)
+
 from db.db import DB
 from routes import set_routes
 

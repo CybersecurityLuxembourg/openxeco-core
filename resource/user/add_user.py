@@ -5,7 +5,8 @@ from flask_bcrypt import generate_password_hash
 from sqlalchemy.exc import IntegrityError
 from utils.re import has_mail_format, has_password_format
 from utils.mail import send_email
-from config.config import FRONTEND_URL
+# TODO: Needed?
+#from config.config import FRONTEND_URL
 from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception

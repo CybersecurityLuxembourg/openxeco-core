@@ -2,7 +2,8 @@ from flask import request, render_template
 from flask_bcrypt import generate_password_hash
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
-from config.config import FRONTEND_URL
+# TODO: Needed?
+#from config.config import FRONTEND_URL
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_payload import verify_payload

@@ -2,10 +2,10 @@ name: Run PyCQA Prospector
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -22,4 +22,6 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run PyCQA Prospector
-        run: prospector -i venv/ --no-autodetect
+        run: |
+          cp config/config.py.sample config/config.py
+          prospector -i venv/ --no-autodetect

@@ -1,15 +1,28 @@
 name: Run Python Unit Tests
 on:
   push:
-    branches-ignore:
-      - '**'
+    branches:
+      - main
   pull_request:
-    branches-ignore:
-      - '**'
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      mysql-service:
+        image: mysql:8.0.23
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: CYBERLUX_TEST
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - uses: actions/checkout@v2
       - name: Install Python 3
@@ -22,4 +35,11 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run unit tests with coverage
-        run: coverage run --source=resource,utils,db,decorator -m unittest discover && coverage report 
+        env:
+          DB_NAME: CYBERLUX_TEST
+          DB_PORT: 33306
+          DB_USER: root
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          cp config/config.py.sample config/config.py
+          coverage run --source=resource,utils,db,decorator -m unittest discover && coverage report
