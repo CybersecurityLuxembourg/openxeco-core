@@ -35,7 +35,8 @@ jobs:
           pip install -r requirements.txt
       - name: Create database
         run: |
-          **sudo systemctl start mysql** mysql -uroot -p${{ secrets.DB_PASSWORD }} CYBERLUX_TEST < db/sql/cyberlux_structure.sql
+          sudo systemctl start mysql
+          mysql -uroot -p${{ secrets.DB_PASSWORD }} CYBERLUX_TEST < db/sql/cyberlux_structure.sql
       - name: Run unit tests with coverage
         env:
           DB_NAME: CYBERLUX_TEST
