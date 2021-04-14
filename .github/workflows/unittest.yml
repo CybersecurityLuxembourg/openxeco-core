@@ -14,7 +14,7 @@ jobs:
       mysql-service:
         image: mysql:8.0.23
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: CYBERLUX_TEST
         ports:
           - 3306
@@ -36,7 +36,7 @@ jobs:
       - name: Create database
         run: |
           sudo systemctl start mysql
-          mysql -h 127.0.0.1 -P 3306 -uroot -p${{ secrets.DB_PASSWORD }} CYBERLUX_TEST < db/sql/cyberlux_structure.sql
+          mysql -h 127.0.0.1 -P 3306 -uroot -ppassword CYBERLUX_TEST < db/sql/cyberlux_structure.sql
       - name: Run unit tests with coverage
         env:
           DB_NAME: CYBERLUX_TEST
