@@ -1,5 +1,6 @@
 import functools
 import traceback
+import re
 
 
 def catch_exception(f):
@@ -7,8 +8,10 @@ def catch_exception(f):
     def wrapper(*args, **kwargs):
         try:
             return f(*args, **kwargs)
-        except Exception as e:
+        except BaseException as e:
             traceback.print_exc()
-            return "", f"500 {str(e)}"
+            if re.fullmatch(r"^[0-9]{3}[ ].*", str(e)) is not None:
+                return "", str(e)
+            return "", f"500 An error occurred on the server"
 
     return wrapper
