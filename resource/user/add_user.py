@@ -2,7 +2,6 @@ from flask_restful import Resource
 from flask import request, render_template
 from flask_jwt_extended import jwt_required
 from flask_bcrypt import generate_password_hash
-from sqlalchemy.exc import IntegrityError
 from utils.re import has_mail_format, has_password_format
 from utils.mail import send_email
 from decorator.verify_payload import verify_payload

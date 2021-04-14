@@ -5,7 +5,6 @@ from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from sqlalchemy.exc import IntegrityError
-from exception.object_already_existing import ObjectAlreadyExisting
 from exception.object_not_found import ObjectNotFound
 from exception.cannot_assign_value_from_parent_category import CannotAssignValueFromParentCategory
 from decorator.log_request import log_request

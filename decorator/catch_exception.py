@@ -12,6 +12,6 @@ def catch_exception(f):
             traceback.print_exc()
             if re.fullmatch(r"^[0-9]{3}[ ].*", str(e)) is not None:
                 return "", str(e)
-            return "", f"500 An error occurred on the server"
+            return "", "500 An error occurred on the server"
 
     return wrapper

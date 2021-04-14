@@ -6,7 +6,6 @@ from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_payload import verify_payload
-from exception.object_already_existing import ObjectAlreadyExisting
 
 
 class AddTaxonomyCategory(Resource):

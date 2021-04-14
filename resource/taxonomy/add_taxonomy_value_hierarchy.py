@@ -5,7 +5,6 @@ from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from sqlalchemy.exc import IntegrityError
-from exception.object_already_existing import ObjectAlreadyExisting
 from decorator.log_request import log_request
 
 
