@@ -17,11 +17,11 @@ class ResetPassword(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'new_password', 'type': str}
     ])
     @jwt_required
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

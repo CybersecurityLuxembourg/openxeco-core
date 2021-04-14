@@ -15,13 +15,13 @@ class AddTaxonomyTag(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'article', 'type': int},
         {'field': 'taxonomy_value', 'type': int}
     ])
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

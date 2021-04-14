@@ -37,6 +37,8 @@ application.config['MAIL_USE_TLS'] = config.MAIL_USE_TLS == "True"
 application.config['MAIL_USE_SSL'] = config.MAIL_USE_SSL == "True"
 application.config['MAIL_DEFAULT_SENDER'] = config.MAIL_DEFAULT_SENDER
 
+application.config['PROPAGATE_EXCEPTIONS'] = True
+
 application.config['SCHEDULER_API_ENABLED'] = False
 
 # Create DB instance

@@ -15,11 +15,11 @@ class DeleteMyRequest(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'id', 'type': int}
     ])
     @jwt_required
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

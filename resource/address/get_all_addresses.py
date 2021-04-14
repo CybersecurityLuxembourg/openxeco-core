@@ -1,6 +1,5 @@
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
-
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
@@ -13,9 +12,9 @@ class GetAllAddresses(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def get(self):
 
         data = self.db.get(self.db.tables["Company_Address"])

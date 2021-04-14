@@ -18,10 +18,10 @@ class ForgotPassword(Resource):
         self.mail = mail
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'email', 'type': str}
     ])
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

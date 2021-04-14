@@ -13,9 +13,9 @@ class GetUserGroupRights(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def get(self, id_):
 
         data = self.db.get(self.db.tables["UserGroupRight"], {"group_id": id_})

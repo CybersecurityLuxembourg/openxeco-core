@@ -15,7 +15,6 @@ class UpdateContact(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'id', 'type': int},
         {'field': 'type', 'type': str, 'optional': True},
@@ -25,6 +24,7 @@ class UpdateContact(Resource):
     ])
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

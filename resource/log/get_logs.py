@@ -15,9 +15,9 @@ class GetLogs(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def get(self):
 
         filters = request.args.to_dict()

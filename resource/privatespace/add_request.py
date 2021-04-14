@@ -12,11 +12,11 @@ class AddRequest(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'request', 'type': str},
     ])
     @jwt_required
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

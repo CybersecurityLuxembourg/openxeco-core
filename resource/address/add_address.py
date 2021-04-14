@@ -13,7 +13,6 @@ class AddAddress(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'company_id', 'type': int},
         {'field': 'address_1', 'type': str},
@@ -28,6 +27,7 @@ class AddAddress(Resource):
     ])
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

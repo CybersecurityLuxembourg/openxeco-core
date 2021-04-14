@@ -14,13 +14,13 @@ class AddUserCompany(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'user', 'type': int},
         {'field': 'company', 'type': int},
     ])
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

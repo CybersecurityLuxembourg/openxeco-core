@@ -11,8 +11,8 @@ class IsLogged(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @jwt_required
+    @catch_exception
     def get(self):
 
         data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})

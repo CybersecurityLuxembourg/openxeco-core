@@ -16,7 +16,6 @@ class AddWorkforce(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @verify_payload([
         {'field': 'company', 'type': int},
         {'field': 'workforce', 'type': int},
@@ -26,6 +25,7 @@ class AddWorkforce(Resource):
     ])
     @jwt_required
     @verify_admin_access
+    @catch_exception
     def post(self):
         input_data = request.get_json()
 

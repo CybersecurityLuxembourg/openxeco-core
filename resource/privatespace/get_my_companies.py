@@ -12,8 +12,8 @@ class GetMyCompanies(Resource):
         self.db = db
 
     @log_request
-    @catch_exception
     @jwt_required
+    @catch_exception
     def get(self):
 
         subquery = self.db.session \
