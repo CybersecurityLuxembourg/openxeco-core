@@ -44,7 +44,7 @@ class AddTaxonomyCategoryHierarchy(Resource):
         except IntegrityError as e:
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
-                raise ObjectAlreadyExisting
+                return "", "422 This relation is already existing"
             raise e
 
         return "", "200 "

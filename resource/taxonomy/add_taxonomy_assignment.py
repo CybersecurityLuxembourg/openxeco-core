@@ -45,12 +45,15 @@ class AddTaxonomyAssignment(Resource):
             "taxonomy_value": input_data["value"]
         }
 
+        if self.db.get_count(self.db.tables["TaxonomyAssignment"], row) > 0:
+            return "", "422 This assignment is already existing"
+
         try:
             self.db.insert(row, self.db.tables["TaxonomyAssignment"])
         except IntegrityError as e:
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
-                raise ObjectAlreadyExisting
+                return "422 This assignment is already existing"
             raise e
 
         return "", "200 "

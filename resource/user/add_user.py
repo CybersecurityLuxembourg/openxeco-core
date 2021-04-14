@@ -5,12 +5,9 @@ from flask_bcrypt import generate_password_hash
 from sqlalchemy.exc import IntegrityError
 from utils.re import has_mail_format, has_password_format
 from utils.mail import send_email
-# TODO: Needed?
-#from config.config import FRONTEND_URL
 from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
-from exception.object_already_existing import ObjectAlreadyExisting
 from decorator.log_request import log_request
 
 
@@ -51,11 +48,11 @@ class AddUser(Resource):
 
         try:
             self.db.insert(input_data, self.db.tables["User"])
-        except IntegrityError as e:
+        except Exception as e:
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
-                raise ObjectAlreadyExisting
-            raise e
+                return "", "422 This address is already existing"
+            raise
 
         send_email(self.mail,
                    subject='[CYBERSECURITY LUXEMBOURG] New account',

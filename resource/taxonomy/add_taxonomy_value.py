@@ -39,7 +39,7 @@ class AddTaxonomyValue(Resource):
         except IntegrityError as e:
             self.db.session.rollback()
             if "Duplicate entry" in str(e):
-                raise ObjectAlreadyExisting
+                return "", "422 This value is already existing"
             raise e
 
         return "", "200 "
