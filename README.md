@@ -66,6 +66,13 @@ For Windows
 > pip install -r requirements.txt
 ```
 
+# Import the database structure
+
+```
+$ cd ~/project/bo-api
+$ mysql -u root -p < ./db/sql/cyberlux_structure.sql
+```
+
 # Run environment
 
 You have to make sure that the python environment is active
