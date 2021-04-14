@@ -4,10 +4,9 @@ ENVIRONMENT = os.getenv('ENVIRONMENT', 'dev')
 
 JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', "my_$secret_D3v3lop3r_k3Y")
 
-# FIXME: remove root acount and add db creation step in README
 DB_CONFIG = {
     'drivername': 'mysql+pymysql',
-    'username': os.getenv('DB_USERNAME', 'root'),
+    'username': os.getenv('DB_USERNAME', 'cyberlux'),
     'password': os.getenv('DB_PASSWORD', 'DBDevSMILE20'),
     'host': os.getenv('DB_HOSTNAME', 'localhost'),
     'port': os.getenv('DB_PORT', '3306'),
@@ -22,8 +21,6 @@ MAIL_USE_TLS = os.getenv('MAIL_USE_TLS', "False")
 MAIL_USE_SSL = os.getenv('MAIL_USE_SSL', "False")
 MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "cyberlux-app@securitymadein.lu")
 
-
-# FIXME: Remove if not needed, make sure directories are POSIX
 IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', "/tmp/image_folder")
 
 JOBADDER_CLIENT_ID = os.getenv('JOBADDER_CLIENT_ID', "See JobAdder account")
