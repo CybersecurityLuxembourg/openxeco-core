@@ -14,4 +14,4 @@ class TestIsLogged(BaseCase):
         response = self.application.get('/privatespace/is_logged',
                                         headers=self.get_standard_header(None))
 
-        self.assertEqual(500, response.status_code)
+        self.assertEqual(422, response.status_code)

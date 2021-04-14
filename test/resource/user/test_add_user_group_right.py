@@ -42,6 +42,6 @@ class TestAddUserGroupRight(BaseCase):
 
         new_rights = self.db.get(self.db.tables["UserGroupRight"], {"group_id": 14})
 
-        self.assertEqual("500 Object already existing", response.status)
+        self.assertEqual("422 Object already existing", response.status)
         self.assertEqual(len(new_rights), 1)
         self.assertEqual(new_rights[0].resource, "/user/example_resource")

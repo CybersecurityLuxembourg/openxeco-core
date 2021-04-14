@@ -37,7 +37,6 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(422, response.status_code)
         self.assertEqual("422 The provided categories cannot be the same one", response.status)
 
     @BaseCase.login
@@ -53,7 +52,6 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(422, response.status_code)
         self.assertEqual("422 One of the provided category does not exist", response.status)
 
     @BaseCase.login
@@ -73,8 +71,7 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(500, response.status_code)
-        self.assertEqual("500 Object already existing", response.status)
+        self.assertEqual("422 This relation is already existing", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_category_hierarchy")
@@ -83,7 +80,7 @@ class TestAddTaxonomyCategoryHierarchy(BaseCase):
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT2"}))
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT1"}))
         self.db.session.commit()
-        mock_db_insert.side_effect = IntegrityError(None, None, None)
+        mock_db_insert.side_effect = [IntegrityError(None, None, None), None]
 
         payload = {
             "parent_category": "CAT1",

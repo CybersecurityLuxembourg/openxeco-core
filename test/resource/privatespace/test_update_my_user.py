@@ -27,7 +27,7 @@ class TestUpdateMyUser(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("500 Cannot modify this attribute: password", response.status)
+        self.assertEqual("422 Cannot modify this attribute: password", response.status)
 
     @BaseCase.login
     def test_ko_with_email(self, token):
@@ -37,7 +37,7 @@ class TestUpdateMyUser(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("500 Cannot modify this attribute: email", response.status)
+        self.assertEqual("422 Cannot modify this attribute: email", response.status)
 
     @BaseCase.login
     def test_ko_with_is_admin(self, token):
@@ -48,7 +48,7 @@ class TestUpdateMyUser(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("500 Cannot modify this attribute: is_admin", response.status)
+        self.assertEqual("422 Cannot modify this attribute: is_admin", response.status)
 
     @BaseCase.login
     def test_ko_with_is_active(self, token):
@@ -59,4 +59,4 @@ class TestUpdateMyUser(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("500 Cannot modify this attribute: is_active", response.status)
+        self.assertEqual("422 Cannot modify this attribute: is_active", response.status)

@@ -65,7 +65,7 @@ class TestUpdateUserGroupAssignment(BaseCase):
 
         assignments = self.db.get(self.db.tables["UserGroupAssignment"])
 
-        self.assertEqual("500 Object not found : user", response.status)
+        self.assertEqual("422 Object not found : user", response.status)
         self.assertEqual(len(assignments), 1)
 
     @BaseCase.login
@@ -85,5 +85,5 @@ class TestUpdateUserGroupAssignment(BaseCase):
 
         assignments = self.db.get(self.db.tables["UserGroupAssignment"])
 
-        self.assertEqual("500 Object not found : group", response.status)
+        self.assertEqual("422 Object not found : group", response.status)
         self.assertEqual(len(assignments), 1)

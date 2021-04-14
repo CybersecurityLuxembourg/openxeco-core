@@ -17,4 +17,4 @@ class TestGetImage(BaseCase):
 
         response = self.application.get('/public/get_image/50')
 
-        self.assertEqual("500 Image not found", response.status)
+        self.assertEqual("422 Image not found", response.status)

@@ -42,6 +42,5 @@ class TestAddUserCompany(BaseCase):
 
         assignments = self.db.get(self.db.tables["UserCompanyAssignment"])
 
-        self.assertEqual(500, response.status_code)
-        self.assertEqual("500 Object already existing", response.status)
+        self.assertEqual("422 Object already existing", response.status)
         self.assertEqual(len(assignments), 1)

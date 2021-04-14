@@ -32,14 +32,13 @@ class TestAddTaxonomyCategory(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(500, response.status_code)
-        self.assertEqual("500 Object already existing", response.status)
+        self.assertEqual("422 This category is already existing", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_category")
     @patch('db.db.DB.insert')
     def test_ko_force_integrity_error_out_of_duplicate(self, mock_db_insert, token):
-        mock_db_insert.side_effect = IntegrityError(None, None, None)
+        mock_db_insert.side_effect = [IntegrityError(None, None, None), None]
 
         payload = {
             "category": "CAT",

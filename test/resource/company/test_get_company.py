@@ -17,4 +17,4 @@ class TestGetCompany(BaseCase):
         response = self.application.get('/company/get_company/4',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual(500, response.status_code)
+        self.assertEqual("422 Object not found", response.status)

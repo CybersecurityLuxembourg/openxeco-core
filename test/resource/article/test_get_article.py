@@ -35,4 +35,4 @@ class TestGetArticle(BaseCase):
         response = self.application.get('/article/get_article/2',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual("500 Object not found", response.status)
+        self.assertEqual("422 Object not found", response.status)

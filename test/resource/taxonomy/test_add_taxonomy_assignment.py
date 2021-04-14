@@ -43,8 +43,7 @@ class TestAddTaxonomyAssignment(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(500, response.status_code)
-        self.assertEqual("500 Cannot assign value from parent category", response.status)
+        self.assertEqual("422 Cannot assign value from parent category", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
@@ -59,8 +58,7 @@ class TestAddTaxonomyAssignment(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(500, response.status_code)
-        self.assertEqual("500 Object not found", response.status)
+        self.assertEqual("422 Object not found", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
@@ -79,8 +77,7 @@ class TestAddTaxonomyAssignment(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(500, response.status_code)
-        self.assertEqual("500 Object already existing", response.status)
+        self.assertEqual("422 This assignment is already existing", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
@@ -91,7 +88,7 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.db.session.commit()
         self.db.session.add(self.db.tables["TaxonomyValue"](**{"id": 1, "name": "My Value", "category": "CAT1"}))
         self.db.session.commit()
-        mock_db_insert.side_effect = IntegrityError(None, None, None)
+        mock_db_insert.side_effect = [IntegrityError(None, None, None), None]
 
         payload = {
             "company": 1,

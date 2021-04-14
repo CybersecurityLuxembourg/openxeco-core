@@ -50,7 +50,7 @@ class TestUpdateUser(BaseCase):
 
         users = self.db.get(self.db.tables["User"], {"id": 2})
 
-        self.assertEqual("500 Cannot modify this attribute: password", response.status)
+        self.assertEqual("422 Cannot modify this attribute: password", response.status)
         self.assertEqual(users[0].is_admin, 0)
 
     @BaseCase.login
@@ -75,5 +75,5 @@ class TestUpdateUser(BaseCase):
 
         users = self.db.get(self.db.tables["User"], {"id": 2})
 
-        self.assertEqual("500 Cannot modify this attribute: email", response.status)
+        self.assertEqual("422 Cannot modify this attribute: email", response.status)
         self.assertEqual(users[0].is_admin, 0)

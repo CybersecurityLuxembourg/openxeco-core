@@ -1,7 +1,7 @@
 from test.BaseCase import BaseCase
 
 
-class TestDeleteCompany(BaseCase):
+class TestDeleteMyRequest(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
@@ -24,4 +24,4 @@ class TestDeleteCompany(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(500, response.status_code)
+        self.assertEqual("422 Object not found", response.status)
