@@ -61,7 +61,6 @@ export async function getBlobRequest(url, callback, catchBadResponse, catchError
 }
 
 export async function postRequest(url, params, callback, catchBadResponse, catchError) {
-	console.log(window.token);
 	fetch(getApiURL() + url, {
 		method: "POST",
 		body: JSON.stringify(params),
