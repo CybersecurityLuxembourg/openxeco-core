@@ -33,6 +33,7 @@ export default class InsideApp extends React.Component {
 					selectedMenu={this.state.selectedMenu}
 					changeMenu={(v) => this.changeState("selectedMenu", v)}
 					disconnect={this.props.disconnect}
+					cookies={this.props.cookies}
 				/>
 				<div id="InsideApp-content">
 					<Switch>

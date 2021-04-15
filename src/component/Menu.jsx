@@ -33,8 +33,12 @@ export default class Menu extends React.Component {
 		return (
 			<SideNav
 				onSelect={(selected) => {
-					if (selected === "disconnect") window.location.replace("/");
-					else this.props.changeMenu(selected);
+					if (selected === "disconnect") {
+						this.props.cookies.remove("access_token_cookie");
+						window.location.replace("/");
+					} else {
+						this.props.changeMenu(selected);
+					}
 				}}
 			>
 				<Toggle />

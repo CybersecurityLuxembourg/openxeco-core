@@ -4,10 +4,11 @@ import "./css/medium-editor.css";
 import { NotificationContainer } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { BrowserRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
 
-export default class App extends React.Component {
+class App extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -29,10 +30,13 @@ export default class App extends React.Component {
 			<div id="App">
 				{this.state.logged
 					? <BrowserRouter>
-						<InsideApp/>
+						<InsideApp
+							cookies={this.props.cookies}
+						/>
 					</BrowserRouter>
 					: <Login
 						connect={this.connect}
+						cookies={this.props.cookies}
 					/>
 				}
 				<NotificationContainer/>
@@ -40,3 +44,5 @@ export default class App extends React.Component {
 		);
 	}
 }
+
+export default withCookies(App);

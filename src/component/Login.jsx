@@ -6,6 +6,7 @@ import { postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
+import { getCookieOptions } from "../utils/env.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -29,7 +30,8 @@ export default class Login extends React.Component {
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
-			window.token = getUrlParameter("token");
+			// TODO use httponly cookies
+			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
 		}
 
 		// This function to notify if the password has been reset correctly
@@ -53,7 +55,8 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/login", params, (response) => {
-			window.token = response.token;
+			// TODO use httponly cookies
+			this.props.cookies.set("access_token_cookie", response.token, getCookieOptions());
 			this.props.connect();
 		}, (response) => {
 			nm.warning(response.statusText);
