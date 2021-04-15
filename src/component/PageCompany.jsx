@@ -25,7 +25,8 @@ export default class PageCompany extends React.Component {
 			filters: null,
 			filtered_companies_only: true,
 			include_address: false,
-			include_contact: false,
+			include_email: false,
+			include_phone: false,
 			include_taxonomy: false,
 			include_workforce: false,
 
@@ -84,7 +85,8 @@ export default class PageCompany extends React.Component {
 
 		let params = {
 			include_address: this.state.include_address,
-			include_contact: this.state.include_contact,
+			include_email: this.state.include_email,
+			include_phone: this.state.include_phone,
 			include_taxonomy: this.state.include_taxonomy,
 			include_workforce: this.state.include_workforce,
 		};
@@ -220,10 +222,16 @@ export default class PageCompany extends React.Component {
 							onChange={(v) => this.changeState("filtered_companies_only", v)}
 						/>
 						<FormLine
-							label={"Include contacts"}
+							label={"Include emails"}
 							type={"checkbox"}
-							value={this.state.include_contact}
-							onChange={(v) => this.changeState("include_contact", v)}
+							value={this.state.include_email}
+							onChange={(v) => this.changeState("include_email", v)}
+						/>
+						<FormLine
+							label={"Include phone numbers"}
+							type={"checkbox"}
+							value={this.state.include_phone}
+							onChange={(v) => this.changeState("include_phone", v)}
 						/>
 						<FormLine
 							label={"Include addresses"}
