@@ -51,20 +51,45 @@ class ExtractCompanies(Resource):
                 df = df.merge(addresses, left_on='Global|id', right_on='Address|company_id', how='left')
                 df = df.drop(['Address|id', 'Address|company_id'], axis=1)
 
-        # Manage contacts
+        # Manage email addresses from contacts
 
-        if 'include_contact' in input_data and input_data['include_contact'] == "true":
+        if 'include_email' in input_data and input_data['include_email'] == "true":
             if company_ids is not None:
-                contacts = self.db.get(self.db.tables["CompanyContact"], {"company_id": company_ids})
+                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                    "company_id": company_ids,
+                    "type": "EMAIL ADDRESS",
+                })
             else:
-                contacts = self.db.get(self.db.tables["CompanyContact"])
+                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                    "type": "EMAIL ADDRESS",
+                })
             contacts = Serializer.serialize(contacts, self.db.tables["CompanyContact"])
             contacts = pd.DataFrame(contacts)
-            contacts = contacts.add_prefix('Contact|')
+            contacts = contacts.add_prefix('Email|')
 
             if len(contacts) > 0:
-                df = df.merge(contacts, left_on='Global|id', right_on='Contact|company_id', how='left')
-                df = df.drop(['Contact|id', 'Contact|company_id'], axis=1)
+                df = df.merge(contacts, left_on='Global|id', right_on='Email|company_id', how='left')
+                df = df.drop(['Email|id', 'Email|company_id', 'Email|type'], axis=1)
+
+        # Manage phone numbers from contacts
+
+        if 'include_phone' in input_data and input_data['include_phone'] == "true":
+            if company_ids is not None:
+                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                    "company_id": company_ids,
+                    "type": "PHONE NUMBER",
+                })
+            else:
+                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                    "type": "PHONE NUMBER",
+                })
+            contacts = Serializer.serialize(contacts, self.db.tables["CompanyContact"])
+            contacts = pd.DataFrame(contacts)
+            contacts = contacts.add_prefix('Phone|')
+
+            if len(contacts) > 0:
+                df = df.merge(contacts, left_on='Global|id', right_on='Phone|company_id', how='left')
+                df = df.drop(['Phone|id', 'Phone|company_id', 'Phone|type'], axis=1)
 
         # Manage workforces
 
