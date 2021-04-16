@@ -61,5 +61,10 @@
 }
 
 .Request-image {
-    max-width: 100%;
+    text-align: center;
+}
+
+.Request-image img {
+    max-width: 200px;
+    max-height: 200px;
 }

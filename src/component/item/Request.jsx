@@ -154,24 +154,38 @@ export default class Request extends Component {
 
 					<div className="col-md-6 row-spaced">
 						<h3>Action</h3>
-						{this.props.info.request.startsWith("[COMPANY MODIFICATION]")
+						{this.props.info.request.startsWith("[ENTITY MODIFICATION]")
 							&& <RequestModification
 								request={this.props.info.request}
 							/>
 						}
-						{this.props.info.request.startsWith("[COMPANY INSERTION]")
+						{this.props.info.request.startsWith("[ENTITY INSERTION]")
 							&& <RequestModification
 								request={this.props.info.request}
 							/>
 						}
-						{!this.props.info.request.startsWith("[COMPANY INSERTION]")
-							&& !this.props.info.request.startsWith("[COMPANY MODIFICATION]")
+						{this.props.info.request.startsWith("[ENTITY LOGO MODIFICATION]")
+							&& <div>NOT IMPLEMENTED YET - TO BE DONE FASTLY</div>
+						}
+						{!this.props.info.request.startsWith("[ENTITY INSERTION]")
+							&& !this.props.info.request.startsWith("[ENTITY MODIFICATION]")
+							&& !this.props.info.request.startsWith("[ENTITY LOGO MODIFICATION]")
 							&& <Message
 								text={"No action suggested"}
 								height={50}
 							/>
 						}
 					</div>
+
+					{this.props.info !== undefined && this.props.info !== null
+						&& this.props.info.image !== null
+						&& <div className="col-md-12">
+							<h3>Image</h3>
+							<div className="Request-image">
+								<img src={"data:image/png;base64," + this.props.info.image} />
+							</div>
+						</div>
+					}
 
 					<div className="col-md-12">
 						<h3>Content</h3>
