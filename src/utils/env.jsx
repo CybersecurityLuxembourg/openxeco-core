@@ -1,6 +1,6 @@
 export function getApiURL() {
 	if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "") {
-		return "http://127.0.0.1:5000/";
+		return "http://localhost:5000/";
 	}
 	if (window.location.hostname.includes("test")) {
 		return "https://api.test-db.cy.lu/";
@@ -11,11 +11,11 @@ export function getApiURL() {
 export function getCookieOptions() {
 	// TODO use httponly cookies
 	if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "") {
-		// return { domain: ".localhost" };
+		// return { httpOnly: true };
 		return { domain: "localhost" };
 	}
 	if (window.location.hostname.includes("test")) {
-		// return { secure: true, domain: ".cy.lu", httpOnly: true };
+		// return { secure: true, domain: ".cy.lu" httpOnly: true };
 		return { secure: true, domain: ".cy.lu" };
 	}
 	// return { secure: true, domain: ".cy.lu", httpOnly: true };
