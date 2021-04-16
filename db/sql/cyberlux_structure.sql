@@ -420,6 +420,7 @@ CREATE TABLE `UserRequest` (
   `user_id` int NOT NULL,
   `status` enum('NEW','IN PROCESS','PROCESSED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'NEW',
   `request` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` LONGBLOB DEFAULT NULL,
   `submission_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
