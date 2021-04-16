@@ -24,7 +24,7 @@ class ExtractCompanies(Resource):
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def get(self):
+    def get(self):  # pylint: disable=too-many-branches
         input_data = request.args.to_dict()
 
         # Manage global data

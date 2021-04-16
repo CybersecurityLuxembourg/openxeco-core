@@ -29,7 +29,7 @@ application.config["ERROR_404_HELP"] = False
 
 application.config["JWT_SECRET_KEY"] = config.JWT_SECRET_KEY
 application.config["JWT_TOKEN_LOCATION"] = ['headers', 'cookies']
-application.config["JWT_COOKIE_SECURE"] = config.ENVIRONMENT != "dev"
+application.config["JWT_COOKIE_SECURE"] = True
 
 application.config['CORS_HEADERS'] = 'Content-Type'
 application.config["CORS_SUPPORTS_CREDENTIALS"] = True
