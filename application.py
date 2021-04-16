@@ -70,5 +70,5 @@ def undefined_route(_):
 
 
 if __name__ == '__main__':
-    application.debug = True
+    application.debug = config.ENVIRONMENT == "dev"
     application.run()
