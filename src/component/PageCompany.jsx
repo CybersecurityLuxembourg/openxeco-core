@@ -156,7 +156,7 @@ export default class PageCompany extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h1>{this.state.companies !== null
-							? this.state.companies.length : 0} Compan{this.state.companies !== null
+							? this.state.companies.length : 0} Entit{this.state.companies !== null
 								&& this.state.companies.length > 1 ? "ies" : "y"}</h1>
 						<div className="top-right-buttons">
 							<button
