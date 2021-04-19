@@ -24,7 +24,7 @@ export default class DialogSendMail extends React.Component {
 		const params = {
 			address: this.state.email,
 			subject: this.state.subject,
-			content: this.state.content,
+			content: this.state.content.replaceAll("\n", "<br/>"),
 			user_as_cc: this.state.userAsCc,
 		};
 
