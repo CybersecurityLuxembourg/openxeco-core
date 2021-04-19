@@ -47,6 +47,7 @@ from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
 from resource.mail.get_mail_content import GetMailContent
 from resource.mail.save_template import SaveTemplate
+from resource.mail.send_mail import SendMail
 from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
 from resource.privatespace.add_request import AddRequest
@@ -171,6 +172,7 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
 
     api.add_resource(GetMailContent, '/mail/get_mail_content/<name>', resource_class_kwargs={"db": db})
     api.add_resource(SaveTemplate, '/mail/save_template', resource_class_kwargs={"db": db})
+    api.add_resource(SendMail, '/mail/send_mail', resource_class_kwargs={"db": db, "mail": mail})
 
     api.add_resource(AddImage, '/media/add_image', resource_class_kwargs={"db": db})
     api.add_resource(GetImages, '/media/get_images', resource_class_kwargs={"db": db})
