@@ -44,7 +44,7 @@ class SendMail(Resource):
             cc = [data[0].email]
 
         send_email(self.mail,
-                   subject=f'[CYBERSECURITY LUXEMBOURG] {input_data["subject"]}',
+                   subject=input_data["subject"],
                    recipients=[input_data["address"]],
                    cc=cc,
                    html_body=input_data["content"])
