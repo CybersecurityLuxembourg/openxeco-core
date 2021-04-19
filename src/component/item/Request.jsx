@@ -96,15 +96,22 @@ export default class Request extends Component {
 						<i className="fas fa-thumbtack"/>
 						<div className={"Request-name"}>
 							{this.props.info !== undefined && this.props.info !== null
-								? this.props.info.submission_date
+								? this.props.info.request
 								: "Unfound request"
 							}
-
 						</div>
+
 						{this.props.info !== undefined && this.props.info !== null
 							? <div className={"Request-status"}>{this.props.info.status}</div>
 							: ""
 						}
+
+						<div className={"Request-time"}>
+							{this.props.info !== undefined && this.props.info !== null
+								? this.props.info.submission_date
+								: "Unfound request"
+							}
+						</div>
 					</div>
 				}
 				modal

@@ -26,7 +26,7 @@
 
 .Request-name {
     display:inline-block;
-    width: calc(100% - 14px);
+    width: calc(100% - 294px);
     padding-left: 7px;
     padding-top: 2px;
     text-overflow: ellipsis;
@@ -39,7 +39,20 @@
 .Request-status {
     position: absolute;
     top: 3px;
-    right: 7px;
+    right: 180px;
+    padding-left: 7px;
+    padding-top: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+    color: #009fe3;
+}
+
+.Request-time {
+    position: absolute;
+    top: 3px;
+    right: 5px;
     padding-left: 7px;
     padding-top: 2px;
     text-overflow: ellipsis;
