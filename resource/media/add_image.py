@@ -14,6 +14,7 @@ import base64
 from config.config import IMAGE_FOLDER
 import traceback
 from exception.error_while_saving_file import ErrorWhileSavingFile
+from utils.serializer import Serializer
 
 
 class AddImage(Resource):
@@ -71,4 +72,4 @@ class AddImage(Resource):
             traceback.print_exc()
             raise ErrorWhileSavingFile
 
-        return "", "200 "
+        return Serializer.serialize(image, self.db.tables["Image"]), "200 "
