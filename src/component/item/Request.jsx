@@ -8,6 +8,7 @@ import User from "./User.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
+import DialogSendMail from "../dialog/DialogSendMail.jsx";
 import RequestModification from "./request/RequestModification.jsx";
 import RequestLogoChange from "./request/RequestLogoChange.jsx";
 
@@ -162,26 +163,37 @@ export default class Request extends Component {
 
 					<div className="col-md-6 row-spaced">
 						<h3>Action</h3>
+
 						{this.props.info.request.startsWith("[ENTITY MODIFICATION]")
+							&& this.state.user !== null
 							&& <RequestModification
 								request={this.props.info.request}
 							/>
 						}
 						{this.props.info.request.startsWith("[ENTITY INSERTION]")
+							&& this.state.user !== null
 							&& <RequestModification
 								request={this.props.info.request}
 							/>
 						}
 						{this.props.info.request.startsWith("[ENTITY LOGO MODIFICATION]")
+							&& this.state.user !== null
 							&& <RequestLogoChange
 								request={this.props.info}
 							/>
 						}
-						{!this.props.info.request.startsWith("[ENTITY INSERTION]")
-							&& !this.props.info.request.startsWith("[ENTITY MODIFICATION]")
-							&& !this.props.info.request.startsWith("[ENTITY LOGO MODIFICATION]")
-							&& <Message
-								text={"No action suggested"}
+						{this.state.user !== null
+							? <DialogSendMail
+								trigger={
+									<button className={"blue-background"}>
+										<i className="fas fa-envelope-open-text"/> Prepare email...
+									</button>
+								}
+								email={this.state.user.email}
+								subject={"[CYBERSECURITY LUXEMBOURG] Treated request"}
+								content={"Dear user,\n\nYour request has been treated.\n\nSincerely,\nCYBERSECURITY LUXEMBOURG Support Team"}
+							/>
+							: <Loading
 								height={50}
 							/>
 						}
