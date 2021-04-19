@@ -9,6 +9,7 @@ import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import RequestModification from "./request/RequestModification.jsx";
+import RequestLogoChange from "./request/RequestLogoChange.jsx";
 
 export default class Request extends Component {
 	constructor(props) {
@@ -172,7 +173,9 @@ export default class Request extends Component {
 							/>
 						}
 						{this.props.info.request.startsWith("[ENTITY LOGO MODIFICATION]")
-							&& <div>NOT IMPLEMENTED YET - TO BE DONE FASTLY</div>
+							&& <RequestLogoChange
+								request={this.props.info}
+							/>
 						}
 						{!this.props.info.request.startsWith("[ENTITY INSERTION]")
 							&& !this.props.info.request.startsWith("[ENTITY MODIFICATION]")
