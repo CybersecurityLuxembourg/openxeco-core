@@ -13,20 +13,49 @@ export default class Menu extends React.Component {
 		super(props);
 
 		this.state = {
-			requestCount: null,
+			notifications: null,
 		};
 	}
 
 	componentDidMount() {
-		getRequest.call(this, "request/get_new_request_count", (data) => {
+		this.getNotifications();
+	}
+
+	componentDidUpdate(prevProps) {
+		console.log(this.props.selectedMenu);
+		if (this.props.selectedMenu !== prevProps.selectedMenu
+			&& this.props.selectedMenu === "task") {
+			this.getNotifications();
+		}
+	}
+
+	getNotifications() {
+		console.log("rrr");
+		this.setState({ notifications: null });
+
+		getRequest.call(this, "analytic/get_notifications", (data) => {
 			this.setState({
-				requestCount: data,
+				notifications: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
+
+	getTaskNotificationBlock() {
+		if (this.state.notifications === null
+			|| this.state.notifications.new_requests === undefined
+			|| this.state.notifications.data_control === undefined) {
+			return "";
+		}
+
+		return <Link to="/task">
+			<div className={"Menu-notification"}>
+				{this.state.notifications.new_requests + this.state.notifications.data_control}
+			</div>
+		</Link>;
 	}
 
 	render() {
@@ -74,9 +103,7 @@ export default class Menu extends React.Component {
 						<NavText>
 							<Link to="/task">Tasks</Link>
 						</NavText>
-						{this.state.requestCount !== null && this.state.requestCount > 0
-							? <Link to="/task"><div className={"Menu-notification"}>{this.state.requestCount}</div></Link>
-							: ""}
+						{this.getTaskNotificationBlock()}
 					</NavItem>
 					<NavItem>
 						<NavIcon>

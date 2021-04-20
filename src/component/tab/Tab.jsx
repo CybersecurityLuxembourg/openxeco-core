@@ -18,13 +18,20 @@ export default class Tab extends React.Component {
 						<div className={"row"}>
 							<div className="col-md-2">
 								<div className="Tab-menu">
-									{this.props.menu.map((m) => (
+									{this.props.menu.map((m, i) => (
 										<div
 											key={m}
 											className={"Tab-menu-el "
 													+ (this.state.selectedMenu === m ? "Tab-menu-el-selected" : "")}
 											onClick={() => this.setState({ selectedMenu: m })}>
 											{m}
+											{this.props.notifications !== undefined
+												&& this.props.notifications[i] !== undefined
+												&& this.props.notifications[i] > 0
+												&& <div className={"Tab-notification"}>
+													{this.props.notifications[i]}
+												</div>
+											}
 										</div>
 									))}
 								</div>
