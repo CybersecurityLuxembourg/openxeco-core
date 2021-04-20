@@ -36,11 +36,11 @@ jobs:
       - name: Start MySQL server and create user
         run: |
           sudo systemctl start mysql
-          mysql -h 127.0.0.1 -P 3306 -uroot CYBERLUX_TEST < "GRANT ALL PRIVILEGES ON *.* TO 'cyberlux'@'localhost' IDENTIFIED BY 'DBDevSMILE20';"
+          mysql -h 127.0.0.1 -P 3306 -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'cyberlux'@'localhost' IDENTIFIED BY 'DBDevSMILE20';"
       - name: Initialize database
         run: |
           sudo systemctl start mysql
-          mysql -h 127.0.0.1 -P 3306 -uroot CYBERLUX_TEST < "CREATE DATABASE `CYBERLUX_TEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          mysql -h 127.0.0.1 -P 3306 -uroot -e "CREATE DATABASE `CYBERLUX_TEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
           mysql -h 127.0.0.1 -P 3306 -uroot CYBERLUX_TEST < db/sql/cyberlux_structure.sql
       - name: Run unit tests with coverage
         run: |
