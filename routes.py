@@ -42,6 +42,8 @@ from resource.contact.add_contact import AddContact
 from resource.contact.delete_contact import DeleteContact
 from resource.contact.get_contact_enums import GetContactEnums
 from resource.contact.update_contact import UpdateContact
+from resource.cron.run_company_website_check import RunCompanyWebsiteCheck
+from resource.cron.run_database_compliance import RunDatabaseCompliance
 from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
 from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
@@ -164,6 +166,8 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
     api.add_resource(GetContactEnums, '/contact/get_contact_enums', resource_class_kwargs={"db": db})
     api.add_resource(UpdateContact, '/contact/update_contact', resource_class_kwargs={"db": db})
 
+    api.add_resource(RunCompanyWebsiteCheck, '/cron/run_company_website_check', resource_class_kwargs={"db": db})
+    api.add_resource(RunDatabaseCompliance, '/cron/run_database_compliance', resource_class_kwargs={"db": db})
     api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
 
     api.add_resource(GetLogs, '/log/get_logs', resource_class_kwargs={"db": db})
