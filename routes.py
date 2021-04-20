@@ -27,6 +27,7 @@ from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
 from resource.address.update_address import UpdateAddress
 from resource.analytic.get_global_analytics import GetGlobalAnalytics
+from resource.analytic.get_notifications import GetNotifications
 from resource.company.extract_companies import ExtractCompanies
 from resource.company.get_companies import GetCompanies
 from resource.company.get_company import GetCompany
@@ -45,6 +46,8 @@ from resource.contact.update_contact import UpdateContact
 from resource.cron.run_company_website_check import RunCompanyWebsiteCheck
 from resource.cron.run_database_compliance import RunDatabaseCompliance
 from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
+from resource.datacontrol.get_data_controls import GetDataControls
+from resource.datacontrol.delete_data_control import DeleteDataControl
 from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
 from resource.mail.get_mail_content import GetMailContent
@@ -70,7 +73,6 @@ from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.public.is_alive import IsAlive
-from resource.request.get_new_request_count import GetNewRequestCount
 from resource.request.get_requests import GetRequests
 from resource.request.get_request_enums import GetRequestEnums
 from resource.request.update_request import UpdateRequest
@@ -148,6 +150,7 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
                      resource_class_kwargs={"db": db})
 
     api.add_resource(GetGlobalAnalytics, '/analytic/get_global_analytics', resource_class_kwargs={"db": db})
+    api.add_resource(GetNotifications, '/analytic/get_notifications', resource_class_kwargs={"db": db})
 
     api.add_resource(ExtractCompanies, '/company/extract_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetCompanies, '/company/get_companies', resource_class_kwargs={"db": db})
@@ -169,6 +172,9 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
     api.add_resource(RunCompanyWebsiteCheck, '/cron/run_company_website_check', resource_class_kwargs={"db": db})
     api.add_resource(RunDatabaseCompliance, '/cron/run_database_compliance', resource_class_kwargs={"db": db})
     api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
+
+    api.add_resource(DeleteDataControl, '/datacontrol/delete_data_control', resource_class_kwargs={"db": db})
+    api.add_resource(GetDataControls, '/datacontrol/get_data_controls', resource_class_kwargs={"db": db})
 
     api.add_resource(GetLogs, '/log/get_logs', resource_class_kwargs={"db": db})
     api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id_>',
@@ -204,7 +210,6 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
 
     api.add_resource(GetRequests, '/request/get_requests', resource_class_kwargs={"db": db})
     api.add_resource(GetRequestEnums, '/request/get_request_enums', resource_class_kwargs={"db": db})
-    api.add_resource(GetNewRequestCount, '/request/get_new_request_count', resource_class_kwargs={"db": db})
     api.add_resource(UpdateRequest, '/request/update_request', resource_class_kwargs={"db": db})
 
     api.add_resource(GetResources, '/resource/get_resources', resource_class_kwargs={"db": db, "api": api})

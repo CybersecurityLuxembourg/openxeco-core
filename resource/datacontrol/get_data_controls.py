@@ -4,9 +4,10 @@ from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils.serializer import Serializer
 
 
-class GetNewRequestCount(Resource):
+class GetDataControls(Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -17,9 +18,7 @@ class GetNewRequestCount(Resource):
     @catch_exception
     def get(self):
 
-        data = self.db.session \
-            .query(self.db.tables["UserRequest"]) \
-            .filter(self.db.tables["UserRequest"].status == "NEW") \
-            .count()
+        data_control = self.db.session.query(self.db.tables["DataControl"]).all()
+        data = Serializer.serialize(data_control, self.db.tables["DataControl"])
 
         return data, "200 "

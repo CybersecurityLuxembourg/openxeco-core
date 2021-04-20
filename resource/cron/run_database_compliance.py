@@ -29,13 +29,14 @@ class RunDatabaseCompliance(Resource):
 
         anomalies += self._check_company_compliance(companies)
         anomalies += self._check_company_address_compliance(companies)
+        anomalies += self._check_company_contact_compliance(companies)
         anomalies += self._check_company_taxonomy_compliance(companies)
 
         # Treat public articles
 
         public_articles = self.db.get(self.db.tables["Article"], {"status": "PUBLIC"})
 
-        anomalies += self._check_article_compliance(public_articles)
+        anomalies += self._check_news_compliance(public_articles)
         anomalies += self._check_article_version_compliance(public_articles)
 
         anomalies = [{"category": "DATABASE COMPLIANCE", "value": v} for v in anomalies]
@@ -44,26 +45,26 @@ class RunDatabaseCompliance(Resource):
 
         return "", "200 "
 
+    # Company check functions
+
     def _check_company_compliance(self, companies):
         anomalies = []
 
         company_columns = self.db.tables["Company"].__table__.columns
 
         for col in company_columns:
-            col_type = self.db.tables["Company"][col].prop.columns[0].type
-
-            if "VARCHAR" in col_type or "ENUM" in col_type:
-                empty_valued_companies = [c for c in companies if c[col] is None]
+            if col.name != "editus_status" and col.name != "rscl_number":
+                empty_valued_companies = [c for c in companies if getattr(c, col.name) is None]
 
                 if len(empty_valued_companies) > 0:
-                    anomalies += [f"Value '{col}' of <COMPANY:{c.id}> is empty" for c in empty_valued_companies]
+                    anomalies += [f"Value '{col.name}' of <COMPANY:{c.id}> is empty" for c in empty_valued_companies]
 
         return anomalies
 
     def _check_company_address_compliance(self, companies):
         anomalies = []
 
-        company_addresses = self.db.get(self.db.tables["CompanyAddress"])
+        company_addresses = self.db.get(self.db.tables["Company_Address"])
 
         # Get the companies without addresses
 
@@ -80,15 +81,35 @@ class RunDatabaseCompliance(Resource):
 
         return anomalies
 
+    def _check_company_contact_compliance(self, companies):
+        anomalies = []
+
+        company_contacts = self.db.get(self.db.tables["CompanyContact"])
+
+        # Get the companies without phone number
+
+        company_address_ids = [a.company_id for a in company_contacts if a.type == "PHONE NUMBER"]
+        companies_without_address = [c for c in companies if c.id not in company_address_ids]
+        anomalies += [f"<COMPANY:{c.id}> has no phone number registered" for c in companies_without_address]
+
+        # Get the companies without phone number
+
+        company_address_ids = [a.company_id for a in company_contacts if a.type == "EMAIL ADDRESS"]
+        companies_without_address = [c for c in companies if c.id not in company_address_ids]
+        anomalies += [f"<COMPANY:{c.id}> has no email address registered" for c in companies_without_address]
+
+        return anomalies
+
     def _check_company_taxonomy_compliance(self, companies):
         anomalies = []
 
-        universal_categories = ["ECOSYSTEM ROLE", "ENTITY TYPE"]
-        actor_categories = ["ENTITY TYPE", "ROLE", "SERVICE GROUP"]
+        universal_categories = ["ENTITY TYPE"]
+        actor_categories = ["SERVICE GROUP"]
 
         tv = self.db.session \
-            .query(self.db.tables["TaxonomyAssignment"]) \
-            .filter(self.db.tables["TaxonomyAssignment"].categories.in_(universal_categories + actor_categories)) \
+            .query(self.db.tables["TaxonomyValue"]) \
+            .filter(self.db.tables["TaxonomyValue"].category \
+                    .in_(universal_categories + actor_categories + ["ECOSYSTEM ROLE"])) \
             .all()
 
         tv_per_category = {c: [tv for tv in tv if tv.category == c] for c in universal_categories + actor_categories}
@@ -109,16 +130,17 @@ class RunDatabaseCompliance(Resource):
 
         return anomalies
 
-    def _check_article_compliance(self, articles):
+    # Article check functions
+
+    def _check_news_compliance(self, articles):
         anomalies = []
 
+        news = [a for a in articles if a.type == "NEWS"]
         article_columns = self.db.tables["Article"].__table__.columns
 
         for col in article_columns:
-            col_type = self.db.tables["Article"][col].prop.columns[0].type
-
-            if "VARCHAR" in col_type or "ENUM" in col_type:
-                empty_valued_articles = [c for c in articles if c[col] is None]
+            if col.name not in ["external_reference", "link", "abstract", "image", "end_date", "start_date"]:
+                empty_valued_articles = [a for a in news if getattr(a, col.name) is None]
 
                 if len(empty_valued_articles) > 0:
                     anomalies += [f"Value '{col}' of article <ARTICLE:{c.id}> is empty" for c in empty_valued_articles]
@@ -132,22 +154,24 @@ class RunDatabaseCompliance(Resource):
 
         # Get the articles without main version
 
-        article_version_ids = [v.company_id for v in article_versions]
+        article_version_ids = [v.id for v in article_versions]
         article_without_main_version = [a for a in articles if a.id not in article_version_ids]
         anomalies += [f"<ARTICLE:{c.id}> has no main version" for c in article_without_main_version]
 
         # Get the articles with a main version without box
 
         article_version_boxes = self.db.get(
-            self.db.tables["ArticleVersionBox"],
+            self.db.tables["ArticleBox"],
             {"article_version_id": article_version_ids}
         )
 
         for a in articles:
             version = [v for v in article_versions if v.id == a.id]
-            boxes = [b for b in article_version_boxes if b.article_version_id == version.id]
 
-            if len(boxes) == 0:
-                anomalies.append(f"Article <{a.id}> has an empty main version")
+            if len(version) == 1:
+                boxes = [b for b in article_version_boxes if b.article_version_id == version[0].id]
+
+                if len(boxes) == 0:
+                    anomalies.append(f"<ARTICLE:{a.id}> has an empty main version")
 
         return anomalies
