@@ -40,6 +40,7 @@ class RunDatabaseCompliance(Resource):
         anomalies += self._check_article_version_compliance(public_articles)
 
         anomalies = [{"category": "DATABASE COMPLIANCE", "value": v} for v in anomalies]
+        print(anomalies)
 
         self.db.insert(anomalies, self.db.tables["DataControl"])
 
@@ -90,13 +91,15 @@ class RunDatabaseCompliance(Resource):
 
         company_address_ids = [a.company_id for a in company_contacts if a.type == "PHONE NUMBER"]
         companies_without_address = [c for c in companies if c.id not in company_address_ids]
-        anomalies += [f"<COMPANY:{c.id}> has no phone number registered" for c in companies_without_address]
+        anomalies += [f"<COMPANY:{c.id}> has no phone number registered as a contact"
+                      for c in companies_without_address]
 
         # Get the companies without phone number
 
         company_address_ids = [a.company_id for a in company_contacts if a.type == "EMAIL ADDRESS"]
         companies_without_address = [c for c in companies if c.id not in company_address_ids]
-        anomalies += [f"<COMPANY:{c.id}> has no email address registered" for c in companies_without_address]
+        anomalies += [f"<COMPANY:{c.id}> has no email address registered  as a contact"
+                      for c in companies_without_address]
 
         return anomalies
 
@@ -114,7 +117,14 @@ class RunDatabaseCompliance(Resource):
 
         tv_per_category = {c: [tv for tv in tv if tv.category == c] for c in universal_categories + actor_categories}
 
-        actor_tv = [v for v in tv if v.category == "ECOSYSTEM ROLE" and v.name == "ACTOR"][0]
+        actor_tv = [v for v in tv if v.category == "ECOSYSTEM ROLE" and v.name == "ACTOR"]
+
+        if len(actor_tv) == 0:
+            return []
+        elif len(actor_tv) > 1:
+            raise Exception("")
+        else:
+            actor_tv = actor_tv[0]
 
         taxonomy_assignments = self.db.session \
             .query(self.db.tables["TaxonomyAssignment"]).all()
@@ -139,7 +149,7 @@ class RunDatabaseCompliance(Resource):
         article_columns = self.db.tables["Article"].__table__.columns
 
         for col in article_columns:
-            if col.name not in ["external_reference", "link", "abstract", "image", "end_date", "start_date"]:
+            if col.name in ["title", "handle", "publication_date"]:
                 empty_valued_articles = [a for a in news if getattr(a, col.name) is None]
 
                 if len(empty_valued_articles) > 0:

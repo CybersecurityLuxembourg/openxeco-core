@@ -5,7 +5,6 @@ from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 import requests
-from requests.exceptions import MissingSchema
 
 
 class RunCompanyWebsiteCheck(Resource):
@@ -34,13 +33,9 @@ class RunCompanyWebsiteCheck(Resource):
                     r = requests.head(website)
 
                     if r.status_code != 200:
-                        anomalies.append(f"The website of <COMPANY:{c.id}> seems offline")
-                except MissingSchema:
-                    anomalies.append(f"The website of <COMPANY:{c.id}> does not have the right format")
+                        anomalies.append(f"The website of <COMPANY:{c.id}> returned code {r.status_code}")
                 except:
                     anomalies.append(f"The website of <COMPANY:{c.id}> seems unreachable")
-
-                print(anomalies)
 
         anomalies = [{"category": "WEBSITE CHECK", "value": v} for v in anomalies]
 
