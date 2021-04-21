@@ -113,7 +113,7 @@ export default class SettingCron extends React.Component {
 					}
 				</div>
 
-				<div className={"row"}>
+				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>Task logs</h2>
 
@@ -147,13 +147,6 @@ export default class SettingCron extends React.Component {
 						}
 					</div>
 				</div>
-
-				{/* <div className={"row"}>
-					<div className="col-md-12">
-						<h2>Elite Cyber scheduled task</h2>
-
-					</div>
-				</div> */}
 			</div>
 		);
 	}

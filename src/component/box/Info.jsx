@@ -1,5 +1,6 @@
 import React from "react";
 import "./Info.css";
+import dompurify from "dompurify";
 
 export default class Info extends React.Component {
 	render() {
@@ -9,7 +10,9 @@ export default class Info extends React.Component {
 					<i className="fas fa-info-circle"/>
 				</div>
 				<div className="Info-content">
-					{this.props.content}
+					<div dangerouslySetInnerHTML={{
+						__html: dompurify.sanitize(this.props.content),
+					}}/>
 				</div>
 			</div>
 		);

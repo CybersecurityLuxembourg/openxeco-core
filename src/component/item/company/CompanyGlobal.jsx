@@ -85,7 +85,7 @@ export default class CompanyGlobal extends React.Component {
 					/>
 					<FormLine
 						type={"image"}
-						label={"Logo"}
+						label={"Image"}
 						value={this.state.company.image}
 						onChange={(v) => this.saveCompanyValue("image", v)}
 						height={150}

@@ -22,7 +22,6 @@ export default class Menu extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		console.log(this.props.selectedMenu);
 		if (this.props.selectedMenu !== prevProps.selectedMenu
 			&& this.props.selectedMenu === "task") {
 			this.getNotifications();
@@ -30,7 +29,6 @@ export default class Menu extends React.Component {
 	}
 
 	getNotifications() {
-		console.log("rrr");
 		this.setState({ notifications: null });
 
 		getRequest.call(this, "analytic/get_notifications", (data) => {
