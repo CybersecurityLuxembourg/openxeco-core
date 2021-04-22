@@ -18,6 +18,8 @@ class AddRequest(Resource):
     @log_request
     @verify_payload([
         {'field': 'request', 'type': str},
+        {'field': 'type', 'type': str, 'nullable': True, 'optional': True},
+        {'field': 'data', 'type': dict, 'nullable': True, 'optional': True},
         {'field': 'image', 'type': str, 'nullable': True, 'optional': True},
     ])
     @jwt_required
@@ -47,6 +49,8 @@ class AddRequest(Resource):
         user_request = {
             "user_id": int(get_jwt_identity()),
             "request": input_data["request"],
+            "type": input_data["type"] if "type" in input_data else None,
+            "data": input_data["data"] if "data" in input_data else None,
             "image": image,
         }
 
