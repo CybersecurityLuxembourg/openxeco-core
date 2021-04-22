@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from flask_bcrypt import check_password_hash
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, create_refresh_token
 import datetime
 from decorator.verify_payload import verify_payload
 from decorator.catch_exception import catch_exception
@@ -18,7 +18,7 @@ class Login(Resource):
     @log_request
     @verify_payload([
         {'field': 'email', 'type': str},
-        {'field': 'password', 'type': str}
+        {'field': 'password', 'type': str},
     ])
     @catch_exception
     def post(self):
@@ -32,7 +32,12 @@ class Login(Resource):
         if not data[0].is_active:
             return "", "401 The account is not active. Please contact the administrator"
 
-        expires = datetime.timedelta(days=7)
-        access_token = create_access_token(identity=str(data[0].id), expires_delta=expires)
+        access_token_expires = datetime.timedelta(days=1)
+        refresh_token_expires = datetime.timedelta(days=365)
+        access_token = create_access_token(identity=str(data[0].id), expires_delta=access_token_expires)
+        refresh_token = create_refresh_token(identity=str(data[0].id), expires_delta=refresh_token_expires)
 
-        return {"token": access_token}, "200 "
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+        }, "200 "

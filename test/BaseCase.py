@@ -45,7 +45,7 @@ class BaseCase(unittest.TestCase):
             r = getattr(self, "application")\
                 .post('/account/login', headers={"Content-Type": "application/json"}, data=json.dumps(user_payload))
 
-            f(self, token=r.json['token'], *args, **kwargs)
+            f(self, token=r.json['access_token'], *args, **kwargs)
 
         return wrapper
 
