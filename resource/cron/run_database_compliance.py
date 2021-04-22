@@ -34,13 +34,12 @@ class RunDatabaseCompliance(Resource):
 
         # Treat public articles
 
-        public_articles = self.db.get(self.db.tables["Article"], {"status": "PUBLIC"})
+        public_articles = self.db.get(self.db.tables["Article"])
 
         anomalies += self._check_news_compliance(public_articles)
         anomalies += self._check_article_version_compliance(public_articles)
 
         anomalies = [{"category": "DATABASE COMPLIANCE", "value": v} for v in anomalies]
-        print(anomalies)
 
         self.db.insert(anomalies, self.db.tables["DataControl"])
 
@@ -115,14 +114,12 @@ class RunDatabaseCompliance(Resource):
                     .in_(universal_categories + actor_categories + ["ECOSYSTEM ROLE"])) \
             .all()
 
-        tv_per_category = {c: [tv for tv in tv if tv.category == c] for c in universal_categories + actor_categories}
+        tv_per_category = {c: [tv.id for tv in tv if tv.category == c] for c in universal_categories + actor_categories}
 
         actor_tv = [v for v in tv if v.category == "ECOSYSTEM ROLE" and v.name == "ACTOR"]
 
         if len(actor_tv) == 0:
             return []
-        elif len(actor_tv) > 1:
-            raise Exception("")
         else:
             actor_tv = actor_tv[0]
 
@@ -136,7 +133,7 @@ class RunDatabaseCompliance(Resource):
 
             for category in categories_to_check:
                 if len(list(set(company_assignments).intersection(tv_per_category[category]))) == 0:
-                    anomalies.append(f"<COMPANY:{company.id}> is has no value for taxonomy '{category}'")
+                    anomalies.append(f"<COMPANY:{company.id}> has no value for taxonomy '{category}'")
 
         return anomalies
 
