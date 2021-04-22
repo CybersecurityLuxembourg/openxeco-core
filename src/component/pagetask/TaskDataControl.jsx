@@ -28,8 +28,6 @@ export default class TaskDataControl extends React.Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		console.log(prevState.search !== this.state.search, prevState.search, this.state.search);
-		console.log(prevState.dataControls, this.state.dataControls);
 		if (prevState.search !== this.state.search
 			|| prevState.dataControls !== this.state.dataControls) {
 			this.setResearchedList();
