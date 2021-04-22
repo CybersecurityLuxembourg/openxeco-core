@@ -33,16 +33,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Create database
+      - name: Start MySQL server and create user
         run: |
           sudo systemctl start mysql
-          mysql -h 127.0.0.1 -P 3306 -uroot CYBERLUX_TEST < db/sql/cyberlux_structure.sql
+          mysql -h 127.0.0.1 -P 3306 -uroot -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO 'cyberlux'@'localhost' IDENTIFIED BY 'DBDevSMILE20';"
+      - name: Initialize database
+        run: |
+          sudo systemctl start mysql
+          mysql -h 127.0.0.1 -P 3306 -uroot -ppassword -e "CREATE DATABASE `CYBERLUX_TEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          mysql -h 127.0.0.1 -P 3306 -uroot -ppassword CYBERLUX_TEST < db/sql/cyberlux_structure.sql
       - name: Run unit tests with coverage
-        env:
-          DB_NAME: CYBERLUX_TEST
-          DB_PORT: 3306
-          DB_USER: root
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           cp config/config.py.sample config/config.py
           coverage run --source=resource,utils,db,decorator -m unittest discover && coverage report

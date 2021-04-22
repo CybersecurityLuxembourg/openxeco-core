@@ -208,7 +208,7 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
     api.add_resource(GetPublicCompanies, '/public/get_public_companies', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations',
                      resource_class_kwargs={"db": db})
-    api.add_resource(IsAlive, '/public/is_alive', resource_class_kwargs={"db": db})
+    api.add_resource(IsAlive, '/healthz', resource_class_kwargs={"db": db})
 
     api.add_resource(GetRequests, '/request/get_requests', resource_class_kwargs={"db": db})
     api.add_resource(GetRequestEnums, '/request/get_request_enums', resource_class_kwargs={"db": db})
