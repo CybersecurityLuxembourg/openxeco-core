@@ -34,9 +34,7 @@ application.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
 application.config['CORS_HEADERS'] = 'Content-Type'
 application.config["CORS_SUPPORTS_CREDENTIALS"] = True
-application.config["CORS_ORIGINS"] = config.FRONTEND_URL \
-                                     + config.PUBLIC_FRONTEND_URL \
-                                     + config.PUBLIC_ECOSYSTEM_FRONTEND_URL
+application.config["CORS_ORIGINS"] = config.CORS_ORIGINS if config.CORS_ORIGINS else []
 
 application.config['MAIL_SERVER'] = config.MAIL_SERVER
 application.config['MAIL_PORT'] = config.MAIL_PORT

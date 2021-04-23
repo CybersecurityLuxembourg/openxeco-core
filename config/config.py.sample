@@ -28,20 +28,8 @@ JOBADDER_CLIENT_SECRET = os.getenv('JOBADDER_CLIENT_SECRET', "See JobAdder accou
 JOBADDER_REFRESH_TOKEN = os.getenv('JOBADDER_REFRESH_TOKEN', None)
 JOBADDER_ACCESS_TOKEN = os.getenv('JOBADDER_ACCESS_TOKEN', None)
 
-FRONTEND_URL = {
-    'dev': ['http://localhost:3000'],
-    'test': ['https://test-db.cy.lu'],
-    'production': ['https://db.cy.lu']
-}[ENVIRONMENT]
-
-PUBLIC_FRONTEND_URL = {
-    'dev': ['http://localhost:3002'],
-    'test': ['https://test-secin.cy.lu'],
-    'production': ['https://cybersecurity-luxembourg.com', 'https://cy.lu'],
-}[ENVIRONMENT]
-
-PUBLIC_ECOSYSTEM_FRONTEND_URL = {
-    'dev': ['http://localhost:3003'],
-    'test': ['https://test-eco.cy.lu'],
-    'production': ['https://ecosystem.cybersecurity-luxembourg.com', 'https://eco.cy.lu'],
+CORS_ORIGINS = {
+    'dev': ['localhost:*'],
+    'test': ['test-*.cy.lu'],
+    'production': ['(.*\.)?cybersecurity-luxembourg.com', r'(.*\.)?cy.lu']
 }[ENVIRONMENT]
