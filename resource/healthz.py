@@ -3,7 +3,7 @@ from db.db import DB
 from decorator.catch_exception import catch_exception
 
 
-class IsAlive(Resource):
+class Healthz(Resource):
 
     def __init__(self, db: DB):
         self.db = db

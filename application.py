@@ -59,7 +59,7 @@ mail = Mail(application)
 
 # Init and set the resources for Flask
 api = Api(application)
-set_routes(api, db, mail)
+set_routes({"api": api, "db": db, "mail": mail})
 
 
 @application.route('/<generic>')

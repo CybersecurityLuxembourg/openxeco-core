@@ -49,6 +49,7 @@ from resource.cron.run_database_compliance import RunDatabaseCompliance
 from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
 from resource.datacontrol.get_data_controls import GetDataControls
 from resource.datacontrol.delete_data_control import DeleteDataControl
+from resource.healthz import Healthz
 from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
 from resource.mail.get_mail_content import GetMailContent
@@ -73,7 +74,6 @@ from resource.public.get_public_company_geolocations import GetPublicCompanyGeol
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy
-from resource.public.is_alive import IsAlive
 from resource.request.get_requests import GetRequests
 from resource.request.get_request_enums import GetRequestEnums
 from resource.request.update_request import UpdateRequest
@@ -113,151 +113,41 @@ from resource.taxonomy.get_taxonomy_value_hierarchy import GetTaxonomyValueHiera
 from resource.taxonomy.get_all_taxonomy_value_hierarchy import GetAllTaxonomyValueHierarchy
 from resource.workforce.add_workforce import AddWorkforce
 from resource.workforce.delete_workforce import DeleteWorkforce
+import inspect
+import sys
 
 
-def set_routes(api, db, mail):  # pylint: disable=too-many-statements
+def set_routes(*args):
 
-    api.add_resource(ChangePassword, '/account/change_password', resource_class_kwargs={"db": db})
-    api.add_resource(CreateAccount, '/account/create_account', resource_class_kwargs={"db": db, "mail": mail})
-    api.add_resource(ForgotPassword, '/account/forgot_password', resource_class_kwargs={"db": db, "mail": mail})
-    api.add_resource(Login, '/account/login', resource_class_kwargs={"db": db})
-    api.add_resource(Refresh, '/account/refresh', resource_class_kwargs={"db": db})
-    api.add_resource(ResetPassword, '/account/reset_password', resource_class_kwargs={"db": db})
+    plugins = args[0]
 
-    api.add_resource(GetAllAddresses, '/address/get_all_addresses', resource_class_kwargs={"db": db})
-    api.add_resource(AddAddress, '/address/add_address', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteAddress, '/address/delete_address', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateAddress, '/address/update_address', resource_class_kwargs={"db": db})
+    for res in inspect.getmembers(sys.modules[__name__], inspect.isclass):
 
-    api.add_resource(CopyArticleVersion, '/article/copy_article_version', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticles, '/article/get_articles', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticle, '/article/get_article/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleEnums, '/article/get_article_enums', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleTags, '/article/get_article_tags/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleVersions, '/article/get_article_versions/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetArticleVersionContent, '/article/get_article_version_content/<id_>',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(AddArticle, '/article/add_article', resource_class_kwargs={"db": db})
-    api.add_resource(AddArticleVersion, '/article/add_article_version', resource_class_kwargs={"db": db})
-    api.add_resource(AddCompanyTag, '/article/add_company_tag', resource_class_kwargs={"db": db})
-    api.add_resource(AddTaxonomyTag, '/article/add_taxonomy_tag', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteArticle, '/article/delete_article', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteArticleVersion, '/article/delete_article_version', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteCompanyTag, '/article/delete_company_tag', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyTag, '/article/delete_taxonomy_tag', resource_class_kwargs={"db": db})
-    api.add_resource(SetArticleVersionAsMain, '/article/set_article_version_as_main', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateArticle, '/article/update_article', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateArticleVersion, '/article/update_article_version', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateArticleVersionContent, '/article/update_article_version_content',
-                     resource_class_kwargs={"db": db})
+        # Build the endpoint
 
-    api.add_resource(GetGlobalAnalytics, '/analytic/get_global_analytics', resource_class_kwargs={"db": db})
-    api.add_resource(GetNotifications, '/analytic/get_notifications', resource_class_kwargs={"db": db})
+        endpoint = res[1].__module__.replace("resource.", ".", 1).replace(".", "/")
 
-    api.add_resource(ExtractCompanies, '/company/extract_companies', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanies, '/company/get_companies', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompany, '/company/get_company/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyAddresses, '/company/get_company_addresses/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyContacts, '/company/get_company_contacts/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyEnums, '/company/get_company_enums', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyTaxonomy, '/company/get_company_taxonomy/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetCompanyWorkforces, '/company/get_company_workforces/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateCompany, '/company/update_company', resource_class_kwargs={"db": db})
-    api.add_resource(AddCompany, '/company/add_company', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteCompany, '/company/delete_company', resource_class_kwargs={"db": db})
+        functions = inspect.getmembers(res[1], predicate=inspect.isfunction)
+        http_functions = [f for n, f in functions if n in ["get", "post"]]
 
-    api.add_resource(AddContact, '/contact/add_contact', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteContact, '/contact/delete_contact', resource_class_kwargs={"db": db})
-    api.add_resource(GetContactEnums, '/contact/get_contact_enums', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateContact, '/contact/update_contact', resource_class_kwargs={"db": db})
+        if len(http_functions) == 0:
+            raise Exception(f"No http function found on resource {res[1].__module__}")
+        if len(http_functions) > 1:
+            raise Exception(f"Too much http functions found on resource {res[1].__module__}")
 
-    api.add_resource(RunCompanyWebsiteCheck, '/cron/run_company_website_check', resource_class_kwargs={"db": db})
-    api.add_resource(RunDatabaseCompliance, '/cron/run_database_compliance', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateMoovijobJobOffers, '/cron/update_moovijob_job_offers', resource_class_kwargs={"db": db})
+        function_args = [a for a in inspect.signature(http_functions[0]).parameters if a != "self"]
 
-    api.add_resource(DeleteDataControl, '/datacontrol/delete_data_control', resource_class_kwargs={"db": db})
-    api.add_resource(GetDataControls, '/datacontrol/get_data_controls', resource_class_kwargs={"db": db})
+        if len(function_args) > 1:
+            raise Exception(f"Too much args for http function on resource {res[1].__module__}")
 
-    api.add_resource(GetLogs, '/log/get_logs', resource_class_kwargs={"db": db})
-    api.add_resource(GetUpdateArticleVersionLogs, '/log/get_update_article_version_logs/<id_>',
-                     resource_class_kwargs={"db": db})
+        if len(function_args) == 1:
+            endpoint += f"/<{function_args[0]}>"
 
-    api.add_resource(GetMailContent, '/mail/get_mail_content/<name>', resource_class_kwargs={"db": db})
-    api.add_resource(SaveTemplate, '/mail/save_template', resource_class_kwargs={"db": db})
-    api.add_resource(SendMail, '/mail/send_mail', resource_class_kwargs={"db": db, "mail": mail})
+        # Build the args
 
-    api.add_resource(AddImage, '/media/add_image', resource_class_kwargs={"db": db})
-    api.add_resource(GetImages, '/media/get_images', resource_class_kwargs={"db": db})
+        class_args = {a: plugins[a] for a in inspect.getfullargspec(res[1]).args if a != "self"}
 
-    api.add_resource(AddRequest, '/private/add_request', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteMyRequest, '/private/delete_my_request', resource_class_kwargs={"db": db})
-    api.add_resource(IsLogged, '/private/is_logged', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyCompanies, '/private/get_my_companies', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyRequests, '/private/get_my_requests', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyUser, '/private/get_my_user', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateMyUser, '/private/update_my_user', resource_class_kwargs={"db": db})
+        # Add the resource
 
-    api.add_resource(GetArticleContent, '/public/get_article_content/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicAnalytics, '/public/get_public_analytics', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicArticles, '/public/get_public_articles', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicCompany, '/public/get_public_company/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetImage, '/public/get_image/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetRelatedArticles, '/public/get_related_articles/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicTaxonomy, '/public/get_public_taxonomy', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicTaxonomyValues, '/public/get_public_taxonomy_values', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicCompanies, '/public/get_public_companies', resource_class_kwargs={"db": db})
-    api.add_resource(GetPublicCompanyGeolocations, '/public/get_public_company_geolocations',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(IsAlive, '/healthz', resource_class_kwargs={"db": db})
-
-    api.add_resource(GetRequests, '/request/get_requests', resource_class_kwargs={"db": db})
-    api.add_resource(GetRequestEnums, '/request/get_request_enums', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateRequest, '/request/update_request', resource_class_kwargs={"db": db})
-
-    api.add_resource(GetResources, '/resource/get_resources', resource_class_kwargs={"db": db, "api": api})
-
-    api.add_resource(GetAllSources, '/source/get_all_sources', resource_class_kwargs={"db": db})
-
-    api.add_resource(AddUser, '/user/add_user', resource_class_kwargs={"db": db, "mail": mail})
-    api.add_resource(AddUserCompany, '/user/add_user_company', resource_class_kwargs={"db": db})
-    api.add_resource(AddUserGroup, '/user/add_user_group', resource_class_kwargs={"db": db})
-    api.add_resource(AddUserGroupRight, '/user/add_user_group_right', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteUser, '/user/delete_user', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteUserCompany, '/user/delete_user_company', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteUserGroup, '/user/delete_user_group', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteUserGroupRight, '/user/delete_user_group_right', resource_class_kwargs={"db": db})
-    api.add_resource(GetUsers, '/user/get_users', resource_class_kwargs={"db": db})
-    api.add_resource(GetUser, '/user/get_user/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserCompanies, '/user/get_user_companies/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserGroupRights, '/user/get_user_group_rights/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserGroups, '/user/get_user_groups', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserGroup, '/user/get_user_group/<id_>', resource_class_kwargs={"db": db})
-    api.add_resource(GetUserGroupAssignments, '/user/get_user_group_assignments', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateUser, '/user/update_user', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateUserGroupAssignment, '/user/update_user_group_assignment', resource_class_kwargs={"db": db})
-
-    api.add_resource(AddTaxonomyAssignment, '/taxonomy/add_taxonomy_assignment', resource_class_kwargs={"db": db})
-    api.add_resource(AddTaxonomyCategory, '/taxonomy/add_taxonomy_category', resource_class_kwargs={"db": db})
-    api.add_resource(AddTaxonomyCategoryHierarchy, '/taxonomy/add_taxonomy_category_hierarchy',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(AddTaxonomyValue, '/taxonomy/add_taxonomy_value', resource_class_kwargs={"db": db})
-    api.add_resource(AddTaxonomyValueHierarchy, '/taxonomy/add_taxonomy_value_hierarchy',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyAssignment, '/taxonomy/delete_taxonomy_assignment', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyCategory, '/taxonomy/delete_taxonomy_category', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyCategoryHierarchy, '/taxonomy/delete_taxonomy_category_hierarchy',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyValue, '/taxonomy/delete_taxonomy_value', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteTaxonomyValueHierarchy, '/taxonomy/delete_taxonomy_value_hierarchy',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(GetTaxonomyCategories, '/taxonomy/get_taxonomy_categories', resource_class_kwargs={"db": db})
-    api.add_resource(GetTaxonomyCategoryHierarchy, '/taxonomy/get_taxonomy_category_hierarchy',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(GetTaxonomyValues, '/taxonomy/get_taxonomy_values', resource_class_kwargs={"db": db})
-    api.add_resource(GetTaxonomyValueHierarchy, '/taxonomy/get_taxonomy_value_hierarchy',
-                     resource_class_kwargs={"db": db})
-    api.add_resource(GetAllTaxonomyValueHierarchy, '/taxonomy/get_all_taxonomy_value_hierarchy',
-                     resource_class_kwargs={"db": db})
-
-    api.add_resource(AddWorkforce, '/workforce/add_workforce', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteWorkforce, '/workforce/delete_workforce', resource_class_kwargs={"db": db})
+        print(res[1], endpoint, class_args)
+        plugins["api"].add_resource(res[1], endpoint, resource_class_kwargs=class_args)
