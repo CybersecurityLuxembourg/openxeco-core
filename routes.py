@@ -56,13 +56,13 @@ from resource.mail.save_template import SaveTemplate
 from resource.mail.send_mail import SendMail
 from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
-from resource.privatespace.add_request import AddRequest
-from resource.privatespace.delete_my_request import DeleteMyRequest
-from resource.privatespace.get_my_companies import GetMyCompanies
-from resource.privatespace.get_my_requests import GetMyRequests
-from resource.privatespace.get_my_user import GetMyUser
-from resource.privatespace.is_logged import IsLogged
-from resource.privatespace.update_my_user import UpdateMyUser
+from resource.private.add_request import AddRequest
+from resource.private.delete_my_request import DeleteMyRequest
+from resource.private.get_my_companies import GetMyCompanies
+from resource.private.get_my_requests import GetMyRequests
+from resource.private.get_my_user import GetMyUser
+from resource.private.is_logged import IsLogged
+from resource.private.update_my_user import UpdateMyUser
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent
 from resource.public.get_public_articles import GetPublicArticles
@@ -189,13 +189,13 @@ def set_routes(api, db, mail):  # pylint: disable=too-many-statements
     api.add_resource(AddImage, '/media/add_image', resource_class_kwargs={"db": db})
     api.add_resource(GetImages, '/media/get_images', resource_class_kwargs={"db": db})
 
-    api.add_resource(AddRequest, '/privatespace/add_request', resource_class_kwargs={"db": db})
-    api.add_resource(DeleteMyRequest, '/privatespace/delete_my_request', resource_class_kwargs={"db": db})
-    api.add_resource(IsLogged, '/privatespace/is_logged', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyCompanies, '/privatespace/get_my_companies', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyRequests, '/privatespace/get_my_requests', resource_class_kwargs={"db": db})
-    api.add_resource(GetMyUser, '/privatespace/get_my_user', resource_class_kwargs={"db": db})
-    api.add_resource(UpdateMyUser, '/privatespace/update_my_user', resource_class_kwargs={"db": db})
+    api.add_resource(AddRequest, '/private/add_request', resource_class_kwargs={"db": db})
+    api.add_resource(DeleteMyRequest, '/private/delete_my_request', resource_class_kwargs={"db": db})
+    api.add_resource(IsLogged, '/private/is_logged', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyCompanies, '/private/get_my_companies', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyRequests, '/private/get_my_requests', resource_class_kwargs={"db": db})
+    api.add_resource(GetMyUser, '/private/get_my_user', resource_class_kwargs={"db": db})
+    api.add_resource(UpdateMyUser, '/private/update_my_user', resource_class_kwargs={"db": db})
 
     api.add_resource(GetArticleContent, '/public/get_article_content/<id_>', resource_class_kwargs={"db": db})
     api.add_resource(GetPublicAnalytics, '/public/get_public_analytics', resource_class_kwargs={"db": db})

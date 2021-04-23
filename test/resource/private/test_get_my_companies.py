@@ -15,7 +15,7 @@ class TestGetMyCompanies(BaseCase):
         self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
         self.db.insert({"user_id": 2, "company_id": 2}, self.db.tables["UserCompanyAssignment"])
 
-        response = self.application.get('/privatespace/get_my_companies',
+        response = self.application.get('/private/get_my_companies',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)

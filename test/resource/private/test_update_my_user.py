@@ -8,7 +8,7 @@ class TestUpdateMyUser(BaseCase):
 
         payload = {"first_name": "test"}
 
-        response = self.application.post('/privatespace/update_my_user',
+        response = self.application.post('/private/update_my_user',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -23,7 +23,7 @@ class TestUpdateMyUser(BaseCase):
 
         payload = {"password": "test"}
 
-        response = self.application.post('/privatespace/update_my_user',
+        response = self.application.post('/private/update_my_user',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -33,7 +33,7 @@ class TestUpdateMyUser(BaseCase):
     def test_ko_with_email(self, token):
         payload = {"email": "test"}
 
-        response = self.application.post('/privatespace/update_my_user',
+        response = self.application.post('/private/update_my_user',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -44,7 +44,7 @@ class TestUpdateMyUser(BaseCase):
 
         payload = {"is_admin": "test"}
 
-        response = self.application.post('/privatespace/update_my_user',
+        response = self.application.post('/private/update_my_user',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -55,7 +55,7 @@ class TestUpdateMyUser(BaseCase):
 
         payload = {"is_active": "test"}
 
-        response = self.application.post('/privatespace/update_my_user',
+        response = self.application.post('/private/update_my_user',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 

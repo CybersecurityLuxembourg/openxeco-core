@@ -14,7 +14,7 @@ class TestAddRequest(BaseCase):
             "data": {'type': None}
         }
 
-        response = self.application.post('/privatespace/add_request',
+        response = self.application.post('/private/add_request',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -40,7 +40,7 @@ class TestAddRequest(BaseCase):
 
         f.close()
 
-        response = self.application.post('/privatespace/add_request',
+        response = self.application.post('/private/add_request',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -65,7 +65,7 @@ class TestAddRequest(BaseCase):
 
         f.close()
 
-        response = self.application.post('/privatespace/add_request',
+        response = self.application.post('/private/add_request',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -90,7 +90,7 @@ class TestAddRequest(BaseCase):
 
         f.close()
 
-        response = self.application.post('/privatespace/add_request',
+        response = self.application.post('/private/add_request',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -111,7 +111,7 @@ class TestAddRequest(BaseCase):
 
         f.close()
 
-        response = self.application.post('/privatespace/add_request',
+        response = self.application.post('/private/add_request',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 

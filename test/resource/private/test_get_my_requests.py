@@ -11,7 +11,7 @@ class TestGetMyRequests(BaseCase):
         self.db.insert({"id": 2, "user_id": 1, "request": "My request 2"}, self.db.tables["UserRequest"])
         self.db.insert({"id": 3, "user_id": 2, "request": "My request 3"}, self.db.tables["UserRequest"])
 
-        response = self.application.get('/privatespace/get_my_requests',
+        response = self.application.get('/private/get_my_requests',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)

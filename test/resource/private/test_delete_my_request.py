@@ -9,7 +9,7 @@ class TestDeleteMyRequest(BaseCase):
 
         payload = {"id": 2}
 
-        response = self.application.post('/privatespace/delete_my_request',
+        response = self.application.post('/private/delete_my_request',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -20,7 +20,7 @@ class TestDeleteMyRequest(BaseCase):
 
         payload = {"id": 2}
 
-        response = self.application.post('/privatespace/delete_my_request',
+        response = self.application.post('/private/delete_my_request',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 

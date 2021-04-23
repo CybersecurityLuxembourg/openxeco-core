@@ -3,7 +3,6 @@ from flask_restful import Resource
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.verify_admin_access import verify_admin_access
-from utils.serializer import Serializer
 from decorator.log_request import log_request
 
 
