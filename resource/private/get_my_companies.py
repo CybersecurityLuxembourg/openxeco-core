@@ -22,15 +22,11 @@ class GetMyCompanies(Resource):
             .filter(self.db.tables["UserCompanyAssignment"].user_id == get_jwt_identity()) \
             .subquery()
 
-        data = {
-            "companies": Serializer.serialize(self.db.session
-                                              .query(self.db.tables["Company"])
-                                              .filter(self.db.tables["Company"].id.in_(subquery))
-                                              .all(), self.db.tables["Company"]),
-            "addresses": Serializer.serialize(self.db.session
-                                              .query(self.db.tables["Company_Address"])
-                                              .filter(self.db.tables["Company_Address"].company_id.in_(subquery))
-                                              .all(), self.db.tables["Company_Address"])
-        }
+        data = Serializer.serialize(
+            self.db.session
+                .query(self.db.tables["Company"])
+                .filter(self.db.tables["Company"].id.in_(subquery))
+                .all()
+            , self.db.tables["Company"])
 
         return data, "200 "

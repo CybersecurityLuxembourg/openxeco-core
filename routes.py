@@ -60,6 +60,10 @@ from resource.media.get_images import GetImages
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_request import DeleteMyRequest
 from resource.private.get_my_companies import GetMyCompanies
+from resource.private.get_my_company_addresses import GetMyCompanyAddresses
+from resource.private.get_my_company_collaborators import GetMyCompanyCollaborators
+from resource.private.get_my_company_requests import GetMyCompanyRequests
+from resource.private.get_my_company_taxonomy import GetMyCompanyTaxonomy
 from resource.private.get_my_requests import GetMyRequests
 from resource.private.get_my_user import GetMyUser
 from resource.private.is_logged import IsLogged
@@ -149,5 +153,4 @@ def set_routes(*args):
 
         # Add the resource
 
-        print(res[1], endpoint, class_args)
         plugins["api"].add_resource(res[1], endpoint, resource_class_kwargs=class_args)
