@@ -1,6 +1,6 @@
 {
   "name": "bo-front",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "dependencies": {
     "@trendmicro/react-sidenav": "^0.5.0",
