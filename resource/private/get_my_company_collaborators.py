@@ -35,7 +35,8 @@ class GetMyCompanyCollaborators(Resource):
 
         data = [r._asdict() for r in self.db.session
             .query(self.db.tables["User"])
-            .with_entities(self.db.tables["User"].email,
+            .with_entities(self.db.tables["User"].id,
+                           self.db.tables["User"].email,
                            self.db.tables["User"].first_name,
                            self.db.tables["User"].last_name)
             .filter(self.db.tables["User"].id.in_(subquery))

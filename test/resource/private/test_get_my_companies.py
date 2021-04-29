@@ -19,6 +19,6 @@ class TestGetMyCompanies(BaseCase):
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(len(response.json["companies"]), 2)
-        self.assertEqual(response.json["companies"][0]["id"], 1)
-        self.assertEqual(response.json["companies"][1]["id"], 3)
+        self.assertEqual(len(response.json), 2)
+        self.assertEqual(response.json[0]["id"], 1)
+        self.assertEqual(response.json[1]["id"], 3)

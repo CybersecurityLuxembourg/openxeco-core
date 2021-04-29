@@ -1,7 +1,7 @@
 from test.BaseCase import BaseCase
 
 
-class TestGetMyCompanyRequests(BaseCase):
+class TestGetMyCompanyCollaborators(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
@@ -18,12 +18,12 @@ class TestGetMyCompanyRequests(BaseCase):
         response = self.application.get('/private/get_my_company_collaborators/1',
                                         headers=self.get_standard_header(token))
 
-        print(response.json)
-
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(response.json), 2)
         self.assertEqual(response.json[0]["id"], 1)
         self.assertEqual(response.json[1]["id"], 2)
+        self.assertEqual(response.json[0]["email"], "test@cybersecurity.lu")
+        self.assertEqual(response.json[1]["email"], "myemail@test.lu")
 
     @BaseCase.login
     def test_ko_not_assigned(self, token):
