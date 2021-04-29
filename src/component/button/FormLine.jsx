@@ -1,6 +1,7 @@
 import React from "react";
 import "./FormLine.css";
 import Select from "react-select";
+import Editor from "react-medium-editor";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import _ from "lodash";
 import DialogSelectImage from "../dialog/DialogSelectImage.jsx";
@@ -143,6 +144,12 @@ export default class FormLine extends React.Component {
 				className={this.getFormatClassName()}
 				value={this.state.value}
 				onChange={(value) => this.onChange(value)}
+			/>;
+		case "editor":
+			return <Editor
+				text={this.state.value}
+				onChange={(v) => this.onChange(v)}
+				options={{ toolbar: { buttons: ["bold", "italic", "underline", "anchor"] } }}
 			/>;
 		case "region":
 			return <RegionDropdown

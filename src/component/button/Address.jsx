@@ -184,7 +184,7 @@ export default class Address extends React.Component {
 							<div className={"col-md-6"}>
 								<button
 									className="link-button"
-									onClick={() => this.setState("showAddress2", true)}
+									onClick={() => this.setState({ showAddress2: true })}
 								>
                                     Add house, entrance, appartment information
 								</button>
