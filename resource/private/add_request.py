@@ -21,7 +21,7 @@ class AddRequest(Resource):
         {'field': 'company_id', 'type': int, 'nullable': True, 'optional': True},
         {'field': 'request', 'type': str},
         {'field': 'type', 'type': str, 'nullable': True, 'optional': True},
-        {'field': 'data', 'type': dict, 'nullable': True, 'optional': True},
+        {'field': 'data', 'type': [dict, list], 'nullable': True, 'optional': True},
         {'field': 'image', 'type': str, 'nullable': True, 'optional': True},
     ])
     @jwt_required
