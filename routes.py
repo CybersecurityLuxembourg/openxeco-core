@@ -64,6 +64,7 @@ from resource.private.get_my_company_addresses import GetMyCompanyAddresses
 from resource.private.get_my_company_collaborators import GetMyCompanyCollaborators
 from resource.private.get_my_company_requests import GetMyCompanyRequests
 from resource.private.get_my_company_taxonomy import GetMyCompanyTaxonomy
+from resource.private.get_my_notifications import GetMyNotifications
 from resource.private.get_my_requests import GetMyRequests
 from resource.private.get_my_user import GetMyUser
 from resource.private.is_logged import IsLogged
