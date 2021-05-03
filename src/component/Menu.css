@@ -1,0 +1,44 @@
+nav {
+	background: #009fe3 !important;
+	font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+}
+
+.Menu-log-out-nav-item {
+	position: absolute !important;
+	bottom: 10px !important;
+	width: 100%;
+}
+
+.Menu-bug-nav-item {
+	position: absolute !important;
+	bottom: 60px !important;
+	width: 100%;
+}
+
+nav i {
+	padding-top: 12px !important;
+}
+
+.Menu-notification {
+	color: white;
+	font-size: 12px;
+	height: 20px;
+	line-height: 15px;
+	border-radius: 20px;
+	background-color: #e40613;
+	padding: 3px 7px;
+	position: absolute;
+	top: 23px;
+	right: 10px;
+}
+
+.Menu-highlight {
+    animation: colorchange 1.5s linear infinite;
+}
+
+@keyframes colorchange {
+  0% { color: #f9dcdd; }
+  50% { color: #e40613; }
+  100% { color: #f9dcdd; }
+}

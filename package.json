@@ -1,0 +1,59 @@
+{
+  "name": "fo-private",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@trendmicro/react-sidenav": "^0.5.0",
+    "chart.js": "^2.9.4",
+    "chartjs-chart-treemap": "^0.2.3",
+    "cropperjs": "^1.5.11",
+    "dompurify": "^2.2.6",
+    "leaflet": "^1.7.1",
+    "lodash": "^4.17.21",
+    "react": "^16.14.0",
+    "react-beautiful-dnd": "^13.0.0",
+    "react-bootstrap": "^0.32.4",
+    "react-chartjs-2": "^2.11.1",
+    "react-cookie": "^4.0.3",
+    "react-country-region-selector": "^3.0.1",
+    "react-countup": "^4.3.3",
+    "react-cropper": "^2.1.4",
+    "react-d3-tree": "^2.0.1",
+    "react-dom": "^16.3.1",
+    "react-dropzone": "^11.2.4",
+    "react-grid-layout": "^1.2.0",
+    "react-leaflet": "^2.8.0",
+    "react-medium-editor": "^1.8.1",
+    "react-notifications": "^1.6.0",
+    "react-router-dom": "^5.2.0",
+    "react-select": "^3.1.0",
+    "react-table": "^7.6.1",
+    "reactjs-popup": "^1.5.0"
+  },
+  "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .js --ext .jsx",
+    "lint-fix": "eslint --fix --ext .js --ext .jsx src"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^14.2.1",
+    "react-scripts": "4.0.0",
+    "source-map-explorer": "^1.6.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

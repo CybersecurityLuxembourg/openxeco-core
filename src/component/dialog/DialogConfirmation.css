@@ -1,0 +1,9 @@
+
+.DialogConfirmation-wrapper {
+    padding-bottom: 40px;
+}
+
+.DialogConfirmation-wrapper > h2 {
+    white-space: normal;
+    text-overflow: clip;
+}
