@@ -19,6 +19,7 @@ class GetRequestEnums(Resource):
 
         data = {
             "status": self.db.tables["UserRequest"].status.prop.columns[0].type.enums,
+            "type": self.db.tables["UserRequest"].type.prop.columns[0].type.enums,
         }
 
         return data, "200 "

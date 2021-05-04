@@ -10,5 +10,17 @@ class TestGetRequestEnums(BaseCase):
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(dict, type(response.get_json()))
+        self.assertEqual(response.get_json(), {
+            'status': ['NEW', 'IN PROCESS', 'PROCESSED', 'REJECTED'],
+            'type': [
+                'COMPANY ADD',
+                'COMPANY CHANGE',
+                'COMPANY ACCESS CLAIM',
+                'COMPANY ADDRESS CHANGE',
+                'COMPANY ADDRESS ADD',
+                'COMPANY ADDRESS DELETION',
+                'COMPANY TAXONOMY CHANGE',
+                'COMPANY LOGO CHANGE'
+            ]
+        })
 
