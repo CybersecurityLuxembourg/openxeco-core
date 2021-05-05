@@ -2,15 +2,20 @@ import React, { Component } from "react";
 import "./Request.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import dompurify from "dompurify";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import User from "./User.jsx";
+import Company from "./Company.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import DialogSendMail from "../dialog/DialogSendMail.jsx";
-import RequestModification from "./request/RequestModification.jsx";
+import RequestCompanyChange from "./request/RequestCompanyChange.jsx";
+import RequestCompanyAdd from "./request/RequestCompanyAdd.jsx";
 import RequestLogoChange from "./request/RequestLogoChange.jsx";
+import RequestCompanyAddressAdd from "./request/RequestCompanyAddressAdd.jsx";
+import RequestCompanyAddressChange from "./request/RequestCompanyAddressChange.jsx";
+import RequestCompanyAddressDelete from "./request/RequestCompanyAddressDelete.jsx";
+import RequestCompanyTaxonomyChange from "./request/RequestCompanyTaxonomyChange.jsx";
 
 export default class Request extends Component {
 	constructor(props) {
@@ -21,8 +26,8 @@ export default class Request extends Component {
 		this.onOpen = this.onOpen.bind(this);
 
 		this.state = {
-			request: null,
 			user: null,
+			company: null,
 			requestStatus: null,
 		};
 	}
@@ -42,7 +47,6 @@ export default class Request extends Component {
 
 	onOpen() {
 		this.setState({
-			request: this.props.info,
 			isDetailOpened: true,
 			user: null,
 		});
@@ -66,17 +70,30 @@ export default class Request extends Component {
 		}, (error) => {
 			nm.error(error.message);
 		});
+
+		if (this.props.info !== null && this.props.info !== undefined
+			&& this.props.info.company_id !== null && this.props.info.company_id !== undefined) {
+			getRequest.call(this, "company/get_company/" + this.props.info.company_id, (data) => {
+				this.setState({
+					company: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
 	}
 
 	updateRequest(prop, value) {
-		if (this.state.request[prop] !== value) {
+		if (this.props.info[prop] !== value) {
 			const params = {
 				id: this.props.info.id,
 				[prop]: value,
 			};
 
 			postRequest.call(this, "request/update_request", params, () => {
-				const request = { ...this.state.request };
+				const request = { ...this.props.info };
 
 				request[prop] = value;
 				this.setState({ request });
@@ -90,6 +107,12 @@ export default class Request extends Component {
 	}
 
 	render() {
+		if (this.props.info === undefined || this.props.info === null) {
+			return <Loading
+				height={300}
+			/>;
+		}
+
 		return (
 			<Popup
 				className="Popup-small-size"
@@ -97,6 +120,11 @@ export default class Request extends Component {
 					<div className={"Request"}>
 						<i className="fas fa-thumbtack"/>
 						<div className={"Request-name"}>
+							{this.props.info !== undefined && this.props.info !== null
+								&& this.props.info.type !== undefined && this.props.info.type !== null
+								? this.props.info.type + " - "
+								: ""
+							}
 							{this.props.info !== undefined && this.props.info !== null
 								? this.props.info.request
 								: "Unfound request"
@@ -132,15 +160,94 @@ export default class Request extends Component {
 					</div>
 
 					<div className="col-md-12 row-spaced">
-						{this.state.user !== null
+						{this.state.info !== null
 							? <FormLine
 								label={"Status"}
 								type={"select"}
-								value={this.state.request.status}
+								value={this.props.info.status}
 								options={this.state.requestStatus !== null
 									? this.state.requestStatus.map((v) => ({ label: v, value: v }))
 									: []}
 								onChange={(v) => this.updateRequest("status", v)}
+							/>
+							: <Loading
+								height={50}
+							/>
+						}
+						{this.state.info !== null
+							? <FormLine
+								label={"Type"}
+								value={this.props.info.type}
+								disabled={true}
+							/>
+							: <Loading
+								height={50}
+							/>
+						}
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<h3>Action</h3>
+
+						{this.props.info.type === "COMPANY CHANGE"
+							&& this.state.user !== null
+							&& this.state.company !== null
+							&& <RequestCompanyChange
+								data={this.props.info.data}
+							/>
+						}
+						{this.props.info.type === "COMPANY ADD"
+							&& this.state.user !== null
+							&& <RequestCompanyAdd
+								data={this.props.info.data}
+							/>
+						}
+						{this.props.info.type === "COMPANY ADDRESS CHANGE"
+							&& this.state.user !== null
+							&& <RequestCompanyAddressChange
+								data={this.props.info.data}
+							/>
+						}
+						{this.props.info.type === "COMPANY ADDRESS ADD"
+							&& this.state.user !== null
+							&& <RequestCompanyAddressAdd
+								data={this.props.info.data}
+								companyId={this.props.info.company_id}
+							/>
+						}
+						{this.props.info.type === "COMPANY ADDRESS DELETE"
+							&& this.state.user !== null
+							&& <RequestCompanyAddressDelete
+								data={this.props.info.data}
+							/>
+						}
+						{this.props.info.type === "COMPANY TAXONOMY CHANGE"
+							&& this.state.user !== null
+							&& <RequestCompanyTaxonomyChange
+								data={this.props.info.data}
+								companyId={this.props.info.company_id}
+							/>
+						}
+						{this.props.info.type === "COMPANY LOGO CHANGE"
+							&& this.state.user !== null
+							&& <RequestLogoChange
+								requestId={this.props.info.id}
+								requestStatus={this.props.info.status}
+								image={this.props.info.image}
+								companyId={this.props.info.company_id}
+							/>
+						}
+
+						{this.state.user !== null
+							? <DialogSendMail
+								trigger={
+									<button className={"blue-background"}>
+										<i className="fas fa-envelope-open-text"/> Prepare email...
+									</button>
+								}
+								email={this.state.user.email}
+								subject={"[CYBERSECURITY LUXEMBOURG] Treated request"}
+								content={"Dear user,\n\nYour request has been treated.\n\nSincerely,\nCYBERSECURITY LUXEMBOURG Support Team"}
 							/>
 							: <Loading
 								height={50}
@@ -162,46 +269,34 @@ export default class Request extends Component {
 					</div>
 
 					<div className="col-md-6 row-spaced">
-						<h3>Action</h3>
-
-						{this.props.info.request.startsWith("[ENTITY MODIFICATION]")
-							&& this.state.user !== null
-							&& <RequestModification
-								request={this.props.info.request}
+						<h3>Company</h3>
+						{this.state.company !== null
+							? <Company
+								id={this.state.company.id}
+								name={this.state.company.name}
 							/>
-						}
-						{this.props.info.request.startsWith("[ENTITY INSERTION]")
-							&& this.state.user !== null
-							&& <RequestModification
-								request={this.props.info.request}
-							/>
-						}
-						{this.props.info.request.startsWith("[ENTITY LOGO MODIFICATION]")
-							&& this.state.user !== null
-							&& <RequestLogoChange
-								request={this.props.info}
-							/>
-						}
-						{this.state.user !== null
-							? <DialogSendMail
-								trigger={
-									<button className={"blue-background"}>
-										<i className="fas fa-envelope-open-text"/> Prepare email...
-									</button>
-								}
-								email={this.state.user.email}
-								subject={"[CYBERSECURITY LUXEMBOURG] Treated request"}
-								content={"Dear user,\n\nYour request has been treated.\n\nSincerely,\nCYBERSECURITY LUXEMBOURG Support Team"}
-							/>
-							: <Loading
+							: <Message
+								text={"No company in this request"}
 								height={50}
 							/>
 						}
 					</div>
 
+					<div className="col-md-12 row-spaced">
+						<h3>Content</h3>
+						{this.props.info !== undefined && this.props.info !== null
+							&& this.props.info.request !== undefined && this.props.info.request !== null
+							? this.props.info.request
+							: <Message
+								text={"No request content"}
+								height={100}
+							/>
+						}
+					</div>
+
 					{this.props.info !== undefined && this.props.info !== null
-						&& this.props.info.image !== null
-						&& <div className="col-md-12">
+						&& this.props.info.image !== undefined && this.props.info.image !== null
+						&& <div className="col-md-12 row-spaced">
 							<h3>Image</h3>
 							<div className="Request-image">
 								<img src={"data:image/png;base64," + this.props.info.image} />
@@ -209,18 +304,14 @@ export default class Request extends Component {
 						</div>
 					}
 
-					<div className="col-md-12">
-						<h3>Content</h3>
+					<div className="col-md-12 row-spaced">
+						<h3>Data</h3>
 						{this.props.info !== undefined && this.props.info !== null
-							? <div dangerouslySetInnerHTML={
-								{
-									__html:
-									dompurify.sanitize(this.props.info.request.replaceAll("\n", "<br />", "g")),
-								}
-							}/>
+							&& this.props.info.data !== undefined && this.props.info.data !== null
+							? JSON.stringify(this.props.info.data)
 							: <Message
-								text={"Unfound request content"}
-								height={250}
+								text={"No data in this request"}
+								height={50}
 							/>
 						}
 					</div>
