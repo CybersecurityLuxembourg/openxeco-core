@@ -56,7 +56,7 @@ export default class Login extends React.Component {
 
 		postRequest.call(this, "account/login", params, (response) => {
 			// TODO use httponly cookies
-			this.props.cookies.set("access_token_cookie", response.token, getCookieOptions());
+			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 			this.props.connect();
 		}, (response) => {
 			nm.warning(response.statusText);

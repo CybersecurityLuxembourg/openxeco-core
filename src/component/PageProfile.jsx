@@ -31,7 +31,7 @@ export default class PageProfile extends React.Component {
 			user: null,
 		});
 
-		getRequest.call(this, "privatespace/get_my_user", (data) => {
+		getRequest.call(this, "private/get_my_user", (data) => {
 			this.setState({
 				user: data,
 			});
