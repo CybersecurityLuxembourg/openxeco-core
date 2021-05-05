@@ -215,7 +215,7 @@ export default class Request extends Component {
 								companyId={this.props.info.company_id}
 							/>
 						}
-						{this.props.info.type === "COMPANY ADDRESS DELETE"
+						{this.props.info.type === "COMPANY ADDRESS DELETION"
 							&& this.state.user !== null
 							&& <RequestCompanyAddressDelete
 								data={this.props.info.data}

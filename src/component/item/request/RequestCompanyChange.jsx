@@ -10,8 +10,6 @@ export default class RequestCompanyChange extends Component {
 		super(props);
 
 		this.refresh = this.refresh.bind(this);
-		this.onClick = this.onClick.bind(this);
-		this.onClose = this.onClose.bind(this);
 		this.updateCompany = this.updateCompany.bind(this);
 
 		this.state = {

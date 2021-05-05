@@ -21,8 +21,8 @@ export default class RequestCompanyAddressDelete extends Component {
 			return;
 		}
 
-		if (this.props.data.id !== undefined) {
-			nm.warning("Cannot add an address with an ID");
+		if (this.props.data.id === undefined) {
+			nm.warning("Cannot delete an address without an ID");
 			return;
 		}
 

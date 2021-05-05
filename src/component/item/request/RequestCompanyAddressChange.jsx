@@ -80,7 +80,7 @@ export default class RequestCompanyAddressChange extends Component {
 		if (modifiedFields.length === 0) {
 			return (
 				<div className="col-md-12 row-spaced">
-					<h3>Update an existing company</h3>
+					<h3>Update an existing company address</h3>
 					<Message
 						text={"No difference detected between the request and the database"}
 						height={100}

@@ -39,7 +39,7 @@ export default class RequestLogoChange extends Component {
 
 	validateNewLogo() {
 		const params = {
-			image: this.props.request.image,
+			image: this.props.image,
 		};
 
 		postRequest.call(this, "media/add_image", params, (addImageResponse) => {
@@ -51,21 +51,8 @@ export default class RequestLogoChange extends Component {
 			};
 
 			postRequest.call(this, "company/update_company", companyParams, () => {
+				this.refresh();
 				nm.info("The company has been updated with new image");
-
-				const requestParams = {
-					id: this.props.requestId,
-					status: "PROCESSED",
-				};
-
-				postRequest.call(this, "request/update_request", requestParams, () => {
-					this.refresh();
-					nm.info("The request has been set as PROCESSED");
-				}, (response) => {
-					nm.warning(response.statusText);
-				}, (error) => {
-					nm.error(error.message);
-				});
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -159,14 +146,6 @@ export default class RequestLogoChange extends Component {
 										|| this.props.image === undefined
 										|| this.props.requestStatus === "PROCESSED"}>
 									<i className="fas fa-check-circle"/> Add media and change logo
-								</button>
-								<button
-									onClick={this.rejectNewLogo}
-									disabled={this.state.databaseCompany === null
-										|| this.props.image === null
-										|| this.props.image === undefined
-										|| this.props.requestStatus === "PROCESSED"}>
-									<i className="fas fa-times-circle"/> Reject and set as PROCESSED
 								</button>
 							</div>
 						</div>

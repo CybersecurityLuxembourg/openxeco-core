@@ -74,7 +74,7 @@ export default class RequestCompanyAddressAdd extends Component {
 
 						<div className="col-md-12">
 							<Address
-								info={this.props.data.data}
+								info={this.props.data}
 							/>
 						</div>
 
