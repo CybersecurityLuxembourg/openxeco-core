@@ -74,7 +74,7 @@ export default class CompanyTaxonomy extends React.Component {
 			data: {
 				category: this.state.selectedCategory,
 				values: this.state.currentSelectedValues,
-			}
+			},
 		};
 
 		postRequest.call(this, "private/add_request", params, () => {
