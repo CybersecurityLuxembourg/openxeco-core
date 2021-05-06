@@ -37,6 +37,7 @@ from resource.company.get_company_addresses import GetCompanyAddresses
 from resource.company.get_company_contacts import GetCompanyContacts
 from resource.company.get_company_enums import GetCompanyEnums
 from resource.company.get_company_taxonomy import GetCompanyTaxonomy
+from resource.company.get_company_users import GetCompanyUsers
 from resource.company.get_company_workforces import GetCompanyWorkforces
 from resource.company.update_company import UpdateCompany
 from resource.company.add_company import AddCompany
