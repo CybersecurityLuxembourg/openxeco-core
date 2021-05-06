@@ -7,7 +7,7 @@ export default class Loading extends React.Component {
 			<div className="Loading" style={{ height: this.props.height ? this.props.height : "100%" }}>
 				<div className="Loading-logo">
 					<img
-						src="img/logo.png"
+						src="/img/logo.png"
 						alt="CYBERLUX Logo"
 					/>
 				</div>

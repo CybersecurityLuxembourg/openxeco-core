@@ -8,6 +8,7 @@ import Tab from "../tab/Tab.jsx";
 import CompanyGlobal from "./company/CompanyGlobal.jsx";
 import CompanyContact from "./company/CompanyContact.jsx";
 import CompanyAddress from "./company/CompanyAddress.jsx";
+import CompanyUser from "./company/CompanyUser.jsx";
 import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
 import CompanyWorkforce from "./company/CompanyWorkforce.jsx";
 
@@ -106,7 +107,7 @@ export default class Company extends Component {
 						</h1>
 
 						<Tab
-							menu={["Global", "Contact", "Address", "Taxonomy", "Workforce"]}
+							menu={["Global", "Contact", "Address", "User", "Taxonomy", "Workforce"]}
 							content={[
 								<CompanyGlobal
 									key={this.props.id}
@@ -120,6 +121,10 @@ export default class Company extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									name={this.props.name}
+								/>,
+								<CompanyUser
+									key={this.props.id}
+									id={this.props.id}
 								/>,
 								<CompanyTaxonomy
 									key={this.props.id}
