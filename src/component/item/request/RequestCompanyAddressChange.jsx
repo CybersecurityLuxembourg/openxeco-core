@@ -53,7 +53,7 @@ export default class RequestCompanyAddressChange extends Component {
 
 		postRequest.call(this, "address/update_address", params, () => {
 			this.refresh();
-			nm.info("The company address has been updated");
+			nm.info("The entity address has been updated");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {

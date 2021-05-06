@@ -228,7 +228,7 @@ export default class CompanyAddress extends React.Component {
 									{Array.isArray(this.state.scrapedAddresses)
 										&& this.state.scrapedAddresses.length === 0
 										&& <Message
-											text="No address found, try another company name"
+											text="No address found, try another entity name"
 										/>
 									}
 

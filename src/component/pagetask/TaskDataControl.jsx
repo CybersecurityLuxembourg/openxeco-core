@@ -197,7 +197,7 @@ export default class TaskDataControl extends React.Component {
 					<div className="col-md-12">
 						<Info
 							content={
-								"Checks from '/cron/run_database_compliance' for the companies:"
+								"Checks from '/cron/run_database_compliance' for the entities:"
 								+ "<ul/>"
 								+ "<li>Check if image, website, creation date are not empty</li>"
 								+ "<li>Check if there is at least one physical address</li>"

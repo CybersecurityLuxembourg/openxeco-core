@@ -35,7 +35,7 @@ export default class RequestCompanyAddressAdd extends Component {
 		params.company_id = this.props.companyId;
 
 		postRequest.call(this, "address/add_address", params, () => {
-			nm.info("The company address has been added");
+			nm.info("The entity address has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {

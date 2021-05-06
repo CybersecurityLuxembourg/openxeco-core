@@ -52,7 +52,7 @@ export default class RequestLogoChange extends Component {
 
 			postRequest.call(this, "company/update_company", companyParams, () => {
 				this.refresh();
-				nm.info("The company has been updated with new image");
+				nm.info("The entity has been updated with new image");
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {

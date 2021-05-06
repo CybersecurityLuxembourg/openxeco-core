@@ -216,7 +216,7 @@ export default class PageCompany extends React.Component {
 					<div className="col-md-6">
 						<h1>Export into XLSX</h1>
 						<FormLine
-							label={"Get filtered companies only"}
+							label={"Get filtered entities only"}
 							type={"checkbox"}
 							value={this.state.filtered_companies_only}
 							onChange={(v) => this.changeState("filtered_companies_only", v)}

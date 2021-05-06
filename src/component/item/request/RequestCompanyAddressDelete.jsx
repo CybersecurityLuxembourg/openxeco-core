@@ -31,7 +31,7 @@ export default class RequestCompanyAddressDelete extends Component {
 		};
 
 		postRequest.call(this, "address/delete_address", params, () => {
-			nm.info("The company address has been deleted");
+			nm.info("The entity address has been deleted");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {

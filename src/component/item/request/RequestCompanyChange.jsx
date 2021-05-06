@@ -53,7 +53,7 @@ export default class RequestCompanyChange extends Component {
 
 		postRequest.call(this, "company/update_company", params, () => {
 			this.refresh();
-			nm.info("The company has been updated");
+			nm.info("The entity has been updated");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {

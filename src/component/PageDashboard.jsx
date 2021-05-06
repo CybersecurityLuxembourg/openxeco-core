@@ -343,7 +343,7 @@ export default class PageDashboard extends React.Component {
 						</div>
 					</div>
 					<div className="col-md-6">
-						<h2>Recently added companies</h2>
+						<h2>Recently added entities</h2>
 						<div>
 							{this.state.analytics !== null && "last_companies" in this.state.analytics
 								? this.state.analytics.last_companies.map((o) => (
@@ -552,7 +552,7 @@ export default class PageDashboard extends React.Component {
 						}
 					</div>
 					<div className="col-md-6">
-						<h2>Age of companies</h2>
+						<h2>Age of entities</h2>
 						{this.state.filteredActors !== null
 							? <BarActorAge
 								actors={this.state.filteredActors}

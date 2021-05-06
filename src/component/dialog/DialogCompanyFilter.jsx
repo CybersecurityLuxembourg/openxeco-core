@@ -147,7 +147,7 @@ export default class DialogCompanyFilter extends React.Component {
 				className={"slide-in DialogCompanyFilter"}
 			>
 				<div className={"DialogCompanyFilter-form"}>
-					<h2>Filter companies</h2>
+					<h2>Filter entities</h2>
 					<button
 						className={"link-button"}
 						data-hover="Cancel"
