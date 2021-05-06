@@ -142,7 +142,7 @@ export default class CompanyAddress extends React.Component {
 						{this.state.originalAddresses.length === 0
 							&& <Message
 								text={"No address found for this entity"}
-								height={300}
+								height={150}
 							/>
 						}
 
