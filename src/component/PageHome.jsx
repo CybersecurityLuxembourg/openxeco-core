@@ -2,7 +2,7 @@ import React from "react";
 import "./PageHome.css";
 import { Link } from "react-router-dom";
 import Loading from "./box/Loading.jsx";
-import { getGlobalAppURL, getEcosystemAppURL } from "../utils/env.jsx";
+import { getEcosystemAppURL } from "../utils/env.jsx";
 
 export default class PageHome extends React.Component {
 	constructor(props) {
@@ -27,8 +27,8 @@ export default class PageHome extends React.Component {
 					</div>
 
 					<div className="col-md-6">
-						<a
-							href={getGlobalAppURL() + "/news"}
+						{/* <a
+							href={getGlobalAppURL() + "news"}
 							target="_blank"
 							rel="noreferrer"
 						>
@@ -36,12 +36,16 @@ export default class PageHome extends React.Component {
 								<i className="far fa-newspaper"/>
 								<h3>News</h3>
 							</div>
-						</a>
+						</a> */}
+						<div className="PageHome-white-block">
+							<i className="far fa-newspaper"/>
+							<h3>Coming soon!</h3>
+						</div>
 					</div>
 
 					<div className="col-md-6">
-						<a
-							href={getGlobalAppURL() + "/calendar"}
+						{/* <a
+							href={getGlobalAppURL() + "calendar"}
 							target="_blank"
 							rel="noreferrer"
 						>
@@ -49,7 +53,11 @@ export default class PageHome extends React.Component {
 								<i className="fas fa-calendar-alt"/>
 								<h3>Events</h3>
 							</div>
-						</a>
+						</a> */}
+						<div className="PageHome-white-block">
+							<i className="fas fa-calendar-alt"/>
+							<h3>Coming soon!</h3>
+						</div>
 					</div>
 
 					<div className="col-md-6">

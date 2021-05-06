@@ -9,13 +9,13 @@
 
 #Login-box {
     position: absolute;
-    top: 50%;
+    top: calc(50% - 50px);
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
+    transform: translate(calc(-50% - 10px), calc(-50% - 50px));
+    width: calc(100% - 20px);
     min-width: 300px;
-    max-width: 500px;
-    margin: 10px 0px 100px 0px;
+    max-width: 900px;
+    margin: 100px 10px 100px 10px;
     background:
         linear-gradient(to right, black 20px, transparent 4px) 0 0,
         linear-gradient(to left, black 20px, transparent 4px) 100% 100%,
@@ -23,7 +23,7 @@
         linear-gradient(to top, black 20px, transparent 4px) 100% 100% !important;
     background-repeat: no-repeat !important;
     background-size: 80px 80px !important;
-    padding: 6px 20px 80px 20px;
+    padding: 6px 20px 20px 20px;
 }
 
 #Login-inner-box {
@@ -39,13 +39,28 @@
     background: linear-gradient(110deg, #EEE 60%, #E9E9E9 60%);
 }
 
-.Login-title-small {
-    font-size: 14px;
-}
-
-.Login-title h1 {
+.Login-title {
+    font-size: 45px;
+    line-height: 1;
+    text-align: center;
     padding: 0px 10px 0px 10px;
     background-image: none;
+    color: #010101;
+    text-transform: uppercase;
+    font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    padding: 0px 10px 0px 10px;
+    margin: 20px 0px 10px 0px;
+    background-size: 75px 75px;
+    background-repeat: no-repeat;
+}
+
+.Login-title-small {
+    font-size: 16px;
+}
+
+#Login-box .link-button {
+    margin-top: 5px;
 }
 
 /* BACKGROUND EFFECT */

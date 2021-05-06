@@ -3,7 +3,7 @@ import "./Login.css";
 import { NotificationManager as nm } from "react-notifications";
 import FormLine from "./form/FormLine.jsx";
 import { postRequest } from "../utils/request.jsx";
-import { validatePassword } from "../utils/re.jsx";
+import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions } from "../utils/env.jsx";
@@ -13,12 +13,14 @@ export default class Login extends React.Component {
 		super(props);
 
 		this.login = this.login.bind(this);
+		this.createAccount = this.createAccount.bind(this);
 		this.requestReset = this.requestReset.bind(this);
 		this.resetPassword = this.resetPassword.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 
 		this.state = {
 			email: null,
+			createAccountEmail: null,
 			password: null,
 			passwordConfirmation: null,
 			view: getUrlParameter("action") === "reset_password" ? "reset" : "login",
@@ -57,6 +59,20 @@ export default class Login extends React.Component {
 		postRequest.call(this, "account/login", params, (response) => {
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 			this.props.connect(this.state.email);
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	createAccount() {
+		const params = {
+			email: this.state.createAccountEmail,
+		};
+
+		postRequest.call(this, "account/create_account", params, () => {
+			nm.info("An email has been sent to your mailbox with a generated password");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -124,46 +140,82 @@ export default class Login extends React.Component {
 				<div id="Login-box" className="resize-animation">
 					<div id="Login-inner-box" className={"fade-in"}>
 						{this.state.view === "login"
-							&& <div>
-								<div className="Login-title">
-									<h1>
+							&& <div className="row">
+								<div className="col-md-12">
+									<div className="Login-title">
 										MY CYBERLUX
 										<div className={"Login-title-small"}>
-											CYBERSECURITY LUXEMBOURG admin platform
+											CYBERSECURITY LUXEMBOURG private space
 										</div>
-									</h1>
+									</div>
 								</div>
-								<FormLine
-									label="Email"
-									fullWidth={true}
-									value={this.state.email}
-									onChange={(v) => this.changeState("email", v)}
-									autofocus={true}
-									onKeyDown={this.onKeyDown}
-								/>
-								<FormLine
-									label="Password"
-									type={"password"}
-									fullWidth={true}
-									value={this.state.password}
-									onChange={(v) => this.changeState("password", v)}
-									onKeyDown={this.onKeyDown}
-								/>
-								<div className="bottom-right-buttons">
-									<button
-										className="blue-button"
-										onClick={this.login}
-									>
-										Login
-									</button>
+								<div className="col-md-6">
+									<div className="Login-title">
+										<div className={"Login-title-small"}>
+											Login
+										</div>
+									</div>
+
+									<FormLine
+										label="Email"
+										fullWidth={true}
+										value={this.state.email}
+										onChange={(v) => this.changeState("email", v)}
+										autofocus={true}
+										onKeyDown={this.onKeyDown}
+									/>
+									<FormLine
+										label="Password"
+										type={"password"}
+										fullWidth={true}
+										value={this.state.password}
+										onChange={(v) => this.changeState("password", v)}
+										onKeyDown={this.onKeyDown}
+									/>
+
+									<div>
+										<div className="right-buttons">
+											<button
+												className="blue-button"
+												onClick={this.login}
+											>
+												Login
+											</button>
+										</div>
+										<div className="left-buttons">
+											<button
+												className="link-button"
+												onClick={() => this.changeState("view", "forgot")}
+											>
+												I forgot my password
+											</button>
+										</div>
+									</div>
 								</div>
-								<div className="bottom-left-buttons">
-									<button
-										className="link-button"
-										onClick={() => this.changeState("view", "forgot")}
-									>
-										I forgot my password
-									</button>
+								<div className="col-md-6">
+									<div className="Login-title">
+										<div className={"Login-title-small"}>
+											Create an account
+										</div>
+									</div>
+
+									<FormLine
+										label="Email"
+										fullWidth={true}
+										value={this.state.createAccountEmail}
+										onChange={(v) => this.changeState("createAccountEmail", v)}
+										autofocus={true}
+										onKeyDown={this.onKeyDown}
+									/>
+									<div className="right-buttons">
+										<button
+											className="blue-button"
+											onClick={this.createAccount}
+											disabled={!validateEmail(this.state.createAccountEmail)}
+										>
+											Create account
+										</button>
+									</div>
 								</div>
 							</div>
 						}
@@ -171,10 +223,9 @@ export default class Login extends React.Component {
 						{this.state.view === "forgot"
 							&& <div>
 								<div className="Login-title">
-									<h1>
-										Forgot password
-									</h1>
+									Forgot password
 								</div>
+
 								<FormLine
 									label="Email"
 									fullWidth={true}
@@ -183,7 +234,8 @@ export default class Login extends React.Component {
 									autofocus={true}
 									onKeyDown={this.onKeyDown}
 								/>
-								<div className="bottom-right-buttons">
+
+								<div className="right-buttons">
 									<button
 										className="blue-button"
 										onClick={this.requestReset}
@@ -191,7 +243,7 @@ export default class Login extends React.Component {
 										Reset password
 									</button>
 								</div>
-								<div className="bottom-left-buttons">
+								<div className="left-buttons">
 									<button
 										className="link-button"
 										onClick={() => this.changeState("view", "login")}
@@ -205,10 +257,9 @@ export default class Login extends React.Component {
 						{this.state.view === "reset"
 							&& <div>
 								<div className="Login-title">
-									<h1>
-										Reset password
-									</h1>
+									Reset password
 								</div>
+
 								<Info
 									content={
 										<div>
@@ -240,7 +291,7 @@ export default class Login extends React.Component {
 									format={validatePassword}
 									onKeyDown={this.onKeyDown}
 								/>
-								<div className="bottom-right-buttons">
+								<div className="right-buttons">
 									<button
 										className="blue-button"
 										onClick={this.resetPassword}
@@ -252,7 +303,7 @@ export default class Login extends React.Component {
 										Change password
 									</button>
 								</div>
-								<div className="bottom-left-buttons">
+								<div className="left-buttons">
 									<button
 										className="link-button"
 										onClick={() => window.location.replace("/")}

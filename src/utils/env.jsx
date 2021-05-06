@@ -10,7 +10,7 @@ export function getApiURL() {
 
 export function getGlobalAppURL() {
 	if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "") {
-		return "http://localhost:3000/";
+		return "http://localhost:3002/";
 	}
 	if (window.location.hostname.includes("test")) {
 		return "https://test-secin.cy.lu/";
