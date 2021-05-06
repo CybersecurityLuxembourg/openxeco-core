@@ -52,7 +52,7 @@ export default class PageCompany extends React.Component {
 
 		getRequest.call(this, "company/get_companies?" + params, (data) => {
 			this.setState({
-				companies: data.sort((a, b) => (a.name > b.name ? 1 : -1)),
+				companies: data.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)),
 				loading: false,
 			});
 		}, (response) => {
