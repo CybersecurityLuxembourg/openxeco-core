@@ -13,7 +13,7 @@ export function getGlobalAppURL() {
 		return "http://localhost:3002/";
 	}
 	if (window.location.hostname.includes("test")) {
-		return "https://test-secin.cy.lu/";
+		return "https://test.cy.lu/";
 	}
 	return "https://cybersecurity-luxembourg.com/";
 }
