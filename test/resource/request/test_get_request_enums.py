@@ -13,14 +13,14 @@ class TestGetRequestEnums(BaseCase):
         self.assertEqual(response.get_json(), {
             'status': ['NEW', 'IN PROCESS', 'PROCESSED', 'REJECTED'],
             'type': [
-                'COMPANY ADD',
-                'COMPANY CHANGE',
-                'COMPANY ACCESS CLAIM',
-                'COMPANY ADDRESS CHANGE',
-                'COMPANY ADDRESS ADD',
-                'COMPANY ADDRESS DELETION',
-                'COMPANY TAXONOMY CHANGE',
-                'COMPANY LOGO CHANGE'
+                'ENTITY ADD',
+                'ENTITY CHANGE',
+                'ENTITY ACCESS CLAIM',
+                'ENTITY ADDRESS CHANGE',
+                'ENTITY ADDRESS ADD',
+                'ENTITY ADDRESS DELETION',
+                'ENTITY TAXONOMY CHANGE',
+                'ENTITY LOGO CHANGE'
             ]
         })
 

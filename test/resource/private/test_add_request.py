@@ -10,7 +10,7 @@ class TestAddRequest(BaseCase):
 
         payload = {
             "request": "My request",
-            "type": "COMPANY CHANGE",
+            "type": "ENTITY CHANGE",
             "data": {'type': None}
         }
 
