@@ -16,14 +16,14 @@ class AddAddress(Resource):
     @verify_payload([
         {'field': 'company_id', 'type': int},
         {'field': 'address_1', 'type': str},
-        {'field': 'address_2', 'type': str, 'nullable': True},
-        {'field': 'number', 'type': str, 'nullable': True},
-        {'field': 'postal_code', 'type': str, 'nullable': True},
+        {'field': 'address_2', 'type': str, 'nullable': True, 'optional': True},
+        {'field': 'number', 'type': str, 'nullable': True, 'optional': True},
+        {'field': 'postal_code', 'type': str, 'nullable': True, 'optional': True},
         {'field': 'city', 'type': str},
-        {'field': 'administrative_area', 'type': str, 'nullable': True},
+        {'field': 'administrative_area', 'type': str, 'nullable': True, 'optional': True},
         {'field': 'country', 'type': str},
-        {'field': 'latitude', 'type': float, 'nullable': True},
-        {'field': 'longitude', 'type': float, 'nullable': True},
+        {'field': 'latitude', 'type': float, 'nullable': True, 'optional': True},
+        {'field': 'longitude', 'type': float, 'nullable': True, 'optional': True},
     ])
     @jwt_required
     @verify_admin_access
