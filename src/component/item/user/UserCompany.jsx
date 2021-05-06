@@ -56,7 +56,7 @@ export default class UserCompany extends React.Component {
 
 		postRequest.call(this, "user/add_user_company", params, () => {
 			this.refresh();
-			nm.info("The company has been added to the user");
+			nm.info("The entity has been added to the user");
 		}, (response) => {
 			this.refresh();
 			nm.warning(response.statusText);
@@ -116,7 +116,7 @@ export default class UserCompany extends React.Component {
 		return (
 			<div className={"row"}>
 				<div className="col-md-12">
-					<h2>Company</h2>
+					<h2>Entity</h2>
 				</div>
 
 				<div className="col-md-12">
@@ -130,7 +130,7 @@ export default class UserCompany extends React.Component {
 				</div>
 
 				<div className="col-md-12">
-					<h2>Add a company</h2>
+					<h2>Add an entity</h2>
 					{this.state.allCompanies !== null
 						? <div>
 							<FormLine
@@ -147,7 +147,7 @@ export default class UserCompany extends React.Component {
 								<button
 									onClick={this.addUserCompany}
 									disabled={this.state.selectedCompany === null}>
-                                    Add the company
+                                    Add the entity
 								</button>
 							</div>
 						</div>

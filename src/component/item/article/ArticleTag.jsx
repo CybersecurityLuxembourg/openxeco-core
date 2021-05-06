@@ -200,7 +200,7 @@ export default class ArticleTag extends React.Component {
 							<h3>Company tags</h3>
 							{this.state.companies !== null
 								? <FormLine
-									label={"Add company"}
+									label={"Add entity"}
 									type={"multiselect"}
 									fullWidth={true}
 									value={this.state.selectedCompanies}

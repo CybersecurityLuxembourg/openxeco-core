@@ -29,7 +29,7 @@ export default class RequestCompanyAdd extends Component {
 		const params = this.props.data;
 
 		postRequest.call(this, "company/add_company", params, () => {
-			nm.info("The company has been added");
+			nm.info("The entity has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -111,11 +111,6 @@ export default class RequestCompanyAdd extends Component {
 								value={this.props.data.is_targeting_sme}
 								disabled={true}
 							/>
-							<FormLine
-								label={"Editus status"}
-								value={this.props.data.editus_status}
-								disabled={true}
-							/>
 						</div>
 
 						<div className="col-md-12 right-buttons">
@@ -123,7 +118,7 @@ export default class RequestCompanyAdd extends Component {
 								className={"blue-background"}
 								onClick={this.insertCompany}
 							>
-								<i className="fas fa-plus"/> Add company
+								<i className="fas fa-plus"/> Add entity
 							</button>
 						</div>
 					</div>

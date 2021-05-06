@@ -538,7 +538,7 @@ export default class PageDashboard extends React.Component {
 						</div>
 					</div>
 					<div className="col-md-6">
-						<h2>Employees per company size ranges</h2>
+						<h2>Employees per entity size ranges</h2>
 						{this.state.filteredActors !== null
 							? <BarWorkforceRange
 								actors={this.state.filteredActors}

@@ -53,7 +53,7 @@ export default class Company extends Component {
 
 		postRequest.call(this, "company/delete_company", params, () => {
 			document.elementFromPoint(100, 0).click();
-			nm.info("The company has been deleted");
+			nm.info("The entity has been deleted");
 
 			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
 		}, (response) => {
@@ -91,7 +91,7 @@ export default class Company extends Component {
 								<i className="fab fa-google"></i>
 							</button>
 							<DialogConfirmation
-								text={"Are you sure you want to delete this company?"}
+								text={"Are you sure you want to delete this entity?"}
 								trigger={
 									<button
 										className={"red-background"}>

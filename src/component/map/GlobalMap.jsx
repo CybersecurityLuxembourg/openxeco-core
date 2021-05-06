@@ -86,7 +86,7 @@ export default class GlobalMap extends React.Component {
 				{this.state.selectedCompanyId !== null
 					? <div className="GlobalMap-company">
 						<div>
-                            Click to access the company page:
+                            Click to access the entity page:
 						</div>
 						<Company
 							id={this.state.selectedCompanyId}

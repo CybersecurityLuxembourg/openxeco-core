@@ -72,7 +72,7 @@ export default class PageCompany extends React.Component {
 		postRequest.call(this, "company/add_company", params, () => {
 			this.refreshCompanies();
 			this.setState({ newCompanyName: null });
-			nm.info("The company has been added");
+			nm.info("The entity has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -198,7 +198,7 @@ export default class PageCompany extends React.Component {
 				</div>
 				<div className={"row row-spaced"}>
 					<div className="col-md-6">
-						<h1>Add a new company</h1>
+						<h1>Add a new entity</h1>
 						<FormLine
 							label={"Name"}
 							value={this.state.newCompanyName}
@@ -209,7 +209,7 @@ export default class PageCompany extends React.Component {
 								onClick={() => this.addCompany()}
 								disabled={this.state.newCompanyName === null
 									|| this.state.newCompanyName.length < 3}>
-								<i className="fas fa-plus"/> Add a new company
+								<i className="fas fa-plus"/> Add a new entity
 							</button>
 						</div>
 					</div>

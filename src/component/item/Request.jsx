@@ -276,7 +276,7 @@ export default class Request extends Component {
 								name={this.state.company.name}
 							/>
 							: <Message
-								text={"No company in this request"}
+								text={"No entity in this request"}
 								height={50}
 							/>
 						}
