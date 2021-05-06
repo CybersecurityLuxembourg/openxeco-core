@@ -47,7 +47,7 @@ export default class CompanyAddress extends React.Component {
 
 	submitModificationRequests(address) {
 		const params = {
-			type: "COMPANY ADDRESS CHANGE",
+			type: "ENTITY ADDRESS CHANGE",
 			request: "The user requests modifications on an entity",
 			company_id: this.props.companyId,
 			data: address,
@@ -65,7 +65,7 @@ export default class CompanyAddress extends React.Component {
 
 	submitDeletionRequests(address) {
 		const params = {
-			type: "COMPANY ADDRESS DELETION",
+			type: "ENTITY ADDRESS DELETION",
 			request: "The user requests address deletion on an entity",
 			company_id: this.props.companyId,
 			data: address,
@@ -83,7 +83,7 @@ export default class CompanyAddress extends React.Component {
 
 	submitAddRequests() {
 		const params = {
-			type: "COMPANY ADDRESS ADD",
+			type: "ENTITY ADDRESS ADD",
 			request: "The user requests address add on an entity",
 			company_id: this.props.companyId,
 			data: this.state.addressToAdd,

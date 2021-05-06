@@ -33,7 +33,7 @@ export default class CompanyGlobal extends React.Component {
 
 	submitLogoModificationRequests() {
 		const params = {
-			type: "COMPANY LOGO CHANGE",
+			type: "ENTITY LOGO CHANGE",
 			request: "The user requests a change of the logo on an entity",
 			company_id: this.props.company.id,
 			image: this.state.imageContent,

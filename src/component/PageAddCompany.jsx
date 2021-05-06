@@ -63,7 +63,7 @@ export default class PageAddCompany extends React.Component {
 
 	submitCreationRequest() {
 		const params = {
-			type: "COMPANY ADD",
+			type: "ENTITY ADD",
 			request: "The user requests the creation of an entity",
 			data: this.state.newCompanyForm,
 		};
@@ -83,7 +83,7 @@ export default class PageAddCompany extends React.Component {
 
 	submitClaimRequest(companyId) {
 		const params = {
-			type: "COMPANY ACCESS CLAIM",
+			type: "ENTITY ACCESS CLAIM",
 			request: "The user requests access to an entity",
 			data: {
 				company_id: companyId,

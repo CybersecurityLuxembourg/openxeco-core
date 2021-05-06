@@ -42,7 +42,7 @@ export default class CompanyGlobal extends React.Component {
 
 	submitModificationRequests() {
 		const params = {
-			type: "COMPANY CHANGE",
+			type: "ENTITY CHANGE",
 			request: "The user requests modifications on an entity",
 			company_id: this.props.company.id,
 			data: this.state.companyInfo,

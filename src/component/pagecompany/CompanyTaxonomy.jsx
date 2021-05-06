@@ -67,7 +67,7 @@ export default class CompanyTaxonomy extends React.Component {
 
 	submitModificationRequests() {
 		const params = {
-			type: "COMPANY TAXONOMY CHANGE",
+			type: "ENTITY TAXONOMY CHANGE",
 			request: "The user requests modifications on taxonomy of an entity on the category "
 				+ this.state.selectedCategory,
 			company_id: this.props.companyId,
