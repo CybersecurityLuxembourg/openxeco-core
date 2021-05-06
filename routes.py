@@ -23,6 +23,7 @@ from resource.article.set_article_version_as_main import SetArticleVersionAsMain
 from resource.article.update_article import UpdateArticle
 from resource.article.update_article_version import UpdateArticleVersion
 from resource.article.update_article_version_content import UpdateArticleVersionContent
+from resource.address.get_address import GetAddress
 from resource.address.get_all_addresses import GetAllAddresses
 from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
