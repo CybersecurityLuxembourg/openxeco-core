@@ -70,9 +70,6 @@ export default class PageAddCompany extends React.Component {
 
 		postRequest.call(this, "private/add_request", params, () => {
 			this.props.getNotifications();
-			this.setState({
-				newCompanyForm: {},
-			});
 			nm.info("The request has been sent and will be reviewed");
 		}, (response) => {
 			nm.warning(response.statusText);
