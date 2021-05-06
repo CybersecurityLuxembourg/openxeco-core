@@ -26,7 +26,7 @@ export default class RequestCompanyAddressAdd extends Component {
 			return;
 		}
 
-		if (this.props.companyId === undefined || this.props.companyId !== null) {
+		if (this.props.companyId === undefined || this.props.companyId === null) {
 			nm.warning("Company ID not found");
 			return;
 		}
@@ -35,7 +35,6 @@ export default class RequestCompanyAddressAdd extends Component {
 		params.company_id = this.props.companyId;
 
 		postRequest.call(this, "address/add_address", params, () => {
-			this.refresh();
 			nm.info("The company address has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
