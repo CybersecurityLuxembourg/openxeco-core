@@ -189,46 +189,46 @@ export default class Request extends Component {
 					<div className="col-md-12 row-spaced">
 						<h3>Action</h3>
 
-						{this.props.info.type === "COMPANY CHANGE"
+						{this.props.info.type === "ENTITY CHANGE"
 							&& this.state.user !== null
 							&& this.state.company !== null
 							&& <RequestCompanyChange
 								data={this.props.info.data}
 							/>
 						}
-						{this.props.info.type === "COMPANY ADD"
+						{this.props.info.type === "ENTITY ADD"
 							&& this.state.user !== null
 							&& <RequestCompanyAdd
 								data={this.props.info.data}
 							/>
 						}
-						{this.props.info.type === "COMPANY ADDRESS CHANGE"
+						{this.props.info.type === "ENTITY ADDRESS CHANGE"
 							&& this.state.user !== null
 							&& <RequestCompanyAddressChange
 								data={this.props.info.data}
 							/>
 						}
-						{this.props.info.type === "COMPANY ADDRESS ADD"
+						{this.props.info.type === "ENTITY ADDRESS ADD"
 							&& this.state.user !== null
 							&& <RequestCompanyAddressAdd
 								data={this.props.info.data}
 								companyId={this.props.info.company_id}
 							/>
 						}
-						{this.props.info.type === "COMPANY ADDRESS DELETION"
+						{this.props.info.type === "ENTITY ADDRESS DELETION"
 							&& this.state.user !== null
 							&& <RequestCompanyAddressDelete
 								data={this.props.info.data}
 							/>
 						}
-						{this.props.info.type === "COMPANY TAXONOMY CHANGE"
+						{this.props.info.type === "ENTITY TAXONOMY CHANGE"
 							&& this.state.user !== null
 							&& <RequestCompanyTaxonomyChange
 								data={this.props.info.data}
 								companyId={this.props.info.company_id}
 							/>
 						}
-						{this.props.info.type === "COMPANY LOGO CHANGE"
+						{this.props.info.type === "ENTITY LOGO CHANGE"
 							&& this.state.user !== null
 							&& <RequestLogoChange
 								requestId={this.props.info.id}
