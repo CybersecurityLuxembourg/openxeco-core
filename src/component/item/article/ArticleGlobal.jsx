@@ -143,6 +143,21 @@ export default class ArticleGlobal extends React.Component {
 					/>
 				</div>
 
+				{this.state.article.type === "NEWS"
+					? <div className="col-md-12">
+						<h2>Additional news fields</h2>
+					</div>
+					: ""}
+				{this.state.article.type === "NEWS"
+					? <div className="col-md-12">
+						<FormLine
+							label={"Link"}
+							value={this.state.article.link}
+							onBlur={(v) => this.saveArticleValue("link", v)}
+						/>
+					</div>
+					: ""}
+
 				{this.state.article.type === "EVENT"
 					? <div className="col-md-12">
 						<h2>Additional event fields</h2>
