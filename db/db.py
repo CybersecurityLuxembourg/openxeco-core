@@ -1,7 +1,7 @@
 from sqlalchemy import MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, and_
+from sqlalchemy import func, and_, or_
 import datetime
 
 
@@ -140,7 +140,8 @@ class DB:
 
         if "name" in filters and filters['name'] is not None:
             name = func.lower(filters['name'])
-            query = query.filter(func.lower(self.tables["Company"].name).like("%" + name + "%"))
+            query = query.filter(or_(func.lower(self.tables["Company"].name).like("%" + name + "%"),
+                                     func.lower(self.tables["Company"].website).like("%" + name + "%")))
 
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
             ecosystem_roles = filters['ecosystem_role'].split(',') \
