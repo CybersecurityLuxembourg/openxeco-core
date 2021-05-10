@@ -24,6 +24,7 @@ export default class Request extends Component {
 		this.onClick = this.onClick.bind(this);
 		this.onClose = this.onClose.bind(this);
 		this.onOpen = this.onOpen.bind(this);
+		this.getMailBody = this.getMailBody.bind(this);
 
 		this.state = {
 			user: null,
@@ -98,11 +99,45 @@ export default class Request extends Component {
 				request[prop] = value;
 				this.setState({ request });
 				nm.info("The property has been updated");
+
+				if (prop === "status"
+					&& value === "PROCESSED"
+					&& this.state.user !== null) {
+					const element = document.getElementById("Request-send-mail-button");
+					element.click();
+				}
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
 				nm.error(error.message);
 			});
+		}
+	}
+
+	getMailBody() {
+		if (this.props.info !== undefined && this.props.info !== null) {
+			switch (this.props.info.type) {
+			case "ENTITY ACCESS CLAIM":
+				return "Your request to access the claimed entity has been treated.";
+			case "ENTITY CHANGE":
+				return "Your request to modify the entity information has been treated.";
+			case "ENTITY ADD":
+				return "Your request to add the entity in our database has been treated.";
+			case "ENTITY ADDRESS CHANGE":
+				return "Your request to modify the address of your entity has been treated.";
+			case "ENTITY ADDRESS ADD":
+				return "Your request to add an address to your entity has been treated.";
+			case "ENTITY ADDRESS DELETION":
+				return "Your request to remove an address from your entity has been treated.";
+			case "ENTITY TAXONOMY CHANGE":
+				return "Your request to modify the taxonomy of your entity has been treated.";
+			case "ENTITY LOGO CHANGE":
+				return "Your request to modify the logo of your entity has been treated.";
+			default:
+				return "Your request has been treated.";
+			}
+		} else {
+			return "Your request has been treated.";
 		}
 	}
 
@@ -241,13 +276,15 @@ export default class Request extends Component {
 						{this.state.user !== null
 							? <DialogSendMail
 								trigger={
-									<button className={"blue-background"}>
+									<button
+										className={"blue-background"}
+										id="Request-send-mail-button">
 										<i className="fas fa-envelope-open-text"/> Prepare email...
 									</button>
 								}
 								email={this.state.user.email}
 								subject={"[CYBERSECURITY LUXEMBOURG] Treated request"}
-								content={"Dear user,\n\nYour request has been treated.\n\nSincerely,\nCYBERSECURITY LUXEMBOURG Support Team"}
+								content={"Dear user,\n\n" + this.getMailBody() + "\n\nSincerely,\nCYBERSECURITY LUXEMBOURG Support Team"}
 							/>
 							: <Loading
 								height={50}
