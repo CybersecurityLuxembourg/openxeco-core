@@ -6,7 +6,7 @@ import { postRequest } from "../utils/request.jsx";
 import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getCookieOptions } from "../utils/env.jsx";
+import { getCookieOptions, getEcosystemAppURL } from "../utils/env.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -123,6 +123,25 @@ export default class Login extends React.Component {
 	render() {
 		return (
 			<div id="Login">
+				<div className="top-right-buttons">
+					<div>
+						<a
+							className="link-button"
+							href="mailto:info@cybersecurity-luxembourg.com"
+						>
+							<i className="fas fa-envelope-open-text"/> Contact via email
+						</a>
+					</div>
+					<div>
+						<a
+							className="link-button"
+							href={getEcosystemAppURL()}
+						>
+							<i className="fas fa-globe"/> Visit ecosystem app
+						</a>
+					</div>
+				</div>
+
 				<div id="Login-area">
 					<ul className="Login-circles">
 						<li></li>
