@@ -20,6 +20,7 @@ export default class CompanyTaxonomy extends React.Component {
 			taxonomy: null,
 			companyTaxonomy: null,
 
+			categoryOptions: [],
 			selectedCategory: null,
 
 			originalSelectedValues: null,
@@ -30,6 +31,74 @@ export default class CompanyTaxonomy extends React.Component {
 	componentDidMount() {
 		this.getTaxonomy();
 		this.getCompanyTaxonomy();
+	}
+
+	componentDidUpdate(i, prevState) {
+		if (this.state.taxonomy !== null && this.state.companyTaxonomy !== null
+			&& (prevState.taxonomy === null || prevState.companyTaxonomy === null)) {
+			if (this.state.taxonomy.values === undefined) {
+				nm.warning("No taxonomy values found");
+			}
+
+			const entityTypeValues = this.state.taxonomy.values
+				.filter((v) => v.category === "ENTITY TYPE");
+			const entityTypeValueIds = entityTypeValues
+				.map((v) => v.id);
+
+			const companyEntityTypes = this.state.companyTaxonomy
+				.filter((ct) => entityTypeValueIds.indexOf(ct.taxonomy_value) >= 0);
+
+			if (companyEntityTypes.length === 0) {
+				nm.warning("No entity type found for this entity. "
+					+ "Please contact administrators.");
+			} else if (companyEntityTypes.length > 1) {
+				nm.warning("Multiple entity types found for this entity. "
+					+ "Please contact administrators.");
+			} else {
+				const entityTypeValue = entityTypeValues
+					.filter((v) => v.id === companyEntityTypes[0].taxonomy_value)[0];
+				console.log(entityTypeValue);
+
+				switch (entityTypeValue.name) {
+				case "PRIVATE SECTOR":
+					this.setState({
+						categoryOptions:
+							this.state.taxonomy.categories
+								.filter((c) => c.name === "SERVICE GROUP")
+								.map((c) => ({
+									label: c.name,
+									value: c.name,
+								})),
+					});
+					break;
+				case "PUBLIC SECTOR":
+					this.setState({
+						categoryOptions:
+							this.state.taxonomy.categories
+								.filter((c) => c.name === "LEGAL FRAMEWORK")
+								.map((c) => ({
+									label: c.name,
+									value: c.name,
+								})),
+					});
+					break;
+				case "CIVIL SOCIETY":
+					this.setState({
+						categoryOptions:
+							this.state.taxonomy.categories
+								.filter((c) => c.name === "INDUSTRY VERTICAL")
+								.map((c) => ({
+									label: c.name,
+									value: c.name,
+								})),
+					});
+					break;
+				default:
+					nm.warning("No taxonomy available for your entity.");
+					break;
+				}
+			}
+		}
 	}
 
 	getTaxonomy() {
@@ -50,8 +119,7 @@ export default class CompanyTaxonomy extends React.Component {
 
 	getCompanyTaxonomy() {
 		this.setState({
-			originalAddresses: null,
-			addresses: null,
+			companyTaxonomy: null,
 		});
 
 		getRequest.call(this, "private/get_my_company_taxonomy/" + this.props.companyId, (data) => {
@@ -157,11 +225,7 @@ export default class CompanyTaxonomy extends React.Component {
 						<FormLine
 							label={"Category"}
 							type={"select"}
-							options={this.state.taxonomy.categories
-								.filter((c) => this.state.taxonomy.category_hierarchy
-									.map((h) => h.parent_category)
-									.indexOf(c.name) < 0)
-								.map((c) => ({ label: c.name, value: c.name }))}
+							options={this.state.categoryOptions}
 							value={this.state.selectedCategory}
 							onChange={(v) => this.selectCategory(v)}
 						/>
