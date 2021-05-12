@@ -69,7 +69,7 @@ export default class ArticleContent extends React.Component {
 	getContent(versionId) {
 		getRequest.call(this, "article/get_article_version_content/" + versionId, (data) => {
 			for (let i = 0; i < data.length; i++) {
-				data[i].i = i;
+				data[i].i = "" + i;
 				data[i].y = 0;
 				data[i].x = data[i].position;
 				data[i].w = 1;
