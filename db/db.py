@@ -286,6 +286,18 @@ class DB:
             .filter(self.tables["TaxonomyValue"].id.in_(companies_filtered_by_taxonomy)) \
             .all()
 
+    def get_companies_of_article(self, article_id):
+        companies_filtered_by_taxonomy = self.session \
+            .query(self.tables["ArticleCompanyTag"]) \
+            .with_entities(self.tables["ArticleCompanyTag"].company) \
+            .filter(self.tables["ArticleCompanyTag"].article == article_id) \
+            .subquery()
+
+        return self.session \
+            .query(self.tables["Company"]) \
+            .filter(self.tables["Company"].id.in_(companies_filtered_by_taxonomy)) \
+            .all()
+
     ###############
     # WORKFORCE   #
     ###############

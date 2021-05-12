@@ -53,11 +53,15 @@ class GetArticleContent(Resource):
             "title": article[0].title,
             "abstract": article[0].abstract,
             "image": article[0].image,
-            "publication_date": str(article[0].publication_date),
+            "publication_date": str(article[0].publication_date) if article[0].publication_date is not None else None,
+            "start_date": str(article[0].start_date) if article[0].start_date is not None else None,
+            "end_date": str(article[0].end_date) if article[0].end_date is not None else None,
             "type": article[0].type,
             "link": article[0].link,
             "content": Serializer.serialize(article_content, self.db.tables["ArticleBox"]),
-            "tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables["TaxonomyValue"])
+            "tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables["TaxonomyValue"]),
+            "companies": Serializer.serialize(self.db.get_companies_of_article(article[0].id),
+                                              self.db.tables["Company"])
         }
 
         return data, "200 "
