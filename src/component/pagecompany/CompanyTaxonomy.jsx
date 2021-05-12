@@ -57,7 +57,6 @@ export default class CompanyTaxonomy extends React.Component {
 			} else {
 				const entityTypeValue = entityTypeValues
 					.filter((v) => v.id === companyEntityTypes[0].taxonomy_value)[0];
-				console.log(entityTypeValue);
 
 				switch (entityTypeValue.name) {
 				case "PRIVATE SECTOR":
