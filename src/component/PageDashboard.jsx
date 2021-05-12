@@ -586,77 +586,82 @@ export default class PageDashboard extends React.Component {
 						<h1>Taxonomy</h1>
 					</div>
 					{this.state.filteredActors !== null
-						? this.state.analytics.taxonomy_categories.map((category) => (
-							<div
-								className="col-md-12"
-								key={category.name}
-							>
-								<h2>{category.name}</h2>
-								{this.getTreeValues(category.name) !== null
-									? <TreeMap
-										data={{
-											datasets: [{
-												tree: this.getTreeValues(category.name),
-												key: "amount",
-												groups: ["value"],
-												fontColor: "grey",
-												borderColor: (ctx) => (
-													ctx.dataset.data.length > 0
-													&& this.state.filters.taxonomy_values
-													&& this.state.filters.taxonomy_values
-														.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
-														? "#e40613" : "#8fddff"
-												),
-												backgroundColor: (ctx) => (
-													ctx.dataset.data.length > 0
-													&& this.state.filters.taxonomy_values
-													&& this.state.filters.taxonomy_values
-														.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
-														? "#fed7da" : "#bcebff"
-												),
-												borderWidth: 1,
-											}],
-										}}
-										options={{
-											legend: {
-												display: false,
-											},
-											tooltips: {
-												callbacks: {
-													title(item, data) {
-														return data.datasets[item[0].datasetIndex].key;
-													},
-													label(item, data) {
-														const dataset = data.datasets[item.datasetIndex];
-														const dataItem = dataset.data[item.index];
-														// eslint-disable-next-line no-underscore-dangle
-														const obj = dataItem._data;
-														const label = obj.value;
-														return label + ": " + dataItem.v;
+						? this.state.analytics.taxonomy_categories
+							.filter((category) => ["ENTITY TYPE", "INDUSTRY VERTICAL", "ROLE",
+								"SERVICE GROUP"].indexOf(category.name) >= 0)
+							.map((category) => (
+								<div
+									className="col-md-12"
+									key={category.name}
+								>
+									<h2>{category.name}</h2>
+									{this.getTreeValues(category.name) !== null
+										? <TreeMap
+											data={{
+												datasets: [{
+													tree: this.getTreeValues(category.name),
+													key: "amount",
+													groups: ["value"],
+													fontColor: "grey",
+													borderColor: (ctx) => (
+														ctx.dataset.data.length > 0
+														&& this.state.filters.taxonomy_values
+														&& this.state.filters.taxonomy_values
+															.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
+															? "#e40613" : "#8fddff"
+													),
+													backgroundColor: (ctx) => (
+														ctx.dataset.data.length > 0
+														&& this.state.filters.taxonomy_values
+														&& this.state.filters.taxonomy_values
+															.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
+															? "#fed7da" : "#bcebff"
+													),
+													borderWidth: 1,
+												}],
+											}}
+											options={{
+												legend: {
+													display: false,
+												},
+												tooltips: {
+													callbacks: {
+														title(item, data) {
+															return data.datasets[item[0].datasetIndex].key;
+														},
+														label(item, data) {
+															const dataset = data.datasets[item.datasetIndex];
+															const dataItem = dataset.data[item.index];
+															// eslint-disable-next-line no-underscore-dangle
+															const obj = dataItem._data;
+															const label = obj.value;
+															return label + ": " + dataItem.v;
+														},
 													},
 												},
-											},
-											onClick: (mouseEvent, data) => {
-												// eslint-disable-next-line no-underscore-dangle
-												const dataset = data[0]._chart.config.data.datasets[data[0]._datasetIndex];
-												// eslint-disable-next-line no-underscore-dangle
-												const dataItem = dataset.data[data[0]._index];
-												// eslint-disable-next-line no-underscore-dangle
-												const obj = dataItem._data;
-												const label = obj.value;
+												onClick: (mouseEvent, data) => {
+													// eslint-disable-next-line no-underscore-dangle
+													const dataset = data[0]._chart.config.data
+													// eslint-disable-next-line no-underscore-dangle
+														.datasets[data[0]._datasetIndex];
+													// eslint-disable-next-line no-underscore-dangle
+													const dataItem = dataset.data[data[0]._index];
+													// eslint-disable-next-line no-underscore-dangle
+													const obj = dataItem._data;
+													const label = obj.value;
 
-												if (this.state.filters.taxonomy_values
-												&& this.state.filters.taxonomy_values.indexOf(label) >= 0) this.manageFilter("taxonomy_values", label, false);
-												else this.manageFilter("taxonomy_values", label, true);
-											},
-										}}
-									/>
-									:								<Message
-										height={180}
-										text={"No data matched"}
-									/>
-								}
-							</div>))
+													if (this.state.filters.taxonomy_values
+													&& this.state.filters.taxonomy_values.indexOf(label) >= 0) this.manageFilter("taxonomy_values", label, false);
+													else this.manageFilter("taxonomy_values", label, true);
+												},
+											}}
+										/>
+										:								<Message
+											height={180}
+											text={"No data matched"}
+										/>
+									}
+								</div>))
 						:						<Loading
 							height={300}
 						/>
