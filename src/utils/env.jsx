@@ -39,7 +39,7 @@ export function getCookieOptions() {
 		return { secure: true, domain: ".cy.lu", path: "/" };
 	}
 	// return { secure: true, domain: ".cy.lu", httpOnly: true };
-	return { secure: true, domain: ".cybersecurity-luxembourg.lu", path: "/" };
+	return { secure: true, domain: ".cybersecurity-luxembourg.com", path: "/" };
 }
 
 export function isInternetExplorer() {
