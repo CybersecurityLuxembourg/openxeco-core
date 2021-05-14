@@ -59,8 +59,9 @@ class GetArticleContent(Resource):
             "type": article[0].type,
             "link": article[0].link,
             "content": Serializer.serialize(article_content, self.db.tables["ArticleBox"]),
-            "tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables["TaxonomyValue"]),
-            "companies": Serializer.serialize(self.db.get_companies_of_article(article[0].id),
+            "taxonomy_tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id),
+                                                  self.db.tables["TaxonomyValue"]),
+            "company_tags": Serializer.serialize(self.db.get_companies_of_article(article[0].id),
                                               self.db.tables["Company"])
         }
 
