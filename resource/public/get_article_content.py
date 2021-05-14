@@ -62,7 +62,7 @@ class GetArticleContent(Resource):
             "taxonomy_tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id),
                                                   self.db.tables["TaxonomyValue"]),
             "company_tags": Serializer.serialize(self.db.get_companies_of_article(article[0].id),
-                                              self.db.tables["Company"])
+                                                 self.db.tables["Company"])
         }
 
         return data, "200 "
