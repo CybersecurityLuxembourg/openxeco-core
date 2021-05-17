@@ -98,13 +98,17 @@ export default class RequestCompanyChange extends Component {
 						<div className="col-md-12">
 							<h4>{f}</h4>
 						</div>
-						<div className="col-md-5">
+						<div
+							className="col-md-5"
+							style={{ whiteSpace: "pre-line" }}>
 							{this.state.databaseCompany[f]}
 						</div>
 						<div className="col-md-1">
 							<i className="fas fa-long-arrow-alt-right"/>
 						</div>
-						<div className="col-md-5">
+						<div
+							className="col-md-5"
+							style={{ whiteSpace: "pre-line" }}>
 							{this.props.data[f]}
 						</div>
 						<div className="col-md-1">
