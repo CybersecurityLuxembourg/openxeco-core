@@ -177,6 +177,11 @@ export default class ArticleGlobal extends React.Component {
 							value={this.state.article.end_date}
 							onChange={(v) => this.saveArticleValue("end_date", v)}
 						/>
+						<FormLine
+							label={"Link"}
+							value={this.state.article.link}
+							onBlur={(v) => this.saveArticleValue("link", v)}
+						/>
 					</div>
 					: ""}
 
