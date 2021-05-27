@@ -121,8 +121,6 @@ export default class RequestCompanyTaxonomyChange extends Component {
 		const databaseTaxonomyId = this.state.databaseCompanyTaxonomy.map((t) => t.taxonomy_value);
 		const taxonomyIds = [...new Set(databaseTaxonomyId.concat(this.props.data.values))];
 
-		console.log(this.state.categoryValues, taxonomyIds);
-
 		return (
 			<div className="col-md-12">
 				{taxonomyIds.map((f) => (

@@ -73,3 +73,8 @@
 .ArticleContent-item .popup-content {
     width: 96% !important;
 }
+
+.medium-editor-element blockquote {
+    margin: 0px 10px;
+    font-style: italic;
+}
