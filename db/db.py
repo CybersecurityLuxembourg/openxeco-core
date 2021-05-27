@@ -139,9 +139,10 @@ class DB:
             query = query.with_entities(*entities)
 
         if "name" in filters and filters['name'] is not None:
-            name = func.lower(filters['name'])
-            query = query.filter(or_(func.lower(self.tables["Company"].name).like("%" + name + "%"),
-                                     func.lower(self.tables["Company"].website).like("%" + name + "%")))
+            words = filters['name'].lower().split(" ")
+            for word in words:
+                query = query.filter(or_(func.lower(self.tables["Company"].name).like("%" + word + "%"),
+                                         func.lower(self.tables["Company"].website).like("%" + word + "%")))
 
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
             ecosystem_roles = filters['ecosystem_role'].split(',') \
@@ -222,8 +223,10 @@ class DB:
         query = self.session.query(self.tables["Article"])
 
         if "title" in filters and filters['title'] is not None:
-            title = func.lower(filters['title'])
-            query = query.filter(func.lower(self.tables["Article"].title).like("%" + title + "%"))
+            words = filters['title'].lower().split(" ")
+            for word in words:
+                query = query.filter(or_(func.lower(self.tables["Article"].title).like("%" + word + "%"),
+                                         func.lower(self.tables["Article"].abstract).like("%" + word + "%")))
 
         if "status" in filters:
             query = query.filter(self.tables["Article"].status == filters["status"])
