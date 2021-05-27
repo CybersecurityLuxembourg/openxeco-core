@@ -34,7 +34,7 @@ class RunCompanyWebsiteCheck(Resource):
 
                     if r.status_code != 200:
                         anomalies.append(f"The website of <COMPANY:{c.id}> returned code {r.status_code}")
-                except:
+                except Exception:
                     anomalies.append(f"The website of <COMPANY:{c.id}> seems unreachable")
 
         anomalies = [{"category": "WEBSITE CHECK", "value": v} for v in anomalies]

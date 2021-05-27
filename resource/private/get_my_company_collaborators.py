@@ -24,7 +24,7 @@ class GetMyCompanyCollaborators(Resource):
                 .filter(self.db.tables["UserCompanyAssignment"].company_id == int(id_)) \
                 .one()
         except NoResultFound:
-            return "", f"422 Object not found or you don't have the required access to it"
+            return "", "422 Object not found or you don't have the required access to it"
 
         subquery = self.db.session \
             .query(self.db.tables["UserCompanyAssignment"]) \

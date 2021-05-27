@@ -22,12 +22,13 @@ class GetMyNotifications(Resource):
 
         requests = self.db.get(self.db.tables["UserRequest"], params)
 
-        company_ids = list(set([r.company_id for r in requests if r.company_id is not None]))
+        company_ids = list({r.company_id for r in requests if r.company_id is not None})
 
         data = {
             "global_requests": len([r for r in requests if r.company_id is None]),
             "entity_requests": {
-                id: len([r for r in requests if r.company_id == id]) for id in company_ids
+                id: len([r for r in requests if r.company_id == id])  # pylint: disable=comparison-with-callable
+                for id in company_ids
             }
         }
 

@@ -25,7 +25,7 @@ class GetMyCompanyRequests(Resource):
                 .filter(self.db.tables["UserCompanyAssignment"].company_id == int(id_)) \
                 .one()
         except NoResultFound:
-            return "", f"422 Object not found or you don't have the required access to it"
+            return "", "422 Object not found or you don't have the required access to it"
 
         data = Serializer.serialize(
             self.db.session

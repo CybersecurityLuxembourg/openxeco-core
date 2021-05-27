@@ -74,8 +74,8 @@ class RunDatabaseCompliance(Resource):
 
         # Get the companies with addresses without geolocation
 
-        companies_without_loc = list(set([a.company_id for a in company_addresses
-                                          if a.latitude is None or a.longitude is None]))
+        companies_without_loc = list({a.company_id for a in company_addresses
+                                      if a.latitude is None or a.longitude is None})
         anomalies += [f"Company <COMPANY:{c.id}> has at least one address without geolocation"
                       for c in companies_without_loc]
 
@@ -120,8 +120,8 @@ class RunDatabaseCompliance(Resource):
 
         if len(actor_tv) == 0:
             return []
-        else:
-            actor_tv = actor_tv[0]
+
+        actor_tv = actor_tv[0]
 
         taxonomy_assignments = self.db.session \
             .query(self.db.tables["TaxonomyAssignment"]).all()
