@@ -1,6 +1,6 @@
 {
   "name": "bo-front",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "dependencies": {
     "@trendmicro/react-sidenav": "^0.5.0",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "eslint-config-airbnb-base": "^14.2.1",
-    "react-scripts": "4.0.0",
+    "react-scripts": "4.0.3",
     "source-map-explorer": "^1.6.0"
   },
   "browserslist": {
