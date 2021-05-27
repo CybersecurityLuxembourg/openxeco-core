@@ -115,7 +115,7 @@ Run the test coverage report (with the venv activated)
 > coverage run --source=resource,utils,db,decorator -m unittest discover && coverage report
 ```
 
-Tun the test coverage report and generate in HTML ( with the venv activated)
+Run the test coverage report and generate in HTML (with the venv activated)
 ```
 > coverage run --source=resource,utils,db,decorator -m unittest discover && coverage html
 ```
