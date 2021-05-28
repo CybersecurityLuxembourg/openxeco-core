@@ -22,9 +22,9 @@ export default class DialogArticleFilter extends React.Component {
 		this.initialState = {
 			open: false,
 
-			allowedFilters: ["name", "type", "status", "media"],
+			allowedFilters: ["title", "type", "status", "media"],
 
-			name: null,
+			title: null,
 			type: null,
 			status: null,
 			media: null,
@@ -179,7 +179,7 @@ export default class DialogArticleFilter extends React.Component {
 						label="Title"
 						fullWidth={true}
 						value={this.state.name}
-						onChange={(v) => this.changeState("name", v)}
+						onChange={(v) => this.changeState("title", v)}
 						autofocus={true}
 					/>
 					{this.state.articleEnums !== null
