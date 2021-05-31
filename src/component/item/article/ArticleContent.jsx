@@ -40,9 +40,11 @@ export default class ArticleContent extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.selectedVersion !== this.state.selectedVersion
-            && this.state.selectedVersion !== null) this.getContent(this.state.selectedVersion);
+			&& this.state.selectedVersion !== null) {
+			this.getContent(this.state.selectedVersion);
+		}
 
-		// Necessary to automaticaly resize the paragraph blocks
+		// Necessary to automatically resize the paragraph blocks
 
 		if (JSON.stringify(prevState.content) !== JSON.stringify(this.state.content)) {
 			this.resizeBoxes();
@@ -56,8 +58,13 @@ export default class ArticleContent extends React.Component {
 		});
 
 		getRequest.call(this, "article/get_article_versions/" + this.props.id, (data) => {
+			const mainVersions = data.filter((v) => v.is_main);
+
 			this.setState({
 				versions: data,
+				selectedVersion: mainVersions.length > 0
+					? mainVersions[0].id
+					: null,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
