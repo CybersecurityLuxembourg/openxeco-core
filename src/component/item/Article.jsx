@@ -14,13 +14,9 @@ export default class Article extends Component {
 	constructor(props) {
 		super(props);
 
-		this.onClick = this.onClick.bind(this);
-		this.onClose = this.onClose.bind(this);
-		this.onOpen = this.onOpen.bind(this);
 		this.confirmDeletion = this.confirmDeletion.bind(this);
 
 		this.state = {
-			isDetailOpened: false,
 		};
 	}
 
@@ -31,18 +27,6 @@ export default class Article extends Component {
 			const newState = !this.props.selected;
 			if (typeof this.props.onClick !== "undefined") this.props.onClick(this.props.id, newState);
 		}
-	}
-
-	onClose() {
-		this.setState({ isDetailOpened: false }, () => {
-			if (this.props.onClose !== undefined) this.props.onClose();
-		});
-	}
-
-	onOpen() {
-		this.setState({ isDetailOpened: true }, () => {
-			if (this.props.onOpen !== undefined) this.props.onOpen();
-		});
 	}
 
 	confirmDeletion() {
@@ -75,12 +59,9 @@ export default class Article extends Component {
 					</div>
 				}
 				modal
-				closeOnDocumentClick
-				onClose={this.onClose}
-				onOpen={this.onOpen}
-				open={this.props.open || this.state.isDetailOpened}
+				closeOnDocumentClick={false}
 			>
-				<div className="Article-content row row-spaced">
+				{(close) => <div className="Article-content row row-spaced">
 					<div className="col-md-12">
 						<div className={"top-right-buttons"}>
 							<DialogConfirmation
@@ -93,6 +74,13 @@ export default class Article extends Component {
 								}
 								afterConfirmation={() => this.confirmDeletion()}
 							/>
+							<button
+								className={"grey-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={close}>
+								<span><i className="far fa-times-circle"/></span>
+							</button>
 						</div>
 						<h1 className="Article-title">
 							{this.props.name}
@@ -120,6 +108,7 @@ export default class Article extends Component {
 						/>
 					</div>
 				</div>
+				}
 			</Popup>
 		);
 	}

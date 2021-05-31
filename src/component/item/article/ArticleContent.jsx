@@ -248,6 +248,33 @@ export default class ArticleContent extends React.Component {
 		return (
 			<div className={"row"}>
 				<div className="col-md-12">
+					<div className={"ArticleContent-action-buttons"}>
+						<h3>Fast links</h3>
+						<div>
+							<button
+								onClick={this.saveContent}
+								disabled={JSON.stringify(this.state.content)
+									=== JSON.stringify(this.state.originalContent)}>
+								<i className="fas fa-save"/> Save content
+							</button>
+						</div>
+						<div>
+							<DialogConfirmation
+								text={"Are you sure to discard changes? You will lose the current modification"}
+								trigger={
+									<button
+										disabled={JSON.stringify(this.state.content)
+											=== JSON.stringify(this.state.originalContent)}>
+										<i className="fas fa-undo-alt"/> Discard changes
+									</button>
+								}
+								afterConfirmation={() => this.getContent(this.state.selectedVersion)}
+							/>
+						</div>
+					</div>
+				</div>
+
+				<div className="col-md-12">
 					<div className={"row row-spaced"}>
 						<div className="col-md-12">
 							<h2>Content</h2>
@@ -267,25 +294,6 @@ export default class ArticleContent extends React.Component {
 
 					{this.state.selectedVersion !== null && this.state.content !== null
 						&& <div className={"row"}>
-							<div className="col-md-12 right-buttons">
-								<button
-									onClick={this.saveContent}
-									disabled={JSON.stringify(this.state.content)
-										=== JSON.stringify(this.state.originalContent)}>
-									<i className="fas fa-save"/> Save content
-								</button>
-								<DialogConfirmation
-									text={"Are you sure to discard changes? You will lose the current modification"}
-									trigger={
-										<button
-											disabled={JSON.stringify(this.state.content)
-                                                === JSON.stringify(this.state.originalContent)}>
-											<i className="fas fa-undo-alt"/> Discard changes
-										</button>
-									}
-									afterConfirmation={() => this.getContent(this.state.selectedVersion)}
-								/>
-							</div>
 							<div className="col-md-12">
 								{this.state.content.length === 0
 									? <Message
@@ -306,7 +314,7 @@ export default class ArticleContent extends React.Component {
 								>
 									{this.state.content.map((item, index) => (
 										<div className={"ArticleContent-item row item-" + index + " "
-                                                + this.getItemStatusClassname(index)}
+											+ this.getItemStatusClassname(index)}
 										key={index}
 										data-grid={item}>
 											<div className="ArticleContent-item-remove-button">
