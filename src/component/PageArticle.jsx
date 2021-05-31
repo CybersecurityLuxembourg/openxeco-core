@@ -90,6 +90,7 @@ export default class PageArticle extends React.Component {
 						open={value.id.toString() === this.props.match.params.id}
 					/>
 				),
+				width: 400,
 			},
 			{
 				Header: "TYPE",
