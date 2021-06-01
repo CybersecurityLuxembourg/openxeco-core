@@ -143,53 +143,29 @@ export default class ArticleGlobal extends React.Component {
 					/>
 				</div>
 
-				{this.state.article.type === "NEWS"
+				{["NEWS", "EVENT", "JOB OFFER"].indexOf(this.state.article.type) >= 0
 					? <div className="col-md-12">
-						<h2>Additional news fields</h2>
-					</div>
-					: ""}
-				{this.state.article.type === "NEWS"
-					? <div className="col-md-12">
-						<FormLine
-							label={"Link"}
-							value={this.state.article.link}
-							onBlur={(v) => this.saveArticleValue("link", v)}
-						/>
+						<h2>Additional {this.state.article.type.toLowerCase()} fields</h2>
 					</div>
 					: ""}
 
-				{this.state.article.type === "EVENT"
-					? <div className="col-md-12">
-						<h2>Additional event fields</h2>
-					</div>
-					: ""}
 				{this.state.article.type === "EVENT"
 					? <div className="col-md-12">
 						<FormLine
 							label={"Start date"}
 							type={"datetime-local"}
 							value={this.state.article.start_date}
-							onChange={(v) => this.saveArticleValue("start_date", v)}
+							onBlur={(v) => this.saveArticleValue("start_date", v)}
 						/>
 						<FormLine
 							label={"End date"}
 							type={"datetime-local"}
 							value={this.state.article.end_date}
-							onChange={(v) => this.saveArticleValue("end_date", v)}
-						/>
-						<FormLine
-							label={"Link"}
-							value={this.state.article.link}
-							onBlur={(v) => this.saveArticleValue("link", v)}
+							onBlur={(v) => this.saveArticleValue("end_date", v)}
 						/>
 					</div>
 					: ""}
 
-				{this.state.article.type === "JOB OFFER"
-					? <div className="col-md-12">
-						<h2>Additional job offer fields</h2>
-					</div>
-					: ""}
 				{this.state.article.type === "JOB OFFER"
 					? <div className="col-md-12">
 						<FormLine
@@ -197,6 +173,11 @@ export default class ArticleGlobal extends React.Component {
 							value={this.state.article.external_reference}
 							disabled={true}
 						/>
+					</div>
+					: ""}
+
+				{["NEWS", "EVENT", "JOB OFFER"].indexOf(this.state.article.type) >= 0
+					? <div className="col-md-12">
 						<FormLine
 							label={"Link"}
 							value={this.state.article.link}
