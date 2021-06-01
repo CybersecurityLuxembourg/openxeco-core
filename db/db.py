@@ -217,7 +217,7 @@ class DB:
     # ARTICLE     #
     ###############
 
-    def get_filtered_articles(self, filters=None):
+    def get_filtered_articles_query(self, filters=None):
         filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Article"])
@@ -275,7 +275,7 @@ class DB:
 
         query = query.order_by(self.tables["Article"].publication_date.desc())
 
-        return query.all()
+        return query
 
     def get_tags_of_article(self, article_id):
         companies_filtered_by_taxonomy = self.session \

@@ -15,17 +15,31 @@ class GetPublicArticles(Resource):
 
         filters = request.args.to_dict()
         filters["public_only"] = "true"
-        article_objects = self.db.get_filtered_articles(filters)
-        data = Serializer.serialize(article_objects, self.db.tables["Article"])
+
+        per_page = 50 if "per_page" not in filters or not filters["per_page"].isdigit() \
+            or filters["per_page"] > 50 else filters["per_page"]
+        page = 1 if "page" not in filters or not filters["page"].isdigit() else filters["page"]
+
+        query = self.db.get_filtered_articles_query(filters)
+        paginate = query.paginate(page, per_page, error_out=False)
+        articles = Serializer.serialize(paginate.items, self.db.tables["Article"])
 
         if "include_tags" in filters and filters["public_only"] == "true":
-            article_ids = [a["id"] for a in data]
+            article_ids = [a["id"] for a in articles]
 
             taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
             company_tags = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": article_ids})
 
-            for a in data:
+            for a in articles:
                 a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
                 a["company_tags"] = [t.company for t in company_tags if t.article == a["id"]]
 
-        return data, "200 "
+        return {
+            "pagination": {
+                "page": page,
+                "pages": paginate.pages,
+                "per_page": per_page,
+                "total": paginate.total,
+            },
+            "item": articles,
+        }, "200 "

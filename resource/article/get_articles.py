@@ -20,7 +20,7 @@ class GetArticles(Resource):
     def get(self):
 
         filters = request.args.to_dict()
-        article_objects = self.db.get_filtered_articles(filters)
+        article_objects = self.db.get_filtered_articles_query(filters).all()
         data = Serializer.serialize(article_objects, self.db.tables["Article"])
 
         return data, "200 "
