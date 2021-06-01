@@ -2,7 +2,7 @@ nav {
 	background: #009fe3 !important;
 	font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
-    z-index: 300;
+    z-index: 300 !important;
 }
 
 .Menu-log-out-nav-item {
