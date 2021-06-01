@@ -246,16 +246,16 @@ export default class ArticleContent extends React.Component {
 		if (this.state.versions === null) return <Loading height={300}/>;
 
 		return (
-			<div className={"row"}>
-				<div className="col-md-12">
+			<div className={"ArticleContent row"}>
+				<div className="ArticleContent-action-buttons-wrapper">
 					<div className={"ArticleContent-action-buttons"}>
-						<h3>Fast links</h3>
+						<h3>Fast actions</h3>
 						<div>
 							<button
 								onClick={this.saveContent}
 								disabled={JSON.stringify(this.state.content)
 									=== JSON.stringify(this.state.originalContent)}>
-								<i className="fas fa-save"/> Save content
+								<i className="fas fa-save"/> Save
 							</button>
 						</div>
 						<div>
@@ -265,7 +265,7 @@ export default class ArticleContent extends React.Component {
 									<button
 										disabled={JSON.stringify(this.state.content)
 											=== JSON.stringify(this.state.originalContent)}>
-										<i className="fas fa-undo-alt"/> Discard changes
+										<i className="fas fa-undo-alt"/> Discard
 									</button>
 								}
 								afterConfirmation={() => this.getContent(this.state.selectedVersion)}
