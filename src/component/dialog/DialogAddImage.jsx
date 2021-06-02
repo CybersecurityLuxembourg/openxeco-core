@@ -19,8 +19,6 @@ export default class DialogAddImage extends React.Component {
 		this.backToImageCropping = this.backToImageCropping.bind(this);
 
 		this.state = {
-			open: false,
-
 			cropper: null,
 
 			imageName: null,
@@ -64,7 +62,7 @@ export default class DialogAddImage extends React.Component {
 		}
 	}
 
-	onValidate() {
+	onValidate(close) {
 		const params = {
 			image: this.state.croppedImageContent,
 		};
@@ -73,7 +71,7 @@ export default class DialogAddImage extends React.Component {
 			if (this.props.afterValidate !== undefined) this.props.afterValidate();
 
 			this.backToImageSelection();
-			DialogAddImage.cancel();
+			close();
 			nm.info("The image has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -95,10 +93,6 @@ export default class DialogAddImage extends React.Component {
 		});
 	}
 
-	static cancel() {
-		document.elementFromPoint(100, 0).click();
-	}
-
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -109,11 +103,9 @@ export default class DialogAddImage extends React.Component {
 				className={"DialogAddImage"}
 				trigger={this.props.trigger}
 				modal
-				onOpen={() => this.changeState("open", true)}
-				onClose={() => this.changeState("open", false)}
 				closeOnDocumentClick
 			>
-				<div className={"row"}>
+				{(close) => <div className={"row"}>
 					<div className={"col-md-12"}>
 						<h2>{this.state.imageContent !== null
                             && this.state.croppedImageContent === null ? "Crop" : "Add"} the new image</h2>
@@ -175,54 +167,55 @@ export default class DialogAddImage extends React.Component {
 							/>
 						}
 					</div>
+
+					{this.state.croppedImageContent !== null
+						&& <div className={"bottom-right-buttons"}>
+							<button
+								className={"grey-background"}
+								data-hover="Back to image cropping"
+								data-active=""
+								onClick={this.backToImageCropping}>
+								<span><i className="far fa-arrow-alt-circle-left"/> Back to image cropping</span>
+							</button>
+							<button
+								data-hover="Validate image"
+								data-active=""
+								onClick={() => this.onValidate(close)}>
+								<span><i className="far fa-check-circle"/> Upload</span>
+							</button>
+						</div>
+					}
+
+					{this.state.croppedImageContent === null && this.state.imageContent !== null
+						&& <div className={"bottom-right-buttons"}>
+							<button
+								className={"grey-background"}
+								data-hover="Back to image selection"
+								data-active=""
+								onClick={this.backToImageSelection}>
+								<span><i className="far fa-arrow-alt-circle-left"/> Back to image selection</span>
+							</button>
+							<button
+								data-hover="Crop image"
+								data-active=""
+								onClick={this.onCrop}>
+								<span><i className="far fa-check-circle"/> Crop</span>
+							</button>
+						</div>
+					}
+
+					{this.state.croppedImageContent === null && this.state.imageContent === null
+						&& <div className={"bottom-right-buttons"}>
+							<button
+								className={"grey-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={close}>
+								<span><i className="far fa-times-circle"/> Close</span>
+							</button>
+						</div>
+					}
 				</div>
-
-				{this.state.croppedImageContent !== null
-					&& <div className={"bottom-right-buttons"}>
-						<button
-							className={"grey-background"}
-							data-hover="Back to image cropping"
-							data-active=""
-							onClick={this.backToImageCropping}>
-							<span><i className="far fa-arrow-alt-circle-left"/> Back to image cropping</span>
-						</button>
-						<button
-							data-hover="Validate image"
-							data-active=""
-							onClick={this.onValidate}>
-							<span><i className="far fa-check-circle"/> Upload</span>
-						</button>
-					</div>
-				}
-
-				{this.state.croppedImageContent === null && this.state.imageContent !== null
-					&& <div className={"bottom-right-buttons"}>
-						<button
-							className={"grey-background"}
-							data-hover="Back to image selection"
-							data-active=""
-							onClick={this.backToImageSelection}>
-							<span><i className="far fa-arrow-alt-circle-left"/> Back to image selection</span>
-						</button>
-						<button
-							data-hover="Crop image"
-							data-active=""
-							onClick={this.onCrop}>
-							<span><i className="far fa-check-circle"/> Crop</span>
-						</button>
-					</div>
-				}
-
-				{this.state.croppedImageContent === null && this.state.imageContent === null
-					&& <div className={"bottom-right-buttons"}>
-						<button
-							className={"grey-background"}
-							data-hover="Close"
-							data-active=""
-							onClick={DialogAddImage.cancel}>
-							<span><i className="far fa-times-circle"/> Close</span>
-						</button>
-					</div>
 				}
 			</Popup>
 		);
