@@ -29,7 +29,7 @@ export default class PageMedia extends React.Component {
 
 		getRequest.call(this, "media/get_images", (data) => {
 			this.setState({
-				images: data,
+				images: data.sort((a, b) => b.id - a.id),
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -83,7 +83,7 @@ export default class PageMedia extends React.Component {
 
 						{this.state.images !== null && this.state.images.length !== 0
 							&& <div className="row">
-								{this.state.images.map((i) => i).reverse().map((i) => (
+								{this.state.images.map((i) => i).map((i) => (
 									<div
 										key={i.id}
 										className="col-md-2 col-sm-3">

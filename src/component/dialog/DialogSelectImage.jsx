@@ -31,7 +31,7 @@ export default class DialogSelectImage extends React.Component {
 
 		getRequest.call(this, "media/get_images", (data) => {
 			this.setState({
-				images: data,
+				images: data.sort((a, b) => b.id - a.id),
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -95,7 +95,7 @@ export default class DialogSelectImage extends React.Component {
 
 						{this.state.images !== null && this.state.images.length > 0
 							&& <div className="row">
-								{this.state.images.reverse().map((i) => (
+								{this.state.images.map((i) => (
 									<div
 										key={i.id}
 										className="col-xl-2 col-md-4 col-sm-6 DialogSelectImage-content-image">
@@ -106,12 +106,14 @@ export default class DialogSelectImage extends React.Component {
 											width={i.width}
 											creationDate={i.creation_date}
 										/>
-										<button
-											data-hover="Select"
-											data-active=""
-											onClick={() => this.onSelect(i.id)}>
-											<span>Select</span>
-										</button>
+										<div>
+											<button
+												data-hover="Select"
+												data-active=""
+												onClick={() => this.onSelect(i.id)}>
+												<span>Select</span>
+											</button>
+										</div>
 									</div>
 								))}
 							</div>
