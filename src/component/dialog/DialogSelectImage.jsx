@@ -6,6 +6,7 @@ import Image from "../item/Image.jsx";
 import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
+import DialogAddImage from "./DialogAddImage.jsx";
 
 export default class DialogSelectImage extends React.Component {
 	constructor(props) {
@@ -15,7 +16,6 @@ export default class DialogSelectImage extends React.Component {
 		this.onSelect = this.onSelect.bind(this);
 
 		this.state = {
-			open: false,
 			images: null,
 		};
 	}
@@ -40,16 +40,11 @@ export default class DialogSelectImage extends React.Component {
 		});
 	}
 
-	onSelect(id) {
+	onSelect(id, close) {
 		if (this.props.validateSelection !== undefined) {
 			this.props.validateSelection(id);
-			DialogSelectImage.cancel();
+			close();
 		}
-	}
-
-	static cancel() {
-		const elements = document.getElementsByClassName("DialogSelectImage-overlay");
-		elements[0].click();
 	}
 
 	changeState(field, value) {
@@ -59,21 +54,30 @@ export default class DialogSelectImage extends React.Component {
 	render() {
 		return (
 			<Popup
-				className={"Popup-small-size DialogSelectImage"}
+				className={"Popup-small-size DialogSelectImage"
+					+ (this.state.open ? " DialogSelectImage-opened" : "")}
 				trigger={this.props.trigger}
 				modal
-				onOpen={() => this.changeState("open", true)}
-				onClose={() => this.changeState("open", false)}
 				closeOnDocumentClick
 			>
-				<div className={"row DialogSelectImage-content"}>
+				{(close) => <div className={"row DialogSelectImage-content"}>
 					<div className={"col-md-12"}>
 						<div className="top-right-buttons">
+							<DialogAddImage
+								trigger={
+									<button
+										className={"blue-background"}
+										data-hover="Filter">
+										<span><i className="fas fa-plus"/></span>
+									</button>
+								}
+								afterValidate={this.refresh}
+							/>
 							<button
 								className={"grey-background"}
 								data-hover="Close"
 								data-active=""
-								onClick={DialogSelectImage.cancel}>
+								onClick={close}>
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
@@ -110,7 +114,7 @@ export default class DialogSelectImage extends React.Component {
 											<button
 												data-hover="Select"
 												data-active=""
-												onClick={() => this.onSelect(i.id)}>
+												onClick={() => this.onSelect(i.id, close)}>
 												<span>Select</span>
 											</button>
 										</div>
@@ -120,6 +124,7 @@ export default class DialogSelectImage extends React.Component {
 						}
 					</div>
 				</div>
+				}
 			</Popup>
 		);
 	}

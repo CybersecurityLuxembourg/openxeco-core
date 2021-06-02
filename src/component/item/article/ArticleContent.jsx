@@ -8,6 +8,7 @@ import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import LogArticleVersion from "../LogArticleVersion.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
+import DialogAddImage from "../../dialog/DialogAddImage.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -251,6 +252,18 @@ export default class ArticleContent extends React.Component {
 					<div className={"ArticleContent-action-buttons"}>
 						<h3>Fast actions</h3>
 						<div>
+							<DialogAddImage
+								trigger={
+									<button
+										className={"blue-background"}
+										data-hover="Filter">
+										<i className="fas fa-plus"/> Add image
+									</button>
+								}
+							/>
+						</div>
+
+						<div>
 							<button
 								onClick={this.saveContent}
 								disabled={JSON.stringify(this.state.content)
@@ -258,6 +271,7 @@ export default class ArticleContent extends React.Component {
 								<i className="fas fa-save"/> Save
 							</button>
 						</div>
+
 						<div>
 							<DialogConfirmation
 								text={"Are you sure to discard changes? You will lose the current modification"}
