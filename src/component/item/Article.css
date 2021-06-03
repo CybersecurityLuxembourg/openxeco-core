@@ -51,3 +51,28 @@
 .Article-content {
     white-space: initial !important;
 }
+
+/* ACTION BUTTON */
+
+.Article-action-buttons-wrapper {
+    z-index: 500;
+    position: fixed;
+    bottom: 2.5%;
+    width: 150px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.Article-action-buttons {
+    position: absolute;
+    width: 180px;
+    bottom: 20px;
+    left: -180px;
+    background-color: #EEE !important;
+    border: 2px solid rgb(187, 187, 187);
+    padding: 2px 10px 8px 10px;
+}
+
+.Article-action-buttons > div > button {
+    width: 100%;
+}

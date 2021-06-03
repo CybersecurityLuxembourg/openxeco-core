@@ -248,8 +248,8 @@ export default class ArticleContent extends React.Component {
 
 		return (
 			<div className={"ArticleContent row"}>
-				<div className="ArticleContent-action-buttons-wrapper">
-					<div className={"ArticleContent-action-buttons"}>
+				<div className="Article-action-buttons-wrapper">
+					<div className={"Article-action-buttons"}>
 						<h3>Fast actions</h3>
 						<div>
 							<DialogAddImage

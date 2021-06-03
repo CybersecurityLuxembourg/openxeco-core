@@ -5,6 +5,7 @@ import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import { validateUrlHandle } from "../../../utils/re.jsx";
+import DialogAddImage from "../../dialog/DialogAddImage.jsx";
 
 export default class ArticleGlobal extends React.Component {
 	constructor(props) {
@@ -75,6 +76,23 @@ export default class ArticleGlobal extends React.Component {
 
 		return (
 			<div className={"row"}>
+				<div className="Article-action-buttons-wrapper">
+					<div className={"Article-action-buttons"}>
+						<h3>Fast actions</h3>
+						<div>
+							<DialogAddImage
+								trigger={
+									<button
+										className={"blue-background"}
+										data-hover="Filter">
+										<i className="fas fa-plus"/> Add image
+									</button>
+								}
+							/>
+						</div>
+					</div>
+				</div>
+
 				<div className="col-md-12">
 					<h2>Global</h2>
 				</div>
