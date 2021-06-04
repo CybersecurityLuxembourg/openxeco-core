@@ -130,7 +130,7 @@ export default class ArticleGlobal extends React.Component {
 						format={validateUrlHandle}
 					/>
 					<FormLine
-						type={"textarea"}
+						type="editor"
 						label={"Abstract"}
 						value={this.state.article.abstract}
 						onBlur={(v) => this.saveArticleValue("abstract", v)}

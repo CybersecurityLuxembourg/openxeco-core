@@ -149,6 +149,7 @@ export default class FormLine extends React.Component {
 			return <Editor
 				text={this.state.value}
 				onChange={(v) => this.onChange(v)}
+				onBlur={() => this.onBlur(this.state.value)}
 				options={{ toolbar: { buttons: ["bold", "italic", "underline", "anchor", "quote", "unorderedlist"] } }}
 			/>;
 		case "region":
