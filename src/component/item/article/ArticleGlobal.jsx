@@ -171,15 +171,15 @@ export default class ArticleGlobal extends React.Component {
 					? <div className="col-md-12">
 						<FormLine
 							label={"Start date"}
-							type={"datetime-local"}
+							type={"datetime"}
 							value={this.state.article.start_date}
-							onBlur={(v) => this.saveArticleValue("start_date", v)}
+							onBlur={(v) => this.saveArticleValue("start_date", v.format("yyyy-MM-DDTHH:mm"))}
 						/>
 						<FormLine
 							label={"End date"}
-							type={"datetime-local"}
+							type={"datetime"}
 							value={this.state.article.end_date}
-							onBlur={(v) => this.saveArticleValue("end_date", v)}
+							onBlur={(v) => this.saveArticleValue("end_date", v.format("yyyy-MM-DDTHH:mm"))}
 						/>
 					</div>
 					: ""}

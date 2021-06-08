@@ -1,7 +1,10 @@
 import React from "react";
 import "./FormLine.css";
+import * as moment from "moment";
+import "react-datetime/css/react-datetime.css";
 import Select from "react-select";
 import Editor from "react-medium-editor";
+import Datetime from "react-datetime";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import _ from "lodash";
 import DialogSelectImage from "../dialog/DialogSelectImage.jsx";
@@ -158,6 +161,16 @@ export default class FormLine extends React.Component {
 				country={this.props.country}
 				value={this.state.value}
 				onChange={(value) => this.onChange(value)}
+			/>;
+		case "datetime":
+			return <Datetime
+				className={this.getFormatClassName()}
+				value={this.state.value === null ? null : moment(this.state.value)}
+				onChange={(v) => this.onChange(v)}
+				onClose={() => this.onBlur(this.state.value)}
+				disabled={this.props.disabled}
+				autoFocus={this.props.autofocus}
+				onKeyDown={this.props.onKeyDown}
 			/>;
 		case "image":
 			return <div className={"Formline-image-wrapper"}>
