@@ -20,7 +20,7 @@ class GetPublicArticles(Resource):
             or int(filters["per_page"]) > 50 else int(filters["per_page"])
         page = 1 if "page" not in filters or not filters["page"].isdigit() else int(filters["page"])
 
-        query = self.db.get_filtered_articles_query(filters)
+        query = self.db.get_filtered_article_query(filters)
         paginate = query.paginate(page, per_page)
         articles = Serializer.serialize(paginate.items, self.db.tables["Article"])
 

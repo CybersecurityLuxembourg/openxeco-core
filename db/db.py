@@ -217,7 +217,7 @@ class DB:
     # ARTICLE     #
     ###############
 
-    def get_filtered_articles_query(self, filters=None):
+    def get_filtered_article_query(self, filters=None):
         filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Article"])
@@ -341,3 +341,24 @@ class DB:
             .filter(self.tables["TaxonomyValueHierarchy"].child_value.in_(child_sub_query)) \
 
         return query.all()
+
+    ###############
+    # IMAGE       #
+    ###############
+
+    def get_filtered_image_query(self, filters=None):
+        filters = {} if filters is None else filters
+
+        query = self.session.query(self.tables["Image"])
+
+        if "logo_only" in filters and filters["logo_only"] == "true":
+            company_image_ids = self.session \
+                .query(self.tables["Company"]) \
+                .with_entities(self.tables["Company"].image) \
+                .subquery()
+
+            query = query.filter(self.tables["Image"].id.in_(company_image_ids))
+
+        query = query.order_by(self.tables["Image"].id.desc())
+
+        return query
