@@ -17,14 +17,14 @@ class GetPublicArticles(Resource):
         filters["public_only"] = "true"
 
         per_page = 50 if "per_page" not in filters or not filters["per_page"].isdigit() \
-            or filters["per_page"] > 50 else filters["per_page"]
-        page = 1 if "page" not in filters or not filters["page"].isdigit() else filters["page"]
+            or int(filters["per_page"]) > 50 else int(filters["per_page"])
+        page = 1 if "page" not in filters or not filters["page"].isdigit() else int(filters["page"])
 
         query = self.db.get_filtered_articles_query(filters)
-        paginate = query.paginate(page, per_page, error_out=False)
+        paginate = query.paginate(page, per_page)
         articles = Serializer.serialize(paginate.items, self.db.tables["Article"])
 
-        if "include_tags" in filters and filters["public_only"] == "true":
+        if "include_tags" in filters and filters["include_tags"] == "true":
             article_ids = [a["id"] for a in articles]
 
             taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
@@ -41,5 +41,5 @@ class GetPublicArticles(Resource):
                 "per_page": per_page,
                 "total": paginate.total,
             },
-            "item": articles,
+            "items": articles,
         }, "200 "
