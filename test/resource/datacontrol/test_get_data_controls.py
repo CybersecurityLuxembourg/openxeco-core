@@ -10,7 +10,25 @@ class TestGetDataControls(BaseCase):
 
         response = self.application.get('/datacontrol/get_data_controls', headers=self.get_standard_header(token))
 
-        self.assertEqual(len(response.json), 2)
-        self.assertEqual(response.json[0], {'category': 'CAT', 'id': 1, 'value': 'val1'})
-        self.assertEqual(response.json[1], {'category': 'CAT2', 'id': 2, 'value': 'val2'})
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual({
+            'pagination':
+                {
+                    'page': 1,
+                    'pages': 1,
+                    'per_page': 50,
+                    'total': 2
+                },
+            'items': [
+                {
+                    'id': 1,
+                    'category': 'CAT',
+                    'value':'val1'
+                },
+                {
+                    'id': 2,
+                    'category': 'CAT2',
+                    'value': 'val2'
+                }
+            ]
+        }, response.json)

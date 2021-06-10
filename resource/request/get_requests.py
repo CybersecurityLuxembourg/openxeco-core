@@ -21,13 +21,25 @@ class GetRequests(Resource):
 
         filters = request.args.to_dict()
 
+        per_page = 50 if "per_page" not in filters or not filters["per_page"].isdigit() \
+                         or int(filters["per_page"]) > 50 else int(filters["per_page"])
+        page = 1 if "page" not in filters or not filters["page"].isdigit() else int(filters["page"])
+
         query = self.db.session.query(self.db.tables["UserRequest"])
 
         if "status" in filters:
             types = filters["status"].split(",")
             query = query.filter(self.db.tables["UserRequest"].status.in_(types))
 
-        data = query.all()
-        data = Serializer.serialize(data, self.db.tables["UserRequest"])
+        pagination = query.paginate(page, per_page)
+        data = Serializer.serialize(pagination.items, self.db.tables["UserRequest"])
 
-        return data, "200 "
+        return {
+            "pagination": {
+                "page": page,
+                "pages": pagination.pages,
+                "per_page": per_page,
+                "total": pagination.total,
+            },
+            "items": data,
+        }, "200 "

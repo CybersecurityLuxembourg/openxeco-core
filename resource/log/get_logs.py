@@ -24,12 +24,25 @@ class GetLogs(Resource):
         today = datetime.date.today()
         two_weeks_ago = today - datetime.timedelta(days=14)
 
+        per_page = 50 if "per_page" not in filters or not filters["per_page"].isdigit() \
+                         or int(filters["per_page"]) > 50 else int(filters["per_page"])
+        page = 1 if "page" not in filters or not filters["page"].isdigit() else int(filters["page"])
+
         query = self.db.session.query(self.db.tables["Log"]) \
             .filter(self.db.tables["Log"].sys_date > two_weeks_ago)
 
         if "resource" in filters and isinstance(filters["resource"], str):
             query = query.filter(self.db.tables["Log"].request.like(f"%{filters['resource']}%"))
 
-        data = Serializer.serialize(query.all(), self.db.tables["Log"])
+        pagination = query.paginate(page, per_page)
+        logs = Serializer.serialize(pagination.items, self.db.tables["Log"])
 
-        return data, "200 "
+        return {
+            "pagination": {
+                "page": page,
+                "pages": pagination.pages,
+                "per_page": per_page,
+                "total": pagination.total,
+            },
+            "items": logs,
+        }, "200 "
