@@ -359,6 +359,9 @@ class DB:
 
             query = query.filter(self.tables["Image"].id.in_(company_image_ids))
 
-        query = query.order_by(self.tables["Image"].id.desc())
+        if "order" in filters and filters["order"] == "desc":
+            query = query.order_by(self.tables["Image"].id.desc())
+        else:
+            query = query.order_by(self.tables["Image"].id.asc())
 
         return query
