@@ -12,8 +12,20 @@ class TestGetUsers(BaseCase):
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
-        # 3 because there is the User need to authenticate
-        self.assertEqual(3, len(response.json))
+        # 3 because there is the user created in the init of the unittest
+        self.assertEqual(response.json, {
+            'pagination': {
+                'page': 1,
+                'pages': 1,
+                'per_page': 50,
+                'total': 3
+            },
+            'items': [
+                {'id': 1, 'email': 'test@cybersecurity.lu', 'is_admin': 1, 'is_active': 1},
+                {'id': 2, 'email': 'email1', 'is_admin': 0, 'is_active': 0},
+                {'id': 3, 'email': 'email2', 'is_admin': 0, 'is_active': 0}
+            ]
+        })
 
     @BaseCase.login
     def test_ok_admin_only(self, token):
@@ -24,5 +36,16 @@ class TestGetUsers(BaseCase):
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
-        # 3 because there is the User need to authenticate
-        self.assertEqual(2, len(response.json))
+        # 2 because there is the User need to authenticate
+        self.assertEqual(response.json, {
+            'pagination': {
+                'page': 1,
+                'pages': 1,
+                'per_page': 50,
+                'total': 2
+            },
+            'items': [
+                {'id': 1, 'email': 'test@cybersecurity.lu', 'is_admin': 1, 'is_active': 1},
+                {'id': 3, 'email': 'email2', 'is_admin': 1, 'is_active': 0}
+            ]
+        })
