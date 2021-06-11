@@ -5,21 +5,24 @@ import { getRequest, postRequest } from "../../utils/request.jsx";
 import Message from "../box/Message.jsx";
 import Loading from "../box/Loading.jsx";
 import Info from "../box/Info.jsx";
-import Table from "../table/Table.jsx";
+import DynamicTable from "../table/DynamicTable.jsx";
 import Company from "../item/Company.jsx";
 import Article from "../item/Article.jsx";
 import FormLine from "../button/FormLine.jsx";
+import { dictToURI } from "../../utils/url.jsx";
 
 export default class TaskDataControl extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.refresh = this.refresh.bind(this);
+		this.fetchDataControls = this.fetchDataControls.bind(this);
 
 		this.state = {
 			dataControls: null,
-			filteredDataControls: null,
+			pagination: null,
 			search: "",
+			page: 1,
 		};
 	}
 
@@ -28,20 +31,32 @@ export default class TaskDataControl extends React.Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		if (prevState.search !== this.state.search
-			|| prevState.dataControls !== this.state.dataControls) {
-			this.setResearchedList();
+		if (prevState.search !== this.state.search) {
+			this.refresh();
 		}
 	}
 
 	refresh() {
 		this.setState({
 			dataControls: null,
+			page: 1,
+		}, () => {
+			this.fetchDataControls();
 		});
+	}
 
-		getRequest.call(this, "datacontrol/get_data_controls", (data) => {
+	fetchDataControls(page) {
+		const filters = {
+			search: this.state.search,
+			page: Number.isInteger(page) ? page : this.state.page,
+			per_page: 10,
+		};
+
+		getRequest.call(this, "datacontrol/get_data_controls?" + dictToURI(filters), (data) => {
 			this.setState({
-				dataControls: data,
+				dataControls: data.items,
+				pagination: data.pagination,
+				page,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -56,33 +71,12 @@ export default class TaskDataControl extends React.Component {
 		};
 
 		postRequest.call(this, "datacontrol/delete_data_control", param, () => {
-			this.setState({
-				dataControls: this.state.dataControls.filter((c) => c.id !== id),
-			});
+			this.fetchDataControls();
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
-	}
-
-	setResearchedList() {
-		if (this.state.search === null
-			|| this.state.search.length === 0) {
-			this.setState({ filteredDataControls: this.state.dataControls });
-		}
-
-		if (this.state.dataControls === null) {
-			this.setState({
-				filteredDataControls: null,
-			});
-		} else {
-			this.setState({
-				filteredDataControls: this.state.dataControls
-					.filter((c) => c.value.indexOf(this.state.search.toLowerCase()) >= 0
-						|| c.category.indexOf(this.state.search.toLowerCase()) >= 0),
-			});
-		}
 	}
 
 	changeState(field, value) {
@@ -147,7 +141,7 @@ export default class TaskDataControl extends React.Component {
 					</div>
 				</div>
 
-				<div className={"row"}>
+				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<FormLine
 							label={"Search"}
@@ -156,8 +150,10 @@ export default class TaskDataControl extends React.Component {
 							disabled={this.state.dataControls === null}
 						/>
 					</div>
+				</div>
 
-					<div className="col-md-12 row-spaced">
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
 						{this.state.dataControls === null
 							&& <Loading
 								height={250}
@@ -166,11 +162,11 @@ export default class TaskDataControl extends React.Component {
 						{this.state.dataControls !== null
 							&& this.state.dataControls.length > 0
 							&& <div className="fade-in">
-								<Table
+								<DynamicTable
 									columns={columns}
-									data={this.state.filteredDataControls !== null
-										? this.state.filteredDataControls
-										: []}
+									data={this.state.dataControls}
+									pagination={this.state.pagination}
+									changePage={this.fetchDataControls}
 								/>
 							</div>}
 
@@ -181,7 +177,9 @@ export default class TaskDataControl extends React.Component {
 								height={250}
 							/>}
 					</div>
+				</div>
 
+				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<Info
 							content={

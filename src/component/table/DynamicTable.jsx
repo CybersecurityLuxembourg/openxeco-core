@@ -3,7 +3,7 @@ import { useTable, usePagination, useFlexLayout } from "react-table";
 import "./Table.css";
 
 export default function Table({
-	columns, data, height, showBottomBar,
+	columns, data, pagination, changePage, height, showBottomBar,
 }) {
 	const {
 		getTableProps,
@@ -11,22 +11,22 @@ export default function Table({
 		headerGroups,
 		prepareRow,
 		page,
-		canPreviousPage,
-		canNextPage,
-		pageOptions,
-		pageCount,
 		gotoPage,
-		nextPage,
-		previousPage,
 		setPageSize,
-		state: { pageIndex, pageSize },
+		state: {
+			pageIndex,
+			pageSize,
+		},
 	} = useTable(
 		{
 			columns,
 			data,
 			height,
 			showBottomBar,
-			initialState: { pageIndex: 0 },
+			initialState: {
+				pageIndex: 0,
+				pageSize: pagination.per_page,
+			},
 		},
 		usePagination,
 		useFlexLayout,
@@ -58,12 +58,11 @@ export default function Table({
 				</tbody>
 			</table>
 			<div className="Table-pagination">
-
 				<div className="Table-pagination-center">
 					<span>
           				Page{" "}
 						<strong>
-							{pageIndex + 1} of {pageOptions.length}
+							{pagination.page} of {pagination.pages}
 						</strong>{" "}
 					</span>
 
@@ -104,19 +103,27 @@ export default function Table({
 				</div>
 
 				<div className="Table-pagination-button-left">
-					<button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+					<button
+						onClick={() => changePage(1)}
+						disabled={pagination.page <= 1}>
 						{"<<"}
 					</button>{" "}
-					<button onClick={() => previousPage()} disabled={!canPreviousPage}>
+					<button
+						onClick={() => changePage(pagination.page - 1)}
+						disabled={pagination.page <= 1}>
 						{"<"}
 					</button>{" "}
 				</div>
 
 				<div className="Table-pagination-button-right">
-					<button onClick={() => nextPage()} disabled={!canNextPage}>
+					<button
+						onClick={() => changePage(pagination.page + 1)}
+						disabled={pagination.page >= pagination.pages}>
 						{">"}
 					</button>{" "}
-					<button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+					<button
+						onClick={() => changePage(pagination.pages)}
+						disabled={pagination.page >= pagination.pages}>
 						{">>"}
 					</button>{" "}
 				</div>

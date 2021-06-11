@@ -1,0 +1,88 @@
+
+table {
+	  border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    padding: 20px;
+}
+
+thead {
+	  display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+    margin: 6px 0px;
+}
+
+tr {
+    color: gray;
+    line-height: 1.2;
+    font-weight: unset;
+}
+
+th {
+  	display: table-cell;
+  	padding: 12px 12px;
+  	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: lightgrey;
+}
+
+td {
+  	display: table-cell;
+  	padding: 6px 12px 4px 12px;
+  	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+table td:last {
+    border-right: 0;
+    padding-bottom: 16px !important;
+}
+
+.DynamicTable-pagination {
+	padding: 0.5rem;
+  height: 50px;
+}
+
+.DynamicTable-pagination-button-left {
+  position: absolute;
+	left: 30px;
+}
+
+.DynamicTable-pagination-button-right {
+	position: absolute;
+  right: 30px;
+}
+
+.DynamicTable-pagination-center {
+  position: absolute;
+  width: calc(100% - 1rem);
+	margin: auto;
+  text-align: center;
+}
+
+.DynamicTable-pagination-center span {
+  line-height: 2.2;
+}
+
+.DynamicTable-pagination-center input {
+  display: inline-block;
+  margin: auto;
+}
+
+.DynamicTable-pagination-center select {
+  display: inline-block;
+  margin: auto;
+  width: 130px;
+}
+
+.DynamicTable-right-button {
+  float: right;
+}
