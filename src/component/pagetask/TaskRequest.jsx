@@ -24,6 +24,10 @@ export default class TaskRequest extends React.Component {
 			today: new Date().toJSON().slice(0, 10),
 			yesterday: new Date(today.valueOf() - (1 * 24 * 60 * 60 * 1000)).toJSON().slice(0, 10),
 			lastWeek: new Date(today.valueOf() - (7 * 24 * 60 * 60 * 1000)).toJSON().slice(0, 10),
+
+			showLoadMoreButton: true,
+			page: 1,
+			order: "desc",
 		};
 	}
 
@@ -42,10 +46,17 @@ export default class TaskRequest extends React.Component {
 	refresh() {
 		this.setState({
 			requests: null,
+			page: 1,
+		}, () => {
+			this.fetchRequests();
 		});
+	}
 
+	fetchRequests() {
 		const filters = {
 			status: [],
+			order: this.state.order,
+			page: this.state.page,
 		};
 
 		if (this.state.showNew) filters.status.push("NEW");
@@ -54,7 +65,9 @@ export default class TaskRequest extends React.Component {
 
 		getRequest.call(this, "request/get_requests?" + dictToURI(filters), (data) => {
 			this.setState({
-				requests: data.reverse(),
+				requests: (this.state.requests === null ? [] : this.state.requests).concat(data.items),
+				page: this.state.page + 1,
+				showLoadMoreButton: data.pagination.page < data.pagination.pages,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -123,7 +136,7 @@ export default class TaskRequest extends React.Component {
 									.filter((r) => r.submission_date > this.state.today)
 									.map((r) => (
 										<Request
-											key={r.id}
+											key={"request-" + r.id}
 											info={r}
 										/>
 									))}
@@ -192,6 +205,23 @@ export default class TaskRequest extends React.Component {
 							: ""}
 					</div>
 					: ""}
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12 centered-buttons">
+						{this.state.showLoadMoreButton
+							? <button
+								className={"blue-background"}
+								onClick={() => this.fetchRequests()}>
+								<i className="fas fa-plus"/> Load more requests
+							</button>
+							: <button
+								className={"blue-background"}
+								disabled={true}>
+								No more request to load
+							</button>
+						}
+					</div>
+				</div>
 			</div>
 		);
 	}

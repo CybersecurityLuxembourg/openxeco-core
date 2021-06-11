@@ -159,7 +159,7 @@ export default class PageMedia extends React.Component {
 							: <button
 								className={"blue-background"}
 								disabled={true}>
-								No more images to load
+								No more image to load
 							</button>
 						}
 					</div>
