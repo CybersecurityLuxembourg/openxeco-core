@@ -30,12 +30,6 @@ export default class TaskDataControl extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(_, prevState) {
-		if (prevState.search !== this.state.search) {
-			this.refresh();
-		}
-	}
-
 	refresh() {
 		this.setState({
 			dataControls: null,
@@ -144,11 +138,19 @@ export default class TaskDataControl extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<FormLine
-							label={"Search"}
+							label={"Filter"}
 							value={this.state.search}
 							onChange={(v) => this.changeState("search", v)}
 							disabled={this.state.dataControls === null}
 						/>
+					</div>
+					<div className="col-md-12">
+						<div className="right-buttons">
+							<button
+								onClick={this.refresh}>
+								Apply filter
+							</button>
+						</div>
 					</div>
 				</div>
 

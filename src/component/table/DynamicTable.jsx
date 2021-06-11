@@ -11,10 +11,8 @@ export default function Table({
 		headerGroups,
 		prepareRow,
 		page,
-		gotoPage,
 		setPageSize,
 		state: {
-			pageIndex,
 			pageSize,
 		},
 	} = useTable(
@@ -65,22 +63,6 @@ export default function Table({
 							{pagination.page} of {pagination.pages}
 						</strong>{" "}
 					</span>
-
-					{showBottomBar
-						? <span>
-          					| Go to page:{" "}
-							<input
-								type="number"
-								defaultValue={pageIndex + 1}
-								onChange={(e) => {
-									const page2 = e.target.value ? Number(e.target.value) - 1 : 0;
-									gotoPage(page2);
-								}}
-								style={{ width: "100px" }}
-							/>
-						</span>
-						: ""
-					}{" "}
 
 					{typeof height === "undefined" && showBottomBar
 						? <select
