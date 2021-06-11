@@ -6,6 +6,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 from flask import request
+from sqlalchemy import func, or_
 
 
 class GetDataControls(Resource):
@@ -26,6 +27,10 @@ class GetDataControls(Resource):
         page = 1 if "page" not in filters or not filters["page"].isdigit() else int(filters["page"])
 
         query = self.db.session.query(self.db.tables["DataControl"])
+
+        if "search" in filters and filters["search"] is not None:
+            query = query.filter(or_(func.lower(self.db.tables["DataControl"].value).like("%" + filters["search"] + "%"),
+                         func.lower(self.db.tables["DataControl"].category).like("%" + filters["search"] + "%")))
 
         pagination = query.paginate(page, per_page)
         data = Serializer.serialize(pagination.items, self.db.tables["DataControl"])
