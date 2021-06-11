@@ -31,6 +31,11 @@ class GetRequests(Resource):
             types = filters["status"].split(",")
             query = query.filter(self.db.tables["UserRequest"].status.in_(types))
 
+        if "order" in filters and filters["order"] == "desc":
+            query = query.order_by(self.db.tables["UserRequest"].submission_date.desc())
+        else:
+            query = query.order_by(self.db.tables["UserRequest"].submission_date.asc())
+
         pagination = query.paginate(page, per_page)
         data = Serializer.serialize(pagination.items, self.db.tables["UserRequest"])
 
