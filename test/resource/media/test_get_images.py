@@ -36,14 +36,14 @@ class TestGetImages(BaseCase):
                 {
                     'creation_date': datetime.date.today().strftime("%Y-%m-%d"),
                     'height': 10,
-                    'id': 51,
+                    'id': 50,
                     'thumbnail': '',
                     'width': 10
                 },
                 {
                     'creation_date': datetime.date.today().strftime("%Y-%m-%d"),
                     'height': 10,
-                    'id': 50,
+                    'id': 51,
                     'thumbnail': '',
                     'width': 10
                 }
