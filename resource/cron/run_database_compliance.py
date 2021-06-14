@@ -70,13 +70,13 @@ class RunDatabaseCompliance(Resource):
 
         company_address_ids = [a.company_id for a in company_addresses]
         companies_without_address = [c for c in companies if c.id not in company_address_ids]
-        anomalies += [f"<COMPANY:{c.id}> has no address registered" for c in companies_without_address]
+        anomalies += [f"<COMPANY:{c}> has no address registered" for c in companies_without_address]
 
         # Get the companies with addresses without geolocation
 
         companies_without_loc = list({a.company_id for a in company_addresses
                                       if a.latitude is None or a.longitude is None})
-        anomalies += [f"Company <COMPANY:{c.id}> has at least one address without geolocation"
+        anomalies += [f"Company <COMPANY:{c}> has at least one address without geolocation"
                       for c in companies_without_loc]
 
         return anomalies
