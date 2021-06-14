@@ -5,6 +5,7 @@ import Loading from "../box/Loading.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import Log from "../item/Log.jsx";
 import Message from "../box/Message.jsx";
+import { dictToURI } from "../../utils/url.jsx";
 
 export default class SettingCron extends React.Component {
 	constructor(props) {
@@ -17,12 +18,26 @@ export default class SettingCron extends React.Component {
 			resources: null,
 			logs: null,
 			isTaskRunning: false,
+
+			per_page: 20,
+			page: 1,
+			order: "desc",
+			showLoadMoreButton: true,
 		};
 	}
 
 	componentDidMount() {
 		this.getResources();
-		this.getLogs();
+		this.refresh();
+	}
+
+	refresh() {
+		this.setState({
+			logs: null,
+			page: 1,
+		}, () => {
+			this.getLogs();
+		});
 	}
 
 	getResources() {
@@ -42,13 +57,17 @@ export default class SettingCron extends React.Component {
 	}
 
 	getLogs() {
-		this.setState({
-			logs: null,
-		});
+		const params = {
+			order: this.state.order,
+			page: this.state.page,
+			per_page: this.state.per_page,
+		};
 
-		getRequest.call(this, "log/get_logs?resource=%2Fcron%2F", (data) => {
+		getRequest.call(this, "log/get_logs?resource=%2Fcron%2F&" + dictToURI(params), (data) => {
 			this.setState({
-				logs: data,
+				logs: (this.state.logs === null ? [] : this.state.logs).concat(data.items),
+				page: this.state.page + 1,
+				showLoadMoreButton: data.pagination.page < data.pagination.pages,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -144,6 +163,23 @@ export default class SettingCron extends React.Component {
 							&& <Loading
 								height={150}
 							/>
+						}
+					</div>
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12 centered-buttons">
+						{this.state.showLoadMoreButton
+							? <button
+								className={"blue-background"}
+								onClick={() => this.getLogs()}>
+								<i className="fas fa-plus"/> Load more logs
+							</button>
+							: <button
+								className={"blue-background"}
+								disabled={true}>
+								No more log to load
+							</button>
 						}
 					</div>
 				</div>
