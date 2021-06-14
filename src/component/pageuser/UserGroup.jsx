@@ -61,7 +61,7 @@ export default class UserGroup extends React.Component {
 
 		getRequest.call(this, "user/get_users?admin_only=true", (data) => {
 			this.setState({
-				admins: data,
+				admins: data.items,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
