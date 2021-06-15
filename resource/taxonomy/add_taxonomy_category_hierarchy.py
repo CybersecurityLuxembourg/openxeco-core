@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request
 from flask_jwt_extended import jwt_required
 from sqlalchemy.exc import IntegrityError
@@ -8,7 +9,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class AddTaxonomyCategoryHierarchy(Resource):
+class AddTaxonomyCategoryHierarchy(MethodResource, Resource):
 
     db = None
 

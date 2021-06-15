@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request
 import io
 import base64
@@ -11,7 +12,7 @@ from PIL import Image
 from sqlalchemy.orm.exc import NoResultFound
 
 
-class AddRequest(Resource):
+class AddRequest(MethodResource, Resource):
 
     def __init__(self, db):
         self.db = db

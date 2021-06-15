@@ -1,10 +1,11 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from utils.serializer import Serializer
 
 
-class GetPublicAnalytics(Resource):
+class GetPublicAnalytics(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

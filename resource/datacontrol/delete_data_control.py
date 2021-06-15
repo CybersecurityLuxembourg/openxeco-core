@@ -1,6 +1,7 @@
 from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
+from flask_apispec import MethodResource
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -9,7 +10,7 @@ from decorator.verify_payload import verify_payload
 from exception.object_not_found import ObjectNotFound
 
 
-class DeleteDataControl(Resource):
+class DeleteDataControl(MethodResource, Resource):
 
     db = None
 

@@ -1,10 +1,11 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from db.db import DB
 from exception.object_not_found import ObjectNotFound
 from decorator.catch_exception import catch_exception
 
 
-class GetPublicCompany(Resource):
+class GetPublicCompany(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

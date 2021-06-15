@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from decorator.verify_payload import verify_payload
@@ -7,7 +8,7 @@ from decorator.log_request import log_request
 from exception.cannot_modify_this_attribute import CannotModifyThisAttribute
 
 
-class UpdateMyUser(Resource):
+class UpdateMyUser(MethodResource, Resource):
 
     db = None
 

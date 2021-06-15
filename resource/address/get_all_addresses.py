@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask_jwt_extended import jwt_required
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
@@ -6,7 +7,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class GetAllAddresses(Resource):
+class GetAllAddresses(MethodResource, Resource):
 
     def __init__(self, db):
         self.db = db

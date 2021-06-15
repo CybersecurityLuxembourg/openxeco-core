@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask_jwt_extended import create_access_token
 import datetime
 from decorator.verify_payload import verify_payload
@@ -8,7 +9,7 @@ from flask_jwt_extended import jwt_refresh_token_required
 from flask_jwt_extended import get_jwt_identity
 
 
-class Refresh(Resource):
+class Refresh(MethodResource, Resource):
 
     db = None
 

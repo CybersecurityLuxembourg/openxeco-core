@@ -1,6 +1,7 @@
 from flask import request, render_template
 from flask_bcrypt import generate_password_hash
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from sqlalchemy.exc import IntegrityError
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -11,7 +12,7 @@ from utils.password import generate_password
 from utils.re import has_mail_format
 
 
-class CreateAccount(Resource):
+class CreateAccount(MethodResource, Resource):
 
     db = None
     mail = None

@@ -1,6 +1,7 @@
 from flask import request, render_template
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource
+from flask_apispec import MethodResource
 import datetime
 from utils.mail import send_email
 from decorator.verify_payload import verify_payload
@@ -8,7 +9,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class ForgotPassword(Resource):
+class ForgotPassword(MethodResource, Resource):
 
     db = None
     mail = None

@@ -7,6 +7,9 @@ from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from flask_restful import Api
 from sqlalchemy.engine.url import URL
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from flask_apispec.extension import FlaskApiSpec
 
 try:
     from config import config
@@ -48,6 +51,17 @@ application.config['PROPAGATE_EXCEPTIONS'] = True
 
 application.config['SCHEDULER_API_ENABLED'] = False
 
+application.config.update({
+    'APISPEC_SPEC': APISpec(
+        title='CYBERLUX API',
+        version='v1.2',
+        plugins=[MarshmallowPlugin()],
+        openapi_version='2.0.0'
+    ),
+    'APISPEC_SWAGGER_URL': '/doc/',  # URI to access API Doc JSON
+    'APISPEC_SWAGGER_UI_URL': '/doc-ui/'  # URI to access UI of API Doc
+})
+
 # Create DB instance
 db = DB(application)
 
@@ -56,10 +70,11 @@ cors = CORS(application)
 bcrypt = Bcrypt(application)
 jwt = JWTManager(application)
 mail = Mail(application)
+docs = FlaskApiSpec(application)
 
 # Init and set the resources for Flask
 api = Api(application)
-set_routes({"api": api, "db": db, "mail": mail})
+set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
 
 
 @application.route('/<generic>')

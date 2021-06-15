@@ -1,5 +1,6 @@
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.verify_admin_access import verify_admin_access
@@ -7,7 +8,7 @@ from utils.serializer import Serializer
 from decorator.log_request import log_request
 
 
-class GetGlobalAnalytics(Resource):
+class GetGlobalAnalytics(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

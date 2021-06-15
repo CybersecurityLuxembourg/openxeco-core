@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request, render_template
 from flask_jwt_extended import jwt_required
 from flask_bcrypt import generate_password_hash
@@ -10,7 +11,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class AddUser(Resource):
+class AddUser(MethodResource, Resource):
 
     db = None
     mail = None

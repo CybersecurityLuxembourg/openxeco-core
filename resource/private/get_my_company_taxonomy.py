@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -7,7 +8,7 @@ from utils.serializer import Serializer
 from sqlalchemy.orm.exc import NoResultFound
 
 
-class GetMyCompanyTaxonomy(Resource):
+class GetMyCompanyTaxonomy(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

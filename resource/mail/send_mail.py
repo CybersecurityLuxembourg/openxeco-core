@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request
 from flask_jwt_extended import jwt_required
 from decorator.verify_payload import verify_payload
@@ -10,7 +11,7 @@ from flask_jwt_extended import get_jwt_identity
 from utils.re import has_mail_format
 
 
-class SendMail(Resource):
+class SendMail(MethodResource, Resource):
 
     def __init__(self, db, mail):
         self.db = db

@@ -159,3 +159,7 @@ def set_routes(*args):
         # Add the resource
 
         plugins["api"].add_resource(res[1], endpoint, resource_class_kwargs=class_args)
+
+        # Add the resource in the doc
+
+        plugins["docs"].register(res[1], resource_class_kwargs=class_args)

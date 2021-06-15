@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask_jwt_extended import jwt_required
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -9,7 +10,7 @@ from flask import request
 from sqlalchemy import func, or_
 
 
-class GetDataControls(Resource):
+class GetDataControls(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

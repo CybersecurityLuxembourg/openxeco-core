@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request, Response
 from flask_jwt_extended import jwt_required
 from io import BytesIO
@@ -13,7 +14,7 @@ from decorator.log_request import log_request
 import json
 
 
-class ExtractCompanies(Resource):
+class ExtractCompanies(MethodResource, Resource):
 
     db = None
 

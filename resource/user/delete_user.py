@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request
 from flask_jwt_extended import jwt_required
 from decorator.verify_payload import verify_payload
@@ -8,7 +9,7 @@ from exception.object_not_found import ObjectNotFound
 from decorator.log_request import log_request
 
 
-class DeleteUser(Resource):
+class DeleteUser(MethodResource, Resource):
 
     db = None
 

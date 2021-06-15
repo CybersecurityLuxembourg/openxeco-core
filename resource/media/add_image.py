@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from flask import request
 from flask_jwt_extended import jwt_required
 from decorator.log_request import log_request
@@ -17,7 +18,7 @@ from exception.error_while_saving_file import ErrorWhileSavingFile
 from utils.serializer import Serializer
 
 
-class AddImage(Resource):
+class AddImage(MethodResource, Resource):
 
     db = None
 

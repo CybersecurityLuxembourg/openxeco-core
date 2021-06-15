@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from flask import send_file
@@ -7,7 +8,7 @@ import os
 from exception.image_not_found import ImageNotFound
 
 
-class GetImage(Resource):
+class GetImage(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

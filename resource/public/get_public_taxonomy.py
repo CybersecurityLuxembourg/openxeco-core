@@ -1,10 +1,11 @@
 from flask_restful import Resource
+from flask_apispec import MethodResource
 from db.db import DB
 from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
 
 
-class GetPublicTaxonomy(Resource):
+class GetPublicTaxonomy(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
