@@ -144,7 +144,7 @@ def set_routes(*args):
         if len(http_functions) > 1:
             raise Exception(f"Too much http functions found on resource {res[1].__module__}")
 
-        function_args = [a for a in inspect.signature(http_functions[0]).parameters if a != "self"]
+        function_args = [a for a in inspect.signature(http_functions[0]).parameters if a != "self" and a != "kwargs"]
 
         if len(function_args) > 1:
             raise Exception(f"Too much args for http function on resource {res[1].__module__}")

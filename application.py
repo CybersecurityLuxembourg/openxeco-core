@@ -18,7 +18,6 @@ except ImportError:
     sys.exit(1)
 
 from db.db import DB
-from routes import set_routes
 
 
 # Manage DB connection
@@ -51,16 +50,14 @@ application.config['PROPAGATE_EXCEPTIONS'] = True
 
 application.config['SCHEDULER_API_ENABLED'] = False
 
-application.config.update({
-    'APISPEC_SPEC': APISpec(
-        title='CYBERLUX API',
-        version='v1.2',
-        plugins=[MarshmallowPlugin()],
-        openapi_version='2.0.0'
-    ),
-    'APISPEC_SWAGGER_URL': '/doc/',  # URI to access API Doc JSON
-    'APISPEC_SWAGGER_UI_URL': '/doc-ui/'  # URI to access UI of API Doc
-})
+application.config['APISPEC_SWAGGER_URL'] = '/doc/json'
+application.config['APISPEC_SWAGGER_UI_URL'] = '/doc/'
+application.config['APISPEC_SPEC'] = APISpec(
+    title='CYBERLUX API',
+    version='v1.2',
+    plugins=[MarshmallowPlugin()],
+    openapi_version='2.0.0'
+)
 
 # Create DB instance
 db = DB(application)
@@ -74,7 +71,6 @@ docs = FlaskApiSpec(application)
 
 # Init and set the resources for Flask
 api = Api(application)
-set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
 
 
 @application.route('/<generic>')
@@ -83,5 +79,8 @@ def undefined_route(_):
 
 
 if __name__ == '__main__':
+    from routes import set_routes
+    set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
+
     application.debug = config.ENVIRONMENT == "dev"
     application.run()

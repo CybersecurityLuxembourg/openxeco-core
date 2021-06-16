@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask_apispec import MethodResource
 from flask_jwt_extended import jwt_required
 from db.db import DB
+from flask_apispec import doc, marshal_with
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
@@ -16,6 +17,8 @@ class GetDataControls(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['datacontrol'], description='Get all data control records')
+    @marshal_with(None, code=200)
     @jwt_required
     @verify_admin_access
     @catch_exception
@@ -30,8 +33,10 @@ class GetDataControls(MethodResource, Resource):
         query = self.db.session.query(self.db.tables["DataControl"])
 
         if "search" in filters and filters["search"] is not None:
-            query = query.filter(or_(func.lower(self.db.tables["DataControl"].value).like("%" + filters["search"] + "%"),
-                         func.lower(self.db.tables["DataControl"].category).like("%" + filters["search"] + "%")))
+            query = query.filter(or_(func.lower(self.db.tables["DataControl"].value)
+                                     .like("%" + filters["search"] + "%"),
+                                     func.lower(self.db.tables["DataControl"].category)
+                                     .like("%" + filters["search"] + "%")))
 
         pagination = query.paginate(page, per_page)
         data = Serializer.serialize(pagination.items, self.db.tables["DataControl"])
