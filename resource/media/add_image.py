@@ -1,12 +1,12 @@
 from flask_restful import Resource
 from flask_apispec import MethodResource
-from flask import request
 from flask_jwt_extended import jwt_required
 from decorator.log_request import log_request
-from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 import datetime
+from webargs import fields
+from flask_apispec import use_kwargs, doc, marshal_with
 from PIL import Image
 import os
 import PIL
@@ -26,16 +26,18 @@ class AddImage(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'image', 'type': str}
-    ])
+    @doc(tags=['media'], description='Add an image to the media library')
+    @use_kwargs({
+        'image': fields.Str(),
+    })
+    @marshal_with(None, code=200)
+    @marshal_with(None, code=500, description="An error occurred while saving the file")
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        thumbnail_stream = io.BytesIO(base64.b64decode(input_data["image"].split(",")[-1]))
+        thumbnail_stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
 
         # Create Thumbnail file
 
@@ -62,7 +64,7 @@ class AddImage(MethodResource, Resource):
 
         # Save file in dir
 
-        stream = io.BytesIO(base64.b64decode(input_data["image"].split(",")[-1]))
+        stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
 
         try:
             f = open(os.path.join(IMAGE_FOLDER, str(image.id)), 'wb')

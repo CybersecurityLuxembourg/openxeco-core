@@ -2,10 +2,11 @@ from flask_restful import Resource
 from flask_apispec import MethodResource
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from decorator.verify_payload import verify_payload
 from decorator.catch_exception import catch_exception
 from exception.object_not_found import ObjectNotFound
 from decorator.log_request import log_request
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class DeleteMyRequest(MethodResource, Resource):
@@ -16,9 +17,15 @@ class DeleteMyRequest(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'id', 'type': int}
-    ])
+    @doc(tags=['private'],
+         description='Delete a request of the user related to the token',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found or you don't have the required access to it"}
+         })
+    @use_kwargs({
+        'id': fields.Int(),
+    })
     @jwt_required
     @catch_exception
     def post(self):

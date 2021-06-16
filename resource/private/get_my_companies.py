@@ -2,6 +2,7 @@ from flask_restful import Resource
 from flask_apispec import MethodResource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from db.db import DB
+from flask_apispec import doc
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from utils.serializer import Serializer
@@ -13,6 +14,11 @@ class GetMyCompanies(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['private'],
+         description='Get the list of companies assigned to the user related to the token',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @catch_exception
     def get(self):

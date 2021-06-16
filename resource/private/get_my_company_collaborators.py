@@ -5,6 +5,7 @@ from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from sqlalchemy.orm.exc import NoResultFound
+from flask_apispec import doc
 
 
 class GetMyCompanyCollaborators(MethodResource, Resource):
@@ -13,6 +14,12 @@ class GetMyCompanyCollaborators(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['private'],
+         description='Get the list of collaborators of the specified company',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found or you don't have the required access to it"},
+         })
     @jwt_required
     @catch_exception
     def get(self, id_):

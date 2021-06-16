@@ -1,11 +1,11 @@
 from flask_restful import Resource
 from flask_apispec import MethodResource
-from flask import request
 import io
 import base64
 import traceback
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from decorator.verify_payload import verify_payload
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from PIL import Image
@@ -18,24 +18,32 @@ class AddRequest(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'company_id', 'type': int, 'nullable': True, 'optional': True},
-        {'field': 'request', 'type': str},
-        {'field': 'type', 'type': str, 'nullable': True, 'optional': True},
-        {'field': 'data', 'type': [dict, list], 'nullable': True, 'optional': True},
-        {'field': 'image', 'type': str, 'nullable': True, 'optional': True},
-    ])
+    @doc(tags=['private'],
+         description='Add a request under the name of the requesting user',
+         responses={
+             "200": {},
+             "422.a": {"description": "Impossible to read the image"},
+             "422.b": {"description": "Image width and height can't be bigger than 500 pixels"},
+             "422.c": {"description": "Object not found or you don't have the required access to it"}
+         })
+    @use_kwargs({
+        'company_id': fields.Int(required=False, allow_none=True),
+        'request': fields.Str(),
+        'type': fields.Str(required=False, allow_none=True),
+        'data': fields.Dict(required=False, allow_none=True),
+        'image': fields.Str(required=False, allow_none=True),
+    })
     @jwt_required
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
+
         image = None
 
         # Control image
 
-        if "image" in input_data and input_data["image"] is not None:
+        if "image" in kwargs and kwargs["image"] is not None:
             try:
-                image = base64.b64decode(input_data["image"].split(",")[-1])
+                image = base64.b64decode(kwargs["image"].split(",")[-1])
                 image_io = io.BytesIO(image)
                 pil_image = Image.open(image_io)
             except Exception:
@@ -45,17 +53,17 @@ class AddRequest(MethodResource, Resource):
             if pil_image.size[0] > 500 or float(pil_image.size[1]) > 500:
                 return "", "422 Image width and height can't be bigger than 500 pixels"
 
-            image = base64.b64decode(input_data["image"].split(",")[-1])
+            image = base64.b64decode(kwargs["image"].split(",")[-1])
 
         # Control rights on company
 
-        if "company_id" in input_data:
+        if "company_id" in kwargs:
             try:
                 self.db.session \
                     .query(self.db.tables["UserCompanyAssignment"]) \
                     .with_entities(self.db.tables["UserCompanyAssignment"].company_id) \
                     .filter(self.db.tables["UserCompanyAssignment"].user_id == get_jwt_identity()) \
-                    .filter(self.db.tables["UserCompanyAssignment"].company_id == input_data["company_id"]) \
+                    .filter(self.db.tables["UserCompanyAssignment"].company_id == kwargs["company_id"]) \
                     .one()
             except NoResultFound:
                 return "", "422 Object not found or you don't have the required access to it"
@@ -64,10 +72,10 @@ class AddRequest(MethodResource, Resource):
 
         user_request = {
             "user_id": int(get_jwt_identity()),
-            "company_id": input_data["company_id"] if "company_id" in input_data else None,
-            "request": input_data["request"],
-            "type": input_data["type"] if "type" in input_data else None,
-            "data": input_data["data"] if "data" in input_data else None,
+            "company_id": kwargs["company_id"] if "company_id" in kwargs else None,
+            "request": kwargs["request"],
+            "type": kwargs["type"] if "type" in kwargs else None,
+            "data": kwargs["data"] if "data" in kwargs else None,
             "image": image,
         }
 
