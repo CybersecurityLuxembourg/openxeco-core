@@ -78,6 +78,10 @@ def undefined_route(_):
     return '', 404
 
 
+if __name__ == 'application':
+    from routes import set_routes
+    set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
+
 if __name__ == '__main__':
     from routes import set_routes
     set_routes({"api": api, "db": db, "mail": mail, "docs": docs})

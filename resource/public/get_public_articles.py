@@ -3,7 +3,8 @@ from flask_apispec import MethodResource
 from db.db import DB
 from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
-from flask import request
+from webargs import fields, validate
+from flask_apispec import use_kwargs, doc
 
 
 class GetPublicArticles(MethodResource, Resource):
@@ -11,21 +12,29 @@ class GetPublicArticles(MethodResource, Resource):
     def __init__(self, db: DB):
         self.db = db
 
+    @doc(tags=['public'],
+         description='Get the public articles',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
+        'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
+        'title': fields.Str(required=False),
+        'type': fields.List(fields.Str(), required=False),
+        'media': fields.Str(required=False),
+        'taxonomy_values': fields.List(fields.Str(), required=False),
+    })
     @catch_exception
-    def get(self):
+    def get(self, **kwargs):
 
-        filters = request.args.to_dict()
-        filters["public_only"] = "true"
+        kwargs["public_only"] = "true"
 
-        per_page = 50 if "per_page" not in filters or not filters["per_page"].isdigit() \
-            or int(filters["per_page"]) > 50 else int(filters["per_page"])
-        page = 1 if "page" not in filters or not filters["page"].isdigit() else int(filters["page"])
-
-        query = self.db.get_filtered_article_query(filters)
-        paginate = query.paginate(page, per_page)
+        query = self.db.get_filtered_article_query(kwargs)
+        paginate = query.paginate(kwargs["page"], kwargs["per_page"])
         articles = Serializer.serialize(paginate.items, self.db.tables["Article"])
 
-        if "include_tags" in filters and filters["include_tags"] == "true":
+        if "include_tags" in kwargs and kwargs["include_tags"] == "true":
             article_ids = [a["id"] for a in articles]
 
             taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
@@ -37,9 +46,9 @@ class GetPublicArticles(MethodResource, Resource):
 
         return {
             "pagination": {
-                "page": page,
+                "page": kwargs["page"],
                 "pages": paginate.pages,
-                "per_page": per_page,
+                "per_page": kwargs["per_page"],
                 "total": paginate.total,
             },
             "items": articles,

@@ -6,6 +6,7 @@ from flask import send_file
 from config.config import IMAGE_FOLDER
 import os
 from exception.image_not_found import ImageNotFound
+from flask_apispec import doc
 
 
 class GetImage(MethodResource, Resource):
@@ -13,6 +14,12 @@ class GetImage(MethodResource, Resource):
     def __init__(self, db: DB):
         self.db = db
 
+    @doc(tags=['public'],
+         description='Get image from the media library',
+         responses={
+             "200": {},
+             "422.a": {"description": "Image not found"},
+         })
     @catch_exception
     def get(self, id_):
 

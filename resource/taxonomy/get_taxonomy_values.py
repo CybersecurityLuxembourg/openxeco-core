@@ -6,6 +6,8 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 from flask import request
 from decorator.log_request import log_request
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class GetTaxonomyValues(MethodResource, Resource):
@@ -14,18 +16,20 @@ class GetTaxonomyValues(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['taxonomy'],
+         description='Get all the taxonomy values',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'category': fields.Str(required=False),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def get(self):
+    def get(self, **kwargs):
 
-        args = request.args.to_dict()
-        filters = {}
-
-        if "category" in args:
-            filters["category"] = args["category"]
-
-        data = self.db.get(self.db.tables["TaxonomyValue"], filters)
+        data = self.db.get(self.db.tables["TaxonomyValue"], kwargs)
         data = Serializer.serialize(data, self.db.tables["TaxonomyValue"])
 
         return data, "200 "

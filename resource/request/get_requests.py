@@ -6,7 +6,8 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
-from flask import request
+from webargs import fields, validate
+from flask_apispec import use_kwargs, doc
 
 
 class GetRequests(MethodResource, Resource):
@@ -15,36 +16,41 @@ class GetRequests(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['request'],
+         description='Get the requests',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
+        'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
+        'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
+        'status': fields.List(fields.Str(), required=False),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def get(self):
-
-        filters = request.args.to_dict()
-
-        per_page = 50 if "per_page" not in filters or not filters["per_page"].isdigit() \
-                         or int(filters["per_page"]) > 50 else int(filters["per_page"])
-        page = 1 if "page" not in filters or not filters["page"].isdigit() else int(filters["page"])
+    def get(self, **kwargs):
 
         query = self.db.session.query(self.db.tables["UserRequest"])
 
-        if "status" in filters:
-            types = filters["status"].split(",")
+        if "status" in kwargs:
+            types = kwargs["status"].split(",")
             query = query.filter(self.db.tables["UserRequest"].status.in_(types))
 
-        if "order" in filters and filters["order"] == "desc":
+        if "order" in kwargs and kwargs["order"] == "desc":
             query = query.order_by(self.db.tables["UserRequest"].submission_date.desc())
         else:
             query = query.order_by(self.db.tables["UserRequest"].submission_date.asc())
 
-        pagination = query.paginate(page, per_page)
+        pagination = query.paginate(kwargs['page'], kwargs['per_page'])
         data = Serializer.serialize(pagination.items, self.db.tables["UserRequest"])
 
         return {
             "pagination": {
-                "page": page,
+                "page": kwargs['page'],
                 "pages": pagination.pages,
-                "per_page": per_page,
+                "per_page": kwargs['per_page'],
                 "total": pagination.total,
             },
             "items": data,

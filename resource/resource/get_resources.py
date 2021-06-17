@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from flask_apispec import doc
 
 
 class GetResources(MethodResource, Resource):
@@ -13,6 +14,11 @@ class GetResources(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['resource'],
+         description='Get the list of the POST resources of the API',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

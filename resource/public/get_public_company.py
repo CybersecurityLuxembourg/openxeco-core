@@ -3,6 +3,7 @@ from flask_apispec import MethodResource
 from db.db import DB
 from exception.object_not_found import ObjectNotFound
 from decorator.catch_exception import catch_exception
+from flask_apispec import doc
 
 
 class GetPublicCompany(MethodResource, Resource):
@@ -10,6 +11,12 @@ class GetPublicCompany(MethodResource, Resource):
     def __init__(self, db: DB):
         self.db = db
 
+    @doc(tags=['public'],
+         description='Get full information of a company',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"}
+         })
     @catch_exception
     def get(self, id_):
 

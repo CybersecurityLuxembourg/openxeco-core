@@ -5,6 +5,7 @@ from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from flask_apispec import doc
 
 
 class GetAllSources(MethodResource, Resource):
@@ -13,6 +14,11 @@ class GetAllSources(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['source'],
+         description='Get the list of the sources',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

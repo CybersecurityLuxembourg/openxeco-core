@@ -3,6 +3,7 @@ from flask_apispec import MethodResource
 from db.db import DB
 from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
+from flask_apispec import doc
 
 
 class GetPublicTaxonomyValues(MethodResource, Resource):
@@ -10,6 +11,11 @@ class GetPublicTaxonomyValues(MethodResource, Resource):
     def __init__(self, db: DB):
         self.db = db
 
+    @doc(tags=['public'],
+         description='Get the taxonomy values',
+         responses={
+             "200": {},
+         })
     @catch_exception
     def get(self):
 
