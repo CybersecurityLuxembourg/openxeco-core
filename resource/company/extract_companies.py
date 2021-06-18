@@ -4,7 +4,6 @@ from flask import request, Response
 from flask_jwt_extended import jwt_required
 from io import BytesIO
 import pandas as pd
-
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 from datetime import datetime
@@ -12,6 +11,8 @@ from openpyxl.styles import PatternFill, Color, Font
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 import json
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class ExtractCompanies(MethodResource, Resource):
@@ -22,15 +23,33 @@ class ExtractCompanies(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['company'],
+         description='Extract an excel file of the companies',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"},
+         })
+    @use_kwargs({
+        'name': fields.Str(required=False),
+        'include_address': fields.Str(required=False, validate=lambda x: x == "true"),
+        'include_email': fields.Str(required=False, validate=lambda x: x == "true"),
+        'include_phone': fields.Str(required=False, validate=lambda x: x == "true"),
+        'include_workforce': fields.Str(required=False, validate=lambda x: x == "true"),
+        'include_taxonomy': fields.Str(required=False, validate=lambda x: x == "true"),
+        'ecosystem_role': fields.List(fields.Str(), required=False),
+        'entity_type': fields.List(fields.Str(), required=False),
+        'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'taxonomy_values': fields.List(fields.Str(), required=False),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def get(self):  # pylint: disable=too-many-branches
-        input_data = request.args.to_dict()
+    def get(self, **kwargs):  # pylint: disable=too-many-branches
 
         # Manage global data
 
-        companies = Serializer.serialize(self.db.get_filtered_companies(input_data), self.db.tables["Company"])
+        companies = Serializer.serialize(self.db.get_filtered_companies(kwargs), self.db.tables["Company"])
         company_ids = [c["id"] for c in companies] \
             if len(companies) < self.db.get_count(self.db.tables["Company"]) else None
 
@@ -39,7 +58,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage addresses
 
-        if 'include_address' in input_data and input_data['include_address'] == "true":
+        if 'include_address' in kwargs and kwargs['include_address'] == "true":
             if company_ids is not None:
                 addresses = self.db.get(self.db.tables["Company_Address"], {"company_id": company_ids})
             else:
@@ -54,7 +73,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage email addresses from contacts
 
-        if 'include_email' in input_data and input_data['include_email'] == "true":
+        if 'include_email' in kwargs and kwargs['include_email'] == "true":
             if company_ids is not None:
                 contacts = self.db.get(self.db.tables["CompanyContact"], {
                     "company_id": company_ids,
@@ -74,7 +93,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage phone numbers from contacts
 
-        if 'include_phone' in input_data and input_data['include_phone'] == "true":
+        if 'include_phone' in kwargs and kwargs['include_phone'] == "true":
             if company_ids is not None:
                 contacts = self.db.get(self.db.tables["CompanyContact"], {
                     "company_id": company_ids,
@@ -94,7 +113,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage workforces
 
-        if 'include_workforce' in input_data and input_data['include_workforce'] == "true":
+        if 'include_workforce' in kwargs and kwargs['include_workforce'] == "true":
             workforces = self.db.get_latest_workforce(company_ids)
             workforces = Serializer.serialize(workforces, self.db.tables["Workforce"])
             workforces = pd.DataFrame(workforces)
@@ -106,12 +125,12 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage taxonomy
 
-        if 'include_taxonomy' in input_data and input_data['include_taxonomy'] == "true":
+        if 'include_taxonomy' in kwargs and kwargs['include_taxonomy'] == "true":
             df = self.include_taxonomy(company_ids, df)
 
         # Prepare final export
 
-        if 'format' not in input_data or input_data['format'] != "json":
+        if 'format' not in kwargs or kwargs['format'] != "json":
             filename = f"Export - Companies - {datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.xlsx"
 
             res = Response(

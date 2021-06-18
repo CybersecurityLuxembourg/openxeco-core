@@ -5,6 +5,7 @@ from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from flask_apispec import doc
 
 
 class GetArticleEnums(MethodResource, Resource):
@@ -13,6 +14,11 @@ class GetArticleEnums(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['article'],
+         description='Get enumerations of article fields',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

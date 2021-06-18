@@ -6,6 +6,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
+from flask_apispec import doc
 
 
 class GetUserCompanies(MethodResource, Resource):
@@ -14,6 +15,12 @@ class GetUserCompanies(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['user'],
+         description='Get companies assigned to a user by user ID',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"}
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

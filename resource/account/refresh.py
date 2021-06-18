@@ -2,11 +2,12 @@ from flask_restful import Resource
 from flask_apispec import MethodResource
 from flask_jwt_extended import create_access_token
 import datetime
-from decorator.verify_payload import verify_payload
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from flask_jwt_extended import jwt_refresh_token_required
 from flask_jwt_extended import get_jwt_identity
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class Refresh(MethodResource, Resource):
@@ -17,9 +18,14 @@ class Refresh(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'refresh_token', 'type': str},
-    ])
+    @doc(tags=['account'],
+         description='Request the token',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'refresh_token': fields.Str(),
+    })
     @jwt_refresh_token_required
     @catch_exception
     def post(self):

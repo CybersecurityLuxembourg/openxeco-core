@@ -119,7 +119,6 @@ from resource.taxonomy.get_taxonomy_categories import GetTaxonomyCategories
 from resource.taxonomy.get_taxonomy_category_hierarchy import GetTaxonomyCategoryHierarchy
 from resource.taxonomy.get_taxonomy_values import GetTaxonomyValues
 from resource.taxonomy.get_taxonomy_value_hierarchy import GetTaxonomyValueHierarchy
-from resource.taxonomy.get_taxonomy_value_hierarchy import GetAllTaxonomyValueHierarchy
 from resource.workforce.add_workforce import AddWorkforce
 from resource.workforce.delete_workforce import DeleteWorkforce
 import inspect

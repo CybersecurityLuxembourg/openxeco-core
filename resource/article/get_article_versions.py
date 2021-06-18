@@ -7,6 +7,7 @@ from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
+from flask_apispec import doc
 
 
 class GetArticleVersions(MethodResource, Resource):
@@ -15,6 +16,12 @@ class GetArticleVersions(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['article'],
+         description='Get version of an article specified by its ID',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

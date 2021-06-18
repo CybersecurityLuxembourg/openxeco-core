@@ -1,12 +1,12 @@
 from flask_restful import Resource
 from flask_apispec import MethodResource
-from flask import request
 from flask_bcrypt import check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token
 import datetime
-from decorator.verify_payload import verify_payload
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class Login(MethodResource, Resource):
@@ -17,17 +17,23 @@ class Login(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'email', 'type': str},
-        {'field': 'password', 'type': str},
-    ])
+    @doc(tags=['account'],
+         description='Request a password change with a temporary link sent via email',
+         responses={
+             "200": {},
+             "401.a": {"description": "Wrong email/password combination"},
+             "401.b": {"description": "The account is not active. Please contact the administrator"},
+         })
+    @use_kwargs({
+        'email': fields.Str(),
+        'password': fields.Str(),
+    })
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        data = self.db.get(self.db.tables["User"], {"email": input_data["email"]})
+        data = self.db.get(self.db.tables["User"], {"email": kwargs["email"]})
 
-        if len(data) < 1 or not check_password_hash(data[0].password, input_data['password']):
+        if len(data) < 1 or not check_password_hash(data[0].password, kwargs['password']):
             return "", "401 Wrong email/password combination"
 
         if not data[0].is_active:

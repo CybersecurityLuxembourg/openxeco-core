@@ -1,12 +1,11 @@
 from flask_restful import Resource
 from flask_apispec import MethodResource
-from flask import request
 from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from exception.cannot_modify_this_attribute import CannotModifyThisAttribute
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class UpdateUser(MethodResource, Resource):
@@ -17,20 +16,22 @@ class UpdateUser(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'id', 'type': int}
-    ])
+    @doc(tags=['user'],
+         description='Update user. Password and email updated is not accepted on this resource',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'id': fields.Int(),
+        'last_name': fields.Str(required=False, allow_none=True),
+        'first_name': fields.Dict(required=False, allow_none=True),
+        'telephone': fields.Str(required=False, allow_none=True),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        if "password" in input_data:
-            raise CannotModifyThisAttribute("password")
-        if "email" in input_data:
-            raise CannotModifyThisAttribute("email")
-
-        self.db.merge(input_data, self.db.tables["User"])
+        self.db.merge(kwargs, self.db.tables["User"])
 
         return "", "200 "

@@ -1,13 +1,13 @@
 from flask_restful import Resource
 from flask_apispec import MethodResource
-from flask import request
 from flask_jwt_extended import jwt_required
 from decorator.log_request import log_request
-from decorator.verify_payload import verify_payload
 from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from utils.serializer import Serializer
 from datetime import datetime
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class CopyArticleVersion(MethodResource, Resource):
@@ -18,17 +18,22 @@ class CopyArticleVersion(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'name', 'type': str, 'optional': True},
-        {'field': 'article_version_id', 'type': int}
-    ])
+    @doc(tags=['article'],
+         description='Copy an article version',
+         responses={
+             "200": {},
+             "422": {"description": "The provided article version ID does not exist"},
+         })
+    @use_kwargs({
+        'name': fields.Str(required=False),
+        'article_version_id': fields.Int(),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        article_version = self.db.get(self.db.tables["ArticleVersion"], {"id": input_data["article_version_id"]})
+        article_version = self.db.get(self.db.tables["ArticleVersion"], {"id": kwargs["article_version_id"]})
 
         if len(article_version) > 0:
             article_version = article_version[0]
@@ -37,7 +42,7 @@ class CopyArticleVersion(MethodResource, Resource):
 
         copied_version = Serializer.serialize(article_version, self.db.tables["ArticleVersion"])
         del copied_version["id"]
-        copied_version["name"] = input_data["name"] if "name" in input_data else \
+        copied_version["name"] = kwargs["name"] if "name" in kwargs else \
             f"{copied_version['name']} - Copy {datetime.now().strftime('%Y-%m-%d %H:%M')}"
         copied_version["is_main"] = False
         copied_version = self.db.insert(copied_version, self.db.tables["ArticleVersion"], commit=False)

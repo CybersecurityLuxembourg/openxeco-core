@@ -7,6 +7,7 @@ from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
+from flask_apispec import doc
 
 
 class GetArticleVersionContent(MethodResource, Resource):
@@ -15,6 +16,11 @@ class GetArticleVersionContent(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['article'],
+         description='Get content of an article version specified by its ID',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

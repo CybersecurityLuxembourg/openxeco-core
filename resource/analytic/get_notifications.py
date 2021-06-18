@@ -14,8 +14,11 @@ class GetNotifications(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @doc(tags=['analytic'], description='Get number of requests with a NEW status and number of data control result')
-    @marshal_with(None, code=200)
+    @doc(tags=['analytic'],
+         description='Get number of requests with a NEW status and number of data control result',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

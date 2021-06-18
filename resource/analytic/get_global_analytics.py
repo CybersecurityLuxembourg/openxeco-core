@@ -15,9 +15,12 @@ class GetGlobalAnalytics(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @doc(tags=['analytic'], description='Get information about actors, workforces, users, last created users, '
-                                        'last created companies and the whole taxonomy')
-    @marshal_with(None, code=200)
+    @doc(tags=['analytic'],
+         description='Get information about actors, workforces, users, last created users, '
+                     'last created companies and the whole taxonomy',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

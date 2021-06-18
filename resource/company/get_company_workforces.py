@@ -6,6 +6,7 @@ from decorator.catch_exception import catch_exception
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 from decorator.log_request import log_request
+from flask_apispec import doc
 
 
 class GetCompanyWorkforces(MethodResource, Resource):
@@ -14,6 +15,11 @@ class GetCompanyWorkforces(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['company'],
+         description='Get the workforce of a company specified by its ID',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

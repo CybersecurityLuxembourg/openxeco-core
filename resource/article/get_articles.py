@@ -7,6 +7,8 @@ from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
 from flask import request
 from decorator.log_request import log_request
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class GetArticles(MethodResource, Resource):
@@ -15,6 +17,17 @@ class GetArticles(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['article'],
+         description='Get articles',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'title': fields.Str(required=False),
+        'type': fields.List(fields.Str(), required=False),
+        'media': fields.Str(required=False),
+        'taxonomy_values': fields.List(fields.Str(), required=False),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception

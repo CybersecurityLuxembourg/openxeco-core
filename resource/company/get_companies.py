@@ -7,6 +7,8 @@ from utils.serializer import Serializer
 from decorator.catch_exception import catch_exception
 from flask import request
 from decorator.log_request import log_request
+from webargs import fields
+from flask_apispec import use_kwargs, doc
 
 
 class GetCompanies(MethodResource, Resource):
@@ -15,6 +17,19 @@ class GetCompanies(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['company'],
+         description='Get companies',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'name': fields.Str(required=False),
+        'ecosystem_role': fields.List(fields.Str(), required=False),
+        'entity_type': fields.List(fields.Str(), required=False),
+        'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'taxonomy_values': fields.List(fields.Str(), required=False),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception

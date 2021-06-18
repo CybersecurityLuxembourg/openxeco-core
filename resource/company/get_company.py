@@ -7,6 +7,7 @@ from utils.serializer import Serializer
 from exception.object_not_found import ObjectNotFound
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from flask_apispec import doc
 
 
 class GetCompany(MethodResource, Resource):
@@ -15,6 +16,12 @@ class GetCompany(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['company'],
+         description='Get a company by its ID',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception
