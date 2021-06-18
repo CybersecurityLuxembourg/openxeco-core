@@ -25,7 +25,7 @@ class AddTaxonomyTag(MethodResource, Resource):
          })
     @use_kwargs({
         'article': fields.Int(),
-        'company': fields.Int(),
+        'taxonomy_value': fields.Int(),
     })
     @jwt_required
     @verify_admin_access
