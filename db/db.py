@@ -164,8 +164,8 @@ class DB:
             query = query.filter(self.tables["Company"].id.in_(assigned_company))
 
         if "entity_type" in filters and filters['entity_type'] is not None:
-            entity_types = filters['entity_type'].split(',') \
-                if isinstance(filters['entity_type'], str) else filters['entity_type']
+            entity_types = filters['entity_type'].split(',') if filters['entity_type'] is list \
+                else filters['entity_type'].split(',')
 
             entity_type_values = self.session \
                 .query(self.tables["TaxonomyValue"]) \
@@ -189,8 +189,8 @@ class DB:
             query = query.filter(self.tables["Company"].is_cybersecurity_core_business.is_(True))
 
         if "taxonomy_values" in filters:
-            taxonomy_values = [int(value_id) for value_id in filters["taxonomy_values"].split(",")
-                               if value_id.isdigit()]
+            taxonomy_values = filters["taxonomy_values"] if filters["taxonomy_values"] is list else \
+                [int(value_id) for value_id in filters["taxonomy_values"].split(",") if value_id.isdigit()]
 
             if len(taxonomy_values) > 0:
                 tch = taxonomy_values
@@ -232,7 +232,7 @@ class DB:
             query = query.filter(self.tables["Article"].status == filters["status"])
 
         if "type" in filters:
-            types = filters["type"].split(",")
+            types = filters["type"] if filters["type"] is list else filters["type"].split(",")
             query = query.filter(self.tables["Article"].type.in_(types))
 
         if "media" in filters:
@@ -244,7 +244,8 @@ class DB:
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
 
         if "taxonomy_values" in filters:
-            tmp_taxonomy_values = filters["taxonomy_values"].split(",")
+            tmp_taxonomy_values = filters["taxonomy_values"] if filters["taxonomy_values"] is list \
+                else filters["taxonomy_values"].split(",")
             taxonomy_values = []
 
             for tv in tmp_taxonomy_values:
