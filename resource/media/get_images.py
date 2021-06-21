@@ -25,14 +25,15 @@ class GetImages(MethodResource, Resource):
     @use_kwargs({
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
-        'logo_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'logo_only': fields.Bool(required=False),
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
-    })
+    }, location="query")
     @jwt_required
     @verify_admin_access
     @catch_exception
     def get(self, **kwargs):
 
+        print(kwargs)
         query = self.db.get_filtered_image_query(kwargs)
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
         images = Serializer.serialize(paginate.items, self.db.tables["Image"])

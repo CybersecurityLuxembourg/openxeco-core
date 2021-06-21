@@ -31,13 +31,12 @@ class DeleteUserGroup(MethodResource, Resource):
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["UserGroup"], {"id": input_data["id"]})
+        companies = self.db.get(self.db.tables["UserGroup"], {"id": kwargs["id"]})
 
         if len(companies) > 0:
-            self.db.delete(self.db.tables["UserGroup"], {"id": input_data["id"]})
+            self.db.delete(self.db.tables["UserGroup"], {"id": kwargs["id"]})
         else:
             raise ObjectNotFound
 

@@ -25,6 +25,7 @@ class GetPublicArticles(MethodResource, Resource):
         'type': fields.List(fields.Str(), required=False),
         'media': fields.Str(required=False),
         'taxonomy_values': fields.List(fields.Str(), required=False),
+        'include_tags': fields.Bool(required=False),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
@@ -35,7 +36,7 @@ class GetPublicArticles(MethodResource, Resource):
         paginate = query.paginate(kwargs["page"], kwargs["per_page"])
         articles = Serializer.serialize(paginate.items, self.db.tables["Article"])
 
-        if "include_tags" in kwargs and kwargs["include_tags"] == "true":
+        if "include_tags" in kwargs and kwargs["include_tags"] is True:
             article_ids = [a["id"] for a in articles]
 
             taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})

@@ -33,15 +33,16 @@ class ExtractCompanies(MethodResource, Resource):
          })
     @use_kwargs({
         'name': fields.Str(required=False),
-        'include_address': fields.Str(required=False, validate=lambda x: x == "true"),
-        'include_email': fields.Str(required=False, validate=lambda x: x == "true"),
-        'include_phone': fields.Str(required=False, validate=lambda x: x == "true"),
-        'include_workforce': fields.Str(required=False, validate=lambda x: x == "true"),
-        'include_taxonomy': fields.Str(required=False, validate=lambda x: x == "true"),
+        'format': fields.Str(required=False),
+        'include_address': fields.Bool(required=False),
+        'include_email': fields.Bool(required=False),
+        'include_phone': fields.Bool(required=False),
+        'include_workforce': fields.Bool(required=False),
+        'include_taxonomy': fields.Bool(required=False),
         'ecosystem_role': fields.List(fields.Str(), required=False),
         'entity_type': fields.List(fields.Str(), required=False),
-        'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
-        'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'startup_only': fields.Bool(required=False),
+        'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.List(fields.Str(), required=False),
     }, location="query")
     @jwt_required
@@ -60,7 +61,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage addresses
 
-        if 'include_address' in kwargs and kwargs['include_address'] == "true":
+        if 'include_address' in kwargs and kwargs['include_address'] is True:
             if company_ids is not None:
                 addresses = self.db.get(self.db.tables["Company_Address"], {"company_id": company_ids})
             else:
@@ -75,7 +76,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage email addresses from contacts
 
-        if 'include_email' in kwargs and kwargs['include_email'] == "true":
+        if 'include_email' in kwargs and kwargs['include_email'] is True:
             if company_ids is not None:
                 contacts = self.db.get(self.db.tables["CompanyContact"], {
                     "company_id": company_ids,
@@ -95,7 +96,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage phone numbers from contacts
 
-        if 'include_phone' in kwargs and kwargs['include_phone'] == "true":
+        if 'include_phone' in kwargs and kwargs['include_phone'] is True:
             if company_ids is not None:
                 contacts = self.db.get(self.db.tables["CompanyContact"], {
                     "company_id": company_ids,
@@ -115,7 +116,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage workforces
 
-        if 'include_workforce' in kwargs and kwargs['include_workforce'] == "true":
+        if 'include_workforce' in kwargs and kwargs['include_workforce'] is True:
             workforces = self.db.get_latest_workforce(company_ids)
             workforces = Serializer.serialize(workforces, self.db.tables["Workforce"])
             workforces = pd.DataFrame(workforces)
@@ -127,7 +128,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage taxonomy
 
-        if 'include_taxonomy' in kwargs and kwargs['include_taxonomy'] == "true":
+        if 'include_taxonomy' in kwargs and kwargs['include_taxonomy'] is True:
             df = self.include_taxonomy(company_ids, df)
 
         # Prepare final export

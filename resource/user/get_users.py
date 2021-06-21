@@ -25,7 +25,7 @@ class GetUsers(MethodResource, Resource):
     @use_kwargs({
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
-        'admin_only': fields.List(fields.Str(), required=False, validate=lambda x: x == "true"),
+        'admin_only': fields.Bool(required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access
@@ -38,7 +38,7 @@ class GetUsers(MethodResource, Resource):
                            self.db.tables["User"].is_admin,
                            self.db.tables["User"].is_active)
 
-        if "admin_only" in kwargs and kwargs["admin_only"] == "true":
+        if "admin_only" in kwargs and kwargs["admin_only"] is True:
             query = query.filter(self.db.tables["User"].is_admin.is_(True))
 
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])

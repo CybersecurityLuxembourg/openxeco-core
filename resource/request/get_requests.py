@@ -36,8 +36,7 @@ class GetRequests(MethodResource, Resource):
         query = self.db.session.query(self.db.tables["UserRequest"])
 
         if "status" in kwargs:
-            types = kwargs["status"].split(",")
-            query = query.filter(self.db.tables["UserRequest"].status.in_(types))
+            query = query.filter(self.db.tables["UserRequest"].status.in_(kwargs["status"]))
 
         if "order" in kwargs and kwargs["order"] == "desc":
             query = query.order_by(self.db.tables["UserRequest"].submission_date.desc())

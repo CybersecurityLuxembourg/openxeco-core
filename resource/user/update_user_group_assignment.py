@@ -27,7 +27,7 @@ class UpdateUserGroupAssignment(MethodResource, Resource):
          })
     @use_kwargs({
         'user': fields.Int(),
-        'group': fields.Str(allow_none=True),
+        'group': fields.Int(),
     })
     @jwt_required
     @verify_admin_access

@@ -145,6 +145,7 @@ class DB:
                                          func.lower(self.tables["Company"].website).like("%" + word + "%")))
 
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
+            print(filters['ecosystem_role'])
             ecosystem_roles = filters['ecosystem_role'] if type(filters['ecosystem_role']) is list else \
                 filters['ecosystem_role'].split(',')
 
@@ -352,7 +353,7 @@ class DB:
 
         query = self.session.query(self.tables["Image"])
 
-        if "logo_only" in filters and filters["logo_only"] == "true":
+        if "logo_only" in filters and filters["logo_only"] is True:
             company_image_ids = self.session \
                 .query(self.tables["Company"]) \
                 .with_entities(self.tables["Company"].image) \

@@ -17,13 +17,14 @@ class UpdateMyUser(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Update the user information related to the token',
+         description='Update the user information related to the token. This is only applicable on last_name, '
+                     'first_name and telephone',
          responses={
              "200": {},
          })
     @use_kwargs({
         'last_name': fields.Str(required=False, allow_none=True),
-        'first_name': fields.Dict(required=False, allow_none=True),
+        'first_name': fields.Str(required=False, allow_none=True),
         'telephone': fields.Str(required=False, allow_none=True),
     })
     @jwt_required

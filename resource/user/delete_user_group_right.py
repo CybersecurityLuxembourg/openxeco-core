@@ -30,12 +30,11 @@ class DeleteUserGroupRight(MethodResource, Resource):
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
         row = {
-            "group_id": input_data["group"],
-            "resource": input_data["resource"],
+            "group_id": kwargs["group"],
+            "resource": kwargs["resource"],
         }
 
         rights = self.db.get(self.db.tables["UserGroupRight"], row)

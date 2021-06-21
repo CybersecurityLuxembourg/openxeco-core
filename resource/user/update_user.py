@@ -25,8 +25,9 @@ class UpdateUser(MethodResource, Resource):
     @use_kwargs({
         'id': fields.Int(),
         'last_name': fields.Str(required=False, allow_none=True),
-        'first_name': fields.Dict(required=False, allow_none=True),
+        'first_name': fields.Str(required=False, allow_none=True),
         'telephone': fields.Str(required=False, allow_none=True),
+        'is_admin': fields.Bool(required=False),
     })
     @jwt_required
     @verify_admin_access

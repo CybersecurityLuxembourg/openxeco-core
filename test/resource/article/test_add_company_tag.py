@@ -41,7 +41,7 @@ class TestAddCompanyTag(BaseCase):
 
         tags = self.db.get(self.db.tables["ArticleCompanyTag"])
 
-        self.assertEqual("422 the provided article does not exist", response.status)
+        self.assertEqual("422 The provided article does not exist", response.status)
         self.assertEqual(len(tags), 0)
 
     @BaseCase.login
@@ -60,5 +60,5 @@ class TestAddCompanyTag(BaseCase):
 
         tags = self.db.get(self.db.tables["ArticleCompanyTag"])
 
-        self.assertEqual("422 the provided company does not exist", response.status)
+        self.assertEqual("422 The provided company does not exist", response.status)
         self.assertEqual(len(tags), 0)

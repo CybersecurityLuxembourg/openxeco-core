@@ -25,9 +25,6 @@ class Refresh(MethodResource, Resource):
          responses={
              "200": {},
          })
-    @use_kwargs({
-        'refresh_token': fields.Str(),
-    })
     @jwt_refresh_token_required
     @catch_exception
     def post(self):

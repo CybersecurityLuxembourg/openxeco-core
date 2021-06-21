@@ -23,6 +23,7 @@ class UpdateContact(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
+        'id': fields.Int(),
         'company_id': fields.Int(),
         'type': fields.Str(required=False),
         'representative': fields.Str(required=False, allow_none=True),

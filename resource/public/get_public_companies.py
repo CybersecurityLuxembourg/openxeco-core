@@ -28,14 +28,12 @@ class GetPublicCompanies(MethodResource, Resource):
         'taxonomy_values': fields.List(fields.Str(), required=False),
     }, location="query")
     @catch_exception
-    def get(self):
+    def get(self, **kwargs):
 
         c = self.db.tables["Company"]
         entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image
 
-        filters = request.args.to_dict()
-
-        companies = [o._asdict() for o in self.db.get_filtered_companies(filters, entities)]
+        companies = [o._asdict() for o in self.db.get_filtered_companies(kwargs, entities)]
 
         for a in companies:
             a["creation_date"] = None if a["creation_date"] is None else str(a["creation_date"])
