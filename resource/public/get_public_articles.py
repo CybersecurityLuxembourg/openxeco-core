@@ -28,7 +28,6 @@ class GetPublicArticles(MethodResource, Resource):
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
-        print(kwargs)
 
         kwargs["public_only"] = "true"
 
