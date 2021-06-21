@@ -145,8 +145,8 @@ class DB:
                                          func.lower(self.tables["Company"].website).like("%" + word + "%")))
 
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
-            ecosystem_roles = filters['ecosystem_role'].split(',') \
-                if isinstance(filters['ecosystem_role'], str) else filters['ecosystem_role']
+            ecosystem_roles = filters['ecosystem_role'] if type(filters['ecosystem_role']) is list else \
+                filters['ecosystem_role'].split(',')
 
             ecosystem_role_values = self.session \
                 .query(self.tables["TaxonomyValue"]) \
@@ -164,7 +164,7 @@ class DB:
             query = query.filter(self.tables["Company"].id.in_(assigned_company))
 
         if "entity_type" in filters and filters['entity_type'] is not None:
-            entity_types = filters['entity_type'].split(',') if filters['entity_type'] is list \
+            entity_types = filters['entity_type'] if type(filters['entity_type']) is list \
                 else filters['entity_type'].split(',')
 
             entity_type_values = self.session \
@@ -189,7 +189,7 @@ class DB:
             query = query.filter(self.tables["Company"].is_cybersecurity_core_business.is_(True))
 
         if "taxonomy_values" in filters:
-            taxonomy_values = filters["taxonomy_values"] if filters["taxonomy_values"] is list else \
+            taxonomy_values = filters["taxonomy_values"] if type(filters["taxonomy_values"]) is list else \
                 [int(value_id) for value_id in filters["taxonomy_values"].split(",") if value_id.isdigit()]
 
             if len(taxonomy_values) > 0:
@@ -232,7 +232,7 @@ class DB:
             query = query.filter(self.tables["Article"].status == filters["status"])
 
         if "type" in filters:
-            types = filters["type"] if filters["type"] is list else filters["type"].split(",")
+            types = filters["type"] if type(filters["type"]) is list else filters["type"].split(",")
             query = query.filter(self.tables["Article"].type.in_(types))
 
         if "media" in filters:
@@ -244,7 +244,7 @@ class DB:
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
 
         if "taxonomy_values" in filters:
-            tmp_taxonomy_values = filters["taxonomy_values"] if filters["taxonomy_values"] is list \
+            tmp_taxonomy_values = filters["taxonomy_values"] if type(filters["taxonomy_values"]) is list \
                 else filters["taxonomy_values"].split(",")
             taxonomy_values = []
 
