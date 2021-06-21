@@ -1,10 +1,11 @@
-from flask_restful import Resource
 from flask_apispec import MethodResource
-from db.db import DB
-from utils.serializer import Serializer
-from decorator.catch_exception import catch_exception
-from webargs import fields, validate
 from flask_apispec import use_kwargs, doc
+from flask_restful import Resource
+from webargs import fields, validate
+
+from db.db import DB
+from decorator.catch_exception import catch_exception
+from utils.serializer import Serializer
 
 
 class GetPublicArticles(MethodResource, Resource):
@@ -24,9 +25,10 @@ class GetPublicArticles(MethodResource, Resource):
         'type': fields.List(fields.Str(), required=False),
         'media': fields.Str(required=False),
         'taxonomy_values': fields.List(fields.Str(), required=False),
-    })
+    }, location="query")
     @catch_exception
     def get(self, **kwargs):
+        print(kwargs)
 
         kwargs["public_only"] = "true"
 

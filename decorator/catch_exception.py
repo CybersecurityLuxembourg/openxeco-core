@@ -1,6 +1,6 @@
 import functools
-import traceback
 import re
+import traceback
 
 
 def catch_exception(f):

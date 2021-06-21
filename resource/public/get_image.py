@@ -1,12 +1,14 @@
-from flask_restful import Resource
+import os
+
+from flask import send_file
 from flask_apispec import MethodResource
+from flask_apispec import doc
+from flask_restful import Resource
+
+from config.config import IMAGE_FOLDER
 from db.db import DB
 from decorator.catch_exception import catch_exception
-from flask import send_file
-from config.config import IMAGE_FOLDER
-import os
 from exception.image_not_found import ImageNotFound
-from flask_apispec import doc
 
 
 class GetImage(MethodResource, Resource):

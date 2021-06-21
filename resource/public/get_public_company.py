@@ -1,9 +1,10 @@
-from flask_restful import Resource
 from flask_apispec import MethodResource
-from db.db import DB
-from exception.object_not_found import ObjectNotFound
-from decorator.catch_exception import catch_exception
 from flask_apispec import doc
+from flask_restful import Resource
+
+from db.db import DB
+from decorator.catch_exception import catch_exception
+from exception.object_not_found import ObjectNotFound
 
 
 class GetPublicCompany(MethodResource, Resource):

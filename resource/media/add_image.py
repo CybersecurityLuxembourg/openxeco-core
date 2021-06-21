@@ -1,19 +1,21 @@
-from flask_restful import Resource
+import base64
+import datetime
+import io
+import os
+import traceback
+
+import PIL
+from PIL import Image
 from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
+from flask_restful import Resource
+from webargs import fields
+
+from config.config import IMAGE_FOLDER
+from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
-from decorator.catch_exception import catch_exception
-import datetime
-from webargs import fields
-from flask_apispec import use_kwargs, doc, marshal_with
-from PIL import Image
-import os
-import PIL
-import io
-import base64
-from config.config import IMAGE_FOLDER
-import traceback
 from exception.error_while_saving_file import ErrorWhileSavingFile
 from utils.serializer import Serializer
 
@@ -26,12 +28,15 @@ class AddImage(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @doc(tags=['media'], description='Add an image to the media library')
+    @doc(tags=['media'],
+         description='Add an image to the media library',
+         responses={
+             "200": {},
+             "500": {"description": "An error occurred while saving the file"},
+         })
     @use_kwargs({
         'image': fields.Str(),
     })
-    @marshal_with(None, code=200)
-    @marshal_with(None, code=500, description="An error occurred while saving the file")
     @jwt_required
     @verify_admin_access
     @catch_exception

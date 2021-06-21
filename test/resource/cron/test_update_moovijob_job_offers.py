@@ -1,6 +1,7 @@
-from test.BaseCase import BaseCase
-from unittest.mock import patch, Mock
 import os
+from unittest.mock import patch, Mock
+
+from test.BaseCase import BaseCase
 
 
 class TestUpdateMoovijobJobOffers(BaseCase):

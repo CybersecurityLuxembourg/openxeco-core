@@ -1,14 +1,14 @@
-from flask import request
-from flask_restful import Resource
 from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_bcrypt import generate_password_hash
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
-from utils.re import has_password_format
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from webargs import fields
-from flask_apispec import use_kwargs, doc
+from utils.re import has_password_format
 
 
 class ResetPassword(MethodResource, Resource):

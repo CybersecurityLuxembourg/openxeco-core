@@ -1,14 +1,15 @@
-from flask_restful import Resource
 from flask_apispec import MethodResource
-from flask_jwt_extended import jwt_required
-from decorator.verify_admin_access import verify_admin_access
-from decorator.catch_exception import catch_exception
-from sqlalchemy.exc import IntegrityError
-from exception.object_not_found import ObjectNotFound
-from exception.cannot_assign_value_from_parent_category import CannotAssignValueFromParentCategory
-from decorator.log_request import log_request
-from webargs import fields
 from flask_apispec import use_kwargs, doc
+from flask_jwt_extended import jwt_required
+from flask_restful import Resource
+from sqlalchemy.exc import IntegrityError
+from webargs import fields
+
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
+from exception.cannot_assign_value_from_parent_category import CannotAssignValueFromParentCategory
+from exception.object_not_found import ObjectNotFound
 
 
 class AddTaxonomyAssignment(MethodResource, Resource):

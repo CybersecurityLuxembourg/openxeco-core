@@ -1,6 +1,6 @@
-import string
 import random
 import secrets
+import string
 
 
 def generate_password():

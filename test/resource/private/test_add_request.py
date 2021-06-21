@@ -1,6 +1,7 @@
-from test.BaseCase import BaseCase
-import os
 import base64
+import os
+
+from test.BaseCase import BaseCase
 
 
 class TestAddRequest(BaseCase):

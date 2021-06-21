@@ -1,11 +1,12 @@
-from flask_restful import Resource
 from flask_apispec import MethodResource
+from flask_apispec import doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_restful import Resource
+from sqlalchemy.orm.exc import NoResultFound
+
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from sqlalchemy.orm.exc import NoResultFound
-from flask_apispec import doc
 
 
 class GetMyCompanyCollaborators(MethodResource, Resource):

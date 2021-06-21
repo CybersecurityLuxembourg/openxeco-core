@@ -1,16 +1,18 @@
-from flask_restful import Resource
+import copy
+import json
+import re
+from datetime import datetime
+from urllib import request
+
 from flask_apispec import MethodResource
 from flask_jwt_extended import jwt_required
+from flask_restful import Resource
+from sqlalchemy import func
+
 from db.db import DB
-from decorator.verify_admin_access import verify_admin_access
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from urllib import request
-import json
-from datetime import datetime
-import re
-import copy
-from sqlalchemy import func
+from decorator.verify_admin_access import verify_admin_access
 
 
 class UpdateMoovijobJobOffers(MethodResource, Resource):

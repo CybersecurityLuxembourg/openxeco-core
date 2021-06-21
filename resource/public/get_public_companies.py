@@ -1,10 +1,11 @@
-from flask_restful import Resource
+from flask import request
 from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
+from flask_restful import Resource
+from webargs import fields
+
 from db.db import DB
 from decorator.catch_exception import catch_exception
-from flask import request
-from webargs import fields
-from flask_apispec import use_kwargs, doc
 
 
 class GetPublicCompanies(MethodResource, Resource):
@@ -25,7 +26,7 @@ class GetPublicCompanies(MethodResource, Resource):
         'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
         'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
         'taxonomy_values': fields.List(fields.Str(), required=False),
-    })
+    }, location="query")
     @catch_exception
     def get(self):
 

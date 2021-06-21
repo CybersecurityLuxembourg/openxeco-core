@@ -1,12 +1,14 @@
-from flask_restful import Resource
+import datetime
+
 from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_bcrypt import check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token
-import datetime
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from webargs import fields
-from flask_apispec import use_kwargs, doc
 
 
 class Login(MethodResource, Resource):

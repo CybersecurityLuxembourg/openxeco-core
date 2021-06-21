@@ -1,18 +1,20 @@
-from flask_restful import Resource
-from flask_apispec import MethodResource
-from flask import request, Response
-from flask_jwt_extended import jwt_required
-from io import BytesIO
-import pandas as pd
-from decorator.verify_admin_access import verify_admin_access
-from utils.serializer import Serializer
+import json
 from datetime import datetime
+from io import BytesIO
+
+import pandas as pd
+from flask import Response
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
+from flask_jwt_extended import jwt_required
+from flask_restful import Resource
 from openpyxl.styles import PatternFill, Color, Font
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-import json
-from webargs import fields
-from flask_apispec import use_kwargs, doc
+from decorator.verify_admin_access import verify_admin_access
+from utils.serializer import Serializer
 
 
 class ExtractCompanies(MethodResource, Resource):
@@ -41,7 +43,7 @@ class ExtractCompanies(MethodResource, Resource):
         'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
         'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
         'taxonomy_values': fields.List(fields.Str(), required=False),
-    })
+    }, location="query")
     @jwt_required
     @verify_admin_access
     @catch_exception

@@ -1,6 +1,6 @@
+import base64
 from datetime import datetime, date
 from decimal import Decimal
-import base64
 
 
 class Serializer:

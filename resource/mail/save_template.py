@@ -1,12 +1,14 @@
-from flask_restful import Resource
-from flask_apispec import MethodResource
-from flask import request
-from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
-from decorator.catch_exception import catch_exception
 import os
+
+from flask import request
+from flask_apispec import MethodResource
+from flask_jwt_extended import jwt_required
+from flask_restful import Resource
+
+from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
+from decorator.verify_payload import verify_payload
 
 
 class SaveTemplate(MethodResource, Resource):

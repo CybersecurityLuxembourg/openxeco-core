@@ -1,6 +1,8 @@
-from test.BaseCase import BaseCase
 from unittest.mock import patch, call
+
 from requests import Response
+
+from test.BaseCase import BaseCase
 
 
 class TestRunCompanyWebsiteCheck(BaseCase):

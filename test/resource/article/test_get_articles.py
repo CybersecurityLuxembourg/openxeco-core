@@ -1,5 +1,6 @@
-from test.BaseCase import BaseCase
 from datetime import datetime
+
+from test.BaseCase import BaseCase
 
 
 class TestGetArticles(BaseCase):

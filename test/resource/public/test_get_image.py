@@ -1,6 +1,7 @@
-from test.BaseCase import BaseCase
-from unittest.mock import patch
 import os
+from unittest.mock import patch
+
+from test.BaseCase import BaseCase
 
 
 class TestGetImage(BaseCase):

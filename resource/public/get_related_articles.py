@@ -1,12 +1,14 @@
-from flask_restful import Resource
-from flask_apispec import MethodResource
-from db.db import DB
-from utils.serializer import Serializer
-from decorator.catch_exception import catch_exception
 import datetime
+
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
+from flask_restful import Resource
 from sqlalchemy import desc
 from webargs import fields
-from flask_apispec import use_kwargs, doc
+
+from db.db import DB
+from decorator.catch_exception import catch_exception
+from utils.serializer import Serializer
 
 
 class GetRelatedArticles(MethodResource, Resource):
@@ -22,7 +24,7 @@ class GetRelatedArticles(MethodResource, Resource):
          })
     @use_kwargs({
         'media': fields.Str(required=False),
-    })
+    }, location="query")
     @catch_exception
     def get(self, id_, **kwargs):
 

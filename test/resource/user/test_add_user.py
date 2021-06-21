@@ -1,8 +1,10 @@
-from test.BaseCase import BaseCase
-from unittest.mock import patch
-from sqlalchemy.exc import IntegrityError
-from flask_bcrypt import check_password_hash
 import os
+from unittest.mock import patch
+
+from flask_bcrypt import check_password_hash
+from sqlalchemy.exc import IntegrityError
+
+from test.BaseCase import BaseCase
 
 
 class TestAddUser(BaseCase):

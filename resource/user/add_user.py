@@ -1,15 +1,16 @@
-from flask_restful import Resource
-from flask_apispec import MethodResource
 from flask import request, render_template
-from flask_jwt_extended import jwt_required
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_bcrypt import generate_password_hash
-from utils.re import has_mail_format, has_password_format
-from utils.mail import send_email
-from decorator.verify_admin_access import verify_admin_access
+from flask_jwt_extended import jwt_required
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from webargs import fields
-from flask_apispec import use_kwargs, doc
+from decorator.verify_admin_access import verify_admin_access
+from utils.mail import send_email
+from utils.re import has_mail_format, has_password_format
 
 
 class AddUser(MethodResource, Resource):

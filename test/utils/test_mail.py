@@ -1,6 +1,7 @@
+from unittest.mock import patch
+
 from test.BaseCase import BaseCase
 from utils.mail import send_email
-from unittest.mock import patch
 
 
 class Mail:

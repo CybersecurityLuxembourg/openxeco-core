@@ -1,16 +1,17 @@
 from flask import request, render_template
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_bcrypt import generate_password_hash
 from flask_restful import Resource
-from flask_apispec import MethodResource
 from sqlalchemy.exc import IntegrityError
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_already_existing import ObjectAlreadyExisting
 from utils.mail import send_email
 from utils.password import generate_password
 from utils.re import has_mail_format
-from webargs import fields
-from flask_apispec import use_kwargs, doc
 
 
 class CreateAccount(MethodResource, Resource):

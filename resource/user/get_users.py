@@ -1,12 +1,13 @@
-from flask_restful import Resource
 from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
+from flask_restful import Resource
+from webargs import fields, validate
+
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
-from webargs import fields, validate
-from flask_apispec import use_kwargs, doc
 
 
 class GetUsers(MethodResource, Resource):
@@ -25,7 +26,7 @@ class GetUsers(MethodResource, Resource):
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'admin_only': fields.List(fields.Str(), required=False, validate=lambda x: x == "true"),
-    })
+    }, location="query")
     @jwt_required
     @verify_admin_access
     @catch_exception

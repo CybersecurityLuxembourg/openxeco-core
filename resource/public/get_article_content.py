@@ -1,12 +1,14 @@
-from flask_restful import Resource
-from flask_apispec import MethodResource
-from db.db import DB
-from utils.serializer import Serializer
-from decorator.catch_exception import catch_exception
 import datetime
+
 import html2markdown
-from webargs import fields
+from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
+from flask_restful import Resource
+from webargs import fields
+
+from db.db import DB
+from decorator.catch_exception import catch_exception
+from utils.serializer import Serializer
 
 
 class GetArticleContent(MethodResource, Resource):
@@ -23,7 +25,7 @@ class GetArticleContent(MethodResource, Resource):
          })
     @use_kwargs({
         'format': fields.Str(required=False, missing='json', validate=lambda x: x in ['markdown', 'html', 'json']),
-    })
+    }, location="query")
     @catch_exception
     def get(self, id_, **kwargs):
 

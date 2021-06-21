@@ -1,15 +1,17 @@
-from flask_restful import Resource
-from flask_apispec import MethodResource
-import io
 import base64
+import io
 import traceback
-from webargs import fields
+
+from PIL import Image
+from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_restful import Resource
+from sqlalchemy.orm.exc import NoResultFound
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from PIL import Image
-from sqlalchemy.orm.exc import NoResultFound
 
 
 class AddRequest(MethodResource, Resource):
