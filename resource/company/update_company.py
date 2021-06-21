@@ -30,9 +30,9 @@ class UpdateCompany(MethodResource, Resource):
         'description': fields.Str(required=False, allow_none=True),
         'creation_date': fields.Str(required=False, allow_none=True),
         'website': fields.Str(required=False, allow_none=True),
-        'is_startup': fields.Str(required=False, validate=lambda x: x == "true" or x == "false"),
-        'is_cybersecurity_core_business': fields.Str(required=False, validate=lambda x: x == "true" or x == "false"),
-        'is_targeting_sme': fields.Str(required=False, validate=lambda x: x == "true" or x == "false"),
+        'is_startup': fields.Bool(required=False),
+        'is_cybersecurity_core_business': fields.Bool(required=False),
+        'is_targeting_sme': fields.Bool(required=False),
         'editus_status': fields.Str(required=False, allow_none=True),
     })
     @jwt_required

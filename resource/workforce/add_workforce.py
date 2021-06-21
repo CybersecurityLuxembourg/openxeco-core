@@ -31,7 +31,7 @@ class AddWorkforce(MethodResource, Resource):
         'field': fields.Int(),
         'workforce': fields.Int(),
         'date': fields.Str(),
-        'is_estimated': fields.Str(validate=lambda x: x == "true" or x == "false"),
+        'is_estimated': fields.Bool(),
         'source': fields.Str(),
     })
     @jwt_required
