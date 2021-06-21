@@ -5,6 +5,7 @@ from datetime import datetime
 from urllib import request
 
 from flask_apispec import MethodResource
+from flask_apispec import doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from sqlalchemy import func
@@ -21,6 +22,14 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['cron'],
+         description='Update the job offers from Moovijob',
+         responses={
+             "200": {},
+             "500.a": {"description": "No article has been treated"},
+             "500.b": {"description": "Moovijob company not found"},
+             "500.c": {"description": "Too many Moovijob company found"},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception

@@ -1,4 +1,5 @@
 from flask_apispec import MethodResource
+from flask_apispec import doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
@@ -14,6 +15,11 @@ class RunDatabaseCompliance(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['cron'],
+         description='Run the compliance check of the database content. The result is written in the DataControl table',
+         responses={
+             "200": {},
+         })
     @catch_exception
     @jwt_required
     @verify_admin_access
