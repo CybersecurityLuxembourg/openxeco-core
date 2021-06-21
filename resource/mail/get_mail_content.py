@@ -1,6 +1,7 @@
 import os
 
 from flask_apispec import MethodResource
+from flask_apispec import doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 
@@ -15,6 +16,12 @@ class GetMailContent(MethodResource, Resource):
         self.db = db
 
     @log_request
+    @doc(tags=['mail'],
+         description='Get the HTML content of the specified mail template name (new_account or reset_password)',
+         responses={
+             "200": {},
+             "404": {"description": "This mail template does not exist"},
+         })
     @jwt_required
     @verify_admin_access
     @catch_exception
