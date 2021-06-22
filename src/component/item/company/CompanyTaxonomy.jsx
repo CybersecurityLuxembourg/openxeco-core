@@ -71,7 +71,7 @@ export default class CompanyTaxonomy extends React.Component {
 			nm.error(error.message);
 		});
 
-		getRequest.call(this, "taxonomy/get_all_taxonomy_value_hierarchy", (data) => {
+		getRequest.call(this, "taxonomy/get_taxonomy_value_hierarchy", (data) => {
 			this.setState({
 				valueHierarchy: data,
 			});
