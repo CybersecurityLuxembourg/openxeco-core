@@ -47,8 +47,8 @@ class ExtractCompanies(MethodResource, Resource):
     }, location="query")
     @jwt_required
     @verify_admin_access
-    @catch_exception
-    def get(self, **kwargs):  # pylint: disable=too-many-branches
+    @catch_exception  # pylint: disable=too-many-branches
+    def get(self, **kwargs):
 
         # Manage global data
 

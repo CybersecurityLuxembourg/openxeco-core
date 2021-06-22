@@ -1,4 +1,3 @@
-from flask import request
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required

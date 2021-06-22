@@ -32,8 +32,8 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
          })
     @jwt_required
     @verify_admin_access
-    @catch_exception
-    def post(self):  # pylint: disable=too-many-locals
+    @catch_exception  # pylint: disable=too-many-locals
+    def post(self):
 
         base_url = "https://www.moovijob.com/api/job-offers/search?job_categories[]=informatique-consulting" \
                    "&job_categories[]=informatique-dev&job_categories[]=informatique-infra-reseau&q=security"
