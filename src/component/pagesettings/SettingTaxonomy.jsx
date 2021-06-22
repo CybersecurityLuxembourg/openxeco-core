@@ -2,13 +2,12 @@ import React from "react";
 import "./SettingTaxonomy.css";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import _ from "lodash";
 import Loading from "../box/Loading.jsx";
+import Message from "../box/Message.jsx";
 import Table from "../table/Table.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
-import { dictToURI } from "../../utils/url.jsx";
 
 export default class SettingTaxonomy extends React.Component {
 	constructor(props) {
@@ -44,28 +43,6 @@ export default class SettingTaxonomy extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.selectedCategory !== this.state.selectedCategory) {
-			if (this.state.selectedCategory === null) {
-				this.setState({
-					values: null,
-				});
-			} else {
-				this.getValues();
-			}
-		}
-
-		if (prevState.selectedCategoryHierarchy !== this.state.selectedCategoryHierarchy) {
-			if (this.state.selectedCategoryHierarchy === null) {
-				this.setState({
-					valueHierarchy: null,
-				});
-			} else {
-				this.getValueHierarchy();
-			}
-		}
-	}
-
 	refresh() {
 		this.setState({
 			categories: null,
@@ -89,6 +66,9 @@ export default class SettingTaxonomy extends React.Component {
 				}, (error) => {
 					nm.error(error.message);
 				});
+
+				this.getValueHierarchy();
+				this.getValues();
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -106,7 +86,7 @@ export default class SettingTaxonomy extends React.Component {
 			values: null,
 		});
 
-		getRequest.call(this, "taxonomy/get_taxonomy_values?" + dictToURI({ category: this.state.selectedCategory }), (data) => {
+		getRequest.call(this, "taxonomy/get_taxonomy_values", (data) => {
 			this.setState({
 				values: data,
 			});
@@ -118,16 +98,7 @@ export default class SettingTaxonomy extends React.Component {
 	}
 
 	getValueHierarchy() {
-		this.setState({
-			valueHierarchy: null,
-		});
-
-		const args = dictToURI({
-			parent_category: this.state.selectedCategoryHierarchy.split(" - ")[0],
-			child_category: this.state.selectedCategoryHierarchy.split(" - ")[1],
-		});
-
-		getRequest.call(this, "taxonomy/get_taxonomy_value_hierarchy?" + args, (data) => {
+		getRequest.call(this, "taxonomy/get_taxonomy_value_hierarchy", (data) => {
 			this.setState({
 				valueHierarchy: data,
 			});
@@ -264,44 +235,73 @@ export default class SettingTaxonomy extends React.Component {
 		});
 	}
 
+	filterParentCategoryValues() {
+		return this.state.values
+			.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[0]);
+	}
+
+	filterChildCategoryValues(parentValue) {
+		if (this.state.valueHierarchy !== null
+			&& this.state.categories !== null
+			&& this.state.values !== null) {
+			if (parentValue === undefined) {
+				const parentCategoryValueIDs = this.state.values
+					.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[0])
+					.map((h) => h.id);
+
+				const concernedChildValueIDs = this.state.valueHierarchy
+					.filter((h) => parentCategoryValueIDs.indexOf(h.parent_value) >= 0)
+					.map((h) => h.child_value);
+
+				return this.state.values
+					.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[1])
+					.filter((v) => concernedChildValueIDs.indexOf(v.id) < 0);
+			}
+
+			const concernedValueIDs = this.state.valueHierarchy
+				.filter((v) => v.parent_value === parentValue.id)
+				.map((v) => v.child_value);
+
+			return this.state.values
+				.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[1])
+				.filter((v) => concernedValueIDs.indexOf(v.id) >= 0);
+		}
+
+		return [];
+	}
+
 	onDragEnd(result) {
 		if (!result.destination) {
 			return;
 		}
 
-		const params = {
-			parent_value: parseInt(result.destination.droppableId, 10),
-			child_value: parseInt(result.draggableId, 10),
-		};
-
-		const valueHierarchy = _.cloneDeep(this.state.valueHierarchy);
-
-		valueHierarchy.value_hierarchy = valueHierarchy.value_hierarchy
-			.filter((h) => h.child_value !== parseInt(result.draggableId, 10));
-
 		if (result.destination.droppableId !== "null") {
+			const params = {
+				parent_value: parseInt(result.destination.droppableId, 10),
+				child_value: parseInt(result.draggableId, 10),
+			};
+
 			postRequest.call(this, "taxonomy/add_taxonomy_value_hierarchy", params, () => {
 				nm.info("The modification has been saved");
 
-				valueHierarchy.value_hierarchy = valueHierarchy.value_hierarchy
-					.filter((h) => h.child_value !== parseInt(result.draggableId, 10));
-
-				valueHierarchy.value_hierarchy.push(params);
-
-				this.setState({ valueHierarchy });
+				this.getValueHierarchy();
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
 				nm.error(error.message);
 			});
-		} else {
+		}
+
+		if (result.source.droppableId !== "null") {
+			const params = {
+				parent_value: parseInt(result.source.droppableId, 10),
+				child_value: parseInt(result.draggableId, 10),
+			};
+
 			postRequest.call(this, "taxonomy/delete_taxonomy_value_hierarchy", params, () => {
 				nm.info("The modification has been saved");
 
-				valueHierarchy.value_hierarchy = valueHierarchy.value_hierarchy
-					.filter((h) => h.child_value !== parseInt(result.draggableId, 10));
-
-				this.setState({ valueHierarchy });
+				this.getValueHierarchy();
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -490,7 +490,8 @@ export default class SettingTaxonomy extends React.Component {
 					<div className="col-md-12">
 						<h2>Category values</h2>
 						{this.state.categories !== null
-							? <div className="row">
+							&& this.state.values !== null
+							&& <div className="row">
 								<div className="col-xl-12">
 									<FormLine
 										label={"Category"}
@@ -517,19 +518,25 @@ export default class SettingTaxonomy extends React.Component {
 										</div>
 										<Table
 											columns={valueColumns}
-											data={this.state.values}
+											data={this.state.values
+												.filter((v) => v.category === this.state.selectedCategory)}
 										/>
 									</div>
 								}
-
-								{(this.state.selectedCategory === null || this.state.values === null)
-									&& <Loading
-										height={300}
-									/>
-								}
 							</div>
-							: <Loading
+						}
+
+						{(this.state.categories === null || this.state.categories === null)
+							&& <Loading
 								height={300}
+							/>
+						}
+
+						{(this.state.categories !== null && this.state.values !== null)
+							&& this.state.selectedCategory === null
+							&& <Message
+								height={300}
+								text={"Please select a category"}
 							/>
 						}
 					</div>
@@ -558,7 +565,9 @@ export default class SettingTaxonomy extends React.Component {
 							/>
 						}
 
-						{this.state.selectedCategoryHierarchy !== null && this.state.valueHierarchy !== null
+						{this.state.selectedCategoryHierarchy !== null
+							&& this.state.valueHierarchy !== null
+							&& this.state.values !== null
 							&& <div className="row row-spaced">
 								<div className="col-xl-12">
 									<DragDropContext onDragEnd={this.onDragEnd}>
@@ -571,10 +580,7 @@ export default class SettingTaxonomy extends React.Component {
 													className="Droppable-bar Droppable-bar-unassigned"
 													{...provided.droppableProps}>
 													<div>Not assigned</div>
-													{this.state.valueHierarchy.child_values
-														.filter((v) => this.state.valueHierarchy.value_hierarchy
-															.map((h) => h.child_value)
-															.indexOf(v.id) < 0)
+													{this.filterChildCategoryValues()
 														.map((item, index) => (
 															<Draggable
 																key={"" + item.id}
@@ -599,7 +605,7 @@ export default class SettingTaxonomy extends React.Component {
 												</div>
 											)}
 										</Droppable>
-										{this.state.valueHierarchy.parent_values.map((pv) => (
+										{this.filterParentCategoryValues().map((pv) => (
 											<Droppable
 												key={pv.id}
 												droppableId={"" + pv.id}
@@ -610,12 +616,11 @@ export default class SettingTaxonomy extends React.Component {
 														className="Droppable-bar"
 														{...provided.droppableProps}>
 														<div>{pv.name}</div>
-														{this.state.valueHierarchy.value_hierarchy
-															.filter((v) => pv.id === v.parent_value)
+														{this.filterChildCategoryValues(pv)
 															.map((item, index) => (
 																<Draggable
-																	key={"" + item.child_value}
-																	draggableId={"" + item.child_value}
+																	key={"" + item.id}
+																	draggableId={"" + item.id}
 																	index={index}>
 																	{(provided2, snapshot2) => (
 																		<div
@@ -627,8 +632,7 @@ export default class SettingTaxonomy extends React.Component {
 																				snapshot2.isDragging,
 																				provided2.draggableProps.style,
 																			)}>
-																			{this.state.valueHierarchy.child_values
-																				.filter((v) => v.id === item.child_value)[0].name}
+																			{item.name}
 																		</div>
 																	)}
 																</Draggable>
@@ -643,9 +647,17 @@ export default class SettingTaxonomy extends React.Component {
 							</div>
 						}
 
-						{(this.state.selectedCategoryHierarchy === null || this.state.valueHierarchy === null)
+						{this.state.valueHierarchy === null
 							&& <Loading
 								height={300}
+							/>
+						}
+
+						{this.state.selectedCategoryHierarchy === null
+							&& this.state.valueHierarchy !== null
+							&& <Message
+								height={300}
+								text={"Please select a value hierarchy"}
 							/>
 						}
 					</div>
