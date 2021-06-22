@@ -25,9 +25,9 @@ class GetArticles(MethodResource, Resource):
          })
     @use_kwargs({
         'title': fields.Str(required=False),
-        'type': fields.List(fields.Str(), required=False),
+        'type': fields.DelimitedList(fields.Str(), required=False),
         'media': fields.Str(required=False),
-        'taxonomy_values': fields.List(fields.Str(), required=False),
+        'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access

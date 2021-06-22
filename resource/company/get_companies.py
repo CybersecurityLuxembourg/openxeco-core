@@ -25,11 +25,11 @@ class GetCompanies(MethodResource, Resource):
          })
     @use_kwargs({
         'name': fields.Str(required=False),
-        'ecosystem_role': fields.List(fields.Str(), required=False),
-        'entity_type': fields.List(fields.Str(), required=False),
+        'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
+        'entity_type': fields.DelimitedList(fields.Str(), required=False),
         'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
         'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
-        'taxonomy_values': fields.List(fields.Str(), required=False),
+        'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access

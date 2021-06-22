@@ -26,7 +26,7 @@ class GetRequests(MethodResource, Resource):
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
-        'status': fields.List(fields.Str(), required=False),
+        'status': fields.DelimitedList(fields.Str(), required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access

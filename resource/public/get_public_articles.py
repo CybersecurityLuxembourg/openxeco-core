@@ -22,9 +22,9 @@ class GetPublicArticles(MethodResource, Resource):
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'title': fields.Str(required=False),
-        'type': fields.List(fields.Str(), required=False),
+        'type': fields.DelimitedList(fields.Str(), required=False),
         'media': fields.Str(required=False),
-        'taxonomy_values': fields.List(fields.Str(), required=False),
+        'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'include_tags': fields.Bool(required=False),
     }, location="query")
     @catch_exception
