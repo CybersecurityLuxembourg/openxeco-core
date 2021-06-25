@@ -61,7 +61,7 @@ class RunDatabaseCompliance(MethodResource, Resource):
         company_columns = self.db.tables["Company"].__table__.columns
 
         for col in company_columns:
-            if col.name != "editus_status" and col.name != "rscl_number":
+            if col.name != "editus_status" and col.name != "trade_register_number":
                 empty_valued_companies = [c for c in companies if getattr(c, col.name) is None]
 
                 if len(empty_valued_companies) > 0:

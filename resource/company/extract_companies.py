@@ -186,8 +186,8 @@ class ExtractCompanies(MethodResource, Resource):
         # Clean DF
 
         df = df.drop('Global|id', axis=1)
-        df = df.rename({'Global|rscl_number': "rscl_number"}, axis=1)
-        df = df.set_index("rscl_number")
+        df = df.rename({'Global|trade_register_number': "trade_register_number"}, axis=1)
+        df = df.set_index("trade_register_number")
         df.columns = df.columns.str.split('|', expand=True)
 
         # Build the XLS file

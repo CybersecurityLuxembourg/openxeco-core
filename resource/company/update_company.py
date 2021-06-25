@@ -24,7 +24,7 @@ class UpdateCompany(MethodResource, Resource):
          })
     @use_kwargs({
         'id': fields.Int(),
-        'rscl_number': fields.Str(required=False, allow_none=True),
+        'trade_register_number': fields.Str(required=False, allow_none=True),
         'name': fields.Str(required=False, allow_none=True),
         'image': fields.Int(required=False, allow_none=True),
         'description': fields.Str(required=False, allow_none=True),

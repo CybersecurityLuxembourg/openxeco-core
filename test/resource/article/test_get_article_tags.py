@@ -32,7 +32,7 @@ class TestGetArticleTags(BaseCase):
                     'is_startup': 0,
                     'is_targeting_sme': 0,
                     'name': 'COMPANY',
-                    'rscl_number': None,
+                    'trade_register_number': None,
                     'website': None
                 },
                 {
@@ -45,7 +45,7 @@ class TestGetArticleTags(BaseCase):
                     'is_startup': 0,
                     'is_targeting_sme': 0,
                     'name': 'COMPANY2',
-                    'rscl_number': None,
+                    'trade_register_number': None,
                     'website': None
                 }],
             'taxonomy_tags': [

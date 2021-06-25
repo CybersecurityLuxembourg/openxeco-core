@@ -27,7 +27,7 @@ class TestGetUserCompanies(BaseCase):
                 'is_startup': 0,
                 'is_targeting_sme': 0,
                 'name': 'My company',
-                'rscl_number': None,
+                'trade_register_number': None,
                 'website': None
             },
             {
@@ -40,6 +40,6 @@ class TestGetUserCompanies(BaseCase):
                 'is_startup': 0,
                 'is_targeting_sme': 0,
                 'name': 'My company2',
-                'rscl_number': None,
+                'trade_register_number': None,
                 'website': None
             }], response.json)

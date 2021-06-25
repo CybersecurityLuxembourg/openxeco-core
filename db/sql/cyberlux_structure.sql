@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS `Company`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Company` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `rscl_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trade_register_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` int DEFAULT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
