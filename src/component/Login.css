@@ -37,6 +37,10 @@
     font-size: 14px;
 }
 
+#Login h1 {
+    border: none !important;
+}
+
 /* BACKGROUND EFFECT */
 
 .Login-circles {

@@ -16,6 +16,7 @@ class App extends React.Component {
 
 		this.state = {
 			logged: false,
+			settings: null,
 		};
 	}
 

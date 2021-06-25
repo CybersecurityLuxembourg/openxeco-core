@@ -2,7 +2,7 @@ import React from "react";
 import "./Login.css";
 import { NotificationManager as nm } from "react-notifications";
 import FormLine from "./button/FormLine.jsx";
-import { postRequest } from "../utils/request.jsx";
+import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
@@ -12,12 +12,14 @@ export default class Login extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.getSettings = this.getSettings.bind(this);
 		this.login = this.login.bind(this);
 		this.requestReset = this.requestReset.bind(this);
 		this.resetPassword = this.resetPassword.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 
 		this.state = {
+			settings: null,
 			email: null,
 			password: null,
 			passwordConfirmation: null,
@@ -27,6 +29,8 @@ export default class Login extends React.Component {
 
 	// eslint-disable-next-line class-methods-use-this
 	componentDidMount() {
+		this.getSettings();
+
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
@@ -37,6 +41,24 @@ export default class Login extends React.Component {
 		// This function to notify if the password has been reset correctly
 
 		Login.notifyForPasswordReset();
+	}
+
+	getSettings() {
+		getRequest.call(this, "public/get_public_settings", (data) => {
+			const settings = {};
+
+			data.forEach((d) => {
+				settings[d.property] = d.value;
+			});
+
+			this.setState({
+				settings,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	static async notifyForPasswordReset() {
@@ -128,9 +150,15 @@ export default class Login extends React.Component {
 							&& <div>
 								<div className="Login-title">
 									<h1>
-										Welcome to CY-DB
+										{this.state.settings !== null
+											&& this.state.settings.ADMIN_PLATFORM_NAME !== undefined
+											? "Welcome to " + this.state.settings.ADMIN_PLATFORM_NAME
+											: "Welcome"}
 										<div className={"Login-title-small"}>
-											Dashboard of CYBERSECURITY LUXEMBOURG
+											{this.state.settings !== null
+												&& this.state.settings.PROJECT_NAME !== undefined
+												? "Administration platform of " + this.state.settings.PROJECT_NAME
+												: "Administration platform"}
 										</div>
 									</h1>
 								</div>
