@@ -26,7 +26,7 @@ class GetCompanyEnums(MethodResource, Resource):
     def get(self):
 
         data = {
-            "editus_status": self.db.tables["Company"].editus_status.prop.columns[0].type.enums
+            "status": self.db.tables["Company"].status.prop.columns[0].type.enums
         }
 
         return data, "200 "
