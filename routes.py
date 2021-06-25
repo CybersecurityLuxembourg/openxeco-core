@@ -81,12 +81,17 @@ from resource.public.get_public_analytics import GetPublicAnalytics
 from resource.public.get_public_companies import GetPublicCompanies
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company import GetPublicCompany
+from resource.public.get_public_settings import GetPublicSettings
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.request.get_requests import GetRequests
 from resource.request.get_request_enums import GetRequestEnums
 from resource.request.update_request import UpdateRequest
 from resource.resource.get_resources import GetResources
+from resource.setting.add_setting import AddSetting
+from resource.setting.delete_setting import DeleteSetting
+from resource.setting.upload_favicon import UploadFavicon
+from resource.setting.upload_logo import UploadLogo
 from resource.source.get_all_sources import GetAllSources
 from resource.user.add_user import AddUser
 from resource.user.add_user_company import AddUserCompany

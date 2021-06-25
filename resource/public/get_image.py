@@ -30,4 +30,9 @@ class GetImage(MethodResource, Resource):
         except FileNotFoundError:
             raise ImageNotFound
 
-        return send_file(f, attachment_filename=f"{id_}.jpg", mimetype='image/JPG')
+        if id_ == "favicon.ico":
+            return send_file(f, attachment_filename=id_, mimetype='image/x-icon')
+        elif id_ == "logo.png":
+            return send_file(f, attachment_filename=id_, mimetype='image/JPG')
+        else:
+            return send_file(f, attachment_filename=f"{id_}.jpg", mimetype='image/JPG')
