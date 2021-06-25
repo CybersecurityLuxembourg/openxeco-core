@@ -78,8 +78,8 @@ export default class RequestCompanyAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"RCSL number"}
-								value={this.props.data.rscl_number}
+								label={"Trade register number"}
+								value={this.props.data.trade_register_number}
 								disabled={true}
 							/>
 							<FormLine

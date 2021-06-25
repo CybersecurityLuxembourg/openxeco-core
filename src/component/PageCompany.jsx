@@ -137,8 +137,8 @@ export default class PageCompany extends React.Component {
 				),
 			},
 			{
-				Header: "RSCL Number",
-				accessor: "rscl_number",
+				Header: "Trade register number",
+				accessor: "trade_register_number",
 			},
 			{
 				Header: "Website",

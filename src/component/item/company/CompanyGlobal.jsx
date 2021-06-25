@@ -120,9 +120,9 @@ export default class CompanyGlobal extends React.Component {
 						onBlur={(v) => this.saveCompanyValue("description", v)}
 					/>
 					<FormLine
-						label={"RCSL number"}
-						value={this.state.company.rscl_number}
-						onBlur={(v) => this.saveCompanyValue("rscl_number", v)}
+						label={"Trade register number"}
+						value={this.state.company.trade_register_number}
+						onBlur={(v) => this.saveCompanyValue("trade_register_number", v)}
 					/>
 					<FormLine
 						label={"Website"}
@@ -154,13 +154,13 @@ export default class CompanyGlobal extends React.Component {
 						onChange={(v) => this.saveCompanyValue("is_targeting_sme", v)}
 					/>
 					<FormLine
-						label={"Editus status"}
+						label={"Status"}
 						type={"select"}
-						value={this.state.company.editus_status}
+						value={this.state.company.status}
 						options={this.state.companyEnums === null
-                            || typeof this.state.companyEnums.editus_status === "undefined" ? []
-							: this.state.companyEnums.editus_status.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveCompanyValue("editus_status", v)}
+                            || typeof this.state.companyEnums.status === "undefined" ? []
+							: this.state.companyEnums.status.map((o) => ({ label: o, value: o }))}
+						onChange={(v) => this.saveCompanyValue("status", v)}
 					/>
 				</div>
 			</div>
