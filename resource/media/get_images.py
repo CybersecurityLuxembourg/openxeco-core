@@ -33,7 +33,6 @@ class GetImages(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        print(kwargs)
         query = self.db.get_filtered_image_query(kwargs)
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
         images = Serializer.serialize(paginate.items, self.db.tables["Image"])

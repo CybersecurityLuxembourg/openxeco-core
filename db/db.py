@@ -145,7 +145,6 @@ class DB:
                                          func.lower(self.tables["Company"].website).like("%" + word + "%")))
 
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
-            print(filters['ecosystem_role'])
             ecosystem_roles = filters['ecosystem_role'] if isinstance(filters['ecosystem_role'], list) else \
                 filters['ecosystem_role'].split(',')
 

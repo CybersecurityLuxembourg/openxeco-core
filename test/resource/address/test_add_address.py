@@ -25,8 +25,6 @@ class TestAddAddress(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        print(response.status)
-
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.db.get_count(self.db.tables["Company_Address"]), 1)
 
