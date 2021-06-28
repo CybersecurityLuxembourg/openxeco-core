@@ -8,6 +8,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
+from PIL import Image
 
 from config.config import IMAGE_FOLDER
 from decorator.catch_exception import catch_exception
@@ -26,6 +27,7 @@ class UploadFavicon(MethodResource, Resource):
     @log_request
     @doc(tags=['setting'],
          description='Upload favicon of the project (overwrite if already exists). '
+                     'Must be an ICO file. '
                      'Note: the media is then available via the resource public/get_image/favicon.ico',
          responses={
              "200": {},
@@ -39,7 +41,15 @@ class UploadFavicon(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
+        try:
+            stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
+            image = Image.open(stream)
+        except Exception:
+            traceback.print_exc()
+            return "", "422 Impossible to read the image"
+
+        if image.format != 'ICO':
+            return "", "422 Wrong image format. Must be an ICO file"
 
         try:
             f = open(os.path.join(IMAGE_FOLDER, "favicon.ico"), 'wb')

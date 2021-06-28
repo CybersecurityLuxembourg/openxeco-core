@@ -8,6 +8,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
+from PIL import Image
 
 from config.config import IMAGE_FOLDER
 from decorator.catch_exception import catch_exception
@@ -26,7 +27,8 @@ class UploadLogo(MethodResource, Resource):
     @log_request
     @doc(tags=['setting'],
          description='Upload logo of the project (overwrite if already exists). '
-                     'Note: the media is then available via the resource public/get_image/logo',
+                     'Must be a JPG or a PNG file. '
+                     'Note: the media is then available via the resource public/get_image/logo.jpg',
          responses={
              "200": {},
              "500": {"description": "An error occurred while saving the file"},
@@ -39,7 +41,15 @@ class UploadLogo(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
+        try:
+            stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
+            image = Image.open(stream)
+        except Exception:
+            traceback.print_exc()
+            return "", "422 Impossible to read the image"
+
+        if image.format not in  ['JPG', 'PNG']:
+            return "", "422 Wrong image format. Must be an JPG or PNG file"
 
         try:
             f = open(os.path.join(IMAGE_FOLDER, "logo.jpg"), 'wb')
