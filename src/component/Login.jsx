@@ -6,7 +6,7 @@ import { postRequest } from "../utils/request.jsx";
 import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getCookieOptions, getEcosystemAppURL } from "../utils/env.jsx";
+import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -124,36 +124,39 @@ export default class Login extends React.Component {
 		return (
 			<div id="Login">
 				<div className="top-right-buttons">
+					{this.props.settings !== null && this.props.settings.EMAIL_ADDRESS !== undefined
+						&& <div>
+							<a
+								className="link-button"
+								href={"mailto:" + this.props.settings.EMAIL_ADDRESS}
+							>
+								<i className="fas fa-envelope-open-text"/> Contact via email
+							</a>
+						</div>
+					}
+
 					<div>
 						<a
 							className="link-button"
-							href="mailto:info@cybersecurity-luxembourg.com"
+							href={getGlobalAppURL()}
 						>
-							<i className="fas fa-envelope-open-text"/> Contact via email
-						</a>
-					</div>
-					<div>
-						<a
-							className="link-button"
-							href={getEcosystemAppURL()}
-						>
-							<i className="fas fa-globe"/> Visit ecosystem app
+							<i className="fas fa-globe"/> Visit main app
 						</a>
 					</div>
 				</div>
 
 				<div id="Login-area">
 					<ul className="Login-circles">
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
 					</ul>
 				</div>
 				<div id="Login-box" className="resize-animation">
@@ -162,10 +165,18 @@ export default class Login extends React.Component {
 							&& <div className="row">
 								<div className="col-md-12">
 									<div className="Login-title">
-										MY CYBERLUX
-										<div className={"Login-title-small"}>
-											CYBERSECURITY LUXEMBOURG private space
-										</div>
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "PRIVATE SPACE"
+										}
+
+										{this.props.settings !== null
+											&& this.props.settings.PROJECT_NAME !== undefined
+											&& <div className={"Login-title-small"}>
+												{this.props.settings.PROJECT_NAME} private space
+											</div>
+										}
 									</div>
 								</div>
 								<div className="col-md-6">
