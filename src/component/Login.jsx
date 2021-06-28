@@ -6,7 +6,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getCookieOptions } from "../utils/env.jsx";
+import { getCookieOptions, getApiURL } from "../utils/env.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -132,16 +132,16 @@ export default class Login extends React.Component {
 			<div id="Login">
 				<div id="Login-area">
 					<ul className="Login-circles">
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
 					</ul>
 				</div>
 				<div id="Login-box" className="resize-animation">

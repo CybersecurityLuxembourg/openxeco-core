@@ -54,15 +54,15 @@
 
 .Login-circles li{
     position: absolute;
-    display: block;
     list-style: none;
-    width: 20px;
-    height: 20px;
-    background-image: url("../img/logo.png");
-    background-size: cover;
+    min-width: 20px;
+    height: auto;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    object-fit: cover;
     animation: animate 25s linear infinite;
     bottom: -150px;
-   
 }
 
 .Login-circles li:nth-child(1){
