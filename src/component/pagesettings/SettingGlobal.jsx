@@ -308,6 +308,8 @@ export default class SettingGlobal extends React.Component {
 								<ul>
 									<li>PROJECT_NAME</li>
 									<li>ADMIN_PLATFORM_NAME</li>
+									<li>PRIVATE_PLATFORM_NAME</li>
+									<li>EMAIL_ADDRESS</li>
 								</ul>
 								<div>
 									You can then manage additional settings for customized usage.
