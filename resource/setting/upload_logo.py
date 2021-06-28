@@ -42,7 +42,7 @@ class UploadLogo(MethodResource, Resource):
         stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
 
         try:
-            f = open(os.path.join(IMAGE_FOLDER, "logo.png"), 'wb')
+            f = open(os.path.join(IMAGE_FOLDER, "logo.jpg"), 'wb')
             f.write(stream.read())
             f.close()
         except Exception:
