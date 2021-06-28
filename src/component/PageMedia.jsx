@@ -95,7 +95,7 @@ export default class PageMedia extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<div className="TaskRequest-buttons">
+						<div className="PageMedia-buttons">
 							<CheckBox
 								label={"SHOW LOGO ONLY"}
 								value={this.state.showLogoOnly}
