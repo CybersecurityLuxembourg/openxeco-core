@@ -123,7 +123,6 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
         a.type = "JOB OFFER" if a.type is None else a.type
         a.publication_date = today if a.publication_date is None else a.publication_date
         a.status = "PUBLIC" if a.status is None else a.status
-        a.media = "CYBERLUX" if a.media is None else a.media
         a.link = self._get_preferred_lang_info(source["urls"]) if a.link is None else a.link
 
         # Save modifications in DB

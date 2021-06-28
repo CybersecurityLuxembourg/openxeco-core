@@ -7,3 +7,5 @@ CREATE TABLE Setting (
 	property VARCHAR(255) NOT NULL PRIMARY KEY,
 	value TEXT NOT NULL
 );
+
+ALTER TABLE Article DROP COLUMN media;

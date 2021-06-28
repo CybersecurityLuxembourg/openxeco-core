@@ -23,7 +23,6 @@ class GetPublicArticles(MethodResource, Resource):
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'title': fields.Str(required=False),
         'type': fields.DelimitedList(fields.Str(), required=False),
-        'media': fields.Str(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'include_tags': fields.Bool(required=False),
     }, location="query")

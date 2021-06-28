@@ -22,9 +22,6 @@ class GetRelatedArticles(MethodResource, Resource):
              "200": {},
              "422": {"description": "The provided article ID does not exist or is not accessible"}
          })
-    @use_kwargs({
-        'media': fields.Str(required=False),
-    }, location="query")
     @catch_exception
     def get(self, id_, **kwargs):
 
@@ -59,9 +56,6 @@ class GetRelatedArticles(MethodResource, Resource):
             .filter(self.db.tables["Article"].status == "PUBLIC") \
             .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
             .filter(self.db.tables["Article"].type == "NEWS")
-
-        if "media" in kwargs:
-            query = query.filter(self.db.tables["Article"].media.in_(["ALL", kwargs["media"]]))
 
         related_articles = query \
             .order_by(desc(self.db.tables["Article"].publication_date)) \

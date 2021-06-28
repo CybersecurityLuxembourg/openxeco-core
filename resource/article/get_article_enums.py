@@ -27,7 +27,6 @@ class GetArticleEnums(MethodResource, Resource):
 
         data = {
             "status": self.db.tables["Article"].status.prop.columns[0].type.enums,
-            "media": self.db.tables["Article"].media.prop.columns[0].type.enums,
             "type": self.db.tables["Article"].type.prop.columns[0].type.enums
         }
 

@@ -32,7 +32,6 @@ class UpdateArticle(MethodResource, Resource):
         'end_date': fields.Str(required=False, allow_none=True),
         'status': fields.Str(required=False, allow_none=True),
         'type': fields.Str(required=False, allow_none=True),
-        'media': fields.Str(required=False, allow_none=True),
         'image': fields.Int(required=False, allow_none=True),
         'external_reference': fields.Str(required=False, allow_none=True),
         'link': fields.Str(required=False, allow_none=True),
