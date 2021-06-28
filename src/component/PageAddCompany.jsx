@@ -27,7 +27,7 @@ export default class PageAddCompany extends React.Component {
 				name: "Name",
 				type: "Type",
 				description: "Description",
-				rscl_number: "RCSL number",
+				trade_register_number: "Trade register number",
 				website: "Website",
 				creation_date: "Creation date",
 				is_cybersecurity_core_business: "Is cybersecurity core business",
@@ -229,9 +229,9 @@ export default class PageAddCompany extends React.Component {
 								disabled={!this.state.notFoundEntity}
 							/>
 							<FormLine
-								label={this.state.fields.rscl_number}
-								value={this.state.newCompanyForm.rscl_number}
-								onChange={(v) => this.updateNewCompany("rscl_number", v)}
+								label={this.state.fields.trade_register_number}
+								value={this.state.newCompanyForm.trade_register_number}
+								onChange={(v) => this.updateNewCompany("trade_register_number", v)}
 								disabled={!this.state.notFoundEntity}
 							/>
 							<FormLine

@@ -20,7 +20,7 @@ export default class CompanyGlobal extends React.Component {
 				name: "Name",
 				type: "Type",
 				description: "Description",
-				rscl_number: "RCSL number",
+				trade_register_number: "Trade register number",
 				website: "Website",
 				creation_date: "Creation date",
 				is_cybersecurity_core_business: "Is cybersecurity core business",
@@ -102,9 +102,9 @@ export default class CompanyGlobal extends React.Component {
 							onChange={(v) => this.updateCompany("description", v)}
 						/>
 						<FormLine
-							label={this.state.fields.rscl_number}
-							value={this.state.companyInfo.rscl_number}
-							onChange={(v) => this.updateCompany("rscl_number", v)}
+							label={this.state.fields.trade_register_number}
+							value={this.state.companyInfo.trade_register_number}
+							onChange={(v) => this.updateCompany("trade_register_number", v)}
 						/>
 						<FormLine
 							label={this.state.fields.website}
