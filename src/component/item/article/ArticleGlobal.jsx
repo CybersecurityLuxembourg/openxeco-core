@@ -150,15 +150,6 @@ export default class ArticleGlobal extends React.Component {
 							: this.state.articleEnums.status.map((o) => ({ label: o, value: o }))}
 						onChange={(v) => this.saveArticleValue("status", v)}
 					/>
-					<FormLine
-						label={"Media"}
-						type={"select"}
-						value={this.state.article.media}
-						options={this.state.articleEnums === null
-                            || typeof this.state.articleEnums.media === "undefined" ? []
-							: this.state.articleEnums.media.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveArticleValue("media", v)}
-					/>
 				</div>
 
 				{["NEWS", "EVENT", "JOB OFFER"].indexOf(this.state.article.type) >= 0

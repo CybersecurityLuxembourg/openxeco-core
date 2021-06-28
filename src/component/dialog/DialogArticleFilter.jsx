@@ -22,12 +22,11 @@ export default class DialogArticleFilter extends React.Component {
 		this.initialState = {
 			open: false,
 
-			allowedFilters: ["title", "type", "status", "media"],
+			allowedFilters: ["title", "type", "status"],
 
 			title: null,
 			type: null,
 			status: null,
-			media: null,
 
 			categories: null,
 			taxonomy_values: null,
@@ -209,22 +208,6 @@ export default class DialogArticleFilter extends React.Component {
 									this.state.articleEnums.status.map((o) => ({ label: o, value: o })),
 								)}
 							onChange={(v) => this.changeState("status", v)}
-						/>
-						: <Loading
-							height={100}
-						/>
-					}
-					{this.state.articleEnums !== null
-						? <FormLine
-							label={"Media"}
-							type={"select"}
-							value={this.state.media}
-							options={this.state.articleEnums === null
-                                || typeof this.state.articleEnums.media === "undefined" ? []
-								: [{ value: null, label: "-" }].concat(
-									this.state.articleEnums.media.map((o) => ({ label: o, value: o })),
-								)}
-							onChange={(v) => this.changeState("media", v)}
 						/>
 						: <Loading
 							height={100}

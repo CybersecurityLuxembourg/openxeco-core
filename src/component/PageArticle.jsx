@@ -105,10 +105,6 @@ export default class PageArticle extends React.Component {
 				accessor: "status",
 			},
 			{
-				Header: "Media",
-				accessor: "media",
-			},
-			{
 				Header: "Preview",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
