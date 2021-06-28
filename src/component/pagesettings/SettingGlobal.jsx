@@ -6,7 +6,7 @@ import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import Info from "../box/Info.jsx";
 import Table from "../table/Table.jsx";
-import { getRequest, postRequest } from "../../utils/request.jsx";
+import { getBlobRequest, getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 
@@ -64,13 +64,13 @@ export default class SettingGlobal extends React.Component {
 			logo: null,
 		});
 
-		getRequest.call(this, "public/get_image/logo.png", (data) => {
+		getBlobRequest.call(this, "public/get_image/logo.png", (data) => {
 			this.setState({
-				logo: data,
+				logo: URL.createObjectURL(data),
 			});
 		}, (response) => {
 			if (response.status === 422) {
-				nm.info("No favicon found for this project. Please provide one");
+				nm.info("No logo found for this project. Please provide one");
 			} else {
 				nm.warning(response.statusText);
 			}
@@ -84,13 +84,13 @@ export default class SettingGlobal extends React.Component {
 			favicon: null,
 		});
 
-		getRequest.call(this, "public/get_image/favicon.ico", (data) => {
+		getBlobRequest.call(this, "public/get_image/favicon.ico", (data) => {
 			this.setState({
-				favicon: String(data),
+				favicon: URL.createObjectURL(data),
 			});
 		}, (response) => {
 			if (response.status === 422) {
-				nm.info("No logo found for this project. Please provide one");
+				nm.info("No favicon found for this project. Please provide one");
 			} else {
 				nm.warning(response.statusText);
 			}
@@ -145,23 +145,19 @@ export default class SettingGlobal extends React.Component {
 			reader.onabort = () => console.log("file reading was aborted");
 			reader.onerror = () => console.log("An error happened while reading the file");
 			reader.onload = () => {
-				this.setState({
-					favicon: reader.result,
-				}, () => {
-					console.log(this.state.favicon);
-					const params = {
-						image: this.state.favicon,
-					};
+				const params = {
+					image: reader.result,
+				};
 
-					postRequest.call(this, "setting/upload_favicon", params, () => {
-						nm.info("The favicon has been uploaded");
-					}, (response) => {
-						this.refresh();
-						nm.warning(response.statusText);
-					}, (error) => {
-						this.refresh();
-						nm.error(error.message);
-					});
+				postRequest.call(this, "setting/upload_favicon", params, () => {
+					nm.info("The favicon has been uploaded");
+					this.getFavicon();
+				}, (response) => {
+					this.refresh();
+					nm.warning(response.statusText);
+				}, (error) => {
+					this.refresh();
+					nm.error(error.message);
 				});
 			};
 
@@ -181,22 +177,19 @@ export default class SettingGlobal extends React.Component {
 			reader.onabort = () => console.log("file reading was aborted");
 			reader.onerror = () => console.log("An error happened while reading the file");
 			reader.onload = () => {
-				this.setState({
-					logo: reader.result,
-				}, () => {
-					const params = {
-						image: this.state.logo,
-					};
+				const params = {
+					image: reader.result,
+				};
 
-					postRequest.call(this, "setting/upload_favicon", params, () => {
-						nm.info("The logo has been uploaded");
-					}, (response) => {
-						this.refresh();
-						nm.warning(response.statusText);
-					}, (error) => {
-						this.refresh();
-						nm.error(error.message);
-					});
+				postRequest.call(this, "setting/upload_logo", params, () => {
+					nm.info("The logo has been uploaded");
+					this.getLogo();
+				}, (response) => {
+					this.refresh();
+					nm.warning(response.statusText);
+				}, (error) => {
+					this.refresh();
+					nm.error(error.message);
 				});
 			};
 
@@ -266,11 +259,12 @@ export default class SettingGlobal extends React.Component {
 						>
 							{({ getRootProps, getInputProps }) => (
 								<div
-									className={"DialogAddImage-dragdrop"}
+									className={"SettingGlobal-dragdrop"}
 									{...getRootProps()}>
 									<input {...getInputProps()} />
-									<div className="DialogAddImage-dragdrop-textContent">
-										<i className="far fa-image"/>
+									<div className="SettingGlobal-dragdrop-textContent">
+										{this.state.logo !== null
+											&& <img src={this.state.logo}/>}
 										<div>Drag and drop the file here</div>
 										<div>(must be .jpg, .jpeg or .png)</div>
 									</div>
@@ -289,11 +283,12 @@ export default class SettingGlobal extends React.Component {
 						>
 							{({ getRootProps, getInputProps }) => (
 								<div
-									className={"DialogAddImage-dragdrop"}
+									className={"SettingGlobal-dragdrop"}
 									{...getRootProps()}>
 									<input {...getInputProps()} />
-									<div className="DialogAddImage-dragdrop-textContent">
-										<i className="far fa-image"/>
+									<div className="SettingGlobal-dragdrop-textContent">
+										{this.state.favicon !== null
+											&& <img src={this.state.favicon}/>}
 										<div>Drag and drop the file here</div>
 										<div>(must be .ico)</div>
 									</div>
