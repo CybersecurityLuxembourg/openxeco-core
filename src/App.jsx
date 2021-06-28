@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
+import { getApiURL } from "./utils/env.jsx";
 
 class App extends React.Component {
 	constructor(props) {
@@ -18,6 +19,11 @@ class App extends React.Component {
 			logged: false,
 			settings: null,
 		};
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	componentDidMount() {
+		document.getElementById("favicon").href = getApiURL() + "public/get_image/favicon.ico";
 	}
 
 	connect() {
