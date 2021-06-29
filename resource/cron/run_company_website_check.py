@@ -3,6 +3,7 @@ from flask_apispec import MethodResource
 from flask_apispec import doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
+import traceback
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -38,7 +39,7 @@ class RunCompanyWebsiteCheck(MethodResource, Resource):
             if c.website is not None:
                 website = c.website if c.website.startswith("http") else "https://" + c.website
                 try:
-                    r = requests.head(website)
+                    r = requests.head(website, allow_redirects=True)
 
                     if r.status_code != 200:
                         anomalies.append(f"The website of <COMPANY:{c.id}> returned code {r.status_code}")
