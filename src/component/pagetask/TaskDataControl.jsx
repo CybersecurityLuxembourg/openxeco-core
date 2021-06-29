@@ -184,33 +184,52 @@ export default class TaskDataControl extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<Info
-							content={
-								"You can launch again the scanning with the 'SCHEDULED TASK' section of the 'SETTINGS' page"
-								+ "<ul/>"
-								+ "<li>'/cron/run_database_compliance' issues the 'DATABASE COMPLIANCE' category controls</li>"
-								+ "<li>'/cron/run_company_website_check' issues the 'WEBSITE CHECK' category controls</li>"
-								+ "</ul>"
-							}
+							content={<div>
+								<div>
+									You can launch again the scanning with the &#39;SCHEDULED
+									TASK&#39; section of the &#39;SETTINGS&#39; page
+								</div>
+								<ul>
+									<li>
+										&#39;/cron/run_database_compliance&#39;
+										issues the &#39;DATABASE COMPLIANCE&#39;
+										category controls
+									</li>
+									<li>
+										&#39;/cron/run_company_website_check&#39; issues
+										the &#39;WEBSITE CHECK&#39; category controls
+									</li>
+								</ul>
+							</div>}
 						/>
 					</div>
 
 					<div className="col-md-12">
 						<Info
-							content={
-								"Checks from '/cron/run_database_compliance' for the entities:"
-								+ "<ul/>"
-								+ "<li>Check if image, website, creation date are not empty</li>"
-								+ "<li>Check if there is at least one physical address</li>"
-								+ "<li>Check if there is at least one phone number contact</li>"
-								+ "<li>Check if there is an ENTITY TYPE from the taxonomy</li>"
-								+ "<li>Check if there is at least one SERVICE GROUP from the ACTORs</li>"
-								+ "</ul>"
-								+ "Checks from '/cron/run_database_compliance' for the news:"
-								+ "<ul/>"
-								+ "<li>Check if title, handle and publication date are not empty</li>"
-								+ "<li>Check if it has a main version</li>"
-								+ "</ul>"
-							}
+							content={<div>
+								<div>Checks from &#39;/cron/run_database_compliance&#39; for the entities:</div>
+								<ul>
+									<li>Check if image, website, creation date are not empty</li>
+									<li>Check if there is at least one physical address</li>
+									<li>Check if there is at least one phone number contact</li>
+									<li>Check if there is at least one email address contact</li>
+									<li>Check if there is an ENTITY TYPE from the taxonomy</li>
+									<li>Check if there is at least one SERVICE GROUP from the ACTORs</li>
+								</ul>
+								<div>Checks from &#39;/cron/run_database_compliance&#39; for the news:</div>
+								<ul>
+									<li>Check if title, handle and publication date are not empty</li>
+									<li>Check if it has a link or a main version with at least one content box</li>
+								</ul>
+								<div>Checks from &#39;/cron/run_database_compliance&#39; for the events:</div>
+								<ul>
+									<li>
+										Check if title, handle, publication date, start date
+										and end date are not empty
+									</li>
+									<li>Check if it has a link or a main version with at least one content box</li>
+								</ul>
+							</div>}
 						/>
 					</div>
 				</div>
