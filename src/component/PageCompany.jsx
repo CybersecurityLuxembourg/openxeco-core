@@ -97,7 +97,7 @@ export default class PageCompany extends React.Component {
 			const url = window.URL.createObjectURL(new Blob([blob]));
 			const link = document.createElement("a");
 			link.href = url;
-			link.setAttribute("download", "CYBERLUX - Company export.xlsx");
+			link.setAttribute("download", "Company export.xlsx");
 			document.body.appendChild(link);
 			link.click();
 			link.parentNode.removeChild(link);

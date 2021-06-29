@@ -30,6 +30,7 @@ export default class Request extends Component {
 			user: null,
 			company: null,
 			requestStatus: null,
+			settings: null,
 		};
 	}
 
@@ -50,6 +51,7 @@ export default class Request extends Component {
 		this.setState({
 			isDetailOpened: true,
 			user: null,
+			settings: null,
 		});
 
 		getRequest.call(this, "user/get_user/" + this.props.info.user_id, (data) => {
@@ -84,6 +86,16 @@ export default class Request extends Component {
 				nm.error(error.message);
 			});
 		}
+
+		getRequest.call(this, "public/get_public_settings", (data) => {
+			this.setState({
+				settings: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	updateRequest(prop, value) {
@@ -283,8 +295,15 @@ export default class Request extends Component {
 									</button>
 								}
 								email={this.state.user.email}
-								subject={"[CYBERSECURITY LUXEMBOURG] Treated request"}
-								content={"Dear user,\n\n" + this.getMailBody() + "\n\nSincerely,\nCYBERSECURITY LUXEMBOURG Support Team"}
+								subject={(this.state.settings !== null
+									&& this.state.settings.PROJECT_NAME !== undefined
+									&& "[" + this.state.settings.PROJECT_NAME + "] ") + "Treated request"}
+								content={"Dear user,\n\n"
+									+ this.getMailBody()
+									+ "\n\nSincerely,\n"
+									+ (this.state.settings !== null
+									&& this.state.settings.PROJECT_NAME !== undefined
+									&& this.state.settings.PROJECT_NAME + " ") + "Support Team"}
 							/>
 							: <Loading
 								height={50}

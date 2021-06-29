@@ -64,7 +64,7 @@ export default class SettingGlobal extends React.Component {
 			logo: null,
 		});
 
-		getBlobRequest.call(this, "public/get_image/logo.png", (data) => {
+		getBlobRequest.call(this, "public/get_image/logo.jpg", (data) => {
 			this.setState({
 				logo: URL.createObjectURL(data),
 			});
