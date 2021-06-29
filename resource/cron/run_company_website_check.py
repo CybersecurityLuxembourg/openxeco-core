@@ -3,7 +3,6 @@ from flask_apispec import MethodResource
 from flask_apispec import doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
-import traceback
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -18,7 +17,11 @@ class RunCompanyWebsiteCheck(MethodResource, Resource):
 
     @log_request
     @doc(tags=['cron'],
-         description='Run the health check of the company websites. The result is written in the DataControl table',
+         description='Run the health check of the company websites. The result is written in the DataControl table '
+                     'with "WEBSITE CHECK" as category.'
+                     '<br/><br/>'
+                     '<p>All the generated rows with "WEBSITE CHECK" as a category on DataControl table '
+                     'are deleted when relaunched.</p>',
          responses={
              "200": {},
          })
