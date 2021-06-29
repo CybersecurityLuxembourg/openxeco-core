@@ -12,6 +12,7 @@ export default class SettingCron extends React.Component {
 		super(props);
 
 		this.getResources = this.getResources.bind(this);
+		this.refreshLogs = this.refreshLogs.bind(this);
 		this.getLogs = this.getLogs.bind(this);
 
 		this.state = {
@@ -48,6 +49,26 @@ export default class SettingCron extends React.Component {
 		getRequest.call(this, "resource/get_resources", (data) => {
 			this.setState({
 				resources: data.filter((d) => d.startsWith("/cron/")),
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	refreshLogs() {
+		const params = {
+			order: this.state.order,
+			page: 1,
+			per_page: this.state.per_page,
+		};
+
+		getRequest.call(this, "log/get_logs?resource=%2Fcron%2F&" + dictToURI(params), (data) => {
+			this.setState({
+				logs: data.items,
+				page: 2,
+				showLoadMoreButton: data.pagination.page < data.pagination.pages,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -138,7 +159,7 @@ export default class SettingCron extends React.Component {
 
 						<div className="top-right-buttons">
 							<button
-								onClick={this.getLogs}>
+								onClick={this.refreshLogs}>
 								<i className="fas fa-redo-alt"/>
 							</button>
 						</div>
