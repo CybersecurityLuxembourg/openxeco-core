@@ -17,7 +17,8 @@ class GetImage(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get image from the media library',
+         description='Get image from the media library. Accept a digit media ID, "favicon.ico" '
+                     'or "logo.png" as a parameter',
          responses={
              "200": {},
              "422.a": {"description": "Image not found"},
@@ -25,7 +26,7 @@ class GetImage(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
-        if id_.isdigit() or id_ in ["favicon.ico", "logo.jpg"]:
+        if id_.isdigit() or id_ in ["favicon.ico", "logo.png"]:
             try:
                 f = open(os.path.join(IMAGE_FOLDER, id_), "rb")
             except FileNotFoundError:
@@ -33,9 +34,9 @@ class GetImage(MethodResource, Resource):
 
             if id_ == "favicon.ico":
                 return send_file(f, attachment_filename=id_, mimetype='image/x-icon')
-            elif id_ == "logo.jpg":
-                return send_file(f, attachment_filename=id_, mimetype='image/JPG')
+            elif id_ == "logo.png":
+                return send_file(f, attachment_filename=id_, mimetype='image/PNG')
             else:
                 return send_file(f, attachment_filename=f"{id_}.jpg", mimetype='image/JPG')
         else:
-            return "", "422 The provided parameter mush be digits or 'favicon.ico' or 'logo.jpg'"
+            return "", "422 The provided parameter mush be digits or 'favicon.ico' or 'logo.png'"

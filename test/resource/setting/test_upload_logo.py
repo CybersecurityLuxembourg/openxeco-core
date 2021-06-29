@@ -14,7 +14,7 @@ class TestUploadLogo(BaseCase):
     def test_ok(self, token):
 
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "original_image.png")
-        target_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "logo.jpg")
+        target_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "logo.png")
 
         if os.path.exists(target_path):
             os.remove(target_path)
@@ -41,7 +41,7 @@ class TestUploadLogo(BaseCase):
     def test_ko_wrong_format(self, token):
 
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "original_favicon.ico")
-        target_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "logo.jpg")
+        target_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "logo.png")
 
         if os.path.exists(target_path):
             os.remove(target_path)
@@ -57,7 +57,7 @@ class TestUploadLogo(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 Wrong image format. Must be an JPG or PNG file", response.status)
+        self.assertEqual("422 Wrong image format. Must be a PNG file", response.status)
         self.assertFalse(os.path.exists(target_path))
 
     @BaseCase.login
@@ -67,7 +67,7 @@ class TestUploadLogo(BaseCase):
     def test_ko_file_exception(self, token):
 
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "original_image.png")
-        target_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "logo.jpg")
+        target_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_upload_logo", "logo.png")
 
         payload = {"image": "FAKE FILE"}
 

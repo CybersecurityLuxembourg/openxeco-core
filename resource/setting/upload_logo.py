@@ -27,8 +27,8 @@ class UploadLogo(MethodResource, Resource):
     @log_request
     @doc(tags=['setting'],
          description='Upload logo of the project (overwrite if already exists). '
-                     'Must be a JPG or a PNG file. '
-                     'Note: the media is then available via the resource public/get_image/logo.jpg',
+                     'Must be a PNG file. '
+                     'Note: the media is then available via the resource public/get_image/logo.png',
          responses={
              "200": {},
              "500": {"description": "An error occurred while saving the file"},
@@ -42,18 +42,19 @@ class UploadLogo(MethodResource, Resource):
     def post(self, **kwargs):
 
         try:
-            stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
+            decoded_data = base64.b64decode(kwargs["image"].split(",")[-1])
+            stream = io.BytesIO(decoded_data)
             image = Image.open(stream)
         except Exception:
             traceback.print_exc()
             return "", "422 Impossible to read the image"
 
-        if image.format not in  ['JPG', 'PNG']:
-            return "", "422 Wrong image format. Must be an JPG or PNG file"
+        if image.format != 'PNG':
+            return "", "422 Wrong image format. Must be a PNG file"
 
         try:
-            f = open(os.path.join(IMAGE_FOLDER, "logo.jpg"), 'wb')
-            f.write(stream.read())
+            f = open(os.path.join(IMAGE_FOLDER, "logo.png"), 'wb')
+            f.write(decoded_data)
             f.close()
         except Exception:
             traceback.print_exc()

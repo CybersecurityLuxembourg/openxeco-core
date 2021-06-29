@@ -18,7 +18,7 @@ class TestGetImage(BaseCase):
                                                                   "test_get_image"))
     def test_ok_logo(self):
 
-        response = self.application.get('/public/get_image/logo.jpg')
+        response = self.application.get('/public/get_image/logo.png')
 
         self.assertEqual(200, response.status_code)
 
@@ -44,4 +44,4 @@ class TestGetImage(BaseCase):
 
         response = self.application.get('/public/get_image/other.string')
 
-        self.assertEqual("422 The provided parameter mush be digits or 'favicon.ico' or 'logo.jpg'", response.status)
+        self.assertEqual("422 The provided parameter mush be digits or 'favicon.ico' or 'logo.png'", response.status)
