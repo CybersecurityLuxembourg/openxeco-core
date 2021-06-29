@@ -266,7 +266,7 @@ export default class SettingGlobal extends React.Component {
 										{this.state.logo !== null
 											&& <img src={this.state.logo}/>}
 										<div>Drag and drop the file here</div>
-										<div>(must be .jpg, .jpeg or .png)</div>
+										<div>(must be .png)</div>
 									</div>
 								</div>
 							)}
