@@ -40,7 +40,6 @@ CREATE TABLE `Article` (
   `end_date` datetime DEFAULT NULL,
   `status` enum('DRAFT','PUBLIC','ARCHIVE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'DRAFT',
   `type` enum('NEWS','EVENT','TOOL','SERVICE','RESOURCE','JOB OFFER') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'NEWS',
-  `media` enum('ALL','CYBERLUX','SECURITYMADEIN.LU') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'ALL',
   `image` int DEFAULT NULL,
   `external_reference` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(550) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -479,4 +478,16 @@ CREATE TABLE `Workforce` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-14 17:09:24
+--
+-- Table structure for table `UserGroupRight`
+--
+
+DROP TABLE IF EXISTS `Setting`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Setting` (
+  `property` VARCHAR(255) NOT NULL,
+  `value` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`property`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
