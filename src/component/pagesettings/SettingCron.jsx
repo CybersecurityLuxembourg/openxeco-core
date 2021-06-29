@@ -81,7 +81,7 @@ export default class SettingCron extends React.Component {
 			isTaskRunning: true,
 		});
 
-		nm.info("The task is running. A notification will appear one finished.");
+		nm.info("The task is running. A notification will appear once finished.");
 
 		postRequest.call(this, resource, null, () => {
 			nm.info("The task has been executed with success");
