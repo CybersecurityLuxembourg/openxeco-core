@@ -58,22 +58,27 @@ export default class SettingCron extends React.Component {
 	}
 
 	refreshLogs() {
-		const params = {
-			order: this.state.order,
+		this.setState({
+			logs: null,
 			page: 1,
-			per_page: this.state.per_page,
-		};
+		}, () => {
+			const params = {
+				order: this.state.order,
+				page: this.state.page,
+				per_page: this.state.per_page,
+			};
 
-		getRequest.call(this, "log/get_logs?resource=%2Fcron%2F&" + dictToURI(params), (data) => {
-			this.setState({
-				logs: data.items,
-				page: 2,
-				showLoadMoreButton: data.pagination.page < data.pagination.pages,
+			getRequest.call(this, "log/get_logs?resource=%2Fcron%2F&" + dictToURI(params), (data) => {
+				this.setState({
+					logs: data.items,
+					page: 2,
+					showLoadMoreButton: data.pagination.page < data.pagination.pages,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
 		});
 	}
 
