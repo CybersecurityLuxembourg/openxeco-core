@@ -20,19 +20,19 @@ export default class PageSettings extends React.Component {
 		return (
 			<div id="PageSettings" className="page max-sized-page">
 				<Tab
-					menu={["Global", "Scheduled task", "Taxonomy", "Mail"]}
+					menu={["Global", "Taxonomy", "Mail", "Scheduled task"]}
 					content={[
 						<SettingGlobal
 							key={"global"}
-						/>,
-						<SettingCron
-							key={"cron"}
 						/>,
 						<SettingTaxonomy
 							key={"taxonomy"}
 						/>,
 						<SettingMail
 							key={"mail"}
+						/>,
+						<SettingCron
+							key={"cron"}
 						/>,
 					]}
 				/>
