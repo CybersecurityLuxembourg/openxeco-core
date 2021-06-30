@@ -34,9 +34,9 @@ class GetImage(MethodResource, Resource):
 
             if id_ == "favicon.ico":
                 return send_file(f, attachment_filename=id_, mimetype='image/x-icon')
-            elif id_ == "logo.png":
+            if id_ == "logo.png":
                 return send_file(f, attachment_filename=id_, mimetype='image/PNG')
-            else:
-                return send_file(f, attachment_filename=f"{id_}.jpg", mimetype='image/JPG')
-        else:
-            return "", "422 The provided parameter mush be digits or 'favicon.ico' or 'logo.png'"
+
+            return send_file(f, attachment_filename=f"{id_}.jpg", mimetype='image/JPG')
+
+        return "", "422 The provided parameter mush be digits or 'favicon.ico' or 'logo.png'"

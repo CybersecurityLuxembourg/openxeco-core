@@ -1,10 +1,9 @@
 import datetime
 
 from flask_apispec import MethodResource
-from flask_apispec import use_kwargs, doc
+from flask_apispec import doc
 from flask_restful import Resource
 from sqlalchemy import desc
-from webargs import fields
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -23,7 +22,7 @@ class GetRelatedArticles(MethodResource, Resource):
              "422": {"description": "The provided article ID does not exist or is not accessible"}
          })
     @catch_exception
-    def get(self, id_, **kwargs):
+    def get(self, id_):
 
         act = self.db.tables["ArticleCompanyTag"]
         att = self.db.tables["ArticleTaxonomyTag"]
