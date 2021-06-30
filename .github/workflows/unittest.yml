@@ -13,6 +13,11 @@ jobs:
     services:
       mysql-service:
         image: mysql:8.0.23
+        env:
+          MYSQL_USER: cyberlux
+          MYSQL_PASSWORD: DBDevSMILE20
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: CYBERLUX_TEST
         ports:
           - 3306
         options: >-
@@ -33,7 +38,6 @@ jobs:
       - name: Start MySQL server and create user
         run: |
           sudo systemctl start mysql
-          sudo mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'cyberlux'@'localhost' IDENTIFIED BY 'DBDevSMILE20';"
       - name: Initialize database
         run: |
           sudo mysql -e "CREATE DATABASE `CYBERLUX_TEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
