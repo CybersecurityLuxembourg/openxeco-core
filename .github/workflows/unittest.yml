@@ -13,7 +13,6 @@ jobs:
     services:
       mysql-service:
         image: mysql:8.0.23
-        env:
         ports:
           - 3306
         options: >-
