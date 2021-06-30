@@ -14,8 +14,6 @@ jobs:
       mysql-service:
         image: mysql:8.0.23
         env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: CYBERLUX_TEST
         ports:
           - 3306
         options: >-
