@@ -15,7 +15,7 @@ class GetMyNotifications(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Get the number of active requests from the user related to the token '
+         description='Get the number of active requests from the user authenticated by the token '
                      'with status "NEW" or "IN PROCESS". '
                      'The request counts are splitted according to the company the request are related to',
          responses={

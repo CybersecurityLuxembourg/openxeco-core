@@ -17,7 +17,7 @@ class GetMyRequests(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Get the list of requests from the user related to the token with status "NEW" or "IN PROCESS"',
+         description='Get the list of requests from the user authenticated by the token with status "NEW" or "IN PROCESS"',
          responses={
              "200": {},
          })

@@ -16,7 +16,7 @@ class GetMyCompanies(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Get the list of companies assigned to the user related to the token',
+         description='Get the list of companies assigned to the user authenticated by the token',
          responses={
              "200": {},
          })

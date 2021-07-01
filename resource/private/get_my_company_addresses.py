@@ -17,7 +17,7 @@ class GetMyCompanyAddresses(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Get the list of addresses of a company assigned to the user related to the token',
+         description='Get the list of addresses of a company assigned to the user authenticated by the token',
          responses={
              "200": {},
              "422": {"description": "Object not found or you don't have the required access to it"},

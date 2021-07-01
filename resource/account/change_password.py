@@ -21,7 +21,7 @@ class ChangePassword(MethodResource, Resource):
 
     @log_request
     @doc(tags=['account'],
-         description='Change password of the user related to the token',
+         description='Change password of the user authenticated by the token',
          responses={
              "200": {},
              "401": {"description": "The user has not been found"},

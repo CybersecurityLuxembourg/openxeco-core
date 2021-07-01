@@ -15,7 +15,7 @@ class GetMyUser(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Get information about the user related to the token (excluding the password)',
+         description='Get information about the user authenticated by the token (excluding the password)',
          responses={
              "200": {},
              "401": {"description": "The user has not been found"},
