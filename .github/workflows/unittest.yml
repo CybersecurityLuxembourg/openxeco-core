@@ -41,7 +41,7 @@ jobs:
         run: |
           sudo systemctl start mysql
           mysql -h 127.0.0.1 -P 3306 -uroot -ppassword -e "CREATE DATABASE `CYBERLUX_TEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-          mysql -h 127.0.0.1 -P 3306 -uroot -ppassword CYBERLUX_TEST < db/sql/cyberlux_structure.sql
+          mysql -h 127.0.0.1 -P 3306 -uroot -ppassword CYBERLUX_TEST < db/sql/structure.sql
       - name: Run unit tests with coverage
         run: |
           cp config/config.py.sample config/config.py
