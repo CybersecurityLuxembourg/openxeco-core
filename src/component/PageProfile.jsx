@@ -7,6 +7,7 @@ import Info from "./box/Info.jsx";
 import FormLine from "./form/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
+import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
@@ -68,6 +69,16 @@ export default class PageProfile extends React.Component {
 		this.setState({
 			user,
 			hasModification: true,
+		});
+	}
+
+	deleteUser() {
+		postRequest.call(this, "private/delete_my_user", {}, () => {
+			window.location.reload(true);
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
 		});
 	}
 
@@ -152,6 +163,7 @@ export default class PageProfile extends React.Component {
 						}
 					</div>
 				</div>
+
 				<div className={"row row-spaced"}>
 					<div className="col-md-6">
 						<h2>Change password</h2>
@@ -200,6 +212,41 @@ export default class PageProfile extends React.Component {
 										<i className="far fa-save"/> Change password
 									</button>
 								</div>
+							</div>
+							: <Loading
+								height={150}
+							/>
+						}
+					</div>
+
+					<div className="col-md-6">
+						<h2>Delete account</h2>
+
+						{this.state.user !== null
+							? <div>
+								<Info
+									content={
+										<div>
+											Deleting the account will remove all the personal information.
+											You won&#39;t be able to retrieve them after confirmation.
+											<br/><br/>
+											However, the data concerning the entities will be remaining
+											in the CYBERLUX database.
+										</div>
+									}
+								/>
+								<DialogConfirmation
+									text={"Do you want to delete your account? This will be irreversible"}
+									trigger={
+										<div className="right-buttons">
+											<button
+												className={"red-button"}>
+												<i className="far fa-trash-alt"/> Delete account...
+											</button>
+										</div>
+									}
+									afterConfirmation={this.deleteUser}
+								/>
 							</div>
 							: <Loading
 								height={150}
