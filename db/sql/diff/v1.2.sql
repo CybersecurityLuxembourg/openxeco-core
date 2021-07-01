@@ -9,3 +9,5 @@ CREATE TABLE Setting (
 );
 
 ALTER TABLE Article DROP COLUMN media;
+
+ALTER TABLE `Log` DROP FOREIGN KEY `log_ibfk_1`;
