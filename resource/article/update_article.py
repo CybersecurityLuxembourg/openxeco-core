@@ -1,13 +1,15 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
 
 
-class UpdateArticle(Resource):
+class UpdateArticle(MethodResource, Resource):
 
     db = None
 
@@ -15,15 +17,30 @@ class UpdateArticle(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'id', 'type': int}
-    ])
+    @doc(tags=['article'],
+         description='Update an article',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'id': fields.Int(),
+        'handle': fields.Str(required=False, allow_none=True),
+        'title': fields.Str(required=False, allow_none=True),
+        'abstract': fields.Str(required=False, allow_none=True),
+        'publication_date': fields.Str(required=False, allow_none=True),
+        'start_date': fields.Str(required=False, allow_none=True),
+        'end_date': fields.Str(required=False, allow_none=True),
+        'status': fields.Str(required=False, allow_none=True),
+        'type': fields.Str(required=False, allow_none=True),
+        'image': fields.Int(required=False, allow_none=True),
+        'external_reference': fields.Str(required=False, allow_none=True),
+        'link': fields.Str(required=False, allow_none=True),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        self.db.merge(input_data, self.db.tables["Article"])
+        self.db.merge(kwargs, self.db.tables["Article"])
 
         return "", "200 "

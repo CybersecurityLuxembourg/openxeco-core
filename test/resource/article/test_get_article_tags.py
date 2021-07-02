@@ -25,27 +25,27 @@ class TestGetArticleTags(BaseCase):
                 {
                     'creation_date': None,
                     'description': None,
-                    'editus_status': None,
+                    'status': None,
                     'id': 10,
                     'image': None,
                     'is_cybersecurity_core_business': 0,
                     'is_startup': 0,
                     'is_targeting_sme': 0,
                     'name': 'COMPANY',
-                    'rscl_number': None,
+                    'trade_register_number': None,
                     'website': None
                 },
                 {
                     'creation_date': None,
                     'description': None,
-                    'editus_status': None,
+                    'status': None,
                     'id': 11,
                     'image': None,
                     'is_cybersecurity_core_business': 0,
                     'is_startup': 0,
                     'is_targeting_sme': 0,
                     'name': 'COMPANY2',
-                    'rscl_number': None,
+                    'trade_register_number': None,
                     'website': None
                 }],
             'taxonomy_tags': [

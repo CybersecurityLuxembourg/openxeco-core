@@ -1,19 +1,29 @@
-from flask_restful import Resource
+from flask_apispec import MethodResource
+from flask_apispec import doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_restful import Resource
+
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class GetMyUser(Resource):
+class GetMyUser(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @log_request
+    @doc(tags=['private'],
+         description='Get information about the user authenticated by the token (excluding the password)',
+         responses={
+             "200": {},
+             "401": {"description": "The user has not been found"},
+         })
     @jwt_required
     @catch_exception
     def get(self):
+
         data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
 
         if len(data) == 0:

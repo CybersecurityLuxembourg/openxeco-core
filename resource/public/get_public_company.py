@@ -1,20 +1,29 @@
+from flask_apispec import MethodResource
+from flask_apispec import doc
 from flask_restful import Resource
+
 from db.db import DB
-from exception.object_not_found import ObjectNotFound
 from decorator.catch_exception import catch_exception
+from exception.object_not_found import ObjectNotFound
 
 
-class GetPublicCompany(Resource):
+class GetPublicCompany(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
+    @doc(tags=['public'],
+         description='Get full information of a company',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"}
+         })
     @catch_exception
     def get(self, id_):
 
         c = self.db.tables["Company"]
-        entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.rscl_number, c.creation_date, \
-            c.description, c.website, c.image
+        entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.trade_register_number, \
+            c.creation_date, c.description, c.website, c.image
         data = [o._asdict() for o in self.db.get(c, {"id": id_}, entities)]
 
         if len(data) < 1:

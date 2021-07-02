@@ -1,27 +1,39 @@
-from flask_restful import Resource
-from flask_jwt_extended import jwt_required
-from db.db import DB
-from decorator.verify_admin_access import verify_admin_access
-from decorator.catch_exception import catch_exception
-from decorator.log_request import log_request
-from urllib import request
-import json
-from datetime import datetime
-import re
 import copy
+import json
+import re
+from datetime import datetime
+from urllib import request
+
+from flask_apispec import MethodResource
+from flask_apispec import doc
+from flask_jwt_extended import jwt_required
+from flask_restful import Resource
 from sqlalchemy import func
 
+from db.db import DB
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
 
-class UpdateMoovijobJobOffers(Resource):
+
+class UpdateMoovijobJobOffers(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @log_request
+    @doc(tags=['cron'],
+         description='Update the job offers from Moovijob',
+         responses={
+             "200": {},
+             "500.a": {"description": "No article has been treated"},
+             "500.b": {"description": "Moovijob company not found"},
+             "500.c": {"description": "Too many Moovijob company found"},
+         })
     @jwt_required
     @verify_admin_access
-    @catch_exception
-    def post(self):  # pylint: disable=too-many-locals
+    @catch_exception  # pylint: disable=too-many-locals
+    def post(self):
 
         base_url = "https://www.moovijob.com/api/job-offers/search?job_categories[]=informatique-consulting" \
                    "&job_categories[]=informatique-dev&job_categories[]=informatique-infra-reseau&q=security"
@@ -111,7 +123,6 @@ class UpdateMoovijobJobOffers(Resource):
         a.type = "JOB OFFER" if a.type is None else a.type
         a.publication_date = today if a.publication_date is None else a.publication_date
         a.status = "PUBLIC" if a.status is None else a.status
-        a.media = "CYBERLUX" if a.media is None else a.media
         a.link = self._get_preferred_lang_info(source["urls"]) if a.link is None else a.link
 
         # Save modifications in DB

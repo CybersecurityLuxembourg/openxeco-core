@@ -17,7 +17,7 @@ class TestGetPublicCompany(BaseCase):
             'name': 'My Company',
             'is_startup': 0,
             'is_cybersecurity_core_business': 0,
-            'rscl_number': None,
+            'trade_register_number': None,
             'creation_date': None,
             'description': None,
             'taxonomy_assignment': [],

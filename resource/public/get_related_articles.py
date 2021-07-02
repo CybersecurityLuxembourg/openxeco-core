@@ -1,21 +1,28 @@
-from flask_restful import Resource
-from db.db import DB
-from utils.serializer import Serializer
-from decorator.catch_exception import catch_exception
-from flask import request
 import datetime
+
+from flask_apispec import MethodResource
+from flask_apispec import doc
+from flask_restful import Resource
 from sqlalchemy import desc
 
+from db.db import DB
+from decorator.catch_exception import catch_exception
+from utils.serializer import Serializer
 
-class GetRelatedArticles(Resource):
+
+class GetRelatedArticles(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
+    @doc(tags=['public'],
+         description='Get the news articles related to the provided article ID',
+         responses={
+             "200": {},
+             "422": {"description": "The provided article ID does not exist or is not accessible"}
+         })
     @catch_exception
     def get(self, id_):
-
-        filters = request.args.to_dict()
 
         act = self.db.tables["ArticleCompanyTag"]
         att = self.db.tables["ArticleTaxonomyTag"]
@@ -48,9 +55,6 @@ class GetRelatedArticles(Resource):
             .filter(self.db.tables["Article"].status == "PUBLIC") \
             .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
             .filter(self.db.tables["Article"].type == "NEWS")
-
-        if "media" in filters:
-            query = query.filter(self.db.tables["Article"].media.in_(["ALL", filters["media"]]))
 
         related_articles = query \
             .order_by(desc(self.db.tables["Article"].publication_date)) \

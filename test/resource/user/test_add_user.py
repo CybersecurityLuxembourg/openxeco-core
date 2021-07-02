@@ -1,8 +1,10 @@
-from test.BaseCase import BaseCase
-from unittest.mock import patch
-from sqlalchemy.exc import IntegrityError
-from flask_bcrypt import check_password_hash
 import os
+from unittest.mock import patch
+
+from flask_bcrypt import check_password_hash
+from sqlalchemy.exc import IntegrityError
+
+from test.BaseCase import BaseCase
 
 
 class TestAddUser(BaseCase):
@@ -72,7 +74,7 @@ class TestAddUser(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 This address is already existing", response.status)
+        self.assertEqual("422 This user is already existing", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/user/add_user")

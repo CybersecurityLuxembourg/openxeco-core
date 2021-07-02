@@ -1,14 +1,16 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
-from exception.object_not_found import ObjectNotFound
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
+from exception.object_not_found import ObjectNotFound
 
 
-class DeleteTaxonomyCategoryHierarchy(Resource):
+class DeleteTaxonomyCategoryHierarchy(MethodResource, Resource):
 
     db = None
 
@@ -16,19 +18,24 @@ class DeleteTaxonomyCategoryHierarchy(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'parent_category', 'type': str},
-        {'field': 'child_category', 'type': str}
-    ])
+    @doc(tags=['taxonomy'],
+         description='Delete a taxonomy category hierarchy',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"},
+         })
+    @use_kwargs({
+        'parent_category': fields.Str(),
+        'child_category': fields.Str(),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
         row = {
-            "parent_category": input_data["parent_category"],
-            "child_category": input_data["child_category"]
+            "parent_category": kwargs["parent_category"],
+            "child_category": kwargs["child_category"]
         }
 
         values = self.db.get(self.db.tables["TaxonomyCategoryHierarchy"],  row)

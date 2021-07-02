@@ -30,6 +30,24 @@ class TestAddAddress(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/address/add_address")
+    def test_ok_without_none(self, token):
+        payload = {
+            "company_id": 2,
+            "address_1": "Rue inconnue",
+            "postal_code": "1515",
+            "city": "Luxembourg",
+            "country": "Luxembourg",
+        }
+
+        response = self.application.post('/address/add_address',
+                                         headers=self.get_standard_post_header(token),
+                                         json=payload)
+
+        self.assertEqual(422, response.status_code)
+        self.assertEqual("422 Provided company not existing", response.status)
+
+    @BaseCase.login
+    @BaseCase.grant_access("/address/add_address")
     def test_ko_missing_company(self, token):
         payload = {
             "company_id": 2,

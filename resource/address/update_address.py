@@ -1,13 +1,15 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
 
 
-class UpdateAddress(Resource):
+class UpdateAddress(MethodResource, Resource):
 
     db = None
 
@@ -15,24 +17,29 @@ class UpdateAddress(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'id', 'type': int},
-        {'field': 'address_1', 'type': str, 'optional': True},
-        {'field': 'address_2', 'type': str, 'nullable': True, 'optional': True},
-        {'field': 'number', 'type': str, 'nullable': True, 'optional': True},
-        {'field': 'postal_code', 'type': str, 'nullable': True, 'optional': True},
-        {'field': 'city', 'type': str, 'optional': True},
-        {'field': 'administrative_area', 'type': str, 'nullable': True, 'optional': True},
-        {'field': 'country', 'type': str, 'optional': True},
-        {'field': 'latitude', 'type': [int, float], 'nullable': True, 'optional': True},
-        {'field': 'longitude', 'type': [int, float], 'nullable': True, 'optional': True},
-    ])
+    @doc(tags=['address'],
+         description='Update an address related to a company',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        "id": fields.Int(),
+        'company_id': fields.Int(),
+        'address_1': fields.Str(required=False),
+        'address_2': fields.Str(required=False, allow_none=True),
+        'number': fields.Str(required=False, allow_none=True),
+        'postal_code': fields.Str(required=False, allow_none=True),
+        'city': fields.Str(required=False),
+        'administrative_area': fields.Str(required=False, allow_none=True),
+        'country': fields.Str(required=False),
+        'latitude': fields.Float(required=False, allow_none=True),
+        'longitude': fields.Float(required=False, allow_none=True),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        self.db.merge(input_data, self.db.tables["Company_Address"])
+        self.db.merge(kwargs, self.db.tables["Company_Address"])
 
         return "", "200 "

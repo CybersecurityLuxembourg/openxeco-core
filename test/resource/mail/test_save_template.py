@@ -1,5 +1,6 @@
-from test.BaseCase import BaseCase
 from unittest.mock import patch, mock_open
+
+from test.BaseCase import BaseCase
 
 
 class TestSaveTemplate(BaseCase):

@@ -15,7 +15,7 @@ class TestUpdateUser(BaseCase):
 
         payload = {
             "id": 14,
-            "is_admin": 1
+            "is_admin": True
         }
 
         response = self.application.post('/user/update_user',
@@ -40,7 +40,7 @@ class TestUpdateUser(BaseCase):
 
         payload = {
             "id": 2,
-            "is_admin": 1,
+            "is_admin": True,
             "password": "new pass"
         }
 
@@ -50,7 +50,7 @@ class TestUpdateUser(BaseCase):
 
         users = self.db.get(self.db.tables["User"], {"id": 2})
 
-        self.assertEqual("422 Cannot modify this attribute: password", response.status)
+        self.assertEqual("422 UNPROCESSABLE ENTITY", response.status)
         self.assertEqual(users[0].is_admin, 0)
 
     @BaseCase.login
@@ -65,7 +65,7 @@ class TestUpdateUser(BaseCase):
 
         payload = {
             "id": 2,
-            "is_admin": 1,
+            "is_admin": True,
             "email": "myemail@test.lu"
         }
 
@@ -75,5 +75,5 @@ class TestUpdateUser(BaseCase):
 
         users = self.db.get(self.db.tables["User"], {"id": 2})
 
-        self.assertEqual("422 Cannot modify this attribute: email", response.status)
+        self.assertEqual("422 UNPROCESSABLE ENTITY", response.status)
         self.assertEqual(users[0].is_admin, 0)

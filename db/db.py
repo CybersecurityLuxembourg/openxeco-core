@@ -145,8 +145,8 @@ class DB:
                                          func.lower(self.tables["Company"].website).like("%" + word + "%")))
 
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
-            ecosystem_roles = filters['ecosystem_role'].split(',') \
-                if isinstance(filters['ecosystem_role'], str) else filters['ecosystem_role']
+            ecosystem_roles = filters['ecosystem_role'] if isinstance(filters['ecosystem_role'], list) else \
+                filters['ecosystem_role'].split(',')
 
             ecosystem_role_values = self.session \
                 .query(self.tables["TaxonomyValue"]) \
@@ -164,8 +164,8 @@ class DB:
             query = query.filter(self.tables["Company"].id.in_(assigned_company))
 
         if "entity_type" in filters and filters['entity_type'] is not None:
-            entity_types = filters['entity_type'].split(',') \
-                if isinstance(filters['entity_type'], str) else filters['entity_type']
+            entity_types = filters['entity_type'] if isinstance(filters['entity_type'], list) \
+                else filters['entity_type'].split(',')
 
             entity_type_values = self.session \
                 .query(self.tables["TaxonomyValue"]) \
@@ -189,8 +189,8 @@ class DB:
             query = query.filter(self.tables["Company"].is_cybersecurity_core_business.is_(True))
 
         if "taxonomy_values" in filters:
-            taxonomy_values = [int(value_id) for value_id in filters["taxonomy_values"].split(",")
-                               if value_id.isdigit()]
+            taxonomy_values = filters["taxonomy_values"] if isinstance(filters["taxonomy_values"], list) else \
+                [int(value_id) for value_id in filters["taxonomy_values"].split(",") if value_id.isdigit()]
 
             if len(taxonomy_values) > 0:
                 tch = taxonomy_values
@@ -217,7 +217,7 @@ class DB:
     # ARTICLE     #
     ###############
 
-    def get_filtered_articles(self, filters=None):
+    def get_filtered_article_query(self, filters=None):
         filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Article"])
@@ -232,7 +232,7 @@ class DB:
             query = query.filter(self.tables["Article"].status == filters["status"])
 
         if "type" in filters:
-            types = filters["type"].split(",")
+            types = filters["type"] if isinstance(filters["type"], list) else filters["type"].split(",")
             query = query.filter(self.tables["Article"].type.in_(types))
 
         if "media" in filters:
@@ -244,7 +244,8 @@ class DB:
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
 
         if "taxonomy_values" in filters:
-            tmp_taxonomy_values = filters["taxonomy_values"].split(",")
+            tmp_taxonomy_values = filters["taxonomy_values"] if isinstance(filters["taxonomy_values"], list) \
+                else filters["taxonomy_values"].split(",")
             taxonomy_values = []
 
             for tv in tmp_taxonomy_values:
@@ -275,7 +276,7 @@ class DB:
 
         query = query.order_by(self.tables["Article"].publication_date.desc())
 
-        return query.all()
+        return query
 
     def get_tags_of_article(self, article_id):
         companies_filtered_by_taxonomy = self.session \
@@ -341,3 +342,27 @@ class DB:
             .filter(self.tables["TaxonomyValueHierarchy"].child_value.in_(child_sub_query)) \
 
         return query.all()
+
+    ###############
+    # IMAGE       #
+    ###############
+
+    def get_filtered_image_query(self, filters=None):
+        filters = {} if filters is None else filters
+
+        query = self.session.query(self.tables["Image"])
+
+        if "logo_only" in filters and filters["logo_only"] is True:
+            company_image_ids = self.session \
+                .query(self.tables["Company"]) \
+                .with_entities(self.tables["Company"].image) \
+                .subquery()
+
+            query = query.filter(self.tables["Image"].id.in_(company_image_ids))
+
+        if "order" in filters and filters["order"] == "desc":
+            query = query.order_by(self.tables["Image"].creation_date.desc())
+        else:
+            query = query.order_by(self.tables["Image"].creation_date.asc())
+
+        return query

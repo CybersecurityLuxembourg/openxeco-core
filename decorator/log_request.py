@@ -1,8 +1,9 @@
 import functools
-import flask
 import json
-from flask_jwt_extended import get_jwt_identity
+
+import flask
 from flask import Response
+from flask_jwt_extended import get_jwt_identity
 
 
 def log_request(function):

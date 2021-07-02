@@ -1,9 +1,11 @@
-import unittest
-from application import application
-from db.db import DB
 import functools
 import json
+import unittest
+
 from flask_bcrypt import generate_password_hash
+
+from application import application
+from db.db import DB
 
 
 class BaseCase(unittest.TestCase):

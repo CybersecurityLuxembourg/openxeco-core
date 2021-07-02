@@ -1,16 +1,24 @@
+from flask_apispec import MethodResource
+from flask_apispec import doc
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
+
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
-class IsLogged(Resource):
+class IsLogged(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @log_request
+    @doc(tags=['private'],
+         description='Get the status of the provided token',
+         responses={
+             "200": {},
+         })
     @jwt_required
     @catch_exception
     def get(self):

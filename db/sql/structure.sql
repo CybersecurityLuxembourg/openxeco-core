@@ -40,7 +40,6 @@ CREATE TABLE `Article` (
   `end_date` datetime DEFAULT NULL,
   `status` enum('DRAFT','PUBLIC','ARCHIVE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'DRAFT',
   `type` enum('NEWS','EVENT','TOOL','SERVICE','RESOURCE','JOB OFFER') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'NEWS',
-  `media` enum('ALL','CYBERLUX','SECURITYMADEIN.LU') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'ALL',
   `image` int DEFAULT NULL,
   `external_reference` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(550) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -130,7 +129,7 @@ DROP TABLE IF EXISTS `Company`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Company` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `rscl_number` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trade_register_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` int DEFAULT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
@@ -139,7 +138,7 @@ CREATE TABLE `Company` (
   `is_startup` tinyint(1) NOT NULL DEFAULT '0',
   `is_cybersecurity_core_business` tinyint(1) NOT NULL DEFAULT '0',
   `is_targeting_sme` tinyint(1) NOT NULL DEFAULT '0',
-  `editus_status` enum('active','inactive') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('active','inactive') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -237,9 +236,7 @@ CREATE TABLE `Log` (
   `status_code` int NOT NULL,
   `status_description` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sys_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `log_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7016 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -479,4 +476,16 @@ CREATE TABLE `Workforce` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-14 17:09:24
+--
+-- Table structure for table `UserGroupRight`
+--
+
+DROP TABLE IF EXISTS `Setting`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Setting` (
+  `property` VARCHAR(255) NOT NULL,
+  `value` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`property`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;

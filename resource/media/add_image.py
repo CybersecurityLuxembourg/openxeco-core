@@ -1,23 +1,26 @@
-from flask_restful import Resource
-from flask import request
-from flask_jwt_extended import jwt_required
-from decorator.log_request import log_request
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
-from decorator.catch_exception import catch_exception
-import datetime
-from PIL import Image
-import os
-import PIL
-import io
 import base64
-from config.config import IMAGE_FOLDER
+import datetime
+import io
+import os
 import traceback
+
+import PIL
+from PIL import Image
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
+from flask_jwt_extended import jwt_required
+from flask_restful import Resource
+from webargs import fields
+
+from config.config import IMAGE_FOLDER
+from decorator.catch_exception import catch_exception
+from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
 from exception.error_while_saving_file import ErrorWhileSavingFile
 from utils.serializer import Serializer
 
 
-class AddImage(Resource):
+class AddImage(MethodResource, Resource):
 
     db = None
 
@@ -25,16 +28,21 @@ class AddImage(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'image', 'type': str}
-    ])
+    @doc(tags=['media'],
+         description='Add an image to the media library',
+         responses={
+             "200": {},
+             "500": {"description": "An error occurred while saving the file"},
+         })
+    @use_kwargs({
+        'image': fields.Str(),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        thumbnail_stream = io.BytesIO(base64.b64decode(input_data["image"].split(",")[-1]))
+        thumbnail_stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
 
         # Create Thumbnail file
 
@@ -61,7 +69,7 @@ class AddImage(Resource):
 
         # Save file in dir
 
-        stream = io.BytesIO(base64.b64decode(input_data["image"].split(",")[-1]))
+        stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
 
         try:
             f = open(os.path.join(IMAGE_FOLDER, str(image.id)), 'wb')

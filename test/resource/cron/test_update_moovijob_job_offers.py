@@ -1,6 +1,7 @@
-from test.BaseCase import BaseCase
-from unittest.mock import patch, Mock
 import os
+from unittest.mock import patch, Mock
+
+from test.BaseCase import BaseCase
 
 
 class TestUpdateMoovijobJobOffers(BaseCase):
@@ -30,12 +31,10 @@ class TestUpdateMoovijobJobOffers(BaseCase):
         self.assertEqual(len(articles), 2)
         self.assertEqual(articles[0].id, 1)
         self.assertEqual(articles[0].type, "JOB OFFER")
-        self.assertEqual(articles[0].media, "CYBERLUX")
         self.assertEqual(articles[0].status, "PUBLIC")
         self.assertEqual(articles[0].external_reference, "26870")
         self.assertEqual(articles[1].id, 2)
         self.assertEqual(articles[1].type, "JOB OFFER")
-        self.assertEqual(articles[1].media, "CYBERLUX")
         self.assertEqual(articles[1].status, "PUBLIC")
         self.assertEqual(articles[1].external_reference, "8331")
 
@@ -91,13 +90,13 @@ class TestUpdateMoovijobJobOffers(BaseCase):
         self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
         self.db.insert({"id": 1, "title": "TITLE", "external_reference": "26870", "type": "JOB OFFER",
-                        "media": "CYBERLUX", "status": "PUBLIC"}, self.db.tables["Article"])
+                        "status": "PUBLIC"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 1, "article_version_id": 1, "position": 1, "content": "Box content", "type": "PARAGRAPH"},
                        self.db.tables["ArticleBox"])
 
         self.db.insert({"id": 2, "title": "TITLE", "external_reference": "8331", "type": "JOB OFFER",
-                        "media": "CYBERLUX", "status": "PUBLIC"}, self.db.tables["Article"])
+                        "status": "PUBLIC"}, self.db.tables["Article"])
         self.db.insert({"id": 2, "article_id": 2, "name": "VERSION 0", "is_main": 0}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 3, "article_id": 2, "name": "VERSION 1", "is_main": 1}, self.db.tables["ArticleVersion"])
 
@@ -120,12 +119,10 @@ class TestUpdateMoovijobJobOffers(BaseCase):
         self.assertEqual(len(articles), 2)
         self.assertEqual(articles[0].id, 1)
         self.assertEqual(articles[0].type, "JOB OFFER")
-        self.assertEqual(articles[0].media, "CYBERLUX")
         self.assertEqual(articles[0].status, "PUBLIC")
         self.assertEqual(articles[0].external_reference, "26870")
         self.assertEqual(articles[1].id, 2)
         self.assertEqual(articles[1].type, "JOB OFFER")
-        self.assertEqual(articles[1].media, "CYBERLUX")
         self.assertEqual(articles[1].status, "PUBLIC")
         self.assertEqual(articles[1].external_reference, "8331")
 
@@ -157,7 +154,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
         self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
         self.db.insert({"id": 1, "title": "TITLE", "external_reference": "26870", "type": "JOB OFFER",
-                        "media": "CYBERLUX", "status": "PUBLIC"}, self.db.tables["Article"])
+                        "status": "PUBLIC"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 1, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 1, "article_version_id": 1, "position": 1, "content": "Box content", "type": "PARAGRAPH"},
                        self.db.tables["ArticleBox"])
@@ -165,7 +162,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
                        self.db.tables["ArticleBox"])
 
         self.db.insert({"id": 2, "title": "TITLE", "external_reference": "8331", "type": "JOB OFFER",
-                        "media": "CYBERLUX", "status": "PUBLIC"}, self.db.tables["Article"])
+                        "status": "PUBLIC"}, self.db.tables["Article"])
         self.db.insert({"id": 3, "article_id": 2, "name": "VERSION 1", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 3, "article_version_id": 3, "position": 1, "content": "French Body #2",
                         "type": "PARAGRAPH"}, self.db.tables["ArticleBox"])
@@ -189,12 +186,10 @@ class TestUpdateMoovijobJobOffers(BaseCase):
         self.assertEqual(len(articles), 2)
         self.assertEqual(articles[0].id, 1)
         self.assertEqual(articles[0].type, "JOB OFFER")
-        self.assertEqual(articles[0].media, "CYBERLUX")
         self.assertEqual(articles[0].status, "PUBLIC")
         self.assertEqual(articles[0].external_reference, "26870")
         self.assertEqual(articles[1].id, 2)
         self.assertEqual(articles[1].type, "JOB OFFER")
-        self.assertEqual(articles[1].media, "CYBERLUX")
         self.assertEqual(articles[1].status, "PUBLIC")
         self.assertEqual(articles[1].external_reference, "8331")
 

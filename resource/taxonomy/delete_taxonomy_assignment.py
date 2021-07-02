@@ -1,14 +1,16 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
-from exception.object_not_found import ObjectNotFound
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
+from exception.object_not_found import ObjectNotFound
 
 
-class DeleteTaxonomyAssignment(Resource):
+class DeleteTaxonomyAssignment(MethodResource, Resource):
 
     db = None
 
@@ -16,19 +18,24 @@ class DeleteTaxonomyAssignment(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'company', 'type': int},
-        {'field': 'value', 'type': int}
-    ])
+    @doc(tags=['taxonomy'],
+         description='Delete a taxonomy assignment to a company',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"},
+         })
+    @use_kwargs({
+        'company': fields.Int(),
+        'value': fields.Int(),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
         row = {
-            "company": input_data["company"],
-            "taxonomy_value": input_data["value"]
+            "company": kwargs["company"],
+            "taxonomy_value": kwargs["value"]
         }
 
         companies = self.db.get(self.db.tables["TaxonomyAssignment"], row)

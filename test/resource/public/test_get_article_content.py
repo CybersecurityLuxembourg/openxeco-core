@@ -1,7 +1,9 @@
-from test.BaseCase import BaseCase
-import bs4
-import os
 import datetime
+import os
+
+import bs4
+
+from test.BaseCase import BaseCase
 
 
 class TestGetArticleContent(BaseCase):

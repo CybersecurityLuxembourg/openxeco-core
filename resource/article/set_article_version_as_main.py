@@ -1,13 +1,15 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
 
 
-class SetArticleVersionAsMain(Resource):
+class SetArticleVersionAsMain(MethodResource, Resource):
 
     db = None
 
@@ -15,16 +17,21 @@ class SetArticleVersionAsMain(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'id', 'type': int}
-    ])
+    @doc(tags=['article'],
+         description='Set an article version as the main one',
+         responses={
+             "200": {},
+             "422": {"description": "The provided article version ID does not exist"},
+         })
+    @use_kwargs({
+        'id': fields.Int(),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        article_version = self.db.get(self.db.tables["ArticleVersion"], {"id": input_data["id"]})
+        article_version = self.db.get(self.db.tables["ArticleVersion"], {"id": kwargs["id"]})
 
         if len(article_version) < 1:
             return "", "422 The provided article version ID does not exist"

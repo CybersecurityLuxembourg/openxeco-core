@@ -1,14 +1,16 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
-from utils.re import has_date_format
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
+from utils.re import has_date_format
 
 
-class AddWorkforce(Resource):
+class AddWorkforce(MethodResource, Resource):
 
     db = None
 
@@ -16,40 +18,48 @@ class AddWorkforce(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'company', 'type': int},
-        {'field': 'workforce', 'type': int},
-        {'field': 'date', 'type': str},
-        {'field': 'is_estimated', 'type': bool},
-        {'field': 'source', 'type': str}
-    ])
+    @doc(tags=['user'],
+         description='Add workforce information to a company',
+         responses={
+             "200": {},
+             "422.a": {"description": "Provided date does not have the right format (expected: YYYY-mm-dd)"},
+             "422.b": {"description": "Provided source not existing"},
+             "422.c": {"description": "Provided company not existing"}
+         })
+    @use_kwargs({
+        'company': fields.Int(),
+        'field': fields.Int(),
+        'workforce': fields.Int(),
+        'date': fields.Str(),
+        'is_estimated': fields.Bool(),
+        'source': fields.Str(),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
         # Checking date
 
-        if not has_date_format(input_data["date"]):
+        if not has_date_format(kwargs["date"]):
             return "", "422 Provided date does not have the right format (expected: YYYY-mm-dd)"
 
         # Checking source
 
-        source = self.db.get(self.db.tables["Source"], {"name": input_data["source"]})
+        source = self.db.get(self.db.tables["Source"], {"name": kwargs["source"]})
 
         if len(source) == 0:
             return "", "422 Provided source not existing"
 
         # Checking company
 
-        company = self.db.get(self.db.tables["Company"], {"id": input_data["company"]})
+        company = self.db.get(self.db.tables["Company"], {"id": kwargs["company"]})
 
         if len(company) == 0:
             return "", "422 Provided company not existing"
 
         # Insert
 
-        self.db.insert(input_data, self.db.tables["Workforce"])
+        self.db.insert(kwargs, self.db.tables["Workforce"])
 
         return "", "200 "

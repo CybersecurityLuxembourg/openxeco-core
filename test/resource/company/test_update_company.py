@@ -1,5 +1,6 @@
-from test.BaseCase import BaseCase
 import datetime
+
+from test.BaseCase import BaseCase
 
 
 class TestUpdateCompany(BaseCase):

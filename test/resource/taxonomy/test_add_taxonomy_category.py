@@ -1,6 +1,8 @@
-from test.BaseCase import BaseCase
-from sqlalchemy.exc import IntegrityError
 from unittest.mock import patch
+
+from sqlalchemy.exc import IntegrityError
+
+from test.BaseCase import BaseCase
 
 
 class TestAddTaxonomyCategory(BaseCase):

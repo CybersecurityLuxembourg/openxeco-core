@@ -1,5 +1,6 @@
-from test.BaseCase import BaseCase
 from datetime import datetime, timedelta
+
+from test.BaseCase import BaseCase
 
 
 class TestGetLogs(BaseCase):
@@ -27,16 +28,23 @@ class TestGetLogs(BaseCase):
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(len(response.json), 1)
-        self.assertEqual([
-            {
-                "id": 3,
-                "request_method": "POST",
-                "request": "/article/other_resource",
-                "params": '{"article_version_id": 2}',
-                'sys_date': time,
-                "status_code": 500,
-                'status_description': None,
-                'user_id': None
-            }
-        ], response.json)
+        self.assertEqual({
+            "pagination": {
+                "page": 1,
+                "pages": 1,
+                "per_page": 50,
+                "total": 1
+            },
+            "items": [
+                {
+                    "id": 3,
+                    "request_method": "POST",
+                    "request": "/article/other_resource",
+                    "params": '{"article_version_id": 2}',
+                    'sys_date': time,
+                    "status_code": 500,
+                    'status_description': None,
+                    'user_id': None
+                }
+            ]
+        }, response.json)

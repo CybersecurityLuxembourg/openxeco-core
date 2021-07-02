@@ -1,13 +1,15 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from decorator.verify_payload import verify_payload
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
-from exception.object_not_found import ObjectNotFound
 from decorator.log_request import log_request
+from exception.object_not_found import ObjectNotFound
 
 
-class DeleteMyRequest(Resource):
+class DeleteMyRequest(MethodResource, Resource):
 
     db = None
 
@@ -15,22 +17,27 @@ class DeleteMyRequest(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'id', 'type': int}
-    ])
+    @doc(tags=['private'],
+         description='Delete a request of the user authenticated by the token',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"}
+         })
+    @use_kwargs({
+        'id': fields.Int(),
+    })
     @jwt_required
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
         companies = self.db.get(self.db.tables["UserRequest"], {
-            "id": input_data["id"],
+            "id": kwargs["id"],
             "user_id": int(get_jwt_identity())
         })
 
         if len(companies) > 0:
             self.db.delete(self.db.tables["UserRequest"], {
-                "id": input_data["id"],
+                "id": kwargs["id"],
                 "user_id": int(get_jwt_identity())
             })
         else:

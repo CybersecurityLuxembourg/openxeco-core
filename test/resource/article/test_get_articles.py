@@ -1,5 +1,6 @@
-from test.BaseCase import BaseCase
 from datetime import datetime
+
+from test.BaseCase import BaseCase
 
 
 class TestGetArticles(BaseCase):
@@ -26,7 +27,6 @@ class TestGetArticles(BaseCase):
                 'id': 2,
                 'image': None,
                 'link': None,
-                'media': 'ALL',
                 'publication_date': '2021-01-22',
                 'start_date': None,
                 'status': 'DRAFT',
@@ -41,7 +41,6 @@ class TestGetArticles(BaseCase):
                 'id': 1,
                 'image': None,
                 'link': None,
-                'media': 'ALL',
                 'publication_date': None,
                 'start_date': None,
                 'status': 'DRAFT',

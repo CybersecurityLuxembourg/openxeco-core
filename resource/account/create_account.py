@@ -1,17 +1,20 @@
 from flask import request, render_template
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_bcrypt import generate_password_hash
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from decorator.verify_payload import verify_payload
 from exception.object_already_existing import ObjectAlreadyExisting
 from utils.mail import send_email
 from utils.password import generate_password
 from utils.re import has_mail_format
 
 
-class CreateAccount(Resource):
+class CreateAccount(MethodResource, Resource):
 
     db = None
     mail = None
@@ -21,13 +24,22 @@ class CreateAccount(Resource):
         self.mail = mail
 
     @log_request
-    @verify_payload([
-        {'field': 'email', 'type': str},
-    ])
+    @doc(tags=['account'],
+         description='Create an account with the provided email as a user ID',
+         responses={
+             "200": {},
+             "403": {"description": "An account already exists with this email address"},
+             "422.a": {"description": "The provided email does not have the right format"},
+             "422.b": {"description": "Object already existing"},
+             "500": {"description": "Impossible to find the origin. Please contact the administrator"},
+         })
+    @use_kwargs({
+        'email': fields.Str(),
+    })
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
-        email = input_data["email"].lower()
+    def post(self, **kwargs):
+
+        email = kwargs["email"].lower()
 
         if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
             origin = request.environ['HTTP_ORIGIN']

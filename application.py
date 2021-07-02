@@ -7,6 +7,9 @@ from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from flask_restful import Api
 from sqlalchemy.engine.url import URL
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from flask_apispec.extension import FlaskApiSpec
 
 try:
     from config import config
@@ -15,7 +18,6 @@ except ImportError:
     sys.exit(1)
 
 from db.db import DB
-from routes import set_routes
 
 
 # Manage DB connection
@@ -48,6 +50,15 @@ application.config['PROPAGATE_EXCEPTIONS'] = True
 
 application.config['SCHEDULER_API_ENABLED'] = False
 
+application.config['APISPEC_SWAGGER_URL'] = '/doc/json'
+application.config['APISPEC_SWAGGER_UI_URL'] = '/doc/'
+application.config['APISPEC_SPEC'] = APISpec(
+    title='CYBERLUX API',
+    version='v1.2',
+    plugins=[MarshmallowPlugin()],
+    openapi_version='2.0.0'
+)
+
 # Create DB instance
 db = DB(application)
 
@@ -56,10 +67,10 @@ cors = CORS(application)
 bcrypt = Bcrypt(application)
 jwt = JWTManager(application)
 mail = Mail(application)
+docs = FlaskApiSpec(application)
 
 # Init and set the resources for Flask
 api = Api(application)
-set_routes({"api": api, "db": db, "mail": mail})
 
 
 @application.route('/<generic>')
@@ -67,6 +78,13 @@ def undefined_route(_):
     return '', 404
 
 
+if __name__ == 'application':
+    from routes import set_routes
+    set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
+
 if __name__ == '__main__':
+    from routes import set_routes
+    set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
+
     application.debug = config.ENVIRONMENT == "dev"
     application.run()

@@ -1,21 +1,33 @@
-from flask_restful import Resource
-from db.db import DB
-from utils.serializer import Serializer
-from decorator.catch_exception import catch_exception
-from flask import request
 import datetime
+
 import html2markdown
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
+from flask_restful import Resource
+from webargs import fields
+
+from db.db import DB
+from decorator.catch_exception import catch_exception
+from utils.serializer import Serializer
 
 
-class GetArticleContent(Resource):
+class GetArticleContent(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
+    @doc(tags=['public'],
+         description='Get content of article by ID',
+         responses={
+             "200": {},
+             "422.a": {"description": "The provided article ID does not exist or is not accessible"},
+             "422.b": {"description": "The provided article does not have a main version"},
+         })
+    @use_kwargs({
+        'format': fields.Str(required=False, missing='json', validate=lambda x: x in ['markdown', 'html', 'json']),
+    }, location="query")
     @catch_exception
-    def get(self, id_):
-
-        filters = request.args.to_dict()
+    def get(self, id_, **kwargs):
 
         # Fetch the info from the DB
 
@@ -43,10 +55,10 @@ class GetArticleContent(Resource):
 
         # Format the output
 
-        if "format" in filters:
-            if filters["format"] == "markdown":
+        if "format" in kwargs:
+            if kwargs["format"] == "markdown":
                 return self.build_markdown(article, article_content), "200 "
-            if filters["format"] == "html":
+            if kwargs["format"] == "html":
                 return self.build_html(article, article_content), "200 "
 
         data = {

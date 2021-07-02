@@ -22,7 +22,6 @@ class TestGetArticle(BaseCase):
             'id': 1,
             'image': None,
             'link': None,
-            'media': 'ALL',
             'publication_date': None,
             'start_date': None,
             'status': 'DRAFT',

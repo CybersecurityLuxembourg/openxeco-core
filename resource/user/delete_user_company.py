@@ -1,32 +1,39 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
-from decorator.verify_payload import verify_payload
-from decorator.verify_admin_access import verify_admin_access
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from decorator.verify_admin_access import verify_admin_access
 from exception.object_not_found import ObjectNotFound
 
 
-class DeleteUserCompany(Resource):
+class DeleteUserCompany(MethodResource, Resource):
 
     def __init__(self, db):
         self.db = db
 
     @log_request
-    @verify_payload([
-        {'field': 'user', 'type': int},
-        {'field': 'company', 'type': int},
-    ])
+    @doc(tags=['user'],
+         description='Delete a company assignment to a user',
+         responses={
+             "200": {},
+             "422": {"description": "Object not found"}
+         })
+    @use_kwargs({
+        'user': fields.Int(),
+        'company': fields.Int(),
+    })
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
         row = {
-            "user_id": input_data["user"],
-            "company_id": input_data["company"],
+            "user_id": kwargs["user"],
+            "company_id": kwargs["company"],
         }
 
         rights = self.db.get(self.db.tables["UserCompanyAssignment"], row)

@@ -1,14 +1,18 @@
+import datetime
+
 from flask import request, render_template
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import create_access_token
 from flask_restful import Resource
-import datetime
-from utils.mail import send_email
-from decorator.verify_payload import verify_payload
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from utils.mail import send_email
 
 
-class ForgotPassword(Resource):
+class ForgotPassword(MethodResource, Resource):
 
     db = None
     mail = None
@@ -18,19 +22,25 @@ class ForgotPassword(Resource):
         self.mail = mail
 
     @log_request
-    @verify_payload([
-        {'field': 'email', 'type': str}
-    ])
+    @doc(tags=['account'],
+         description='Request a password change with a temporary link sent via email',
+         responses={
+             "200": {},
+             "500.a": {"description": "Impossible to find the origin. Please contact the administrator"},
+             "500.b": {"description": "The user has not been found"},
+         })
+    @use_kwargs({
+        'email': fields.Str(),
+    })
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
         if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
             origin = request.environ['HTTP_ORIGIN']
         else:
             return "", "500 Impossible to find the origin. Please contact the administrator"
 
-        data = self.db.get(self.db.tables["User"], {"email": input_data["email"]})
+        data = self.db.get(self.db.tables["User"], {"email": kwargs["email"]})
 
         if len(data) < 1:
             return "", "500 The user has not been found"

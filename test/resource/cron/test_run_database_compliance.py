@@ -134,7 +134,7 @@ class TestRunDatabaseCompliance(BaseCase):
         self.assertEqual(data_controls[1].category, 'DATABASE COMPLIANCE')
         self.assertEqual(data_controls[1].value, "Value 'Article.publication_date' of article <ARTICLE:1> is empty")
         self.assertEqual(data_controls[2].category, 'DATABASE COMPLIANCE')
-        self.assertEqual(data_controls[2].value, "<ARTICLE:1> has no main version")
+        self.assertEqual(data_controls[2].value, "<ARTICLE:1> has no main version and no link")
 
     @BaseCase.login
     @BaseCase.grant_access("/cron/run_database_compliance")
@@ -151,7 +151,7 @@ class TestRunDatabaseCompliance(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(data_controls), 1)
         self.assertEqual(data_controls[0].category, 'DATABASE COMPLIANCE')
-        self.assertEqual(data_controls[0].value, "<ARTICLE:1> has an empty main version")
+        self.assertEqual(data_controls[0].value, "<ARTICLE:1> has an empty main version and no link")
 
     @BaseCase.login
     @BaseCase.grant_access("/cron/run_database_compliance")

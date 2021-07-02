@@ -63,6 +63,7 @@ from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_request import DeleteMyRequest
+from resource.private.delete_my_user import DeleteMyUser
 from resource.private.get_my_companies import GetMyCompanies
 from resource.private.get_my_company_addresses import GetMyCompanyAddresses
 from resource.private.get_my_company_collaborators import GetMyCompanyCollaborators
@@ -81,12 +82,17 @@ from resource.public.get_public_analytics import GetPublicAnalytics
 from resource.public.get_public_companies import GetPublicCompanies
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company import GetPublicCompany
+from resource.public.get_public_settings import GetPublicSettings
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.request.get_requests import GetRequests
 from resource.request.get_request_enums import GetRequestEnums
 from resource.request.update_request import UpdateRequest
 from resource.resource.get_resources import GetResources
+from resource.setting.add_setting import AddSetting
+from resource.setting.delete_setting import DeleteSetting
+from resource.setting.upload_favicon import UploadFavicon
+from resource.setting.upload_logo import UploadLogo
 from resource.source.get_all_sources import GetAllSources
 from resource.user.add_user import AddUser
 from resource.user.add_user_company import AddUserCompany
@@ -119,7 +125,6 @@ from resource.taxonomy.get_taxonomy_categories import GetTaxonomyCategories
 from resource.taxonomy.get_taxonomy_category_hierarchy import GetTaxonomyCategoryHierarchy
 from resource.taxonomy.get_taxonomy_values import GetTaxonomyValues
 from resource.taxonomy.get_taxonomy_value_hierarchy import GetTaxonomyValueHierarchy
-from resource.taxonomy.get_all_taxonomy_value_hierarchy import GetAllTaxonomyValueHierarchy
 from resource.workforce.add_workforce import AddWorkforce
 from resource.workforce.delete_workforce import DeleteWorkforce
 import inspect
@@ -144,7 +149,7 @@ def set_routes(*args):
         if len(http_functions) > 1:
             raise Exception(f"Too much http functions found on resource {res[1].__module__}")
 
-        function_args = [a for a in inspect.signature(http_functions[0]).parameters if a != "self"]
+        function_args = [a for a in inspect.signature(http_functions[0]).parameters if a != "self" and a != "kwargs"]
 
         if len(function_args) > 1:
             raise Exception(f"Too much args for http function on resource {res[1].__module__}")
@@ -159,3 +164,7 @@ def set_routes(*args):
         # Add the resource
 
         plugins["api"].add_resource(res[1], endpoint, resource_class_kwargs=class_args)
+
+        # Add the resource in the doc
+
+        plugins["docs"].register(res[1], resource_class_kwargs=class_args)

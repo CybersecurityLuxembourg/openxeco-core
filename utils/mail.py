@@ -1,4 +1,5 @@
 from flask_mail import Message
+
 from config.config import MAIL_DEFAULT_SENDER
 
 

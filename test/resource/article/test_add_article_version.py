@@ -40,5 +40,5 @@ class TestAddArticleVersion(BaseCase):
 
         article_versions = self.db.get(self.db.tables["ArticleVersion"])
 
-        self.assertEqual("422 the provided article does not exist", response.status)
+        self.assertEqual("422 The provided article does not exist", response.status)
         self.assertEqual(len(article_versions), 0)

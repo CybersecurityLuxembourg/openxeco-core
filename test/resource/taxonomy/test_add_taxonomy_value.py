@@ -1,6 +1,8 @@
-from test.BaseCase import BaseCase
-from sqlalchemy.exc import IntegrityError
 from unittest.mock import patch
+
+from sqlalchemy.exc import IntegrityError
+
+from test.BaseCase import BaseCase
 
 
 class TestAddTaxonomyValue(BaseCase):
@@ -35,7 +37,7 @@ class TestAddTaxonomyValue(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 the provided category does not exist", response.status)
+        self.assertEqual("422 The provided category does not exist", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_value")

@@ -1,6 +1,7 @@
+import datetime
+
 from test.BaseCase import BaseCase
 from utils.serializer import Serializer
-import datetime
 
 
 class TestSerializer(BaseCase):

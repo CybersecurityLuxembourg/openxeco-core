@@ -1,13 +1,14 @@
-from flask_restful import Resource
-from flask import request
+from flask_apispec import MethodResource
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from decorator.verify_payload import verify_payload
+from flask_restful import Resource
+from webargs import fields
+
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from exception.cannot_modify_this_attribute import CannotModifyThisAttribute
 
 
-class UpdateMyUser(Resource):
+class UpdateMyUser(MethodResource, Resource):
 
     db = None
 
@@ -15,23 +16,23 @@ class UpdateMyUser(Resource):
         self.db = db
 
     @log_request
-    @verify_payload([])
+    @doc(tags=['private'],
+         description='Update the user information related to the token. This is only applicable on last_name, '
+                     'first_name and telephone',
+         responses={
+             "200": {},
+         })
+    @use_kwargs({
+        'last_name': fields.Str(required=False, allow_none=True),
+        'first_name': fields.Str(required=False, allow_none=True),
+        'telephone': fields.Str(required=False, allow_none=True),
+    })
     @jwt_required
     @catch_exception
-    def post(self):
-        input_data = request.get_json()
+    def post(self, **kwargs):
 
-        if "password" in input_data:
-            raise CannotModifyThisAttribute("password")
-        if "email" in input_data:
-            raise CannotModifyThisAttribute("email")
-        if "is_admin" in input_data:
-            raise CannotModifyThisAttribute("is_admin")
-        if "is_active" in input_data:
-            raise CannotModifyThisAttribute("is_active")
+        kwargs["id"] = int(get_jwt_identity())
 
-        input_data["id"] = int(get_jwt_identity())
-
-        self.db.merge(input_data, self.db.tables["User"])
+        self.db.merge(kwargs, self.db.tables["User"])
 
         return "", "200 "
