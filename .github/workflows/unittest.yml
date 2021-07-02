@@ -40,8 +40,8 @@ jobs:
           sudo systemctl start mysql
       - name: Initialize database
         run: |
-          sudo mysql -u cyberlux -pDBDevSMILE20 -e "CREATE DATABASE `CYBERLUX_TEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-          sudo mysql -u cyberlux -pDBDevSMILE20 CYBERLUX_TEST < db/sql/cyberlux_structure.sql
+          sudo mysql -h 127.0.0.1 -p 3306 -u cyberlux -pDBDevSMILE20 -e "CREATE DATABASE `CYBERLUX_TEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          sudo mysql -h 127.0.0.1 -p 3306 -u cyberlux -pDBDevSMILE20 CYBERLUX_TEST < db/sql/cyberlux_structure.sql
       - name: Run unit tests with coverage
         run: |
           cp config/config.py.sample config/config.py
