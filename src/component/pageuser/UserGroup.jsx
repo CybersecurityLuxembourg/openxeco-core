@@ -268,8 +268,8 @@ export default class UserGroup extends React.Component {
 													.filter((v) => g.id === v.group_id)
 													.map((item, index) => (
 														<Draggable
-															key={"" + item.id}
-															draggableId={"" + item.id}
+															key={"" + item.user_id}
+															draggableId={"" + item.user_id}
 															index={index}>
 															{(provided2, snapshot2) => (
 																<div

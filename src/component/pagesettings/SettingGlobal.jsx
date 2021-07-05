@@ -249,7 +249,7 @@ export default class SettingGlobal extends React.Component {
 						<h2>Logo</h2>
 
 						<Dropzone
-							accept=".png,.jpg,.jpeg"
+							accept=".png"
 							disabled={false}
 							onDrop={this.onDropLogo}
 						>
