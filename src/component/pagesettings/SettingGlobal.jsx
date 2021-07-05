@@ -245,12 +245,8 @@ export default class SettingGlobal extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
-						<h2>Logo and favicon</h2>
-					</div>
-
 					<div className="col-md-6">
-						<h3>Logo</h3>
+						<h2>Logo</h2>
 
 						<Dropzone
 							accept=".png,.jpg,.jpeg"
@@ -274,7 +270,7 @@ export default class SettingGlobal extends React.Component {
 					</div>
 
 					<div className="col-md-6">
-						<h3>Favicon</h3>
+						<h2>Favicon</h2>
 
 						<Dropzone
 							accept=".ico"
@@ -301,26 +297,9 @@ export default class SettingGlobal extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>Settings</h2>
-
-						<Info
-							content={<div>
-								<div>Here are the main settings:</div>
-								<ul>
-									<li>PROJECT_NAME</li>
-									<li>ADMIN_PLATFORM_NAME</li>
-									<li>PRIVATE_SPACE_PLATFORM_NAME</li>
-									<li>EMAIL_ADDRESS</li>
-								</ul>
-								<div>
-									You can then manage additional settings for customized usage.
-									Please remain aware that those settings will be available publicly
-									via the resource public/get_public_settings
-								</div>
-							</div>}
-						/>
 					</div>
 
-					<div className="col-md-12">
+					<div className="col-md-12 row-spaced">
 						<FormLine
 							label={"Property"}
 							value={this.state.newProperty}
@@ -341,7 +320,7 @@ export default class SettingGlobal extends React.Component {
 						</div>
 					</div>
 
-					<div className="col-md-12">
+					<div className="col-md-12 row-spaced">
 						{this.state.settings !== null && this.state.settings.length > 0
 							&& <Table
 								columns={columns}
@@ -362,6 +341,35 @@ export default class SettingGlobal extends React.Component {
 								text={"No setting found"}
 							/>
 						}
+					</div>
+
+					<div className="col-md-12">
+						<Info
+							content={<div>
+								<div>Here are the main settings:</div>
+								<ul>
+									<li>PROJECT_NAME</li>
+									<li>ADMIN_PLATFORM_NAME</li>
+									<li>PRIVATE_SPACE_PLATFORM_NAME</li>
+									<li>EMAIL_ADDRESS : Main contact address of the project.</li>
+									<li>
+										ALLOW_COMMUNITY_ARTICLE_EDITION : &#34;TRUE&#34; to be activated.
+										Give access on article creation and edition on the private space.
+									</li>
+									<li>
+										ALLOW_DIRECT_PUBLICATION_OF_COMMUNITY : &#34;TRUE&#34; to be activated.
+										The content creation and modification from the community is directly
+										written on the database (without passing throught request to be validated
+										by admins).
+									</li>
+								</ul>
+								<div>
+									You can then manage additional settings for customized usage.
+									Please remain aware that those settings will be available publicly
+									via the resource public/get_public_settings
+								</div>
+							</div>}
+						/>
 					</div>
 				</div>
 			</div>
