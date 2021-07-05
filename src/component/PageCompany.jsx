@@ -91,32 +91,32 @@ export default class PageCompany extends React.Component {
 									<CompanyGlobal
 										getNotifications={this.props.getNotifications}
 										company={this.state.company}
-										key={0}
+										key={"CompanyGlobal"}
 									/>,
 									<CompanyLogo
 										getNotifications={this.props.getNotifications}
 										company={this.state.company}
-										key={0}
+										key={"CompanyLogo"}
 									/>,
 									<CompanyAddress
 										getNotifications={this.props.getNotifications}
 										companyId={this.state.company.id}
-										key={0}
+										key={"CompanyAddress"}
 									/>,
 									<CompanyTaxonomy
 										getNotifications={this.props.getNotifications}
 										companyId={this.state.company.id}
-										key={0}
+										key={"CompanyTaxonomy"}
 									/>,
 									<CompanyCollaborator
 										companyId={this.state.company.id}
-										key={0}
+										key={"CompanyCollaborator"}
 									/>,
 									<CompanyRequest
 										getNotifications={this.props.getNotifications}
 										companyId={this.state.company.id}
 										companyName={this.state.company.name}
-										key={0}
+										key={"CompanyRequest"}
 									/>,
 								]}
 							/>

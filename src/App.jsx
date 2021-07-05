@@ -61,6 +61,7 @@ class App extends React.Component {
 				{this.state.logged
 					? <BrowserRouter>
 						<InsideApp
+							settings={this.state.settings}
 							email={this.state.email}
 							cookies={this.props.cookies}
 						/>

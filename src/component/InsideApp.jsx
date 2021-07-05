@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { Route, Switch } from "react-router-dom";
 import Menu from "./Menu.jsx";
 import PageHome from "./PageHome.jsx";
+import PageArticles from "./PageArticles.jsx";
 import PageAddCompany from "./PageAddCompany.jsx";
 import PageCompany from "./PageCompany.jsx";
 import PageProfile from "./PageProfile.jsx";
@@ -70,10 +71,21 @@ export default class InsideApp extends React.Component {
 					cookies={this.props.cookies}
 					myCompanies={this.state.myCompanies}
 					notifications={this.state.notifications}
+					settings={this.props.settings}
 				/>
 				<div id="InsideApp-content">
 					<Switch>
 						<Route path="/profile" render={(props) => <PageProfile {...props} />}/>
+						{this.props.settings !== undefined
+							&& this.props.settings !== null
+							&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
+							&& <Route path="/articles" render={(props) => <PageArticles
+								myCompanies={this.state.myCompanies}
+								notifications={this.state.notifications}
+								getNotifications={this.getNotifications}
+								{...props}
+							/>}/>
+						}
 						<Route path="/company/:id?" render={(props) => <PageCompany
 							myCompanies={this.state.myCompanies}
 							notifications={this.state.notifications}

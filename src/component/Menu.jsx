@@ -64,6 +64,22 @@ export default class Menu extends React.Component {
 							<Link to="/profile">My Profile</Link>
 						</NavText>
 					</NavItem>
+					{this.props.settings !== undefined
+						&& this.props.settings !== null
+						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
+						&& <NavItem
+							eventKey={"/articles"}
+							active={this.props.selectedMenu === "/articles"}>
+							<NavIcon>
+								<Link to={"/articles"}>
+									<i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} />
+								</Link>
+							</NavIcon>
+							<NavText>
+								<Link to={"/articles"}>My articles</Link>
+							</NavText>
+						</NavItem>
+					}
 					{this.props.myCompanies === null
 						? <Loading
 							height={70}
