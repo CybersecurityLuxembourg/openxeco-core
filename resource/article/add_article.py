@@ -34,7 +34,8 @@ class AddArticle(MethodResource, Resource):
 
         article = self.db.insert({
             "title": kwargs["title"],
-            "handle": re.sub(r'[^a-z1-9-]', '', kwargs["title"].lower().replace(" ", "-"))[:100]
+            "handle": re.sub(r'[^a-z1-9-]', '', kwargs["title"].lower().replace(" ", "-"))[:100],
+            "is_created_by_admin": True,
         }, self.db.tables["Article"])
         self.db.insert({
             "article_id": article.id,

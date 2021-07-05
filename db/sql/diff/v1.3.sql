@@ -1,0 +1,2 @@
+
+ALTER TABLE Article ADD COLUMN is_created_by_admin BOOLEAN DEFAULT FALSE;
