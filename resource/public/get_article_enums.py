@@ -15,13 +15,11 @@ class GetArticleEnums(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @doc(tags=['article'],
+    @doc(tags=['public'],
          description='Get enumerations of article fields',
          responses={
              "200": {},
          })
-    @jwt_required
-    @verify_admin_access
     @catch_exception
     def get(self):
 

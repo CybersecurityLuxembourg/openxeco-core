@@ -3,11 +3,9 @@ from test.BaseCase import BaseCase
 
 class TestGetArticleEnums(BaseCase):
 
-    @BaseCase.login
-    def test_ok(self, token):
+    def test_ok(self):
 
-        response = self.application.get('/article/get_article_enums',
-                                        headers=self.get_standard_header(token))
+        response = self.application.get('/public/get_article_enums')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual({

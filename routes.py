@@ -9,7 +9,6 @@ from resource.account.reset_password import ResetPassword
 from resource.article.copy_article_version import CopyArticleVersion
 from resource.article.get_articles import GetArticles
 from resource.article.get_article import GetArticle
-from resource.article.get_article_enums import GetArticleEnums
 from resource.article.get_article_tags import GetArticleTags
 from resource.article.get_article_versions import GetArticleVersions
 from resource.article.get_article_version_content import GetArticleVersionContent
@@ -76,6 +75,7 @@ from resource.private.is_logged import IsLogged
 from resource.private.update_my_user import UpdateMyUser
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent
+from resource.public.get_article_enums import GetArticleEnums
 from resource.public.get_public_articles import GetPublicArticles
 from resource.public.get_related_articles import GetRelatedArticles
 from resource.public.get_public_analytics import GetPublicAnalytics
