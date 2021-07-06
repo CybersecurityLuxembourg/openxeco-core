@@ -217,7 +217,7 @@ class DB:
     # ARTICLE     #
     ###############
 
-    def get_filtered_article_query(self, filters=None):
+    def get_filtered_article_query(self, filters=None, user_id=None):
         filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Article"])
@@ -273,6 +273,23 @@ class DB:
                     .subquery()
 
                 query = query.filter(self.tables["Article"].id.in_(article_filtered_by_taxonomy))
+
+        if "editable" in filters and filters["editable"] == "true":
+            assignment_subquery = self.session \
+                .query(self.tables["UserCompanyAssignment"]) \
+                .with_entities(self.tables["UserCompanyAssignment"].company_id) \
+                .filter(self.tables["UserCompanyAssignment"].user_id == user_id) \
+                .subquery()
+
+            company_subquery = self.session \
+                .query(self.tables["ArticleCompanyTag"]) \
+                .with_entities(self.tables["ArticleCompanyTag"].article) \
+                .filter(self.tables["ArticleCompanyTag"].company.in_(assignment_subquery)) \
+                .subquery()
+
+            query = query \
+                .filter(self.tables["Article"].id.in_(company_subquery)) \
+                .filter(self.tables["Article"].is_created_by_admin.is_(False))
 
         query = query.order_by(self.tables["Article"].publication_date.desc())
 

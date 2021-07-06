@@ -1,8 +1,8 @@
 from flask_apispec import MethodResource
-from flask_apispec import doc
+from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
-from sqlalchemy.sql.expression import false
+from webargs import fields, validate
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -21,28 +21,40 @@ class GetMyArticles(MethodResource, Resource):
          responses={
              "200": {},
          })
+    @use_kwargs({
+        'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
+        'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
+        'title': fields.Str(required=False),
+        'type': fields.DelimitedList(fields.Str(), required=False),
+        'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'include_tags': fields.Bool(required=False),
+    }, location="query")
     @jwt_required
     @catch_exception
-    def get(self):
+    def get(self, **kwargs):
 
-        assignment_subquery = self.db.session \
-            .query(self.db.tables["UserCompanyAssignment"]) \
-            .with_entities(self.db.tables["UserCompanyAssignment"].company_id) \
-            .filter(self.db.tables["UserCompanyAssignment"].user_id == get_jwt_identity()) \
-            .subquery()
+        kwargs["editable"] = "true"
 
-        company_subquery = self.db.session \
-            .query(self.db.tables["ArticleCompanyTag"]) \
-            .with_entities(self.db.tables["ArticleCompanyTag"].article) \
-            .filter(self.db.tables["ArticleCompanyTag"].company.in_(assignment_subquery)) \
-            .subquery()
+        query = self.db.get_filtered_article_query(kwargs, get_jwt_identity())
+        paginate = query.paginate(kwargs["page"], kwargs["per_page"])
+        articles = Serializer.serialize(paginate.items, self.db.tables["Article"])
 
-        data = Serializer.serialize(
-            self.db.session
-                .query(self.db.tables["Article"])
-                .filter(self.db.tables["Article"].id.in_(company_subquery))
-                .filter(self.db.tables["Article"].is_created_by_admin == false())
-                .all()
-            , self.db.tables["Article"])
+        if "include_tags" in kwargs and kwargs["include_tags"] is True:
+            article_ids = [a["id"] for a in articles]
 
-        return data, "200 "
+            taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
+            company_tags = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": article_ids})
+
+            for a in articles:
+                a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
+                a["company_tags"] = [t.company for t in company_tags if t.article == a["id"]]
+
+        return {
+           "pagination": {
+               "page": kwargs["page"],
+               "pages": paginate.pages,
+               "per_page": kwargs["per_page"],
+               "total": paginate.total,
+           },
+           "items": articles,
+        }, "200 "
