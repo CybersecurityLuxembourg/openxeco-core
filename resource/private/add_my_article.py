@@ -19,7 +19,7 @@ class AddMyArticle(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @doc(tags=['article'],
+    @doc(tags=['private'],
          description='Add an article determined by its title and related to an assigned company',
          responses={
              "200": {},
@@ -29,7 +29,6 @@ class AddMyArticle(MethodResource, Resource):
         'company': fields.Int(),
     })
     @jwt_required
-    @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
@@ -52,8 +51,7 @@ class AddMyArticle(MethodResource, Resource):
                 "handle": re.sub(r'[^a-z1-9-]', '', kwargs["title"].lower().replace(" ", "-"))[:100],
                 "is_created_by_admin": False,
             },
-            self.db.tables["Article"],
-            commit=False
+            self.db.tables["Article"]
         )
 
         self.db.insert(
@@ -63,16 +61,14 @@ class AddMyArticle(MethodResource, Resource):
                 "is_main": True
             },
             self.db.tables["ArticleVersion"],
-            commit=False
         )
 
         self.db.insert(
             {
-                "article_id": article.id,
-                "name": "Version 0",
-                "is_main": True
+                "article": article.id,
+                "company": kwargs["company"],
             },
-            self.db.tables["ArticleVersion"]
+            self.db.tables["ArticleCompanyTag"]
         )
 
         return "", "200 "

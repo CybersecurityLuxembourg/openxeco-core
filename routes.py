@@ -60,9 +60,12 @@ from resource.mail.save_template import SaveTemplate
 from resource.mail.send_mail import SendMail
 from resource.media.add_image import AddImage
 from resource.media.get_images import GetImages
+from resource.private.add_my_article import AddMyArticle
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_request import DeleteMyRequest
 from resource.private.delete_my_user import DeleteMyUser
+from resource.private.get_my_article import GetMyArticle
+from resource.private.get_my_article_content import GetMyArticleContent
 from resource.private.get_my_articles import GetMyArticles
 from resource.private.get_my_companies import GetMyCompanies
 from resource.private.get_my_company_addresses import GetMyCompanyAddresses

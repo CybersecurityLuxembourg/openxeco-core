@@ -26,7 +26,6 @@ class GetTaxonomyValueHierarchy(MethodResource, Resource):
     def get(self):
 
         tvh = self.db.tables["TaxonomyValueHierarchy"]
-
         data = Serializer.serialize(self.db.get(tvh), tvh)
 
         return data, "200 "
