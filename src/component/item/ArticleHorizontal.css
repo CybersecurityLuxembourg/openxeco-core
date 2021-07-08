@@ -4,19 +4,15 @@
     padding-bottom: 50px;
     overflow: hidden;
     line-height: 1 !important;
+    background-color: #ffeced;
+}
+
+.ArticleHorizontal-public {
+    background-color: #e3f7ff;
 }
 
 .ArticleHorizontal-link {
     color: inherit;
-}
-
-.ArticleHorizontal-link:hover {
-    color: initial !important;
-    text-decoration: none;
-}
-
-.ArticleHorizontal:hover {
-    background-color: #f2fbff;
 }
 
 @media (min-width: 500px) {
@@ -91,7 +87,7 @@
     margin-bottom: 5px !important;
     max-width: 100%;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;

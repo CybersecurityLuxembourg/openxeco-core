@@ -5,6 +5,7 @@ export function getDateFormat(date) {
 }
 
 export function dateToString(date) {
+	if (date === null) return "NO INFO";
 	if (typeof date === "string") return date.substring(10, 0);
 	if (date instanceof Date) {
 		return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0")

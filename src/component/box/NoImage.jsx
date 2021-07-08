@@ -6,7 +6,7 @@ export default class NoImage extends React.Component {
 		return (
 			<div className="NoImage" style={{ height: this.props.height ? this.props.height : "100%" }}>
 				<div className="NoImage-logo">
-					<i className="fas fa-camera-retro"/>
+					<i className="fas fa-shield-alt"/>
 				</div>
 			</div>
 		);

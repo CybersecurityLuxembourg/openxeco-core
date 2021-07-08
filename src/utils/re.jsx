@@ -18,3 +18,8 @@ export function validateUrlHandle(value) {
 	if (typeof value === "undefined" || value === null || value.length === 0) return false;
 	return value.match(/^([a-z-_+]){4,100}$/);
 }
+
+export function validateArticleTitle(value) {
+	if (typeof value === "undefined" || value === null || value.length === 0) return false;
+	return value.length > 5 && value.length < 255;
+}

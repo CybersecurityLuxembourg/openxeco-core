@@ -9,6 +9,7 @@
 #8fddff : hovered light blue;
 #ffa8b0 : hovered light red
 rgba(0, 159, 227, 0.05) : transparent light blue (usually for background)
+rgba(228, 6, 19, 0.05) : transparent light red (usually for background)
 grey
 lightgrey
 
@@ -40,24 +41,24 @@ h1 {
     text-transform: uppercase;
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
-    padding: 0px 10px 0px 85px;
+    padding: 0px 10px 0px 55px;
     margin: 25px 0px 15px 0px;
     background-image: url("img/polygon-red-bold.svg");
-	background-size: 75px 75px;
+	background-size: 44px 44px;
 	background-repeat: no-repeat;
-	min-height: 75px;
+	min-height: 44px;
 }
 
 h2 {
 	color: #010101;
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
-    padding: 0px 10px 0px 73px;
+    padding: 0px 10px 0px 45px;
     margin: 25px 0px 15px 0px;
     background-image: url("img/polygon-blue-bold.svg");
-	background-size: 60px 60px;
+	background-size: 35px 35px;
 	background-repeat: no-repeat;
-	min-height: 60px;
+	min-height: 35px;
 }
 
 h3 {
@@ -395,6 +396,14 @@ textarea {
 	width: 10px;
 	border-radius: 50%;
 	display: inline-block;
+}
+
+.red-dot {
+	background-color: #bcebff;
+}
+
+.blue-dot {
+	background-color: #fed7da;
 }
 
 /* DRAG'n'DROP */

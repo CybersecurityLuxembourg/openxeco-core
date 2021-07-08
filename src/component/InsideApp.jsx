@@ -94,6 +94,7 @@ export default class InsideApp extends React.Component {
 						/>}/>
 						<Route path="/add_company" render={(props) => <PageAddCompany
 							getNotifications={this.getNotifications}
+							myCompanies={this.state.myCompanies}
 							{...props}
 						/>}/>
 						<Route path="/contact" render={(props) => <PageContact
