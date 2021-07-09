@@ -20,6 +20,8 @@ class GetArticleEnums(MethodResource, Resource):
          responses={
              "200": {},
          })
+    @jwt_required
+    @verify_admin_access
     @catch_exception
     def get(self):
 
