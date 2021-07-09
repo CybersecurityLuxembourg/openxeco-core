@@ -1,13 +1,13 @@
 import React from "react";
 import "./EditContent.css";
-import dompurify from "dompurify";
 import { NotificationManager as nm } from "react-notifications";
+import dompurify from "dompurify";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../form/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
-import { getApiURL } from "../../../utils/env.jsx";
+import { getContentFromBlock } from "../../../utils/article.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -35,18 +35,13 @@ export default class EditContent extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.version !== this.prevProps.version
-			&& this.prevProps.version !== null) {
-			this.getContent();
-		}
-
 		if (JSON.stringify(prevState.content) !== JSON.stringify(this.state.content)) {
 			this.resizeBoxes();
 		}
 	}
 
 	getContent() {
-		getRequest.call(this, "article/get_article_version_content/" + this.state.version.id, (data) => {
+		getRequest.call(this, "private/get_my_article_content/" + this.props.article.id, (data) => {
 			for (let i = 0; i < data.length; i++) {
 				data[i].i = "" + i;
 				data[i].y = 0;
@@ -72,12 +67,12 @@ export default class EditContent extends React.Component {
 
 	saveContent() {
 		const params = {
-			article_version_id: this.state.selectedVersion,
+			article: this.props.article.id,
 			content: this.state.content.sort((first, second) => first.y - second.y),
 		};
 
-		postRequest.call(this, "article/update_article_version_content", params, () => {
-			this.getContent(this.state.selectedVersion);
+		postRequest.call(this, "private/update_article_content", params, () => {
+			this.getContent();
 			nm.info("The content has been updated");
 		}, (response) => {
 			this.refresh();
@@ -207,7 +202,7 @@ export default class EditContent extends React.Component {
 	render() {
 		return (
 			<div className="row">
-				<div className="col-md-5">
+				<div className="col-md-6">
 					<div className={"row row-spaced"}>
 						<div className="col-md-12">
 							<h3>Content</h3>
@@ -220,8 +215,10 @@ export default class EditContent extends React.Component {
 								{this.state.content.length === 0
 									? <Message
 										text={"This article has no content yet"}
+										height={100}
 									/>
 									: ""}
+
 								<ReactGridLayout
 									className="DialogArticleEditor-layout layout"
 									layout={this.state.content}
@@ -324,51 +321,37 @@ export default class EditContent extends React.Component {
 						</div>
 					}
 
-					{this.state.selectedVersion !== null && this.state.content === null
+					{this.state.content === null
 						&& <Loading
 							height={250}
 						/>
 					}
 				</div>
 
-				<div className="col-md-5">
+				<div className="col-md-6">
 					<div className={"row row-spaced"}>
 						<div className="col-md-12">
 							<h3>Preview</h3>
 						</div>
 					</div>
 
+					{this.props.article.title !== null && this.state.content !== null
+						&& <h2>{this.props.article.title}</h2>
+					}
+
+					{this.props.article.abstract !== null && this.state.content !== null
+						&& this.props.article.abstract.length > 0
+						&& <div
+							className="EditContent-abstract"
+							dangerouslySetInnerHTML={{
+								__html:
+								dompurify.sanitize(this.props.article.abstract),
+							}}>
+						</div>
+					}
+
 					{this.state.content !== null
-						&& this.state.content.map((item) => (
-							<div key={item.id}>
-								{item.type === "TITLE1"
-									? <h4>{item.content}</h4>
-									: ""}
-								{item.type === "TITLE2"
-									? <h5>{item.content}</h5>
-									: ""}
-								{item.type === "TITLE3"
-									? <h6>{item.content}</h6>
-									: ""}
-								{item.type === "PARAGRAPH"
-									? <div>
-										<div
-											dangerouslySetInnerHTML={{
-												__html: dompurify.sanitize(item.content),
-											}}>
-										</div>
-									</div>
-									: ""}
-								{item.type === "IMAGE"
-									? <div>
-										<img
-											className={"LogArticleVersion-image"}
-											src={getApiURL() + "public/get_image/" + item.content}
-										/>
-									</div>
-									: ""}
-							</div>
-						))
+						&& this.state.content.map((item) => getContentFromBlock(item))
 					}
 
 					{this.state.content === null

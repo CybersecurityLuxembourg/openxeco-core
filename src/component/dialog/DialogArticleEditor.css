@@ -95,13 +95,24 @@
     margin-bottom: 15px;
 }
 
+@media (min-width: 768px) {
+    .DialogArticleEditor-menu {
+        position: fixed;
+        width: inherit;
+        max-width: inherit;
+        height: calc(100vh - 100px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .DialogArticleEditor-menu-wrapper {
+        padding: 0 !important;
+    }
+}
+
 .DialogArticleEditor-menu {
     box-shadow: rgba(149, 157, 165, 0.8) 0px 8px 24px;
     padding: 5px;
-    height: calc(100vh - 120px);
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
     background-color: #E9E9E9;
 }
 

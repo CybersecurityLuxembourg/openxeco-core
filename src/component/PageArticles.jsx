@@ -1,18 +1,19 @@
 import React from "react";
 import "./PageArticles.css";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "./box/Loading.jsx";
 import { getRequest } from "../utils/request.jsx";
 import { getUrlParameter, dictToURI } from "../utils/url.jsx";
 import DynamicTable from "./table/DynamicTable.jsx";
 import ArticleHorizontal from "./item/ArticleHorizontal.jsx";
 import Message from "./box/Message.jsx";
+import Loading from "./box/Loading.jsx";
 import DialogAddArticle from "./dialog/DialogAddArticle.jsx";
 
 export default class PageArticles extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.refresh = this.refresh.bind(this);
 		this.getArticleEnums = this.getArticleEnums.bind(this);
 		this.getMyArticles = this.getMyArticles.bind(this);
 
@@ -31,8 +32,20 @@ export default class PageArticles extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getArticleEnums();
-		this.getMyArticles();
+		this.refresh();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (JSON.stringify(prevProps.myCompanies) !== JSON.stringify(this.props.myCompanies)) {
+			this.refresh();
+		}
+	}
+
+	refresh() {
+		if (this.props.myCompanies !== null && this.props.myCompanies.length > 0) {
+			this.getArticleEnums();
+			this.getMyArticles();
+		}
 	}
 
 	getArticleEnums() {
@@ -86,77 +99,95 @@ export default class PageArticles extends React.Component {
 					</div>
 				</div>
 
-				<div className={"row"}>
-					<div className="col-md-6 PageArticles-legend">
-						<span className="dot red-dot"></span> Published articles
-						<span className="dot blue-dot"></span> Hidden articles
-					</div>
-					<div className="col-md-6">
-						<div className="right-buttons">
-							<button
-								className="blue-button"
-								disabled={true}
-							>
-								<i className="fas fa-search"/>
-							</button>
-							<DialogAddArticle
-								trigger={<button
+				{this.props.myCompanies !== null && this.props.myCompanies.length > 0
+					&& <div className={"row"}>
+						<div className="col-md-6 PageArticles-legend">
+							<span className="dot red-dot"></span> Published articles
+							<span className="dot blue-dot"></span> Hidden articles
+						</div>
+						<div className="col-md-6">
+							<div className="right-buttons">
+								<button
 									className="blue-button"
-									onClick={this.login}
+									disabled={true}
 								>
-									<i className="fas fa-plus"/> <i className="fas fa-feather-alt"/>
-								</button>}
-								myCompanies={this.props.myCompanies}
-								afterConfirmation={this.getMyArticles}
-							/>
+									<i className="fas fa-search"/>
+								</button>
+								<DialogAddArticle
+									trigger={<button
+										className="blue-button"
+										onClick={this.login}
+									>
+										<i className="fas fa-plus"/> <i className="fas fa-feather-alt"/>
+									</button>}
+									myCompanies={this.props.myCompanies}
+									afterConfirmation={this.getMyArticles}
+								/>
+							</div>
+						</div>
+
+						<div className="col-md-12">
+							{this.state.articles !== null && this.state.articles.pagination
+								&& this.state.articles.pagination.total === 0
+								&& <div className="row row-spaced">
+									<div className="col-md-12">
+										<Message
+											text={"No article found"}
+											height={200}
+										/>
+									</div>
+								</div>
+							}
+
+							{this.state.articles !== null && this.state.articles.pagination
+								&& this.state.articles.pagination.total > 0
+								&& <DynamicTable
+									items={this.state.articles.items}
+									pagination={this.state.articles.pagination}
+									changePage={(page) => this.getArticles(page)}
+									buildElement={(a) => <div className="col-md-12">
+										<ArticleHorizontal
+											info={a}
+											analytics={this.props.analytics}
+											myCompanies={this.props.myCompanies}
+										/>
+									</div>
+									}
+								/>
+							}
+
+							{(this.state.articles === null
+								|| this.state.articles.pagination === undefined
+								|| this.state.articles.items === undefined)
+								&& <div className="row row-spaced">
+									<div className="col-md-12">
+										<Loading
+											height={200}
+										/>
+									</div>
+								</div>
+							}
 						</div>
 					</div>
-				</div>
+				}
 
-				<div className={"row"}>
-					<div className="col-md-12">
-						{this.state.articles !== null && this.state.articles.pagination
-							&& this.state.articles.pagination.total === 0
-							&& <div className="row row-spaced">
-								<div className="col-md-12">
-									<Message
-										text={"No article found"}
-										height={200}
-									/>
-								</div>
-							</div>
-						}
+				{this.props.myCompanies !== null && this.props.myCompanies.length === 0
+					&& <Message
+						text={<div>
+							You are not assign to any entity. You need to have access to
+							an entity to edit articles on behalf of it.
 
-						{this.state.articles !== null && this.state.articles.pagination
-							&& this.state.articles.pagination.total > 0
-							&& <DynamicTable
-								items={this.state.articles.items}
-								pagination={this.state.articles.pagination}
-								changePage={(page) => this.getArticles(page)}
-								buildElement={(a) => <div className="col-md-12">
-									<ArticleHorizontal
-										info={a}
-										analytics={this.props.analytics}
-										myCompanies={this.props.myCompanies}
-									/>
-								</div>
-								}
-							/>
-						}
+							Please see the Add or claim an entity page to request for it.
+						</div>}
+						height={200}
+					/>
+				}
 
-						{(this.state.articles === null
-							|| this.state.articles.pagination === undefined
-							|| this.state.articles.items === undefined)
-							&& <div className="row row-spaced">
-								<div className="col-md-12">
-									<Loading
-										height={200}
-									/>
-								</div>
-							</div>
-						}
-					</div>
-				</div>
+				{this.props.myCompanies === null
+					&& <Loading
+						height={200}
+					/>
+				}
 			</div>
 		);
 	}

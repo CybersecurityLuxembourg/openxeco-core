@@ -1,0 +1,26 @@
+
+.DialogMessage-overlay {
+	display: block;
+	z-index: 1050 !important;
+	margin: initial;
+	color: initial;
+	font-size: initial;
+	font-variant: initial;
+	font-weight: initial;
+	width: initial;
+	text-align: initial;
+}
+
+.DialogMessage-content {
+	position: absolute !important;
+  	top: 50%;
+  	left: 50%;
+  	-ms-transform: translateY(-50%);
+  	transform: translateY(-50%);
+  	-ms-transform: translateX(-50%);
+  	transform: translateX(-50%);
+}
+
+.DialogMessage-wrapper {
+    padding-bottom: 80px;
+}

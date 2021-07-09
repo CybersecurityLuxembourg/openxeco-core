@@ -29,10 +29,8 @@ export default class EditContent extends React.Component {
 				this.props.refreshArticle();
 				nm.info("The property has been updated");
 			}, (response) => {
-				this.refresh();
 				nm.warning(response.statusText);
 			}, (error) => {
-				this.refresh();
 				nm.error(error.message);
 			});
 		}
