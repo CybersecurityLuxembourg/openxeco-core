@@ -11,7 +11,9 @@ export default class DialogMessage extends React.Component {
 	render() {
 		return (
 			<Popup
-				trigger={this.props.trigger}
+				trigger={<div className="DialogMessage-trigger">
+					{this.props.trigger}
+				</div>}
 				modal
 				closeOnDocumentClick
 				className={"DialogMessage"}

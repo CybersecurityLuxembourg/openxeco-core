@@ -448,25 +448,3 @@ textarea {
     background-color: white;
    	margin: 15px 0px 10px 0px;
 }
-
-/* STATUS */
-
-.status-online {
-	margin: 20px 0px;
-	color: #009fe3;
-	font-size: 25px;
-	font-variant: small-caps;
-	font-weight: bold;
-	width: 100%;
-	text-align: center;
-}
-
-.status-offline {
-	margin: 20px 0px;
-	color: #e40613;
-	font-size: 25px;
-	font-variant: small-caps;
-	font-weight: bold;
-	width: 100%;
-	text-align: center;
-}

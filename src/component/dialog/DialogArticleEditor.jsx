@@ -5,8 +5,8 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
 import EditMetadata from "./DialogArticleEditor/EditMetadata.jsx";
 import EditContent from "./DialogArticleEditor/EditContent.jsx";
-import DialogMessage from "./DialogMessage.jsx";
 import Loading from "../box/Loading.jsx";
+import ArticleStatus from "../item/ArticleStatus.jsx";
 
 export default class DialogArticleEditor extends React.Component {
 	constructor(props) {
@@ -31,6 +31,10 @@ export default class DialogArticleEditor extends React.Component {
 	}
 
 	getArticleInfo() {
+		this.setState({
+			article: null,
+		});
+
 		getRequest.call(this, "private/get_my_article/" + this.props.article.id, (data) => {
 			this.setState({
 				article: data,
@@ -43,6 +47,10 @@ export default class DialogArticleEditor extends React.Component {
 	}
 
 	getArticleEnums() {
+		this.setState({
+			articleEnums: null,
+		});
+
 		getRequest.call(this, "public/get_article_enums", (data) => {
 			this.setState({
 				articleEnums: data,
@@ -57,14 +65,18 @@ export default class DialogArticleEditor extends React.Component {
 	getArticleStatus() {
 		const status = [];
 
-		if (this.props.article.status !== "PUBLIC") {
-			status.push("The status of the article is not PUBLIC");
-		}
+		if (this.state.article !== null) {
+			if (this.state.article.status !== "PUBLIC") {
+				status.push("The status of the article is not PUBLIC");
+			}
 
-		if (this.props.article.publication_date === null) {
-			status.push("The publication date of the article is not defined");
-		} else if (this.props.info.publication_date < new Date()) {
-			status.push("The publication date of the article is in the future");
+			if (this.state.article.publication_date === null) {
+				status.push("The publication date of the article is not defined");
+			} else if (this.state.article.publication_date < new Date()) {
+				status.push("The publication date of the article is in the future");
+			}
+		} else {
+			return null;
 		}
 
 		return status;
@@ -90,7 +102,14 @@ export default class DialogArticleEditor extends React.Component {
 
 							<div className="top-right-buttons">
 								<button
-									className={"grey-background"}
+									className={"blue-background"}
+									data-hover="Close"
+									data-active=""
+									onClick={this.getArticleInfo}>
+									<span><i className="fas fa-sync-alt"/></span>
+								</button>
+								<button
+									className={"red-background"}
 									data-hover="Close"
 									data-active=""
 									onClick={close}>
@@ -101,29 +120,9 @@ export default class DialogArticleEditor extends React.Component {
 
 						<div className="col-md-2 DialogArticleEditor-menu-wrapper">
 							<div className="DialogArticleEditor-menu">
-								{this.getArticleStatus().length === 0
-									? <div className="status-online">
-										Online&#160;
-										<DialogMessage
-											trigger={<i className="fas fa-info-circle"/>}
-											text={<div>dfzfd</div>}
-										/>
-									</div>
-									: <div className="status-offline">
-										Offline&#160;
-										<DialogMessage
-											trigger={<i className="fas fa-info-circle"/>}
-											text={<div>
-												Why the status is offline?
-												<ul>
-													{this.getArticleStatus().map((r, i) => <li key={"dae-" + i}>
-														{r}
-													</li>)}
-												</ul>
-											</div>}
-										/>
-									</div>
-								}
+								<ArticleStatus
+									status={this.getArticleStatus()}
+								/>
 
 								<h3>Tabs</h3>
 
@@ -141,30 +140,11 @@ export default class DialogArticleEditor extends React.Component {
 									onClick={() => this.setState({ editContent: true })}>
 									Edit content
 								</button>
-
-								<h3>Action</h3>
-
-								<button
-									className={"grey-background"}
-									data-hover="Save"
-									data-active=""
-									onClick={close}>
-									<span><i className="far fa-times-circle"/></span>
-								</button>
-								<button
-									className={"grey-background"}
-									data-hover="FFFFF"
-									data-active=""
-									onClick={close}>
-									<span><i className="far fa-times-circle"/></span>
-								</button>
-
-								<h3>Logs</h3>
 							</div>
 						</div>
 
 						{this.state.article !== null
-							? <div className="col-md-10">
+							? <div className="col-md-10 DialogArticleEditor-body">
 								{this.state.editContent
 									? <EditContent
 										article={this.state.article}
@@ -177,9 +157,11 @@ export default class DialogArticleEditor extends React.Component {
 									/>
 								}
 							</div>
-							: <Loading
-								height={250}
-							/>
+							: <div className="col-md-10">
+								<Loading
+									height={250}
+								/>
+							</div>
 						}
 					</div>
 				)}

@@ -1,0 +1,60 @@
+
+.ArticleStatus {
+    width: fit-content;
+    padding: 5px;
+    font-size: 18px;
+    font-variant: small-caps;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 25px;
+    transition: all 0.2s;
+    border: 0.16em solid rgba(0,0,0,0);
+}
+
+.ArticleStatus:hover {
+    border-color: rgba(0,0,0,1) !important;
+}
+
+.ArticleStatus-online {
+    color: white;
+    background-color: #009fe3;
+}
+
+.ArticleStatus-offline {
+    color: white;
+    background-color: #e40613;
+}
+
+.ArticleStatus-loading-logo {
+    animation: rotate 3s infinite;
+    -webkit-animation: rotate 3s infinite;
+    -moz-animation: rotate 3s infinite;
+    animation-timing-function: cubic-bezier(1,0,.5,1);
+}
+
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes rotate {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}

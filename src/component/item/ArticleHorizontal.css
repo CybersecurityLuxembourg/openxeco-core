@@ -4,11 +4,6 @@
     padding-bottom: 50px;
     overflow: hidden;
     line-height: 1 !important;
-    background-color: #ffeced;
-}
-
-.ArticleHorizontal-public {
-    background-color: #e3f7ff;
 }
 
 .ArticleHorizontal-link {
@@ -117,4 +112,10 @@
 .ArticleHorizontal .card-text {
     padding: 10px 1rem 5px 1rem;
     text-align: justify;
+}
+
+.ArticleHorizontal .ArticleStatus {
+    position: absolute;
+    top: 10px;
+    right: 15px;
 }

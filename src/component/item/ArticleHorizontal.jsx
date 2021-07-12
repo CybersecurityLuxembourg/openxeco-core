@@ -4,6 +4,7 @@ import dompurify from "dompurify";
 import NoImage from "../box/NoImage.jsx";
 import { getApiURL } from "../../utils/env.jsx";
 import Chip from "../form/Chip.jsx";
+import ArticleStatus from "./ArticleStatus.jsx";
 import { dateToString } from "../../utils/date.jsx";
 import DialogArticleEditor from "../dialog/DialogArticleEditor.jsx";
 
@@ -12,21 +13,30 @@ export default class ArticleHorizontal extends Component {
 		super(props);
 
 		this.getCompanyTagsContent = this.getCompanyTagsContent.bind(this);
-		this.isArticlePublic = this.isArticlePublic.bind(this);
+		this.getArticleStatus = this.getArticleStatus.bind(this);
 
 		this.state = {
 		};
 	}
 
-	isArticlePublic() {
-		if (this.props.info === null
-			|| this.props.info === undefined
-			|| this.props.info.status !== "PUBLIC"
-			|| this.props.info.publication_date === null) {
-			return false;
+	getArticleStatus() {
+		const status = [];
+
+		if (this.props.info !== null) {
+			if (this.props.info.status !== "PUBLIC") {
+				status.push("The status of the article is not PUBLIC");
+			}
+
+			if (this.props.info.publication_date === null) {
+				status.push("The publication date of the article is not defined");
+			} else if (this.props.info.publication_date < new Date()) {
+				status.push("The publication date of the article is in the future");
+			}
+		} else {
+			return null;
 		}
 
-		return true;
+		return status;
 	}
 
 	getCompanyTagsContent() {
@@ -54,7 +64,7 @@ export default class ArticleHorizontal extends Component {
 	}
 
 	render() {
-		return <div className={"ArticleHorizontal card " + (this.isArticlePublic() ? "ArticleHorizontal-public" : "")}>
+		return <div className={"ArticleHorizontal card"}>
 			<div className="card-horizontal">
 				<div className="img-square-wrapper">
 					{this.props.info.image !== null && this.props.info.image !== undefined
@@ -77,6 +87,10 @@ export default class ArticleHorizontal extends Component {
 					</div>
 				</div>
 				<div className="card-body">
+					<ArticleStatus
+						status={this.getArticleStatus()}
+					/>
+
 					<h5 className="card-title">{this.props.info.title}</h5>
 
 					{this.getCompanyTagsContent()}

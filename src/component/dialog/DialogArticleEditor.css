@@ -3,6 +3,7 @@
 	z-index: 100;
 	height: 100% !important;
 	width: 100% !important;
+    line-height: 1.5 !important;
 }
 
 .DialogArticleEditor-content button {
@@ -95,8 +96,14 @@
     margin-bottom: 15px;
 }
 
+.DialogArticleEditor-top-bar button {
+    bottom: 5px;
+    right: 0px;
+}
+
 @media (min-width: 768px) {
     .DialogArticleEditor-menu {
+        z-index: 105;
         position: fixed;
         width: inherit;
         max-width: inherit;
@@ -111,9 +118,12 @@
 }
 
 .DialogArticleEditor-menu {
-    box-shadow: rgba(149, 157, 165, 0.8) 0px 8px 24px;
-    padding: 5px;
-    background-color: #E9E9E9;
+    background-color: #009fe3;
+    padding: 10px;
+}
+
+.DialogArticleEditor-menu h3 {
+    color: white;
 }
 
 .DialogArticleEditor-menu button {
@@ -121,4 +131,29 @@
     text-align: left;
     bottom: 0 !important;
     right: 0 !important;
+}
+
+.DialogArticleEditor-menu .link-button {
+    color: white !important;
+    background-color: #009fe3 !important;
+    opacity: 1;
+}
+
+.DialogArticleEditor-menu .selected-link-button {
+    color: #009fe3 !important;
+    background-color: white !important;
+    opacity: 1;
+}
+
+.DialogArticleEditor-menu .ArticleStatus {
+    position: relative !important;
+    top: unset;
+    right: unset;
+    margin: 15px auto;
+}
+
+@media (min-width: 768px) {
+    .DialogArticleEditor-body {
+        padding: 0px 35px;
+    }
 }
