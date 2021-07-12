@@ -24,6 +24,8 @@ class GetMyArticleContent(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
+        # Check existence of objects
+
         articles = self.db.get(self.db.tables["Article"], {"id": id_})
 
         if len(articles) < 1:
@@ -37,6 +39,8 @@ class GetMyArticleContent(MethodResource, Resource):
         if len(article_companies) > 1:
             return "", "422 Article has too much companies assigned"
 
+        # Check right of the user
+
         assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
             "user_id": get_jwt_identity(),
             "company_id": article_companies[0].company
@@ -45,10 +49,17 @@ class GetMyArticleContent(MethodResource, Resource):
         if len(assignments) < 1:
             return "", "422 User not assign to the company"
 
+        # Check the article version
+
         article_versions = self.db.get(self.db.tables["ArticleVersion"], {"is_main": True, "article_id": id_})
 
         if len(article_versions) < 1:
             return "", "422 Article main version not found. Please contact the administrator"
+
+        if len(article_versions) > 1:
+            return "", "422 Too much main version found. Please contact the administrator"
+
+        # Fetch and return the data
 
         data = self.db.get(self.db.tables["ArticleBox"], {"article_version_id": article_versions[0].id})
         data = Serializer.serialize(data, self.db.tables["ArticleBox"])

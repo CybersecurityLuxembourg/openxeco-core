@@ -77,6 +77,7 @@ from resource.private.get_my_requests import GetMyRequests
 from resource.private.get_my_user import GetMyUser
 from resource.private.is_logged import IsLogged
 from resource.private.update_my_article import UpdateMyArticle
+from resource.private.update_my_article_content import UpdateMyArticleContent
 from resource.private.update_my_user import UpdateMyUser
 from resource.public.get_image import GetImage
 from resource.public.get_article_content import GetArticleContent

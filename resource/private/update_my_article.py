@@ -38,7 +38,7 @@ class UpdateMyArticle(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        # Check if the functionnality is allowed
+        # Check if the functionality is allowed
 
         settings = self.db.get(self.db.tables["Setting"])
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]

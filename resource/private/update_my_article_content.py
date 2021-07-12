@@ -22,14 +22,14 @@ class UpdateMyArticleContent(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
-        'article_id': fields.Int(),
+        'article': fields.Int(),
         'content': fields.List(fields.Dict()),
     })
     @jwt_required
     @catch_exception
     def post(self, **kwargs):
 
-        # Check if the functionnality is allowed
+        # Check if the functionality is allowed
 
         settings = self.db.get(self.db.tables["Setting"])
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
@@ -39,12 +39,12 @@ class UpdateMyArticleContent(MethodResource, Resource):
 
         # Check existence of objects
 
-        articles = self.db.get(self.db.tables["Article"], {"id": kwargs["id"]})
+        articles = self.db.get(self.db.tables["Article"], {"id": kwargs["article"]})
 
         if len(articles) < 1:
             return "", "422 Article ID not found"
 
-        article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["id"]})
+        article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["article"]})
 
         if len(article_companies) < 1:
             return "", "422 Article has no company assigned"
@@ -64,19 +64,28 @@ class UpdateMyArticleContent(MethodResource, Resource):
 
         # Check the article version
 
-        pass
+        article_versions = self.db.get(
+            self.db.tables["ArticleVersion"],
+            {"is_main": True, "article_id": kwargs["article"]}
+        )
+
+        if len(article_versions) < 1:
+            return "", "422 Article main version not found. Please contact the administrator"
+
+        if len(article_versions) > 1:
+            return "", "422 Too much main version found. Please contact the administrator"
 
         # Modify article content
 
         self.db.delete(
-            self.db.tables["ArticleBox"], {"article_version_id": kwargs["article_version_id"]},
+            self.db.tables["ArticleBox"], {"article_version_id": article_versions[0].id},
             commit=False
         )
 
         for i, c in enumerate(kwargs["content"]):
             c = {k: c[k] for k in ["type", "content"]}
             c["position"] = i + 1
-            c["article_version_id"] = kwargs["article_version_id"]
+            c["article_version_id"] = article_versions[0].id
 
             if c["type"] not in self.db.tables["ArticleBox"].__table__.columns["type"].type.enums:
                 self.db.session.rollback()
