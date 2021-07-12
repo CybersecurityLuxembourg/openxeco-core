@@ -113,6 +113,12 @@ export default class PageArticles extends React.Component {
 								>
 									<i className="fas fa-search"/>
 								</button>
+								<button
+									className="blue-button"
+									onClick={this.refresh}
+								>
+									<i className="fas fa-sync-alt"/>
+								</button>
 								<DialogAddArticle
 									trigger={<button
 										className="blue-button"

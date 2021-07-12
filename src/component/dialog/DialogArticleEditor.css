@@ -140,9 +140,7 @@
 }
 
 .DialogArticleEditor-menu .selected-link-button {
-    color: #009fe3 !important;
-    background-color: white !important;
-    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 .DialogArticleEditor-menu .ArticleStatus {

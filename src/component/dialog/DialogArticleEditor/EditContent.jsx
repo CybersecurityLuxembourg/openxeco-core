@@ -26,6 +26,9 @@ export default class EditContent extends React.Component {
 		this.state = {
 			content: null,
 			originalContent: null,
+
+			redirectToURL: this.props.article.link !== null && this.props.article.link.length > 0,
+			editArticle: this.props.article.link === null || this.props.article.link.length === 0,
 		};
 	}
 
@@ -71,14 +74,12 @@ export default class EditContent extends React.Component {
 			content: this.state.content.sort((first, second) => first.y - second.y),
 		};
 
-		postRequest.call(this, "private/update_article_content", params, () => {
+		postRequest.call(this, "private/update_my_article_content", params, () => {
 			this.getContent();
 			nm.info("The content has been updated");
 		}, (response) => {
-			this.refresh();
 			nm.warning(response.statusText);
 		}, (error) => {
-			this.refresh();
 			nm.error(error.message);
 		});
 	}
@@ -201,163 +202,245 @@ export default class EditContent extends React.Component {
 
 	render() {
 		return (
-			<div className="row">
-				<div className="col-md-6">
-					<div className={"row row-spaced"}>
-						<div className="col-md-12">
-							<h3>Content</h3>
+			<div className="EditContent row">
+				{JSON.stringify(this.state.originalContent) !== JSON.stringify(this.state.content)
+					&& <div className="EditContent-lock">
+						<div className="EditContent-lock-buttons">
+							<button
+								className={"blue-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={this.saveContent}>
+								<span><i className="fas fa-save"/> Save progress</span>
+							</button>
+							<button
+								className={"red-background"}
+								data-active=""
+								onClick={this.getContent}>
+								<span><i className="far fa-times-circle"/> Discard changes</span>
+							</button>
 						</div>
 					</div>
+				}
 
-					{this.state.version !== null && this.state.content !== null
-						&& <div className={"row"}>
-							<div className="col-md-12">
-								{this.state.content.length === 0
-									? <Message
-										text={"This article has no content yet"}
-										height={100}
-									/>
-									: ""}
-
-								<ReactGridLayout
-									className="DialogArticleEditor-layout layout"
-									layout={this.state.content}
-									isDraggable={true}
-									isResizable={false}
-									onDragStop={(e) => this.moveBox(e)}
-									draggableHandle={".FormLine-label"}
-									containerPadding={[0, 0]}
-									margin={[0, 0]}
-									cols={1}
-									rowHeight={10}
-								>
-									{this.state.content.map((item, index) => (
-										<div className={"DialogArticleEditor-item row item-" + index + " "
-											+ this.getItemStatusClassname(index)}
-										key={index}
-										data-grid={item}>
-											<div className="DialogArticleEditor-item-remove-button">
-												<span
-													className="tooltip--left"
-													data-tooltip="Remove this block"
-													onClick={() => this.removeBox(index)}>
-													<i className="fas fa-times hoverEffect pageReporting-grid-button"/>
-												</span>
-											</div>
-											<div className={"col-md-12"}>
-												{item.type === "TITLE1"
-													? <FormLine
-														labelWidth={1}
-														label={"H1"}
-														value={item.content}
-														onBlur={(v) => this.updateComponent(index, "content", v)}
-													/>
-													: ""}
-												{item.type === "TITLE2"
-													? <FormLine
-														labelWidth={1}
-														label={"H2"}
-														value={item.content}
-														onBlur={(v) => this.updateComponent(index, "content", v)}
-													/>
-													: ""}
-												{item.type === "PARAGRAPH"
-													? <FormLine
-														type="editor"
-														label={<i className="fas fa-align-left"/>}
-														labelWidth={1}
-														value={item.content}
-														onChange={(v) => this.updateComponent(index, "content", v)}
-													/>
-													: ""}
-												{item.type === "IMAGE"
-													? <div className="DialogArticleEditor-image-wrapper">
-														<FormLine
-															type="image"
-															label={<i className="fas fa-image"/>}
-															labelWidth={1}
-															value={item.content}
-															onChange={(v) => this.updateComponent(index, "content", v)}
-															onLoad={this.resizeBoxes}
-														/>
-													</div>
-													: ""}
-												{item.type === "FRAME"
-													? <FormLine
-														type="frame"
-														label={<i className="fab fa-youtube"/>}
-														labelWidth={1}
-														value={item.content}
-														onChange={(v) => this.updateComponent(index, "content", v)}
-													/>
-													: ""}
-											</div>
-										</div>
-									))}
-								</ReactGridLayout>
-							</div>
-							<div className="col-md-12 DialogArticleEditor-block-buttons">
-								<button
-									onClick={() => this.addBox("TITLE1")}>
-									H1
-								</button>
-								<button
-									onClick={() => this.addBox("TITLE2")}>
-									H2
-								</button>
-								<button
-									onClick={() => this.addBox("PARAGRAPH")}>
-									<i className="fas fa-align-left"/>
-								</button>
-								<button
-									onClick={() => this.addBox("IMAGE")}>
-									<i className="fas fa-image"/>
-								</button>
-								<button
-									onClick={() => this.addBox("FRAME")}>
-									<i className="fab fa-youtube"/>
-								</button>
-							</div>
+				<div className="col-md-12">
+					<div className={"row row-spaced"}>
+						<div className="col-md-12">
+							<h3>The article must:</h3>
 						</div>
-					}
 
-					{this.state.content === null
-						&& <Loading
-							height={250}
-						/>
-					}
+						<div className="col-md-12">
+							<FormLine
+								type={"checkbox"}
+								label={"Show the customized content"}
+								value={this.state.editArticle}
+								disabled={this.state.editArticle}
+								onChange={(v) => this.setState({
+									editArticle: v,
+									redirectToURL: !v,
+								})}
+							/>
+							<FormLine
+								type={"checkbox"}
+								label={"Redirect to an external URL"}
+								value={this.state.redirectToURL}
+								disabled={this.state.redirectToURL}
+								onChange={(v) => this.setState({
+									redirectToURL: v,
+									editArticle: !v,
+								})}
+							/>
+						</div>
+					</div>
 				</div>
 
-				<div className="col-md-6">
-					<div className={"row row-spaced"}>
-						<div className="col-md-12">
-							<h3>Preview</h3>
-						</div>
-					</div>
-
-					{this.props.article.title !== null && this.state.content !== null
-						&& <h2>{this.props.article.title}</h2>
-					}
-
-					{this.props.article.abstract !== null && this.state.content !== null
-						&& this.props.article.abstract.length > 0
-						&& <div
-							className="EditContent-abstract"
-							dangerouslySetInnerHTML={{
-								__html:
-								dompurify.sanitize(this.props.article.abstract),
-							}}>
-						</div>
-					}
-
-					{this.state.content !== null
-						&& this.state.content.map((item) => getContentFromBlock(item))
-					}
-
-					{this.state.content === null
-						&& <Message
-							text={"No preview available"}
+				<div className="col-md-12">
+					{!this.state.editArticle && !this.state.redirectToURL
+						&&	<Message
+							text={"Please select one of the option above"}
+							height={300}
 						/>
+					}
+
+					{this.state.redirectToURL
+						&&	<div className={"row row-spaced"}>
+							<div className="col-md-12">
+								<h3>URL of the article</h3>
+							</div>
+
+							<div className="col-md-12">
+								<FormLine
+									label={"URL of the external article"}
+									value={this.state.editArticle}
+									onChange={(v) => this.changeState("editArticle", v)}
+								/>
+							</div>
+						</div>
+					}
+
+					{this.state.editArticle
+						&& <div className="EditContent-customised">
+							<div className={"row row-spaced EditContent-customised"}>
+								<div className="col-md-6">
+									<div className={"row"}>
+										<div className="col-md-12 row-spaced">
+											<h3>Content</h3>
+										</div>
+									</div>
+
+									{this.state.version !== null && this.state.content !== null
+										&& <div className={"row"}>
+											<div className="col-md-12">
+												{this.state.content.length === 0
+													? <Message
+														text={"This article has no content yet"}
+														height={100}
+													/>
+													: ""}
+
+												<ReactGridLayout
+													className="DialogArticleEditor-layout layout"
+													layout={this.state.content}
+													isDraggable={true}
+													isResizable={false}
+													onDragStop={(e) => this.moveBox(e)}
+													draggableHandle={".FormLine-label"}
+													containerPadding={[0, 0]}
+													margin={[0, 0]}
+													cols={1}
+													rowHeight={10}
+												>
+													{this.state.content.map((item, index) => (
+														<div className={"DialogArticleEditor-item row item-" + index + " "
+															+ this.getItemStatusClassname(index)}
+														key={index}
+														data-grid={item}>
+															<div className="DialogArticleEditor-item-remove-button">
+																<span
+																	className="tooltip--left"
+																	data-tooltip="Remove this block"
+																	onClick={() => this.removeBox(index)}>
+																	<i className="fas fa-times hoverEffect pageReporting-grid-button"/>
+																</span>
+															</div>
+															<div className={"col-md-12"}>
+																{item.type === "TITLE1"
+																	? <FormLine
+																		labelWidth={2}
+																		label={"H1"}
+																		value={item.content}
+																		onBlur={(v) => this.updateComponent(index, "content", v)}
+																	/>
+																	: ""}
+																{item.type === "TITLE2"
+																	? <FormLine
+																		labelWidth={2}
+																		label={"H2"}
+																		value={item.content}
+																		onBlur={(v) => this.updateComponent(index, "content", v)}
+																	/>
+																	: ""}
+																{item.type === "PARAGRAPH"
+																	? <FormLine
+																		type="editor"
+																		label={<i className="fas fa-align-left"/>}
+																		labelWidth={2}
+																		value={item.content}
+																		onChange={(v) => this.updateComponent(index, "content", v)}
+																	/>
+																	: ""}
+																{item.type === "IMAGE"
+																	? <div className="DialogArticleEditor-image-wrapper">
+																		<FormLine
+																			type="image"
+																			label={<i className="fas fa-image"/>}
+																			labelWidth={2}
+																			value={item.content}
+																			onChange={(v) => this.updateComponent(index, "content", v)}
+																			onLoad={this.resizeBoxes}
+																		/>
+																	</div>
+																	: ""}
+																{item.type === "FRAME"
+																	? <FormLine
+																		type="frame"
+																		label={<i className="fab fa-youtube"/>}
+																		labelWidth={2}
+																		value={item.content}
+																		onChange={(v) => this.updateComponent(index, "content", v)}
+																	/>
+																	: ""}
+															</div>
+														</div>
+													))}
+												</ReactGridLayout>
+											</div>
+											<div className="col-md-12 DialogArticleEditor-block-buttons">
+												<button
+													onClick={() => this.addBox("TITLE1")}>
+													H1
+												</button>
+												<button
+													onClick={() => this.addBox("TITLE2")}>
+													H2
+												</button>
+												<button
+													onClick={() => this.addBox("PARAGRAPH")}>
+													<i className="fas fa-align-left"/>
+												</button>
+												<button
+													onClick={() => this.addBox("IMAGE")}>
+													<i className="fas fa-image"/>
+												</button>
+												<button
+													onClick={() => this.addBox("FRAME")}>
+													<i className="fab fa-youtube"/>
+												</button>
+											</div>
+										</div>
+									}
+
+									{this.state.content === null
+										&& <Loading
+											height={250}
+										/>
+									}
+								</div>
+
+								<div className="col-md-6">
+									<div className={"row"}>
+										<div className="col-md-12">
+											<h3>Preview</h3>
+										</div>
+									</div>
+
+									{this.props.article.title !== null && this.state.content !== null
+										&& <h2>{this.props.article.title}</h2>
+									}
+
+									{this.props.article.abstract !== null && this.state.content !== null
+										&& this.props.article.abstract.length > 0
+										&& <div
+											className="EditContent-abstract"
+											dangerouslySetInnerHTML={{
+												__html:
+												dompurify.sanitize(this.props.article.abstract),
+											}}>
+										</div>
+									}
+
+									{this.state.content !== null
+										&& this.state.content.map((item) => getContentFromBlock(item))
+									}
+
+									{this.state.content === null
+										&& <Message
+											text={"No preview available"}
+										/>
+									}
+								</div>
+							</div>
+						</div>
 					}
 				</div>
 			</div>
