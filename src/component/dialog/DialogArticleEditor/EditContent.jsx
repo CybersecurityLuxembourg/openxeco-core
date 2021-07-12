@@ -388,10 +388,10 @@ export default class EditContent extends React.Component {
 													onClick={() => this.addBox("PARAGRAPH")}>
 													<i className="fas fa-align-left"/>
 												</button>
-												<button
+												{/* <button
 													onClick={() => this.addBox("IMAGE")}>
 													<i className="fas fa-image"/>
-												</button>
+												</button> */}
 												<button
 													onClick={() => this.addBox("FRAME")}>
 													<i className="fab fa-youtube"/>
