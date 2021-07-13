@@ -79,6 +79,12 @@ class UpdateMyArticle(MethodResource, Resource):
             if len(type_setting) < 1 or kwargs["type"] not in type_setting[0].value.split(","):
                 return "", "422 The article type is not allowed"
 
+        if "handle" in kwargs:
+            articles = self.db.get(self.db.tables["Article"], {"handle": kwargs["handle"]})
+
+            if len(articles) > 0:
+                return "", "422 The article handle is not available"
+
         # Modify article
 
         self.db.merge(kwargs, self.db.tables["Article"])
