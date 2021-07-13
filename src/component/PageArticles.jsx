@@ -1,6 +1,7 @@
 import React from "react";
 import "./PageArticles.css";
 import { NotificationManager as nm } from "react-notifications";
+import { Link } from "react-router-dom";
 import { getRequest } from "../utils/request.jsx";
 import { getUrlParameter, dictToURI } from "../utils/url.jsx";
 import DynamicTable from "./table/DynamicTable.jsx";
@@ -177,10 +178,19 @@ export default class PageArticles extends React.Component {
 				{this.props.myCompanies !== null && this.props.myCompanies.length === 0
 					&& <Message
 						text={<div>
-							You are not assign to any entity. You need to have access to
-							an entity to edit articles on behalf of it.
-
-							Please see the Add or claim an entity page to request for it.
+							<p>
+								You are not assign to any entity. You need to have access to
+								an entity to edit articles and publish on behalf of it.
+							</p>
+							<p>
+								Please see the
+								<a
+									onClick={() => this.props.changeMenu("add_company")}
+								>
+									<Link to="/add_company">&#32;Add or claim an entity&#32;</Link>
+								</a>
+								page to request for it.
+							</p>
 						</div>}
 						height={200}
 					/>

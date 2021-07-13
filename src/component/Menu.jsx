@@ -99,7 +99,7 @@ export default class Menu extends React.Component {
 						</NavItem>)
 					}
 					<NavItem
-						eventKey="add_company"
+						eventKey="/add_company"
 						active={this.props.selectedMenu === "add_company"}>
 						<NavIcon>
 							<Link to="/add_company">
@@ -107,7 +107,7 @@ export default class Menu extends React.Component {
 									className={"fas fa-plus-circle "
 										+ (this.props.myCompanies !== null
 											&& this.props.myCompanies.length === 0
-											&& this.props.selectedMenu !== "add_company"
+											&& this.props.selectedMenu !== "/add_company"
 											&& "Menu-highlight")}
 									style={{ fontSize: "1.75em" }}
 								/>
