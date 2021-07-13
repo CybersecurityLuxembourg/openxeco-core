@@ -26,14 +26,29 @@ export default class EditContent extends React.Component {
 			};
 
 			postRequest.call(this, "private/update_my_article", params, () => {
-				this.props.refreshArticle();
+				this.props.refreshArticle(false);
 				nm.info("The property has been updated");
 			}, (response) => {
+				this.props.refreshArticle();
 				nm.warning(response.statusText);
 			}, (error) => {
+				this.props.refreshArticle();
 				nm.error(error.message);
 			});
 		}
+	}
+
+	getAvailableArticleType() {
+		if (this.props.articleEnums !== null
+			&& this.props.articleEnums.type !== undefined
+			&& this.props.settings !== null
+			&& this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM !== undefined) {
+			return this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM
+				.split(",")
+				.filter((t) => this.props.articleEnums.type.indexOf(t) >= 0);
+		}
+
+		return [];
 	}
 
 	changeState(field, value) {
@@ -59,9 +74,7 @@ export default class EditContent extends React.Component {
 								label={"Type"}
 								type={"select"}
 								value={this.props.article.type}
-								options={this.props.articleEnums === null
-									|| typeof this.props.articleEnums.type === "undefined" ? []
-									: this.props.articleEnums.type.map((o) => ({ label: o, value: o }))}
+								options={this.getAvailableArticleType().map((o) => ({ label: o, value: o }))}
 								onChange={(v) => this.saveArticleValue("type", v)}
 							/>
 							<FormLine
@@ -93,7 +106,7 @@ export default class EditContent extends React.Component {
 							/>
 						</div>
 
-						{["EVENT", "JOB OFFER"].indexOf(this.props.article.type) >= 0
+						{["EVENT"].indexOf(this.props.article.type) >= 0
 							&& <div className="col-md-12">
 								<h2>Additional {this.props.article.type.toLowerCase()} fields</h2>
 							</div>}
@@ -104,22 +117,13 @@ export default class EditContent extends React.Component {
 									label={"Start date"}
 									type={"datetime"}
 									value={this.props.article.start_date}
-									onBlur={(v) => this.saveArticleValue("start_date", v.format("yyyy-MM-DDTHH:mm"))}
+									onBlur={(v) => this.saveArticleValue("start_date", v === null ? v : v.format("yyyy-MM-DDTHH:mm"))}
 								/>
 								<FormLine
 									label={"End date"}
 									type={"datetime"}
 									value={this.props.article.end_date}
-									onBlur={(v) => this.saveArticleValue("end_date", v.format("yyyy-MM-DDTHH:mm"))}
-								/>
-							</div>}
-
-						{this.props.article.type === "JOB OFFER"
-							&& <div className="col-md-12">
-								<FormLine
-									label={"External reference"}
-									value={this.props.article.external_reference}
-									disabled={true}
+									onBlur={(v) => this.saveArticleValue("end_date", v === null ? v : v.format("yyyy-MM-DDTHH:mm"))}
 								/>
 							</div>}
 					</div>

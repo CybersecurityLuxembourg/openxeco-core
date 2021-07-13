@@ -47,3 +47,32 @@ export function getNextTitle1Position(content, pos) {
 
 	return content.length;
 }
+
+export function getArticleStatus(article) {
+	const status = [];
+
+	if (article !== null) {
+		if (article.status !== "PUBLIC") {
+			status.push("The status of the article is not PUBLIC");
+		}
+
+		if (article.publication_date === null) {
+			status.push("The publication date of the article is not defined");
+		} else if (article.publication_date > new Date()) {
+			status.push("The publication date of the article is in the future");
+		}
+
+		if (article.type === "EVENT") {
+			if (article.start_date === null) {
+				status.push("The start date of the article is not defined");
+			}
+			if (article.end_date === null) {
+				status.push("The end date of the article is not defined");
+			}
+		}
+	} else {
+		return null;
+	}
+
+	return status;
+}

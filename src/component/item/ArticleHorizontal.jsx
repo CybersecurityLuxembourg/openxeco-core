@@ -6,6 +6,7 @@ import { getApiURL } from "../../utils/env.jsx";
 import Chip from "../form/Chip.jsx";
 import ArticleStatus from "./ArticleStatus.jsx";
 import { dateToString } from "../../utils/date.jsx";
+import { getArticleStatus } from "../../utils/article.jsx";
 import DialogArticleEditor from "../dialog/DialogArticleEditor.jsx";
 
 export default class ArticleHorizontal extends Component {
@@ -13,30 +14,9 @@ export default class ArticleHorizontal extends Component {
 		super(props);
 
 		this.getCompanyTagsContent = this.getCompanyTagsContent.bind(this);
-		this.getArticleStatus = this.getArticleStatus.bind(this);
 
 		this.state = {
 		};
-	}
-
-	getArticleStatus() {
-		const status = [];
-
-		if (this.props.info !== null) {
-			if (this.props.info.status !== "PUBLIC") {
-				status.push("The status of the article is not PUBLIC");
-			}
-
-			if (this.props.info.publication_date === null) {
-				status.push("The publication date of the article is not defined");
-			} else if (this.props.info.publication_date < new Date()) {
-				status.push("The publication date of the article is in the future");
-			}
-		} else {
-			return null;
-		}
-
-		return status;
 	}
 
 	getCompanyTagsContent() {
@@ -88,7 +68,7 @@ export default class ArticleHorizontal extends Component {
 				</div>
 				<div className="card-body">
 					<ArticleStatus
-						status={this.getArticleStatus()}
+						status={getArticleStatus(this.props.info)}
 					/>
 
 					<h5 className="card-title">{this.props.info.title}</h5>
@@ -104,6 +84,7 @@ export default class ArticleHorizontal extends Component {
 						article={this.props.info}
 						myCompanies={this.props.myCompanies}
 						afterConfirmation={this.getMyArticles}
+						settings={this.props.settings}
 					/>
 				</div>
 			</div>

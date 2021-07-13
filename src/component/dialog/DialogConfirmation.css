@@ -7,3 +7,8 @@
     white-space: normal;
     text-overflow: clip;
 }
+
+.DialogConfirmation-wrapper button {
+    display: inline !important;
+    width: auto !important;
+}

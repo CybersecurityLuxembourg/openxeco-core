@@ -3,10 +3,12 @@ import "./DialogArticleEditor.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
+import { getArticleStatus } from "../../utils/article.jsx";
 import EditMetadata from "./DialogArticleEditor/EditMetadata.jsx";
 import EditContent from "./DialogArticleEditor/EditContent.jsx";
 import Loading from "../box/Loading.jsx";
 import ArticleStatus from "../item/ArticleStatus.jsx";
+import DialogConfirmation from "./DialogConfirmation.jsx";
 
 export default class DialogArticleEditor extends React.Component {
 	constructor(props) {
@@ -30,10 +32,12 @@ export default class DialogArticleEditor extends React.Component {
 		this.getArticleEnums();
 	}
 
-	getArticleInfo() {
-		this.setState({
-			article: null,
-		});
+	getArticleInfo(refresh) {
+		if (refresh !== false) {
+			this.setState({
+				article: null,
+			});
+		}
 
 		getRequest.call(this, "private/get_my_article/" + this.props.article.id, (data) => {
 			this.setState({
@@ -62,26 +66,6 @@ export default class DialogArticleEditor extends React.Component {
 		});
 	}
 
-	getArticleStatus() {
-		const status = [];
-
-		if (this.state.article !== null) {
-			if (this.state.article.status !== "PUBLIC") {
-				status.push("The status of the article is not PUBLIC");
-			}
-
-			if (this.state.article.publication_date === null) {
-				status.push("The publication date of the article is not defined");
-			} else if (this.state.article.publication_date < new Date()) {
-				status.push("The publication date of the article is in the future");
-			}
-		} else {
-			return null;
-		}
-
-		return status;
-	}
-
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -98,7 +82,10 @@ export default class DialogArticleEditor extends React.Component {
 				{(close) => (
 					<div className={"row"}>
 						<div className={"col-md-12 DialogArticleEditor-top-bar"}>
-							<h2>Article editor</h2>
+							<h2>
+								Editing an article:
+								&#34;{this.state.article !== null ? this.state.article.title : ""}&#34;
+							</h2>
 
 							<div className="top-right-buttons">
 								<button
@@ -121,7 +108,7 @@ export default class DialogArticleEditor extends React.Component {
 						<div className="col-md-2 DialogArticleEditor-menu-wrapper">
 							<div className="DialogArticleEditor-menu">
 								<ArticleStatus
-									status={this.getArticleStatus()}
+									status={getArticleStatus(this.state.article)}
 								/>
 
 								<h3>Tabs</h3>
@@ -131,15 +118,37 @@ export default class DialogArticleEditor extends React.Component {
 									data-hover="Save"
 									data-active=""
 									onClick={() => this.setState({ editContent: false })}>
-									Edit metadata
+									<i className="fas fa-heading"/> Edit metadata
 								</button>
 								<button
 									className={"link-button " + (this.state.editContent && "selected-link-button")}
 									data-hover="Save"
 									data-active=""
 									onClick={() => this.setState({ editContent: true })}>
-									Edit content
+									<i className="fas fa-align-left"/> Edit content
 								</button>
+
+								<h3>Action</h3>
+
+								<button
+									data-hover="Save"
+									data-active=""
+									onClick={() => this.setState({ editContent: true })}>
+									<i className="far fa-eye"/> View article
+								</button>
+								<DialogConfirmation
+									text={"Are you sure you want to delete this article?"}
+									trigger={
+										<button
+											className="red-font"
+											data-hover="Save"
+											data-active=""
+											onClick={() => this.setState({ editContent: false })}>
+											<i className="far fa-trash-alt"/> Delete article...
+										</button>
+									}
+									afterConfirmation={this.submitCreationRequest}
+								/>
 							</div>
 						</div>
 
@@ -148,12 +157,13 @@ export default class DialogArticleEditor extends React.Component {
 								{this.state.editContent
 									? <EditContent
 										article={this.state.article}
-										refreshArticle={this.getArticleInfo}
+										refreshArticle={(refresh) => this.getArticleInfo(refresh)}
 									/>
 									: <EditMetadata
 										article={this.state.article}
 										articleEnums={this.state.articleEnums}
-										refreshArticle={this.getArticleInfo}
+										refreshArticle={(refresh) => this.getArticleInfo(refresh)}
+										settings={this.props.settings}
 									/>
 								}
 							</div>
