@@ -8,7 +8,9 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from decorator.verify_admin_access import verify_admin_access
+from exception.object_not_found import ObjectNotFound
+from exception.user_not_assign_to_company import UserNotAssignedToCompany
+from exception.deactivated_article_edition import DeactivatedArticleEdition
 
 
 class AddMyArticle(MethodResource, Resource):
@@ -23,6 +25,9 @@ class AddMyArticle(MethodResource, Resource):
          description='Add an article determined by its title and related to an assigned company',
          responses={
              "200": {},
+             "403": {"description": "The article edition is deactivated"},
+             "422.1": {"description": "Object not found : Company"},
+             "422.2": {"description": "The user is not assign to the company"},
          })
     @use_kwargs({
         'title': fields.Str(),
@@ -38,14 +43,14 @@ class AddMyArticle(MethodResource, Resource):
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
 
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
-            return "", "422 The article edition functionality is not activated"
+            raise DeactivatedArticleEdition()
 
         # Check the company
 
         companies = self.db.get(self.db.tables["Company"], {"id": kwargs["company"]})
 
         if len(companies) < 1:
-            return "", "422 Company ID not found"
+            raise ObjectNotFound("Company")
 
         # Check the right of the user
 
@@ -55,7 +60,7 @@ class AddMyArticle(MethodResource, Resource):
         })
 
         if len(assignments) < 1:
-            return "", "422 User not assign to the company"
+            raise UserNotAssignedToCompany()
 
         # Insert rows
 

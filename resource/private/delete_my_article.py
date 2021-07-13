@@ -6,6 +6,9 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from exception.object_not_found import ObjectNotFound
+from exception.user_not_assign_to_company import UserNotAssignedToCompany
+from exception.deactivated_article_edition import DeactivatedArticleEdition
 
 
 class DeleteMyArticle(MethodResource, Resource):
@@ -20,6 +23,11 @@ class DeleteMyArticle(MethodResource, Resource):
          description='Delete an article editable by the user authenticated by the token',
          responses={
              "200": {},
+             "403": {"description": "The article edition is deactivated"},
+             "422.1": {"description": "Object not found : Article"},
+             "422.2": {"description": "Article has no company assigned"},
+             "422.3": {"description": "Article has too much companies assigned"},
+             "422.4": {"description": "The user is not assign to the company"},
          })
     @use_kwargs({
         'id': fields.Int(),
@@ -34,14 +42,14 @@ class DeleteMyArticle(MethodResource, Resource):
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
 
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
-            return "", "422 The article edition functionality is not activated"
+            raise DeactivatedArticleEdition()
 
         # Check existence of objects
 
         articles = self.db.get(self.db.tables["Article"], {"id": kwargs["id"]})
 
         if len(articles) < 1:
-            return "", "422 Article ID not found"
+            raise ObjectNotFound("Article")
 
         article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["id"]})
 
@@ -59,15 +67,7 @@ class DeleteMyArticle(MethodResource, Resource):
         })
 
         if len(assignments) < 1:
-            return "", "422 User not assign to the company"
-
-        # Valid values of properties
-
-        if "type" in kwargs:
-            type_setting = [s for s in settings if s.property == "AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM"]
-
-            if len(type_setting) < 1 or kwargs["type"] not in type_setting[0].value.split(","):
-                return "", "422 The article type is not allowed"
+            raise UserNotAssignedToCompany()
 
         # Modify article
 

@@ -6,6 +6,10 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from exception.object_not_found import ObjectNotFound
+from exception.user_not_assign_to_company import UserNotAssignedToCompany
+from exception.deactivated_article_edition import DeactivatedArticleEdition
+from exception.article_type_not_allowed import ArticleTypeNotAllowed
 
 
 class UpdateMyArticleContent(MethodResource, Resource):
@@ -20,6 +24,15 @@ class UpdateMyArticleContent(MethodResource, Resource):
          description='Update content of an article',
          responses={
              "200": {},
+             "403.1": {"description": "The article edition is deactivated"},
+             "403.2": {"description": "The article type is not allowed"},
+             "422.1": {"description": "Object not found : Article"},
+             "422.2": {"description": "Article has no company assigned"},
+             "422.3": {"description": "Article has too much companies assigned"},
+             "422.4": {"description": "The user is not assign to the company"},
+             "422.5": {"description": "Article main version not found. Please contact the administrator"},
+             "422.6": {"description": "Too much main version found. Please contact the administrator"},
+             "422.7": {"description": "Wrong content type found: 'TYPE'"},
          })
     @use_kwargs({
         'article': fields.Int(),
@@ -36,14 +49,14 @@ class UpdateMyArticleContent(MethodResource, Resource):
         # Check if the functionality is allowed
 
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
-            return "", "422 The article edition functionality is not activated"
+            raise DeactivatedArticleEdition()
 
         # Check existence of objects
 
         articles = self.db.get(self.db.tables["Article"], {"id": kwargs["article"]})
 
         if len(articles) < 1:
-            return "", "422 Article ID not found"
+            raise ObjectNotFound("Article")
 
         article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["article"]})
 
@@ -61,7 +74,7 @@ class UpdateMyArticleContent(MethodResource, Resource):
         })
 
         if len(assignments) < 1:
-            return "", "422 User not assign to the company"
+            raise UserNotAssignedToCompany()
 
         # Check the article version
 
