@@ -85,6 +85,7 @@ export default class ArticleHorizontal extends Component {
 						myCompanies={this.props.myCompanies}
 						afterConfirmation={this.getMyArticles}
 						settings={this.props.settings}
+						afterDelete={this.props.afterDelete}
 					/>
 				</div>
 			</div>

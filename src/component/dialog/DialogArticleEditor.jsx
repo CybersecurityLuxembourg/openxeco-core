@@ -2,7 +2,7 @@ import React from "react";
 import "./DialogArticleEditor.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest } from "../../utils/request.jsx";
+import { getRequest, postRequest } from "../../utils/request.jsx";
 import { getArticleStatus } from "../../utils/article.jsx";
 import EditMetadata from "./DialogArticleEditor/EditMetadata.jsx";
 import EditContent from "./DialogArticleEditor/EditContent.jsx";
@@ -17,6 +17,7 @@ export default class DialogArticleEditor extends React.Component {
 		this.onOpen = this.onOpen.bind(this);
 		this.getArticleInfo = this.getArticleInfo.bind(this);
 		this.getArticleEnums = this.getArticleEnums.bind(this);
+		this.deleteArticle = this.deleteArticle.bind(this);
 		this.changeState = this.changeState.bind(this);
 
 		this.state = {
@@ -59,6 +60,24 @@ export default class DialogArticleEditor extends React.Component {
 			this.setState({
 				articleEnums: data,
 			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	deleteArticle(close) {
+		const params = {
+			id: this.props.article.id,
+		};
+
+		postRequest.call(this, "private/delete_my_article", params, () => {
+			if (this.props.afterDelete !== undefined) {
+				this.props.afterDelete();
+			}
+			close();
+			nm.info("The article has been deleted");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -147,7 +166,7 @@ export default class DialogArticleEditor extends React.Component {
 											<i className="far fa-trash-alt"/> Delete article...
 										</button>
 									}
-									afterConfirmation={this.submitCreationRequest}
+									afterConfirmation={() => this.deleteArticle(close)}
 								/>
 							</div>
 						</div>

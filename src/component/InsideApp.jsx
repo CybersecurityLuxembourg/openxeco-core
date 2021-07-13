@@ -83,6 +83,7 @@ export default class InsideApp extends React.Component {
 								myCompanies={this.state.myCompanies}
 								notifications={this.state.notifications}
 								getNotifications={this.getNotifications}
+								settings={this.props.settings}
 								{...props}
 							/>}/>
 						}

@@ -26,7 +26,7 @@ export default class DialogMessage extends React.Component {
 								data-hover="Ok"
 								data-active=""
 								onClick={close}>
-								<span><i className="far fa-check-circle"/> Ok</span>
+								<i className="far fa-check-circle"/> Ok
 							</button>
 						</div>
 					</div>

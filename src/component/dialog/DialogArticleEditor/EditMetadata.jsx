@@ -60,7 +60,7 @@ export default class EditContent extends React.Component {
 			<div className="row">
 				<div className="col-md-12">
 					<div className={"row row-spaced"}>
-						<div className="col-md-12 row-spaced">
+						<div className="col-md-12">
 							<h3>Metadata</h3>
 						</div>
 

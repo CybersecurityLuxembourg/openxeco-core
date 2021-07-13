@@ -119,7 +119,7 @@
 
 .DialogArticleEditor-menu {
     background-color: #009fe3;
-    padding: 10px;
+    padding: 20px 10px;
 }
 
 .DialogArticleEditor-menu h3 {
@@ -137,6 +137,7 @@
     color: white !important;
     background-color: #009fe3 !important;
     opacity: 1;
+    border-radius: unset;
 }
 
 .DialogArticleEditor-menu .selected-link-button {
@@ -147,11 +148,16 @@
     position: relative !important;
     top: unset;
     right: unset;
-    margin: 15px auto;
+    margin: 5px auto 15px auto;
 }
 
 @media (min-width: 768px) {
     .DialogArticleEditor-body {
         padding: 0px 35px;
     }
+}
+
+.DialogArticleEditor-menu button i {
+    width: 20px;
+    text-align: center;
 }

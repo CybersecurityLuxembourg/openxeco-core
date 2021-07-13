@@ -22,7 +22,6 @@ export default class PageArticles extends React.Component {
 			articleEnums: null,
 
 			filters: {
-				type: "NEWS",
 				title: null,
 				include_tags: "true",
 				per_page: 20,
@@ -101,11 +100,7 @@ export default class PageArticles extends React.Component {
 
 				{this.props.myCompanies !== null && this.props.myCompanies.length > 0
 					&& <div className={"row"}>
-						<div className="col-md-6 PageArticles-legend">
-							<span className="dot red-dot"></span> Published articles
-							<span className="dot blue-dot"></span> Hidden articles
-						</div>
-						<div className="col-md-6">
+						<div className="col-md-12 row-spaced">
 							<div className="right-buttons">
 								<button
 									className="blue-button"
@@ -156,6 +151,8 @@ export default class PageArticles extends React.Component {
 											info={a}
 											analytics={this.props.analytics}
 											myCompanies={this.props.myCompanies}
+											settings={this.props.settings}
+											afterDelete={this.refresh}
 										/>
 									</div>
 									}
