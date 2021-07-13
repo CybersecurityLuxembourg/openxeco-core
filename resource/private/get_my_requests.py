@@ -22,8 +22,8 @@ class GetMyRequests(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
-        'global_only': fields.Str(required=False, validate=lambda x: x == "true"),
-    })
+        'global_only': fields.Bool(required=False),
+    }, location="query")
     @jwt_required
     @catch_exception
     def get(self, **kwargs):
@@ -33,7 +33,7 @@ class GetMyRequests(MethodResource, Resource):
             "status": ['NEW', 'IN PROCESS']
         }
 
-        if "global_only" in kwargs and kwargs["global_only"] == "true":
+        if "global_only" in kwargs and kwargs["global_only"] is True:
             params["company_id"] = None
 
         data = self.db.get(self.db.tables["UserRequest"], params)
