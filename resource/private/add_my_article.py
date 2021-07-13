@@ -32,10 +32,22 @@ class AddMyArticle(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
+        # Check if the functionality is allowed
+
+        settings = self.db.get(self.db.tables["Setting"])
+        allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
+
+        if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
+            return "", "422 The article edition functionality is not activated"
+
+        # Check the company
+
         companies = self.db.get(self.db.tables["Company"], {"id": kwargs["company"]})
 
         if len(companies) < 1:
             return "", "422 Company ID not found"
+
+        # Check the right of the user
 
         assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
             "user_id": get_jwt_identity(),
@@ -44,6 +56,8 @@ class AddMyArticle(MethodResource, Resource):
 
         if len(assignments) < 1:
             return "", "422 User not assign to the company"
+
+        # Insert rows
 
         article = self.db.insert(
             {
@@ -57,7 +71,7 @@ class AddMyArticle(MethodResource, Resource):
         self.db.insert(
             {
                 "article_id": article.id,
-                "name": "Version 0",
+                "name": "Version 0 [Initiated by the company]",
                 "is_main": True
             },
             self.db.tables["ArticleVersion"],

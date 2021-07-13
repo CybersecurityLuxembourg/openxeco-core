@@ -25,10 +25,35 @@ class GetMyArticle(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
+        # Check existence of objects
+
         articles = self.db.get(self.db.tables["Article"], {"id": id_})
 
         if len(articles) < 1:
             return "", "422 Article ID not found"
+
+        article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": id_})
+
+        if len(article_companies) < 1:
+            return "", "422 Article has no company assigned"
+
+        if len(article_companies) > 1:
+            return "", "422 Article has too much companies assigned"
+
+        # Check right of the user
+
+        assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+            "user_id": get_jwt_identity(),
+            "company_id": article_companies[0].company
+        })
+
+        if len(assignments) < 1:
+            return "", "422 User not assign to the company"
+
+        if len(articles) < 1:
+            return "", "422 Article ID not found"
+
+        # Fetch and return the data
 
         data = Serializer.serialize(articles[0], self.db.tables["Article"])
 

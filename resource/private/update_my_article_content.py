@@ -35,7 +35,7 @@ class UpdateMyArticleContent(MethodResource, Resource):
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
 
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
-            return "", "422 The article edition functionality is not allowed"
+            return "", "422 The article edition functionality is not activated"
 
         # Check existence of objects
 
