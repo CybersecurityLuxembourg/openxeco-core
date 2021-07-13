@@ -71,6 +71,6 @@ class DeleteMyArticle(MethodResource, Resource):
 
         # Modify article
 
-        self.db.delete(kwargs["id"], self.db.tables["Article"])
+        self.db.delete_by_id(kwargs["id"], self.db.tables["Article"])
 
         return "", "200 "
