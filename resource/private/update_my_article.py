@@ -38,10 +38,11 @@ class UpdateMyArticle(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        # Check if the functionality is allowed
-
         settings = self.db.get(self.db.tables["Setting"])
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
+        review_setting = [s for s in settings if s.property == "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE"]
+
+        # Check if the functionality is allowed
 
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
             return "", "422 The article edition functionality is not activated"
@@ -83,9 +84,20 @@ class UpdateMyArticle(MethodResource, Resource):
             articles = self.db.get(self.db.tables["Article"], {"handle": kwargs["handle"]})
 
             if len(articles) > 0:
-                return "", "422 The article handle is not available"
+                return "", "422 The article handle is already used"
+
+        if "status" in kwargs:
+            if len(review_setting) == 0 or review_setting[0].value != "TRUE" and articles[0].status == "PUBLIC":
+                return "", "422 The article status can't be set to 'PUBLIC'"
+
+            if len(review_setting) > 0 and review_setting[0].value == "TRUE" and articles[0].status == "UNDER REVIEW":
+                return "", "422 The article status can't be set to 'UNDER REVIEW'"
 
         # Modify article
+
+        if len(review_setting) == 0 or review_setting[0].value != "TRUE":
+            if articles[0].status == "PUBLIC":
+                kwargs["status"] = "UNDER REVIEW"
 
         self.db.merge(kwargs, self.db.tables["Article"])
 

@@ -29,10 +29,11 @@ class UpdateMyArticleContent(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        # Check if the functionality is allowed
-
         settings = self.db.get(self.db.tables["Setting"])
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
+        review_setting = [s for s in settings if s.property == "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE"]
+
+        # Check if the functionality is allowed
 
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
             return "", "422 The article edition functionality is not activated"
@@ -92,6 +93,13 @@ class UpdateMyArticleContent(MethodResource, Resource):
                 return "", f"422 Wrong content type found: '{c['type']}'"
 
             self.db.insert(c, self.db.tables["ArticleBox"], commit=False)
+
+        if len(review_setting) == 0 or review_setting[0].value != "TRUE":
+            if articles[0].status == "PUBLIC":
+                self.db.merge({
+                    "id": articles[0].id,
+                    "status": "UNDER REVIEW"
+                }, self.db.tables["Article"], commit=False)
 
         self.db.session.commit()
 
