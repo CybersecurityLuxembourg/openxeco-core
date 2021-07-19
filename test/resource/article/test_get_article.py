@@ -21,6 +21,7 @@ class TestGetArticle(BaseCase):
             'handle': None,
             'id': 1,
             'image': None,
+            'is_created_by_admin': 0,
             'link': None,
             'publication_date': None,
             'start_date': None,
