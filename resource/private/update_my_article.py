@@ -100,7 +100,7 @@ class UpdateMyArticle(MethodResource, Resource):
                 return "", "422 The article handle is already used"
 
         if "status" in kwargs:
-            if len(review_setting) == 0 or review_setting[0].value != "TRUE" and kwargs["status"] == "PUBLIC":
+            if (len(review_setting) == 0 or review_setting[0].value != "TRUE") and kwargs["status"] == "PUBLIC":
                 return "", "422 The article status can't be set to 'PUBLIC'"
 
             if len(review_setting) > 0 and review_setting[0].value == "TRUE" and kwargs["status"] == "UNDER REVIEW":
