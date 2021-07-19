@@ -9,7 +9,6 @@ from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
 from exception.user_not_assign_to_company import UserNotAssignedToCompany
 from exception.deactivated_article_edition import DeactivatedArticleEdition
-from exception.article_type_not_allowed import ArticleTypeNotAllowed
 
 
 class UpdateMyArticleContent(MethodResource, Resource):
