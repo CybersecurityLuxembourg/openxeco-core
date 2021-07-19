@@ -34,10 +34,9 @@ class GetCompanies(MethodResource, Resource):
     @jwt_required
     @verify_admin_access
     @catch_exception
-    def get(self):
+    def get(self, **kwargs):
 
-        filters = request.args.to_dict()
-        company_objects = self.db.get_filtered_companies(filters)
+        company_objects = self.db.get_filtered_companies(kwargs)
         data = Serializer.serialize(company_objects, self.db.tables["Company"])
 
         return data, "200 "
