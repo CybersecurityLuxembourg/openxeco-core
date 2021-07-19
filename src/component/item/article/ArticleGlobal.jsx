@@ -30,7 +30,7 @@ export default class ArticleGlobal extends React.Component {
 				article: data,
 			});
 
-			getRequest.call(this, "article/get_article_enums", (data2) => {
+			getRequest.call(this, "public/get_article_enums", (data2) => {
 				this.setState({
 					articleEnums: data2,
 				});

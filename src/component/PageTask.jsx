@@ -3,6 +3,7 @@ import "./PageTask.css";
 import { NotificationManager as nm } from "react-notifications";
 import TaskRequest from "./pagetask/TaskRequest.jsx";
 import TaskDataControl from "./pagetask/TaskDataControl.jsx";
+import TaskArticle from "./pagetask/TaskArticle.jsx";
 import Tab from "./tab/Tab.jsx";
 import { getRequest } from "../utils/request.jsx";
 
@@ -48,15 +49,20 @@ export default class PageTask extends React.Component {
 				<Tab
 					menu={[
 						"Request",
+						"Article to review",
 						"Data control",
 					]}
 					notifications={[
 						this.getTaskNotificationBlock("new_requests"),
+						this.getTaskNotificationBlock("articles_under_review"),
 						this.getTaskNotificationBlock("data_control"),
 					]}
 					content={[
 						<TaskRequest
 							key={"task"}
+						/>,
+						<TaskArticle
+							key={"article"}
 						/>,
 						<TaskDataControl
 							key={"datacontrol"}
