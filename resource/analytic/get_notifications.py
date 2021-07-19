@@ -33,6 +33,10 @@ class GetNotifications(MethodResource, Resource):
             "data_control": self.db.session
                                 .query(self.db.tables["DataControl"])
                                 .count(),
+            "articles_under_review": self.db.session
+                                         .query(self.db.tables["Article"])
+                                         .filter(self.db.tables["Article"].status == "UNDER REVIEW")
+                                         .count(),
         }
 
         return data, "200 "
