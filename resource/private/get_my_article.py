@@ -49,9 +49,6 @@ class GetMyArticle(MethodResource, Resource):
         if len(assignments) < 1:
             return "", "422 User not assign to the company"
 
-        if len(articles) < 1:
-            return "", "422 Article ID not found"
-
         # Fetch and return the data
 
         data = Serializer.serialize(articles[0], self.db.tables["Article"])
