@@ -84,6 +84,7 @@ export default class InsideApp extends React.Component {
 								notifications={this.state.notifications}
 								getNotifications={this.getNotifications}
 								settings={this.props.settings}
+								changeMenu={(v) => this.changeState("selectedMenu", v)}
 								{...props}
 							/>}/>
 						}

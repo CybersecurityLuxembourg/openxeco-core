@@ -149,12 +149,6 @@ export default class DialogArticleEditor extends React.Component {
 
 								<h3>Action</h3>
 
-								<button
-									data-hover="Save"
-									data-active=""
-									onClick={() => this.setState({ editContent: true })}>
-									<i className="far fa-eye"/> View article
-								</button>
 								<DialogConfirmation
 									text={"Are you sure you want to delete this article?"}
 									trigger={

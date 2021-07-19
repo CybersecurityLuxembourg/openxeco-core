@@ -10,6 +10,7 @@ export default class EditContent extends React.Component {
 		super(props);
 
 		this.saveArticleValue = this.saveArticleValue.bind(this);
+		this.getStatusOptions = this.getStatusOptions.bind(this);
 		this.changeState = this.changeState.bind(this);
 
 		this.state = {
@@ -49,6 +50,24 @@ export default class EditContent extends React.Component {
 		}
 
 		return [];
+	}
+
+	getStatusOptions() {
+		if (this.props.articleEnums === null
+			|| this.props.articleEnums.status === undefined
+			|| this.props.settings === null) {
+			return [];
+		}
+
+		if (this.props.settings.DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE === "TRUE") {
+			return this.props.articleEnums.status
+				.filter((o) => o !== "UNDER REVIEW")
+				.map((o) => ({ label: o, value: o }));
+		}
+
+		return this.props.articleEnums.status
+			.filter((o) => o !== "PUBLIC")
+			.map((o) => ({ label: o, value: o }));
 	}
 
 	changeState(field, value) {
@@ -99,9 +118,7 @@ export default class EditContent extends React.Component {
 								label={"Status"}
 								type={"select"}
 								value={this.props.article.status}
-								options={this.props.articleEnums === null
-									|| typeof this.props.articleEnums.status === "undefined" ? []
-									: this.props.articleEnums.status.map((o) => ({ label: o, value: o }))}
+								options={this.getStatusOptions()}
 								onChange={(v) => this.saveArticleValue("status", v)}
 							/>
 						</div>
