@@ -105,12 +105,6 @@ export default class PageArticles extends React.Component {
 							<div className="right-buttons">
 								<button
 									className="blue-button"
-									disabled={true}
-								>
-									<i className="fas fa-search"/>
-								</button>
-								<button
-									className="blue-button"
 									onClick={this.refresh}
 								>
 									<i className="fas fa-sync-alt"/>
@@ -118,7 +112,6 @@ export default class PageArticles extends React.Component {
 								<DialogAddArticle
 									trigger={<button
 										className="blue-button"
-										onClick={this.login}
 									>
 										<i className="fas fa-plus"/> <i className="fas fa-feather-alt"/>
 									</button>}
