@@ -94,9 +94,9 @@ class UpdateMyArticle(MethodResource, Resource):
                 raise ArticleTypeNotAllowed()
 
         if "handle" in kwargs:
-            articles = self.db.get(self.db.tables["Article"], {"handle": kwargs["handle"]})
+            articles_with_same_handle = self.db.get(self.db.tables["Article"], {"handle": kwargs["handle"]})
 
-            if len(articles) > 0:
+            if len(articles_with_same_handle) > 0:
                 return "", "422 The article handle is already used"
 
         if "status" in kwargs:
