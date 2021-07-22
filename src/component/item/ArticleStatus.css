@@ -17,12 +17,20 @@
 
 .ArticleStatus-online {
     color: white;
-    background-color: #009fe3;
+    background-color: #99F3DE;
+}
+
+.ArticleStatus-online:hover {
+    background-color: #00e3ae;
 }
 
 .ArticleStatus-offline {
     color: white;
-    background-color: #e40613;
+    background-color: lightgrey;
+}
+
+.ArticleStatus-offline:hover {
+    background-color: grey;
 }
 
 .ArticleStatus-loading-logo {
