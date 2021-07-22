@@ -5,10 +5,8 @@ import Loading from "./box/Loading.jsx";
 import Table from "./table/Table.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import Article from "./item/Article.jsx";
-import Website from "./item/Website.jsx";
 import FormLine from "./button/FormLine.jsx";
 import { dictToURI } from "../utils/url.jsx";
-import { getApiURL } from "../utils/env.jsx";
 import DialogArticleFilter from "./dialog/DialogArticleFilter.jsx";
 
 export default class PageArticle extends React.Component {
@@ -105,13 +103,10 @@ export default class PageArticle extends React.Component {
 				accessor: "status",
 			},
 			{
-				Header: "Preview",
+				Header: "Initiator",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<Website
-						url={getApiURL() + "public/get_article_content/" + value.handle + "?format=html"}
-						label="Preview"
-					/>
+					value.is_created_by_admin === 1 ? "ADMIN" : "COMMUNITY"
 				),
 			},
 		];
