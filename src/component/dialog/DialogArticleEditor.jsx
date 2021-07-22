@@ -17,6 +17,7 @@ export default class DialogArticleEditor extends React.Component {
 		this.onOpen = this.onOpen.bind(this);
 		this.getArticleInfo = this.getArticleInfo.bind(this);
 		this.getArticleEnums = this.getArticleEnums.bind(this);
+		this.saveArticleValue = this.saveArticleValue.bind(this);
 		this.deleteArticle = this.deleteArticle.bind(this);
 		this.changeState = this.changeState.bind(this);
 
@@ -65,6 +66,28 @@ export default class DialogArticleEditor extends React.Component {
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
+
+	saveArticleValue(prop, value, hideMessage) {
+		if (this.state.article[prop] !== value) {
+			const params = {
+				id: this.state.article.id,
+				[prop]: value,
+			};
+
+			postRequest.call(this, "private/update_my_article", params, () => {
+				this.getArticleInfo(false);
+				if (!hideMessage) {
+					nm.info("The property has been updated");
+				}
+			}, (response) => {
+				this.getArticleInfo();
+				nm.warning(response.statusText);
+			}, (error) => {
+				this.getArticleInfo();
+				nm.error(error.message);
+			});
+		}
 	}
 
 	deleteArticle(close) {
@@ -170,12 +193,12 @@ export default class DialogArticleEditor extends React.Component {
 								{this.state.editContent
 									? <EditContent
 										article={this.state.article}
-										refreshArticle={(refresh) => this.getArticleInfo(refresh)}
+										saveArticleValue={this.saveArticleValue}
 									/>
 									: <EditMetadata
 										article={this.state.article}
 										articleEnums={this.state.articleEnums}
-										refreshArticle={(refresh) => this.getArticleInfo(refresh)}
+										saveArticleValue={this.saveArticleValue}
 										settings={this.props.settings}
 									/>
 								}

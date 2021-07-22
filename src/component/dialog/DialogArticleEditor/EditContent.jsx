@@ -41,6 +41,10 @@ export default class EditContent extends React.Component {
 		if (JSON.stringify(prevState.content) !== JSON.stringify(this.state.content)) {
 			this.resizeBoxes();
 		}
+
+		if (!prevState.editArticle && this.state.editArticle) {
+			this.props.saveArticleValue("link", null, true);
+		}
 	}
 
 	getContent() {
@@ -271,8 +275,8 @@ export default class EditContent extends React.Component {
 							<div className="col-md-12">
 								<FormLine
 									label={"URL of the external article"}
-									value={this.state.editArticle}
-									onChange={(v) => this.changeState("editArticle", v)}
+									value={this.props.article.link}
+									onBlur={(v) => this.props.saveArticleValue("link", v)}
 								/>
 							</div>
 						</div>
