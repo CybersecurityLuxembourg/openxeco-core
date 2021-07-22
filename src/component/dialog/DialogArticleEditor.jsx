@@ -138,7 +138,7 @@ export default class DialogArticleEditor extends React.Component {
 									<span><i className="fas fa-sync-alt"/></span>
 								</button>
 								<button
-									className={"red-background"}
+									className={"grey-background"}
 									data-hover="Close"
 									data-active=""
 									onClick={close}>
