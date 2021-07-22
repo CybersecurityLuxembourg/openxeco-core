@@ -25,6 +25,7 @@ export default class Request extends Component {
 		this.onClose = this.onClose.bind(this);
 		this.onOpen = this.onOpen.bind(this);
 		this.getMailBody = this.getMailBody.bind(this);
+		this.getSettingValue = this.getSettingValue.bind(this);
 
 		this.state = {
 			user: null,
@@ -151,6 +152,20 @@ export default class Request extends Component {
 		} else {
 			return "Your request has been treated.";
 		}
+	}
+
+	getSettingValue(property) {
+		if (this.state.settings !== null) {
+			const concernedSettings = this.state.settings.filter((s) => s.property === property);
+
+			if (concernedSettings.length > 0) {
+				return concernedSettings[0].value;
+			}
+
+			return null;
+		}
+
+		return null;
 	}
 
 	render() {
@@ -285,7 +300,7 @@ export default class Request extends Component {
 							/>
 						}
 
-						{this.state.user !== null
+						{this.state.user !== null && this.state.settings !== null
 							? <DialogSendMail
 								trigger={
 									<button
@@ -295,15 +310,13 @@ export default class Request extends Component {
 									</button>
 								}
 								email={this.state.user.email}
-								subject={(this.state.settings !== null
-									&& this.state.settings.PROJECT_NAME !== undefined
-									&& "[" + this.state.settings.PROJECT_NAME + "] ") + "Treated request"}
+								subject={(this.getSettingValue("PROJECT_NAME") !== null
+									? "[" + this.getSettingValue("PROJECT_NAME") + "] " : "") + "Treated request"}
 								content={"Dear user,\n\n"
 									+ this.getMailBody()
 									+ "\n\nSincerely,\n"
-									+ (this.state.settings !== null
-									&& this.state.settings.PROJECT_NAME !== undefined
-									&& this.state.settings.PROJECT_NAME + " ") + "Support Team"}
+									+ (this.getSettingValue("PROJECT_NAME") !== null
+										? this.getSettingValue("PROJECT_NAME") + " " : "") + "Support Team"}
 							/>
 							: <Loading
 								height={50}
