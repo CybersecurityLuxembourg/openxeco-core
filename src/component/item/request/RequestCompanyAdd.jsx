@@ -26,10 +26,23 @@ export default class RequestCompanyAdd extends Component {
 			return;
 		}
 
-		const params = this.props.data;
+		let params = {
+			name: this.props.data.name,
+		};
 
-		postRequest.call(this, "company/add_company", params, () => {
-			nm.info("The entity has been added");
+		postRequest.call(this, "company/add_company", params, (addedCompany) => {
+			nm.info("The entity has been created");
+
+			params = this.props.data;
+			params.id = addedCompany.id;
+
+			postRequest.call(this, "company/update_company", params, () => {
+				nm.info("The information of the entity has been updated");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
