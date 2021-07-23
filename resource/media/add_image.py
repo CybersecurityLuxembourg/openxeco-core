@@ -29,7 +29,7 @@ class AddImage(MethodResource, Resource):
 
     @log_request
     @doc(tags=['media'],
-         description='Add an image to the media library',
+         description='Add an image to the media library. Return a dictionary with the data of the new object',
          responses={
              "200": {},
              "500": {"description": "An error occurred while saving the file"},

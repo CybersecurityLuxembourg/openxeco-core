@@ -7,6 +7,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils.serializer import Serializer
 
 
 class AddCompany(MethodResource, Resource):
@@ -18,7 +19,7 @@ class AddCompany(MethodResource, Resource):
 
     @log_request
     @doc(tags=['company'],
-         description='Add a company',
+         description='Add a company. Return a dictionary with the data of the new object',
          responses={
              "200": {},
              "422": {"description": "A company is already existing with that name"},
@@ -36,6 +37,6 @@ class AddCompany(MethodResource, Resource):
         if len(companies) > 0:
             return "", "422 A company is already existing with that name"
 
-        self.db.insert(kwargs, self.db.tables["Company"])
+        company = self.db.insert(kwargs, self.db.tables["Company"])
 
-        return "", "200 "
+        return Serializer.serialize(company, self.db.tables["Company"]), "200 "
