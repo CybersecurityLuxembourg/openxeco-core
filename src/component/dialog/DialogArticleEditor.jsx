@@ -176,10 +176,7 @@ export default class DialogArticleEditor extends React.Component {
 									text={"Are you sure you want to delete this article?"}
 									trigger={
 										<button
-											className="red-font"
-											data-hover="Save"
-											data-active=""
-											onClick={() => this.setState({ editContent: false })}>
+											className="red-font">
 											<i className="far fa-trash-alt"/> Delete article...
 										</button>
 									}
