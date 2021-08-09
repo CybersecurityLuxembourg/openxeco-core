@@ -35,7 +35,7 @@ CREATE TABLE `Article` (
   `handle` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `abstract` varchar(2040) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `publication_date` date DEFAULT NULL,
+  `publication_date` date DEFAULT CURRENT_DATE,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `status` enum('DRAFT','PUBLIC','ARCHIVE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'DRAFT',
