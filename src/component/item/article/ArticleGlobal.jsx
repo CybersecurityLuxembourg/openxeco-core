@@ -152,7 +152,7 @@ export default class ArticleGlobal extends React.Component {
 					/>
 				</div>
 
-				{["NEWS", "EVENT", "JOB OFFER"].indexOf(this.state.article.type) >= 0
+				{["NEWS", "EVENT", "JOB OFFER", "TOOL"].indexOf(this.state.article.type) >= 0
 					? <div className="col-md-12">
 						<h2>Additional {this.state.article.type.toLowerCase()} fields</h2>
 					</div>
@@ -185,7 +185,7 @@ export default class ArticleGlobal extends React.Component {
 					</div>
 					: ""}
 
-				{["NEWS", "EVENT", "JOB OFFER"].indexOf(this.state.article.type) >= 0
+				{["NEWS", "EVENT", "JOB OFFER", "TOOL"].indexOf(this.state.article.type) >= 0
 					? <div className="col-md-12">
 						<FormLine
 							label={"Link"}
