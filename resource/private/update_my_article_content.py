@@ -9,6 +9,7 @@ from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
 from exception.user_not_assign_to_company import UserNotAssignedToCompany
 from exception.deactivated_article_edition import DeactivatedArticleEdition
+from exception.deactivated_article_content_edition import DeactivatedArticleContentEdition
 
 
 class UpdateMyArticleContent(MethodResource, Resource):
@@ -24,7 +25,8 @@ class UpdateMyArticleContent(MethodResource, Resource):
          responses={
              "200": {},
              "403.1": {"description": "The article edition is deactivated"},
-             "403.2": {"description": "The article type is not allowed"},
+             "403.2": {"description": "The article content edition is deactivated"},
+             "403.3": {"description": "The article type is not allowed"},
              "422.1": {"description": "Object not found : Article"},
              "422.2": {"description": "Article has no company assigned"},
              "422.3": {"description": "Article has too much companies assigned"},
@@ -43,12 +45,18 @@ class UpdateMyArticleContent(MethodResource, Resource):
 
         settings = self.db.get(self.db.tables["Setting"])
         allowance_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE"]
+        allowance_content_setting = [s for s in settings if s.property == "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT"]
         review_setting = [s for s in settings if s.property == "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE"]
 
         # Check if the functionality is allowed
 
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
             raise DeactivatedArticleEdition()
+
+        # Check if the content modification is allowed
+
+        if len(allowance_content_setting) < 1 or allowance_content_setting[0].value != "TRUE":
+            raise DeactivatedArticleContentEdition()
 
         # Check existence of objects
 

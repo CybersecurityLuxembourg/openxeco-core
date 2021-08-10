@@ -50,6 +50,8 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
 
         payload = {
             "article": 2,
@@ -64,7 +66,7 @@ class TestUpdateMyArticleContent(BaseCase):
         self.assertEqual(3, self.db.get_count(self.db.tables["ArticleBox"]))
 
     @BaseCase.login
-    def test_ko_functionality_not_activated(self, token):
+    def test_ko_article_edition_not_activated(self, token):
 
         payload = {
             "article": 2,
@@ -80,8 +82,27 @@ class TestUpdateMyArticleContent(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["ArticleVersion"]), 0)
 
     @BaseCase.login
+    def test_ko_article_content_edition_not_activated(self, token):
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+
+        payload = {
+            "article": 2,
+            "content": content
+        }
+
+        response = self.application.post('/private/update_my_article_content',
+                                         headers=self.get_standard_post_header(token),
+                                         json=payload)
+
+        self.assertEqual("403 The article content edition is deactivated", response.status)
+        self.assertEqual(self.db.get_count(self.db.tables["Article"]), 0)
+        self.assertEqual(self.db.get_count(self.db.tables["ArticleVersion"]), 0)
+
+    @BaseCase.login
     def test_ko_update_unexisting(self, token):
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
 
         payload = {
             "article": 2,
@@ -100,6 +121,8 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
 
         payload = {
             "article": 2,
@@ -120,6 +143,8 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"article": 2, "company": 4}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
 
         payload = {
             "article": 2,
@@ -138,6 +163,8 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
 
         payload = {
             "article": 2,
@@ -157,6 +184,8 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
 
         payload = {
             "article": 2,
@@ -178,6 +207,8 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
 
         payload = {
             "article": 2,
@@ -198,6 +229,8 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
+                       self.db.tables["Setting"])
         self.db.insert({"property": "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE", "value": "TRUE"},
                        self.db.tables["Setting"])
 
