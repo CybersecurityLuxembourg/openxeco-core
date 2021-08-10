@@ -150,6 +150,7 @@ export default class FormLine extends React.Component {
 			/>;
 		case "editor":
 			return <Editor
+				className={"medium-editor-element"}
 				text={this.state.value}
 				onChange={(v) => this.onChange(v)}
 				onBlur={() => this.onBlur(this.state.value)}
