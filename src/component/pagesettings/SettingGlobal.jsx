@@ -353,21 +353,30 @@ export default class SettingGlobal extends React.Component {
 									<li>PRIVATE_SPACE_PLATFORM_NAME</li>
 									<li>EMAIL_ADDRESS : Main contact address of the project.</li>
 									<li>
-										ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE : &#34;TRUE&#34; to be activated.
-										Give access on article creation and edition on the private space.
-										This won&#39;t be available if this setting is not configured.
+										ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE : &#34;TRUE&#34; to be activated.<br/>
+										This setting allows the users to create an article.<br/>
+										This also gives the access to the article page on the private space.<br/>
+										This won&#39;t be activated if this setting is not configured.<br/>
 									</li>
 									<li>
-										DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE : &#34;TRUE&#34; to be activated.
+										ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT : &#34;TRUE&#34; to be activated.<br/>
+										This setting gives access on article content edition on the private space.<br/>
+										Otherwise, only the metadata and the link of the article is editable.<br/>
+										This won&#39;t be activated if this setting is not configured.
+									</li>
+									<li>
+										DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE : &#34;TRUE&#34; to be activated.<br/>
 										The content creation and modification from the ecosystem are
 										directly publish (without passing throught request to be validated
-										by admins). This won&#39;t be possible if the setting is not provided.
+										by admins).<br/>
+										This won&#39;t be possible if the setting is not provided.
 									</li>
 									<li>
-										AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM : &#34;TYPE1,TYPE2&#34; to be activated.
-										This is the list or article types that the ecosystem can publish/edit. The full
-										list is available on the resource public/get_article_enums. No type is
-										available if this setting is not configured.
+										AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM : &#34;TYPE1,TYPE2&#34;
+										to be activated.<br/>
+										This is the list or article types that the ecosystem can publish/edit.<br/>
+										The full list is available on the resource public/get_article_enums.<br/>
+										No type is available if this setting is not configured.
 									</li>
 								</ul>
 								<div>
