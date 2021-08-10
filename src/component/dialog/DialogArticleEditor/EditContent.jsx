@@ -22,13 +22,18 @@ export default class EditContent extends React.Component {
 		this.getItemStatusClassname = this.getItemStatusClassname.bind(this);
 		this.saveContent = this.saveContent.bind(this);
 		this.resizeBoxes = this.resizeBoxes.bind(this);
+		this.isContentEditionAllowed = this.isContentEditionAllowed.bind(this);
 
 		this.state = {
 			content: null,
 			originalContent: null,
 
-			redirectToURL: this.props.article.link !== null && this.props.article.link.length > 0,
-			editArticle: this.props.article.link === null || this.props.article.link.length === 0,
+			redirectToURL: (this.props.article.link !== null
+				&& this.props.article.link.length > 0)
+				|| !this.isContentEditionAllowed(),
+			editArticle: (this.props.article.link === null
+				|| this.props.article.link.length === 0)
+				&& this.isContentEditionAllowed(),
 		};
 	}
 
@@ -200,6 +205,17 @@ export default class EditContent extends React.Component {
 		return "";
 	}
 
+	isContentEditionAllowed() {
+		if (this.props.settings !== null && this.props.settings !== undefined) {
+			if (this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT !== undefined
+				&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT === "TRUE") {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -227,36 +243,38 @@ export default class EditContent extends React.Component {
 					</div>
 				}
 
-				<div className="col-md-12">
-					<div className={"row row-spaced"}>
-						<div className="col-md-12">
-							<h3>The article must:</h3>
-						</div>
+				{this.isContentEditionAllowed()
+					&& <div className="col-md-12">
+						<div className={"row row-spaced"}>
+							<div className="col-md-12">
+								<h3>The article must:</h3>
+							</div>
 
-						<div className="col-md-12">
-							<FormLine
-								type={"checkbox"}
-								label={"Show the customized content"}
-								value={this.state.editArticle}
-								disabled={this.state.editArticle}
-								onChange={(v) => this.setState({
-									editArticle: v,
-									redirectToURL: !v,
-								})}
-							/>
-							<FormLine
-								type={"checkbox"}
-								label={"Redirect to an external URL"}
-								value={this.state.redirectToURL}
-								disabled={this.state.redirectToURL}
-								onChange={(v) => this.setState({
-									redirectToURL: v,
-									editArticle: !v,
-								})}
-							/>
+							<div className="col-md-12">
+								<FormLine
+									type={"checkbox"}
+									label={"Show the customized content"}
+									value={this.state.editArticle}
+									disabled={this.state.editArticle}
+									onChange={(v) => this.setState({
+										editArticle: v,
+										redirectToURL: !v,
+									})}
+								/>
+								<FormLine
+									type={"checkbox"}
+									label={"Redirect to an external URL"}
+									value={this.state.redirectToURL}
+									disabled={this.state.redirectToURL}
+									onChange={(v) => this.setState({
+										redirectToURL: v,
+										editArticle: !v,
+									})}
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
+				}
 
 				<div className="col-md-12">
 					{!this.state.editArticle && !this.state.redirectToURL

@@ -191,6 +191,7 @@ export default class DialogArticleEditor extends React.Component {
 									? <EditContent
 										article={this.state.article}
 										saveArticleValue={this.saveArticleValue}
+										settings={this.props.settings}
 									/>
 									: <EditMetadata
 										article={this.state.article}
