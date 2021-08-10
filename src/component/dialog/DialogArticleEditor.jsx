@@ -68,8 +68,8 @@ export default class DialogArticleEditor extends React.Component {
 		});
 	}
 
-	saveArticleValue(prop, value, hideMessage) {
-		if (this.state.article[prop] !== value) {
+	saveArticleValue(prop, value, customizedMessage) {
+		if (this.state.article[prop] !== value || customizedMessage !== undefined) {
 			const params = {
 				id: this.state.article.id,
 				[prop]: value,
@@ -77,8 +77,10 @@ export default class DialogArticleEditor extends React.Component {
 
 			postRequest.call(this, "private/update_my_article", params, () => {
 				this.getArticleInfo(false);
-				if (!hideMessage) {
+				if (customizedMessage === undefined) {
 					nm.info("The property has been updated");
+				} else {
+					nm.info(customizedMessage);
 				}
 			}, (response) => {
 				this.getArticleInfo();

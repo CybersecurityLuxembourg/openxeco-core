@@ -23,6 +23,7 @@ export default class EditContent extends React.Component {
 		this.saveContent = this.saveContent.bind(this);
 		this.resizeBoxes = this.resizeBoxes.bind(this);
 		this.isContentEditionAllowed = this.isContentEditionAllowed.bind(this);
+		this.saveArticleValue = this.saveArticleValue.bind(this);
 
 		this.state = {
 			content: null,
@@ -48,7 +49,7 @@ export default class EditContent extends React.Component {
 		}
 
 		if (!prevState.editArticle && this.state.editArticle) {
-			this.props.saveArticleValue("link", null, true);
+			this.props.saveArticleValue("link", null, "The URL has been removed");
 		}
 	}
 
@@ -216,6 +217,12 @@ export default class EditContent extends React.Component {
 		return false;
 	}
 
+	saveArticleValue(property, value) {
+		if (this.state.redirectToURL) {
+			this.props.saveArticleValue(property, value);
+		}
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -294,7 +301,7 @@ export default class EditContent extends React.Component {
 								<FormLine
 									label={"URL of the external article"}
 									value={this.props.article.link}
-									onBlur={(v) => this.props.saveArticleValue("link", v)}
+									onBlur={(v) => this.saveArticleValue("link", v)}
 								/>
 							</div>
 						</div>
