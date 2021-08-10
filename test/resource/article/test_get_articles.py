@@ -24,6 +24,21 @@ class TestGetArticles(BaseCase):
                 'end_date': None,
                 'external_reference': None,
                 'handle': None,
+                'id': 1,
+                'image': None,
+                'is_created_by_admin': 0,
+                'link': None,
+                'publication_date': datetime.today().date().strftime('%Y-%m-%d'),
+                'start_date': None,
+                'status': 'DRAFT',
+                'title': 'TITLE',
+                'type': 'NEWS'
+            },
+            {
+                'abstract': None,
+                'end_date': None,
+                'external_reference': None,
+                'handle': None,
                 'id': 2,
                 'image': None,
                 'is_created_by_admin': 0,
@@ -32,21 +47,6 @@ class TestGetArticles(BaseCase):
                 'start_date': None,
                 'status': 'DRAFT',
                 'title': 'TITLE2',
-                'type': 'NEWS'
-            },
-            {
-                'abstract': None,
-                'end_date': None,
-                'external_reference': None,
-                'handle': None,
-                'id': 1,
-                'image': None,
-                'is_created_by_admin': 0,
-                'link': None,
-                'publication_date': None,
-                'start_date': None,
-                'status': 'DRAFT',
-                'title': 'TITLE',
                 'type': 'NEWS'
             }
         ], response.json)

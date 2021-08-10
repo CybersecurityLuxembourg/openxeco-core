@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from test.BaseCase import BaseCase
 
 
@@ -23,7 +25,7 @@ class TestGetArticle(BaseCase):
             'image': None,
             'is_created_by_admin': 0,
             'link': None,
-            'publication_date': None,
+            'publication_date': datetime.today().date().strftime('%Y-%m-%d'),
             'start_date': None,
             'status': 'DRAFT',
             'title': 'TITLE',
