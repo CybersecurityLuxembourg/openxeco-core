@@ -63,6 +63,7 @@
 
 #Login .top-right-buttons {
     z-index: 100;
+    text-align: right;
 }
 
 /* BACKGROUND EFFECT */

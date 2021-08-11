@@ -124,25 +124,25 @@ export default class Login extends React.Component {
 		return (
 			<div id="Login">
 				<div className="top-right-buttons">
+					<div>
+						<a
+							className="link-button"
+							href={getGlobalAppURL()}
+						>
+							Go to CYBERSECURITY Luxembourg portal <i className="fa fa-shield-alt"/>
+						</a>
+					</div>
+
 					{this.props.settings !== null && this.props.settings.EMAIL_ADDRESS !== undefined
 						&& <div>
 							<a
 								className="link-button"
 								href={"mailto:" + this.props.settings.EMAIL_ADDRESS}
 							>
-								<i className="fas fa-envelope-open-text"/> Contact via email
+								Contact via email <i className="fas fa-envelope-open-text"/>
 							</a>
 						</div>
 					}
-
-					<div>
-						<a
-							className="link-button"
-							href={getGlobalAppURL()}
-						>
-							<i className="fas fa-globe"/> Visit main app
-						</a>
-					</div>
 				</div>
 
 				<div id="Login-area">
