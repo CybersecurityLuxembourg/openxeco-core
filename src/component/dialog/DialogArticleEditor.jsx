@@ -15,6 +15,7 @@ export default class DialogArticleEditor extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.onOpen = this.getContent.bind(this);
 		this.getContent = this.getContent.bind(this);
 		this.moveBox = this.moveBox.bind(this);
 		this.changeState = this.changeState.bind(this);
@@ -31,15 +32,15 @@ export default class DialogArticleEditor extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		window.addEventListener("resize", this.resizeBoxes);
-		this.getContent();
-	}
-
 	componentDidUpdate(prevProps, prevState) {
 		if (JSON.stringify(prevState.content) !== JSON.stringify(this.state.content)) {
 			this.resizeBoxes();
 		}
+	}
+
+	onOpen() {
+		window.addEventListener("resize", this.resizeBoxes);
+		this.getContent();
 	}
 
 	getContent() {
