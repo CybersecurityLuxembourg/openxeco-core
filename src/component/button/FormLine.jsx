@@ -154,7 +154,18 @@ export default class FormLine extends React.Component {
 				text={this.state.value}
 				onChange={(v) => this.onChange(v)}
 				onBlur={() => this.onBlur(this.state.value)}
-				options={{ toolbar: { buttons: ["bold", "italic", "underline", "anchor", "quote", "unorderedlist"] } }}
+				options={{
+					toolbar: {
+						buttons: ["bold", "italic", "underline", "anchor", "quote", "unorderedlist"],
+					},
+					paste: {
+						forcePlainText: false,
+						cleanPastedHTML: true,
+						cleanAttrs: ["class", "style", "dir", "rel", "id", "aria-hidden"],
+						cleanTags: ["svg"],
+						unwrapTags: ["h1", "h2", "h3", "h4", "h5", "div", "code", "span"],
+					},
+				}}
 			/>;
 		case "region":
 			return <RegionDropdown
