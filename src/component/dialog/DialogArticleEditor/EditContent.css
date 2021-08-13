@@ -1,0 +1,57 @@
+
+.EditContent-abstract {
+    font-size: 20px;
+}
+
+.EditContent-customised {
+	z-index: 250;
+	position: relative;
+	background-color: #EEE;
+}
+
+.EditContent-lock {
+	z-index: 200;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: repeating-linear-gradient( 
+		135deg, rgba(150, 150, 150, 0.5), rgba(150, 150, 150, 0.5) 1px, rgba(150, 150, 150, 0.5) 1px, rgba(0, 0, 0, 0.5) 4px );
+}
+
+.EditContent .CheckBox-disabled {
+	background-color: #bcebff !important;
+}
+
+.EditContent-lock-buttons {
+	position: absolute;
+}
+
+@media (min-width: 768px) {
+    .EditContent-lock-buttons {
+        width: 17% !important;
+        height: 100%;
+    }
+}
+
+@media (min-width: 0px) {
+    .EditContent-lock-buttons {
+        width: 100%;
+    }
+}
+
+.EditContent-lock-buttons button {
+	display: block !important;
+	bottom: unset !important;
+	right: unset !important;
+	opacity: 1;
+	width: 100%;
+}
+
+@media (min-width: 768px) {
+    .EditContent-lock-buttons button {
+		height: 50% !important;
+		border-radius: unset !important;
+    }
+}
