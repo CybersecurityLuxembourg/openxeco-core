@@ -7,18 +7,19 @@ class TestGetPublicCompanies(BaseCase):
     def test_ok(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
-        self.db.insert({"id": 4, "name": "My Company 3"}, self.db.tables["Company"])
+        self.db.insert({"id": 4, "name": "My Company 3", "status": "INACTIVE"}, self.db.tables["Company"])
 
         response = self.application.get('/public/get_public_companies',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual(3, len(response.json))
+        self.assertEqual(2, len(response.json))
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.json, [
             {
                 'id': 2,
                 'image': None,
                 'name': 'My Company',
+                'status': 'ACTIVE',
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
@@ -27,14 +28,7 @@ class TestGetPublicCompanies(BaseCase):
                 'id': 3,
                 'image': None,
                 'name': 'My Company 2',
-                'is_startup': 0,
-                'is_cybersecurity_core_business': 0,
-                'creation_date': None,
-            },
-            {
-                'id': 4,
-                'image': None,
-                'name': 'My Company 3',
+                'status': 'ACTIVE',
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
@@ -70,6 +64,47 @@ class TestGetPublicCompanies(BaseCase):
                 'id': 3,
                 'image': None,
                 'name': 'My Company 2',
+                'is_startup': 0,
+                'is_cybersecurity_core_business': 0,
+                'creation_date': None,
+            }
+        ])
+
+    @BaseCase.login
+    def test_ok_with_inactive(self, token):
+        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 4, "name": "My Company 3", "status": "INACTIVE"}, self.db.tables["Company"])
+
+        response = self.application.get('/public/get_public_companies?include_inactive=true',
+                                        headers=self.get_standard_header(token))
+
+        self.assertEqual(3, len(response.json))
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(response.json, [
+            {
+                'id': 2,
+                'image': None,
+                'name': 'My Company',
+                'status': 'ACTIVE',
+                'is_startup': 0,
+                'is_cybersecurity_core_business': 0,
+                'creation_date': None,
+            },
+            {
+                'id': 3,
+                'image': None,
+                'name': 'My Company 2',
+                'status': 'ACTIVE',
+                'is_startup': 0,
+                'is_cybersecurity_core_business': 0,
+                'creation_date': None,
+            },
+            {
+                'id': 4,
+                'image': None,
+                'name': 'My Company 3',
+                'status': 'INACTIVE',
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,

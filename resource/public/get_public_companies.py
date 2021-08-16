@@ -13,8 +13,11 @@ class GetPublicCompanies(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get the full list of companies. The request returns a restricted amount of information '
-                     '(id, name, is_startup, is_cybersecurity_core_business, creation_date, image)',
+         description='Get the full list of public companies.\n\n'
+                     'Companies with the INACTIVE status are not in the list by default, '
+                     'please see the "include_inactive" parameter.\n\n'
+                     'The request returns a restricted amount of information '
+                     '(id, name, is_startup, is_cybersecurity_core_business, creation_date, image, status)',
          responses={
              "200": {},
          })
@@ -22,15 +25,20 @@ class GetPublicCompanies(MethodResource, Resource):
         'name': fields.Str(required=False),
         'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
         'entity_type': fields.DelimitedList(fields.Str(), required=False),
-        'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
-        'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'startup_only': fields.Bool(required=False),
+        'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'include_inactive': fields.Bool(required=False),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
 
         c = self.db.tables["Company"]
-        entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image
+        entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image, c.status
+
+        kwargs["status"] = ["ACTIVE", "INACTIVE"] \
+            if "include_inactive" in kwargs and kwargs["include_inactive"] is True \
+            else ["ACTIVE"]
 
         companies = [o._asdict() for o in self.db.get_filtered_companies(kwargs, entities)]
 

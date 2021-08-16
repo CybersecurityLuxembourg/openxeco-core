@@ -21,9 +21,10 @@ class GetPublicCompanyGeolocations(MethodResource, Resource):
         'name': fields.Str(required=False),
         'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
         'entity_type': fields.DelimitedList(fields.Str(), required=False),
-        'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
-        'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'startup_only': fields.Bool(required=False),
+        'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'include_inactive': fields.Bool(required=False),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
@@ -31,6 +32,10 @@ class GetPublicCompanyGeolocations(MethodResource, Resource):
         c = self.db.tables["Company"]
         ca = self.db.tables["Company_Address"]
         entities = (c.id, )
+
+        kwargs["status"] = ["ACTIVE", "INACTIVE"] \
+            if "include_inactive" in kwargs and kwargs["include_inactive"] is True \
+            else ["ACTIVE"]
 
         company_ids = [o.id for o in self.db.get_filtered_companies(kwargs, entities)]
 

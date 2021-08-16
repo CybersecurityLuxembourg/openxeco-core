@@ -13,7 +13,8 @@ class GetPublicCompany(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get full information of a company',
+         description='Get full information of a company.'
+                     'Only companies with those following status are accessible: ACTIVE, INACTIVE',
          responses={
              "200": {},
              "422": {"description": "Object not found"}
@@ -23,8 +24,8 @@ class GetPublicCompany(MethodResource, Resource):
 
         c = self.db.tables["Company"]
         entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.trade_register_number, \
-            c.creation_date, c.description, c.website, c.image
-        data = [o._asdict() for o in self.db.get(c, {"id": id_}, entities)]
+            c.creation_date, c.description, c.website, c.image, c.status
+        data = [o._asdict() for o in self.db.get(c, {"id": id_, "status": ["ACTIVE", "INACTIVE"]}, entities)]
 
         if len(data) < 1:
             raise ObjectNotFound
