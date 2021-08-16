@@ -21,7 +21,8 @@ class TestUpdateCompany(BaseCase):
             "id": 2,
             "name": "My Modified Company",
             "creation_date": (today - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
-            "is_startup": False
+            "is_startup": False,
+            "status": "INACTIVE",
         }
 
         response = self.application.post('/company/update_company',
