@@ -26,10 +26,6 @@ export default class DialogSelectImage extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		this.refresh();
-	}
-
 	componentDidUpdate(_, prevState) {
 		if (prevState.showLogoOnly !== this.state.showLogoOnly
 			|| prevState.order !== this.state.order) {
@@ -83,6 +79,7 @@ export default class DialogSelectImage extends React.Component {
 				className={"Popup-small-size DialogSelectImage"
 					+ (this.state.open ? " DialogSelectImage-opened" : "")}
 				trigger={this.props.trigger}
+				onOpen={this.refresh}
 				modal
 				closeOnDocumentClick
 			>
