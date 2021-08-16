@@ -144,6 +144,9 @@ class DB:
                 query = query.filter(or_(func.lower(self.tables["Company"].name).like("%" + word + "%"),
                                          func.lower(self.tables["Company"].website).like("%" + word + "%")))
 
+        if "status" in filters and filters['status'] is not None:
+            query = query.filter(self.tables["Company"].status.in_(filters['status']))
+
         if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
             ecosystem_roles = filters['ecosystem_role'] if isinstance(filters['ecosystem_role'], list) else \
                 filters['ecosystem_role'].split(',')
