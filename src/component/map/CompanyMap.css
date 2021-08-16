@@ -20,3 +20,7 @@
 	bottom: 0px;
 	left: 95px;
 }
+
+.CompanyMap-buttons > button {
+	margin-left: 5px;
+}

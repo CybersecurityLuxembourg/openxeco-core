@@ -63,7 +63,7 @@ export default class DialogArticleFilter extends React.Component {
 			nm.error(error.message);
 		});
 
-		getRequest.call(this, "article/get_article_enums", (data) => {
+		getRequest.call(this, "public/get_article_enums", (data) => {
 			this.setState({
 				articleEnums: data,
 			});
@@ -149,14 +149,14 @@ export default class DialogArticleFilter extends React.Component {
 		return (
 			<Popup
 				trigger={
-					<span>
+					<div className={"DialogArticleFilter-button"}>
 						{this.props.trigger}
 						{this.getNumberOfFilter() > 0
 							? <div className="Badge">
 								{this.getNumberOfFilter()}
 							</div>
 							: ""}
-					</span>
+					</div>
 				}
 				modal
 				onOpen={() => this.changeState("open", true)}

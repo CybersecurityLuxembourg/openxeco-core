@@ -50,3 +50,7 @@
     -webkit-animation: slide-in 0.5s forwards;
 }
 
+.DialogArticleFilter-button {
+	display: inline-block;
+	margin-left: 5px;
+}

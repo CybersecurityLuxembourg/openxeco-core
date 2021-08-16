@@ -105,7 +105,7 @@ export default class CompanyMap extends React.Component {
 					: ""}
 				<div className="CompanyMap-buttons">
 					<button
-						className={"red-background"}
+						className={"grey-background"}
 						data-hover="Close"
 						data-active=""
 						onClick={this.props.onClose}>
@@ -125,7 +125,7 @@ export default class CompanyMap extends React.Component {
 							<button
 								className={"blue-background"}
 								data-hover="Filter">
-								<span><i className="fas fa-shapes"/></span>
+								<i className="fas fa-search"/>
 							</button>
 						}
 						applyFilter={(filters) => this.applyFilter(filters)}
