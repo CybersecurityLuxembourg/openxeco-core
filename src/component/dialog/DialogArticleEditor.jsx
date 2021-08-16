@@ -9,6 +9,7 @@ import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import { getContentFromBlock } from "../../utils/article.jsx";
 import DialogConfirmation from "./DialogConfirmation.jsx";
+import DialogAddImage from "./DialogAddImage.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -254,31 +255,46 @@ export default class DialogArticleEditor extends React.Component {
 						</div>
 
 						{JSON.stringify(this.state.originalContent) !== JSON.stringify(this.state.content)
-							&& <div>
-								<div className="DialogArticleEditor-lock"/>
+							&& <div className="DialogArticleEditor-lock"/>
+						}
 
-								<div className="DialogArticleEditor-lock-buttons">
-									<DialogConfirmation
-										text={"Are you sure you want to discard the progress?"}
-										trigger={
-											<button
-												className={"red-background"}
-												data-active="">
-												<span><i className="far fa-times-circle"/> Discard changes...</span>
-											</button>
-										}
-										afterConfirmation={this.getContent}
-									/>
+						<div className="DialogArticleEditor-lock-buttons">
+							<h3>Quick actions</h3>
+
+							<DialogAddImage
+								trigger={
 									<button
 										className={"blue-background"}
-										data-hover="Close"
-										data-active=""
-										onClick={this.saveContent}>
-										<span><i className="fas fa-save"/> Save progress</span>
+										data-hover="Filter">
+										<i className="fas fa-plus"/> Add image
 									</button>
-								</div>
-							</div>
-						}
+								}
+							/>
+
+							{JSON.stringify(this.state.originalContent) !== JSON.stringify(this.state.content)
+								&& <DialogConfirmation
+									text={"Are you sure you want to discard the progress?"}
+									trigger={
+										<button
+											className={"red-background"}
+											data-active="">
+											<span><i className="far fa-times-circle"/> Discard changes...</span>
+										</button>
+									}
+									afterConfirmation={this.getContent}
+								/>
+							}
+
+							{JSON.stringify(this.state.originalContent) !== JSON.stringify(this.state.content)
+								&& <button
+									className={"blue-background"}
+									data-hover="Close"
+									data-active=""
+									onClick={this.saveContent}>
+									<span><i className="fas fa-save"/> Save progress</span>
+								</button>
+							}
+						</div>
 
 						<div className="col-md-12">
 							<div className="DialogArticleEditor-customised">
