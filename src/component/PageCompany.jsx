@@ -172,7 +172,7 @@ export default class PageCompany extends React.Component {
 									<button
 										className={"blue-background"}
 										data-hover="Filter">
-										<span><i className="fas fa-search"/></span>
+										<i className="fas fa-search"/>
 									</button>
 								}
 								applyFilter={(filters) => this.changeState("filters", filters)}

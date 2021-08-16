@@ -131,14 +131,14 @@ export default class DialogCompanyFilter extends React.Component {
 		return (
 			<Popup
 				trigger={
-					<span>
+					<div className={"DialogCompanyFilter-button"}>
 						{this.props.trigger}
 						{this.getNumberOfFilter() > 0
 							? <div className="Badge">
 								{this.getNumberOfFilter()}
 							</div>
 							: ""}
-					</span>
+					</div>
 				}
 				modal
 				onOpen={() => this.changeState("open", true)}
