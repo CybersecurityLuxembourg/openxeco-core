@@ -8,6 +8,7 @@ import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import { getContentFromBlock } from "../../utils/article.jsx";
+import DialogConfirmation from "./DialogConfirmation.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -44,27 +45,32 @@ export default class DialogArticleEditor extends React.Component {
 	}
 
 	getContent() {
-		getRequest.call(this, "private/get_my_article_content/" + this.props.article.id, (data) => {
-			for (let i = 0; i < data.length; i++) {
-				data[i].i = "" + i;
-				data[i].y = 0;
-				data[i].x = data[i].position;
-				data[i].w = 1;
-				data[i].h = 5;
-				data[i].isResizable = true;
-				data[i].draggableHandle = ".draggable";
-			}
+		this.setState({
+			content: null,
+			originalContent: null,
+		}, () => {
+			getRequest.call(this, "private/get_my_article_content/" + this.props.article.id, (data) => {
+				for (let i = 0; i < data.length; i++) {
+					data[i].i = "" + i;
+					data[i].y = 0;
+					data[i].x = data[i].position;
+					data[i].w = 1;
+					data[i].h = 5;
+					data[i].isResizable = true;
+					data[i].draggableHandle = ".draggable";
+				}
 
-			this.setState({
-				content: data,
-				originalContent: data,
-			}, () => {
-				this.resizeBoxes();
+				this.setState({
+					content: data,
+					originalContent: data,
+				}, () => {
+					this.resizeBoxes();
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
 		});
 	}
 
@@ -229,14 +235,14 @@ export default class DialogArticleEditor extends React.Component {
 				{(close) => (
 					<div className="DialogArticleEditor row">
 						<div className={"col-md-12 DialogArticleEditor-top-bar"}>
-							<h2>
+							<h1>
 								Editing content
-							</h2>
+							</h1>
 
 							<div className="top-right-buttons">
 								<button
 									className={"blue-background"}
-									onClick={this.getArticleInfo}>
+									onClick={this.getContent}>
 									<span><i className="fas fa-sync-alt"/></span>
 								</button>
 								<button
@@ -252,12 +258,17 @@ export default class DialogArticleEditor extends React.Component {
 								<div className="DialogArticleEditor-lock"/>
 
 								<div className="DialogArticleEditor-lock-buttons">
-									<button
-										className={"red-background"}
-										data-active=""
-										onClick={this.getContent}>
-										<span><i className="far fa-times-circle"/> Discard changes...</span>
-									</button>
+									<DialogConfirmation
+										text={"Are you sure you want to discard the progress?"}
+										trigger={
+											<button
+												className={"red-background"}
+												data-active="">
+												<span><i className="far fa-times-circle"/> Discard changes...</span>
+											</button>
+										}
+										afterConfirmation={this.getContent}
+									/>
 									<button
 										className={"blue-background"}
 										data-hover="Close"
@@ -275,7 +286,7 @@ export default class DialogArticleEditor extends React.Component {
 									<div className="col-md-6">
 										<div className={"row"}>
 											<div className="col-md-12">
-												<h3>Content</h3>
+												<h2>Content</h2>
 											</div>
 										</div>
 
@@ -401,7 +412,7 @@ export default class DialogArticleEditor extends React.Component {
 									<div className="col-md-6">
 										<div className={"row"}>
 											<div className="col-md-12">
-												<h3>Preview</h3>
+												<h2>Preview</h2>
 											</div>
 										</div>
 

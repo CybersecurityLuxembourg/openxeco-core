@@ -1,6 +1,5 @@
 import React from "react";
 import "./ArticleContent.css";
-import dompurify from "dompurify";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
@@ -8,7 +7,7 @@ import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import LogArticleVersion from "../LogArticleVersion.jsx";
 import DialogArticleEditor from "../../dialog/DialogArticleEditor.jsx";
-import { getApiURL } from "../../../utils/env.jsx";
+import { getContentFromBlock } from "../../../utils/article.jsx";
 
 export default class ArticleContent extends React.Component {
 	constructor(props) {
@@ -112,7 +111,7 @@ export default class ArticleContent extends React.Component {
 						<div className={"row"}>
 							<h2>Content</h2>
 
-							<div className={"bottom-right-buttons"}>
+							<div className={"top-right-buttons"}>
 								<DialogArticleEditor
 									trigger={<button
 										className={"blue-background"}
@@ -128,36 +127,9 @@ export default class ArticleContent extends React.Component {
 					{this.state.selectedVersion !== null && this.state.content !== null
 						&& <div className={"row"}>
 							<div className="col-md-12">
-								{this.state.content.map((item) => (
-									<div key={item.id}>
-										{item.type === "TITLE1"
-											? <h4>{item.content}</h4>
-											: ""}
-										{item.type === "TITLE2"
-											? <h5>{item.content}</h5>
-											: ""}
-										{item.type === "TITLE3"
-											? <h6>{item.content}</h6>
-											: ""}
-										{item.type === "PARAGRAPH"
-											? <div>
-												<div
-													dangerouslySetInnerHTML={{
-														__html: dompurify.sanitize(item.content),
-													}}>
-												</div>
-											</div>
-											: ""}
-										{item.type === "IMAGE"
-											? <div>
-												<img
-													className={"LogArticleVersion-image"}
-													src={getApiURL() + "public/get_image/" + item.content}
-												/>
-											</div>
-											: ""}
-									</div>
-								))}
+								{this.state.content !== null
+									&& this.state.content.map((item) => getContentFromBlock(item))
+								}
 							</div>
 						</div>
 					}
