@@ -92,7 +92,9 @@ export default class Company extends Component {
 								<i className="fab fa-google"></i>
 							</button>
 							<DialogConfirmation
-								text={"Are you sure you want to delete this entity?"}
+								text={"This will permanently remove the data. Are you sure you want to delete this entity?"
+									+ "<br/><br/>"
+									+ "Please consider using the 'DELETED' or the 'INACTIVE' status before proceeding."}
 								trigger={
 									<button
 										className={"red-background"}>

@@ -1,6 +1,7 @@
 import React from "react";
 import "./DialogConfirmation.css";
 import Popup from "reactjs-popup";
+import dompurify from "dompurify";
 
 export default class DialogConfirmation extends React.Component {
 	constructor(props) {
@@ -27,7 +28,13 @@ export default class DialogConfirmation extends React.Component {
 				className={"DialogConfirmation"}
 			>
 				<div className={"DialogConfirmation-wrapper"}>
-					<h2>{this.props.text}</h2>
+					<h2>
+						<div
+							dangerouslySetInnerHTML={{
+								__html: dompurify.sanitize(this.props.text),
+							}}>
+						</div>
+					</h2>
 					<div className={"bottom-right-buttons"}>
 						<button
 							className={"grey-background"}

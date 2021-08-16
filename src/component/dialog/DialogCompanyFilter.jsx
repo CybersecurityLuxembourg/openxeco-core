@@ -12,33 +12,35 @@ export default class DialogCompanyFilter extends React.Component {
 		super(props);
 
 		this.state = {};
+		this.onOpen = this.onOpen.bind(this);
 		this.afterConfirmation = this.afterConfirmation.bind(this);
 		this.changeState = this.changeState.bind(this);
 		this.getNumberOfFilter = this.getNumberOfFilter.bind(this);
 		this.eraseFilters = this.eraseFilters.bind(this);
 		this.applyFilter = this.applyFilter.bind(this);
 		this.fetchTaxonomyData = this.fetchTaxonomyData.bind(this);
+		this.fetchCompanyEnums = this.fetchCompanyEnums.bind(this);
 
 		this.initialState = {
-			open: false,
-
-			allowedFilters: ["name", "startup_only", "corebusiness_only"],
+			allowedFilters: ["name", "startup_only", "corebusiness_only", "status"],
 
 			name: null,
 			startup_only: false,
 			corebusiness_only: false,
+			status: null,
 
 			categories: null,
 			taxonomy_values: null,
+
+			companyEnums: null,
 		};
 
 		this.state = _.cloneDeep(this.initialState);
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (!prevState.open && this.state.open) {
-			this.fetchTaxonomyData();
-		}
+	onOpen() {
+		this.fetchTaxonomyData();
+		this.fetchCompanyEnums();
 	}
 
 	fetchTaxonomyData() {
@@ -55,6 +57,18 @@ export default class DialogCompanyFilter extends React.Component {
 		getRequest.call(this, "taxonomy/get_taxonomy_values", (data) => {
 			this.setState({
 				taxonomy_values: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	fetchCompanyEnums() {
+		getRequest.call(this, "company/get_company_enums", (data) => {
+			this.setState({
+				companyEnums: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -141,8 +155,7 @@ export default class DialogCompanyFilter extends React.Component {
 					</div>
 				}
 				modal
-				onOpen={() => this.changeState("open", true)}
-				onClose={() => this.changeState("open", false)}
+				onOpen={this.onOpen}
 				closeOnDocumentClick
 				className={"slide-in DialogCompanyFilter"}
 			>
@@ -163,6 +176,22 @@ export default class DialogCompanyFilter extends React.Component {
 						onChange={(v) => this.changeState("name", v)}
 						autofocus={true}
 					/>
+					{this.state.companyEnums !== null
+						? <FormLine
+							label={"Status"}
+							type={"select"}
+							value={this.state.status}
+							options={this.state.companyEnums === null
+                                || typeof this.state.companyEnums.status === "undefined" ? []
+								: [{ value: null, label: "-" }].concat(
+									this.state.companyEnums.status.map((o) => ({ label: o, value: o })),
+								)}
+							onChange={(v) => this.changeState("status", v)}
+						/>
+						: <Loading
+							height={100}
+						/>
+					}
 					<FormLine
 						label="Only startups"
 						type={"checkbox"}
