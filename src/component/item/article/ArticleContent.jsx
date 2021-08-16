@@ -116,7 +116,7 @@ export default class ArticleContent extends React.Component {
 									trigger={<button
 										className={"blue-background"}
 									>
-										<i className="far fa-edit"/> Open editor
+										<i className="far fa-edit"/> Edit the content
 									</button>}
 									article={{ id: this.props.id }}
 								/>
