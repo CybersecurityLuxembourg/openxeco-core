@@ -38,11 +38,12 @@ CREATE TABLE `Article` (
   `publication_date` date DEFAULT CURRENT_DATE,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
-  `status` enum('DRAFT','PUBLIC','ARCHIVE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'DRAFT',
+  `status` enum('DRAFT','UNDER REVIEW','PUBLIC','ARCHIVE') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'DRAFT',
   `type` enum('NEWS','EVENT','TOOL','SERVICE','RESOURCE','JOB OFFER') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'NEWS',
   `image` int DEFAULT NULL,
   `external_reference` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(550) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_created_by_admin` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`id`),
   KEY `image` (`image`),
   CONSTRAINT `Article_ibfk_1` FOREIGN KEY (`image`) REFERENCES `Image` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
