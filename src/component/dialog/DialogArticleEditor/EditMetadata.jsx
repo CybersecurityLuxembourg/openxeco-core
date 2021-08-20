@@ -1,9 +1,10 @@
 import React from "react";
-import "./EditContent.css";
+import "./EditMetadata.css";
 import FormLine from "../../form/FormLine.jsx";
 import { validateUrlHandle } from "../../../utils/re.jsx";
+import DialogHint from "../DialogHint.jsx";
 
-export default class EditContent extends React.Component {
+export default class EditMetadata extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -53,11 +54,94 @@ export default class EditContent extends React.Component {
 
 	render() {
 		return (
-			<div className="row">
+			<div className="EditMetadata row">
 				<div className="col-md-12">
 					<div className={"row row-spaced"}>
-						<div className="col-md-12">
+						<div className="col-md-9">
 							<h3>Metadata</h3>
+						</div>
+
+						<div className="col-md-3 EditMetadata-top-menu">
+							<DialogHint
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>What are the metadata fields?</h2>
+
+											<p>
+												The metadata fields are the information related to an
+												article that is not concerning the body itself. The
+												&quot;Edit metadata&quot; tab shows them all.
+											</p>
+
+											<img src="img/hint-edit-metadata.png"/>
+
+											<p>
+												Here is an explanation for each of them:
+											</p>
+
+											<img src="img/hint-metadata-fields.png"/>
+
+											<ul>
+												<li><b>Title</b>: main title of the article</li>
+												<li>
+													<b>Type</b>: type of article amongst this list:
+													{this.props.settings !== null
+														&& this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM
+															!== undefined
+														&& this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM
+															.split(",")
+															.map((t) => t)}
+												</li>
+												<li>
+													<b>Handle</b>: the URL path that will define the article of the
+													article URL
+												</li>
+												<li>
+													<b>Abstract</b>: the summary that introduces the content of the article
+												</li>
+												<li>
+													<b>Publication date</b>: the date of publication of the article.
+													If the date is in the future, the article won&apos;t be public
+												</li>
+												<li>
+													<b>Status</b>:
+
+													<ul>
+														<li>
+															<b>DRAFT</b>: the article is in edition.
+															It won&apos;t be shown publicly
+														</li>
+														<li>
+															<b>PUBLIC</b>: the article is ready and complete.
+															This is the right status to put it accessible
+														</li>
+														<li>
+															<b>ARCHIVE</b>: the article is saved in the
+															database but inaccessible online
+														</li>
+													</ul>
+												</li>
+											</ul>
+
+											<p>
+												There are some additional fields according to the selected type:
+											</p>
+
+											<img src="img/hint-additional-metadata-fields.png"/>
+
+											<ul>
+												<li>
+													<b>Start date</b>: Date and time of the start of the object
+												</li>
+												<li>
+													<b>End date</b>: Date and time of the end of the object
+												</li>
+											</ul>
+										</div>
+									</div>
+								}
+							/>
 						</div>
 
 						<div className="col-md-12">
@@ -102,7 +186,7 @@ export default class EditContent extends React.Component {
 
 						{["EVENT"].indexOf(this.props.article.type) >= 0
 							&& <div className="col-md-12">
-								<h2>Additional {this.props.article.type.toLowerCase()} fields</h2>
+								<h3>Additional {this.props.article.type.toLowerCase()} fields</h3>
 							</div>}
 
 						{this.props.article.type === "EVENT"

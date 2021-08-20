@@ -9,6 +9,7 @@ import EditContent from "./DialogArticleEditor/EditContent.jsx";
 import Loading from "../box/Loading.jsx";
 import ArticleStatus from "../item/ArticleStatus.jsx";
 import DialogConfirmation from "./DialogConfirmation.jsx";
+import DialogHint from "./DialogHint.jsx";
 
 export default class DialogArticleEditor extends React.Component {
 	constructor(props) {
@@ -125,28 +126,46 @@ export default class DialogArticleEditor extends React.Component {
 			>
 				{(close) => (
 					<div className={"row"}>
-						<div className={"col-md-12 DialogArticleEditor-top-bar"}>
+						<div className={"col-md-8 DialogArticleEditor-top-bar"}>
 							<h2>
 								Editing an article:
 								&#34;{this.state.article !== null ? this.state.article.title : ""}&#34;
 							</h2>
+						</div>
 
-							<div className="top-right-buttons">
-								<button
-									className={"blue-background"}
-									data-hover="Close"
-									data-active=""
-									onClick={this.getArticleInfo}>
-									<span><i className="fas fa-sync-alt"/></span>
-								</button>
-								<button
-									className={"grey-background"}
-									data-hover="Close"
-									data-active=""
-									onClick={close}>
-									<span><i className="far fa-times-circle"/></span>
-								</button>
-							</div>
+						<div className={"col-md-4 DialogArticleEditor-top-menu"}>
+							<DialogHint
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How to edit my article?</h2>
+
+											<h2>Why is my article offline?</h2>
+
+											<p>
+												You can have the reason of the publication status of
+												the article by clicking on the following button:
+											</p>
+
+											<img src="img/hint-offline-article-button.png"/>
+										</div>
+									</div>
+								}
+							/>
+							<button
+								className={"blue-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={this.getArticleInfo}>
+								<span><i className="fas fa-sync-alt"/></span>
+							</button>
+							<button
+								className={"grey-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={close}>
+								<span><i className="far fa-times-circle"/></span>
+							</button>
 						</div>
 
 						<div className="col-md-2 DialogArticleEditor-menu-wrapper">

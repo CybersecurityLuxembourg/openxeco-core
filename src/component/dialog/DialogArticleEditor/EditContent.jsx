@@ -8,6 +8,7 @@ import FormLine from "../../form/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import { getContentFromBlock } from "../../../utils/article.jsx";
+import DialogHint from "../DialogHint.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -253,8 +254,29 @@ export default class EditContent extends React.Component {
 				{this.isContentEditionAllowed()
 					&& <div className="col-md-12">
 						<div className={"row row-spaced"}>
-							<div className="col-md-12">
+							<div className="col-md-9">
 								<h3>The article must:</h3>
+							</div>
+
+							<div className="col-md-3 EditContent-top-menu">
+								<DialogHint
+									content={
+										<div className="row">
+											<div className="col-md-12">
+												<h2>How to edit my article?</h2>
+
+												<h2>Why is my article offline?</h2>
+
+												<p>
+													You can have the reason of the publication status of
+													the article by clicking on the following button:
+												</p>
+
+												<img src="img/hint-offline-article-button.png"/>
+											</div>
+										</div>
+									}
+								/>
 							</div>
 
 							<div className="col-md-12">

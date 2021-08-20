@@ -6,6 +6,12 @@
     line-height: 1.5 !important;
 }
 
+.DialogArticleEditor-content p {
+    text-overflow: initial !important;
+    white-space: initial !important;
+    overflow: auto !important;
+}
+
 .DialogArticleEditor-content button {
 	display: inline !important;
 	position: relative !important;
@@ -160,4 +166,29 @@
 .DialogArticleEditor-menu button i {
     width: 20px;
     text-align: center;
+}
+
+.DialogArticleEditor-content .DialogHint-icon {
+    margin: 0px 10px 0px 10px;
+}
+
+.DialogArticleEditor-top-menu {
+    padding: 0px 0px 20px 0px;
+    text-align: center;
+}
+
+.DialogArticleEditor-top-menu button {
+        bottom: unset !important;
+        right: unset !important;
+    }
+
+@media (min-width: 768px) {
+    .DialogArticleEditor-body {
+        padding: 0px 35px;
+    }
+
+    .DialogArticleEditor-top-menu {
+        padding: 30px 40px 0px 0px !important;
+        text-align: right !important;
+    }
 }
