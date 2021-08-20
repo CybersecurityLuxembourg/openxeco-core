@@ -7,6 +7,7 @@ import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
+import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -143,6 +144,133 @@ export default class Login extends React.Component {
 							</a>
 						</div>
 					}
+				</div>
+
+				<div className="top-left-buttons">
+					<DialogHint
+						content={
+							<div className="row">
+								<div className="col-md-12">
+									<h2>
+										What is&nbsp;
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "this portal"
+										} ?
+									</h2>
+
+									<div>
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "This portal"
+										} is the endpoint to manage the information shown on the
+										platform by the community. Every single person can personnalize
+										his own presentation and the one from his entity (private company,
+										civil society or public institutions). This allow to share and
+										promote your activity amongst the community.
+									</div>
+
+									<h2>
+										What can I do with&nbsp;
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "this portal"
+										} ?
+									</h2>
+
+									<h3>Edit my profile</h3>
+
+									<div>
+										Update your personal information to get closer to the community.
+										[TO COMPLETE]
+									</div>
+
+									<h3>Edit my entity information and description</h3>
+
+									<div>
+										Build a complete presentation of your entity. This will be shown...
+										[TO COMPLETE]
+									</div>
+
+									<h3>Promote your activities</h3>
+
+									<div>
+										You can use our editor to show your potential off.
+										[TO COMPLETE]
+									</div>
+
+									<h2>
+										How do I start?
+									</h2>
+
+									<h3>
+										Create your account
+									</h3>
+
+									<div>
+										You can create an account thanks to the section that is shown on this
+										webpage. Fill your address in and select &quot;Create account&quot;.
+									</div>
+
+									<img src={"img/hint-create-account.png"}/>
+
+									<h3>
+										Receive your provisory password
+									</h3>
+
+									<div>
+										You will then receive an email on the provided mail box.
+										This email should contain a provisory password that
+										allows you to log into the portal.
+									</div>
+
+									<h3>
+										Connect into the portal
+									</h3>
+
+									<div>
+										This email address and the password
+										will then be your credentials to connect to the platform.
+									</div>
+
+									<img src={"img/hint-connect.png"}/>
+
+									<div>
+										On this webpage again, you can provide your credentials
+										via the &quot;Login&quot; section and select the
+										&quot;Login&quot; button.
+									</div>
+
+									<h2>
+										Hint and tips
+									</h2>
+
+									<div>
+										Remember that this following logo is clickable
+										on the different pages of the portal to guide you
+										over your experience.
+									</div>
+
+									<div className="DialogHint-inside-icon-wrapper">
+										<i className="DialogHint-inside-icon fas fa-question-circle"/>
+									</div>
+
+									<div>
+										If you need more support, you can contact the team
+										via the &quot;Contact us&quot; page or via email{this.props.settings !== null
+											&& this.props.settings.EMAIL_ADDRESS !== undefined
+											? ": " + this.props.settings.EMAIL_ADDRESS
+											: ""
+										}.
+									</div>
+								</div>
+							</div>
+						}
+						validateSelection={(value) => this.onChange(value)}
+					/>
 				</div>
 
 				<div id="Login-area">

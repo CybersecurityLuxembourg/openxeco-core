@@ -3,11 +3,11 @@ import "./PageProfile.css";
 import { NotificationManager as nm } from "react-notifications";
 import _ from "lodash";
 import Loading from "./box/Loading.jsx";
-import Info from "./box/Info.jsx";
 import FormLine from "./form/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
 import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
+import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
@@ -108,7 +108,7 @@ export default class PageProfile extends React.Component {
 
 	render() {
 		return (
-			<div className={"page max-sized-page"}>
+			<div className={"PageProfile page max-sized-page"}>
 				<div className={"row"}>
 					<div className="col-md-12">
 						<h1>My profile</h1>
@@ -123,9 +123,38 @@ export default class PageProfile extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+					<div className="col-md-10">
 						<h2>My information</h2>
+					</div>
 
+					<div className="col-md-2">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>Who can see those information?</h2>
+
+										<p>
+											Those information are not shared publicly.
+										</p>
+
+										<p>
+											Your email address, first name and last name can be seen by
+											the collaborators from your entities only.
+										</p>
+
+										<p>
+											The phone number is accessible by the adminisrator team only.
+											It allows the organisation administrator to have direct
+											contacts with you.
+										</p>
+									</div>
+								</div>
+							}
+						/>
+					</div>
+
+					<div className="col-md-12">
 						{this.state.user !== null
 							? <div className="col-md-12">
 								<FormLine
@@ -166,92 +195,131 @@ export default class PageProfile extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-6">
-						<h2>Change password</h2>
-						{this.state.user !== null
-							? <div>
-								<FormLine
-									label={"Current password"}
-									value={this.state.password}
-									onChange={(v) => this.changeState("password", v)}
-									format={validatePassword}
-									type={"password"}
-								/>
-								<Info
+						<div className={"row row-spaced"}>
+							<div className="col-md-10">
+								<h2>Change password</h2>
+							</div>
+
+							<div className="col-md-2">
+								<DialogHint
 									content={
-										<div>
-											The password must:<br/>
-											<li>contain at least 1 lowercase alphabetical character</li>
-											<li>contain at least 1 uppercase alphabetical character</li>
-											<li>contain at least 1 numeric character</li>
-											<li>contain at least 1 special character such as !@#$%^&*</li>
-											<li>be between 8 and 30 characters long</li>
+										<div className="row">
+											<div className="col-md-12">
+												<h2>What are the password conditions?</h2>
+
+												The password must:<br/>
+												<li>contain at least 1 lowercase alphabetical character</li>
+												<li>contain at least 1 uppercase alphabetical character</li>
+												<li>contain at least 1 numeric character</li>
+												<li>contain at least 1 special character such as !@#$%^&*</li>
+												<li>be between 8 and 30 characters long</li>
+											</div>
 										</div>
 									}
 								/>
-								<FormLine
-									label={"New password"}
-									value={this.state.newPassword}
-									onChange={(v) => this.changeState("newPassword", v)}
-									format={validatePassword}
-									type={"password"}
-								/>
-								<FormLine
-									label={"New password confirmation"}
-									value={this.state.newPasswordConfirmation}
-									onChange={(v) => this.changeState("newPasswordConfirmation", v)}
-									format={validatePassword}
-									type={"password"}
-								/>
-								<div className="right-buttons">
-									<button
-										onClick={() => this.changePassword()}
-										disabled={!validatePassword(this.state.password)
-											|| !validatePassword(this.state.newPassword)
-											|| !validatePassword(this.state.newPasswordConfirmation)
-											|| this.state.newPassword !== this.state.newPasswordConfirmation}>
-										<i className="far fa-save"/> Change password
-									</button>
-								</div>
 							</div>
-							: <Loading
-								height={150}
-							/>
-						}
+
+							<div className="col-md-12">
+								{this.state.user !== null
+									? <div>
+										<FormLine
+											label={"Current password"}
+											value={this.state.password}
+											onChange={(v) => this.changeState("password", v)}
+											format={this.state.password === null
+												|| this.state.password.length === 0
+												? undefined : validatePassword}
+											type={"password"}
+										/>
+										<br/>
+										<FormLine
+											label={"New password"}
+											value={this.state.newPassword}
+											onChange={(v) => this.changeState("newPassword", v)}
+											format={this.state.newPassword === null
+												|| this.state.newPassword.length === 0
+												? undefined : validatePassword}
+											type={"password"}
+										/>
+										<FormLine
+											label={"New password confirmation"}
+											value={this.state.newPasswordConfirmation}
+											onChange={(v) => this.changeState("newPasswordConfirmation", v)}
+											format={this.state.newPasswordConfirmation === null
+												|| this.state.newPasswordConfirmation.length === 0
+												? undefined : validatePassword}
+											type={"password"}
+										/>
+										<div className="right-buttons">
+											<button
+												onClick={() => this.changePassword()}
+												disabled={!validatePassword(this.state.password)
+													|| !validatePassword(this.state.newPassword)
+													|| !validatePassword(this.state.newPasswordConfirmation)
+													|| this.state.newPassword !== this.state.newPasswordConfirmation}>
+												<i className="far fa-save"/> Change password
+											</button>
+										</div>
+									</div>
+									: <Loading
+										height={150}
+									/>
+								}
+							</div>
+						</div>
 					</div>
 
 					<div className="col-md-6">
-						<h2>Delete account</h2>
+						<div className={"row row-spaced"}>
+							<div className="col-md-10">
+								<h2>Delete account</h2>
+							</div>
 
-						{this.state.user !== null
-							? <div>
-								<Info
+							<div className="col-md-2">
+								<DialogHint
 									content={
-										<div>
-											Deleting the account will remove all the personal information.
-											You won&#39;t be able to retrieve them after confirmation.
-											<br/><br/>
-											However, the data concerning the entities will be remaining
-											in the CYBERLUX database.
+										<div className="row">
+											<div className="col-md-12">
+												<h2>What happens when I delete my account?</h2>
+
+												<p>
+													Deleting the account will remove all the personal information.
+													You won&#39;t be able to retrieve them after confirmation. It will
+													also be impossible for you to login into the portal.
+												</p>
+
+												<p>
+													However, the data concerning the entities and its articles
+													will be remaining on the database.
+												</p>
+											</div>
 										</div>
 									}
-								/>
-								<DialogConfirmation
-									text={"Do you want to delete your account? This will be irreversible"}
-									trigger={
-										<div className="right-buttons">
-											<button
-												className={"red-button"}>
-												<i className="far fa-trash-alt"/> Delete account...
-											</button>
-										</div>
-									}
-									afterConfirmation={this.deleteUser}
 								/>
 							</div>
-							: <Loading
-								height={150}
-							/>
-						}
+
+							<div className="col-md-12">
+								{this.state.user !== null
+									? <div>
+										<DialogConfirmation
+											text={"Do you want to delete your account? This will be irreversible"}
+											trigger={
+												<div className="right-buttons">
+													<button
+														className={"red-button"}>
+														<i className="far fa-trash-alt"/> Delete account...
+													</button>
+												</div>
+											}
+											afterConfirmation={this.deleteUser}
+										/>
+									</div>
+									: <Loading
+										height={150}
+									/>
+								}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

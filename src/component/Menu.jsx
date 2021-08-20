@@ -58,7 +58,7 @@ export default class Menu extends React.Component {
 						eventKey="profile"
 						active={this.props.selectedMenu === "profile"}>
 						<NavIcon>
-							<Link to="/profile"><i className="fa fa-user-circle" style={{ fontSize: "1.75em" }}/></Link>
+							<Link to="/profile"><i className="fas fa-user" style={{ fontSize: "1.75em" }}/></Link>
 						</NavIcon>
 						<NavText>
 							<Link to="/profile">My Profile</Link>

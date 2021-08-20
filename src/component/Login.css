@@ -178,3 +178,10 @@
         opacity: 0;
     }
 }
+
+#Login .DialogHint-icon {
+    z-index: 100;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}

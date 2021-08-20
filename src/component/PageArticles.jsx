@@ -9,6 +9,7 @@ import ArticleHorizontal from "./item/ArticleHorizontal.jsx";
 import Message from "./box/Message.jsx";
 import Loading from "./box/Loading.jsx";
 import DialogAddArticle from "./dialog/DialogAddArticle.jsx";
+import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageArticles extends React.Component {
 	constructor(props) {
@@ -94,8 +95,95 @@ export default class PageArticles extends React.Component {
 		return (
 			<div className={"PageArticles page max-sized-page"}>
 				<div className={"row"}>
-					<div className="col-md-12">
+					<div className="col-md-10">
 						<h1>My articles</h1>
+					</div>
+
+					<div className="col-md-2 PageArticles-hint-wrapper">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>What is an article?</h2>
+
+										<p>
+											An article is a global name to define different objects
+											as the following ones:
+										</p>
+
+										<ul>
+											{this.props.settings !== null
+												&& this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM !== undefined
+												&& this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM
+													.split(",")
+													.map((t) => <li
+														key={t}>
+														{t}
+													</li>)}
+										</ul>
+
+										<p>
+											Each of thoses object are editable with this webpage
+											by creating an article.
+										</p>
+
+										<p>
+											Every article is edited and published on behalf of an entity.
+											If you are not assigned to any entities, please see this page.
+										</p>
+
+										<h2>How can I create an article</h2>
+
+										<p>
+											To create an article, you can select this button
+											that is on the current webpage.
+										</p>
+
+										<img src="img/hint-create-article-button.png"/>
+
+										<p>
+											Then, you will find a dialog box to choose the title
+											and the company that will be marked as an editor of the article.
+											The title must be at least 6 characters long.
+										</p>
+
+										<img src="img/hint-create-article-form.png"/>
+
+										<p>
+											To finish, you can select the &quot;Add article&quot; button.
+											The new article will be visible on the list of the page.
+										</p>
+
+										<h2>What is the information shown?</h2>
+
+										<img src="img/hint-article-display.png"/>
+
+										<ul>
+											<li>1. The title of the article</li>
+											<li>2. The company assigned to the article</li>
+											<li>
+												3. The status of the article. To have more
+												information about the OFFLINE status, you can
+												click on this button and get the reasons why
+												the article is offline
+											</li>
+											<li>4. The abstract of the article</li>
+											<li>5. The publication date of the article</li>
+											<li>6. The button to reach the editor mode of the article</li>
+										</ul>
+
+										<h2>How can I edit an article?</h2>
+
+										<p>
+											You can edit any article you can see by clicking on the
+											according &quot;Open editor&quot; button:
+										</p>
+
+										<img src="img/hint-open-editor.png"/>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 				</div>
 
