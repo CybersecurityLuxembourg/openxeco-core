@@ -26,20 +26,20 @@ export default class PageHome extends React.Component {
 						<h2>Visit CYBERSECURITY Luxembourg</h2>
 					</div>
 
-					<div className="col-md-6">
+					<div className="col-md-3">
 						<a
 							href={getGlobalAppURL() + "news"}
 							target="_blank"
 							rel="noreferrer"
 						>
 							<div className="PageHome-white-block">
-								<i className="far fa-newspaper"/>
+								<i className="fas fa-newspaper"/>
 								<h3>News</h3>
 							</div>
 						</a>
 					</div>
 
-					<div className="col-md-6">
+					<div className="col-md-3">
 						<a
 							href={getGlobalAppURL() + "calendar"}
 							target="_blank"
@@ -52,7 +52,20 @@ export default class PageHome extends React.Component {
 						</a>
 					</div>
 
-					<div className="col-md-6">
+					<div className="col-md-3">
+						<a
+							href={getGlobalAppURL() + "strategy"}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<div className="PageHome-white-block">
+								<i className="fas fa-chess"/>
+								<h3>Strategy</h3>
+							</div>
+						</a>
+					</div>
+
+					<div className="col-md-3">
 						<a
 							href={getEcosystemAppURL()}
 							target="_blank"
@@ -67,7 +80,7 @@ export default class PageHome extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+					<div className="col-md-6">
 						<h2>My profile</h2>
 
 						<a
@@ -77,6 +90,21 @@ export default class PageHome extends React.Component {
 								<div className="PageHome-white-block">
 									<i className="fas fa-user"/>
 									<h3>{this.props.email.split("@")[0]}</h3>
+								</div>
+							</Link>
+						</a>
+					</div>
+
+					<div className="col-md-6">
+						<h2>My articles</h2>
+
+						<a
+							onClick={() => this.props.changeMenu("profile")}
+						>
+							<Link to="/profile">
+								<div className="PageHome-white-block">
+									<i className="fas fa-feather-alt"/>
+									<h3>Read or edit articles</h3>
 								</div>
 							</Link>
 						</a>
@@ -95,23 +123,6 @@ export default class PageHome extends React.Component {
 					}
 
 					{this.props.myCompanies !== null
-						&& this.props.myCompanies.length === 0
-						&& <div
-							className="col-md-12">
-							<a
-								onClick={() => this.props.changeMenu("add_company")}
-							>
-								<Link to={"/add_company"}>
-									<div className="PageHome-white-block">
-										<i className="fas fa-plus-circle"/>
-										<h3>No company found, please add or request an entity</h3>
-									</div>
-								</Link>
-							</a>
-						</div>
-					}
-
-					{this.props.myCompanies !== null
 						&& this.props.myCompanies.length > 0
 						&& this.props.myCompanies.map((c) => <div
 							key={c.id}
@@ -127,6 +138,22 @@ export default class PageHome extends React.Component {
 								</Link>
 							</a>
 						</div>)
+					}
+
+					{this.props.myCompanies !== null
+						&& <div
+							className="col-md-6">
+							<a
+								onClick={() => this.props.changeMenu("add_company")}
+							>
+								<Link to={"/add_company"}>
+									<div className="PageHome-white-block">
+										<i className="fas fa-plus-circle"/>
+										<h3>Add or claim an entity</h3>
+									</div>
+								</Link>
+							</a>
+						</div>
 					}
 				</div>
 			</div>
