@@ -127,7 +127,7 @@ export default class PageProfile extends React.Component {
 						<h2>My information</h2>
 					</div>
 
-					<div className="col-md-2">
+					<div className="col-md-2 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">
@@ -200,7 +200,7 @@ export default class PageProfile extends React.Component {
 								<h2>Change password</h2>
 							</div>
 
-							<div className="col-md-2">
+							<div className="col-md-2 top-title-menu">
 								<DialogHint
 									content={
 										<div className="row">
@@ -275,7 +275,7 @@ export default class PageProfile extends React.Component {
 								<h2>Delete account</h2>
 							</div>
 
-							<div className="col-md-2">
+							<div className="col-md-2 top-title-menu">
 								<DialogHint
 									content={
 										<div className="row">

@@ -42,7 +42,7 @@ h1 {
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
     padding: 0px 10px 0px 55px;
-    margin: 25px 0px 15px 0px;
+    margin: 5px 0px 25px 0px;
     background-image: url("img/polygon-red-bold.svg");
 	background-size: 44px 44px;
 	background-repeat: no-repeat;
@@ -54,7 +54,7 @@ h2 {
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
     padding: 0px 10px 0px 45px;
-    margin: 25px 0px 15px 0px;
+    margin: 5px 0px 15px 0px;
     background-image: url("img/polygon-blue-bold.svg");
 	background-size: 35px 35px;
 	background-repeat: no-repeat;
@@ -104,7 +104,7 @@ a {
 /* PAGE */
 
 .page {
-	padding: 10px 20px;
+	padding: 30px 20px 15px 20px;
 }
 
 .row-spaced {
@@ -160,9 +160,13 @@ a {
 	margin-left: 5px;
 }
 
+.right-buttons {
+	display: block;
+	text-align: right;
+}
+
 .right-buttons > button {
 	margin: 7px 2px;
-	float: right;
 }
 
 button {
@@ -331,7 +335,7 @@ textarea {
 
 
 .popup-content {
-	padding: 0px 20px 30px 20px !important;
+	padding: 10px 20px 30px 20px !important;
 	overflow-y: auto;
 	overflow-x: hidden;
 	background-color: #EEE !important;
@@ -458,4 +462,23 @@ textarea {
     border-radius: 0.4rem;
     background-color: white;
    	margin: 15px 0px 10px 0px;
+}
+
+/* TOP TITLE MENU */
+
+.top-title-menu {
+    padding: 0px 0px 20px 0px;
+    text-align: center;
+}
+
+.top-title-menu button {
+        bottom: unset !important;
+        right: unset !important;
+    }
+
+@media (min-width: 768px) {
+    .top-title-menu {
+        padding: 10px 20px 0px 0px !important;
+        text-align: right !important;
+    }
 }

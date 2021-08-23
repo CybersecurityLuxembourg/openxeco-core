@@ -8,6 +8,7 @@ import TreeTaxonomy from "../chart/TreeTaxonomy.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import FormLine from "../form/FormLine.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class CompanyTaxonomy extends React.Component {
 	constructor(props) {
@@ -213,9 +214,71 @@ export default class CompanyTaxonomy extends React.Component {
 
 		return (
 			<div id="CompanyTaxonomy" className="max-sized-page fade-in">
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+				<div className={"row"}>
+					<div className="col-md-9">
 						<h2>Taxonomy</h2>
+					</div>
+
+					<div className="col-md-3 top-title-menu">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>How can modify the taxonomy of my entity?</h2>
+
+										<p>
+											You can select the taxonomy category you want to
+											treat with this following select field:
+										</p>
+
+										<img src="/img/hint-taxonomy-select.png"/>
+
+										<p>
+											You can now see the tree with the current selection.
+											A bleu circle means that the entity is assigned to
+											the value and a red circle means that it is not.
+										</p>
+
+										<img src="/img/hint-taxonomy-tree.png"/>
+
+										<p>
+											If you want to edit the selection, you must at first
+											unlock the diagram by clicking on the top right button:
+										</p>
+
+										<img src="/img/hint-taxonomy-lock-button.png"/>
+
+										<p>
+											By clicking on the colored circles, you will modify the
+											selection. Once done, you can consult the differencies
+											at the bottom of the tree.
+										</p>
+
+										<img src="/img/hint-taxonomy-differences.png"/>
+
+										<p>
+											You will complete the modifications by selecting the
+											following button.
+										</p>
+
+										<img src="/img/hint-taxonomy-modif-button.png"/>
+
+										<p>
+											This will send a request to the organisation team that will
+											treat your request by accepting of rejecting your suggestion.
+										</p>
+
+										<h2>Note</h2>
+
+										<p>
+											You can follow up your requests by going on this menu:
+										</p>
+
+										<img src="/img/hint-request-menu.png"/>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 				</div>
 

@@ -6,6 +6,7 @@ import { postRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import { getApiURL } from "../../utils/env.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class CompanyGlobal extends React.Component {
 	constructor(props) {
@@ -78,9 +79,54 @@ export default class CompanyGlobal extends React.Component {
 
 		return (
 			<div id="CompanyLogo" className="max-sized-page fade-in">
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+				<div className={"row"}>
+					<div className="col-md-9">
 						<h2>Logo</h2>
+					</div>
+
+					<div className="col-md-3 top-title-menu">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>How can I modify the logo of my entity?</h2>
+
+										<p>
+											You can modify the logo by clocking the Drap and Drop box of the
+											&quot;Request a new logo&quot; section:
+										</p>
+
+										<img src="/img/hint-drag-and-drop-logo.png"/>
+
+										<p>
+											You can then select an image from your terminal and select
+											the following button:
+										</p>
+
+										<img src="/img/hint-request-logo-button.png"/>
+
+										<p>
+											Please consider
+											that the image must be .jpg, .jpeg or .png. The width and the
+											height also cannot be higher than 500px.
+										</p>
+
+										<p>
+											This will send a request to the organisation team that will
+											treat your request by accepting of rejecting your suggestion.
+										</p>
+
+										<h2>Note</h2>
+
+										<p>
+											You can follow up your requests by going on this menu:
+										</p>
+
+										<img src="/img/hint-request-menu.png"/>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 				</div>
 
@@ -139,16 +185,16 @@ export default class CompanyGlobal extends React.Component {
 							<button
 								className={"blue-background"}
 								disabled={this.state.imageContent === null}
-								onClick={() => this.submitLogoModificationRequests()}
+								onClick={() => this.setState({ imageContent: null })}
 							>
-								<i className="fas fa-save"/> Request logo change...
+								<i className="fas fa-times-circle"/> Remove the selection
 							</button>
 							<button
 								className={"blue-background"}
 								disabled={this.state.imageContent === null}
-								onClick={() => this.setState({ imageContent: null })}
+								onClick={() => this.submitLogoModificationRequests()}
 							>
-								<i className="fas fa-times-circle"/> Remove the selection
+								<i className="fas fa-save"/> Request logo change...
 							</button>
 						</div>
 					</div>

@@ -258,7 +258,7 @@ export default class EditContent extends React.Component {
 								<h3>Body type:</h3>
 							</div>
 
-							<div className="col-md-3 EditContent-top-menu">
+							<div className="col-md-3 top-title-menu">
 								<DialogHint
 									content={
 										<div className="row">

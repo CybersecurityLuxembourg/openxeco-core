@@ -7,6 +7,7 @@ import Address from "../form/Address.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class CompanyAddress extends React.Component {
 	constructor(props) {
@@ -131,9 +132,73 @@ export default class CompanyAddress extends React.Component {
 
 		return (
 			<div id="CompanyAddress" className="max-sized-page fade-in">
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+				<div className={"row"}>
+					<div className="col-md-9">
 						<h2>Address</h2>
+					</div>
+
+					<div className="col-md-3 top-title-menu">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>How can I add an address to my entity?</h2>
+
+										<p>
+											You can add an address by completing the following form and
+											selecting the &quot;Request add&quot; button:
+										</p>
+
+										<img src="/img/hint-add-address.png"/>
+
+										<p>
+											Note that the Street, City and Country fields are mandatory
+											to complete the form.
+										</p>
+
+										<p>
+											This will send a request to the organisation team that will
+											treat your request by accepting of rejecting your suggestion.
+										</p>
+
+										<h2>How can I delete an address from my entity?</h2>
+
+										<p>
+											You can delete an address from your entity by clicking the
+											red following button:
+										</p>
+
+										<img src="/img/hint-delete-address-button.png"/>
+
+										<p>
+											This will send a request to the organisation team that will
+											treat your request by accepting of rejecting your suggestion.
+										</p>
+
+										<h2>How can I modify an address from my entity?</h2>
+
+										<p>
+											You can modify the fields and select the following button:
+										</p>
+
+										<img src="/img/hint-modify-address-button.png"/>
+
+										<p>
+											This will send a request to the organisation team that will
+											treat your request by accepting of rejecting your suggestion.
+										</p>
+
+										<h2>Note</h2>
+
+										<p>
+											You can follow up your requests by going on this menu:
+										</p>
+
+										<img src="/img/hint-request-menu.png"/>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 				</div>
 
@@ -154,6 +219,29 @@ export default class CompanyAddress extends React.Component {
 							/>
 
 							<div className={"right-buttons"}>
+								<button
+									className={"blue-background"}
+									disabled={_.isEqual(
+										this.state.addresses.filter((ad) => ad.id === a.id),
+										this.state.originalAddresses.filter((ad) => ad.id === a.id),
+									)}
+									onClick={() => this.revertAddress(y)}
+								>
+									<i className="fas fa-undo-alt"/>
+								</button>
+
+								<DialogConfirmation
+									text={"Do you want to request deletion for this address?"}
+									trigger={
+										<button
+											className={"red-background"}
+										>
+											<i className="far fa-trash-alt"/> Request deletion...
+										</button>
+									}
+									afterConfirmation={() => this.submitDeletionRequests(a)}
+								/>
+
 								<DialogConfirmation
 									text={"Do you want to request modifications for this address?"}
 									trigger={
@@ -171,27 +259,6 @@ export default class CompanyAddress extends React.Component {
 									}
 									afterConfirmation={() => this.submitModificationRequests(a)}
 								/>
-								<DialogConfirmation
-									text={"Do you want to request deletion for this address?"}
-									trigger={
-										<button
-											className={"red-background"}
-										>
-											<i className="fas fa-save"/> Request deletion...
-										</button>
-									}
-									afterConfirmation={() => this.submitDeletionRequests(a)}
-								/>
-								<button
-									className={"blue-background"}
-									disabled={_.isEqual(
-										this.state.addresses.filter((ad) => ad.id === a.id),
-										this.state.originalAddresses.filter((ad) => ad.id === a.id),
-									)}
-									onClick={() => this.revertAddress(y)}
-								>
-									<i className="fas fa-undo-alt"/>
-								</button>
 							</div>
 						</div>)
 						}

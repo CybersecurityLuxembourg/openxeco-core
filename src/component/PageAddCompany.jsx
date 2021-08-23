@@ -7,6 +7,7 @@ import FormLine from "./form/FormLine.jsx";
 import Info from "./box/Info.jsx";
 import Message from "./box/Message.jsx";
 import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
+import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageAddCompany extends React.Component {
 	constructor(props) {
@@ -135,9 +136,63 @@ export default class PageAddCompany extends React.Component {
 					? <Loading
 						height={200}
 					/>
-					: <div className={"row"}>
-						<div className="col-md-12">
+					: <div className={"row row-spaced"}>
+						<div className="col-md-9">
 							<h2>Claim access to an entity</h2>
+						</div>
+
+						<div className="col-md-3 top-title-menu">
+							<DialogHint
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>Why claiming access to an entity?</h2>
+
+											<p>
+												By being assigned to an entity, you will be able
+												to request modifications on its global information,
+												its logo, its addresses and its taxonomy.
+											</p>
+
+											<p>
+												The administrators may get contact with you to verify
+												if you can be legitimately assigned.
+											</p>
+
+											<h2>How to claim access to an entity?</h2>
+
+											<p>
+												You can type the company name in the text field of this
+												section. This requires at least 2 characters to
+												perform the search.
+											</p>
+
+											<img src="/img/hint-search-claim-company.png"/>
+
+											<p>
+												Then, you will see the list of companies matching
+												your search. By clicking on the &quot;Claim access&quot;
+												button, you have claimed the assignment to this entity.
+											</p>
+
+											<img src="/img/hint-company-claim-button.png"/>
+
+											<p>
+												This will send a request to the organisation team that will
+												treat your request by accepting of rejecting your claim.
+											</p>
+
+											<h2>Note</h2>
+
+											<p>
+												You can follow up your requests by going on this menu:
+											</p>
+
+											<img src="/img/hint-contact-menu.png"/>
+										</div>
+									</div>
+								}
+							/>
 						</div>
 
 						<div className="col-md-12 row-spaced">
@@ -164,33 +219,68 @@ export default class PageAddCompany extends React.Component {
 								/>
 							}
 
-							{this.state.filteredCompanies !== null
-								&& this.state.filteredCompanies.length > 0
-								&& this.state.filteredCompanies.map((c) => <div
-									className={"row"}
-									key={c.id}>
-									<div className="col-md-9">
-										{c.name}
-									</div>
-									<div className="col-md-3 right-buttons">
-										<DialogConfirmation
-											text={"Do you want to request access to: " + c.name + "?"}
-											trigger={
-												<button
-													className={"blue-background"}
-												>
-													Claim access...
-												</button>
-											}
-											afterConfirmation={() => this.submitClaimRequest(c.id)}
-										/>
-									</div>
-								</div>)
-							}
+							<div className={"row"}>
+								{this.state.filteredCompanies !== null
+									&& this.state.filteredCompanies.length > 0
+									&& this.state.filteredCompanies.map((c) => <div
+										className="col-md-3"
+										key={c.id}>
+										<div className="card">
+											<i className="fas fa-building card-icon"/>
+											<div className="card-body">
+												<div className="card-title">{c.name}</div>
+												<DialogConfirmation
+													text={"Do you want to request access to: " + c.name + "?"}
+													trigger={
+														<button
+															className={"blue-background card-button"}
+														>
+															Claim access...
+														</button>
+													}
+													afterConfirmation={() => this.submitClaimRequest(c.id)}
+												/>
+											</div>
+										</div>
+									</div>)
+								}
+							</div>
 						</div>
 
-						<div className="col-md-12">
+						<div className="col-md-9">
 							<h2>Register a new entity</h2>
+						</div>
+
+						<div className="col-md-3 top-title-menu">
+							<DialogHint
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How to register a new entity?</h2>
+
+											<p>
+												You can fill in the form and select the
+												&quot;Request registration&quot; button.
+											</p>
+
+											<img src="/img/hint-request-registration-button.png"/>
+
+											<p>
+												Note that the Name, Website and Creation date fields
+												are mandatory to complete the form.
+											</p>
+
+											<h2>Note</h2>
+
+											<p>
+												You can follow up your requests by going on this menu:
+											</p>
+
+											<img src="/img/hint-contact-menu.png"/>
+										</div>
+									</div>
+								}
+							/>
 						</div>
 
 						<div className="col-md-12 row-spaced">
@@ -198,7 +288,7 @@ export default class PageAddCompany extends React.Component {
 								content={
 									<div>
 										You can register your company here.
-										Please fill in the form if you haven&apos;t
+										Please fill in the form only if you haven&apos;t
 										found your entity in the section above.
 									</div>
 								}

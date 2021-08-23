@@ -61,7 +61,7 @@ export default class EditMetadata extends React.Component {
 							<h3>Metadata</h3>
 						</div>
 
-						<div className="col-md-3 EditMetadata-top-menu">
+						<div className="col-md-3 top-title-menu">
 							<DialogHint
 								content={
 									<div className="row">

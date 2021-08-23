@@ -6,6 +6,7 @@ import FormLine from "../form/FormLine.jsx";
 import { postRequest } from "../../utils/request.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Loading from "../box/Loading.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class CompanyGlobal extends React.Component {
 	constructor(props) {
@@ -84,11 +85,44 @@ export default class CompanyGlobal extends React.Component {
 
 		return (
 			<div id="CompanyGlobal" className="max-sized-page fade-in">
-				<div className={"row row-spaced"}>
-					<div className="col-md-12 row-spaced">
+				<div className={"row"}>
+					<div className="col-md-9">
 						<h2>Global information</h2>
 					</div>
 
+					<div className="col-md-3 top-title-menu">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>How can I modify the global information of my entity?</h2>
+
+										<p>
+											You can modify the fields and select the following button:
+										</p>
+
+										<img src="/img/hint-request-global-modification.png"/>
+
+										<p>
+											This will send a request to the organisation team that will
+											treat your request by accepting of rejecting your suggestion.
+										</p>
+
+										<h2>Note</h2>
+
+										<p>
+											You can follow up your requests by going on this menu:
+										</p>
+
+										<img src="/img/hint-request-menu.png"/>
+									</div>
+								</div>
+							}
+						/>
+					</div>
+				</div>
+
+				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<FormLine
 							label={this.state.fields.name}

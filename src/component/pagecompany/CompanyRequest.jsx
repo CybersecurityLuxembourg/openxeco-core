@@ -7,6 +7,7 @@ import Message from "../box/Message.jsx";
 import Info from "../box/Info.jsx";
 import Request from "../item/Request.jsx";
 import FormLine from "../form/FormLine.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class CompanyGlobal extends React.Component {
 	constructor(props) {
@@ -56,9 +57,47 @@ export default class CompanyGlobal extends React.Component {
 
 		return (
 			<div id="CompanyGlobal" className="max-sized-page fade-in">
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+				<div className={"row"}>
+					<div className="col-md-9">
 						<h2>Request</h2>
+					</div>
+
+					<div className="col-md-3 top-title-menu">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>What&apos;s on this page?</h2>
+
+										<p>
+											You will find all the active requests that are related to the
+											entity mentioned at the top of the page. The status is
+											&quot;NEW&quot; or &quot;IN PROCESS&quot;. The processed
+											requests won&apos;t be shown in this list.
+										</p>
+
+										<h2>How can I delete a request?</h2>
+
+										<p>
+											You can delete a request by clicking the following red
+											button:
+										</p>
+
+										<img src="/img/hint-request-delete-button.png"/>
+
+										<h2>How can I issue an open request regarding my entity?</h2>
+
+										<p>
+											You can issue an open request regarding your entity by
+											completing this field and clicking on
+											&quot;Submit request&quot;:
+										</p>
+
+										<img src="/img/hint-request-issue.png"/>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 				</div>
 

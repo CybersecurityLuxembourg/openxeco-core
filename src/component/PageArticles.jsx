@@ -99,7 +99,7 @@ export default class PageArticles extends React.Component {
 						<h1>My articles</h1>
 					</div>
 
-					<div className="col-md-2 PageArticles-hint-wrapper">
+					<div className="col-md-2 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">

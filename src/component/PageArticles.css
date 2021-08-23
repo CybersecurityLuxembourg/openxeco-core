@@ -8,21 +8,3 @@
 .PageArticles-legend .dot {
     margin-left: 20px;
 }
-
-.PageArticles-hint-wrapper {
-	text-align: center;
-}
-
-.PageArticles-hint-wrapper i {
-	padding: 5px 5px 10px 5px;
-}
-
-@media (min-width: 768px) {
-    .PageArticles-hint-wrapper {
-		text-align: right !important;
-	}
-
-	.PageArticles-hint-wrapper > i {
-		padding: 30px 10px 30px 10px !important;
-	}
-}

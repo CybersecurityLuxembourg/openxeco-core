@@ -100,15 +100,15 @@ export default class PageContact extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h2>Your current messages</h2>
+					</div>
 
-						<div className="top-right-buttons">
-							<button
-								onClick={this.refresh}>
-								<i className="fas fa-redo-alt"/>
-							</button>
-						</div>
+					<div className="col-md-3 top-title-menu">
+						<button
+							onClick={this.refresh}>
+							<i className="fas fa-redo-alt"/>
+						</button>
 					</div>
 
 					{this.state.requests !== null && this.state.requests.length === 0

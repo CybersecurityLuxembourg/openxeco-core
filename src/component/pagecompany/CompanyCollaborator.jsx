@@ -1,11 +1,12 @@
 import React from "react";
-import "./CompanyGlobal.css";
+import "./CompanyCollaborator.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
-export default class CompanyGlobal extends React.Component {
+export default class CompanyCollaborator extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -43,10 +44,33 @@ export default class CompanyGlobal extends React.Component {
 		}
 
 		return (
-			<div id="CompanyGlobal" className="max-sized-page fade-in">
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+			<div id="CompanyCollaborator" className="max-sized-page fade-in">
+				<div className={"row"}>
+					<div className="col-md-9">
 						<h2>Collaborator</h2>
+					</div>
+
+					<div className="col-md-3 top-title-menu">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>What&apos;s on this page?</h2>
+
+										<p>
+											This page is a simple list of the collaborators
+											from the entity. All the physical persons on this list
+											are able to request changes.
+										</p>
+
+										<p>
+											If a collaborator doesn&apos;t seem to be legitimately
+											in this list, please contact the administrators.
+										</p>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 				</div>
 
@@ -59,8 +83,15 @@ export default class CompanyGlobal extends React.Component {
 							/>
 						}
 
-						{this.state.collaborators.map((c, y) => <div className="col-md-12" key={y}>
-							<h3>{c.email}</h3>
+						{this.state.collaborators.map((c) => <div
+							className="col-md-6"
+							key={c.email}>
+							<div className="card">
+								<i className="fas fa-user card-icon"/>
+								<div className="card-body">
+									<div className="card-title">{c.email}</div>
+								</div>
+							</div>
 						</div>)}
 					</div>
 				</div>
