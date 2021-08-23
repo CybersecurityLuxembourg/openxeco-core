@@ -28,6 +28,7 @@ class UpdateUser(MethodResource, Resource):
         'first_name': fields.Str(required=False, allow_none=True),
         'telephone': fields.Str(required=False, allow_none=True),
         'is_admin': fields.Bool(required=False),
+        'is_active': fields.Bool(required=False),
     })
     @jwt_required
     @verify_admin_access
