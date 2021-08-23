@@ -47,10 +47,10 @@ export default class UserGlobal extends React.Component {
 				this.setState({ user });
 				nm.info("The property has been updated");
 			}, (response) => {
-				this.refreshCompanyData();
+				this.refresh();
 				nm.warning(response.statusText);
 			}, (error) => {
-				this.refreshCompanyData();
+				this.refresh();
 				nm.error(error.message);
 			});
 		}
