@@ -133,7 +133,7 @@ export default class EditContent extends React.Component {
 
 		for (let y = 0; y < content.length; y++) {
 			content[y].position = parseInt(y, 10) + 1;
-			content[y].y = y + "";
+			content[y].y = y;
 		}
 
 		this.setState({ content });
@@ -255,7 +255,7 @@ export default class EditContent extends React.Component {
 					&& <div className="col-md-12">
 						<div className={"row row-spaced"}>
 							<div className="col-md-9">
-								<h3>The article must:</h3>
+								<h3>Body type:</h3>
 							</div>
 
 							<div className="col-md-3 EditContent-top-menu">
@@ -263,16 +263,98 @@ export default class EditContent extends React.Component {
 									content={
 										<div className="row">
 											<div className="col-md-12">
-												<h2>How to edit my article?</h2>
+												<h2>How can I edit the body of the article?</h2>
 
-												<h2>Why is my article offline?</h2>
+												{this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT !== undefined
+													&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT === "TRUE"
+													? <div>
+														<p>
+															You have to options to compose the body of an
+															article:
+														</p>
 
-												<p>
-													You can have the reason of the publication status of
-													the article by clicking on the following button:
-												</p>
+														<ul>
+															<li>
+																<b>Customised body</b>: you can
+																use the content editor of this portal to edit
+																the body of the article
+															</li>
+															<li>
+																<b>External URL</b>: you can
+																provide an URL from an external website.
+																Clicking the article will redirect to this webpage
+															</li>
+														</ul>
+													</div>
+													: <div>
+														<p>
+															You have to provide an URL that is redirecting to
+															the according webpage.
+														</p>
+													</div>
+												}
 
-												<img src="img/hint-offline-article-button.png"/>
+												{this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT !== undefined
+													&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT === "TRUE"
+													&& <div>
+														<h2>How do I edit the customised body?</h2>
+
+														<p>
+															You can create blocks to edit the body. Here
+															are the block types:
+														</p>
+
+														<img src="img/hint-add-block-buttons.png"/>
+
+														<ul>
+															<li>
+																<b>H1</b>: this is the highest heading level or
+																paragraph title
+															</li>
+															<li>
+																<b>H2</b>: this is the second highest heading level
+																or paragraph subtitle
+															</li>
+															<li>
+																<b><i className="fas fa-align-left"/></b>: this
+																allows to edit the paragraphs
+															</li>
+															<li>
+																<b><i className="fab fa-youtube"/></b>: you can
+																insert the embed tag of a video (Youtube, Peertube, ...)
+																to display the video in the article
+															</li>
+														</ul>
+
+														<p>
+															Once the blocks are created, you can always order them
+															by drag-&-droping and remove them by clicking the
+															following top right cross: <i className="fas fa-times"/>
+														</p>
+
+														<p>
+															The preview is available next to the blocks. Here is
+															the structure of it:
+														</p>
+
+														<img src="img/hint-article-content-preview.png"/>
+
+														<ul>
+															<li>
+																<b>1</b>: this is the title of the article edited
+																in the metadata section
+															</li>
+															<li>
+																<b>2</b>: this is the abstract of the article
+																edited in the metadata section
+															</li>
+															<li>
+																The arrows show the representation of the
+																blocks in the preview section
+															</li>
+														</ul>
+													</div>
+												}
 											</div>
 										</div>
 									}
@@ -282,7 +364,7 @@ export default class EditContent extends React.Component {
 							<div className="col-md-12">
 								<FormLine
 									type={"checkbox"}
-									label={"Show the customized content"}
+									label={"Customised body"}
 									value={this.state.editArticle}
 									disabled={this.state.editArticle}
 									onChange={(v) => this.setState({
@@ -292,7 +374,7 @@ export default class EditContent extends React.Component {
 								/>
 								<FormLine
 									type={"checkbox"}
-									label={"Redirect to an external URL"}
+									label={"External URL"}
 									value={this.state.redirectToURL}
 									disabled={this.state.redirectToURL}
 									onChange={(v) => this.setState({
@@ -321,7 +403,7 @@ export default class EditContent extends React.Component {
 
 							<div className="col-md-12">
 								<FormLine
-									label={"URL of the external article"}
+									label={"External URL"}
 									value={this.props.article.link}
 									onBlur={(v) => this.saveArticleValue("link", v)}
 								/>

@@ -138,8 +138,6 @@ export default class DialogArticleEditor extends React.Component {
 								content={
 									<div className="row">
 										<div className="col-md-12">
-											<h2>How to edit my article?</h2>
-
 											<h2>Why is my article offline?</h2>
 
 											<p>
@@ -148,6 +146,19 @@ export default class DialogArticleEditor extends React.Component {
 											</p>
 
 											<img src="img/hint-offline-article-button.png"/>
+
+											<h2>How can I delete my article?</h2>
+
+											<p>
+												You can delete the article by clicking on this button:
+											</p>
+
+											<img src="img/hint-delete-article.png"/>
+
+											<p>
+												You won&apos;t be able to retrieve the information of the
+												article after proceeding.
+											</p>
 										</div>
 									</div>
 								}
@@ -188,7 +199,7 @@ export default class DialogArticleEditor extends React.Component {
 									data-hover="Save"
 									data-active=""
 									onClick={() => this.setState({ editContent: true })}>
-									<i className="fas fa-align-left"/> Edit content
+									<i className="fas fa-align-left"/> Edit body
 								</button>
 
 								<h3>Action</h3>
