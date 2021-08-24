@@ -89,6 +89,7 @@ export default class InsideApp extends React.Component {
 							/>}/>
 						}
 						<Route path="/company/:id?" render={(props) => <PageCompany
+							key={Date.now()}
 							myCompanies={this.state.myCompanies}
 							notifications={this.state.notifications}
 							getNotifications={this.getNotifications}
