@@ -92,7 +92,7 @@ export default class CompanyGlobal extends React.Component {
 										<h2>How can I modify the logo of my entity?</h2>
 
 										<p>
-											You can modify the logo by clocking the Drap and Drop box of the
+											You can modify the logo by clicking the Drap and Drop box of the
 											&quot;Request a new logo&quot; section:
 										</p>
 

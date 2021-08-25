@@ -224,7 +224,7 @@ export default class CompanyTaxonomy extends React.Component {
 							content={
 								<div className="row">
 									<div className="col-md-12">
-										<h2>How can modify the taxonomy of my entity?</h2>
+										<h2>How can I modify the taxonomy of my entity?</h2>
 
 										<p>
 											You can select the taxonomy category you want to
@@ -235,14 +235,14 @@ export default class CompanyTaxonomy extends React.Component {
 
 										<p>
 											You can now see the tree with the current selection.
-											A bleu circle means that the entity is assigned to
+											A blue circle means that the entity is assigned to
 											the value and a red circle means that it is not.
 										</p>
 
 										<img src="/img/hint-taxonomy-tree.png"/>
 
 										<p>
-											If you want to edit the selection, you must at first
+											If you want to change the selection, you must first
 											unlock the diagram by clicking on the top right button:
 										</p>
 
@@ -264,7 +264,7 @@ export default class CompanyTaxonomy extends React.Component {
 										<img src="/img/hint-taxonomy-modif-button.png"/>
 
 										<p>
-											This will send a request to the organisation team that will
+											This will send a request to the admin team that will
 											treat your request by accepting of rejecting your suggestion.
 										</p>
 

@@ -139,8 +139,8 @@ export default class PageProfile extends React.Component {
 										</p>
 
 										<p>
-											Your email address, first name and last name can be seen by
-											the collaborators from your entities only.
+											Your email address, first name and last name can
+											only be seen by the employees of your entities.
 										</p>
 
 										<p>
@@ -290,7 +290,8 @@ export default class PageProfile extends React.Component {
 
 												<p>
 													However, the data concerning the entities and its articles
-													will be remaining on the database.
+													will be remaining on the database and accessible online for
+													the ones that are public.
 												</p>
 											</div>
 										</div>

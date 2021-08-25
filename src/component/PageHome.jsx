@@ -99,9 +99,9 @@ export default class PageHome extends React.Component {
 						<h2>My articles</h2>
 
 						<a
-							onClick={() => this.props.changeMenu("profile")}
+							onClick={() => this.props.changeMenu("articles")}
 						>
-							<Link to="/profile">
+							<Link to="/articles">
 								<div className="PageHome-white-block">
 									<i className="fas fa-feather-alt"/>
 									<h3>Read or edit articles</h3>

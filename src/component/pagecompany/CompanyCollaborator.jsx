@@ -75,25 +75,24 @@ export default class CompanyCollaborator extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
-						{this.state.collaborators.length === 0
-							&& <Message
+					{this.state.collaborators.length === 0
+						&& <div className="col-md-12">
+							<Message
 								text={"No collaborator found for this entity"}
 								height={300}
 							/>
-						}
+						</div>}
 
-						{this.state.collaborators.map((c) => <div
-							className="col-md-6"
-							key={c.email}>
-							<div className="card">
-								<i className="fas fa-user card-icon"/>
-								<div className="card-body">
-									<div className="card-title">{c.email}</div>
-								</div>
+					{this.state.collaborators.map((c) => <div
+						className="col-md-6"
+						key={c.email}>
+						<div className="card">
+							<i className="fas fa-user card-icon"/>
+							<div className="card-body">
+								<div className="card-title">{c.email}</div>
 							</div>
-						</div>)}
-					</div>
+						</div>
+					</div>)}
 				</div>
 			</div>
 		);

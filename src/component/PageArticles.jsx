@@ -123,7 +123,7 @@ export default class PageArticles extends React.Component {
 										</ul>
 
 										<p>
-											Each of thoses object are editable with this webpage
+											Each of thoses objects are editable with this webpage
 											by creating an article.
 										</p>
 
