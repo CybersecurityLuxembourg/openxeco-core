@@ -71,7 +71,7 @@ export default class DialogAddArticle extends React.Component {
 								format={validateArticleTitle}
 							/>
 							<FormLine
-								label={"Company"}
+								label={"Entity"}
 								type={"select"}
 								value={this.state.company}
 								options={this.props.myCompanies === null
