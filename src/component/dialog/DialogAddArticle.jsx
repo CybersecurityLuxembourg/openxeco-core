@@ -14,8 +14,20 @@ export default class DialogAddArticle extends React.Component {
 
 		this.state = {
 			title: null,
-			company: null,
+			company: this.props.myCompanies !== null
+				&& this.props.myCompanies !== undefined
+				&& this.props.myCompanies.length > 0
+				? this.props.myCompanies[0].id
+				: null,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		if ((prevProps.myCompanies === null || prevProps.myCompanies === undefined)
+			&& Array.isArray(this.props.myCompanies)
+			&& this.props.myCompanies.length > 0) {
+			this.setState({ company: this.props.myCompanies[0].id });
+		}
 	}
 
 	addArticle(close) {
@@ -61,13 +73,12 @@ export default class DialogAddArticle extends React.Component {
 							<FormLine
 								label={"Company"}
 								type={"select"}
-								value={this.state.selectedCompanyID}
+								value={this.state.company}
 								options={this.props.myCompanies === null
 									|| this.props.myCompanies === undefined
 									? []
-									: [{ value: null, label: "-" }].concat(
-										this.props.myCompanies.map((o) => ({ label: o.name, value: o.id })),
-									)}
+									: this.props.myCompanies.map((o) => ({ label: o.name, value: o.id }))
+								}
 								onChange={(v) => this.changeState("company", v)}
 								format={this.state.company === null}
 							/>
