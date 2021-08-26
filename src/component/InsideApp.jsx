@@ -101,6 +101,7 @@ export default class InsideApp extends React.Component {
 							{...props}
 						/>}/>
 						<Route path="/contact" render={(props) => <PageContact
+							settings={this.props.settings}
 							getNotifications={this.getNotifications}
 							{...props}
 						/>}/>

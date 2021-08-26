@@ -18,16 +18,6 @@ export function getGlobalAppURL() {
 	return "https://cybersecurity-luxembourg.com/";
 }
 
-export function getEcosystemAppURL() {
-	if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "") {
-		return "http://localhost:3003/";
-	}
-	if (window.location.hostname.includes("test")) {
-		return "https://test-eco.cy.lu/";
-	}
-	return "https://ecosystem.cybersecurity-luxembourg.com/";
-}
-
 export function getCookieOptions() {
 	// TODO use httponly cookies
 	if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "") {

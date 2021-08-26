@@ -130,7 +130,12 @@ export default class Login extends React.Component {
 							className="link-button"
 							href={getGlobalAppURL()}
 						>
-							Go to CYBERSECURITY Luxembourg portal <i className="fa fa-shield-alt"/>
+							Go to&nbsp;
+							{this.props.settings !== null && this.props.settings.PROJECT_NAME !== undefined
+								? this.props.settings.PROJECT_NAME
+								: "the"
+							}
+							&nbsp;portal <i className="fa fa-shield-alt"/>
 						</a>
 					</div>
 

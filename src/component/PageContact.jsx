@@ -139,36 +139,38 @@ export default class PageContact extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-lg-6 col-xl-4">
-						<h2>Email</h2>
+					{this.props.settings !== null && this.props.settings.EMAIL_ADDRESS !== undefined
+						&& <div className="col-lg-6 col-xl-4">
+							<h2>Email</h2>
 
-						<Message
-							text={"info@cybersecurity-luxembourg.com"}
-							height={150}
-						/>
-					</div>
+							<Message
+								text={this.props.settings.EMAIL_ADDRESS}
+								height={150}
+							/>
+						</div>
+					}
 
-					<div className="col-lg-6 col-xl-4">
-						<h2>Postal address</h2>
+					{this.props.settings !== null && this.props.settings.POSTAL_ADDRESS !== undefined
+						&& <div className="col-lg-6 col-xl-4">
+							<h2>Postal address</h2>
 
-						<Message
-							text={<div>
-								SECURITYMADEIN.LU g.i.e.<br/>
-								16, boulevard d&apos;Avranches<br/>
-								L-1160 Luxembourg
-							</div>}
-							height={150}
-						/>
-					</div>
+							<Message
+								text={this.props.settings.POSTAL_ADDRESS}
+								height={150}
+							/>
+						</div>
+					}
 
-					<div className="col-lg-6 col-xl-4">
-						<h2>Phone</h2>
+					{this.props.settings !== null && this.props.settings.PHONE_NUMBER !== undefined
+						&& <div className="col-lg-6 col-xl-4">
+							<h2>Phone</h2>
 
-						<Message
-							text={"(+352) 274 00 98 601"}
-							height={150}
-						/>
-					</div>
+							<Message
+								text={this.props.settings.PHONE_NUMBER}
+								height={150}
+							/>
+						</div>
+					}
 				</div>
 			</div>
 		);
