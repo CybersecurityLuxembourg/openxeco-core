@@ -351,7 +351,9 @@ export default class SettingGlobal extends React.Component {
 									<li>PROJECT_NAME</li>
 									<li>ADMIN_PLATFORM_NAME</li>
 									<li>PRIVATE_SPACE_PLATFORM_NAME</li>
-									<li>EMAIL_ADDRESS : Main contact address of the project.</li>
+									<li>EMAIL_ADDRESS : Email address of contact for the project.</li>
+									<li>PHONE_NUMBER : Phone number of contact for the project.</li>
+									<li>POSTAL_ADDRESS : Postal address of contact for the project.</li>
 									<li>
 										ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE : &#34;TRUE&#34; to be activated.<br/>
 										This setting allows the users to create an article.<br/>
@@ -382,7 +384,7 @@ export default class SettingGlobal extends React.Component {
 								<div>
 									You can then manage additional settings for customized usage.
 									Please remain aware that those settings will be available publicly
-									via the resource public/get_public_settings
+									via the resource public/get_public_settings.
 								</div>
 							</div>}
 						/>
