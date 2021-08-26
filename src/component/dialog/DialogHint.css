@@ -1,7 +1,7 @@
 
 .DialogHint-icon {
 	font-size: 30px;
-	color: #8fddff;
+	color: #F1C40F;
 }
 
 .DialogHint-icon:hover {
@@ -18,7 +18,7 @@
 .DialogHint-inside-icon {
 	display: block;
 	font-size: 70px;
-	color: #8fddff;
+	color: #F1C40F;
 	animation: swing 1s;
   	-webkit-animation: swing 1s;
 }
