@@ -45,6 +45,11 @@
 .DialogHint-wrapper {
     max-height: 100%;
     text-align: left;
+    font-size: initial;
+    font-weight: initial;
+    font-family: sans-serif;
+    color: grey;
+    line-height: 1.5;
 }
 
 .DialogHint-wrapper img {
@@ -58,8 +63,8 @@
 	cursor: pointer;
 }
 
-.DialogHint-content p {
-	text-overflow: unset !important;
+.DialogHint-content p { 
+    text-overflow: unset !important;
     white-space: normal !important;
     overflow: show !important;
 }
