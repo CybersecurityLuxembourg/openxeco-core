@@ -189,7 +189,7 @@ export default class EditMetadata extends React.Component {
 
 						{["EVENT"].indexOf(this.props.article.type) >= 0
 							&& <div className="col-md-12">
-								<h3>Additional {this.props.article.type.toLowerCase()} fields</h3>
+								<h3>Additional fields for {this.props.article.type.toLowerCase()} articles</h3>
 							</div>}
 
 						{this.props.article.type === "EVENT"

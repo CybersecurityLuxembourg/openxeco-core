@@ -9,7 +9,6 @@ import EditContent from "./DialogArticleEditor/EditContent.jsx";
 import Loading from "../box/Loading.jsx";
 import ArticleStatus from "../item/ArticleStatus.jsx";
 import DialogConfirmation from "./DialogConfirmation.jsx";
-import DialogHint from "./DialogHint.jsx";
 
 export default class DialogArticleEditor extends React.Component {
 	constructor(props) {
@@ -134,35 +133,6 @@ export default class DialogArticleEditor extends React.Component {
 						</div>
 
 						<div className={"col-md-4 DialogArticleEditor-top-menu"}>
-							<DialogHint
-								content={
-									<div className="row">
-										<div className="col-md-12">
-											<h2>Why is my article offline?</h2>
-
-											<p>
-												You can have the reason of the publication status of
-												the article by clicking on the following button:
-											</p>
-
-											<img src="img/hint-offline-article-button.png"/>
-
-											<h2>How can I delete my article?</h2>
-
-											<p>
-												You can delete the article by clicking on this button:
-											</p>
-
-											<img src="img/hint-delete-article.png"/>
-
-											<p>
-												You won&apos;t be able to retrieve the information of the
-												article after proceeding.
-											</p>
-										</div>
-									</div>
-								}
-							/>
 							<button
 								className={"blue-background"}
 								data-hover="Close"
@@ -199,7 +169,11 @@ export default class DialogArticleEditor extends React.Component {
 									data-hover="Save"
 									data-active=""
 									onClick={() => this.setState({ editContent: true })}>
-									<i className="fas fa-align-left"/> Edit body
+									{this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT !== undefined
+										&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT === "TRUE"
+										? <div><i className="fas fa-align-left"/> Edit body</div>
+										: <div><i className="fas fa-directions"/> Edit redirection</div>
+									}
 								</button>
 
 								<h3>Action</h3>
@@ -208,7 +182,7 @@ export default class DialogArticleEditor extends React.Component {
 									text={"Are you sure you want to delete this article?"}
 									trigger={
 										<button
-											className="red-font">
+											className="red-button">
 											<i className="far fa-trash-alt"/> Delete article...
 										</button>
 									}
