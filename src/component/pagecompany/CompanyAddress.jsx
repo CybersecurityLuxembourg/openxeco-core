@@ -157,7 +157,7 @@ export default class CompanyAddress extends React.Component {
 										</p>
 
 										<p>
-											This will send a request to the organisation team that will
+											This will send a request to the admin team that will
 											treat your request by accepting of rejecting your suggestion.
 										</p>
 
@@ -171,7 +171,7 @@ export default class CompanyAddress extends React.Component {
 										<img src="/img/hint-delete-address-button.png"/>
 
 										<p>
-											This will send a request to the organisation team that will
+											This will send a request to the admin team that will
 											treat your request by accepting of rejecting your suggestion.
 										</p>
 
@@ -184,7 +184,7 @@ export default class CompanyAddress extends React.Component {
 										<img src="/img/hint-modify-address-button.png"/>
 
 										<p>
-											This will send a request to the organisation team that will
+											This will send a request to the admin team that will
 											treat your request by accepting of rejecting your suggestion.
 										</p>
 

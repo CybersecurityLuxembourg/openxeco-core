@@ -112,7 +112,7 @@ export default class CompanyGlobal extends React.Component {
 										</p>
 
 										<p>
-											This will send a request to the organisation team that will
+											This will send a request to the admin team that will
 											treat your request by accepting of rejecting your suggestion.
 										</p>
 
