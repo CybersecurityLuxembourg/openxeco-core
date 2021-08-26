@@ -59,6 +59,7 @@ class TestGetPublicCompanies(BaseCase):
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
+                'status': 'ACTIVE',
             },
             {
                 'id': 3,
@@ -67,6 +68,7 @@ class TestGetPublicCompanies(BaseCase):
                 'is_startup': 0,
                 'is_cybersecurity_core_business': 0,
                 'creation_date': None,
+                'status': 'ACTIVE',
             }
         ])
 

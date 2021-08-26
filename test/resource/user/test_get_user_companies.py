@@ -20,7 +20,7 @@ class TestGetUserCompanies(BaseCase):
             {
                 'creation_date': None,
                 'description': None,
-                'status': None,
+                'status': 'ACTIVE',
                 'id': 14,
                 'image': None,
                 'is_cybersecurity_core_business': 0,
@@ -33,7 +33,7 @@ class TestGetUserCompanies(BaseCase):
             {
                 'creation_date': None,
                 'description': None,
-                'status': None,
+                'status': 'ACTIVE',
                 'id': 15,
                 'image': None,
                 'is_cybersecurity_core_business': 0,

@@ -25,7 +25,7 @@ class TestGetArticleTags(BaseCase):
                 {
                     'creation_date': None,
                     'description': None,
-                    'status': None,
+                    'status': 'ACTIVE',
                     'id': 10,
                     'image': None,
                     'is_cybersecurity_core_business': 0,
@@ -38,7 +38,7 @@ class TestGetArticleTags(BaseCase):
                 {
                     'creation_date': None,
                     'description': None,
-                    'status': None,
+                    'status': 'ACTIVE',
                     'id': 11,
                     'image': None,
                     'is_cybersecurity_core_business': 0,
