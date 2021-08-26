@@ -105,6 +105,7 @@ export default class InsideApp extends React.Component {
 							{...props}
 						/>}/>
 						<Route path="/" render={(props) => <PageHome
+							settings={this.props.settings}
 							changeMenu={(v) => this.changeState("selectedMenu", v)}
 							myCompanies={this.state.myCompanies}
 							email={this.props.email}
