@@ -123,13 +123,14 @@ export default class PageArticles extends React.Component {
 										</ul>
 
 										<p>
-											Each of thoses objects are editable with this webpage
+											Each of these objects are editable with this webpage
 											by creating an article.
 										</p>
 
 										<p>
 											Every article is edited and published on behalf of an entity.
-											If you are not assigned to any entities, please see this page.
+											If you are not assigned to any entities, please see
+											&nbsp;<Link to={"/add_company"}>this page</Link>.
 										</p>
 
 										<h2>How can I create an article</h2>
@@ -142,7 +143,7 @@ export default class PageArticles extends React.Component {
 										<img src="img/hint-create-article-button.png"/>
 
 										<p>
-											Then, you will find a dialog box to choose the title
+											Then, you will find a dialogue box to choose the title
 											and the company that will be marked as an editor of the article.
 											The title must be at least 6 characters long.
 										</p>
@@ -163,7 +164,7 @@ export default class PageArticles extends React.Component {
 											<li>2. The company assigned to the article</li>
 											<li>
 												3. The status of the article. To have more
-												information about the OFFLINE status, you can
+												information about the OFFLINE status,
 												click on this button and get the reasons why
 												the article is offline
 											</li>
@@ -175,7 +176,7 @@ export default class PageArticles extends React.Component {
 										<h2>How can I edit an article?</h2>
 
 										<p>
-											You can edit any article you can see by clicking on the
+											You can edit any articles you can see by clicking on the
 											according &quot;Open editor&quot; button:
 										</p>
 

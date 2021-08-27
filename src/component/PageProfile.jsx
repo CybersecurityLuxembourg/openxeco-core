@@ -135,18 +135,17 @@ export default class PageProfile extends React.Component {
 										<h2>Who can see those information?</h2>
 
 										<p>
-											Those information are not shared publicly.
+											The information is not shared publicly.
 										</p>
 
 										<p>
-											Your email address, first name and last name can
-											only be seen by the employees of your entities.
+											The collaborators from your entities only
+											can see your email address, first name and last name.
 										</p>
 
 										<p>
-											The phone number is accessible by the adminisrator team only.
-											It allows the organisation administrator to have direct
-											contacts with you.
+											The phone number is accessible by the administrator team only.
+											It allows the organisation administrators to contact you directly.
 										</p>
 									</div>
 								</div>
@@ -205,7 +204,7 @@ export default class PageProfile extends React.Component {
 									content={
 										<div className="row">
 											<div className="col-md-12">
-												<h2>What are the password conditions?</h2>
+												<h2>What are the password criteria?</h2>
 
 												The password must:<br/>
 												<li>contain at least 1 lowercase alphabetical character</li>
@@ -283,9 +282,10 @@ export default class PageProfile extends React.Component {
 												<h2>What happens when I delete my account?</h2>
 
 												<p>
-													Deleting the account will remove all the personal information.
-													You won&#39;t be able to retrieve them after confirmation. It will
-													also be impossible for you to login into the portal.
+													Deleting the account will remove all your personal information.
+													You won&#39;t be able to retrieve you personal information
+													after confirmation. It will also
+													be impossible for you to login in to the portal.
 												</p>
 
 												<p>

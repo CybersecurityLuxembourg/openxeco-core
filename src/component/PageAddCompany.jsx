@@ -149,43 +149,44 @@ export default class PageAddCompany extends React.Component {
 											<h2>Why claiming access to an entity?</h2>
 
 											<p>
-												By being assigned to an entity, you will be able
-												to request modifications on its global information,
-												its logo, its addresses and its taxonomy.
+												When assigned to an entity, you can
+												a change to its global information,
+												logo, addresses and taxonomy.
 											</p>
 
 											<p>
-												The administrators may get contact with you to verify
-												if you can be legitimately assigned.
+												The administrators can contact you to verify
+												that the entity can legitimately be assigned to you.
 											</p>
 
 											<h2>How to claim access to an entity?</h2>
 
 											<p>
-												You can type the company name in the text field of this
-												section. This requires at least 2 characters to
-												perform the search.
+												Type the name of the company you want to claim
+												access to in the text field. You need to type at
+												least two characters to perform a search.
 											</p>
 
 											<img src="/img/hint-search-claim-company.png"/>
 
 											<p>
-												Then, you will see the list of companies matching
+												Then, you will see the list of entities matching
 												your search. By clicking on the &quot;Claim access&quot;
-												button, you have claimed the assignment to this entity.
+												button, you have claimed the assignment to that entity.
 											</p>
 
 											<img src="/img/hint-company-claim-button.png"/>
 
 											<p>
-												This will send a request to the admin team that will
-												treat your request by accepting of rejecting your claim.
+												This will send a request to the administration team,
+												who will either accept or reject your request.
 											</p>
 
 											<h2>Note</h2>
 
 											<p>
-												You can follow up your requests by going on this menu:
+												You can follow up your requests by clicking on this icon
+												in the left menu bar:
 											</p>
 
 											<img src="/img/hint-contact-menu.png"/>

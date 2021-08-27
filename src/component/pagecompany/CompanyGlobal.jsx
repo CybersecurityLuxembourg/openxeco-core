@@ -104,8 +104,8 @@ export default class CompanyGlobal extends React.Component {
 										<img src="/img/hint-request-global-modification.png"/>
 
 										<p>
-											This will send a request to the admin team that will
-											treat your request by accepting of rejecting your suggestion.
+											Your request will be sent to the administration team, who will
+											either accept or reject your suggestion.
 										</p>
 
 										<h2>Note</h2>
