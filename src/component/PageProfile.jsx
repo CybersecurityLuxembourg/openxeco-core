@@ -132,7 +132,7 @@ export default class PageProfile extends React.Component {
 							content={
 								<div className="row">
 									<div className="col-md-12">
-										<h2>Who can see those information?</h2>
+										<h2>Who can see this information?</h2>
 
 										<p>
 											The information is not shared publicly.
@@ -283,7 +283,7 @@ export default class PageProfile extends React.Component {
 
 												<p>
 													Deleting the account will remove all your personal information.
-													You won&#39;t be able to retrieve you personal information
+													You won&#39;t be able to retrieve your personal information
 													after confirmation. It will also
 													be impossible for you to login in to the portal.
 												</p>
