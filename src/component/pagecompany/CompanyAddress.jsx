@@ -157,22 +157,22 @@ export default class CompanyAddress extends React.Component {
 										</p>
 
 										<p>
-											This will send a request to the admin team that will
-											treat your request by accepting of rejecting your suggestion.
+											This will send a request to the administration team, who will
+											either accept or reject your request.
 										</p>
 
-										<h2>How can I delete an address from my entity?</h2>
+										<h2>How can I delete an address of my entity?</h2>
 
 										<p>
-											You can delete an address from your entity by clicking the
-											red following button:
+											You can delete an address of your entity by clicking the
+											red button:
 										</p>
 
 										<img src="/img/hint-delete-address-button.png"/>
 
 										<p>
-											This will send a request to the admin team that will
-											treat your request by accepting of rejecting your suggestion.
+											This will send a request to the administration team, who will
+											either accept or reject your request.
 										</p>
 
 										<h2>How can I modify an address from my entity?</h2>
@@ -184,8 +184,8 @@ export default class CompanyAddress extends React.Component {
 										<img src="/img/hint-modify-address-button.png"/>
 
 										<p>
-											This will send a request to the admin team that will
-											treat your request by accepting of rejecting your suggestion.
+											This will send a request to the administration team, who will
+											either accept or reject your request.
 										</p>
 
 										<h2>Note</h2>

@@ -149,22 +149,21 @@ export default class PageAddCompany extends React.Component {
 											<h2>Why claiming access to an entity?</h2>
 
 											<p>
-												When assigned to an entity, you can
+												If assigned to an entity, you can request
 												a change to its global information,
 												logo, addresses and taxonomy.
 											</p>
 
 											<p>
-												The administrators can contact you to verify
-												that the entity can legitimately be assigned to you.
+												Administrators can contact you to verify
+												that you can be legitimately assigned to the entity.
 											</p>
 
 											<h2>How to claim access to an entity?</h2>
 
 											<p>
-												Type the name of the company you want to claim
-												access to in the text field. You need to type at
-												least two characters to perform a search.
+												Type the company name in the text field shown below.
+												You need to type at least 2 characters to perform the search.
 											</p>
 
 											<img src="/img/hint-search-claim-company.png"/>
@@ -172,7 +171,7 @@ export default class PageAddCompany extends React.Component {
 											<p>
 												Then, you will see the list of entities matching
 												your search. By clicking on the &quot;Claim access&quot;
-												button, you have claimed the assignment to that entity.
+												button, you have claimed the assignment to the chosen entity.
 											</p>
 
 											<img src="/img/hint-company-claim-button.png"/>
@@ -185,8 +184,8 @@ export default class PageAddCompany extends React.Component {
 											<h2>Note</h2>
 
 											<p>
-												You can follow up your requests by clicking on this icon
-												in the left menu bar:
+												You can follow up your requests by clicking on
+												the icon in the left menu bar as shown below:
 											</p>
 
 											<img src="/img/hint-contact-menu.png"/>
@@ -260,7 +259,7 @@ export default class PageAddCompany extends React.Component {
 											<h2>How to register a new entity?</h2>
 
 											<p>
-												You can fill in the form and select the
+												Fill in the form and select the
 												&quot;Request registration&quot; button.
 											</p>
 
@@ -274,7 +273,8 @@ export default class PageAddCompany extends React.Component {
 											<h2>Note</h2>
 
 											<p>
-												You can follow up your requests by going on this menu:
+												You can follow up your requests by clicking on the
+												icon in the left menu bar as shown below:
 											</p>
 
 											<img src="/img/hint-contact-menu.png"/>

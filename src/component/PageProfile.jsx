@@ -144,8 +144,8 @@ export default class PageProfile extends React.Component {
 										</p>
 
 										<p>
-											The phone number is accessible by the administrator team only.
-											It allows the organisation administrators to contact you directly.
+											The phone number is accessible by the administration team only.
+											It allows the administrators to contact you directly.
 										</p>
 									</div>
 								</div>
@@ -282,10 +282,10 @@ export default class PageProfile extends React.Component {
 												<h2>What happens when I delete my account?</h2>
 
 												<p>
-													Deleting the account will remove all your personal information.
+													Deleting your account will remove all your personal information.
 													You won&#39;t be able to retrieve your personal information
 													after confirmation. It will also
-													be impossible for you to login in to the portal.
+													be impossible for you to log in to the portal.
 												</p>
 
 												<p>

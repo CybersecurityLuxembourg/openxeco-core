@@ -1,5 +1,6 @@
 import React from "react";
 import "./CompanyCollaborator.css";
+import { Link } from "react-router-dom";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
@@ -58,14 +59,15 @@ export default class CompanyCollaborator extends React.Component {
 										<h2>What&apos;s on this page?</h2>
 
 										<p>
-											This page is a simple list of the collaborators
-											from the entity. All the physical persons on this list
-											are able to request changes.
+											This page shows the list of collaborators of the entity.
+											Each collaborator can request changes.
+											If a collaborator does not seem to be legitimate on this
+											list, please contact the administrators.
 										</p>
 
 										<p>
-											If a collaborator doesn&apos;t seem to be legitimately
-											in this list, please contact the administrators.
+											To contact the administration team, please go to&nbsp;
+											<Link to={"/contact"}>this page</Link>.
 										</p>
 									</div>
 								</div>

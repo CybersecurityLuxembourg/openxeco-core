@@ -70,16 +70,16 @@ export default class CompanyGlobal extends React.Component {
 										<h2>What&apos;s on this page?</h2>
 
 										<p>
-											You will find all the active requests that are related to the
+											You will find all the active requests related to the
 											entity mentioned at the top of the page. The status is
 											&quot;NEW&quot; or &quot;IN PROCESS&quot;. The processed
-											requests won&apos;t be shown in this list.
+											requests will not appear in this list.
 										</p>
 
 										<h2>How can I delete a request?</h2>
 
 										<p>
-											You can delete a request by clicking the following red
+											You can delete a request by clicking the following
 											button:
 										</p>
 

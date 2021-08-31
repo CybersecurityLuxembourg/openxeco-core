@@ -92,15 +92,25 @@ export default class CompanyGlobal extends React.Component {
 										<h2>How can I modify the logo of my entity?</h2>
 
 										<p>
-											You can modify the logo by clicking the Drap and Drop box of the
-											&quot;Request a new logo&quot; section:
+											You can modify the logo by:
 										</p>
+
+										<ul>
+											<li>
+												Clicking on the Drag and Drop box and
+												choose an image from your computer
+											</li>
+											<li>
+												Choose an image on your computer, drag
+												it onto the Drag and drop field and drop it to the box
+											</li>
+										</ul>
 
 										<img src="/img/hint-drag-and-drop-logo.png"/>
 
 										<p>
-											You can then select an image from your terminal and select
-											the following button:
+											Once finished, click on the active &quot;Request logo change&quot;
+											button to confirm your action:
 										</p>
 
 										<img src="/img/hint-request-logo-button.png"/>
@@ -112,8 +122,8 @@ export default class CompanyGlobal extends React.Component {
 										</p>
 
 										<p>
-											This will send a request to the admin team that will
-											treat your request by accepting of rejecting your suggestion.
+											This will send a request to the administration team, who will
+											either accept or reject your request.
 										</p>
 
 										<h2>Note</h2>

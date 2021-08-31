@@ -176,8 +176,8 @@ export default class PageArticles extends React.Component {
 										<h2>How can I edit an article?</h2>
 
 										<p>
-											You can edit any articles you can see by clicking on the
-											according &quot;Open editor&quot; button:
+											You can edit any articles by clicking on the
+											&quot;Open editor&quot; button:
 										</p>
 
 										<img src="img/hint-open-editor.png"/>
