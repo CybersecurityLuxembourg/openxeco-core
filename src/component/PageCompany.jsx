@@ -111,6 +111,7 @@ export default class PageCompany extends React.Component {
 									<CompanyCollaborator
 										companyId={this.state.company.id}
 										key={"CompanyCollaborator"}
+										changeMenu={this.props.changeMenu}
 									/>,
 									<CompanyRequest
 										getNotifications={this.props.getNotifications}

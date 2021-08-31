@@ -1,7 +1,7 @@
 import React from "react";
 import "./CompanyCollaborator.css";
-import { Link } from "react-router-dom";
 import { NotificationManager as nm } from "react-notifications";
+import { Link } from "react-router-dom";
 import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
@@ -67,7 +67,13 @@ export default class CompanyCollaborator extends React.Component {
 
 										<p>
 											To contact the administration team, please go to&nbsp;
-											<Link to={"/contact"}>this page</Link>.
+											<a
+												onClick={() => this.props.changeMenu("contact")}
+											>
+												<Link to="/contact">
+													this page
+												</Link>
+											</a>.
 										</p>
 									</div>
 								</div>

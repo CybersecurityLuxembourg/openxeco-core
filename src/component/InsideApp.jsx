@@ -18,6 +18,7 @@ export default class InsideApp extends React.Component {
 		this.changeState = this.changeState.bind(this);
 		this.getNotifications = this.getNotifications.bind(this);
 		this.getMyCompanies = this.getMyCompanies.bind(this);
+		this.changeMenu = this.changeMenu.bind(this);
 
 		this.state = {
 			selectedMenu: "",
@@ -57,6 +58,10 @@ export default class InsideApp extends React.Component {
 		});
 	}
 
+	changeMenu(menu) {
+		this.setState({ selectedMenu: menu });
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -66,7 +71,7 @@ export default class InsideApp extends React.Component {
 			<div id="InsideApp">
 				<Menu
 					selectedMenu={this.state.selectedMenu}
-					changeMenu={(v) => this.changeState("selectedMenu", v)}
+					changeMenu={this.changeMenu}
 					disconnect={this.props.disconnect}
 					cookies={this.props.cookies}
 					myCompanies={this.state.myCompanies}
@@ -84,7 +89,7 @@ export default class InsideApp extends React.Component {
 								notifications={this.state.notifications}
 								getNotifications={this.getNotifications}
 								settings={this.props.settings}
-								changeMenu={(v) => this.changeState("selectedMenu", v)}
+								changeMenu={this.changeMenu}
 								{...props}
 							/>}/>
 						}
@@ -93,6 +98,7 @@ export default class InsideApp extends React.Component {
 							myCompanies={this.state.myCompanies}
 							notifications={this.state.notifications}
 							getNotifications={this.getNotifications}
+							changeMenu={this.changeMenu}
 							{...props}
 						/>}/>
 						<Route path="/add_company" render={(props) => <PageAddCompany
@@ -107,7 +113,7 @@ export default class InsideApp extends React.Component {
 						/>}/>
 						<Route path="/" render={(props) => <PageHome
 							settings={this.props.settings}
-							changeMenu={(v) => this.changeState("selectedMenu", v)}
+							changeMenu={this.changeMenu}
 							myCompanies={this.state.myCompanies}
 							email={this.props.email}
 							{...props}
