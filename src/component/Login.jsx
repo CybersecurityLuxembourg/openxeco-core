@@ -8,6 +8,7 @@ import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
 import DialogHint from "./dialog/DialogHint.jsx";
+import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -124,6 +125,8 @@ export default class Login extends React.Component {
 	render() {
 		return (
 			<div id="Login">
+				<Version/>
+
 				<div className="top-right-buttons">
 					<div>
 						<a
