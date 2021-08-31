@@ -34,112 +34,92 @@ export default class PageHome extends React.Component {
 											} ?
 										</h2>
 
-										<div>
+										<p>
 											{this.props.settings !== null
 												&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
 												? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
 												: "This portal"
-											} is the endpoint to manage the information shown on the
-											platform by the community. Every single person can personnalize
-											his own presentation and the one from his entity (private company,
-											civil society or public institutions). This allow to share and
-											promote your activity amongst the community.
-										</div>
+											} is your Private Space of the
+											{this.props.settings !== null
+												&& this.props.settings.PROJECT_NAME !== undefined
+												? " " + this.props.settings.PROJECT_NAME
+												: ""
+											} portal to
+											manage your contribution to the ecosystem.
+										</p>
 
-										<h2>
-											What can I do with&nbsp;
+										<p>
+											After creating a personal account, you will be able to
+											register your entity and manage its information at any time.
+											You will also have the opportunity to share your entity’s
+											latest news with the cybersecurity ecosystem in Luxembourg and beyond.
+										</p>
+
+										<h3>
 											{this.props.settings !== null
 												&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
 												? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-												: "this portal"
-											} ?
-										</h2>
-
-										<h3>Edit my profile</h3>
-
-										<div>
-											Update your personal information to get closer to the community.
-											[TO COMPLETE]
-										</div>
-
-										<h3>Edit my entity information and description</h3>
-
-										<div>
-											Build a complete presentation of your entity. This will be shown...
-											[TO COMPLETE]
-										</div>
-
-										<h3>Promote your activities</h3>
-
-										<div>
-											You can use our editor to show your potential off.
-											[TO COMPLETE]
-										</div>
-
-										<h2>
-											How do I start?
-										</h2>
-
-										<h3>
-											Create your account
+												: "This portal"
+											} is divided into 3 sections:
 										</h3>
 
-										<div>
-											You can create an account thanks to the section that is shown on this
-											webpage. Fill your address in and select &quot;Create account&quot;.
-										</div>
+										<h4>
+											My profile
+										</h4>
 
-										<img src={"img/hint-create-account.png"}/>
-
-										<h3>
-											Receive your provisory password
-										</h3>
-
-										<div>
-											You will then receive an email on the provided mail box.
-											This email should contain a provisory password that
-											allows you to log into the portal.
-										</div>
-
-										<h3>
-											Connect into the portal
-										</h3>
-
-										<div>
-											This email address and the password
-											will then be your credentials to connect to the platform.
-										</div>
-
-										<img src={"img/hint-connect.png"}/>
-
-										<div>
-											On this webpage again, you can provide your credentials
-											via the &quot;Login&quot; section and select the
-											&quot;Login&quot; button.
-										</div>
-
-										<h2>
-											Hint and tips
-										</h2>
-
-										<div>
-											Remember that this following logo is clickable
-											on the different pages of the portal to guide you
-											over your experience.
-										</div>
-
-										<div className="DialogHint-inside-icon-wrapper">
-											<i className="DialogHint-inside-icon fas fa-question-circle"/>
-										</div>
-
-										<div>
-											If you need more support, you can contact the team
-											via the &quot;Contact us&quot; page or via email{this.props.settings !== null
-												&& this.props.settings.EMAIL_ADDRESS !== undefined
-												? ": " + this.props.settings.EMAIL_ADDRESS
+										<p>
+											Edit your personal profile. You will be the contact person
+											for the entity to which you are assigned. Your personal
+											information will not be made public on the
+											{this.props.settings !== null
+												&& this.props.settings.PROJECT_NAME !== undefined
+												? " " + this.props.settings.PROJECT_NAME
 												: ""
-											}.
+											} portal. Learn more by visiting this section.
+										</p>
+
+										<h4>
+											My entities
+										</h4>
+
+										<p>
+											Register and edit the information of your entity. Use
+											this section to present and promote your entity’s expertise
+											within the cybersecurity community and beyond.
+										</p>
+
+										<h4>
+											My articles
+										</h4>
+
+										<p>
+											Share and promote your entity’s expertise, latest releases
+											and news by regularly publishing articles on the portal.
+										</p>
+
+										<p>
+											To ease the process as much as possible, all you have to do
+											is reference the link to the article already published on
+											your website.
+										</p>
+
+										<h2>Hint & tips</h2>
+
+										<p>
+											Throughout your navigation on your private space, you will see
+											this yellow icon:
+										</p>
+
+										<div style={{ textAlign: "center" }}>
+											<i className="DialogHint-icon far fa-question-circle"/>
 										</div>
+
+										<br/>
+
+										<p>
+											Behind this icon is a lot of useful information to make your
+											experience of using your private space pleasant.
+										</p>
 									</div>
 								</div>
 							}

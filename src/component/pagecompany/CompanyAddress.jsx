@@ -175,7 +175,7 @@ export default class CompanyAddress extends React.Component {
 											either accept or reject your request.
 										</p>
 
-										<h2>How can I modify an address from my entity?</h2>
+										<h2>How can I modify an address of my entity?</h2>
 
 										<p>
 											You can modify the fields and select the following button:

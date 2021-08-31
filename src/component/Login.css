@@ -179,7 +179,7 @@
     }
 }
 
-#Login .DialogHint-icon {
+#Login > div > .DialogHint-icon {
     z-index: 100;
     position: absolute;
     top: 20px;
