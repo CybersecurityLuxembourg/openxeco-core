@@ -180,3 +180,59 @@ class TestGetPublicArticles(BaseCase):
                 },
             ]
         }, response.json)
+
+    def test_ok_with_company_filter(self):
+        self.db.insert({
+            "id": 1,
+            "title": "TITLE",
+            "handle": "handle-1",
+            "status": "PUBLIC",
+            "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
+        }, self.db.tables["Article"])
+        self.db.insert({
+            "id": 2,
+            "title": "TITLE2",
+            "handle": "handle-2",
+            "status": "PUBLIC",
+            "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
+        }, self.db.tables["Article"])
+        self.db.insert({
+            "id": 3,
+            "title": "TITLE3",
+            "handle": "handle-3",
+            "status": "DRAFT",
+            "publication_date": datetime.date.today() - datetime.timedelta(days=1)
+        }, self.db.tables["Article"])
+
+        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+
+        self.db.insert({"article": 2, "company": 2}, self.db.tables["ArticleCompanyTag"])
+
+        response = self.application.get('/public/get_public_articles?companies=2')
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual({
+            "pagination": {
+                "page": 1,
+                "pages": 1,
+                "per_page": 50,
+                "total": 1,
+            },
+            "items": [
+                {
+                    'abstract': None,
+                    'end_date': None,
+                    'external_reference': None,
+                    'handle': 'handle-2',
+                    'id': 2,
+                    'image': None,
+                    'is_created_by_admin': 0,
+                    'link': None,
+                    'publication_date': '2021-01-22',
+                    'start_date': None,
+                    'status': 'PUBLIC',
+                    'title': 'TITLE2',
+                    'type': 'NEWS'
+                },
+            ]
+        }, response.json)

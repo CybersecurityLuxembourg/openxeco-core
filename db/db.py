@@ -277,6 +277,16 @@ class DB:
 
                 query = query.filter(self.tables["Article"].id.in_(article_filtered_by_taxonomy))
 
+        if "companies" in filters:
+            article_filtered_by_companies = self.session \
+                .query(self.tables["ArticleCompanyTag"]) \
+                .with_entities(self.tables["ArticleCompanyTag"].article) \
+                .distinct(self.tables["ArticleCompanyTag"].article) \
+                .filter(self.tables["ArticleCompanyTag"].company.in_(filters["companies"])) \
+                .subquery()
+
+            query = query.filter(self.tables["Article"].id.in_(article_filtered_by_companies))
+
         if "editable" in filters and filters["editable"] == "true":
             assignment_subquery = self.session \
                 .query(self.tables["UserCompanyAssignment"]) \
