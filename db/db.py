@@ -138,6 +138,9 @@ class DB:
         if entities is not None:
             query = query.with_entities(*entities)
 
+        if "ids" in filters and filters['ids'] is not None:
+            query = query.filter(self.tables["Company"].id.in_(filters['ids']))
+
         if "name" in filters and filters['name'] is not None:
             words = filters['name'].lower().split(" ")
             for word in words:

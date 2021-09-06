@@ -22,6 +22,7 @@ class GetPublicCompanies(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
+        'ids': fields.DelimitedList(fields.Int(), required=False),
         'name': fields.Str(required=False),
         'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
         'entity_type': fields.DelimitedList(fields.Str(), required=False),
