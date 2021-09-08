@@ -64,8 +64,22 @@ export default class Menu extends React.Component {
 							<Link to="/profile">My Profile</Link>
 						</NavText>
 					</NavItem>
-					{this.props.settings !== undefined
-						&& this.props.settings !== null
+					{this.props.settings
+						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_LOGO === "TRUE"
+						&& <NavItem
+							eventKey={"generator"}
+							active={this.props.selectedMenu === "generator"}>
+							<NavIcon>
+								<Link to={"/generator"}>
+									<i className="fas fa-shapes" style={{ fontSize: "1.75em" }} />
+								</Link>
+							</NavIcon>
+							<NavText>
+								<Link to={"/generator"}>Logo generator</Link>
+							</NavText>
+						</NavItem>
+					}
+					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <NavItem
 							eventKey={"articles"}

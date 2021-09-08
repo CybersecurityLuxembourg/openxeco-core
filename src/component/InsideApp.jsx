@@ -5,6 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import Menu from "./Menu.jsx";
 import PageHome from "./PageHome.jsx";
 import PageArticles from "./PageArticles.jsx";
+import PageLogoGenerator from "./PageLogoGenerator.jsx";
 import PageAddCompany from "./PageAddCompany.jsx";
 import PageCompany from "./PageCompany.jsx";
 import PageProfile from "./PageProfile.jsx";
@@ -104,6 +105,10 @@ export default class InsideApp extends React.Component {
 						<Route path="/add_company" render={(props) => <PageAddCompany
 							getNotifications={this.getNotifications}
 							myCompanies={this.state.myCompanies}
+							{...props}
+						/>}/>
+						<Route path="/generator" render={(props) => <PageLogoGenerator
+							settings={this.props.settings}
 							{...props}
 						/>}/>
 						<Route path="/contact" render={(props) => <PageContact

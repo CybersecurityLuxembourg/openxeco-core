@@ -144,20 +144,23 @@ export default class PageHome extends React.Component {
 						</a>
 					</div>
 
-					<div className="col-md-6">
-						<h2>My articles</h2>
+					{this.props.settings
+						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
+						&& <div className="col-md-6">
+							<h2>My articles</h2>
 
-						<a
-							onClick={() => this.props.changeMenu("articles")}
-						>
-							<Link to="/articles">
-								<div className="PageHome-white-block">
-									<i className="fas fa-feather-alt"/>
-									<h3>Read or edit articles</h3>
-								</div>
-							</Link>
-						</a>
-					</div>
+							<a
+								onClick={() => this.props.changeMenu("articles")}
+							>
+								<Link to="/articles">
+									<div className="PageHome-white-block">
+										<i className="fas fa-feather-alt"/>
+										<h3>Read or edit articles</h3>
+									</div>
+								</Link>
+							</a>
+						</div>
+					}
 				</div>
 
 				<div className={"row row-spaced"}>
