@@ -109,6 +109,7 @@ export default class InsideApp extends React.Component {
 						/>}/>
 						<Route path="/generator" render={(props) => <PageLogoGenerator
 							settings={this.props.settings}
+							myCompanies={this.state.myCompanies}
 							{...props}
 						/>}/>
 						<Route path="/contact" render={(props) => <PageContact
