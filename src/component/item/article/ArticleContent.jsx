@@ -118,7 +118,7 @@ export default class ArticleContent extends React.Component {
 									>
 										<i className="far fa-edit"/> Edit the content
 									</button>}
-									article={{ id: this.props.id }}
+									articleVersion={this.state.selectedVersion}
 								/>
 							</div>
 						</div>
