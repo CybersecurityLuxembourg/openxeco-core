@@ -1,5 +1,7 @@
 import React from "react";
 import "./PageLogoGenerator.css";
+import { NotificationManager as nm } from "react-notifications";
+import { getRequest } from "../utils/request.jsx";
 import { getApiURL } from "../utils/env.jsx";
 import FormLine from "./form/FormLine.jsx";
 import Message from "./box/Message.jsx";
@@ -14,7 +16,8 @@ export default class PageLogoGenerator extends React.Component {
 
 		this.state = {
 			text: "Type your text",
-			company: null,
+			selectedCompanyId: null,
+			selectedCompany: null,
 			canvas: [{
 				id: "canvas-text-1",
 				status: "Member of the ecosystem",
@@ -92,6 +95,24 @@ export default class PageLogoGenerator extends React.Component {
 					show: true,
 					position: "left",
 				},
+			},
+			{
+				id: "canvas-text-104",
+				status: "Member of the ecosystem",
+				width: 250,
+				height: 150,
+			},
+			{
+				id: "canvas-text-105",
+				status: "Member of the ecosystem",
+				width: 350,
+				height: 75,
+			},
+			{
+				id: "canvas-text-106",
+				status: "Member of the ecosystem",
+				width: 400,
+				height: 100,
 			}],
 		};
 	}
@@ -106,15 +127,36 @@ export default class PageLogoGenerator extends React.Component {
 			this.drawAllWithText();
 		}
 
-		if (prevState.company !== this.state.company) {
+		if (prevState.selectedCompanyId !== this.state.selectedCompanyId) {
+			this.getCompany();
+		}
+
+		if (prevState.selectedCompany !== this.state.selectedCompany) {
 			this.drawAllWithCompany();
+		}
+	}
+
+	getCompany() {
+		if (!this.state.selectedCompanyId) {
+			this.setState({ selectedCompany: null });
+		} else {
+			getRequest.call(this, "public/get_public_company/"
+				+ this.state.selectedCompanyId, (data) => {
+				this.setState({
+					selectedCompany: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}
 	}
 
 	drawAllWithText() {
 		this.state.canvas.map((c) => {
 			if (c.logo && c.logo.show) {
-				this.drawWithLogo(c);
+				this.drawWithProjectLogo(c);
 			} else {
 				this.drawWithProjectName(c);
 			}
@@ -125,13 +167,17 @@ export default class PageLogoGenerator extends React.Component {
 
 	drawAllWithCompany() {
 		this.state.companyCanvas.map((c) => {
-			this.drawWithCompany(c);
+			if (c.logo && c.logo.show) {
+				this.drawWithProjectLogoAndCompanyLogo(c);
+			} else {
+				this.drawWithProjectNameAndCompanyLogo(c);
+			}
 
 			return null;
 		});
 	}
 
-	drawWithLogo(c) {
+	drawWithProjectLogo(c) {
 		// Get the logo image
 
 		const image = new Image();
@@ -139,7 +185,6 @@ export default class PageLogoGenerator extends React.Component {
 
 		// Init the canvas
 
-		console.log(c.id);
 		const drawing = document.getElementById(c.id);
 		if (!drawing) {
 			return;
@@ -172,7 +217,7 @@ export default class PageLogoGenerator extends React.Component {
 
 		con.fillStyle = "black";
 		con.textAlign = c.logo.position === "middle" ? "center" : "left";
-		con.textBaseline = c.logo.position === "middle" ? "bottom" : "middle";
+		con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
 		con.font = c.logo.position === "middle"
 			? "20px Fjalla One"
 			: PageLogoGenerator.getFittingFontSize(
@@ -185,9 +230,9 @@ export default class PageLogoGenerator extends React.Component {
 		con.fillText(
 			this.state.text,
 			c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
-			c.logo.position === "middle" ? c.height - 23 : c.height / 2,
+			c.logo.position === "middle" ? c.height - 32 : c.height / 2,
 			c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
-			c.logo.position === "middle" ? 50 : c.height - 40,
+			c.logo.position === "middle" ? c.height - 20 - imageHeight : c.height - 40,
 		);
 
 		con.textBaseline = "alphabetic";
@@ -234,7 +279,7 @@ export default class PageLogoGenerator extends React.Component {
 		con.fillText(
 			this.props.settings.PROJECT_NAME,
 			10,
-			10 + (idealFontSize / 2),
+			4 + (((c.height / 2) - 12) / 2),
 			c.width - 20,
 		);
 
@@ -255,7 +300,7 @@ export default class PageLogoGenerator extends React.Component {
 		con.fillText(
 			this.state.text,
 			c.width - 10,
-			(c.height / 2) - 1 + (idealFontSize / 2),
+			8 + (((c.height / 2) - 12) * 1.5),
 			c.width - 20,
 		);
 
@@ -276,7 +321,99 @@ export default class PageLogoGenerator extends React.Component {
 		con.stroke();
 	}
 
-	drawWithCompany(c) {
+	drawWithProjectLogoAndCompanyLogo(c) {
+		if (!this.state.selectedCompany || !this.state.selectedCompany.image) {
+			return;
+		}
+
+		// Get the logos
+
+		const image = new Image();
+		image.src = getApiURL() + "public/get_image/logo.png";
+
+		const companyLogo = new Image();
+		companyLogo.src = getApiURL() + "public/get_image/" + this.state.selectedCompany.image;
+
+		// Init the canvas
+
+		const drawing = document.getElementById(c.id);
+		if (!drawing) {
+			return;
+		}
+		const con = drawing.getContext("2d");
+
+		// Clear the previous content
+
+		con.beginPath();
+		con.clearRect(0, 0, c.width, c.height);
+		con.stroke();
+
+		drawing.width = c.width;
+		drawing.height = c.height;
+
+		// Integrate project logo
+
+		let imageHeight = c.height - 35;
+		let imageWidth = image.width * (imageHeight / image.height);
+
+		if (imageWidth > (c.width - 40) / 2) {
+			imageHeight *= ((c.width - 40) / 2) / imageWidth;
+			imageWidth = (c.width - 40) / 2;
+		}
+
+		con.drawImage(
+			image,
+			(c.width / 4) - (imageWidth / 2),
+			10 + ((c.height - 35) / 2) - (imageHeight / 2),
+			imageWidth,
+			imageHeight,
+		);
+
+		// Integrate company logo
+
+		imageHeight = c.height - 35;
+		imageWidth = companyLogo.width * (imageHeight / companyLogo.height);
+
+		if (imageWidth > (c.width - 40) / 2) {
+			imageHeight *= ((c.width - 40) / 2) / imageWidth;
+			imageWidth = (c.width - 40) / 2;
+		}
+
+		con.drawImage(
+			companyLogo,
+			((c.width / 4) * 3) - (imageWidth / 2),
+			10 + ((c.height - 35) / 2) - (imageHeight / 2),
+			imageWidth,
+			imageHeight,
+		);
+
+		// Write the status
+
+		con.textBaseline = "alphabetic";
+
+		con.textAlign = "right";
+		con.font = "15px 'Fjalla One'";
+		con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+
+		// Draw a separation line
+
+		con.lineWidth = 1;
+		con.beginPath();
+		con.moveTo(c.width / 2, 10);
+		con.lineTo(c.width / 2, c.height - 25);
+		con.stroke();
+	}
+
+	drawWithProjectNameAndCompanyLogo(c) {
+		if (!this.state.selectedCompany || !this.state.selectedCompany.image) {
+			return;
+		}
+
+		// Get the logo
+
+		const companyLogo = new Image();
+		companyLogo.src = getApiURL() + "public/get_image/" + this.state.selectedCompany.image;
+
 		// Init the canvas
 
 		const drawing = document.getElementById(c.id);
@@ -296,7 +433,7 @@ export default class PageLogoGenerator extends React.Component {
 
 		// Write the project name
 
-		let idealFontSize = PageLogoGenerator.getFittingFontSize(
+		const idealFontSize = PageLogoGenerator.getFittingFontSize(
 			con,
 			this.props.settings.PROJECT_NAME,
 			c.width - 20,
@@ -311,29 +448,26 @@ export default class PageLogoGenerator extends React.Component {
 		con.fillText(
 			this.props.settings.PROJECT_NAME,
 			10,
-			10 + (idealFontSize / 2),
+			4 + (((c.height / 2) - 12) / 2),
 			c.width - 20,
 		);
 
-		// Write the text
+		// Integrate company logo
 
-		idealFontSize = PageLogoGenerator.getFittingFontSize(
-			con,
-			this.state.text,
-			c.width - 20,
-			(c.height / 2) - 20,
-		);
+		let imageHeight = (c.height - 50) / 2;
+		let imageWidth = companyLogo.width * (imageHeight / companyLogo.height);
 
-		con.fillStyle = "black";
-		con.textAlign = "right";
-		con.textBaseline = "middle";
-		con.font = idealFontSize + "px Fjalla One";
+		if (imageWidth > c.width - 22) {
+			imageHeight *= (c.width - 20) / imageWidth;
+			imageWidth = (c.width - 20);
+		}
 
-		con.fillText(
-			this.state.text,
-			c.width - 10,
-			(c.height / 2) - 1 + (idealFontSize / 2),
-			c.width - 20,
+		con.drawImage(
+			companyLogo,
+			(c.width / 2) - (imageWidth / 2),
+			3 + (((c.height - 20) / 4) * 3) - (imageHeight / 2),
+			imageWidth,
+			imageHeight,
 		);
 
 		// Write the status
@@ -354,14 +488,14 @@ export default class PageLogoGenerator extends React.Component {
 	}
 
 	static getFittingFontSize(context, text, width, height) {
-		console.log("eAAA");
+		const contextClone = context;
 		let retFontSize = height;
 
 		do {
-			console.log("eAAA", retFontSize);
 			retFontSize--;
-		} while ((context.measureText(text).width > width
-			|| context.measureText(text).height > height)
+			contextClone.font = retFontSize + "px 'Fjalla One'";
+		} while ((contextClone.measureText(text).width > width
+			|| contextClone.measureText(text).height > height)
 				&& retFontSize > 0);
 
 		return retFontSize;
@@ -412,7 +546,7 @@ export default class PageLogoGenerator extends React.Component {
 
 				<div className={"row"}>
 					<div className="col-md-12">
-						<h2>With a company logo</h2>
+						<h2>With an entity logo</h2>
 					</div>
 				</div>
 
@@ -424,33 +558,38 @@ export default class PageLogoGenerator extends React.Component {
 									<FormLine
 										label={"Select your entity"}
 										type={"select"}
-										value={this.state.company}
+										value={this.state.selectedCompanyId}
 										options={this.props.myCompanies === null
 											|| this.props.myCompanies === undefined
 											? []
 											: this.props.myCompanies.map((o) => ({ label: o.name, value: o.id }))
 										}
-										onChange={(v) => this.changeState("company", v)}
-										format={this.state.company === null}
+										onChange={(v) => this.changeState("selectedCompanyId", v)}
 									/>
 								</div>
 
 								<div className="col-md-12 row-spaced">
-									{this.state.company === null
+									{!this.state.selectedCompanyId
 										&& <Message
 											text={"Please select a company"}
 											height={300}
 										/>
 									}
 
-									{this.state.company !== null && !this.state.company.image
+									{this.state.selectedCompany && !this.state.selectedCompany.image
 										&& <Message
 											text={"The entity does not have a logo"}
 											height={300}
 										/>
 									}
 
-									{this.state.company !== null && this.state.company.image
+									{this.state.selectedCompanyId && !this.state.selectedCompany
+										&& <Loading
+											height={300}
+										/>
+									}
+
+									{this.state.selectedCompany && this.state.selectedCompany.image
 										&& <div className={"row"}>
 											{this.state.companyCanvas.map((c) => <div
 												key={c.id}
@@ -479,7 +618,6 @@ export default class PageLogoGenerator extends React.Component {
 					{!this.props.myCompanies
 						&& <div className="col-md-12">
 							<Loading
-								text={"Please select a company"}
 								height={300}
 							/>
 						</div>
