@@ -153,43 +153,43 @@ export default class PageProfile extends React.Component {
 						/>
 					</div>
 
-					<div className="col-md-12">
-						{this.state.user !== null
-							? <div className="col-md-12">
-								<FormLine
-									label={"Email"}
-									value={this.state.user.email}
-									disabled={true}
-								/>
-								<FormLine
-									label={"First name"}
-									value={this.state.user.first_name}
-									onChange={(v) => this.changeUser("first_name", v)}
-								/>
-								<FormLine
-									label={"Last name"}
-									value={this.state.user.last_name}
-									onChange={(v) => this.changeUser("last_name", v)}
-								/>
-								<FormLine
-									label={"Phone"}
-									type={"phone"}
-									value={this.state.user.telephone}
-									onChange={(v) => this.changeUser("telephone", v)}
-								/>
-								<div className="right-buttons">
-									<button
-										onClick={() => this.saveUser()}
-										disabled={!this.state.hasModification}>
-										<i className="far fa-save"/> Save
-									</button>
-								</div>
+					{this.state.user !== null
+						? <div className="col-md-12">
+							<FormLine
+								label={"Email"}
+								value={this.state.user.email}
+								disabled={true}
+							/>
+							<FormLine
+								label={"First name"}
+								value={this.state.user.first_name}
+								onChange={(v) => this.changeUser("first_name", v)}
+							/>
+							<FormLine
+								label={"Last name"}
+								value={this.state.user.last_name}
+								onChange={(v) => this.changeUser("last_name", v)}
+							/>
+							<FormLine
+								label={"Phone"}
+								type={"phone"}
+								value={this.state.user.telephone}
+								onChange={(v) => this.changeUser("telephone", v)}
+							/>
+							<div className="right-buttons">
+								<button
+									onClick={() => this.saveUser()}
+									disabled={!this.state.hasModification}>
+									<i className="far fa-save"/> Save
+								</button>
 							</div>
-							: <Loading
+						</div>
+						: <div className="col-md-12">
+							<Loading
 								height={300}
 							/>
-						}
-					</div>
+						</div>
+					}
 				</div>
 
 				<div className={"row row-spaced"}>
