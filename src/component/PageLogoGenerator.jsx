@@ -18,6 +18,7 @@ export default class PageLogoGenerator extends React.Component {
 			text: "Type your text",
 			selectedCompanyId: null,
 			selectedCompany: null,
+			withTransparentBackground: true,
 			canvas: [{
 				id: "canvas-text-1",
 				status: "Member of the ecosystem",
@@ -134,6 +135,11 @@ export default class PageLogoGenerator extends React.Component {
 		if (prevState.selectedCompany !== this.state.selectedCompany) {
 			this.drawAllWithCompany();
 		}
+
+		if (prevState.withTransparentBackground !== this.state.withTransparentBackground) {
+			this.drawAllWithText();
+			this.drawAllWithCompany();
+		}
 	}
 
 	getCompany() {
@@ -202,6 +208,12 @@ export default class PageLogoGenerator extends React.Component {
 			drawing.width = c.width;
 			drawing.height = c.height;
 
+			if (!this.state.withTransparentBackground) {
+				con.fillStyle = "white";
+				con.rect(0, 0, c.width, c.height);
+				con.fill();
+			}
+
 			// Integrate logo
 
 			const imageHeight = c.logo.position === "middle" ? c.height - 60 : c.height - 30;
@@ -264,6 +276,11 @@ export default class PageLogoGenerator extends React.Component {
 
 		drawing.width = c.width;
 		drawing.height = c.height;
+
+		if (!this.state.withTransparentBackground) {
+			con.fillStyle = "white";
+			con.fillRect(0, 0, c.width, c.height);
+		}
 
 		// Write the project name
 
@@ -354,6 +371,11 @@ export default class PageLogoGenerator extends React.Component {
 			drawing.width = c.width;
 			drawing.height = c.height;
 
+			if (!this.state.withTransparentBackground) {
+				con.fillStyle = "white";
+				con.fillRect(0, 0, c.width, c.height);
+			}
+
 			// Integrate project logo
 
 			let imageHeight = c.height - 35;
@@ -394,6 +416,7 @@ export default class PageLogoGenerator extends React.Component {
 
 			con.textBaseline = "alphabetic";
 
+			con.fillStyle = "black";
 			con.textAlign = "right";
 			con.font = "15px 'Fjalla One'";
 			con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
@@ -436,6 +459,11 @@ export default class PageLogoGenerator extends React.Component {
 
 			drawing.width = c.width;
 			drawing.height = c.height;
+
+			if (!this.state.withTransparentBackground) {
+				con.fillStyle = "white";
+				con.fillRect(0, 0, c.width, c.height);
+			}
 
 			// Write the project name
 
@@ -538,6 +566,17 @@ export default class PageLogoGenerator extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
+						<FormLine
+							label={"Make the background transparent"}
+							type={"checkbox"}
+							value={this.state.withTransparentBackground}
+							onChange={(v) => this.changeState("withTransparentBackground", v)}
+						/>
+					</div>
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
 						<h2>With a text</h2>
 					</div>
 
@@ -557,6 +596,21 @@ export default class PageLogoGenerator extends React.Component {
 							id={c.id}
 							className="PageLogoGenerator-canvas"
 						/>
+						<button
+							onClick={() => {
+								const canvas = document.getElementById(c.id);
+								const image = canvas
+									.toDataURL("image/png")
+									.replace("image/png", "image/octet-stream");
+								const element = document.createElement("a");
+								const filename = c.id + ".png";
+								element.setAttribute("href", image);
+								element.setAttribute("download", filename);
+
+								element.click();
+							}}>
+							Save image
+						</button>
 					</div>)}
 				</div>
 
@@ -615,6 +669,14 @@ export default class PageLogoGenerator extends React.Component {
 													id={c.id}
 													className="PageLogoGenerator-canvas"
 												/>
+												<button
+													onClick={() => {
+														const canvas = document.getElementById(c.id);
+														const dataURL = canvas.toDataURL("image/png");
+														window.open(dataURL);
+													}}>
+													Save image
+												</button>
 											</div>)}
 										</div>
 									}
