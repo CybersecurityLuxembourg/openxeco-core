@@ -142,7 +142,7 @@ export default class Menu extends React.Component {
 						<NavText>
 							<Link to="/contact">Contact us</Link>
 						</NavText>
-						{this.getTaskNotificationBlock()}
+						{this.getTaskNotificationBlock("/contact")}
 					</NavItem>
 					<NavItem
 						className="Menu-log-out-nav-item"
