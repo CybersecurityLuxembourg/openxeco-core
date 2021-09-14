@@ -6,6 +6,7 @@ import { getApiURL } from "../utils/env.jsx";
 import FormLine from "./form/FormLine.jsx";
 import Message from "./box/Message.jsx";
 import Loading from "./box/Loading.jsx";
+import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageLogoGenerator extends React.Component {
 	constructor(props) {
@@ -553,14 +554,31 @@ export default class PageLogoGenerator extends React.Component {
 		return (
 			<div className={"PageLogoGenerator page max-sized-page"}>
 				<div className={"row"}>
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h1>Logo generator</h1>
+					</div>
 
-						<div className="top-right-buttons">
-							<button>
-								<i className="fas fa-redo-alt"/>
-							</button>
-						</div>
+					<div className="col-md-3 top-title-menu">
+						<DialogHint
+							content={
+								<div className="row">
+									<div className="col-md-12">
+										<h2>How to save the generated logo?</h2>
+
+										<p>
+											Simply right click on the generated image and
+											select &quot;Save image as...&quot;.
+										</p>
+
+										<p>
+											A window will appear to choose the target
+											on your computer file system. By selecting the confirmation
+											button, the image will be saved on your computer.
+										</p>
+									</div>
+								</div>
+							}
+						/>
 					</div>
 				</div>
 
@@ -596,21 +614,6 @@ export default class PageLogoGenerator extends React.Component {
 							id={c.id}
 							className="PageLogoGenerator-canvas"
 						/>
-						<button
-							onClick={() => {
-								const canvas = document.getElementById(c.id);
-								const image = canvas
-									.toDataURL("image/png")
-									.replace("image/png", "image/octet-stream");
-								const element = document.createElement("a");
-								const filename = c.id + ".png";
-								element.setAttribute("href", image);
-								element.setAttribute("download", filename);
-
-								element.click();
-							}}>
-							Save image
-						</button>
 					</div>)}
 				</div>
 
