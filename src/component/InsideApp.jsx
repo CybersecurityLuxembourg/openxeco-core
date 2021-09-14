@@ -22,7 +22,7 @@ export default class InsideApp extends React.Component {
 		this.changeMenu = this.changeMenu.bind(this);
 
 		this.state = {
-			selectedMenu: "",
+			selectedMenu: window.location.pathname.replace(/\//, ""),
 			notifications: null,
 			myCompanies: null,
 		};

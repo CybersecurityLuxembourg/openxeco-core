@@ -101,7 +101,7 @@ export default class Menu extends React.Component {
 						: this.props.myCompanies.map((c) => <NavItem
 							key={c.id}
 							eventKey={"/company/" + c.id}
-							active={this.props.selectedMenu === "/company/" + c.id}>
+							active={this.props.selectedMenu === "company/" + c.id}>
 							<NavIcon>
 								<Link to={"/company/" + c.id}>
 									<i className="fas fa-building" style={{ fontSize: "1.75em" }} />
