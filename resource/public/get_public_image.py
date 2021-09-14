@@ -11,7 +11,7 @@ from decorator.catch_exception import catch_exception
 from exception.image_not_found import ImageNotFound
 
 
-class GetImage(MethodResource, Resource):
+class GetPublicImage(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

@@ -59,7 +59,9 @@ from resource.mail.get_mail_content import GetMailContent
 from resource.mail.save_template import SaveTemplate
 from resource.mail.send_mail import SendMail
 from resource.media.add_image import AddImage
+from resource.media.update_image import UpdateImage
 from resource.media.get_images import GetImages
+from resource.media.get_image import GetImage
 from resource.private.add_my_article import AddMyArticle
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_article import DeleteMyArticle
@@ -80,7 +82,7 @@ from resource.private.is_logged import IsLogged
 from resource.private.update_my_article import UpdateMyArticle
 from resource.private.update_my_article_content import UpdateMyArticleContent
 from resource.private.update_my_user import UpdateMyUser
-from resource.public.get_image import GetImage
+from resource.public.get_public_image import GetPublicImage
 from resource.public.get_article_content import GetArticleContent
 from resource.public.get_article_enums import GetArticleEnums
 from resource.public.get_public_articles import GetPublicArticles

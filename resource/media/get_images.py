@@ -18,7 +18,7 @@ class GetImages(MethodResource, Resource):
 
     @log_request
     @doc(tags=['media'],
-         description='Add an image to the media library',
+         description='Get images object from the media library',
          responses={
              "200": {},
          })
