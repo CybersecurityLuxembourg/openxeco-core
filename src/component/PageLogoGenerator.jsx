@@ -180,68 +180,71 @@ export default class PageLogoGenerator extends React.Component {
 	drawWithProjectLogo(c) {
 		// Get the logo image
 
-		const image = new Image();
-		image.src = getApiURL() + "public/get_image/logo.png";
+		const imagesSrcs = [
+			getApiURL() + "public/get_image/logo.png",
+		];
 
-		// Init the canvas
+		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
+			// Init the canvas
 
-		const drawing = document.getElementById(c.id);
-		if (!drawing) {
-			return;
-		}
-		const con = drawing.getContext("2d");
+			const drawing = document.getElementById(c.id);
+			if (!drawing) {
+				return;
+			}
+			const con = drawing.getContext("2d");
 
-		// Clear the previous content
+			// Clear the previous content
 
-		con.beginPath();
-		con.clearRect(0, 0, c.width, c.height);
-		con.stroke();
+			con.beginPath();
+			con.clearRect(0, 0, c.width, c.height);
+			con.stroke();
 
-		drawing.width = c.width;
-		drawing.height = c.height;
+			drawing.width = c.width;
+			drawing.height = c.height;
 
-		// Integrate logo
+			// Integrate logo
 
-		const imageHeight = c.logo.position === "middle" ? c.height - 60 : c.height - 30;
-		const imageWidth = imageHeight * (image.height / image.width);
+			const imageHeight = c.logo.position === "middle" ? c.height - 60 : c.height - 30;
+			const imageWidth = imageHeight * (images[0].height / images[0].width);
 
-		con.drawImage(
-			image,
-			c.logo.position === "middle" ? (c.width - imageWidth) / 2 : 10,
-			10,
-			imageHeight,
-			imageWidth,
-		);
+			con.drawImage(
+				images[0],
+				c.logo.position === "middle" ? (c.width - imageWidth) / 2 : 10,
+				10,
+				imageHeight,
+				imageWidth,
+			);
 
-		// Write the text
+			// Write the text
 
-		con.fillStyle = "black";
-		con.textAlign = c.logo.position === "middle" ? "center" : "left";
-		con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
-		con.font = c.logo.position === "middle"
-			? "20px Fjalla One"
-			: PageLogoGenerator.getFittingFontSize(
-				con,
+			con.fillStyle = "black";
+			con.textAlign = c.logo.position === "middle" ? "center" : "left";
+			con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
+			con.font = c.logo.position === "middle"
+				? "20px Fjalla One"
+				: PageLogoGenerator.getFittingFontSize(
+					con,
+					this.state.text,
+					c.width - imageWidth - 20,
+					c.height - 40,
+				) + "px Fjalla One";
+
+			con.fillText(
 				this.state.text,
-				c.width - imageWidth - 20,
-				c.height - 40,
-			) + "px Fjalla One";
+				c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
+				c.logo.position === "middle" ? c.height - 32 : c.height / 2,
+				c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
+				c.logo.position === "middle" ? c.height - 20 - imageHeight : c.height - 40,
+			);
 
-		con.fillText(
-			this.state.text,
-			c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
-			c.logo.position === "middle" ? c.height - 32 : c.height / 2,
-			c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
-			c.logo.position === "middle" ? c.height - 20 - imageHeight : c.height - 40,
-		);
+			con.textBaseline = "alphabetic";
 
-		con.textBaseline = "alphabetic";
+			// Write the status
 
-		// Write the status
-
-		con.textAlign = "right";
-		con.font = "15px 'Fjalla One'";
-		con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+			con.textAlign = "right";
+			con.font = "15px 'Fjalla One'";
+			con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+		});
 	}
 
 	drawWithProjectName(c) {
@@ -328,80 +331,81 @@ export default class PageLogoGenerator extends React.Component {
 
 		// Get the logos
 
-		const image = new Image();
-		image.src = getApiURL() + "public/get_image/logo.png";
+		const imagesSrcs = [
+			getApiURL() + "public/get_image/logo.png",
+			getApiURL() + "public/get_image/" + this.state.selectedCompany.image,
+		];
 
-		const companyLogo = new Image();
-		companyLogo.src = getApiURL() + "public/get_image/" + this.state.selectedCompany.image;
+		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
+			// Init the canvas
 
-		// Init the canvas
+			const drawing = document.getElementById(c.id);
+			if (!drawing) {
+				return;
+			}
+			const con = drawing.getContext("2d");
 
-		const drawing = document.getElementById(c.id);
-		if (!drawing) {
-			return;
-		}
-		const con = drawing.getContext("2d");
+			// Clear the previous content
 
-		// Clear the previous content
+			con.beginPath();
+			con.clearRect(0, 0, c.width, c.height);
+			con.stroke();
 
-		con.beginPath();
-		con.clearRect(0, 0, c.width, c.height);
-		con.stroke();
+			drawing.width = c.width;
+			drawing.height = c.height;
 
-		drawing.width = c.width;
-		drawing.height = c.height;
+			// Integrate project logo
 
-		// Integrate project logo
+			let imageHeight = c.height - 35;
+			let imageWidth = images[0].width * (imageHeight / images[0].height);
 
-		let imageHeight = c.height - 35;
-		let imageWidth = image.width * (imageHeight / image.height);
+			if (imageWidth > (c.width - 40) / 2) {
+				imageHeight *= ((c.width - 40) / 2) / imageWidth;
+				imageWidth = (c.width - 40) / 2;
+			}
 
-		if (imageWidth > (c.width - 40) / 2) {
-			imageHeight *= ((c.width - 40) / 2) / imageWidth;
-			imageWidth = (c.width - 40) / 2;
-		}
+			con.drawImage(
+				images[0],
+				(c.width / 4) - (imageWidth / 2),
+				10 + ((c.height - 35) / 2) - (imageHeight / 2),
+				imageWidth,
+				imageHeight,
+			);
 
-		con.drawImage(
-			image,
-			(c.width / 4) - (imageWidth / 2),
-			10 + ((c.height - 35) / 2) - (imageHeight / 2),
-			imageWidth,
-			imageHeight,
-		);
+			// Integrate company logo
 
-		// Integrate company logo
+			imageHeight = c.height - 35;
+			imageWidth = images[1].width * (imageHeight / images[1].height);
 
-		imageHeight = c.height - 35;
-		imageWidth = companyLogo.width * (imageHeight / companyLogo.height);
+			if (imageWidth > (c.width - 40) / 2) {
+				imageHeight *= ((c.width - 40) / 2) / imageWidth;
+				imageWidth = (c.width - 40) / 2;
+			}
 
-		if (imageWidth > (c.width - 40) / 2) {
-			imageHeight *= ((c.width - 40) / 2) / imageWidth;
-			imageWidth = (c.width - 40) / 2;
-		}
+			con.drawImage(
+				images[1],
+				((c.width / 4) * 3) - (imageWidth / 2),
+				10 + ((c.height - 35) / 2) - (imageHeight / 2),
+				imageWidth,
+				imageHeight,
+			);
 
-		con.drawImage(
-			companyLogo,
-			((c.width / 4) * 3) - (imageWidth / 2),
-			10 + ((c.height - 35) / 2) - (imageHeight / 2),
-			imageWidth,
-			imageHeight,
-		);
+			// Write the status
 
-		// Write the status
+			con.textBaseline = "alphabetic";
 
-		con.textBaseline = "alphabetic";
+			con.textAlign = "right";
+			con.font = "15px 'Fjalla One'";
+			con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
 
-		con.textAlign = "right";
-		con.font = "15px 'Fjalla One'";
-		con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+			// Draw a separation line
 
-		// Draw a separation line
-
-		con.lineWidth = 1;
-		con.beginPath();
-		con.moveTo(c.width / 2, 10);
-		con.lineTo(c.width / 2, c.height - 25);
-		con.stroke();
+			con.lineWidth = 1;
+			con.beginPath();
+			con.moveTo(c.width / 2, 10);
+			con.lineTo(c.width / 2, c.height - 25);
+			con.stroke();
+		});
 	}
 
 	drawWithProjectNameAndCompanyLogo(c) {
@@ -411,80 +415,83 @@ export default class PageLogoGenerator extends React.Component {
 
 		// Get the logo
 
-		const companyLogo = new Image();
-		companyLogo.src = getApiURL() + "public/get_image/" + this.state.selectedCompany.image;
+		const imagesSrcs = [
+			getApiURL() + "public/get_image/" + this.state.selectedCompany.image,
+		];
 
-		// Init the canvas
+		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
+			// Init the canvas
 
-		const drawing = document.getElementById(c.id);
-		if (!drawing) {
-			return;
-		}
-		const con = drawing.getContext("2d");
+			const drawing = document.getElementById(c.id);
+			if (!drawing) {
+				return;
+			}
+			const con = drawing.getContext("2d");
 
-		// Clear the previous content
+			// Clear the previous content
 
-		con.beginPath();
-		con.clearRect(0, 0, c.width, c.height);
-		con.stroke();
+			con.beginPath();
+			con.clearRect(0, 0, c.width, c.height);
+			con.stroke();
 
-		drawing.width = c.width;
-		drawing.height = c.height;
+			drawing.width = c.width;
+			drawing.height = c.height;
 
-		// Write the project name
+			// Write the project name
 
-		const idealFontSize = PageLogoGenerator.getFittingFontSize(
-			con,
-			this.props.settings.PROJECT_NAME,
-			c.width - 20,
-			(c.height / 2) - 20,
-		);
+			const idealFontSize = PageLogoGenerator.getFittingFontSize(
+				con,
+				this.props.settings.PROJECT_NAME,
+				c.width - 20,
+				(c.height / 2) - 20,
+			);
 
-		con.fillStyle = "black";
-		con.textAlign = "top";
-		con.textBaseline = "middle";
-		con.font = idealFontSize + "px Fjalla One";
+			con.fillStyle = "black";
+			con.textAlign = "top";
+			con.textBaseline = "middle";
+			con.font = idealFontSize + "px Fjalla One";
 
-		con.fillText(
-			this.props.settings.PROJECT_NAME,
-			10,
-			4 + (((c.height / 2) - 12) / 2),
-			c.width - 20,
-		);
+			con.fillText(
+				this.props.settings.PROJECT_NAME,
+				10,
+				4 + (((c.height / 2) - 12) / 2),
+				c.width - 20,
+			);
 
-		// Integrate company logo
+			// Integrate company logo
 
-		let imageHeight = (c.height - 50) / 2;
-		let imageWidth = companyLogo.width * (imageHeight / companyLogo.height);
+			let imageHeight = (c.height - 50) / 2;
+			let imageWidth = images[0].width * (imageHeight / images[0].height);
 
-		if (imageWidth > c.width - 22) {
-			imageHeight *= (c.width - 20) / imageWidth;
-			imageWidth = (c.width - 20);
-		}
+			if (imageWidth > c.width - 22) {
+				imageHeight *= (c.width - 20) / imageWidth;
+				imageWidth = (c.width - 20);
+			}
 
-		con.drawImage(
-			companyLogo,
-			(c.width / 2) - (imageWidth / 2),
-			3 + (((c.height - 20) / 4) * 3) - (imageHeight / 2),
-			imageWidth,
-			imageHeight,
-		);
+			con.drawImage(
+				images[0],
+				(c.width / 2) - (imageWidth / 2),
+				3 + (((c.height - 20) / 4) * 3) - (imageHeight / 2),
+				imageWidth,
+				imageHeight,
+			);
 
-		// Write the status
+			// Write the status
 
-		con.textBaseline = "alphabetic";
+			con.textBaseline = "alphabetic";
 
-		con.textAlign = "right";
-		con.font = "15px 'Fjalla One'";
-		con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+			con.textAlign = "right";
+			con.font = "15px 'Fjalla One'";
+			con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
 
-		// Draw a separation line
+			// Draw a separation line
 
-		con.lineWidth = 1;
-		con.beginPath();
-		con.moveTo(c.width / 4 + 0.5, (c.height / 2) - 8);
-		con.lineTo((c.width / 4) * 3 + 0.5, (c.height / 2) - 8);
-		con.stroke();
+			con.lineWidth = 1;
+			con.beginPath();
+			con.moveTo(c.width / 4 + 0.5, (c.height / 2) - 8);
+			con.lineTo((c.width / 4) * 3 + 0.5, (c.height / 2) - 8);
+			con.stroke();
+		});
 	}
 
 	static getFittingFontSize(context, text, width, height) {
@@ -499,6 +506,15 @@ export default class PageLogoGenerator extends React.Component {
 				&& retFontSize > 0);
 
 		return retFontSize;
+	}
+
+	static loadImage(src) {
+		return new Promise((resolve, reject) => {
+			const img = new Image();
+			img.onload = () => resolve(img);
+			img.onerror = reject;
+			img.src = src;
+		});
 	}
 
 	changeState(field, value) {
