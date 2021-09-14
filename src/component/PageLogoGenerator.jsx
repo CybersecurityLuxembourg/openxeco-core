@@ -337,8 +337,8 @@ export default class PageLogoGenerator extends React.Component {
 
 		con.lineWidth = 1;
 		con.beginPath();
-		con.moveTo(c.width / 4 + 0.5, (c.height / 2) - 8);
-		con.lineTo((c.width / 4) * 3 + 0.5, (c.height / 2) - 8);
+		con.moveTo(c.width / 4, Math.round(c.height / 2) - 8.5);
+		con.lineTo((c.width / 4) * 3, Math.round(c.height / 2) - 8.5);
 		con.stroke();
 	}
 
@@ -426,8 +426,8 @@ export default class PageLogoGenerator extends React.Component {
 
 			con.lineWidth = 1;
 			con.beginPath();
-			con.moveTo(c.width / 2, 10);
-			con.lineTo(c.width / 2, c.height - 25);
+			con.moveTo(Math.round(c.width / 2) + 0.5, 10);
+			con.lineTo(Math.round(c.width / 2) + 0.5, c.height - 25);
 			con.stroke();
 		});
 	}
@@ -517,8 +517,8 @@ export default class PageLogoGenerator extends React.Component {
 
 			con.lineWidth = 1;
 			con.beginPath();
-			con.moveTo(c.width / 4 + 0.5, (c.height / 2) - 8);
-			con.lineTo((c.width / 4) * 3 + 0.5, (c.height / 2) - 8);
+			con.moveTo(c.width / 4 + 0.5, Math.round(c.height / 2) - 8.5);
+			con.lineTo((c.width / 4) * 3 + 0.5, Math.round(c.height / 2) - 8.5);
 			con.stroke();
 		});
 	}
