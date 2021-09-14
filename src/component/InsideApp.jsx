@@ -18,7 +18,7 @@ export default class InsideApp extends React.Component {
 		this.changeState = this.changeState.bind(this);
 
 		this.state = {
-			selectedMenu: "dashboard",
+			selectedMenu: window.location.pathname.replace(/\//, ""),
 		};
 	}
 
