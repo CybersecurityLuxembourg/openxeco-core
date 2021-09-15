@@ -132,16 +132,16 @@ export default class Login extends React.Component {
 			<div id="Login">
 				<div id="Login-area">
 					<ul className="Login-circles">
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
-						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
+						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
 					</ul>
 				</div>
 				<div id="Login-box" className="resize-animation">

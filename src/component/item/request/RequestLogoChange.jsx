@@ -116,7 +116,7 @@ export default class RequestLogoChange extends Component {
 							{this.state.databaseCompany !== null
 								? <img
 									className={"LogArticleVersion-image"}
-									src={getApiURL() + "public/get_image/" + this.state.databaseCompany.image}
+									src={getApiURL() + "public/get_public_image/" + this.state.databaseCompany.image}
 								/>
 								: <Loading
 									height={200}

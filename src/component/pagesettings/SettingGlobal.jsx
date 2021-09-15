@@ -64,7 +64,7 @@ export default class SettingGlobal extends React.Component {
 			logo: null,
 		});
 
-		getBlobRequest.call(this, "public/get_image/logo.png", (data) => {
+		getBlobRequest.call(this, "public/get_public_image/logo.png", (data) => {
 			this.setState({
 				logo: URL.createObjectURL(data),
 			});
@@ -84,7 +84,7 @@ export default class SettingGlobal extends React.Component {
 			favicon: null,
 		});
 
-		getBlobRequest.call(this, "public/get_image/favicon.ico", (data) => {
+		getBlobRequest.call(this, "public/get_public_image/favicon.ico", (data) => {
 			this.setState({
 				favicon: URL.createObjectURL(data),
 			});
@@ -365,6 +365,9 @@ export default class SettingGlobal extends React.Component {
 										This setting gives access on article content edition on the private space.<br/>
 										Otherwise, only the metadata and the link of the article is editable.<br/>
 										This won&#39;t be activated if this setting is not configured.
+									</li>
+									<li>
+										ALLOW_ECOSYSTEM_TO_EDIT_LOGO :
 									</li>
 									<li>
 										DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE : &#34;TRUE&#34; to be activated.<br/>

@@ -104,7 +104,7 @@ export default class LogArticleVersion extends Component {
 											? <div>
 												<img
 													className={"LogArticleVersion-image"}
-													src={getApiURL() + "public/get_image/" + item.content}
+													src={getApiURL() + "public/get_public_image/" + item.content}
 												/>
 											</div>
 											: ""}
@@ -157,7 +157,7 @@ export default class LogArticleVersion extends Component {
 											? <div>
 												<img
 													className={"LogArticleVersion-image"}
-													src={getApiURL() + "public/get_image/" + item.content}
+													src={getApiURL() + "public/get_public_image/" + item.content}
 												/>
 											</div>
 											: ""}
