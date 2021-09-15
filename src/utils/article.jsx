@@ -19,7 +19,7 @@ export function getContentFromBlock(b) {
 	} else if (b.type === "IMAGE") {
 		if (b.content !== null) {
 			el = <div className='content-media'>
-				<img src={`${getApiURL()}public/get_image/${b.content}`}/>
+				<img src={`${getApiURL()}public/get_public_image/${b.content}`}/>
 			</div>;
 		}
 	} else if (b.type === "FRAME") {

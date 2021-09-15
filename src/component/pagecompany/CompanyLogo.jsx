@@ -152,7 +152,7 @@ export default class CompanyGlobal extends React.Component {
 								height={300}
 							/>
 							: <img
-								src={getApiURL() + "public/get_image/" + this.state.companyInfo.image}
+								src={getApiURL() + "public/get_public_image/" + this.state.companyInfo.image}
 								alt={this.state.companyInf + " logo"}
 							/>
 						}

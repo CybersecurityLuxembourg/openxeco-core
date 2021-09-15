@@ -188,7 +188,7 @@ export default class PageLogoGenerator extends React.Component {
 		// Get the logo image
 
 		const imagesSrcs = [
-			getApiURL() + "public/get_image/logo.png",
+			getApiURL() + "public/get_public_image/logo.png",
 		];
 
 		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
@@ -350,8 +350,8 @@ export default class PageLogoGenerator extends React.Component {
 		// Get the logos
 
 		const imagesSrcs = [
-			getApiURL() + "public/get_image/logo.png",
-			getApiURL() + "public/get_image/" + this.state.selectedCompany.image,
+			getApiURL() + "public/get_public_image/logo.png",
+			getApiURL() + "public/get_public_image/" + this.state.selectedCompany.image,
 		];
 
 		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
@@ -440,7 +440,7 @@ export default class PageLogoGenerator extends React.Component {
 		// Get the logo
 
 		const imagesSrcs = [
-			getApiURL() + "public/get_image/" + this.state.selectedCompany.image,
+			getApiURL() + "public/get_public_image/" + this.state.selectedCompany.image,
 		];
 
 		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {

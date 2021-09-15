@@ -183,7 +183,7 @@ export default class FormLine extends React.Component {
 					{this.state.value !== null
 						? <img
 							className={"Formline-image"}
-							src={getApiURL() + "public/get_image/" + this.state.value}
+							src={getApiURL() + "public/get_public_image/" + this.state.value}
 							onLoad={this.props.onLoad}
 						/>
 						: <NoImage/>
