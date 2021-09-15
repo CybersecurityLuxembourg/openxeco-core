@@ -393,6 +393,19 @@ class DB:
 
             query = query.filter(self.tables["Image"].id.in_(company_image_ids))
 
+        if "search" in filters and len(filters["search"]) > 0:
+            words = filters["search"].split(" ")
+
+            for w in words:
+                company_image_ids = self.session \
+                    .query(self.tables["Company"]) \
+                    .with_entities(self.tables["Company"].image) \
+                    .filter(self.tables["Company"].name.contains(f"%{w}%")) \
+                    .subquery()
+
+                query = query.filter(or_(self.tables["Image"].id.in_(company_image_ids),
+                                         self.tables["Image"].keywords.contains(f"%{w}%")))
+
         if "order" in filters and filters["order"] == "desc":
             query = query.order_by(self.tables["Image"].creation_date.desc())
         else:

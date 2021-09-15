@@ -1,11 +1,3 @@
-import base64
-import datetime
-import io
-import os
-import traceback
-
-import PIL
-from PIL import Image
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
@@ -32,6 +24,7 @@ class UpdateImage(MethodResource, Resource):
              "500": {"description": "An error occurred while saving the file"},
          })
     @use_kwargs({
+        'id': fields.Int(),
         'keywords': fields.Str(),
     })
     @jwt_required
