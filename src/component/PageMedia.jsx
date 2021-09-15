@@ -8,6 +8,7 @@ import { getRequest } from "../utils/request.jsx";
 import DialogAddImage from "./dialog/DialogAddImage.jsx";
 import CheckBox from "./button/CheckBox.jsx";
 import { dictToURI } from "../utils/url.jsx";
+import FormLine from "./button/FormLine.jsx";
 
 export default class PageMedia extends React.Component {
 	constructor(props) {
@@ -18,6 +19,7 @@ export default class PageMedia extends React.Component {
 		this.state = {
 			images: null,
 			page: 1,
+			search: null,
 			order: "desc",
 			showLogoOnly: false,
 			showLoadMoreButton: true,
@@ -30,7 +32,9 @@ export default class PageMedia extends React.Component {
 
 	componentDidUpdate(_, prevState) {
 		if (prevState.showLogoOnly !== this.state.showLogoOnly
-			|| prevState.order !== this.state.order) {
+			|| prevState.order !== this.state.order
+			|| (prevState.search !== this.state.search
+				&& PageMedia.isSearchValid(this.state.search))) {
 			this.refresh();
 		}
 	}
@@ -49,6 +53,7 @@ export default class PageMedia extends React.Component {
 			logo_only: this.state.showLogoOnly,
 			order: this.state.order,
 			page: this.state.page,
+			search: this.state.search,
 		};
 
 		getRequest.call(this, "media/get_images?" + dictToURI(params), (data) => {
@@ -62,6 +67,10 @@ export default class PageMedia extends React.Component {
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
+
+	static isSearchValid(search) {
+		return !search || search.length > 2;
 	}
 
 	changeState(field, value) {
@@ -94,7 +103,16 @@ export default class PageMedia extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+					<div className="col-md-6">
+						<FormLine
+							label={"Search"}
+							value={this.state.search}
+							onChange={(v) => this.changeState("search", v)}
+							labelWidth={4}
+							format={() => PageMedia.isSearchValid(this.state.search)}
+						/>
+					</div>
+					<div className="col-md-6">
 						<div className="PageMedia-buttons">
 							<CheckBox
 								label={"SHOW LOGO ONLY"}
@@ -132,7 +150,7 @@ export default class PageMedia extends React.Component {
 							&& <div className="row">
 								{this.state.images.map((i) => i).map((i) => (
 									<div
-										key={i.id}
+										key={"Image-" + i.id}
 										className="col-md-2 col-sm-3">
 										<Image
 											id={i.id}
