@@ -18,3 +18,9 @@ export function validateUrlHandle(value) {
 	if (typeof value === "undefined" || value === null || value.length === 0) return false;
 	return value.match(/^([0-9a-z-_+]){4,100}$/);
 }
+
+export function validateWord(value) {
+	console.log(value);
+	if (typeof value === "undefined" || value === null || value.length === 0) return false;
+	return value.match(/^([0-9a-zA-Z-]){3,100}$/);
+}
