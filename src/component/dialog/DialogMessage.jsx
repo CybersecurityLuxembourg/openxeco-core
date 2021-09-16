@@ -17,6 +17,7 @@ export default class DialogMessage extends React.Component {
 				modal
 				closeOnDocumentClick
 				className={"DialogMessage"}
+				open={this.props.open}
 			>
 				{(close) => (
 					<div className={"DialogMessage-wrapper"}>

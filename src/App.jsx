@@ -8,6 +8,7 @@ import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
 import { getApiURL } from "./utils/env.jsx";
+import DialogMessage from "./component/dialog/DialogMessage.jsx";
 
 class App extends React.Component {
 	constructor(props) {
@@ -18,6 +19,8 @@ class App extends React.Component {
 		this.state = {
 			logged: false,
 			settings: null,
+			openMobileDialog: window
+				.matchMedia("only screen and (max-width: 760px)").matches,
 		};
 	}
 
@@ -46,7 +49,25 @@ class App extends React.Component {
 						cookies={this.props.cookies}
 					/>
 				}
+
 				<NotificationContainer/>
+
+				<DialogMessage
+					trigger={""}
+					text={<div>
+						<h3>We have detected a small screen usage</h3>
+						<p>
+							This application is a content management platform.
+							Hence, the functionnalities and the user interfaces
+							are not optimized for mobile terminals.
+						</p>
+						<p>
+							For a better experience, please use a computer or a
+							tablet with a large screen.
+						</p>
+					</div>}
+					open={this.state.openMobileDialog}
+				/>
 			</div>
 		);
 	}
