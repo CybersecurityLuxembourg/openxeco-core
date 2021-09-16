@@ -332,6 +332,7 @@ textarea {
 	overflow-y: auto;
 	overflow-x: hidden;
 	background-color: #EEE !important;
+	text-align: initial;
 }
 
 /* ANIMATION */
