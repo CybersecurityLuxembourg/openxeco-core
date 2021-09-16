@@ -27,7 +27,7 @@ export default class DialogConfirmation extends React.Component {
 				className={"DialogConfirmation"}
 			>
 				<div className={"DialogConfirmation-wrapper"}>
-					<h2>{this.props.text}</h2>
+					<b>{this.props.text}</b>
 					<div className={"bottom-right-buttons"}>
 						<button
 							className={"grey-background"}
