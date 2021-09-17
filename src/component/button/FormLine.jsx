@@ -183,6 +183,11 @@ export default class FormLine extends React.Component {
 				disabled={this.props.disabled}
 				autoFocus={this.props.autofocus}
 				onKeyDown={this.props.onKeyDown}
+				renderInput={(props, openCalendar) => <div className={"Formline-datetime"}>
+					<input {...props} />
+					<button onClick={openCalendar}>open calendar</button>
+				</div>
+				}
 			/>;
 		case "image":
 			return <div className={"Formline-image-wrapper"}>
