@@ -50,7 +50,7 @@ export default class DialogArticleEditor extends React.Component {
 			content: null,
 			originalContent: null,
 		}, () => {
-			getRequest.call(this, "private/get_my_article_content/" + this.props.article.id, (data) => {
+			getRequest.call(this, "article/get_article_version_content/" + this.props.articleVersion, (data) => {
 				for (let i = 0; i < data.length; i++) {
 					data[i].i = "" + i;
 					data[i].y = 0;
@@ -77,11 +77,11 @@ export default class DialogArticleEditor extends React.Component {
 
 	saveContent() {
 		const params = {
-			article: this.props.article.id,
+			article_version_id: this.props.articleVersion,
 			content: this.state.content.sort((first, second) => first.y - second.y),
 		};
 
-		postRequest.call(this, "private/update_my_article_content", params, () => {
+		postRequest.call(this, "article/update_article_version_content", params, () => {
 			this.getContent();
 			nm.info("The content has been updated");
 		}, (response) => {
