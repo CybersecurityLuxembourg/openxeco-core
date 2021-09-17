@@ -158,14 +158,34 @@ export default class ArticleGlobal extends React.Component {
 					</div>
 					: ""}
 
+				{["NEWS", "EVENT", "JOB OFFER", "TOOL"].indexOf(this.state.article.type) >= 0
+					? <div className="col-md-12">
+						<FormLine
+							label={"Link"}
+							value={this.state.article.link}
+							onBlur={(v) => this.saveArticleValue("link", v)}
+						/>
+					</div>
+					: ""}
+
 				{this.state.article.type === "EVENT"
 					? <div className="col-md-12">
 						<FormLine
 							label={"Start date"}
 							type={"datetime"}
 							value={this.state.article.start_date}
-							onBlur={(v) => this.saveArticleValue("start_date", v.format("yyyy-MM-DDTHH:mm"))}
+							onBlur={(v) => this.saveArticleValue(
+								"start_date",
+								typeof v === "string"
+									? this.state.article.start_date
+									: v.format("yyyy-MM-DDTHH:mm"),
+							)}
 						/>
+					</div>
+					: ""}
+
+				{this.state.article.type === "EVENT"
+					? <div className="col-md-12">
 						<FormLine
 							label={"End date"}
 							type={"datetime"}
@@ -181,16 +201,6 @@ export default class ArticleGlobal extends React.Component {
 							label={"External reference"}
 							value={this.state.article.external_reference}
 							disabled={true}
-						/>
-					</div>
-					: ""}
-
-				{["NEWS", "EVENT", "JOB OFFER", "TOOL"].indexOf(this.state.article.type) >= 0
-					? <div className="col-md-12">
-						<FormLine
-							label={"Link"}
-							value={this.state.article.link}
-							onBlur={(v) => this.saveArticleValue("link", v)}
 						/>
 					</div>
 					: ""}
