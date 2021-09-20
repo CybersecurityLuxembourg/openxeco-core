@@ -37,4 +37,4 @@ jobs:
       run: ssh-keyscan -H ${{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy with rsync
-      run: rsync -r /var/www/bo-api ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
+      run: rsync -r --exclude=config.py --protocol=29 /var/www/bo-api/ ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
