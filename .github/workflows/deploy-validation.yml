@@ -20,10 +20,9 @@ jobs:
       run: |
           sudo mkdir /var/www/bo-api
           cd /var/www/bo-api
-          python3 -m venv venv
+          sudo python3 -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-          service apache2 reload
 
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
