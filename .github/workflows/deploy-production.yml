@@ -1,8 +1,8 @@
-name: Build and deploy on validation environment
+name: Build and deploy on production environment
 
 on:
   push:
-    branches: [ validation ]
+    branches: [ main ]
 
 jobs:
   build:
