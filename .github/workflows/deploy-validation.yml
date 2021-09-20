@@ -18,7 +18,7 @@ jobs:
 
     - name: Install venv
       run: |
-          mkdir /var/www/bo-api
+          sudo mkdir /var/www/bo-api
           cd /var/www/bo-api
           venv venv
           source env/bin/activate
