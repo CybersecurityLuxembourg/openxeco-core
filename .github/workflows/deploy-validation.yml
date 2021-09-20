@@ -16,12 +16,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install venv
+    - name: Create and install venv
       run: |
           sudo mkdir /var/www/bo-api
           cd /var/www/bo-api
-          venv venv
-          source env/bin/activate
+          python3 -m venv venv
+          source venv/bin/activate
           pip install -r requirements.txt
           service apache2 reload
 
