@@ -14,12 +14,15 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Create and install venv
+    - name: Create target directory
       run: |
           sudo mkdir /var/www/bo-api
           cd /var/www/bo-api
+
+    - uses: actions/checkout@v2
+
+    - name: Create and install venv
+        run: |
           sudo python3 -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
