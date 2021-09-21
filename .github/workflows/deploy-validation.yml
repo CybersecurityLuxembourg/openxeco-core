@@ -37,7 +37,7 @@ jobs:
       run: ssh-keyscan -H ${{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy with rsync
-      run: rsync -avzr --exclude=config/config.py ./ ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
+      run: rsync -a --exclude=config/config.py ./ ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
 
     - name: Reload web server
       run: sudo service apache2 reload
