@@ -19,8 +19,9 @@ jobs:
           sudo mkdir /var/www/bo-api
 
     - uses: actions/checkout@v2
-      with:
-        path: /var/www/bo-api
+
+    - name: Copy project to target dir
+      run: cp -R ./ /var/www/bo-api
 
     - name: Create and install venv
       working-directory: /var/www/bo-api
