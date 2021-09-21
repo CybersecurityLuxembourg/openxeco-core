@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Copy project to target dir
-      run: cp -R ./ /var/www/bo-api
+      run: sudo cp -R ./ /var/www/bo-api
 
     - name: Create and install venv
       working-directory: /var/www/bo-api
