@@ -73,6 +73,11 @@
 	padding: 10px !important;
 }
 
+.medium-editor-toolbar-form {
+	padding: 3px;
+	background-color:  black;
+}
+
 .Formline-datetime input {
 	position: absolute;
 }
