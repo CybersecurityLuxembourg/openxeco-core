@@ -229,8 +229,8 @@ class DB:
         query = self.session.query(self.tables["Article"])
 
         if "title" in filters and filters['title'] is not None:
-            words = filters['title'].lower().split(" ")
-            for word in words:
+            elements = filters['title'].lower().split(" ")
+            for word in elements:
                 query = query.filter(or_(func.lower(self.tables["Article"].title).like("%" + word + "%"),
                                          func.lower(self.tables["Article"].abstract).like("%" + word + "%")))
 
@@ -238,8 +238,8 @@ class DB:
             query = query.filter(self.tables["Article"].status == filters["status"])
 
         if "type" in filters:
-            types = filters["type"] if isinstance(filters["type"], list) else filters["type"].split(",")
-            query = query.filter(self.tables["Article"].type.in_(types))
+            elements = filters["type"] if isinstance(filters["type"], list) else filters["type"].split(",")
+            query = query.filter(self.tables["Article"].type.in_(elements))
 
         if "media" in filters:
             query = query.filter(self.tables["Article"].media.in_(["ALL", filters["media"]]))
