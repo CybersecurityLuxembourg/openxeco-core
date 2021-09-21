@@ -29,8 +29,7 @@ from resource.address.get_all_addresses import GetAllAddresses
 from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
 from resource.address.update_address import UpdateAddress
-from resource.analytic.get_global_analytics import GetGlobalAnalytics
-from resource.analytic.get_notifications import GetNotifications
+from resource.notification.get_notifications import GetNotifications
 from resource.company.extract_companies import ExtractCompanies
 from resource.company.get_companies import GetCompanies
 from resource.company.get_company import GetCompany
