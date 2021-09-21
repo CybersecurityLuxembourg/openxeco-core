@@ -38,8 +38,8 @@ jobs:
 
     - name: Display context
       run: |
-          ll
-          wd
+          ls
+          pwd
 
     - name: Deploy with rsync
       run: rsync -a --exclude=config/config.py ./ ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
