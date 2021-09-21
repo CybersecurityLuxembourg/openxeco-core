@@ -144,10 +144,16 @@ export default class Image extends Component {
 
 								<div className="col-md-12">
 									<input
+										autoFocus
 										className={!validateWord(this.state.word) ? "FormLine-wrong-format" : ""}
 										type={"text"}
 										value={this.state.word}
 										onChange={(v) => this.setState({ word: v.target.value })}
+										onKeyPress={(e) => {
+											if (e.key === "Enter" && validateWord(this.state.word)) {
+												this.addKeyword(this.state.word);
+											}
+										}}
 									/>
 								</div>
 
