@@ -46,7 +46,7 @@ jobs:
           pwd
 
     - name: Deploy with rsync
-      run: rsync -r /var/www/bo-api ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
+      run: rsync -a --exclude=config/config.py /var/www/bo-api ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
 
     - name: Reload web server
       run: sudo service apache2 reload
