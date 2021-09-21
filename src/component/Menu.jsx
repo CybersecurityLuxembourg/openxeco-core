@@ -31,7 +31,7 @@ export default class Menu extends React.Component {
 	getNotifications() {
 		this.setState({ notifications: null });
 
-		getRequest.call(this, "analytic/get_notifications", (data) => {
+		getRequest.call(this, "notification/get_notifications", (data) => {
 			this.setState({
 				notifications: data,
 			});
