@@ -71,8 +71,8 @@ export default class Menu extends React.Component {
 				<Toggle />
 				<Nav defaultSelected={this.props.selectedMenu}>
 					<NavItem
-						eventKey="dashboard"
-						active={this.props.selectedMenu === ""}>
+						eventKey=""
+						active={!this.props.selectedMenu}>
 						<NavIcon>
 							<Link to="/"><i className="fa fa-tachometer-alt" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
