@@ -61,15 +61,15 @@ export default class PageDashboard extends React.Component {
 		return (
 			<div id="PageDashboard" className="page max-sized-page">
 				<Tab
-					menu={["Analytics", "Ecosystem", "Recent activities"]}
+					menu={["Ecosystem", "Analytics", "Recent activities"]}
 					content={[
-						<DashboardAnalytics
-							key={"analytics"}
-						/>,
 						<DashboardEcosystem
 							key={"ecosystem"}
 							analytics={this.state.analytics}
 							companies={this.state.companies}
+						/>,
+						<DashboardAnalytics
+							key={"analytics"}
 						/>,
 						<DashboardRecentActivity
 							key={"recent_activity"}

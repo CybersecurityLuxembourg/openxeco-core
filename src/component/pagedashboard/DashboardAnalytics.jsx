@@ -74,28 +74,6 @@ export default class DashboardAnalytics extends React.Component {
 			<div className={"page max-sized-page"}>
 				<div className={"row row-spaced"}>
 					<div className="col-md-6 row-spaced">
-						<h3>Number of logins from ecosystem users</h3>
-
-						{this.state.activity
-							? <div>
-								{Object.keys(this.state.activity.account_login).length > 0
-									? <Line
-										data={DashboardAnalytics.getLineData(this.state.activity.account_login)}
-										options={DashboardAnalytics.getLineOptions()}
-									/>
-									: <Message
-										text={"No data found"}
-										height={150}
-									/>
-								}
-							</div>
-							: <Loading
-								height={150}
-							/>
-						}
-					</div>
-
-					<div className="col-md-6 row-spaced">
 						<h3>Number of user creation</h3>
 
 						{this.state.activity
