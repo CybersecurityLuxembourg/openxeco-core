@@ -6,6 +6,7 @@ from resource.account.forgot_password import ForgotPassword
 from resource.account.login import Login
 from resource.account.refresh import Refresh
 from resource.account.reset_password import ResetPassword
+from resource.analytics.get_ecosystem_activity import GetEcosystemActivity
 from resource.article.copy_article_version import CopyArticleVersion
 from resource.article.get_articles import GetArticles
 from resource.article.get_article import GetArticle

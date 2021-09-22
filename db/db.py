@@ -97,6 +97,8 @@ class DB:
         for attr, value in filters.items():
             if isinstance(value, list):
                 q = q.filter(getattr(table, attr).in_(value))
+            if isinstance(value, bool):
+                q = q.filter(getattr(table, attr).is_(value))
             else:
                 q = q.filter(getattr(table, attr) == value)
 
