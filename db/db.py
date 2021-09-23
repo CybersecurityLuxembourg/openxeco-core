@@ -190,10 +190,10 @@ class DB:
 
             query = query.filter(self.tables["Company"].id.in_(assigned_company))
 
-        if "startup_only" in filters and filters['startup_only'] == "true":
+        if "startup_only" in filters and filters['startup_only'] is True:
             query = query.filter(self.tables["Company"].is_startup.is_(True))
 
-        if "corebusiness_only" in filters and filters['corebusiness_only'] == "true":
+        if "corebusiness_only" in filters and filters['corebusiness_only'] is True:
             query = query.filter(self.tables["Company"].is_cybersecurity_core_business.is_(True))
 
         if "taxonomy_values" in filters:
@@ -246,7 +246,7 @@ class DB:
         if "media" in filters:
             query = query.filter(self.tables["Article"].media.in_(["ALL", filters["media"]]))
 
-        if "public_only" in filters and filters["public_only"] == "true":
+        if "public_only" in filters and filters["public_only"] is True:
             query = query.filter(self.tables["Article"].handle.isnot(None))
             query = query.filter(self.tables["Article"].status == "PUBLIC")
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
@@ -292,7 +292,7 @@ class DB:
 
             query = query.filter(self.tables["Article"].id.in_(article_filtered_by_companies))
 
-        if "editable" in filters and filters["editable"] == "true":
+        if "editable" in filters and filters["editable"] is True:
             assignment_subquery = self.session \
                 .query(self.tables["UserCompanyAssignment"]) \
                 .with_entities(self.tables["UserCompanyAssignment"].company_id) \
