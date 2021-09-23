@@ -37,4 +37,4 @@ jobs:
       run: ssh-keyscan -H ${{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy with rsync
-      run: rsync -avz --delete ./build/ ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/fo-private
+      run: rsync -r --delete ./build/ ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/fo-private
