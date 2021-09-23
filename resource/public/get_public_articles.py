@@ -30,7 +30,7 @@ class GetPublicArticles(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        kwargs["public_only"] = "true"
+        kwargs["public_only"] = True
 
         query = self.db.get_filtered_article_query(kwargs)
         paginate = query.paginate(kwargs["page"], kwargs["per_page"])
