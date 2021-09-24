@@ -10,6 +10,7 @@ import Message from "./box/Message.jsx";
 import Loading from "./box/Loading.jsx";
 import DialogAddArticle from "./dialog/DialogAddArticle.jsx";
 import DialogHint from "./dialog/DialogHint.jsx";
+import CheckBox from "./form/CheckBox.jsx";
 
 export default class PageArticles extends React.Component {
 	constructor(props) {
@@ -20,6 +21,7 @@ export default class PageArticles extends React.Component {
 		this.getMyArticles = this.getMyArticles.bind(this);
 
 		this.state = {
+			selectedTypes: [],
 			articles: null,
 			articleEnums: null,
 
@@ -36,9 +38,13 @@ export default class PageArticles extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		if (JSON.stringify(prevProps.myCompanies) !== JSON.stringify(this.props.myCompanies)) {
 			this.refresh();
+		}
+
+		if (prevState.selectedTypes !== this.state.selectedTypes) {
+			this.getMyArticles();
 		}
 	}
 
@@ -70,6 +76,7 @@ export default class PageArticles extends React.Component {
 		const params = dictToURI({
 			...this.state.filters,
 			page: Number.isInteger(page) ? page : this.state.filters.page,
+			type: this.state.selectedTypes.join(","),
 		});
 
 		const urlParams = dictToURI({
@@ -89,6 +96,18 @@ export default class PageArticles extends React.Component {
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
+
+	onChangeTypeSelection(type, status) {
+		if (status) {
+			this.setState({
+				selectedTypes: this.state.selectedTypes.concat([type]),
+			});
+		} else {
+			this.setState({
+				selectedTypes: this.state.selectedTypes.filter((t) => t !== type),
+			});
+		}
 	}
 
 	render() {
@@ -190,7 +209,28 @@ export default class PageArticles extends React.Component {
 
 				{this.props.myCompanies !== null && this.props.myCompanies.length > 0
 					&& <div className={"row"}>
-						<div className="col-md-12 row-spaced">
+						<div className="col-md-8">
+							{this.props.settings
+								&& this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM
+								? <div className={"row"}>
+									<div className="col-md-12 PageArticles-Checkboxes">
+										{this.props.settings.AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM
+											.split(",")
+											.map((t) => <CheckBox
+												key={t}
+												label={t}
+												value={this.state.selectedTypes.indexOf(t) >= 0}
+												onClick={(v) => this.onChangeTypeSelection(t, v)}
+											/>)}
+									</div>
+								</div>
+								: <Loading
+									height={100}
+								/>
+							}
+						</div>
+
+						<div className="col-md-4 row-spaced">
 							<div className="right-buttons">
 								<button
 									className="blue-button"
