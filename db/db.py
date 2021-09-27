@@ -252,7 +252,6 @@ class DB:
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
 
         if "is_created_by_admin" in filters:
-            print(filters["is_created_by_admin"])
             query = query.filter(self.tables["Article"].is_created_by_admin.is_(filters["is_created_by_admin"]))
 
         if "taxonomy_values" in filters:
