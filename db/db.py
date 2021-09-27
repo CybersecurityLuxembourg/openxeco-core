@@ -251,6 +251,10 @@ class DB:
             query = query.filter(self.tables["Article"].status == "PUBLIC")
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
 
+        if "is_created_by_admin" in filters:
+            print(filters["is_created_by_admin"])
+            query = query.filter(self.tables["Article"].is_created_by_admin.is_(filters["is_created_by_admin"]))
+
         if "taxonomy_values" in filters:
             tmp_taxonomy_values = filters["taxonomy_values"] if isinstance(filters["taxonomy_values"], list) \
                 else filters["taxonomy_values"].split(",")
