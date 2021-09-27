@@ -5,6 +5,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import { getArticleStatus } from "../../utils/article.jsx";
 import EditMetadata from "./DialogArticleEditor/EditMetadata.jsx";
+import EditImage from "./DialogArticleEditor/EditImage.jsx";
 import EditContent from "./DialogArticleEditor/EditContent.jsx";
 import Loading from "../box/Loading.jsx";
 import ArticleStatus from "../item/ArticleStatus.jsx";
@@ -15,6 +16,7 @@ export default class DialogArticleEditor extends React.Component {
 		super(props);
 
 		this.onOpen = this.onOpen.bind(this);
+		this.onClose = this.onClose.bind(this);
 		this.getArticleInfo = this.getArticleInfo.bind(this);
 		this.getArticleEnums = this.getArticleEnums.bind(this);
 		this.saveArticleValue = this.saveArticleValue.bind(this);
@@ -24,7 +26,7 @@ export default class DialogArticleEditor extends React.Component {
 		this.state = {
 			article: null,
 			articleEnums: null,
-			editContent: false,
+			selectedMenu: "metadata",
 		};
 	}
 
@@ -32,6 +34,12 @@ export default class DialogArticleEditor extends React.Component {
 		window.addEventListener("resize", this.resizeBoxes);
 		this.getArticleInfo();
 		this.getArticleEnums();
+	}
+
+	onClose() {
+		if (this.props.onClose) {
+			this.props.onClose();
+		}
 	}
 
 	getArticleInfo(refresh) {
@@ -122,6 +130,7 @@ export default class DialogArticleEditor extends React.Component {
 				closeOnDocumentClick
 				className={"DialogArticleEditor"}
 				onOpen={this.onOpen}
+				onClose={this.onClose}
 			>
 				{(close) => (
 					<div className={"row"}>
@@ -158,17 +167,24 @@ export default class DialogArticleEditor extends React.Component {
 								<h3>Tabs</h3>
 
 								<button
-									className={"link-button " + (!this.state.editContent && "selected-link-button")}
-									data-hover="Save"
+									className={"link-button "
+										+ (this.state.selectedMenu === "metadata" && "selected-link-button")}
 									data-active=""
-									onClick={() => this.setState({ editContent: false })}>
+									onClick={() => this.setState({ selectedMenu: "metadata" })}>
 									<i className="fas fa-heading"/> Edit metadata
 								</button>
 								<button
-									className={"link-button " + (this.state.editContent && "selected-link-button")}
-									data-hover="Save"
+									className={"link-button "
+										+ (this.state.selectedMenu === "image" && "selected-link-button")}
 									data-active=""
-									onClick={() => this.setState({ editContent: true })}>
+									onClick={() => this.setState({ selectedMenu: "image" })}>
+									<i className="fas fa-image"/> Edit image
+								</button>
+								<button
+									className={"link-button "
+										+ (this.state.selectedMenu === "body" && "selected-link-button")}
+									data-active=""
+									onClick={() => this.setState({ selectedMenu: "body" })}>
 									{this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT !== undefined
 										&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT === "TRUE"
 										? <div><i className="fas fa-align-left"/> Edit body</div>
@@ -193,13 +209,23 @@ export default class DialogArticleEditor extends React.Component {
 
 						{this.state.article !== null
 							? <div className="col-md-10 DialogArticleEditor-body">
-								{this.state.editContent
-									? <EditContent
+								{this.state.selectedMenu === "body"
+									&& <EditContent
 										article={this.state.article}
 										saveArticleValue={this.saveArticleValue}
 										settings={this.props.settings}
 									/>
-									: <EditMetadata
+								}
+
+								{this.state.selectedMenu === "image"
+									&& <EditImage
+										article={this.state.article}
+										refreshArticle={this.getArticleInfo}
+									/>
+								}
+
+								{this.state.selectedMenu === "metadata"
+									&& <EditMetadata
 										article={this.state.article}
 										articleEnums={this.state.articleEnums}
 										saveArticleValue={this.saveArticleValue}

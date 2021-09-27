@@ -276,6 +276,7 @@ export default class PageArticles extends React.Component {
 											myCompanies={this.props.myCompanies}
 											settings={this.props.settings}
 											afterDelete={this.refresh}
+											onCloseEdition={this.refresh}
 										/>
 									</div>
 									}

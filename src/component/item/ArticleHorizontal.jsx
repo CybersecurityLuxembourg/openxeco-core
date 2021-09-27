@@ -86,6 +86,7 @@ export default class ArticleHorizontal extends Component {
 						afterConfirmation={this.getMyArticles}
 						settings={this.props.settings}
 						afterDelete={this.props.afterDelete}
+						onClose={this.props.onCloseEdition}
 					/>
 				</div>
 			</div>
