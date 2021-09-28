@@ -26,6 +26,7 @@ class UpdateImage(MethodResource, Resource):
     @use_kwargs({
         'id': fields.Int(),
         'keywords': fields.Str(),
+        'is_in_generator': fields.Bool(required=False),
     })
     @jwt_required
     @verify_admin_access

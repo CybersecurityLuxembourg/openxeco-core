@@ -398,6 +398,9 @@ class DB:
 
             query = query.filter(self.tables["Image"].id.in_(company_image_ids))
 
+        if "is_in_generator" in filters:
+            query = query.filter(self.tables["Image"].is_in_generator.is_(filters["is_in_generator"]))
+
         if "search" in filters and len(filters["search"]) > 0:
             words = filters["search"].split(" ")
 

@@ -26,6 +26,7 @@ class GetImages(MethodResource, Resource):
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'logo_only': fields.Bool(required=False),
+        'is_in_generator': fields.Bool(required=False),
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
         'search': fields.Str(required=False),
     }, location="query")
