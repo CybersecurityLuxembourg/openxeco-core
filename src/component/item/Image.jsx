@@ -8,6 +8,7 @@ import Chip from "../button/Chip.jsx";
 import Message from "../box/Message.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
+import CheckBox from "../button/CheckBox.jsx";
 
 export default class Image extends Component {
 	constructor(props) {
@@ -16,6 +17,7 @@ export default class Image extends Component {
 		this.onClick = this.onClick.bind(this);
 		this.getImage = this.getImage.bind(this);
 		this.updateImage = this.updateImage.bind(this);
+		this.changeImageValue = this.changeImageValue.bind(this);
 		this.addKeyword = this.addKeyword.bind(this);
 		this.deleteKeyword = this.deleteKeyword.bind(this);
 
@@ -62,6 +64,22 @@ export default class Image extends Component {
 			}, () => {
 				this.getImage();
 			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	changeImageValue(property, value) {
+		const params = {
+			id: this.state.image.id,
+			[property]: value,
+		};
+
+		postRequest.call(this, "media/update_image", params, () => {
+			this.getImage();
+			nm.info("The image has been updated");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -136,6 +154,21 @@ export default class Image extends Component {
 
 								<div className="col-md-12 Image-size">
 									<b>{this.state.image.width}x{this.state.image.height}</b>
+								</div>
+
+								<div className="col-md-12">
+									<h3>Fields</h3>
+								</div>
+
+								<div className="col-md-6 FormLine-label">
+									Include in logo generator
+								</div>
+
+								<div className="col-md-6">
+									<CheckBox
+										value={this.state.image.is_in_generator}
+										onClick={(v) => this.changeImageValue("is_in_generator", v)}
+									/>
 								</div>
 
 								<div className="col-md-12">
