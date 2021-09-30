@@ -1,0 +1,8 @@
+
+#DashboardAnalytics .CheckBox {
+	width: fit-content !important;
+	float: right;
+	margin-top: 10px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+}
