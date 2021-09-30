@@ -3,6 +3,7 @@ import "./PageLogoGenerator.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../utils/request.jsx";
 import { getApiURL } from "../utils/env.jsx";
+import { getUrlParameter } from "../utils/url.jsx";
 import FormLine from "./form/FormLine.jsx";
 import Message from "./box/Message.jsx";
 import Loading from "./box/Loading.jsx";
@@ -14,12 +15,19 @@ export default class PageLogoGenerator extends React.Component {
 
 		this.drawAllWithText = this.drawAllWithText.bind(this);
 		this.drawAllWithCompany = this.drawAllWithCompany.bind(this);
+		this.getImageIds = this.getImageIds.bind(this);
 
 		this.state = {
-			text: "Type your text",
+			text: getUrlParameter("text")
+				? getUrlParameter("text").replace("%20", " ")
+				: "Type text here",
+			subtext: getUrlParameter("subtext")
+				? getUrlParameter("subtext").replace("%20", " ")
+				: "",
 			selectedCompanyId: null,
 			selectedCompany: null,
 			withTransparentBackground: true,
+			includedImages: null,
 			canvas: [{
 				id: "canvas-text-1",
 				status: "Member of the ecosystem",
@@ -49,24 +57,6 @@ export default class PageLogoGenerator extends React.Component {
 					show: true,
 					position: "left",
 				},
-			},
-			{
-				id: "canvas-text-4",
-				status: "Member of the ecosystem",
-				width: 250,
-				height: 150,
-			},
-			{
-				id: "canvas-text-5",
-				status: "Member of the ecosystem",
-				width: 350,
-				height: 75,
-			},
-			{
-				id: "canvas-text-6",
-				status: "Member of the ecosystem",
-				width: 400,
-				height: 100,
 			}],
 			companyCanvas: [{
 				id: "canvas-text-101",
@@ -97,24 +87,6 @@ export default class PageLogoGenerator extends React.Component {
 					show: true,
 					position: "left",
 				},
-			},
-			{
-				id: "canvas-text-104",
-				status: "Member of the ecosystem",
-				width: 250,
-				height: 150,
-			},
-			{
-				id: "canvas-text-105",
-				status: "Member of the ecosystem",
-				width: 350,
-				height: 75,
-			},
-			{
-				id: "canvas-text-106",
-				status: "Member of the ecosystem",
-				width: 400,
-				height: 100,
 			}],
 		};
 	}
@@ -122,10 +94,12 @@ export default class PageLogoGenerator extends React.Component {
 	componentDidMount() {
 		this.drawAllWithText();
 		this.drawAllWithCompany();
+		this.getImagesIncludedInGenerator();
 	}
 
 	componentDidUpdate(_, prevState) {
-		if (prevState.text !== this.state.text) {
+		if (prevState.text !== this.state.text
+			|| prevState.subtext !== this.state.subtext) {
 			this.drawAllWithText();
 		}
 
@@ -137,10 +111,25 @@ export default class PageLogoGenerator extends React.Component {
 			this.drawAllWithCompany();
 		}
 
-		if (prevState.withTransparentBackground !== this.state.withTransparentBackground) {
+		if (prevState.withTransparentBackground !== this.state.withTransparentBackground
+			|| prevState.includedImages !== this.state.includedImages) {
 			this.drawAllWithText();
 			this.drawAllWithCompany();
 		}
+	}
+
+	getImagesIncludedInGenerator() {
+		this.setState({ includedImages: null }, () => {
+			getRequest.call(this, "media/get_images?is_in_generator=true", (data) => {
+				this.setState({
+					includedImages: data.items,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		});
 	}
 
 	getCompany() {
@@ -162,24 +151,14 @@ export default class PageLogoGenerator extends React.Component {
 
 	drawAllWithText() {
 		this.state.canvas.map((c) => {
-			if (c.logo && c.logo.show) {
-				this.drawWithProjectLogo(c);
-			} else {
-				this.drawWithProjectName(c);
-			}
-
+			this.drawWithProjectLogo(c);
 			return null;
 		});
 	}
 
 	drawAllWithCompany() {
 		this.state.companyCanvas.map((c) => {
-			if (c.logo && c.logo.show) {
-				this.drawWithProjectLogoAndCompanyLogo(c);
-			} else {
-				this.drawWithProjectNameAndCompanyLogo(c);
-			}
-
+			this.drawWithProjectLogoAndCompanyLogo(c);
 			return null;
 		});
 	}
@@ -187,159 +166,80 @@ export default class PageLogoGenerator extends React.Component {
 	drawWithProjectLogo(c) {
 		// Get the logo image
 
-		const imagesSrcs = [
-			getApiURL() + "public/get_public_image/logo.png",
-		];
+		const imageIds = this.getImageIds();
+		const imagesSrcs = imageIds
+			.map((i) => getApiURL() + "public/get_public_image/" + i);
 
 		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
 			// Init the canvas
 
-			const drawing = document.getElementById(c.id);
-			if (!drawing) {
-				return;
-			}
-			const con = drawing.getContext("2d");
+			images.forEach((image, i) => {
+				const drawing = document.getElementById(c.id + "-" + imageIds[i]);
+				console.log(c.id + "-" + imageIds[i], drawing);
+				if (!drawing) {
+					return;
+				}
+				const con = drawing.getContext("2d");
 
-			// Clear the previous content
+				// Clear the previous content
 
-			con.beginPath();
-			con.clearRect(0, 0, c.width, c.height);
-			con.stroke();
+				con.beginPath();
+				con.clearRect(0, 0, c.width, c.height);
+				con.stroke();
 
-			drawing.width = c.width;
-			drawing.height = c.height;
+				drawing.width = c.width;
+				drawing.height = c.height;
 
-			if (!this.state.withTransparentBackground) {
-				con.fillStyle = "white";
-				con.rect(0, 0, c.width, c.height);
-				con.fill();
-			}
+				if (!this.state.withTransparentBackground) {
+					con.fillStyle = "white";
+					con.rect(0, 0, c.width, c.height);
+					con.fill();
+				}
 
-			// Integrate logo
+				// Integrate logo
 
-			const imageHeight = c.logo.position === "middle" ? c.height - 60 : c.height - 30;
-			const imageWidth = imageHeight * (images[0].height / images[0].width);
+				const imageHeight = c.logo.position === "middle" ? c.height - 60 : c.height - 30;
+				const imageWidth = imageHeight * (image.height / image.width);
 
-			con.drawImage(
-				images[0],
-				c.logo.position === "middle" ? (c.width - imageWidth) / 2 : 10,
-				10,
-				imageHeight,
-				imageWidth,
-			);
+				con.drawImage(
+					image,
+					c.logo.position === "middle" ? (c.width - imageWidth) / 2 : 10,
+					10,
+					imageHeight,
+					imageWidth,
+				);
 
-			// Write the text
+				// Write the text
 
-			con.fillStyle = "black";
-			con.textAlign = c.logo.position === "middle" ? "center" : "left";
-			con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
-			con.font = c.logo.position === "middle"
-				? "20px Fjalla One"
-				: PageLogoGenerator.getFittingFontSize(
-					con,
+				con.fillStyle = "black";
+				con.textAlign = c.logo.position === "middle" ? "center" : "left";
+				con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
+				con.font = c.logo.position === "middle"
+					? "20px Fjalla One"
+					: PageLogoGenerator.getFittingFontSize(
+						con,
+						this.state.text,
+						c.width - imageWidth - 20,
+						c.height - 40,
+					) + "px Fjalla One";
+
+				con.fillText(
 					this.state.text,
-					c.width - imageWidth - 20,
-					c.height - 40,
-				) + "px Fjalla One";
+					c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
+					c.logo.position === "middle" ? c.height - 32 : c.height / 2,
+					c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
+					c.logo.position === "middle" ? c.height - 20 - imageHeight : c.height - 40,
+				);
 
-			con.fillText(
-				this.state.text,
-				c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
-				c.logo.position === "middle" ? c.height - 32 : c.height / 2,
-				c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
-				c.logo.position === "middle" ? c.height - 20 - imageHeight : c.height - 40,
-			);
+				con.textBaseline = "alphabetic";
 
-			con.textBaseline = "alphabetic";
+				// Write the status
 
-			// Write the status
-
-			con.textAlign = "right";
-			con.font = "15px 'Fjalla One'";
-			con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+				con.textAlign = "right";
+				con.font = "15px 'Fjalla One'";
+				con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+			});
 		});
-	}
-
-	drawWithProjectName(c) {
-		// Init the canvas
-
-		const drawing = document.getElementById(c.id);
-		if (!drawing) {
-			return;
-		}
-		const con = drawing.getContext("2d");
-
-		// Clear the previous content
-
-		con.beginPath();
-		con.clearRect(0, 0, c.width, c.height);
-		con.stroke();
-
-		drawing.width = c.width;
-		drawing.height = c.height;
-
-		if (!this.state.withTransparentBackground) {
-			con.fillStyle = "white";
-			con.fillRect(0, 0, c.width, c.height);
-		}
-
-		// Write the project name
-
-		let idealFontSize = PageLogoGenerator.getFittingFontSize(
-			con,
-			this.props.settings.PROJECT_NAME,
-			c.width - 20,
-			(c.height / 2) - 20,
-		);
-
-		con.fillStyle = "black";
-		con.textAlign = "top";
-		con.textBaseline = "middle";
-		con.font = idealFontSize + "px Fjalla One";
-
-		con.fillText(
-			this.props.settings.PROJECT_NAME,
-			10,
-			4 + (((c.height / 2) - 12) / 2),
-			c.width - 20,
-		);
-
-		// Write the text
-
-		idealFontSize = PageLogoGenerator.getFittingFontSize(
-			con,
-			this.state.text,
-			c.width - 20,
-			(c.height / 2) - 20,
-		);
-
-		con.fillStyle = "black";
-		con.textAlign = "right";
-		con.textBaseline = "middle";
-		con.font = idealFontSize + "px Fjalla One";
-
-		con.fillText(
-			this.state.text,
-			c.width - 10,
-			8 + (((c.height / 2) - 12) * 1.5),
-			c.width - 20,
-		);
-
-		// Write the status
-
-		con.textBaseline = "alphabetic";
-
-		con.textAlign = "right";
-		con.font = "15px 'Fjalla One'";
-		con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
-
-		// Draw a separation line
-
-		con.lineWidth = 1;
-		con.beginPath();
-		con.moveTo(c.width / 4, Math.round(c.height / 2) - 8.5);
-		con.lineTo((c.width / 4) * 3, Math.round(c.height / 2) - 8.5);
-		con.stroke();
 	}
 
 	drawWithProjectLogoAndCompanyLogo(c) {
@@ -349,177 +249,91 @@ export default class PageLogoGenerator extends React.Component {
 
 		// Get the logos
 
-		const imagesSrcs = [
-			getApiURL() + "public/get_public_image/logo.png",
-			getApiURL() + "public/get_public_image/" + this.state.selectedCompany.image,
-		];
+		const imageIds = this.getImageIds();
+		const imagesSrcs = [getApiURL() + "public/get_public_image/" + this.state.selectedCompany.image]
+			.concat(imageIds
+				.map((i) => getApiURL() + "public/get_public_image/" + i));
 
 		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
-			// Init the canvas
+			const companyImage = images[0];
+			images.shift();
 
-			const drawing = document.getElementById(c.id);
-			if (!drawing) {
-				return;
-			}
-			const con = drawing.getContext("2d");
+			images.forEach((image, i) => {
+				// Init the canvas
 
-			// Clear the previous content
+				const drawing = document.getElementById(c.id + "-" + imageIds[i]);
+				if (!drawing) {
+					return;
+				}
+				const con = drawing.getContext("2d");
 
-			con.beginPath();
-			con.clearRect(0, 0, c.width, c.height);
-			con.stroke();
+				// Clear the previous content
 
-			drawing.width = c.width;
-			drawing.height = c.height;
+				con.beginPath();
+				con.clearRect(0, 0, c.width, c.height);
+				con.stroke();
 
-			if (!this.state.withTransparentBackground) {
-				con.fillStyle = "white";
-				con.fillRect(0, 0, c.width, c.height);
-			}
+				drawing.width = c.width;
+				drawing.height = c.height;
 
-			// Integrate project logo
+				if (!this.state.withTransparentBackground) {
+					con.fillStyle = "white";
+					con.fillRect(0, 0, c.width, c.height);
+				}
 
-			let imageHeight = c.height - 35;
-			let imageWidth = images[0].width * (imageHeight / images[0].height);
+				// Integrate project logo
 
-			if (imageWidth > (c.width - 40) / 2) {
-				imageHeight *= ((c.width - 40) / 2) / imageWidth;
-				imageWidth = (c.width - 40) / 2;
-			}
+				let imageHeight = c.height - 35;
+				let imageWidth = image.width * (imageHeight / image.height);
 
-			con.drawImage(
-				images[0],
-				(c.width / 4) - (imageWidth / 2),
-				10 + ((c.height - 35) / 2) - (imageHeight / 2),
-				imageWidth,
-				imageHeight,
-			);
+				if (imageWidth > (c.width - 40) / 2) {
+					imageHeight *= ((c.width - 40) / 2) / imageWidth;
+					imageWidth = (c.width - 40) / 2;
+				}
 
-			// Integrate company logo
+				con.drawImage(
+					image,
+					(c.width / 4) - (imageWidth / 2),
+					10 + ((c.height - 35) / 2) - (imageHeight / 2),
+					imageWidth,
+					imageHeight,
+				);
 
-			imageHeight = c.height - 35;
-			imageWidth = images[1].width * (imageHeight / images[1].height);
+				// Integrate company logo
 
-			if (imageWidth > (c.width - 40) / 2) {
-				imageHeight *= ((c.width - 40) / 2) / imageWidth;
-				imageWidth = (c.width - 40) / 2;
-			}
+				imageHeight = c.height - 35;
+				imageWidth = companyImage.width * (imageHeight / companyImage.height);
 
-			con.drawImage(
-				images[1],
-				((c.width / 4) * 3) - (imageWidth / 2),
-				10 + ((c.height - 35) / 2) - (imageHeight / 2),
-				imageWidth,
-				imageHeight,
-			);
+				if (imageWidth > (c.width - 40) / 2) {
+					imageHeight *= ((c.width - 40) / 2) / imageWidth;
+					imageWidth = (c.width - 40) / 2;
+				}
 
-			// Write the status
+				con.drawImage(
+					companyImage,
+					((c.width / 4) * 3) - (imageWidth / 2),
+					10 + ((c.height - 35) / 2) - (imageHeight / 2),
+					imageWidth,
+					imageHeight,
+				);
 
-			con.textBaseline = "alphabetic";
+				// Write the status
 
-			con.fillStyle = "black";
-			con.textAlign = "right";
-			con.font = "15px 'Fjalla One'";
-			con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
+				con.textBaseline = "alphabetic";
 
-			// Draw a separation line
+				con.fillStyle = "black";
+				con.textAlign = "right";
+				con.font = "15px 'Fjalla One'";
+				con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
 
-			con.lineWidth = 1;
-			con.beginPath();
-			con.moveTo(Math.round(c.width / 2) + 0.5, 10);
-			con.lineTo(Math.round(c.width / 2) + 0.5, c.height - 25);
-			con.stroke();
-		});
-	}
+				// Draw a separation line
 
-	drawWithProjectNameAndCompanyLogo(c) {
-		if (!this.state.selectedCompany || !this.state.selectedCompany.image) {
-			return;
-		}
-
-		// Get the logo
-
-		const imagesSrcs = [
-			getApiURL() + "public/get_public_image/" + this.state.selectedCompany.image,
-		];
-
-		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
-			// Init the canvas
-
-			const drawing = document.getElementById(c.id);
-			if (!drawing) {
-				return;
-			}
-			const con = drawing.getContext("2d");
-
-			// Clear the previous content
-
-			con.beginPath();
-			con.clearRect(0, 0, c.width, c.height);
-			con.stroke();
-
-			drawing.width = c.width;
-			drawing.height = c.height;
-
-			if (!this.state.withTransparentBackground) {
-				con.fillStyle = "white";
-				con.fillRect(0, 0, c.width, c.height);
-			}
-
-			// Write the project name
-
-			const idealFontSize = PageLogoGenerator.getFittingFontSize(
-				con,
-				this.props.settings.PROJECT_NAME,
-				c.width - 20,
-				(c.height / 2) - 20,
-			);
-
-			con.fillStyle = "black";
-			con.textAlign = "top";
-			con.textBaseline = "middle";
-			con.font = idealFontSize + "px Fjalla One";
-
-			con.fillText(
-				this.props.settings.PROJECT_NAME,
-				10,
-				4 + (((c.height / 2) - 12) / 2),
-				c.width - 20,
-			);
-
-			// Integrate company logo
-
-			let imageHeight = (c.height - 50) / 2;
-			let imageWidth = images[0].width * (imageHeight / images[0].height);
-
-			if (imageWidth > c.width - 22) {
-				imageHeight *= (c.width - 20) / imageWidth;
-				imageWidth = (c.width - 20);
-			}
-
-			con.drawImage(
-				images[0],
-				(c.width / 2) - (imageWidth / 2),
-				3 + (((c.height - 20) / 4) * 3) - (imageHeight / 2),
-				imageWidth,
-				imageHeight,
-			);
-
-			// Write the status
-
-			con.textBaseline = "alphabetic";
-
-			con.textAlign = "right";
-			con.font = "15px 'Fjalla One'";
-			con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
-
-			// Draw a separation line
-
-			con.lineWidth = 1;
-			con.beginPath();
-			con.moveTo(c.width / 4 + 0.5, Math.round(c.height / 2) - 8.5);
-			con.lineTo((c.width / 4) * 3 + 0.5, Math.round(c.height / 2) - 8.5);
-			con.stroke();
+				con.lineWidth = 1;
+				con.beginPath();
+				con.moveTo(Math.round(c.width / 2) + 0.5, 10);
+				con.lineTo(Math.round(c.width / 2) + 0.5, c.height - 25);
+				con.stroke();
+			});
 		});
 	}
 
@@ -546,11 +360,50 @@ export default class PageLogoGenerator extends React.Component {
 		});
 	}
 
+	getImageIds() {
+		return this.state.includedImages
+			? this.state.includedImages.map((i) => i.id)
+			: [];
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
 
 	render() {
+		if (!this.state.includedImages) {
+			return <div className={"PageLogoGenerator page max-sized-page"}>
+				<div className={"row"}>
+					<div className="col-md-9">
+						<h1>Logo generator</h1>
+					</div>
+
+					<div className="col-md-12">
+						<Loading
+							height={300}
+						/>
+					</div>
+				</div>
+			</div>;
+		}
+
+		if (this.state.includedImages.length === 0) {
+			return <div className={"PageLogoGenerator page max-sized-page"}>
+				<div className={"row"}>
+					<div className="col-md-9">
+						<h1>Logo generator</h1>
+					</div>
+
+					<div className="col-md-12">
+						<Message
+							text="No logo configured by administrators"
+							height={300}
+						/>
+					</div>
+				</div>
+			</div>;
+		}
+
 		return (
 			<div className={"PageLogoGenerator page max-sized-page"}>
 				<div className={"row"}>
@@ -600,20 +453,39 @@ export default class PageLogoGenerator extends React.Component {
 
 					<div className="col-md-12 row-spaced">
 						<FormLine
-							label="Entity name"
+							label="Main text"
 							value={this.state.text}
 							onChange={(v) => this.changeState("text", v)}
 						/>
+						<FormLine
+							label="Sub text"
+							value={this.state.subtext}
+							onChange={(v) => this.changeState("subtext", v)}
+						/>
 					</div>
 
-					{this.state.canvas.map((c) => <div
-						key={c.id}
-						className="col-md-4 PageLogoGenerator-canvas-wrapper">
-						<h3>{c.width}x{c.height}</h3>
-						<canvas
-							id={c.id}
-							className="PageLogoGenerator-canvas"
-						/>
+					{this.getImageIds().map((i) => <div
+						key={i}
+						className="col-md-12">
+						<div className={"row"}>
+							{this.state.canvas.map((c) => <div
+								key={c.id + "-" + i}
+								className="col-md-4 PageLogoGenerator-canvas-wrapper">
+								<h3>{c.width}x{c.height}</h3>
+								<canvas
+									id={c.id + "-" + i}
+									className="PageLogoGenerator-canvas"
+								/>
+								<button
+									onClick={() => {
+										const canvas = document.getElementById(c.id + "-" + i);
+										const dataURL = canvas.toDataURL("image/png");
+										window.open(dataURL);
+									}}>
+									Save image
+								</button>
+							</div>)}
+						</div>
 					</div>)}
 				</div>
 
@@ -664,22 +536,28 @@ export default class PageLogoGenerator extends React.Component {
 
 									{this.state.selectedCompany && this.state.selectedCompany.image
 										&& <div className={"row"}>
-											{this.state.companyCanvas.map((c) => <div
-												key={c.id}
-												className="col-md-4 PageLogoGenerator-canvas-wrapper">
-												<h3>{c.width}x{c.height}</h3>
-												<canvas
-													id={c.id}
-													className="PageLogoGenerator-canvas"
-												/>
-												<button
-													onClick={() => {
-														const canvas = document.getElementById(c.id);
-														const dataURL = canvas.toDataURL("image/png");
-														window.open(dataURL);
-													}}>
-													Save image
-												</button>
+											{this.getImageIds().map((i) => <div
+												key={i}
+												className="col-md-12">
+												<div className={"row"}>
+													{this.state.companyCanvas.map((c) => <div
+														key={c.id + "-" + i}
+														className="col-md-4 PageLogoGenerator-canvas-wrapper">
+														<h3>{c.width}x{c.height}</h3>
+														<canvas
+															id={c.id + "-" + i}
+															className="PageLogoGenerator-canvas"
+														/>
+														<button
+															onClick={() => {
+																const canvas = document.getElementById(c.id + "-" + i);
+																const dataURL = canvas.toDataURL("image/png");
+																window.open(dataURL);
+															}}>
+															Save image
+														</button>
+													</div>)}
+												</div>
 											</div>)}
 										</div>
 									}
