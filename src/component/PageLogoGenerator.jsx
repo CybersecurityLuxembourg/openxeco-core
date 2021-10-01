@@ -198,46 +198,92 @@ export default class PageLogoGenerator extends React.Component {
 
 				// Integrate logo
 
-				const imageHeight = c.logo.position === "middle" ? c.height - 60 : c.height - 30;
-				const imageWidth = imageHeight * (image.height / image.width);
+				let imageHeight = c.logo.position === "middle" ? c.height - 60 : c.height - 20;
+				let imageWidth = Math.round(imageHeight * (image.width / image.height));
+
+				if (c.logo.position === "middle" && imageWidth > (c.width - 20)) {
+					imageWidth = c.width - 20;
+					imageHeight = imageWidth * (image.height / image.width);
+				}
 
 				con.drawImage(
 					image,
-					c.logo.position === "middle" ? (c.width - imageWidth) / 2 : 10,
-					10,
-					imageHeight,
+					c.logo.position === "middle" ? Math.round((c.width / 2) - (imageWidth / 2)) : 10,
+					c.logo.position === "middle" ? 10 + ((c.height - 60) / 2) - (imageHeight / 2) : 10,
 					imageWidth,
+					imageHeight,
 				);
+				console.log(c.width, imageWidth, Math.round((c.width / 2) - (imageWidth / 2)));
 
 				// Write the text
 
-				con.fillStyle = "black";
-				con.textAlign = c.logo.position === "middle" ? "center" : "left";
-				con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
-				con.font = c.logo.position === "middle"
-					? "20px Fjalla One"
-					: PageLogoGenerator.getFittingFontSize(
-						con,
-						this.state.text,
-						c.width - imageWidth - 20,
-						c.height - 40,
-					) + "px Fjalla One";
+				if (!this.state.subtext) {
+					con.fillStyle = "black";
+					con.textAlign = c.logo.position === "middle" ? "center" : "left";
+					con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
+					con.font = c.logo.position === "middle"
+						? "30px Fjalla One"
+						: PageLogoGenerator.getFittingFontSize(
+							con,
+							this.state.text,
+							c.width - imageWidth - 20,
+							c.height - 40,
+						) + "px Fjalla One";
 
-				con.fillText(
-					this.state.text,
-					c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
-					c.logo.position === "middle" ? c.height - 32 : c.height / 2,
-					c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
-					c.logo.position === "middle" ? c.height - 20 - imageHeight : c.height - 40,
-				);
+					con.fillText(
+						this.state.text,
+						c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
+						c.logo.position === "middle" ? c.height - 22 : c.height / 2 + 2,
+						c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
+						c.logo.position === "middle" ? c.height - 20 - imageHeight : c.height - 20,
+					);
+				} else {
+					// Integrate main text
+
+					con.fillStyle = "black";
+					con.textAlign = c.logo.position === "middle" ? "center" : "left";
+					con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
+					con.font = c.logo.position === "middle"
+						? "20px Fjalla One"
+						: PageLogoGenerator.getFittingFontSize(
+							con,
+							this.state.text,
+							c.width - imageWidth - 45,
+							((c.height - 20) / 3) * 2,
+						) + "px Fjalla One";
+
+					// Integrate subtext
+
+					con.fillText(
+						this.state.text,
+						c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
+						c.logo.position === "middle" ? c.height - 32 : 10 + (c.height - 20) / 3,
+						c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
+						c.logo.position === "middle" ? c.height - 20 - imageHeight : ((c.height - 20) / 3) * 2,
+					);
+
+					con.fillStyle = "black";
+					con.textAlign = c.logo.position === "middle" ? "center" : "left";
+					con.textBaseline = c.logo.position === "middle" ? "middle" : "middle";
+					con.font = c.logo.position === "middle"
+						? "13px Fjalla One"
+						: PageLogoGenerator.getFittingFontSize(
+							con,
+							this.state.text,
+							c.width - imageWidth - 45,
+							(c.height - 20) / 3,
+						) + "px Fjalla One";
+
+					con.fillText(
+						this.state.subtext,
+						c.logo.position === "middle" ? c.width / 2 : 25 + imageWidth,
+						c.logo.position === "middle" ? c.height - 10 : 22 + (((c.height - 20) / 3) * 2),
+						c.logo.position === "middle" ? c.width - 20 : c.width - imageWidth - 45,
+						c.logo.position === "middle" ? c.height - 20 - imageHeight : (c.height - 20) / 3,
+					);
+				}
 
 				con.textBaseline = "alphabetic";
-
-				// Write the status
-
-				con.textAlign = "right";
-				con.font = "15px 'Fjalla One'";
-				con.fillText(c.status, c.width - 10, c.height - 5, c.width - 20, 100);
 			});
 		});
 	}
