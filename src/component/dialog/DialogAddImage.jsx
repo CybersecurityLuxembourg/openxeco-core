@@ -161,15 +161,21 @@ export default class DialogAddImage extends React.Component {
 						}
 
 						{this.state.imageContent !== null && this.state.croppedImageContent !== null
-							&& <img
-								className={"DialogAddImage-cropped-image"}
-								src={this.state.croppedImageContent}
-							/>
+							&& <div
+								className={"DialogAddImage-cropped-image"}>
+								<img src={this.state.croppedImageContent}/>
+							</div>
 						}
 					</div>
 
 					{this.state.croppedImageContent !== null
-						&& <div className={"bottom-right-buttons"}>
+						&& <div className={"right-buttons"}>
+							<button
+								data-hover="Validate image"
+								data-active=""
+								onClick={() => this.onValidate(close)}>
+								<span><i className="far fa-check-circle"/> Upload</span>
+							</button>
 							<button
 								className={"grey-background"}
 								data-hover="Back to image cropping"
@@ -177,17 +183,17 @@ export default class DialogAddImage extends React.Component {
 								onClick={this.backToImageCropping}>
 								<span><i className="far fa-arrow-alt-circle-left"/> Back to image cropping</span>
 							</button>
-							<button
-								data-hover="Validate image"
-								data-active=""
-								onClick={() => this.onValidate(close)}>
-								<span><i className="far fa-check-circle"/> Upload</span>
-							</button>
 						</div>
 					}
 
 					{this.state.croppedImageContent === null && this.state.imageContent !== null
-						&& <div className={"bottom-right-buttons"}>
+						&& <div className={"right-buttons"}>
+							<button
+								data-hover="Crop image"
+								data-active=""
+								onClick={this.onCrop}>
+								<span><i className="far fa-check-circle"/> Crop</span>
+							</button>
 							<button
 								className={"grey-background"}
 								data-hover="Back to image selection"
@@ -195,17 +201,11 @@ export default class DialogAddImage extends React.Component {
 								onClick={this.backToImageSelection}>
 								<span><i className="far fa-arrow-alt-circle-left"/> Back to image selection</span>
 							</button>
-							<button
-								data-hover="Crop image"
-								data-active=""
-								onClick={this.onCrop}>
-								<span><i className="far fa-check-circle"/> Crop</span>
-							</button>
 						</div>
 					}
 
 					{this.state.croppedImageContent === null && this.state.imageContent === null
-						&& <div className={"bottom-right-buttons"}>
+						&& <div className={"right-buttons"}>
 							<button
 								className={"grey-background"}
 								data-hover="Close"
