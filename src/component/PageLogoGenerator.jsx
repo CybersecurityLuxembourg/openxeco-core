@@ -175,7 +175,6 @@ export default class PageLogoGenerator extends React.Component {
 
 			images.forEach((image, i) => {
 				const drawing = document.getElementById(c.id + "-" + imageIds[i]);
-				console.log(c.id + "-" + imageIds[i], drawing);
 				if (!drawing) {
 					return;
 				}
@@ -213,7 +212,6 @@ export default class PageLogoGenerator extends React.Component {
 					imageWidth,
 					imageHeight,
 				);
-				console.log(c.width, imageWidth, Math.round((c.width / 2) - (imageWidth / 2)));
 
 				// Write the text
 
