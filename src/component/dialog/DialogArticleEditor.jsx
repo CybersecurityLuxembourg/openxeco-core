@@ -53,8 +53,8 @@ export default class DialogArticleEditor extends React.Component {
 			getRequest.call(this, "article/get_article_version_content/" + this.props.articleVersion, (data) => {
 				for (let i = 0; i < data.length; i++) {
 					data[i].i = "" + i;
-					data[i].y = 0;
-					data[i].x = data[i].position;
+					data[i].y = data[i].position;
+					data[i].x = 0;
 					data[i].w = 1;
 					data[i].h = 5;
 					data[i].isResizable = true;
@@ -113,11 +113,19 @@ export default class DialogArticleEditor extends React.Component {
 
 	moveBox(e) {
 		const content = [];
-		let oldBlock = null;
 
 		for (let i = 0; i < e.length; i++) {
-			oldBlock = this.state.content.filter((o) => e[i].i === ("" + o.i))[0];
-			content.push({ ...oldBlock, ...e[i] });
+			content.push({
+				...this.state.content[i],
+				...e[i],
+			});
+		}
+
+		content.sort((first, second) => first.y - second.y);
+
+		for (let i = 0; i < content.length; i++) {
+			content[i].position = i + 1;
+			content[i].i = "" + i;
 		}
 
 		this.setState({ content });
@@ -187,9 +195,10 @@ export default class DialogArticleEditor extends React.Component {
 		}
 	}
 
-	updateComponent(index, field, value) {
+	updateComponent(i, field, value) {
 		const c = JSON.parse(JSON.stringify(this.state.content));
-		c[index][field] = value;
+		const element = c.filter((e) => e.i === i)[0];
+		element[field] = value;
 		this.setState({ content: c });
 	}
 
@@ -350,7 +359,7 @@ export default class DialogArticleEditor extends React.Component {
 																			labelWidth={2}
 																			label={"H1"}
 																			value={item.content}
-																			onBlur={(v) => this.updateComponent(index, "content", v)}
+																			onBlur={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																	{item.type === "TITLE2"
@@ -358,7 +367,7 @@ export default class DialogArticleEditor extends React.Component {
 																			labelWidth={2}
 																			label={"H2"}
 																			value={item.content}
-																			onBlur={(v) => this.updateComponent(index, "content", v)}
+																			onBlur={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																	{item.type === "PARAGRAPH"
@@ -367,7 +376,7 @@ export default class DialogArticleEditor extends React.Component {
 																			label={<i className="fas fa-align-left"/>}
 																			labelWidth={2}
 																			value={item.content}
-																			onChange={(v) => this.updateComponent(index, "content", v)}
+																			onChange={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																	{item.type === "IMAGE"
@@ -377,7 +386,7 @@ export default class DialogArticleEditor extends React.Component {
 																				label={<i className="fas fa-image"/>}
 																				labelWidth={2}
 																				value={item.content}
-																				onChange={(v) => this.updateComponent(index, "content", v)}
+																				onChange={(v) => this.updateComponent(item.i, "content", v)}
 																				onLoad={this.resizeBoxes}
 																			/>
 																		</div>
@@ -388,7 +397,7 @@ export default class DialogArticleEditor extends React.Component {
 																			label={<i className="fab fa-youtube"/>}
 																			labelWidth={2}
 																			value={item.content}
-																			onChange={(v) => this.updateComponent(index, "content", v)}
+																			onChange={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																</div>
