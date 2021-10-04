@@ -128,8 +128,9 @@ export default class DialogArticleEditor extends React.Component {
 		content.splice(i, 1);
 
 		for (let y = 0; y < content.length; y++) {
-			content[y].position = parseInt(y, 10) + 1;
-			content[y].y = y + "";
+			content[y].i = "" + y;
+			content[y].position = y;
+			content[y].y = y;
 		}
 
 		this.setState({ content });
@@ -141,6 +142,8 @@ export default class DialogArticleEditor extends React.Component {
 		const content = this.state.content.map((c) => c);
 		let modified = false;
 
+		// Manage editor field size
+
 		for (let i = 0; i < content.length; i++) {
 			const tag = document.querySelector(".DialogArticleEditor-layout .item-" + content[i].i
 				+ " .col-md-12 .FormLine");
@@ -149,7 +152,7 @@ export default class DialogArticleEditor extends React.Component {
 				return;
 			}
 
-			const newSize = Math.ceil(tag.offsetHeight + 8) / 10;
+			const newSize = Math.ceil((tag.offsetHeight + 8) / 10);
 
 			if (content[i].h !== newSize) {
 				content[i].h = newSize;
@@ -157,7 +160,7 @@ export default class DialogArticleEditor extends React.Component {
 			}
 		}
 
-		// This way to save the new layout because the RReact Grid Layout is buggy on refreshing
+		// This way to save the new layout because the React Grid Layout is buggy on refreshing
 
 		if (modified) {
 			content.push({
@@ -178,7 +181,7 @@ export default class DialogArticleEditor extends React.Component {
 				content,
 			}, () => {
 				this.setState({
-					content: content.filter((c) => c.fake === undefined),
+					content: content.filter((c) => !c.fake),
 				});
 			});
 		}
@@ -433,7 +436,9 @@ export default class DialogArticleEditor extends React.Component {
 										</div>
 
 										{this.state.content !== null
-											&& this.state.content.map((item) => getContentFromBlock(item))
+											&& this.state.content
+												.sort((first, second) => first.y - second.y)
+												.map((item) => getContentFromBlock(item))
 										}
 
 										{this.state.content === null
