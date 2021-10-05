@@ -34,6 +34,7 @@ class GetMyArticles(MethodResource, Resource):
     def get(self, **kwargs):
 
         kwargs["editable"] = True
+        kwargs["is_created_by_admin"] = False
 
         query = self.db.get_filtered_article_query(kwargs, get_jwt_identity())
         paginate = query.paginate(kwargs["page"], kwargs["per_page"])
