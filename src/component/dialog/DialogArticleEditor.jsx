@@ -53,8 +53,8 @@ export default class DialogArticleEditor extends React.Component {
 			getRequest.call(this, "article/get_article_version_content/" + this.props.articleVersion, (data) => {
 				for (let i = 0; i < data.length; i++) {
 					data[i].i = "" + i;
-					data[i].y = 0;
-					data[i].x = data[i].position;
+					data[i].y = data[i].position;
+					data[i].x = 0;
 					data[i].w = 1;
 					data[i].h = 5;
 					data[i].isResizable = true;
@@ -113,11 +113,19 @@ export default class DialogArticleEditor extends React.Component {
 
 	moveBox(e) {
 		const content = [];
-		let oldBlock = null;
 
 		for (let i = 0; i < e.length; i++) {
-			oldBlock = this.state.content.filter((o) => e[i].i === ("" + o.i))[0];
-			content.push({ ...oldBlock, ...e[i] });
+			content.push({
+				...this.state.content[i],
+				...e[i],
+			});
+		}
+
+		content.sort((first, second) => first.y - second.y);
+
+		for (let i = 0; i < content.length; i++) {
+			content[i].position = i + 1;
+			content[i].i = "" + i;
 		}
 
 		this.setState({ content });
@@ -128,8 +136,9 @@ export default class DialogArticleEditor extends React.Component {
 		content.splice(i, 1);
 
 		for (let y = 0; y < content.length; y++) {
-			content[y].position = parseInt(y, 10) + 1;
-			content[y].y = y + "";
+			content[y].i = "" + y;
+			content[y].position = y;
+			content[y].y = y;
 		}
 
 		this.setState({ content });
@@ -141,6 +150,8 @@ export default class DialogArticleEditor extends React.Component {
 		const content = this.state.content.map((c) => c);
 		let modified = false;
 
+		// Manage editor field size
+
 		for (let i = 0; i < content.length; i++) {
 			const tag = document.querySelector(".DialogArticleEditor-layout .item-" + content[i].i
 				+ " .col-md-12 .FormLine");
@@ -149,7 +160,7 @@ export default class DialogArticleEditor extends React.Component {
 				return;
 			}
 
-			const newSize = Math.ceil(tag.offsetHeight + 8) / 10;
+			const newSize = Math.ceil((tag.offsetHeight + 8) / 10);
 
 			if (content[i].h !== newSize) {
 				content[i].h = newSize;
@@ -157,7 +168,7 @@ export default class DialogArticleEditor extends React.Component {
 			}
 		}
 
-		// This way to save the new layout because the RReact Grid Layout is buggy on refreshing
+		// This way to save the new layout because the React Grid Layout is buggy on refreshing
 
 		if (modified) {
 			content.push({
@@ -178,15 +189,16 @@ export default class DialogArticleEditor extends React.Component {
 				content,
 			}, () => {
 				this.setState({
-					content: content.filter((c) => c.fake === undefined),
+					content: content.filter((c) => !c.fake),
 				});
 			});
 		}
 	}
 
-	updateComponent(index, field, value) {
+	updateComponent(i, field, value) {
 		const c = JSON.parse(JSON.stringify(this.state.content));
-		c[index][field] = value;
+		const element = c.filter((e) => e.i === i)[0];
+		element[field] = value;
 		this.setState({ content: c });
 	}
 
@@ -347,7 +359,7 @@ export default class DialogArticleEditor extends React.Component {
 																			labelWidth={2}
 																			label={"H1"}
 																			value={item.content}
-																			onBlur={(v) => this.updateComponent(index, "content", v)}
+																			onBlur={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																	{item.type === "TITLE2"
@@ -355,7 +367,7 @@ export default class DialogArticleEditor extends React.Component {
 																			labelWidth={2}
 																			label={"H2"}
 																			value={item.content}
-																			onBlur={(v) => this.updateComponent(index, "content", v)}
+																			onBlur={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																	{item.type === "PARAGRAPH"
@@ -364,7 +376,7 @@ export default class DialogArticleEditor extends React.Component {
 																			label={<i className="fas fa-align-left"/>}
 																			labelWidth={2}
 																			value={item.content}
-																			onChange={(v) => this.updateComponent(index, "content", v)}
+																			onChange={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																	{item.type === "IMAGE"
@@ -374,7 +386,7 @@ export default class DialogArticleEditor extends React.Component {
 																				label={<i className="fas fa-image"/>}
 																				labelWidth={2}
 																				value={item.content}
-																				onChange={(v) => this.updateComponent(index, "content", v)}
+																				onChange={(v) => this.updateComponent(item.i, "content", v)}
 																				onLoad={this.resizeBoxes}
 																			/>
 																		</div>
@@ -385,7 +397,7 @@ export default class DialogArticleEditor extends React.Component {
 																			label={<i className="fab fa-youtube"/>}
 																			labelWidth={2}
 																			value={item.content}
-																			onChange={(v) => this.updateComponent(index, "content", v)}
+																			onChange={(v) => this.updateComponent(item.i, "content", v)}
 																		/>
 																		: ""}
 																</div>
@@ -433,7 +445,9 @@ export default class DialogArticleEditor extends React.Component {
 										</div>
 
 										{this.state.content !== null
-											&& this.state.content.map((item) => getContentFromBlock(item))
+											&& this.state.content
+												.sort((first, second) => first.y - second.y)
+												.map((item) => getContentFromBlock(item))
 										}
 
 										{this.state.content === null
