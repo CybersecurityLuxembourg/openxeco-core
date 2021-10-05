@@ -36,14 +36,15 @@ class UpdateMyArticle(MethodResource, Resource):
              "403.1": {"description": "The article edition is deactivated"},
              "403.2": {"description": "The article type is not allowed"},
              "422.1": {"description": "Object not found : Article"},
-             "422.2": {"description": "Article has no company assigned"},
-             "422.3": {"description": "Article has too much companies assigned"},
-             "422.4": {"description": "The user is not assign to the company"},
-             "422.5": {"description": "The article handle is already used"},
-             "422.6": {"description": "The article status can't be set to 'PUBLIC'"},
-             "422.7": {"description": "The article status can't be set to 'UNDER REVIEW'"},
-             "422.8": {"description": "Impossible to read the image"},
-             "422.9": {"description": "Image width and height can't be bigger than 500 pixels"},
+             "422.2": {"description": "The article can only be modified by an admin"},
+             "422.3": {"description": "The article has no company assigned"},
+             "422.4": {"description": "The article has too much companies assigned"},
+             "422.5": {"description": "The user is not assign to the company"},
+             "422.6": {"description": "The article handle is already used"},
+             "422.7": {"description": "The article status can't be set to 'PUBLIC'"},
+             "422.8": {"description": "The article status can't be set to 'UNDER REVIEW'"},
+             "422.9": {"description": "Impossible to read the image"},
+             "422.10": {"description": "Image width and height can't be bigger than 500 pixels"},
              "500": {"description": "An error occurred while saving the file"},
          })
     @use_kwargs({
@@ -80,13 +81,20 @@ class UpdateMyArticle(MethodResource, Resource):
         if len(articles) < 1:
             raise ObjectNotFound("Article")
 
+        # Check if the article is not managed by an admin
+
+        if articles[0].is_created_by_admin:
+            return "", "422 The article can only be modified by an admin"
+
+        # Check the company of the article
+
         article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["id"]})
 
         if len(article_companies) < 1:
-            return "", "422 Article has no company assigned"
+            return "", "422 The article has no company assigned"
 
         if len(article_companies) > 1:
-            return "", "422 Article has too much companies assigned"
+            return "", "422 The article has too much companies assigned"
 
         # Check right of the user
 
