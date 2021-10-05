@@ -1,5 +1,6 @@
 import React from "react";
 import "./PageLogoGenerator.css";
+import ReactToPdf from "react-to-pdf";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../utils/request.jsx";
 import { getApiURL } from "../utils/env.jsx";
@@ -514,20 +515,58 @@ export default class PageLogoGenerator extends React.Component {
 						<div className={"row"}>
 							{this.state.canvas.map((c) => <div
 								key={c.id + "-" + i}
+								ref={c.id + "-" + i}
 								className="col-md-4 PageLogoGenerator-canvas-wrapper">
 								<h3>{c.width}x{c.height}</h3>
-								<canvas
-									id={c.id + "-" + i}
-									className="PageLogoGenerator-canvas"
-								/>
-								<button
-									onClick={() => {
-										const canvas = document.getElementById(c.id + "-" + i);
-										const dataURL = canvas.toDataURL("image/png");
-										window.open(dataURL);
-									}}>
-									Save image
-								</button>
+								<div>
+									<canvas
+										id={c.id + "-" + i}
+										className="PageLogoGenerator-canvas"
+									/>
+								</div>
+								<div>
+									<a
+										className={"PageLogoGenerator-download-link"}
+										download={c.id + "-" + i + ".png"}
+										href=""
+										onClick={(el) => {
+											const canvas = document.getElementById(c.id + "-" + i);
+											const dataURL = canvas.toDataURL("image/png");
+											// eslint-disable-next-line no-param-reassign
+											el.href = dataURL;
+										}}>
+										PNG
+									</a>
+									<a
+										className={"PageLogoGenerator-download-link"}
+										download={c.id + "-" + i + ".jpg"}
+										href=""
+										onClick={(el) => {
+											const canvas = document.getElementById(c.id + "-" + i);
+											const dataURL = canvas.toDataURL("image/jpg");
+											// eslint-disable-next-line no-param-reassign
+											el.href = dataURL;
+										}}>
+										JPG
+									</a>
+									<ReactToPdf
+										targetRef={c.id + "-" + i}
+										filename={c.id + "-" + i + ".jpg"}
+										options={{}}
+										x={0.5}
+										y={0.5}
+										scale={0.8}>
+										{({ toPdf }) => (
+											<a
+												className={"PageLogoGenerator-download-link"}
+												download={c.id + "-" + i + ".pdf"}
+												href=""
+												onClick={toPdf}>
+												PDF
+											</a>
+										)}
+									</ReactToPdf>
+								</div>
 							</div>)}
 						</div>
 					</div>)}
@@ -592,14 +631,49 @@ export default class PageLogoGenerator extends React.Component {
 															id={c.id + "-" + i}
 															className="PageLogoGenerator-canvas"
 														/>
-														<button
-															onClick={() => {
-																const canvas = document.getElementById(c.id + "-" + i);
-																const dataURL = canvas.toDataURL("image/png");
-																window.open(dataURL);
-															}}>
-															Save image
-														</button>
+														<div>
+															<a
+																className={"PageLogoGenerator-download-link"}
+																download={c.id + "-" + i + ".png"}
+																href=""
+																onClick={(el) => {
+																	const canvas = document.getElementById(c.id + "-" + i);
+																	const dataURL = canvas.toDataURL("image/png");
+																	// eslint-disable-next-line no-param-reassign
+																	el.href = dataURL;
+																}}>
+																PNG
+															</a>
+															<a
+																className={"PageLogoGenerator-download-link"}
+																download={c.id + "-" + i + ".jpg"}
+																href=""
+																onClick={(el) => {
+																	const canvas = document.getElementById(c.id + "-" + i);
+																	const dataURL = canvas.toDataURL("image/jpg");
+																	// eslint-disable-next-line no-param-reassign
+																	el.href = dataURL;
+																}}>
+																JPG
+															</a>
+															<ReactToPdf
+																targetRef={c.id + "-" + i}
+																filename={c.id + "-" + i + ".jpg"}
+																options={{}}
+																x={0.5}
+																y={0.5}
+																scale={0.8}>
+																{({ toPdf }) => (
+																	<a
+																		className={"PageLogoGenerator-download-link"}
+																		download={c.id + "-" + i + ".pdf"}
+																		href=""
+																		onClick={toPdf}>
+																		PDF
+																	</a>
+																)}
+															</ReactToPdf>
+														</div>
 													</div>)}
 												</div>
 											</div>)}
