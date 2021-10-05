@@ -397,6 +397,11 @@ textarea {
   background-color: #e40613 !important;
 }
 
+.notification-container {
+	pointer-events: none;
+	opacity: 0.7;
+}
+
 /* BADGE */
 
 .Badge {
