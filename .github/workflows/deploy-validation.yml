@@ -24,7 +24,6 @@ jobs:
       run: sudo cp -R ./ /var/www/bo-api
 
     - name: cache python venv
-      working-directory: /var/www/bo-api
       uses: actions/cache@v2
       with:
         path: venv
@@ -42,6 +41,7 @@ jobs:
         . ./venv/bin/activate
         pip3 install -U pip setuptools
         pip3 install -r requirements.txt
+
     - name: show built content
       run: find .
 
