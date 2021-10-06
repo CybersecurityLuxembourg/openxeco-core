@@ -41,9 +41,11 @@ class GetRelatedArticles(MethodResource, Resource):
         # Fetch all the related articles
 
         company_tags = [t.company for t in self.db.get(act, {"article": article[0].id})]
-        company_tag_articles = [t.article for t in self.db.get(act, {"company": company_tags})]
+        company_tag_articles = [] if len(company_tags) == 0 \
+            else [t.article for t in self.db.get(act, {"company": company_tags})]
         taxonomy_tags = [t.taxonomy_value for t in self.db.get(att, {"article": article[0].id})]
-        taxonomy_tag_articles = [t.article for t in self.db.get(att, {"taxonomy_value": taxonomy_tags})]
+        taxonomy_tag_articles = [] if len(taxonomy_tags) == 0 \
+            else [t.article for t in self.db.get(att, {"taxonomy_value": taxonomy_tags})]
 
         article_ids = list(set(company_tag_articles + taxonomy_tag_articles))
 

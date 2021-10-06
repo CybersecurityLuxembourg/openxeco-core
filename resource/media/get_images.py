@@ -7,7 +7,6 @@ from webargs import fields, validate
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 
 
@@ -26,11 +25,11 @@ class GetImages(MethodResource, Resource):
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'logo_only': fields.Bool(required=False),
+        'is_in_generator': fields.Bool(required=False),
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
         'search': fields.Str(required=False),
     }, location="query")
     @jwt_required
-    @verify_admin_access
     @catch_exception
     def get(self, **kwargs):
 

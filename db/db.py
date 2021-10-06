@@ -97,6 +97,8 @@ class DB:
         for attr, value in filters.items():
             if isinstance(value, list):
                 q = q.filter(getattr(table, attr).in_(value))
+            elif isinstance(value, bool):
+                q = q.filter(getattr(table, attr).is_(value))
             else:
                 q = q.filter(getattr(table, attr) == value)
 
@@ -188,10 +190,10 @@ class DB:
 
             query = query.filter(self.tables["Company"].id.in_(assigned_company))
 
-        if "startup_only" in filters and filters['startup_only'] == "true":
+        if "startup_only" in filters and filters['startup_only'] is True:
             query = query.filter(self.tables["Company"].is_startup.is_(True))
 
-        if "corebusiness_only" in filters and filters['corebusiness_only'] == "true":
+        if "corebusiness_only" in filters and filters['corebusiness_only'] is True:
             query = query.filter(self.tables["Company"].is_cybersecurity_core_business.is_(True))
 
         if "taxonomy_values" in filters:
@@ -244,10 +246,13 @@ class DB:
         if "media" in filters:
             query = query.filter(self.tables["Article"].media.in_(["ALL", filters["media"]]))
 
-        if "public_only" in filters and filters["public_only"] == "true":
+        if "public_only" in filters and filters["public_only"] is True:
             query = query.filter(self.tables["Article"].handle.isnot(None))
             query = query.filter(self.tables["Article"].status == "PUBLIC")
             query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
+
+        if "is_created_by_admin" in filters:
+            query = query.filter(self.tables["Article"].is_created_by_admin.is_(filters["is_created_by_admin"]))
 
         if "taxonomy_values" in filters:
             tmp_taxonomy_values = filters["taxonomy_values"] if isinstance(filters["taxonomy_values"], list) \
@@ -290,7 +295,7 @@ class DB:
 
             query = query.filter(self.tables["Article"].id.in_(article_filtered_by_companies))
 
-        if "editable" in filters and filters["editable"] == "true":
+        if "editable" in filters and filters["editable"] is True:
             assignment_subquery = self.session \
                 .query(self.tables["UserCompanyAssignment"]) \
                 .with_entities(self.tables["UserCompanyAssignment"].company_id) \
@@ -392,6 +397,9 @@ class DB:
                 .subquery()
 
             query = query.filter(self.tables["Image"].id.in_(company_image_ids))
+
+        if "is_in_generator" in filters:
+            query = query.filter(self.tables["Image"].is_in_generator.is_(filters["is_in_generator"]))
 
         if "search" in filters and len(filters["search"]) > 0:
             words = filters["search"].split(" ")

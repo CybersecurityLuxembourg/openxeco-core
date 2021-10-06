@@ -27,6 +27,7 @@ class GetArticles(MethodResource, Resource):
         'type': fields.DelimitedList(fields.Str(), required=False),
         'status': fields.Str(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'is_created_by_admin': fields.Bool(required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access

@@ -15,7 +15,7 @@ class GetNotifications(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @doc(tags=['analytic'],
+    @doc(tags=['notification'],
          description='Get number of requests with a NEW status and number of data control result',
          responses={
              "200": {},

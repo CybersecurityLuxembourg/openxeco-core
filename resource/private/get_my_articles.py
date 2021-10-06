@@ -33,7 +33,8 @@ class GetMyArticles(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        kwargs["editable"] = "true"
+        kwargs["editable"] = True
+        kwargs["is_created_by_admin"] = False
 
         query = self.db.get_filtered_article_query(kwargs, get_jwt_identity())
         paginate = query.paginate(kwargs["page"], kwargs["per_page"])

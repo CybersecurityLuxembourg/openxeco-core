@@ -26,11 +26,12 @@ class GetPublicArticles(MethodResource, Resource):
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'companies': fields.DelimitedList(fields.Int(), required=False),
         'include_tags': fields.Bool(required=False),
+        'is_created_by_admin': fields.Bool(required=False),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
 
-        kwargs["public_only"] = "true"
+        kwargs["public_only"] = True
 
         query = self.db.get_filtered_article_query(kwargs)
         paginate = query.paginate(kwargs["page"], kwargs["per_page"])

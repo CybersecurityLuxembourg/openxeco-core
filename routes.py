@@ -6,6 +6,7 @@ from resource.account.forgot_password import ForgotPassword
 from resource.account.login import Login
 from resource.account.refresh import Refresh
 from resource.account.reset_password import ResetPassword
+from resource.analytics.get_ecosystem_activity import GetEcosystemActivity
 from resource.article.copy_article_version import CopyArticleVersion
 from resource.article.get_articles import GetArticles
 from resource.article.get_article import GetArticle
@@ -29,8 +30,7 @@ from resource.address.get_all_addresses import GetAllAddresses
 from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
 from resource.address.update_address import UpdateAddress
-from resource.analytic.get_global_analytics import GetGlobalAnalytics
-from resource.analytic.get_notifications import GetNotifications
+from resource.notification.get_notifications import GetNotifications
 from resource.company.extract_companies import ExtractCompanies
 from resource.company.get_companies import GetCompanies
 from resource.company.get_company import GetCompany

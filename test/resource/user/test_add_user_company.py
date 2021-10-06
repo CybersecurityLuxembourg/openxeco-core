@@ -20,7 +20,6 @@ class TestAddUserCompany(BaseCase):
 
         assignments = self.db.get(self.db.tables["UserCompanyAssignment"])
 
-        print(response.status)
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(assignments), 1)
 
