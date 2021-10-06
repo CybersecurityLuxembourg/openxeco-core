@@ -37,10 +37,10 @@ jobs:
     - name: install requirements
       working-directory: /var/www/bo-api
       run: |
-        python3 -m venv venv
+        sudo python3 -m venv venv
         . ./venv/bin/activate
-        pip3 install -U pip setuptools
-        pip3 install -r requirements.txt
+        sudo pip3 install -U pip setuptools
+        sudo pip3 install -r requirements.txt
 
     - name: show built content
       run: find .
