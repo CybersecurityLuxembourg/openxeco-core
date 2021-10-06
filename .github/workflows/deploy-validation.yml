@@ -26,7 +26,7 @@ jobs:
     - name: cache python venv
       uses: actions/cache@v2
       with:
-        path: venv
+        path: /var/www/bo-api/venv
         key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-venv-
@@ -38,7 +38,7 @@ jobs:
       working-directory: /var/www/bo-api
       run: |
         sudo python3 -m venv venv
-        source venv/bin/activate
+        sudo source venv/bin/activate
         sudo pip install -r requirements.txt
 
     - name: show built content
