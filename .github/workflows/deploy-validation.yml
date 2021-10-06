@@ -14,15 +14,15 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: cache python venv
-        uses: actions/cache@v2
-        with:
-          path: venv
-          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-venv-
+    - name: cache python venv
+      uses: actions/cache@v2
+      with:
+        path: venv
+        key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-venv-
 
     - name: install venv
       run: sudo apt-get update && sudo apt-get install -y --no-install-recommends python3 python3-venv
