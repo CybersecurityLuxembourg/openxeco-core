@@ -56,4 +56,4 @@ jobs:
 
     - name: rsync
       working-directory: /var/www/bo-api
-      run: rsync -r --exclude=.git --exclude=.gitignore --exclude=.github --exclude=config/config.py ./ boapi@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
+      run: rsync -r --delete --exclude=.git --exclude=.gitignore --exclude=.github --exclude=config/config.py ./ boapi@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
