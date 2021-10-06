@@ -14,37 +14,28 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - name: Create target directory
-      run: |
-        sudo mkdir /var/www/bo-api
-        sudo chown runner /var/www/bo-api
+      - uses: actions/checkout@v2
 
-    - uses: actions/checkout@v2
-
-    - name: Copy project to target dir
-      run: |
-        sudo cp -R ./ /var/www/bo-api
-
-    - name: cache python venv
-      uses: actions/cache@v2
-      with:
-        path: /var/www/bo-api/venv
-        key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-venv-
+      - name: cache python venv
+        uses: actions/cache@v2
+        with:
+          path: venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-venv-
 
     - name: install venv
       run: sudo apt-get update && sudo apt-get install -y --no-install-recommends python3 python3-venv
 
     - name: install requirements
-      working-directory: /var/www/bo-api
       run: |
-        sudo python3 -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
+        python3 -m venv venv
+        . ./venv/bin/activate
+        pip3 install -U pip setuptools
+        pip3 install -r requirements.txt
 
     - name: show built content
-      run: find /var/www/bo-api/
+      run: find .
 
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
@@ -56,5 +47,4 @@ jobs:
       run: ssh-keyscan -H ${{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
 
     - name: rsync
-      working-directory: /var/www/bo-api
       run: rsync -r --delete --exclude=.git --exclude=.gitignore --exclude=.github --exclude=config/config.py ./ boapi@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
