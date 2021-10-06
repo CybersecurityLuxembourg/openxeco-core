@@ -37,6 +37,7 @@ jobs:
     - name: install requirements
       working-directory: /var/www/bo-api
       run: |
+        whoami
         sudo python3 -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
