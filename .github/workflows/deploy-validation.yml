@@ -16,12 +16,14 @@ jobs:
     steps:
     - name: Create target directory
       run: |
-          sudo mkdir /var/www/bo-api
+        sudo mkdir /var/www/bo-api
+        sudo chown runner /var/www/bo-api
 
     - uses: actions/checkout@v2
 
     - name: Copy project to target dir
-      run: sudo cp -R ./ /var/www/bo-api
+      run: |
+        sudo cp -R ./ /var/www/bo-api
 
     - name: cache python venv
       uses: actions/cache@v2
@@ -37,7 +39,6 @@ jobs:
     - name: install requirements
       working-directory: /var/www/bo-api
       run: |
-        whoami
         sudo python3 -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
