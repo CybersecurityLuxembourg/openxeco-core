@@ -23,12 +23,26 @@ jobs:
     - name: Copy project to target dir
       run: sudo cp -R ./ /var/www/bo-api
 
-    - name: Create and install venv
+    - name: cache python venv
+      working-directory: /var/www/bo-api
+      uses: actions/cache@v2
+      with:
+        path: venv
+        key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-venv-
+    - name: install venv
+      run: sudo apt-get update && sudo apt-get install -y --no-install-recommends python3 python3-venv
+
+    - name: install requirements
       working-directory: /var/www/bo-api
       run: |
-          sudo python3 -m venv venv
-          source venv/bin/activate
-          sudo pip install -r requirements.txt
+        python3 -m venv venv
+        . ./venv/bin/activate
+        pip3 install -U pip setuptools
+        pip3 install -r requirements.txt
+    - name: show built content
+      run: find .
 
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
@@ -37,16 +51,8 @@ jobs:
         known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
 
     - name: Adding Known Hosts
-      run: ssh-keyscan -H ${{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
+      run: ssh-keyscan -H {{ secrets.VALIDATION_ENV_HOST }} >> ~/.ssh/known_hosts
 
-    - name: Display context
+    - name: rsync
       working-directory: /var/www/bo-api
-      run: |
-          ls
-          pwd
-
-    - name: Deploy with rsync
-      run: rsync -r /var/www/bo-api ${{ secrets.VALIDATION_ENV_USER }}@${{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
-
-    - name: Reload web server
-      run: sudo service apache2 reload
+      run: rsync -r --exclude=.git --exclude=.gitignore --exclude=.github --exclude=config/config.py ./ boapi@{{ secrets.VALIDATION_ENV_HOST }}:/var/www/bo-api
