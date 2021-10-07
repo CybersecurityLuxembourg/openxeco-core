@@ -4,3 +4,7 @@ ALTER TABLE Image ADD COLUMN is_in_generator BOOLEAN NOT NULL DEFAULT FALSE;
 
 ALTER TABLE User ADD COLUMN `sys_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP;
 
+ALTER TABLE TaxonomyCategory ADD COLUMN `active_on_companies` BOOLEAN DEFAULT FALSE;
+ALTER TABLE TaxonomyCategory ADD COLUMN `active_on_articles` BOOLEAN DEFAULT FALSE;
+ALTER TABLE TaxonomyCategory ADD COLUMN `accepted_article_types` VARCHAR(255) DEFAULT NULL;
+ALTER TABLE TaxonomyCategory ADD COLUMN `is_standard` BOOLEAN DEFAULT FALSE;
