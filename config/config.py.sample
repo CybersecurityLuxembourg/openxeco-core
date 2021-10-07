@@ -7,7 +7,7 @@ JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', "my_$secret_D3v3lop3r_k3Y")
 DB_CONFIG = {
     'drivername': 'mysql+pymysql',
     'username': os.getenv('DB_USERNAME', 'cyberlux'),
-    'password': os.getenv('DB_PASSWORD', 'DBDevSMILE20'),
+    'password': os.getenv('DB_PASSWORD', 's0mething_mor3_complex_here!!'),
     'host': os.getenv('DB_HOSTNAME', 'localhost'),
     'port': os.getenv('DB_PORT', '3306'),
     'database': os.getenv('DB_NAME', 'CYBERLUX'),
@@ -22,11 +22,6 @@ MAIL_USE_SSL = os.getenv('MAIL_USE_SSL', "False")
 MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "mail@address.com")
 
 IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', "/tmp/image_folder")
-
-JOBADDER_CLIENT_ID = os.getenv('JOBADDER_CLIENT_ID', "See JobAdder account")
-JOBADDER_CLIENT_SECRET = os.getenv('JOBADDER_CLIENT_SECRET', "See JobAdder account")
-JOBADDER_REFRESH_TOKEN = os.getenv('JOBADDER_REFRESH_TOKEN', None)
-JOBADDER_ACCESS_TOKEN = os.getenv('JOBADDER_ACCESS_TOKEN', None)
 
 CORS_ORIGINS = {
     'dev': ['localhost:*'],
