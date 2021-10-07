@@ -16,6 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Create user
+--
+
+CREATE USER 'cyberlux'@'localhost' IDENTIFIED BY 's0mething_mor3_complex_here!!';
+GRANT SELECT, INSERT, UPDATE, DELETE ON CYBERLUX.* TO 'cyberlux'@'localhost';
+
+--
 -- Current Database: `CYBERLUX`
 --
 
