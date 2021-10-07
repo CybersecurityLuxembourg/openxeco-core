@@ -89,12 +89,10 @@ class UpdateMyArticle(MethodResource, Resource):
         # Check the company of the article
 
         article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["id"]})
+        ret = self.check_article_companies(article_companies)
 
-        if len(article_companies) < 1:
-            return "", "422 The article has no company assigned"
-
-        if len(article_companies) > 1:
-            return "", "422 The article has too much companies assigned"
+        if ret is not None:
+            return ret
 
         # Check right of the user
 
@@ -108,29 +106,30 @@ class UpdateMyArticle(MethodResource, Resource):
 
         # Valid values of properties
 
-        if "type" in kwargs:
-            type_setting = [s for s in settings if s.property == "AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM"]
+        ret = self.check_property_values(kwargs, settings, review_setting)
 
-            if len(type_setting) < 1 or kwargs["type"] not in type_setting[0].value.split(","):
-                raise ArticleTypeNotAllowed()
-
-        if "handle" in kwargs:
-            articles_with_same_handle = self.db.get(self.db.tables["Article"], {"handle": kwargs["handle"]})
-
-            if len(articles_with_same_handle) > 0:
-                return "", "422 The article handle is already used"
-
-        if "status" in kwargs:
-            if (len(review_setting) == 0 or review_setting[0].value != "TRUE") and kwargs["status"] == "PUBLIC":
-                return "", "422 The article status can't be set to 'PUBLIC'"
-
-            if len(review_setting) > 0 and review_setting[0].value == "TRUE" and kwargs["status"] == "UNDER REVIEW":
-                return "", "422 The article status can't be set to 'UNDER REVIEW'"
+        if ret is not None:
+            return ret
 
         # Save image
 
-        if "image" in kwargs and kwargs["image"] is not None:
+        ret = self.save_image(kwargs)
 
+        if ret is not None:
+            return ret
+
+        # Modify article
+
+        if len(review_setting) == 0 or review_setting[0].value != "TRUE":
+            if articles[0].status == "PUBLIC":
+                kwargs["status"] = "UNDER REVIEW"
+
+        self.db.merge(kwargs, self.db.tables["Article"])
+
+        return "", "200 "
+
+    def save_image(self, kwargs):
+        if "image" in kwargs and kwargs["image"] is not None:
             # Verify the image
 
             try:
@@ -181,16 +180,38 @@ class UpdateMyArticle(MethodResource, Resource):
                 traceback.print_exc()
                 raise ErrorWhileSavingFile
 
-            # Update article object
-
             kwargs["image"] = image_object.id
 
-        # Modify article
+        return None
 
-        if len(review_setting) == 0 or review_setting[0].value != "TRUE":
-            if articles[0].status == "PUBLIC":
-                kwargs["status"] = "UNDER REVIEW"
+    @staticmethod
+    def check_article_companies(article_companies):
+        if len(article_companies) < 1:
+            return "", "422 The article has no company assigned"
 
-        self.db.merge(kwargs, self.db.tables["Article"])
+        if len(article_companies) > 1:
+            return "", "422 The article has too much companies assigned"
 
-        return "", "200 "
+        return None
+
+    def check_property_values(self, kwargs, settings, review_setting):
+        if "type" in kwargs:
+            type_setting = [s for s in settings if s.property == "AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM"]
+
+            if len(type_setting) < 1 or kwargs["type"] not in type_setting[0].value.split(","):
+                raise ArticleTypeNotAllowed()
+
+        if "handle" in kwargs:
+            articles_with_same_handle = self.db.get(self.db.tables["Article"], {"handle": kwargs["handle"]})
+
+            if len(articles_with_same_handle) > 0:
+                return "", "422 The article handle is already used"
+
+        if "status" in kwargs:
+            if (len(review_setting) == 0 or review_setting[0].value != "TRUE") and kwargs["status"] == "PUBLIC":
+                return "", "422 The article status can't be set to 'PUBLIC'"
+
+            if len(review_setting) > 0 and review_setting[0].value == "TRUE" and kwargs["status"] == "UNDER REVIEW":
+                return "", "422 The article status can't be set to 'UNDER REVIEW'"
+
+        return None
