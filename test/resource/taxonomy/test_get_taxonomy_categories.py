@@ -13,8 +13,20 @@ class TestGetTaxonomyCategories(BaseCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual([
-            {'name': 'CAT1'},
-            {'name': 'CAT2'}
+            {
+                'accepted_article_types': None,
+                'active_on_articles': 0,
+                'active_on_companies': 0,
+                'is_standard': 0,
+                'name': 'CAT1'
+            },
+            {
+                'accepted_article_types': None,
+                'active_on_articles': 0,
+                'active_on_companies': 0,
+                'is_standard': 0,
+                'name': 'CAT2'
+            },
         ], response.json)
 
     @BaseCase.login

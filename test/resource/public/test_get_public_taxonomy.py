@@ -14,7 +14,13 @@ class TestGetGlobalAnalytics(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.json, {
             "categories": [
-                {'name': 'ECOSYSTEM ROLE'}
+                {
+                    'name': 'ECOSYSTEM ROLE',
+                    'accepted_article_types': None,
+                    'active_on_articles': 0,
+                    'active_on_companies': 0,
+                    'is_standard': 0,
+                }
             ],
             "values": [
                 {'category': 'ECOSYSTEM ROLE', 'id': 1, 'name': 'ACTOR'}

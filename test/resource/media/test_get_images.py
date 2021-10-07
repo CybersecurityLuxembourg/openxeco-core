@@ -38,6 +38,7 @@ class TestGetImages(BaseCase):
                     'creation_date': date.today().strftime("%Y-%m-%d"),
                     'height': 10,
                     'id': 51,
+                    'is_in_generator': 0,
                     'keywords': None,
                     'thumbnail': '',
                     'width': 10
@@ -46,6 +47,7 @@ class TestGetImages(BaseCase):
                     'creation_date': (date.today() - timedelta(1)).strftime("%Y-%m-%d"),
                     'height': 10,
                     'id': 50,
+                    'is_in_generator': 0,
                     'keywords': None,
                     'thumbnail': '',
                     'width': 10
@@ -88,6 +90,7 @@ class TestGetImages(BaseCase):
                     'creation_date': date.today().strftime("%Y-%m-%d"),
                     'height': 10,
                     'id': 50,
+                    'is_in_generator': 0,
                     'keywords': None,
                     'thumbnail': '',
                     'width': 10
@@ -128,6 +131,7 @@ class TestGetImages(BaseCase):
                     'creation_date': (date.today() - timedelta(1)).strftime("%Y-%m-%d"),
                     'height': 10,
                     'id': 50,
+                    'is_in_generator': 0,
                     'keywords': None,
                     'thumbnail': '',
                     'width': 10
@@ -136,6 +140,7 @@ class TestGetImages(BaseCase):
                     'creation_date': date.today().strftime("%Y-%m-%d"),
                     'height': 10,
                     'id': 51,
+                    'is_in_generator': 0,
                     'keywords': None,
                     'thumbnail': '',
                     'width': 10
@@ -186,6 +191,7 @@ class TestGetImages(BaseCase):
                     'creation_date': date.today().strftime("%Y-%m-%d"),
                     'height': 10,
                     'id': 52,
+                    'is_in_generator': 0,
                     'keywords': "green compass",
                     'thumbnail': '',
                     'width': 10
@@ -194,6 +200,7 @@ class TestGetImages(BaseCase):
                     'creation_date': (date.today() - timedelta(1)).strftime("%Y-%m-%d"),
                     'height': 10,
                     'id': 50,
+                    'is_in_generator': 0,
                     'keywords': None,
                     'thumbnail': '',
                     'width': 10

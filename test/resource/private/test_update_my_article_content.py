@@ -133,7 +133,7 @@ class TestUpdateMyArticleContent(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 Article has no company assigned", response.status)
+        self.assertEqual("422 The article has no company assigned", response.status)
 
     @BaseCase.login
     def test_ko_article_too_much_company_assigned(self, token):
@@ -155,7 +155,7 @@ class TestUpdateMyArticleContent(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 Article has too much companies assigned", response.status)
+        self.assertEqual("422 The article has too much companies assigned", response.status)
 
     @BaseCase.login
     def test_ko_user_not_assigned_to_company(self, token):
