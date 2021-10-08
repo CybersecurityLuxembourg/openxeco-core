@@ -33,7 +33,7 @@ export default function Table({
 	);
 
 	return (
-		<div>
+		<div className="Table">
 			<table {...getTableProps()}>
 				<thead>
 					{headerGroups.map((headerGroup, i) => (
