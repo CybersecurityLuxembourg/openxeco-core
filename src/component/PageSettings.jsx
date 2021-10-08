@@ -19,7 +19,7 @@ export default class PageSettings extends React.Component {
 		return (
 			<div id="PageSettings" className="page max-sized-page">
 				<Tab
-					menu={["Global", "Taxonomy", "Mail", "Scheduled task"]}
+					menu={["Global", "Mail", "Scheduled task"]}
 					content={[
 						<SettingGlobal
 							key={"global"}
