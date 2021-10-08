@@ -259,67 +259,69 @@ export default class CompanyTaxonomy extends React.Component {
 					<h2>Taxonomy</h2>
 				</div>
 				<div className="col-md-12">
-					{this.getChildCategories().map((c) => (
-						<div className={"row row-spaced"} key={c.name}>
-							<div
-								className="col-md-12"
-								style={{ height: 200 + 200 * this.getLevelsOfCategory(c.name).length }}>
-								<h3>{c.name}</h3>
-								<Tree
-									data={this.getTreeData(c.name)}
-									zoom={0.7}
-									enableLegacyTransition={true}
-									transitionDuration={0}
-									translate={{
-										x: 100,
-										y: (200 + 200 * this.getLevelsOfCategory(c.name).length) / 2,
-									}}
-									separation={{
-										siblings: 0.17,
-										nonSiblings: 0.3,
-									}}
-									nodeSize={{
-										y: 140,
-										x: 300,
-									}}
-									textLayout={{
-										x: 20,
-										y: 0,
-										transform: "string",
-									}}
-									styles={{
-										links: {
-											stroke: "lightgrey",
-											strokeWidth: 2,
-										},
-										nodes: {
-											node: {
-												circle: {
-													stroke: "lightgrey",
-													fill: "lightgrey",
-												},
-												name: {
-													stroke: "gray",
-												},
-												attributes: {},
+					{this.getChildCategories()
+						.filter((c) => c.active_on_companies)
+						.map((c) => (
+							<div className={"row row-spaced"} key={c.name}>
+								<div
+									className="col-md-12"
+									style={{ height: 200 + 200 * this.getLevelsOfCategory(c.name).length }}>
+									<h3>{c.name}</h3>
+									<Tree
+										data={this.getTreeData(c.name)}
+										zoom={0.7}
+										enableLegacyTransition={true}
+										transitionDuration={0}
+										translate={{
+											x: 100,
+											y: (200 + 200 * this.getLevelsOfCategory(c.name).length) / 2,
+										}}
+										separation={{
+											siblings: 0.17,
+											nonSiblings: 0.3,
+										}}
+										nodeSize={{
+											y: 140,
+											x: 300,
+										}}
+										textLayout={{
+											x: 20,
+											y: 0,
+											transform: "string",
+										}}
+										styles={{
+											links: {
+												stroke: "lightgrey",
+												strokeWidth: 2,
 											},
-											leafNode: {
-												circle: {
-													stroke: "lightgrey",
-													fill: "lightgrey",
+											nodes: {
+												node: {
+													circle: {
+														stroke: "lightgrey",
+														fill: "lightgrey",
+													},
+													name: {
+														stroke: "gray",
+													},
+													attributes: {},
 												},
-												name: {
-													stroke: "gray",
+												leafNode: {
+													circle: {
+														stroke: "lightgrey",
+														fill: "lightgrey",
+													},
+													name: {
+														stroke: "gray",
+													},
+													attributes: {},
 												},
-												attributes: {},
 											},
-										},
-									}}
-									onClick={(i, e) => this.onNodeClick(i, e)}
-								/>
+										}}
+										onClick={(i, e) => this.onNodeClick(i, e)}
+									/>
+								</div>
 							</div>
-						</div>
-					))}
+						))}
 				</div>
 			</div>
 		);

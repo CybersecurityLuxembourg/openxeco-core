@@ -19,6 +19,7 @@ export default class ArticleTag extends React.Component {
 		this.state = {
 			companies: null,
 			taxonomyValues: null,
+			taxonomyCategories: null,
 			selectedCompanies: null,
 			selectedTaxonomyValues: null,
 		};
@@ -61,6 +62,7 @@ export default class ArticleTag extends React.Component {
 		this.setState({
 			companies: null,
 			taxonomyValues: null,
+			taxonomyCategories: null,
 			selectedCompanies: null,
 			selectedTaxonomyValues: null,
 		});
@@ -68,6 +70,16 @@ export default class ArticleTag extends React.Component {
 		getRequest.call(this, "taxonomy/get_taxonomy_values", (data) => {
 			this.setState({
 				taxonomyValues: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+
+		getRequest.call(this, "taxonomy/get_taxonomy_categories", (data) => {
+			this.setState({
+				taxonomyCategories: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -165,6 +177,15 @@ export default class ArticleTag extends React.Component {
 		});
 	}
 
+	getTaxonomyValuesForArticles() {
+		const acceptedCategories = this.state.taxonomyCategories
+			.filter((c) => c.active_on_articles)
+			.map((c) => c.name);
+
+		return this.state.taxonomyValues
+			.filter((v) => acceptedCategories.indexOf(v.category) >= 0);
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -181,13 +202,13 @@ export default class ArticleTag extends React.Component {
 					<div className={"row row-spaced"}>
 						<div className="col-md-6">
 							<h3>Taxonomy tags</h3>
-							{this.state.taxonomyValues !== null
+							{this.state.taxonomyValues && this.state.taxonomyCategories
 								? <FormLine
 									label={"Add taxonomy value"}
 									type={"multiselect"}
 									fullWidth={true}
 									value={this.state.selectedTaxonomyValues}
-									options={this.state.taxonomyValues
+									options={this.getTaxonomyValuesForArticles()
 										.map((v) => ({ label: v.category + " - " + v.name, value: v.id }))}
 									onChange={(v) => this.changeState("selectedTaxonomyValues", v)}
 								/>
