@@ -49,6 +49,10 @@ export default class DashboardEcosystem extends React.Component {
 
 			let concernedCategories = concernedValues.map((v) => v.category);
 			concernedCategories = [...new Set(concernedCategories)];
+			concernedCategories = this.props.analytics.taxonomy_categories
+				.filter((c) => c.active_on_companies)
+				.filter((c) => concernedCategories.indexOf(c.name) >= 0)
+				.map((c) => c.name);
 
 			return concernedCategories;
 		}
