@@ -1,16 +1,16 @@
 import React from "react";
-import "./SettingTaxonomy.css";
+import "./PageTaxonomy.css";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Loading from "../box/Loading.jsx";
-import Message from "../box/Message.jsx";
-import Table from "../table/Table.jsx";
-import { getRequest, postRequest } from "../../utils/request.jsx";
-import FormLine from "../button/FormLine.jsx";
-import CheckBox from "../button/CheckBox.jsx";
-import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import Loading from "./box/Loading.jsx";
+import Message from "./box/Message.jsx";
+import Table from "./table/Table.jsx";
+import { getRequest, postRequest } from "../utils/request.jsx";
+import FormLine from "./button/FormLine.jsx";
+import CheckBox from "./button/CheckBox.jsx";
+import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
 
-export default class SettingTaxonomy extends React.Component {
+export default class PageTaxonomy extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -456,7 +456,7 @@ export default class SettingTaxonomy extends React.Component {
 		];
 
 		return (
-			<div id="SettingCompanyValues" className="max-sized-page fade-in">
+			<div id="PageTaxonomy" className="page max-sized-page">
 				<div className={"row"}>
 					<div className="col-md-12">
 						<h1>Taxonomy</h1>

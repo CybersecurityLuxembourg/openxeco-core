@@ -33,3 +33,10 @@ nav i {
 	top: 23px;
 	right: 10px;
 }
+
+.Menu-divider {
+	margin: 3px 10px;
+	background-color: black;
+    opacity: 0.2;
+	height: 2px;
+}

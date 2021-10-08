@@ -80,6 +80,7 @@ export default class Menu extends React.Component {
 							<Link to="/">Dashboard</Link>
 						</NavText>
 					</NavItem>
+					<div className="Menu-divider"/>
 					<NavItem
 						eventKey="companies"
 						active={this.props.selectedMenu === "companies"}>
@@ -101,6 +102,17 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 					<NavItem
+						eventKey="taxonomy"
+						active={this.props.selectedMenu === "taxonomy"}>
+						<NavIcon>
+							<Link to="/taxonomy"><i className="fas fa-project-diagram" style={{ fontSize: "1.75em" }} /></Link>
+						</NavIcon>
+						<NavText>
+							<Link to="/taxonomy">Taxonomies</Link>
+						</NavText>
+					</NavItem>
+					<div className="Menu-divider"/>
+					<NavItem
 						eventKey="task"
 						active={this.props.selectedMenu === "task"}>
 						<NavIcon>
@@ -121,6 +133,7 @@ export default class Menu extends React.Component {
 							<Link to="/media">Media</Link>
 						</NavText>
 					</NavItem>
+					<div className="Menu-divider"/>
 					<NavItem
 						eventKey="users"
 						active={this.props.selectedMenu === "users"}>
