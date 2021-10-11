@@ -1,5 +1,6 @@
 import React from "react";
 import "./PageTaxonomy.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Loading from "./box/Loading.jsx";
@@ -15,6 +16,7 @@ export default class PageTaxonomy extends React.Component {
 		super(props);
 
 		this.refresh = this.refresh.bind(this);
+		this.getArticleEnums = this.getArticleEnums.bind(this);
 		this.getValues = this.getValues.bind(this);
 		this.getValueHierarchy = this.getValueHierarchy.bind(this);
 		this.addCategory = this.addCategory.bind(this);
@@ -38,11 +40,13 @@ export default class PageTaxonomy extends React.Component {
 			newCategory: null,
 			newParentCategory: null,
 			newChildCategory: null,
+			articleEnums: null,
 		};
 	}
 
 	componentDidMount() {
 		this.refresh();
+		this.getArticleEnums();
 	}
 
 	refresh() {
@@ -75,17 +79,21 @@ export default class PageTaxonomy extends React.Component {
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
 
-		if (this.state.selectedCategory !== null) {
-			this.getValues(this.state.selectedCategory);
-		}
+	getArticleEnums() {
+		getRequest.call(this, "public/get_article_enums", (data) => {
+			this.setState({
+				articleEnums: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	getValues() {
-		this.setState({
-			values: null,
-		});
-
 		getRequest.call(this, "taxonomy/get_taxonomy_values", (data) => {
 			this.setState({
 				values: data,
@@ -170,7 +178,7 @@ export default class PageTaxonomy extends React.Component {
 
 		postRequest.call(this, "taxonomy/update_taxonomy_category", params, () => {
 			this.refresh();
-			nm.info("The value has been deleted");
+			nm.info("The taxonomy has been updated");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -352,6 +360,7 @@ export default class PageTaxonomy extends React.Component {
 						onClick={(v) => this.updateCategory(value.name, "active_on_companies", v)}
 					/>
 				),
+				width: 100,
 			},
 			{
 				id: "123",
@@ -364,11 +373,79 @@ export default class PageTaxonomy extends React.Component {
 						onClick={(v) => this.updateCategory(value.name, "active_on_articles", v)}
 					/>
 				),
+				width: 100,
 			},
-			/* {
-				Header: "Article types",
-				accessor: "accepted_article_types",
-			}, */
+			{
+				id: "129",
+				Header: <div align="center">Article types</div>,
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<Popup
+						trigger={
+							<button
+								className={"small-button PageTaxonomy-Table-button"}
+								disabled={!value.active_on_articles}>
+								{value.accepted_article_types
+									? value.accepted_article_types.split(",").length + " selected"
+									: "All types"
+								}
+							</button>
+						}
+						modal
+					>
+						{(close) => <div className="row">
+							<div className={"col-md-9"}>
+								<h3>Select the type of article concerned by the taxonomy</h3>
+							</div>
+							<div className={"col-md-3"}>
+								<div className="right-buttons">
+									<button
+										className={"grey-background"}
+										data-hover="Close"
+										data-active=""
+										onClick={close}>
+										<span><i className="far fa-times-circle"/></span>
+									</button>
+								</div>
+							</div>
+
+							{this.state.articleEnums && this.state.articleEnums.type
+								? <div className={"col-md-12"}>
+									{this.state.articleEnums.type.map((t) => <FormLine
+										key={value.name + t}
+										label={t}
+										type={"checkbox"}
+										value={value.accepted_article_types
+											&& value.accepted_article_types.includes(t)}
+										onChange={(v) => {
+											const oldValue = value.accepted_article_types || "";
+											let newValue = "";
+
+											if (v) {
+												if (!oldValue.includes(t)) {
+													newValue = oldValue.split(",");
+													newValue.push(t);
+													newValue = newValue.join(",");
+												}
+											} else {
+												newValue = oldValue.split(",");
+												newValue = newValue.filter((w) => w !== t && w.length > 0);
+												newValue = newValue.join(",");
+											}
+
+											this.updateCategory(value.name, "accepted_article_types", newValue);
+										}}
+									/>)}
+								</div>
+								: <Loading
+									height={200}
+								/>
+							}
+						</div>}
+					</Popup>
+				),
+				width: 100,
+			},
 			{
 				id: "125",
 				Header: <div align="center">Standard</div>,
@@ -380,6 +457,7 @@ export default class PageTaxonomy extends React.Component {
 						onClick={(v) => this.updateCategory(value.name, "is_standard", v)}
 					/>
 				),
+				width: 100,
 			},
 			{
 				Header: " ",
@@ -490,6 +568,7 @@ export default class PageTaxonomy extends React.Component {
 								</div>
 								<div className="col-xl-12">
 									<Table
+										keyBase={"Category"}
 										columns={categoryColumns}
 										data={this.state.categories}
 									/>
@@ -533,6 +612,7 @@ export default class PageTaxonomy extends React.Component {
 											</button>
 										</div>
 										<Table
+											keyBase={"CategoryValue"}
 											columns={valueColumns}
 											data={this.state.values
 												.filter((v) => v.category === this.state.selectedCategory)}
@@ -590,6 +670,7 @@ export default class PageTaxonomy extends React.Component {
 								</div>
 								<div className="col-xl-12">
 									<Table
+										keyBase={"CategoryHierarchy"}
 										columns={categoryHierarchyColumns}
 										data={this.state.categoryHierarchy}
 									/>
