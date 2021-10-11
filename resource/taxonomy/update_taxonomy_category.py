@@ -26,7 +26,7 @@ class UpdateTaxonomyCategory(MethodResource, Resource):
         'name': fields.Str(),
         'active_on_companies': fields.Bool(required=False),
         'active_on_articles': fields.Bool(required=False),
-        'accepted_article_types': fields.Bool(required=False, allow_none=True),
+        'accepted_article_types': fields.Str(required=False, allow_none=True),
         'is_standard': fields.Bool(required=False),
     })
     @jwt_required
