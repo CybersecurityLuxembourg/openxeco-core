@@ -26,8 +26,8 @@ class GetCompanies(MethodResource, Resource):
         'name': fields.Str(required=False),
         'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
         'entity_type': fields.DelimitedList(fields.Str(), required=False),
-        'startup_only': fields.Str(required=False, validate=lambda x: x == "true"),
-        'corebusiness_only': fields.Str(required=False, validate=lambda x: x == "true"),
+        'startup_only': fields.Bool(required=False),
+        'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'status': fields.DelimitedList(fields.Str(), required=False),
     }, location="query")
