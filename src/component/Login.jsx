@@ -7,6 +7,7 @@ import { validatePassword } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions, getApiURL } from "../utils/env.jsx";
+import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
 	constructor(props) {
@@ -130,6 +131,8 @@ export default class Login extends React.Component {
 	render() {
 		return (
 			<div id="Login">
+				<Version/>
+
 				<div id="Login-area">
 					<ul className="Login-circles">
 						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
