@@ -225,6 +225,7 @@ CREATE TABLE `Image` (
   `height` int NOT NULL,
   `creation_date` date NOT NULL,
   `keywords` VARCHAR(510) DEFAULT NULL,
+  `is_in_generator` BOOLEAN NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -288,6 +289,10 @@ DROP TABLE IF EXISTS `TaxonomyCategory`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TaxonomyCategory` (
   `name` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active_on_companies` BOOLEAN DEFAULT FALSE,
+  `active_on_articles` BOOLEAN DEFAULT FALSE,
+  `accepted_article_types` VARCHAR(255) DEFAULT NULL,
+  `is_standard` BOOLEAN DEFAULT FALSE,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
