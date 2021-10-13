@@ -194,7 +194,7 @@ export default class PageTaxonomy extends React.Component {
 		postRequest.call(this, "taxonomy/delete_taxonomy_category", params, () => {
 			document.elementFromPoint(100, 0).click();
 			this.refresh();
-			nm.info("The value has been deleted");
+			nm.info("The category has been deleted");
 		}, (response) => {
 			this.refresh();
 			nm.warning(response.statusText);
@@ -213,7 +213,7 @@ export default class PageTaxonomy extends React.Component {
 		postRequest.call(this, "taxonomy/delete_taxonomy_category_hierarchy", params, () => {
 			document.elementFromPoint(100, 0).click();
 			this.refresh();
-			nm.info("The value has been deleted");
+			nm.info("The category hierarchy has been deleted");
 		}, (response) => {
 			this.refresh();
 			nm.warning(response.statusText);
