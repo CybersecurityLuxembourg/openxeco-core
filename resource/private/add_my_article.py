@@ -5,6 +5,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
+from sqlalchemy.exc import IntegrityError
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -28,6 +29,7 @@ class AddMyArticle(MethodResource, Resource):
              "403": {"description": "The article edition is deactivated"},
              "422.1": {"description": "Object not found : Company"},
              "422.2": {"description": "The user is not assign to the company"},
+             "422.3": {"description": "This article seems to already exist"},
          })
     @use_kwargs({
         'title': fields.Str(),
@@ -64,14 +66,20 @@ class AddMyArticle(MethodResource, Resource):
 
         # Insert rows
 
-        article = self.db.insert(
-            {
-                "title": kwargs["title"],
-                "handle": re.sub(r'[^a-z1-9-]', '', kwargs["title"].lower().replace(" ", "-"))[:100],
-                "is_created_by_admin": False,
-            },
-            self.db.tables["Article"]
-        )
+        try:
+            article = self.db.insert(
+                {
+                    "title": kwargs["title"],
+                    "handle": re.sub(r'[^a-z1-9-]', '', kwargs["title"].lower().replace(" ", "-"))[:100],
+                    "is_created_by_admin": False,
+                },
+                self.db.tables["Article"]
+            )
+        except IntegrityError as e:
+            self.db.session.rollback()
+            if "Duplicate entry" in str(e):
+                return "", "422 This article seems to already exist"
+            raise e
 
         self.db.insert(
             {
