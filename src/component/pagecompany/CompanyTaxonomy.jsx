@@ -41,63 +41,18 @@ export default class CompanyTaxonomy extends React.Component {
 				nm.warning("No taxonomy values found");
 			}
 
-			const entityTypeValues = this.state.taxonomy.values
-				.filter((v) => v.category === "ENTITY TYPE");
-			const entityTypeValueIds = entityTypeValues
-				.map((v) => v.id);
+			const parentCategories = this.state.taxonomy.category_hierarchy.map((h) => h.parent_category);
 
-			const companyEntityTypes = this.state.companyTaxonomy
-				.filter((ct) => entityTypeValueIds.indexOf(ct.taxonomy_value) >= 0);
-
-			if (companyEntityTypes.length === 0) {
-				nm.warning("No entity type found for this entity. "
-					+ "Please contact administrators.");
-			} else if (companyEntityTypes.length > 1) {
-				nm.warning("Multiple entity types found for this entity. "
-					+ "Please contact administrators.");
-			} else {
-				const entityTypeValue = entityTypeValues
-					.filter((v) => v.id === companyEntityTypes[0].taxonomy_value)[0];
-
-				switch (entityTypeValue.name) {
-				case "PRIVATE SECTOR":
-					this.setState({
-						categoryOptions:
-							this.state.taxonomy.categories
-								.filter((c) => c.name === "SERVICE GROUP")
-								.map((c) => ({
-									label: c.name,
-									value: c.name,
-								})),
-					});
-					break;
-				case "PUBLIC SECTOR":
-					this.setState({
-						categoryOptions:
-							this.state.taxonomy.categories
-								.filter((c) => c.name === "LEGAL FRAMEWORK")
-								.map((c) => ({
-									label: c.name,
-									value: c.name,
-								})),
-					});
-					break;
-				case "CIVIL SOCIETY":
-					this.setState({
-						categoryOptions:
-							this.state.taxonomy.categories
-								.filter((c) => c.name === "INDUSTRY VERTICAL")
-								.map((c) => ({
-									label: c.name,
-									value: c.name,
-								})),
-					});
-					break;
-				default:
-					nm.warning("No taxonomy available for your entity.");
-					break;
-				}
-			}
+			this.setState({
+				categoryOptions:
+					this.state.taxonomy.categories
+						.filter((c) => c.active_on_companies)
+						.filter((c) => parentCategories.indexOf(c.name) < 0)
+						.map((c) => ({
+							label: c.name,
+							value: c.name,
+						})),
+			});
 		}
 	}
 
