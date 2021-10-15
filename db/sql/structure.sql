@@ -504,3 +504,12 @@ CREATE TABLE `Setting` (
   PRIMARY KEY (`property`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `RssFeed`
+--
+
+DROP TABLE IF EXISTS `RssFeed`;
+CREATE TABLE `RssFeed` (
+	url VARCHAR(255) NOT NULL PRIMARY KEY
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

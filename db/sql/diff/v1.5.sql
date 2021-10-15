@@ -8,3 +8,7 @@ ALTER TABLE TaxonomyCategory ADD COLUMN `active_on_companies` BOOLEAN DEFAULT FA
 ALTER TABLE TaxonomyCategory ADD COLUMN `active_on_articles` BOOLEAN DEFAULT FALSE;
 ALTER TABLE TaxonomyCategory ADD COLUMN `accepted_article_types` VARCHAR(255) DEFAULT NULL;
 ALTER TABLE TaxonomyCategory ADD COLUMN `is_standard` BOOLEAN DEFAULT FALSE;
+
+CREATE TABLE RssFeed (
+	url VARCHAR(255) NOT NULL PRIMARY KEY
+);
