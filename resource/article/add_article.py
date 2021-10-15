@@ -44,4 +44,4 @@ class AddArticle(MethodResource, Resource):
             "is_main": True
         }, self.db.tables["ArticleVersion"])
 
-        return Serializer.serialize(article, self.db.tables["Company"]), "200 "
+        return Serializer.serialize(article, self.db.tables["Article"]), "200 "
