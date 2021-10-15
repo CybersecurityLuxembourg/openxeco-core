@@ -9,6 +9,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils.serializer import Serializer
 
 
 class AddArticle(MethodResource, Resource):
@@ -43,4 +44,4 @@ class AddArticle(MethodResource, Resource):
             "is_main": True
         }, self.db.tables["ArticleVersion"])
 
-        return "", "200 "
+        return Serializer.serialize(article, self.db.tables["Company"]), "200 "
