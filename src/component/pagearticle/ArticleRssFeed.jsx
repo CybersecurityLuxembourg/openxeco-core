@@ -86,7 +86,6 @@ export default class ArticleRssFeed extends React.Component {
 		if (this.state.rssFeeds) {
 			this.setState({ rssArticles: null, requestMessages: [] }, () => {
 				Promise.all(this.state.rssFeeds.map(ArticleRssFeed.fetchRssFeed)).then((data) => {
-					console.log(data);
 					let rssArticles = [];
 					const requestMessages = [];
 
@@ -109,7 +108,6 @@ export default class ArticleRssFeed extends React.Component {
 
 					rssArticles.sort((a, b) => (a.pubDate < b.pubDate ? 1 : -1));
 
-					console.log(rssArticles);
 					this.setState({ rssArticles, requestMessages });
 				});
 			});

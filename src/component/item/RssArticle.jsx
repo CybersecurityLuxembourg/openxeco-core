@@ -25,8 +25,6 @@ export default class RssArticle extends Component {
 		postRequest.call(this, "article/add_article", params, (article) => {
 			nm.info("The article has been added");
 
-			console.log(article);
-
 			params = {
 				id: article.id,
 				publication_date: this.props.info.pubDate ? this.props.info.pubDate : null,

@@ -137,7 +137,6 @@ export default class DashboardAnalytics extends React.Component {
 
 			while (currentSunday <= maxDate) {
 				const matchingMonday = new Date(currentSunday.getTime() - 6 * 24 * 60 * 60 * 1000);
-				console.log(matchingMonday, currentSunday, currentSunday.getDate());
 
 				labels.push(
 					DashboardAnalytics.formatLabel(

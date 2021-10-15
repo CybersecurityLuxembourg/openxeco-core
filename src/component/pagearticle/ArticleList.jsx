@@ -88,7 +88,7 @@ export default class ArticleList extends React.Component {
 						open={value.id.toString() === this.props.match.params.id}
 					/>
 				),
-				width: 400,
+				width: 300,
 			},
 			{
 				Header: "TYPE",
