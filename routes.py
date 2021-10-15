@@ -98,6 +98,9 @@ from resource.request.get_requests import GetRequests
 from resource.request.get_request_enums import GetRequestEnums
 from resource.request.update_request import UpdateRequest
 from resource.resource.get_resources import GetResources
+from resource.rss.add_rss_feed import AddRssFeed
+from resource.rss.delete_rss_feed import DeleteRssFeed
+from resource.rss.get_rss_feeds import GetRssFeeds
 from resource.setting.add_setting import AddSetting
 from resource.setting.delete_setting import DeleteSetting
 from resource.setting.upload_favicon import UploadFavicon
