@@ -32,7 +32,7 @@ class TestGetMyArticles(BaseCase):
         self.db.insert({"article": 2, "company": 14}, self.db.tables["ArticleCompanyTag"])
         self.db.insert({"article": 3, "company": 14}, self.db.tables["ArticleCompanyTag"])
 
-        response = self.application.get('/private/get_my_articles',
+        response = self.application.get('/private/get_my_articles?include_tags=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -46,6 +46,7 @@ class TestGetMyArticles(BaseCase):
             "items": [
                 {
                     'abstract': None,
+                    'company_tags': [14],
                     'end_date': None,
                     'external_reference': None,
                     'handle': 'handle-2',
@@ -56,11 +57,13 @@ class TestGetMyArticles(BaseCase):
                     'publication_date': '2021-01-22',
                     'start_date': None,
                     'status': 'PUBLIC',
+                    'taxonomy_tags': [],
                     'title': 'TITLE2',
                     'type': 'NEWS'
                 },
                 {
                     'abstract': None,
+                    'company_tags': [14],
                     'end_date': None,
                     'external_reference': None,
                     'handle': 'handle-3',
@@ -71,6 +74,7 @@ class TestGetMyArticles(BaseCase):
                     'publication_date': '2021-01-22',
                     'start_date': None,
                     'status': 'PUBLIC',
+                    'taxonomy_tags': [],
                     'title': 'TITLE3',
                     'type': 'NEWS'
                 },

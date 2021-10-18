@@ -1,4 +1,6 @@
 from test.BaseCase import BaseCase
+import os
+import base64
 
 
 class TestUpdateMyArticle(BaseCase):
@@ -18,6 +20,42 @@ class TestUpdateMyArticle(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
+
+    @BaseCase.login
+    def test_ok_with_image(self, token):
+        self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
+        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
+        self.db.insert({"property": "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE", "value": "TRUE"},
+                       self.db.tables["Setting"])
+
+        path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_update_my_article", "original_image.png")
+        target_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_update_my_article", "1")
+
+        if os.path.exists(target_path):
+            os.remove(target_path)
+
+        f = open(path, 'rb')
+        data = base64.b64encode(f.read()).decode("utf-8")
+
+        payload = {
+            "id": 2,
+            "image": data
+        }
+
+        f.close()
+
+        response = self.application.post('/private/update_my_article',
+                                         headers=self.get_standard_post_header(token),
+                                         json=payload)
+
+        articles = self.db.get(self.db.tables["Article"])
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(len(articles), 1)
+        self.assertEqual(articles[0].image, 1)
 
     @BaseCase.login
     def test_ko_functionality_not_activated(self, token):
