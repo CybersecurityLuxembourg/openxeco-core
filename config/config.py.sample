@@ -23,8 +23,4 @@ MAIL_DEFAULT_SENDER = os.getenv('MAIL_DEFAULT_SENDER', "mail@address.com")
 
 IMAGE_FOLDER = os.getenv('IMAGE_FOLDER', "/tmp/image_folder")
 
-CORS_ORIGINS = {
-    'dev': ['localhost:*'],
-    'test': ['https://test(.*)?.cy.lu'],
-    'production': ['(.*)?cybersecurity-luxembourg.com', r'(.*)?cy.lu']
-}[ENVIRONMENT]
+CORS_ORIGINS = '*'
