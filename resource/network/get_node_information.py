@@ -35,5 +35,5 @@ class GetNodeInformation(MethodResource, Resource):
 
         if len(s) > 0:
             return s[0].value
-        else:
-            return None
+
+        return None
