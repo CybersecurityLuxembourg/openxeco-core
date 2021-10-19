@@ -344,16 +344,18 @@ export default class Address extends React.Component {
 								>
 									<i className="fas fa-save"/>
 								</button>
-								<DialogConfirmation
-									text={"Are you sure you want to delete this address?"}
-									trigger={
-										<button
-											className={"red-background"}>
-											<i className="fas fa-trash-alt"/>
-										</button>
-									}
-									afterConfirmation={() => this.remove()}
-								/>
+								{this.state.info.id
+									&& <DialogConfirmation
+										text={"Are you sure you want to delete this address?"}
+										trigger={
+											<button
+												className={"red-background"}>
+												<i className="fas fa-trash-alt"/>
+											</button>
+										}
+										afterConfirmation={() => this.remove()}
+									/>
+								}
 							</div>
 						</div>
 					</div>

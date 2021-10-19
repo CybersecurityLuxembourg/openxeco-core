@@ -3,7 +3,7 @@ import { useTable, usePagination, useFlexLayout } from "react-table";
 import "./Table.css";
 
 export default function Table({
-	columns, data, height, showBottomBar,
+	keyBase, columns, data, height, showBottomBar,
 }) {
 	const {
 		getTableProps,
@@ -33,13 +33,13 @@ export default function Table({
 	);
 
 	return (
-		<div>
+		<div className="Table">
 			<table {...getTableProps()}>
 				<thead>
 					{headerGroups.map((headerGroup, i) => (
-						<tr {...headerGroup.getHeaderGroupProps()} key={i}>
-							{headerGroup.headers.map((column) => (
-								<th {...column.getHeaderProps()} key={i}>{column.render("Header")}</th>
+						<tr {...headerGroup.getHeaderGroupProps()} key={keyBase + "-" + i}>
+							{headerGroup.headers.map((column, y) => (
+								<th {...column.getHeaderProps()} key={keyBase + "-" + i + "-" + y}>{column.render("Header")}</th>
 							))}
 						</tr>
 					))}
@@ -48,8 +48,10 @@ export default function Table({
 					{page.map((row, i) => {
 						prepareRow(row);
 						return (
-							<tr {...row.getRowProps()} key={i}>
-								{row.cells.map((cell) => <td {...cell.getCellProps()} key={i}>
+							<tr {...row.getRowProps()} key={keyBase + "-" + i}>
+								{row.cells.map((cell, y) => <td
+									{...cell.getCellProps()}
+									key={keyBase + "-" + i + "-" + y}>
 									{cell.render("Cell")}
 								</td>)}
 							</tr>

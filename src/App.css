@@ -171,7 +171,7 @@ a {
 }
 
 .right-buttons > button {
-	margin: 7px 0px;
+	margin: 7px 2px;
 	float: right;
 }
 
@@ -328,10 +328,11 @@ textarea {
 }
 
 .popup-content {
-	padding: 0px 20px 30px 20px !important;
+	padding: 10px 20px 30px 20px !important;
 	overflow-y: auto;
 	overflow-x: hidden;
 	background-color: #EEE !important;
+	text-align: initial;
 }
 
 /* ANIMATION */
@@ -387,6 +388,11 @@ textarea {
 
 .notification-error {
   background-color: #e40613 !important;
+}
+
+.notification-container {
+	pointer-events: none;
+	opacity: 0.7;
 }
 
 /* BADGE */

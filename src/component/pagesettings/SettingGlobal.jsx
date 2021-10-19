@@ -64,7 +64,7 @@ export default class SettingGlobal extends React.Component {
 			logo: null,
 		});
 
-		getBlobRequest.call(this, "public/get_image/logo.png", (data) => {
+		getBlobRequest.call(this, "public/get_public_image/logo.png", (data) => {
 			this.setState({
 				logo: URL.createObjectURL(data),
 			});
@@ -84,7 +84,7 @@ export default class SettingGlobal extends React.Component {
 			favicon: null,
 		});
 
-		getBlobRequest.call(this, "public/get_image/favicon.ico", (data) => {
+		getBlobRequest.call(this, "public/get_public_image/favicon.ico", (data) => {
 			this.setState({
 				favicon: URL.createObjectURL(data),
 			});
@@ -348,12 +348,21 @@ export default class SettingGlobal extends React.Component {
 							content={<div>
 								<div>Here are the main settings:</div>
 								<ul>
-									<li>PROJECT_NAME</li>
-									<li>ADMIN_PLATFORM_NAME</li>
-									<li>PRIVATE_SPACE_PLATFORM_NAME</li>
-									<li>EMAIL_ADDRESS : Email address of contact for the project.</li>
-									<li>PHONE_NUMBER : Phone number of contact for the project.</li>
-									<li>POSTAL_ADDRESS : Postal address of contact for the project.</li>
+									<li>PROJECT_NAME : The global name of your project/organization</li>
+									<li>ADMIN_PLATFORM_NAME : Name of the platform you currenly are on.</li>
+									<li>
+										PRIVATE_SPACE_PLATFORM_NAME : Name of the platform where
+										the community can manage its data (Cf. fo-private repository).
+									</li>
+									<li>
+										EMAIL_ADDRESS : Email address of contact for the project.
+									</li>
+									<li>
+										PHONE_NUMBER : Phone number of contact for the project.
+									</li>
+									<li>
+										POSTAL_ADDRESS : Postal address of contact for the project.
+									</li>
 									<li>
 										ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE : &#34;TRUE&#34; to be activated.<br/>
 										This setting allows the users to create an article.<br/>
@@ -365,6 +374,10 @@ export default class SettingGlobal extends React.Component {
 										This setting gives access on article content edition on the private space.<br/>
 										Otherwise, only the metadata and the link of the article is editable.<br/>
 										This won&#39;t be activated if this setting is not configured.
+									</li>
+									<li>
+										ALLOW_ECOSYSTEM_TO_EDIT_LOGO : &#34;TRUE&#34; to be activated.<br/>
+										This setting gives access on the logo generator page on the private space.
 									</li>
 									<li>
 										DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE : &#34;TRUE&#34; to be activated.<br/>

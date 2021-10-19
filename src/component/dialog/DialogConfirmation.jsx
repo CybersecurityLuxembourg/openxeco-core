@@ -28,13 +28,13 @@ export default class DialogConfirmation extends React.Component {
 				className={"DialogConfirmation"}
 			>
 				<div className={"DialogConfirmation-wrapper"}>
-					<h2>
+					<b>
 						<div
 							dangerouslySetInnerHTML={{
 								__html: dompurify.sanitize(this.props.text),
 							}}>
 						</div>
-					</h2>
+					</b>
 					<div className={"bottom-right-buttons"}>
 						<button
 							className={"grey-background"}

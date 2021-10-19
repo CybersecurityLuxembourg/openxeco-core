@@ -24,6 +24,10 @@
     text-align: center;
 }
 
+.Image-image img {
+    max-width: 100%;
+}
+
 .Image-text {
     text-align: center;
 }
@@ -33,5 +37,9 @@
 }
 
 .Image-title {
-    width: calc(100% - 80px);
+    width: calc(100% - 120px);
+}
+
+.Image-size {
+    text-align: center;
 }

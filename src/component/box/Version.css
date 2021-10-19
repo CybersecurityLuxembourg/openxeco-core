@@ -1,0 +1,8 @@
+
+.Version {
+    z-index: 900;
+    position:  fixed;
+    right: 6px;
+    bottom: 2px;
+    font-size: 13px;
+}

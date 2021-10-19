@@ -128,3 +128,27 @@ export async function getForeignRequest(url, callback, catchBadResponse, catchEr
 		catchError(error);
 	});
 }
+
+export async function getRssFeed(url, callback, catchBadResponse, catchError) {
+	fetch("https://api.rss2json.com/v1/api.json?rss_url=" + url, {
+		method: "GET",
+		mode: "cors",
+		headers: {
+			Accept: "application/json",
+			"cache-control": "no-cache",
+		},
+	}).then((response) => {
+		if (response.status === 200) {
+			return response.json();
+		}
+		if (catchBadResponse !== null) {
+			catchBadResponse(response);
+			throw new Error(response.error);
+		}
+		throw new Error("An error happened while requesting the server");
+	}).then((jsonBody) => {
+		if (typeof jsonBody !== "undefined") callback(jsonBody);
+	}).catch((error) => {
+		catchError(error);
+	});
+}

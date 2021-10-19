@@ -214,19 +214,21 @@ export default class DialogArticleFilter extends React.Component {
 						/>
 					}
 					{this.state.categories !== null && this.state.taxonomy_values !== null
-						? this.state.categories.map((c) => (
-							<FormLine
-								key={c.name}
-								label={c.name}
-								type={"multiselect"}
-								fullWidth={true}
-								value={this.state[c.name] === undefined ? [] : this.state[c.name]}
-								options={this.state.taxonomy_values
-									.filter((v) => v.category === c.name)
-									.map((v) => ({ label: v.name, value: v.id }))}
-								onChange={(v) => this.changeState(c.name, v)}
-							/>
-						))
+						? this.state.categories
+							.filter((c) => c.active_on_articles)
+							.map((c) => (
+								<FormLine
+									key={c.name}
+									label={c.name}
+									type={"multiselect"}
+									fullWidth={true}
+									value={this.state[c.name] === undefined ? [] : this.state[c.name]}
+									options={this.state.taxonomy_values
+										.filter((v) => v.category === c.name)
+										.map((v) => ({ label: v.name, value: v.id }))}
+									onChange={(v) => this.changeState(c.name, v)}
+								/>
+							))
 						: <Loading
 							height={200}
 						/>

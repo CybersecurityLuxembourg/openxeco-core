@@ -205,19 +205,21 @@ export default class DialogCompanyFilter extends React.Component {
 						onChange={(v) => this.changeState("corebusiness_only", v)}
 					/>
 					{this.state.categories !== null && this.state.taxonomy_values !== null
-						? this.state.categories.map((c) => (
-							<FormLine
-								key={c.name}
-								label={c.name}
-								type={"multiselect"}
-								fullWidth={true}
-								value={this.state[c.name] === undefined ? [] : this.state[c.name]}
-								options={this.state.taxonomy_values
-									.filter((v) => v.category === c.name)
-									.map((v) => ({ label: v.name, value: v.id }))}
-								onChange={(v) => this.changeState(c.name, v)}
-							/>
-						))
+						? this.state.categories
+							.filter((c) => c.active_on_companies)
+							.map((c) => (
+								<FormLine
+									key={c.name}
+									label={c.name}
+									type={"multiselect"}
+									fullWidth={true}
+									value={this.state[c.name] === undefined ? [] : this.state[c.name]}
+									options={this.state.taxonomy_values
+										.filter((v) => v.category === c.name)
+										.map((v) => ({ label: v.name, value: v.id }))}
+									onChange={(v) => this.changeState(c.name, v)}
+								/>
+							))
 						: <Loading
 							height={200}
 						/>

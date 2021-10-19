@@ -14,12 +14,14 @@ export default class Chip extends Component {
 			<div className="Chip">
 				<div className="Chip-head">{this.props.label[0]}</div>
 				<div className="Chip-content">{this.props.label}</div>
-				<div className="Chip-close">
-					<i
-						className="fas fa-times"
-						onClick={() => this.props.onClick(this.props.value)}
-					/>
-				</div>
+				{this.props.onClick
+					&& <div className="Chip-close">
+						<i
+							className="fas fa-times"
+							onClick={() => this.props.onClick(this.props.value)}
+						/>
+					</div>
+				}
 			</div>
 		);
 	}

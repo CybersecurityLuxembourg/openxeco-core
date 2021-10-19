@@ -2,7 +2,6 @@ import React from "react";
 import "./PageSettings.css";
 import SettingGlobal from "./pagesettings/SettingGlobal.jsx";
 import SettingMail from "./pagesettings/SettingMail.jsx";
-import SettingTaxonomy from "./pagesettings/SettingTaxonomy.jsx";
 import SettingCron from "./pagesettings/SettingCron.jsx";
 import Tab from "./tab/Tab.jsx";
 
@@ -20,13 +19,10 @@ export default class PageSettings extends React.Component {
 		return (
 			<div id="PageSettings" className="page max-sized-page">
 				<Tab
-					menu={["Global", "Taxonomy", "Mail", "Scheduled task"]}
+					menu={["Global", "Mail", "Scheduled task"]}
 					content={[
 						<SettingGlobal
 							key={"global"}
-						/>,
-						<SettingTaxonomy
-							key={"taxonomy"}
 						/>,
 						<SettingMail
 							key={"mail"}

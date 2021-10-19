@@ -62,13 +62,11 @@ export default class CompanyUser extends React.Component {
 
 		return (
 			<div>
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
-						<h2>Workforce</h2>
-					</div>
-				</div>
-
 				<div className={"row"}>
+					<div className="col-md-12">
+						<h2>User</h2>
+					</div>
+
 					<div className="col-md-12">
 						<div className="fade-in">
 							<Table

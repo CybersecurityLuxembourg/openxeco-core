@@ -1,24 +1,28 @@
 import React from "react";
-import "./SettingTaxonomy.css";
+import "./PageTaxonomy.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Loading from "../box/Loading.jsx";
-import Message from "../box/Message.jsx";
-import Table from "../table/Table.jsx";
-import { getRequest, postRequest } from "../../utils/request.jsx";
-import FormLine from "../button/FormLine.jsx";
-import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import Loading from "./box/Loading.jsx";
+import Message from "./box/Message.jsx";
+import Table from "./table/Table.jsx";
+import { getRequest, postRequest } from "../utils/request.jsx";
+import FormLine from "./button/FormLine.jsx";
+import CheckBox from "./button/CheckBox.jsx";
+import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
 
-export default class SettingTaxonomy extends React.Component {
+export default class PageTaxonomy extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.refresh = this.refresh.bind(this);
+		this.getArticleEnums = this.getArticleEnums.bind(this);
 		this.getValues = this.getValues.bind(this);
 		this.getValueHierarchy = this.getValueHierarchy.bind(this);
 		this.addCategory = this.addCategory.bind(this);
 		this.addCategoryHierarchy = this.addCategoryHierarchy.bind(this);
 		this.addValue = this.addValue.bind(this);
+		this.updateCategory = this.updateCategory.bind(this);
 		this.deleteCategory = this.deleteCategory.bind(this);
 		this.deleteCategoryHierarchy = this.deleteCategoryHierarchy.bind(this);
 		this.deleteValue = this.deleteValue.bind(this);
@@ -36,17 +40,17 @@ export default class SettingTaxonomy extends React.Component {
 			newCategory: null,
 			newParentCategory: null,
 			newChildCategory: null,
+			articleEnums: null,
 		};
 	}
 
 	componentDidMount() {
 		this.refresh();
+		this.getArticleEnums();
 	}
 
 	refresh() {
 		this.setState({
-			categories: null,
-			categoryHierarchy: null,
 			selectedCategory: null,
 			selectedCategoryHierarchy: null,
 			values: null,
@@ -75,17 +79,21 @@ export default class SettingTaxonomy extends React.Component {
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
 
-		if (this.state.selectedCategory !== null) {
-			this.getValues(this.state.selectedCategory);
-		}
+	getArticleEnums() {
+		getRequest.call(this, "public/get_article_enums", (data) => {
+			this.setState({
+				articleEnums: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	getValues() {
-		this.setState({
-			values: null,
-		});
-
 		getRequest.call(this, "taxonomy/get_taxonomy_values", (data) => {
 			this.setState({
 				values: data,
@@ -162,6 +170,22 @@ export default class SettingTaxonomy extends React.Component {
 		});
 	}
 
+	updateCategory(name, field, value) {
+		const params = {
+			name,
+			[field]: value,
+		};
+
+		postRequest.call(this, "taxonomy/update_taxonomy_category", params, () => {
+			this.refresh();
+			nm.info("The taxonomy has been updated");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
 	deleteCategory(value) {
 		const params = {
 			category: value,
@@ -170,7 +194,7 @@ export default class SettingTaxonomy extends React.Component {
 		postRequest.call(this, "taxonomy/delete_taxonomy_category", params, () => {
 			document.elementFromPoint(100, 0).click();
 			this.refresh();
-			nm.info("The value has been deleted");
+			nm.info("The category has been deleted");
 		}, (response) => {
 			this.refresh();
 			nm.warning(response.statusText);
@@ -189,7 +213,7 @@ export default class SettingTaxonomy extends React.Component {
 		postRequest.call(this, "taxonomy/delete_taxonomy_category_hierarchy", params, () => {
 			document.elementFromPoint(100, 0).click();
 			this.refresh();
-			nm.info("The value has been deleted");
+			nm.info("The category hierarchy has been deleted");
 		}, (response) => {
 			this.refresh();
 			nm.warning(response.statusText);
@@ -323,6 +347,117 @@ export default class SettingTaxonomy extends React.Component {
 			{
 				Header: "Category",
 				accessor: "name",
+				width: 250,
+			},
+			{
+				id: "124",
+				Header: <div align="center"><i className="fas fa-building"/></div>,
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<CheckBox
+						className={"Table-CheckBox"}
+						value={value.active_on_companies}
+						onClick={(v) => this.updateCategory(value.name, "active_on_companies", v)}
+					/>
+				),
+				width: 100,
+			},
+			{
+				id: "123",
+				Header: <div align="center"><i className="fas fa-feather-alt"/></div>,
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<CheckBox
+						className={"Table-CheckBox"}
+						value={value.active_on_articles}
+						onClick={(v) => this.updateCategory(value.name, "active_on_articles", v)}
+					/>
+				),
+				width: 100,
+			},
+			{
+				id: "129",
+				Header: <div align="center">Article types</div>,
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<Popup
+						trigger={
+							<button
+								className={"small-button PageTaxonomy-Table-button"}
+								disabled={!value.active_on_articles}>
+								{value.accepted_article_types
+									? value.accepted_article_types.split(",").length + " selected"
+									: "All types"
+								}
+							</button>
+						}
+						modal
+					>
+						{(close) => <div className="row">
+							<div className={"col-md-9"}>
+								<h3>Select the type of article concerned by the taxonomy</h3>
+							</div>
+							<div className={"col-md-3"}>
+								<div className="right-buttons">
+									<button
+										className={"grey-background"}
+										data-hover="Close"
+										data-active=""
+										onClick={close}>
+										<span><i className="far fa-times-circle"/></span>
+									</button>
+								</div>
+							</div>
+
+							{this.state.articleEnums && this.state.articleEnums.type
+								? <div className={"col-md-12"}>
+									{this.state.articleEnums.type.map((t) => <FormLine
+										key={value.name + t}
+										label={t}
+										type={"checkbox"}
+										value={value.accepted_article_types
+											&& value.accepted_article_types.includes(t)}
+										onChange={(v) => {
+											const oldValue = value.accepted_article_types || "";
+											let newValue = "";
+
+											if (v) {
+												if (!oldValue.includes(t)) {
+													newValue = oldValue.split(",");
+													newValue.push(t);
+													newValue = newValue.join(",");
+												}
+											} else {
+												newValue = oldValue.split(",");
+												newValue = newValue.filter((w) => w !== t && w.length > 0);
+												newValue = newValue.join(",");
+											}
+
+											this.updateCategory(value.name, "accepted_article_types", newValue);
+										}}
+									/>)}
+								</div>
+								: <Loading
+									height={200}
+								/>
+							}
+						</div>}
+					</Popup>
+				),
+				width: 100,
+			},
+			{
+				id: "125",
+				Header: <div align="center">Standard</div>,
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<CheckBox
+						className={"Table-CheckBox"}
+						value={value.is_standard}
+						onClick={(v) => this.updateCategory(value.name, "is_standard", v)}
+					/>
+				),
+				width: 100,
 			},
 			{
 				Header: " ",
@@ -399,7 +534,7 @@ export default class SettingTaxonomy extends React.Component {
 		];
 
 		return (
-			<div id="SettingCompanyValues" className="max-sized-page fade-in">
+			<div id="PageTaxonomy" className="page max-sized-page">
 				<div className={"row"}>
 					<div className="col-md-12">
 						<h1>Taxonomy</h1>
@@ -413,7 +548,7 @@ export default class SettingTaxonomy extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-6">
+					<div className="col-md-12">
 						<h2>Categories</h2>
 						{this.state.categories !== null
 							? <div className="row">
@@ -433,6 +568,7 @@ export default class SettingTaxonomy extends React.Component {
 								</div>
 								<div className="col-xl-12">
 									<Table
+										keyBase={"Category"}
 										columns={categoryColumns}
 										data={this.state.categories}
 									/>
@@ -440,47 +576,6 @@ export default class SettingTaxonomy extends React.Component {
 							</div>
 							: <Loading
 								height={100}
-							/>
-						}
-					</div>
-					<div className="col-md-6">
-						<h2>Category hierarchy</h2>
-						{this.state.categoryHierarchy !== null
-							? <div className="row">
-								<div className="col-xl-12">
-									<FormLine
-										label={"New parent category"}
-										type={"select"}
-										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
-										value={this.state.newParentCategory}
-										onChange={(v) => this.changeState("newParentCategory", v)}
-									/>
-								</div>
-								<div className="col-xl-12">
-									<FormLine
-										label={"New child category"}
-										type={"select"}
-										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
-										value={this.state.newChildCategory}
-										onChange={(v) => this.changeState("newChildCategory", v)}
-									/>
-								</div>
-								<div className="col-xl-12 right-buttons">
-									<button
-										className={"blue-background"}
-										onClick={this.addCategoryHierarchy}>
-										<i className="fas fa-plus"/> Add hierarchy
-									</button>
-								</div>
-								<div className="col-xl-12">
-									<Table
-										columns={categoryHierarchyColumns}
-										data={this.state.categoryHierarchy}
-									/>
-								</div>
-							</div>
-							: <Loading
-								height={300}
 							/>
 						}
 					</div>
@@ -517,6 +612,7 @@ export default class SettingTaxonomy extends React.Component {
 											</button>
 										</div>
 										<Table
+											keyBase={"CategoryValue"}
 											columns={valueColumns}
 											data={this.state.values
 												.filter((v) => v.category === this.state.selectedCategory)}
@@ -537,6 +633,51 @@ export default class SettingTaxonomy extends React.Component {
 							&& <Message
 								height={300}
 								text={"Please select a category"}
+							/>
+						}
+					</div>
+				</div>
+
+				<div className="row row-spaced">
+					<div className="col-md-12">
+						<h2>Category hierarchy</h2>
+						{this.state.categoryHierarchy !== null
+							? <div className="row">
+								<div className="col-xl-12">
+									<FormLine
+										label={"New parent category"}
+										type={"select"}
+										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
+										value={this.state.newParentCategory}
+										onChange={(v) => this.changeState("newParentCategory", v)}
+									/>
+								</div>
+								<div className="col-xl-12">
+									<FormLine
+										label={"New child category"}
+										type={"select"}
+										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
+										value={this.state.newChildCategory}
+										onChange={(v) => this.changeState("newChildCategory", v)}
+									/>
+								</div>
+								<div className="col-xl-12 right-buttons">
+									<button
+										className={"blue-background"}
+										onClick={this.addCategoryHierarchy}>
+										<i className="fas fa-plus"/> Add hierarchy
+									</button>
+								</div>
+								<div className="col-xl-12">
+									<Table
+										keyBase={"CategoryHierarchy"}
+										columns={categoryHierarchyColumns}
+										data={this.state.categoryHierarchy}
+									/>
+								</div>
+							</div>
+							: <Loading
+								height={300}
 							/>
 						}
 					</div>

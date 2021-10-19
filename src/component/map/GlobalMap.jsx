@@ -1,5 +1,6 @@
 import React from "react";
 import "./GlobalMap.css";
+import L from "leaflet";
 import {
 	Map, TileLayer, Marker, Popup,
 } from "react-leaflet";
@@ -44,6 +45,13 @@ export default class GlobalMap extends React.Component {
 	}
 
 	render() {
+		const thisIcon = new L.Icon({
+			iconUrl: "/img/marker-icon-2x.png",
+			iconSize: [24, 36],
+			iconAnchor: [12, 36],
+			popupAnchor: [0, -36],
+		});
+
 		return (
 			<div className={"full-page"}>
 				<Map
@@ -58,7 +66,9 @@ export default class GlobalMap extends React.Component {
 							.filter((a) => a.latitude !== null && a.longitude !== null)
 							.map((a) => (
 								<div key={a.id}>
-									<Marker position={[a.latitude, a.longitude]}>
+									<Marker
+										position={[a.latitude, a.longitude]}
+										icon={thisIcon}>
 										<Popup
 											companyId={a.company_id}
 										>

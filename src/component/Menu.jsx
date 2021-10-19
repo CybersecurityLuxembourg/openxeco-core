@@ -31,7 +31,7 @@ export default class Menu extends React.Component {
 	getNotifications() {
 		this.setState({ notifications: null });
 
-		getRequest.call(this, "analytic/get_notifications", (data) => {
+		getRequest.call(this, "notification/get_notifications", (data) => {
 			this.setState({
 				notifications: data,
 			});
@@ -70,7 +70,9 @@ export default class Menu extends React.Component {
 			>
 				<Toggle />
 				<Nav defaultSelected={this.props.selectedMenu}>
-					<NavItem>
+					<NavItem
+						eventKey=""
+						active={!this.props.selectedMenu}>
 						<NavIcon>
 							<Link to="/"><i className="fa fa-tachometer-alt" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
@@ -78,7 +80,10 @@ export default class Menu extends React.Component {
 							<Link to="/">Dashboard</Link>
 						</NavText>
 					</NavItem>
-					<NavItem>
+					<div className="Menu-divider"/>
+					<NavItem
+						eventKey="companies"
+						active={this.props.selectedMenu === "companies"}>
 						<NavIcon>
 							<Link to="/companies"><i className="fas fa-building" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
@@ -86,7 +91,9 @@ export default class Menu extends React.Component {
 							<Link to="/companies">Entities</Link>
 						</NavText>
 					</NavItem>
-					<NavItem>
+					<NavItem
+						eventKey="articles"
+						active={this.props.selectedMenu === "articles"}>
 						<NavIcon>
 							<Link to="/articles"><i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
@@ -94,7 +101,20 @@ export default class Menu extends React.Component {
 							<Link to="/articles">Articles</Link>
 						</NavText>
 					</NavItem>
-					<NavItem>
+					<NavItem
+						eventKey="taxonomy"
+						active={this.props.selectedMenu === "taxonomy"}>
+						<NavIcon>
+							<Link to="/taxonomy"><i className="fas fa-project-diagram" style={{ fontSize: "1.75em" }} /></Link>
+						</NavIcon>
+						<NavText>
+							<Link to="/taxonomy">Taxonomies</Link>
+						</NavText>
+					</NavItem>
+					<div className="Menu-divider"/>
+					<NavItem
+						eventKey="task"
+						active={this.props.selectedMenu === "task"}>
 						<NavIcon>
 							<Link to="/task"><i className="fas fa-tasks" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
@@ -103,7 +123,9 @@ export default class Menu extends React.Component {
 						</NavText>
 						{this.getTaskNotificationBlock()}
 					</NavItem>
-					<NavItem>
+					<NavItem
+						eventKey="media"
+						active={this.props.selectedMenu === "media"}>
 						<NavIcon>
 							<Link to="/media"><i className="fas fa-photo-video" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
@@ -111,7 +133,10 @@ export default class Menu extends React.Component {
 							<Link to="/media">Media</Link>
 						</NavText>
 					</NavItem>
-					<NavItem>
+					<div className="Menu-divider"/>
+					<NavItem
+						eventKey="users"
+						active={this.props.selectedMenu === "users"}>
 						<NavIcon>
 							<Link to="/users"><i className="fas fa-user-friends" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
@@ -119,7 +144,9 @@ export default class Menu extends React.Component {
 							<Link to="/users">Groups & Users</Link>
 						</NavText>
 					</NavItem>
-					<NavItem eventKey="settings">
+					<NavItem
+						eventKey="settings"
+						active={this.props.selectedMenu === "settings"}>
 						<NavIcon>
 							<Link to="/settings"><i className="fas fa-cogs" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
@@ -128,6 +155,8 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 					<NavItem
+						eventKey="profile"
+						active={this.props.selectedMenu === "profile"}
 						className="Menu-profile-nav-item">
 						<NavIcon>
 							<Link to="/profile"><i className="fas fa-user-circle" style={{ fontSize: "1.75em" }} /></Link>

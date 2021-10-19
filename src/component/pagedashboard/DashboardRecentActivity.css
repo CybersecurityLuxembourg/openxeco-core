@@ -1,0 +1,11 @@
+
+.DashboardRecentActivity h4 {
+	text-align: center !important;
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
+
+.DashboardRecentActivity h4 > i {
+	margin-bottom: 10px;
+	font-size: 35px;
+}
