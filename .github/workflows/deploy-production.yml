@@ -16,14 +16,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install venv
+    - name: cache python venv
+      uses: actions/cache@v2
+      with:
+        path: venv
+        key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-venv-
+
+    - name: install venv
+      run: sudo apt-get update && sudo apt-get install -y --no-install-recommends python3 python3-venv
+
+    - name: install requirements
       run: |
-          mkdir /var/www/bo-api
-          cd /var/www/bo-api
-          venv venv
-          source env/bin/activate
-          pip install -r requirements.txt
-          service apache2 reload
+        python3 -m venv venv
+        . ./venv/bin/activate
+        pip3 install -U pip setuptools
+        pip3 install -r requirements.txt
+
+    - name: show built content
+      run: find .
 
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2
@@ -34,5 +46,5 @@ jobs:
     - name: Adding Known Hosts
       run: ssh-keyscan -H ${{ secrets.PRODUCTION_ENV_HOST }} >> ~/.ssh/known_hosts
 
-    - name: Deploy with rsync
-      run: rsync -r --exclude=config.py /var/www/bo-api ${{ secrets.PRODUCTION_ENV_USER }}@${{ secrets.PRODUCTION_ENV_HOST }}:/var/www/bo-api
+    - name: rsync
+      run: rsync -r --delete --exclude=.git --exclude=.gitignore --exclude=.github --exclude=config/config.py ./ boapi@${{ secrets.PRODUCTION_ENV_HOST }}:/var/www/bo-api
