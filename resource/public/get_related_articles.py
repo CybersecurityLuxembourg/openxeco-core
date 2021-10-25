@@ -1,9 +1,10 @@
 import datetime
 
 from flask_apispec import MethodResource
-from flask_apispec import doc
+from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
 from sqlalchemy import desc
+from webargs import fields
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -21,8 +22,11 @@ class GetRelatedArticles(MethodResource, Resource):
              "200": {},
              "422": {"description": "The provided article ID does not exist or is not accessible"}
          })
+    @use_kwargs({
+        'include_tags': fields.Bool(required=False),
+    }, location="query")
     @catch_exception
-    def get(self, id_):
+    def get(self, id_, **kwargs):
 
         act = self.db.tables["ArticleCompanyTag"]
         att = self.db.tables["ArticleTaxonomyTag"]
@@ -64,5 +68,15 @@ class GetRelatedArticles(MethodResource, Resource):
             .all()
 
         data = Serializer.serialize(related_articles, self.db.tables["Article"])
+
+        if "include_tags" in kwargs and kwargs["include_tags"] is True:
+            article_ids = [a["id"] for a in data]
+
+            taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
+            company_tags = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": article_ids})
+
+            for a in data:
+                a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
+                a["company_tags"] = [t.company for t in company_tags if t.article == a["id"]]
 
         return data, "200 "
