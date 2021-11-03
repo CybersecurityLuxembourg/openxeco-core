@@ -55,8 +55,10 @@ from resource.datacontrol.delete_data_control import DeleteDataControl
 from resource.healthz import Healthz
 from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
+from resource.mail.get_mail_addresses import GetMailAddresses
 from resource.mail.get_mail_content import GetMailContent
 from resource.mail.save_template import SaveTemplate
+from resource.mail.send_communication import SendCommunication
 from resource.mail.send_mail import SendMail
 from resource.media.add_image import AddImage
 from resource.media.update_image import UpdateImage
