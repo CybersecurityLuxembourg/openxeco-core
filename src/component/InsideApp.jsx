@@ -8,6 +8,7 @@ import PageArticle from "./PageArticle.jsx";
 import PageTaxonomy from "./PageTaxonomy.jsx";
 import PageTask from "./PageTask.jsx";
 import PageUser from "./PageUser.jsx";
+import PageEmail from "./PageEmail.jsx";
 import PageMedia from "./PageMedia.jsx";
 import PageSettings from "./PageSettings.jsx";
 import PageProfile from "./PageProfile.jsx";
@@ -43,6 +44,7 @@ export default class InsideApp extends React.Component {
 						<Route path="/articles/:id?" render={(props) => <PageArticle {...props} />}/>
 						<Route path="/taxonomy" render={(props) => <PageTaxonomy {...props} />}/>
 						<Route path="/users" render={(props) => <PageUser {...props} />}/>
+						<Route path="/email" render={(props) => <PageEmail {...props} />}/>
 						<Route path="/media" render={(props) => <PageMedia {...props} />}/>
 						<Route path="/settings" render={(props) => <PageSettings {...props} />}/>
 						<Route path="/profile" render={(props) => <PageProfile {...props} />}/>

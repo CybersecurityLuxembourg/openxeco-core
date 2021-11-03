@@ -124,6 +124,16 @@ export default class Menu extends React.Component {
 						{this.getTaskNotificationBlock()}
 					</NavItem>
 					<NavItem
+						eventKey="email"
+						active={this.props.selectedMenu === "email"}>
+						<NavIcon>
+							<Link to="/email"><i className="fas fa-envelope-open-text" style={{ fontSize: "1.75em" }} /></Link>
+						</NavIcon>
+						<NavText>
+							<Link to="/email">Communication via email</Link>
+						</NavText>
+					</NavItem>
+					<NavItem
 						eventKey="media"
 						active={this.props.selectedMenu === "media"}>
 						<NavIcon>
