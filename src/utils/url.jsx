@@ -18,7 +18,7 @@ export function dictToURI(dict) {
 
 	if (dict !== null) {
 		Object.keys(dict).forEach((key) => {
-			if (typeof dict[key] === "boolean" && dict[key]) {
+			if (typeof dict[key] === "boolean") {
 				args += `${key}=${dict[key]}&`;
 			} else if (typeof dict[key] === "string" && dict[key].length > 0) {
 				args += `${key}=${dict[key]}&`;

@@ -1,0 +1,23 @@
+.Warning {
+    font-size: 13px;
+    margin: 10px 5px;
+    padding: 10px 20px 25px 20px;
+    background-color: #fcc578;
+    border-radius: 0.4rem;
+}
+
+.Warning-logo {
+  position: absolute;
+  margin: 5px 0px;
+}
+
+.Warning-logo > i {
+  font-size: 25px;
+}
+
+.Warning-content {
+  margin-left: 30px;
+  position: relative;
+  top: 8px;
+  left: 15px;
+}
