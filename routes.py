@@ -31,6 +31,8 @@ from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
 from resource.address.update_address import UpdateAddress
 from resource.notification.get_notifications import GetNotifications
+from resource.communication.get_communications import GetCommunications
+from resource.communication.send_communication import SendCommunication
 from resource.company.extract_companies import ExtractCompanies
 from resource.company.get_companies import GetCompanies
 from resource.company.get_company import GetCompany
@@ -58,7 +60,6 @@ from resource.log.get_update_article_version_logs import GetUpdateArticleVersion
 from resource.mail.get_mail_addresses import GetMailAddresses
 from resource.mail.get_mail_content import GetMailContent
 from resource.mail.save_template import SaveTemplate
-from resource.mail.send_communication import SendCommunication
 from resource.mail.send_mail import SendMail
 from resource.media.add_image import AddImage
 from resource.media.update_image import UpdateImage
