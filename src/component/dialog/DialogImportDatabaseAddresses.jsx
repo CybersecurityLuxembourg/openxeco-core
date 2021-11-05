@@ -66,7 +66,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 				modal
 			>
 				{(close) => <div className="row">
-					<div className={"col-md-9"}>
+					<div className={"col-md-9 row-spaced"}>
 						<h3>Import from database...</h3>
 					</div>
 					<div className={"col-md-3"}>

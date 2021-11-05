@@ -127,7 +127,7 @@ export default class Menu extends React.Component {
 						eventKey="email"
 						active={this.props.selectedMenu === "email"}>
 						<NavIcon>
-							<Link to="/email"><i className="fas fa-envelope-open-text" style={{ fontSize: "1.75em" }} /></Link>
+							<Link to="/email"><i className="fas fa-bullhorn" style={{ fontSize: "1.75em" }} /></Link>
 						</NavIcon>
 						<NavText>
 							<Link to="/email">Communication via email</Link>

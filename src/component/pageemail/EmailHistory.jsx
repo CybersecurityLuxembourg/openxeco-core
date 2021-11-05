@@ -1,39 +1,44 @@
 import React from "react";
 import "./EmailHistory.css";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "../box/Loading.jsx";
 import { getRequest } from "../../utils/request.jsx";
-/* import DialogConfirmation from "../dialog/DialogConfirmation.jsx"; */
-import FormLine from "../button/FormLine.jsx";
+import DynamicTable from "../table/DynamicTable.jsx";
+import Communication from "../item/Communication.jsx";
+import Loading from "../box/Loading.jsx";
+import { dictToURI } from "../../utils/url.jsx";
 
 export default class EmailHistory extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-
 		this.state = {
-			rssFeeds: null,
+			communications: null,
+			selectedCommunication: null,
+			pagination: null,
+			page: 1,
 		};
 	}
 
 	componentDidMount() {
-		this.refresh();
+		this.fetchCommunications();
 	}
 
-	refresh() {
-		this.setState({
-			rssFeeds: null,
-		}, () => {
-			getRequest.call(this, "rss/get_rss_feeds", (data) => {
-				this.setState({
-					rssFeeds: data,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
+	fetchCommunications(page) {
+		const filters = {
+			page: Number.isInteger(page) ? page : this.state.page,
+			per_page: 10,
+		};
+
+		getRequest.call(this, "communication/get_communications?" + dictToURI(filters), (data) => {
+			this.setState({
+				communications: data.items,
+				pagination: data.pagination,
+				page,
 			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
 		});
 	}
 
@@ -42,49 +47,46 @@ export default class EmailHistory extends React.Component {
 	}
 
 	render() {
-		/* const columns = [
+		const columns = [
 			{
-				Header: "URL",
-				accessor: "url",
-			},
-			{
-				Header: " ",
+				Header: "Subject",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<DialogConfirmation
-						text={"Are you sure you want to delete this category?"}
-						trigger={
-							<button
-								className={"small-button red-background Table-right-button"}>
-								<i className="fas fa-trash-alt"/>
-							</button>
-						}
-						afterConfirmation={() => this.deleteRssFeed(value.url)}
+					<Communication
+						info={value}
 					/>
 				),
-				width: 50,
+				width: 300,
 			},
-		]; */
-
-		if (!this.state.rssFeeds) {
-			return <Loading
-				height={300}
-			/>;
-		}
+			{
+				Header: "Status",
+				accessor: "status",
+			},
+			{
+				Header: "System date",
+				accessor: "sys_date",
+			},
+		];
 
 		return (
-			<div id="ArticleRssFeed" className="max-sized-page fade-in">
+			<div id="EmailHistory" className="max-sized-page fade-in">
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
-						<h1>RSS Feeds</h1>
+					<div className="col-md-12 row-spaced">
+						<h1>History of communications</h1>
 					</div>
 
-					<div className="col-md-12">
-						<FormLine
-							label={"Add a RSS Feed"}
-							value={this.state.rssFeedField}
-							onChange={(v) => this.changeState("rssFeedField", v)}
-						/>
+					<div className={"col-md-12 row-spaced"}>
+						{this.state.communications
+							? <DynamicTable
+								columns={columns}
+								data={this.state.communications}
+								pagination={this.state.pagination}
+								changePage={this.fetchDataControls}
+							/>
+							: <Loading
+								height={250}
+							/>
+						}
 					</div>
 				</div>
 			</div>
