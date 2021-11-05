@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import "./Communication.css";
+import dompurify from "dompurify";
 import Popup from "reactjs-popup";
+import FormLine from "../button/FormLine.jsx";
+import Chip from "../button/Chip.jsx";
 
 export default class Communication extends Component {
 	constructor(props) {
@@ -39,20 +42,40 @@ export default class Communication extends Component {
 						</div>
 					</div>
 
-					<div className={"col-md-12"}>
-						{this.props.info.body}
+					<div className="col-md-12 row-spaced">
+						<FormLine
+							label={"Subject"}
+							value={this.props.info.subject}
+							disabled={true}
+						/>
+						<FormLine
+							label={"Status"}
+							value={this.props.info.status}
+							disabled={true}
+						/>
+						<FormLine
+							label={"System date"}
+							value={this.props.info.sys_date}
+							disabled={true}
+						/>
 					</div>
 
-					<div className={"col-md-12"}>
-						{this.props.info.addresses}
+					<div className="col-md-12 row-spaced">
+						<h3>Addresses</h3>
+
+						{this.props.info.addresses.split(",").map((a) => <Chip
+							label={a}
+							key={a}
+						/>)}
 					</div>
 
-					<div className={"col-md-12"}>
-						{this.props.info.status}
-					</div>
+					<div className="col-md-12 row-spaced">
+						<h3>Body</h3>
 
-					<div className={"col-md-12"}>
-						{this.props.info.sys_date}
+						<div dangerouslySetInnerHTML={{
+							__html:
+							dompurify.sanitize(this.props.info.body),
+						}} />
 					</div>
 				</div>}
 			</Popup>
