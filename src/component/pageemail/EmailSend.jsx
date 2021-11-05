@@ -1,6 +1,5 @@
 import React from "react";
 import "./EmailSend.css";
-import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import Loading from "../box/Loading.jsx";
 import Info from "../box/Info.jsx";
@@ -8,25 +7,25 @@ import Warning from "../box/Warning.jsx";
 import Table from "../table/Table.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import { extractEmails } from "../../utils/re.jsx";
-import { dictToURI } from "../../utils/url.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Chip from "../button/Chip.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import DialogImportCommunicationAddresses from "../dialog/DialogImportCommunicationAddresses.jsx";
+import DialogImportCommunicationContent from "../dialog/DialogImportCommunicationContent.jsx";
+import DialogImportDatabaseAddresses from "../dialog/DialogImportDatabaseAddresses.jsx";
 
 export default class EmailSend extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.getMailAddresses = this.getMailAddresses.bind(this);
 		this.sendDraft = this.sendDraft.bind(this);
 		this.sendCommunication = this.sendCommunication.bind(this);
+		this.removeAddress = this.removeAddress.bind(this);
 
 		const defaultState = {
 			ignoredAddresses: [],
 			addresses: [],
 
-			includeContacts: false,
-			includeUsers: false,
 			additionalAddressField: null,
 
 			subject: null,
@@ -43,14 +42,6 @@ export default class EmailSend extends React.Component {
 
 	componentDidMount() {
 		this.getMyUser();
-		this.getMailAddresses();
-	}
-
-	componentDidUpdate(_, prevState) {
-		if (prevState.includeContacts !== this.state.includeContacts
-			|| prevState.includeUsers !== this.state.includeUsers) {
-			this.getMailAddresses();
-		}
 	}
 
 	sendDraft() {
@@ -94,21 +85,6 @@ export default class EmailSend extends React.Component {
 			this.setState({
 				user: data,
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
-	getMailAddresses() {
-		const params = dictToURI({
-			include_contacts: this.state.includeContacts,
-			include_users: this.state.includeUsers,
-		});
-
-		getRequest.call(this, "mail/get_mail_addresses?" + params, (data) => {
-			this.addAddresses(data);
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -219,81 +195,18 @@ export default class EmailSend extends React.Component {
 
 					<div className="col-md-12 row-spaced">
 						<div className="right-buttons">
-							<Popup
-								trigger={
-									<button
-										disabled={!this.state.user}>
-										<i className="fas fa-upload"/> Import from previous communication...
-									</button>
-								}
-								modal
-							>
-								{(close) => <div className="row">
-									<div className={"col-md-9"}>
-										<h3>Import from previous communication...</h3>
-									</div>
-									<div className={"col-md-3"}>
-										<div className="right-buttons">
-											<button
-												className={"grey-background"}
-												data-hover="Close"
-												data-active=""
-												onClick={close}>
-												<span><i className="far fa-times-circle"/></span>
-											</button>
-										</div>
-									</div>
-
-									<div className={"col-md-12"}>
-									</div>
-								</div>}
-							</Popup>
-							<Popup
-								trigger={
-									<button>
-										<i className="fas fa-upload"/> Import from database...
-									</button>
-								}
-								modal
-							>
-								{(close) => <div className="row">
-									<div className={"col-md-9"}>
-										<h3>Import from database...</h3>
-									</div>
-									<div className={"col-md-3"}>
-										<div className="right-buttons">
-											<button
-												className={"grey-background"}
-												data-hover="Close"
-												data-active=""
-												onClick={close}>
-												<span><i className="far fa-times-circle"/></span>
-											</button>
-										</div>
-									</div>
-
-									<div className={"col-md-12"}>
-										<FormLine
-											label={"Include contacts from companies"}
-											type={"checkbox"}
-											value={this.state.includeContacts}
-											onChange={(v) => this.changeState("includeContacts", v)}
-										/>
-										<FormLine
-											label={"Include active users"}
-											type={"checkbox"}
-											value={this.state.includeUsers}
-											onChange={(v) => this.changeState("includeUsers", v)}
-										/>
-									</div>
-								</div>}
-							</Popup>
+							<DialogImportCommunicationAddresses
+								onConfirmation={(addresses) => this.addAddresses(addresses)}
+							/>
+							<DialogImportDatabaseAddresses
+								onConfirmation={(addresses) => this.addAddresses(addresses)}
+							/>
 						</div>
 					</div>
 
 					<div className="col-md-12">
 						<FormLine
-							label={"Type multiple addresses"}
+							label={"Add addresses manually"}
 							type={"textarea"}
 							value={this.state.additionalAddressField}
 							onChange={(v) => this.changeState("additionalAddressField", v)}
@@ -341,35 +254,12 @@ export default class EmailSend extends React.Component {
 
 					<div className="col-md-12">
 						<div className="right-buttons">
-							<Popup
-								trigger={
-									<button
-										disabled={!this.state.user}>
-										<i className="fas fa-upload"/> Import from previous communication...
-									</button>
-								}
-								modal
-							>
-								{(close) => <div className="row">
-									<div className={"col-md-9"}>
-										<h3>Import from previous communication...</h3>
-									</div>
-									<div className={"col-md-3"}>
-										<div className="right-buttons">
-											<button
-												className={"grey-background"}
-												data-hover="Close"
-												data-active=""
-												onClick={close}>
-												<span><i className="far fa-times-circle"/></span>
-											</button>
-										</div>
-									</div>
-
-									<div className={"col-md-12"}>
-									</div>
-								</div>}
-							</Popup>
+							<DialogImportCommunicationContent
+								onConfirmation={(subject, body) => this.setState({
+									subject,
+									body,
+								})}
+							/>
 						</div>
 					</div>
 
