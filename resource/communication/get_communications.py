@@ -29,9 +29,9 @@ class GetCommunications(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        query = self.session \
+        query = self.db.session \
             .query(self.db.tables["Communication"]) \
-            .order_by(self.tables["Communication"].id.desc())
+            .order_by(self.db.tables["Communication"].id.desc())
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
         communications = Serializer.serialize(paginate.items, self.db.tables["Communication"])
 

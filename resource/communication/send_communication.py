@@ -24,7 +24,7 @@ class SendCommunication(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
-        'addresses': fields.DelimitedList(fields.Str()),
+        'addresses': fields.List(fields.Str()),
         'subject': fields.Str(),
         'body': fields.Str(),
     })
@@ -33,18 +33,19 @@ class SendCommunication(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.insert({
-            "addresses": kwargs["addresses"].join(","),
-            "subject": kwargs["subject"].join(","),
-            "body": kwargs["body"].join(","),
+        self.db.insert({
+            "addresses": ",".join(kwargs["addresses"]),
+            "subject": kwargs["subject"],
+            "body": kwargs["body"],
             "status": "PROCESSED",
-        }, self.db.tables["Communication"])
+        }, self.db.tables["Communication"], commit=False)
 
         send_email(self.mail,
+                   recipients="",
                    bcc=kwargs["addresses"],
                    subject=kwargs["subject"],
-                   html_body=kwargs["content"])
+                   html_body=kwargs["body"])
 
-        self.commit()
+        self.db.session.commit()
 
         return "", "200 "
