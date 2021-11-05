@@ -54,7 +54,7 @@ application.config['APISPEC_SWAGGER_URL'] = '/doc/json'
 application.config['APISPEC_SWAGGER_UI_URL'] = '/doc/'
 application.config['APISPEC_SPEC'] = APISpec(
     title='CYBERLUX API',
-    version='v1.2',
+    version='v1.6',
     plugins=[MarshmallowPlugin()],
     openapi_version='2.0.0'
 )
