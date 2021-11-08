@@ -95,17 +95,22 @@ export default class EmailSend extends React.Component {
 	addAddresses(addresses) {
 		if (addresses.length > 0) {
 			const addressList = this.state.addresses.map((a) => a.email);
-			const addressObjects = typeof addresses[0] === "string"
-				? addresses.map((a) => ({
-					email: a,
-					information: "",
-					source: "MANUALLY ADDED",
-				}))
-				: addresses;
+			let addressObjects = null;
+
+			if (typeof addresses[0] === "string") {
+				addressObjects = addresses
+					.map((a) => ({
+						email: a,
+						information: "",
+						source: "MANUALLY ADDED",
+					}));
+			} else {
+				addressObjects = addresses;
+			}
 
 			this.setState({
 				addresses: this.state.addresses
-					.concat(addressObjects.filter((a) => addressList.indexOf(a) < 0)),
+					.concat(addressObjects.filter((a) => addressList.indexOf(a.email) < 0)),
 				additionalAddressField: null,
 			});
 		}
@@ -113,7 +118,7 @@ export default class EmailSend extends React.Component {
 
 	removeAddress(address) {
 		this.setState({
-			address: this.state.address
+			addresses: this.state.addresses
 				.filter((a) => a.email !== address),
 		});
 	}

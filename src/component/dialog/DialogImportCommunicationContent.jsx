@@ -149,7 +149,7 @@ export default class DialogImportCommunicationContent extends React.Component {
 								disabled={!this.state.selectedCommunication
 									|| !this.state.selectedCommunication.subject
 									|| !this.state.selectedCommunication.body}>
-								<i className="fas fa-plus"/> Add content
+								<i className="fas fa-upload"/> Import content
 							</button>
 						</div>
 					</div>

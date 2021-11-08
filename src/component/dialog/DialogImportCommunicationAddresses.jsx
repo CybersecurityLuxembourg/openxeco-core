@@ -146,6 +146,8 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 					</div>
 
 					<div className={"col-md-12 row-spaced"}>
+						<h3>{this.getSelectedAddresses().length} addresse{this.getSelectedAddresses().length > 1 && "s"} selected</h3>
+
 						{this.getSelectedAddresses().map((a) => (
 							<Chip
 								key={a.email}
@@ -159,7 +161,7 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 							<button
 								onClick={() => this.onConfirmation(close)}
 								disabled={this.getSelectedAddresses().length === 0}>
-								<i className="fas fa-plus"/> Add addresses
+								<i className="fas fa-upload"/> Import addresses
 							</button>
 						</div>
 					</div>
