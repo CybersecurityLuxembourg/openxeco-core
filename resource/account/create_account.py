@@ -28,9 +28,9 @@ class CreateAccount(MethodResource, Resource):
          description='Create an account with the provided email as a user ID',
          responses={
              "200": {},
-             "403": {"description": "An account already exists with this email address"},
              "422.a": {"description": "The provided email does not have the right format"},
-             "422.b": {"description": "Object already existing"},
+             "422.b": {"description": "An account already exists with this email address"},
+             "422.c": {"description": "Object already existing"},
              "500": {"description": "Impossible to find the origin. Please contact the administrator"},
          })
     @use_kwargs({
@@ -52,7 +52,7 @@ class CreateAccount(MethodResource, Resource):
         data = self.db.get(self.db.tables["User"], {"email": email})
 
         if len(data) > 0:
-            return "", "403 An account already exists with this email address"
+            return "", "422 An account already exists with this email address"
 
         generated_password = generate_password()
 
