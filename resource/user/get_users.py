@@ -2,6 +2,7 @@ from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
+from sqlalchemy import func
 from webargs import fields, validate
 
 from db.db import DB
@@ -23,6 +24,7 @@ class GetUsers(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
+        'email': fields.Str(required=False),
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'admin_only': fields.Bool(required=False),
@@ -36,7 +38,11 @@ class GetUsers(MethodResource, Resource):
             .with_entities(self.db.tables["User"].id,
                            self.db.tables["User"].email,
                            self.db.tables["User"].is_admin,
-                           self.db.tables["User"].is_active)
+                           self.db.tables["User"].is_active) \
+            .order_by(self.db.tables["User"].email.asc())
+
+        if "email" in kwargs:
+            query = query.filter(func.lower(self.db.tables["User"].email).like("%" + kwargs["email"] + "%"))
 
         if "admin_only" in kwargs and kwargs["admin_only"] is True:
             query = query.filter(self.db.tables["User"].is_admin.is_(True))
