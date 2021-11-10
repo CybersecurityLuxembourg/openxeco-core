@@ -9,6 +9,7 @@ import User from "../item/User.jsx";
 import FormLine from "../button/FormLine.jsx";
 import { validateEmail, validatePassword } from "../../utils/re.jsx";
 import { dictToURI } from "../../utils/url.jsx";
+import DialogUserFilter from "../dialog/DialogUserFilter.jsx";
 
 export default class UserUser extends React.Component {
 	constructor(props) {
@@ -23,11 +24,18 @@ export default class UserUser extends React.Component {
 			provisoryPassword: "ProvisoryPassword!" + (Math.floor(Math.random() * 90000) + 10000),
 			page: 1,
 			per_page: 10,
+			filters: {
+				email: null,
+			},
 		};
 	}
 
 	componentDidMount() {
 		this.refresh();
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.filters !== this.state.filters) this.refresh();
 	}
 
 	refresh() {
@@ -47,6 +55,7 @@ export default class UserUser extends React.Component {
 		const params = {
 			page: Number.isInteger(page) ? page : this.state.page,
 			per_page: 10,
+			...this.state.filters,
 		};
 
 		getRequest.call(this, "user/get_users?" + dictToURI(params), (data) => {
@@ -122,6 +131,16 @@ export default class UserUser extends React.Component {
 								onClick={() => this.refresh()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
+							<DialogUserFilter
+								trigger={
+									<button
+										className={"blue-background"}
+										data-hover="Filter">
+										<i className="fas fa-search"/>
+									</button>
+								}
+								applyFilter={(filters) => this.changeState("filters", filters)}
+							/>
 						</div>
 					</div>
 					<div className="col-md-12 PageCompany-table">
