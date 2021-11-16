@@ -165,6 +165,9 @@ export default class FormLine extends React.Component {
 						cleanTags: ["svg"],
 						unwrapTags: ["h1", "h2", "h3", "h4", "h5", "div", "code", "span"],
 					},
+					placeholder: {
+						text: "",
+					},
 				}}
 			/>;
 		case "region":
