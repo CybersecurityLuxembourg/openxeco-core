@@ -42,15 +42,21 @@
     border-radius: unset !important;
 }
 
-.ArticleHorizontal .card-date {
+.ArticleHorizontal .card-blue-boxes {
     position: absolute;
+    text-transform: uppercase;
+    bottom: 0px;
+    left: 15px;
+}
+
+.ArticleHorizontal .card-blue-box {
+    display: inline-block;
     background: #009fe3;
     text-align: center;
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 10px;
+    margin-left: 10px;
     color: #fff;
-    bottom: 0px;
-    left: 15px;
     text-transform: uppercase;
 }
 

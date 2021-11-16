@@ -55,14 +55,25 @@ export default class ArticleHorizontal extends Component {
 						: <NoImage/>
 					}
 
-					<div className="card-date">
+					<div className="card-blue-boxes">
+						<div className="card-blue-box">
+							{this.props.info.type}
+						</div>
+
+						<div className="card-blue-box">
+							{dateToString(this.props.info.publication_date, "DD MMM YYYY")}
+						</div>
+
 						{this.props.info.type === "EVENT"
-							? <div>
-								{dateToString(this.props.info.start_date, "DD MMM YYYY HH:mm")}
-								<br/>
-								{dateToString(this.props.info.end_date, "DD MMM YYYY HH:mm")}
+							&& <div className="card-blue-box">
+								START: {dateToString(this.props.info.start_date)}
 							</div>
-							: dateToString(this.props.info.publication_date, "DD MMM YYYY")
+						}
+
+						{this.props.info.type === "EVENT"
+							&& <div className="card-blue-box">
+								END: {dateToString(this.props.info.end_date)}
+							</div>
 						}
 					</div>
 				</div>
