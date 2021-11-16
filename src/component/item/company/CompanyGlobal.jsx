@@ -148,12 +148,6 @@ export default class CompanyGlobal extends React.Component {
 						onChange={(v) => this.saveCompanyValue("is_startup", v)}
 					/>
 					<FormLine
-						label={"Is targeting SMEs"}
-						type={"checkbox"}
-						value={this.state.company.is_targeting_sme}
-						onChange={(v) => this.saveCompanyValue("is_targeting_sme", v)}
-					/>
-					<FormLine
 						label={"Status"}
 						type={"select"}
 						value={this.state.company.status}

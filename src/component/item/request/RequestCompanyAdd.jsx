@@ -118,12 +118,6 @@ export default class RequestCompanyAdd extends Component {
 								value={this.props.data.is_startup}
 								disabled={true}
 							/>
-							<FormLine
-								label={"Is targeting SMEs"}
-								type={"checkbox"}
-								value={this.props.data.is_targeting_sme}
-								disabled={true}
-							/>
 						</div>
 
 						<div className="col-md-12 right-buttons">
