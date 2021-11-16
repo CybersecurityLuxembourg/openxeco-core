@@ -185,7 +185,7 @@ export default class SettingGlobal extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h2>Branding</h2>
+						<h2>Project and app names</h2>
 					</div>
 
 					<div className="col-md-12 row-spaced">
