@@ -26,7 +26,6 @@ export default class CompanyGlobal extends React.Component {
 				creation_date: "Creation date",
 				is_cybersecurity_core_business: "Is cybersecurity core business",
 				is_startup: "Is startup",
-				is_targeting_sme: "Is targeting SMEs",
 			},
 		};
 	}
@@ -163,13 +162,6 @@ export default class CompanyGlobal extends React.Component {
 							type={"checkbox"}
 							value={this.state.companyInfo.is_startup}
 							onChange={(v) => this.updateCompany("is_startup", v)}
-							background={false}
-						/>
-						<FormLine
-							label={this.state.fields.is_targeting_sme}
-							type={"checkbox"}
-							value={this.state.companyInfo.is_targeting_sme}
-							onChange={(v) => this.updateCompany("is_targeting_sme", v)}
 							background={false}
 						/>
 

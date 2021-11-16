@@ -33,7 +33,6 @@ export default class PageAddCompany extends React.Component {
 				creation_date: "Creation date",
 				is_cybersecurity_core_business: "Is cybersecurity core business",
 				is_startup: "Is startup",
-				is_targeting_sme: "Is targeting SMEs",
 			},
 		};
 	}
@@ -355,14 +354,6 @@ export default class PageAddCompany extends React.Component {
 								type={"checkbox"}
 								value={this.state.newCompanyForm.is_startup}
 								onChange={(v) => this.updateNewCompany("is_startup", v)}
-								background={false}
-								disabled={!this.state.notFoundEntity}
-							/>
-							<FormLine
-								label={this.state.fields.is_targeting_sme}
-								type={"checkbox"}
-								value={this.state.newCompanyForm.is_targeting_sme}
-								onChange={(v) => this.updateNewCompany("is_targeting_sme", v)}
 								background={false}
 								disabled={!this.state.notFoundEntity}
 							/>
