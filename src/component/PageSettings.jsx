@@ -1,6 +1,7 @@
 import React from "react";
 import "./PageSettings.css";
 import SettingGlobal from "./pagesettings/SettingGlobal.jsx";
+import SettingLogo from "./pagesettings/SettingLogo.jsx";
 import SettingMail from "./pagesettings/SettingMail.jsx";
 import SettingCron from "./pagesettings/SettingCron.jsx";
 import Tab from "./tab/Tab.jsx";
@@ -19,10 +20,13 @@ export default class PageSettings extends React.Component {
 		return (
 			<div id="PageSettings" className="page max-sized-page">
 				<Tab
-					menu={["Global", "Mail", "Scheduled task"]}
+					menu={["Global", "Logo", "Mail", "Scheduled task"]}
 					content={[
 						<SettingGlobal
 							key={"global"}
+						/>,
+						<SettingLogo
+							key={"logo"}
 						/>,
 						<SettingMail
 							key={"mail"}

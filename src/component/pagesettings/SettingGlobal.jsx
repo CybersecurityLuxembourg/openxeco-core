@@ -1,14 +1,12 @@
 import React from "react";
 import "./SettingGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import Dropzone from "react-dropzone";
-import Loading from "../box/Loading.jsx";
-import Message from "../box/Message.jsx";
 import Info from "../box/Info.jsx";
-import Table from "../table/Table.jsx";
-import { getBlobRequest, getRequest, postRequest } from "../../utils/request.jsx";
+import { getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import Table from "../table/Table.jsx";
+import Loading from "../box/Loading.jsx";
 
 export default class SettingGlobal extends React.Component {
 	constructor(props) {
@@ -16,20 +14,28 @@ export default class SettingGlobal extends React.Component {
 
 		this.refresh = this.refresh.bind(this);
 		this.getSettings = this.getSettings.bind(this);
-		this.getLogo = this.getLogo.bind(this);
-		this.getFavicon = this.getFavicon.bind(this);
 		this.addSetting = this.addSetting.bind(this);
 		this.deleteSetting = this.deleteSetting.bind(this);
-		this.onDropFavicon = this.onDropFavicon.bind(this);
-		this.onDropLogo = this.onDropLogo.bind(this);
+		this.updateSetting = this.updateSetting.bind(this);
 
 		this.state = {
-			logo: null,
-			favicon: null,
-
-			newProperty: null,
-			newValue: null,
 			settings: null,
+			defaultProperties: [
+				"PROJECT_NAME",
+				"ADMIN_PLATFORM_NAME",
+				"PRIVATE_SPACE_PLATFORM_NAME",
+				"EMAIL_ADDRESS",
+				"PHONE_NUMBER",
+				"POSTAL_ADDRESS",
+				"SHOW_COMMUNICATION_PAGE",
+				"ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE",
+				"ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT",
+				"AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM",
+				"ALLOW_ECOSYSTEM_TO_EDIT_LOGO",
+				"DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE",
+			],
+			property: null,
+			value: null,
 		};
 	}
 
@@ -39,8 +45,6 @@ export default class SettingGlobal extends React.Component {
 
 	refresh() {
 		this.getSettings();
-		this.getLogo();
-		this.getFavicon();
 	}
 
 	getSettings() {
@@ -59,50 +63,10 @@ export default class SettingGlobal extends React.Component {
 		});
 	}
 
-	getLogo() {
-		this.setState({
-			logo: null,
-		});
-
-		getBlobRequest.call(this, "public/get_public_image/logo.png", (data) => {
-			this.setState({
-				logo: URL.createObjectURL(data),
-			});
-		}, (response) => {
-			if (response.status === 422) {
-				nm.info("No logo found for this project. Please provide one");
-			} else {
-				nm.warning(response.statusText);
-			}
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
-	getFavicon() {
-		this.setState({
-			favicon: null,
-		});
-
-		getBlobRequest.call(this, "public/get_public_image/favicon.ico", (data) => {
-			this.setState({
-				favicon: URL.createObjectURL(data),
-			});
-		}, (response) => {
-			if (response.status === 422) {
-				nm.info("No favicon found for this project. Please provide one");
-			} else {
-				nm.warning(response.statusText);
-			}
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
-	addSetting() {
+	addSetting(property, value) {
 		const params = {
-			property: this.state.newProperty,
-			value: this.state.newValue,
+			property,
+			value,
 		};
 
 		postRequest.call(this, "setting/add_setting", params, () => {
@@ -133,68 +97,43 @@ export default class SettingGlobal extends React.Component {
 		});
 	}
 
-	onDropFavicon(files) {
-		if (files.length === 0) {
-			nm.warning("No file has been detected. Please re-check the file extension.");
-			this.setState({
-				favicon: null,
-			});
-		} else {
-			const reader = new FileReader();
-
-			reader.onabort = () => console.log("file reading was aborted");
-			reader.onerror = () => console.log("An error happened while reading the file");
-			reader.onload = () => {
-				const params = {
-					image: reader.result,
-				};
-
-				postRequest.call(this, "setting/upload_favicon", params, () => {
-					nm.info("The favicon has been uploaded");
-					this.getFavicon();
-				}, (response) => {
-					this.refresh();
-					nm.warning(response.statusText);
-				}, (error) => {
-					this.refresh();
-					nm.error(error.message);
-				});
+	updateSetting(property, value) {
+		if (this.getSettingValue(property)) {
+			const params = {
+				property,
 			};
 
-			reader.readAsDataURL(files[0]);
+			postRequest.call(this, "setting/delete_setting", params, () => {
+				if (value && value.length > 0) {
+					this.addSetting(property, value);
+				} else {
+					nm.info("The setting has been updated");
+				}
+			}, (response) => {
+				this.refresh();
+				nm.warning(response.statusText);
+			}, (error) => {
+				this.refresh();
+				nm.error(error.message);
+			});
+		} else {
+			this.addSetting(property, value);
 		}
 	}
 
-	onDropLogo(files) {
-		if (files.length === 0) {
-			nm.warning("No file has been detected. Please re-check the file extension.");
-			this.setState({
-				logo: null,
-			});
-		} else {
-			const reader = new FileReader();
+	getSettingValue(property) {
+		if (this.state.settings) {
+			const settings = this.state.settings
+				.filter((s) => s.property === property);
 
-			reader.onabort = () => console.log("file reading was aborted");
-			reader.onerror = () => console.log("An error happened while reading the file");
-			reader.onload = () => {
-				const params = {
-					image: reader.result,
-				};
+			if (settings.length > 0) {
+				return settings[0].value;
+			}
 
-				postRequest.call(this, "setting/upload_logo", params, () => {
-					nm.info("The logo has been uploaded");
-					this.getLogo();
-				}, (response) => {
-					this.refresh();
-					nm.warning(response.statusText);
-				}, (error) => {
-					this.refresh();
-					nm.error(error.message);
-				});
-			};
-
-			reader.readAsDataURL(files[0]);
+			return null;
 		}
+
+		return null;
 	}
 
 	changeState(field, value) {
@@ -245,58 +184,132 @@ export default class SettingGlobal extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-6">
-						<h2>Logo</h2>
-
-						<Dropzone
-							accept=".png"
-							disabled={false}
-							onDrop={this.onDropLogo}
-						>
-							{({ getRootProps, getInputProps }) => (
-								<div
-									className={"SettingGlobal-dragdrop"}
-									{...getRootProps()}>
-									<input {...getInputProps()} />
-									<div className="SettingGlobal-dragdrop-textContent">
-										{this.state.logo !== null
-											&& <img src={this.state.logo}/>}
-										<div>Drag and drop the file here</div>
-										<div>(must be .png)</div>
-									</div>
-								</div>
-							)}
-						</Dropzone>
-					</div>
-
-					<div className="col-md-6">
-						<h2>Favicon</h2>
-
-						<Dropzone
-							accept=".ico"
-							disabled={false}
-							onDrop={this.onDropFavicon}
-						>
-							{({ getRootProps, getInputProps }) => (
-								<div
-									className={"SettingGlobal-dragdrop"}
-									{...getRootProps()}>
-									<input {...getInputProps()} />
-									<div className="SettingGlobal-dragdrop-textContent">
-										{this.state.favicon !== null
-											&& <img src={this.state.favicon}/>}
-										<div>Drag and drop the file here</div>
-										<div>(must be .ico)</div>
-									</div>
-								</div>
-							)}
-						</Dropzone>
-					</div>
-				</div>
-
-				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h2>Settings</h2>
+						<h2>Branding</h2>
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<FormLine
+							label={"Project name"}
+							value={this.getSettingValue("PROJECT_NAME")}
+							onBlur={(v) => this.updateSetting("PROJECT_NAME", v)}
+						/>
+						<FormLine
+							label={"Admin platform name"}
+							value={this.getSettingValue("ADMIN_PLATFORM_NAME")}
+							onBlur={(v) => this.updateSetting("ADMIN_PLATFORM_NAME", v)}
+						/>
+						<FormLine
+							label={"Private space platform name"}
+							value={this.getSettingValue("PRIVATE_SPACE_PLATFORM_NAME")}
+							onBlur={(v) => this.updateSetting("PRIVATE_SPACE_PLATFORM_NAME", v)}
+						/>
+					</div>
+
+					<div className="col-md-12">
+						<h2>Contact details</h2>
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<FormLine
+							label={"Email address"}
+							value={this.getSettingValue("EMAIL_ADDRESS")}
+							onBlur={(v) => this.updateSetting("EMAIL_ADDRESS", v)}
+						/>
+						<FormLine
+							label={"Phone number"}
+							value={this.getSettingValue("PHONE_NUMBER")}
+							onBlur={(v) => this.updateSetting("PHONE_NUMBER", v)}
+						/>
+						<FormLine
+							label={"Postal address"}
+							value={this.getSettingValue("POSTAL_ADDRESS")}
+							onBlur={(v) => this.updateSetting("POSTAL_ADDRESS", v)}
+						/>
+					</div>
+
+					<div className="col-md-12">
+						<h2>
+							Administration platform
+							{this.getSettingValue("ADMIN_PLATFORM_NAME")
+								? " - " + this.getSettingValue("ADMIN_PLATFORM_NAME")
+								: ""}
+						</h2>
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<FormLine
+							type={"checkbox"}
+							label={"Show communication page"}
+							value={this.getSettingValue("SHOW_COMMUNICATION_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_COMMUNICATION_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_COMMUNICATION_PAGE")
+							)}
+						/>
+					</div>
+
+					<div className="col-md-12">
+						<h2>
+							Private space platform
+							{this.getSettingValue("PRIVATE_SPACE_PLATFORM_NAME")
+								? " - " + this.getSettingValue("PRIVATE_SPACE_PLATFORM_NAME")
+								: ""}
+						</h2>
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<FormLine
+							type={"checkbox"}
+							label={"Allow article edition"}
+							value={this.getSettingValue("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "TRUE")
+								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Allow article content edition"}
+							value={this.getSettingValue("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "TRUE")
+								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT")
+							)}
+						/>
+						<FormLine
+							label={"Authorized article types"}
+							value={this.getSettingValue("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM")}
+							onBlur={(v) => this.updateSetting("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM", v)}
+						/>
+						<br/>
+						<FormLine
+							type={"checkbox"}
+							label={"Show logo generator page"}
+							value={this.getSettingValue("ALLOW_ECOSYSTEM_TO_EDIT_LOGO") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO", "TRUE")
+								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO")
+							)}
+						/>
+					</div>
+
+					<div className="col-md-12">
+						<h2>
+							Additional settings
+						</h2>
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<Info
+							content={<div>
+								<div>
+									You can then manage additional settings for customized usage.
+									Please remain aware that those settings will be available publicly
+									via the resource public/get_public_settings.
+								</div>
+							</div>}
+						/>
 					</div>
 
 					<div className="col-md-12 row-spaced">
@@ -313,7 +326,7 @@ export default class SettingGlobal extends React.Component {
 						<div className="col-xl-12 right-buttons">
 							<button
 								className={"blue-background"}
-								onClick={this.addSetting}
+								onClick={() => this.addSetting(this.state.newProperty, this.state.newValue)}
 								disabled={this.state.newProperty === null || this.state.newValue === null}>
 								<i className="fas fa-plus"/> Add setting
 							</button>
@@ -321,86 +334,21 @@ export default class SettingGlobal extends React.Component {
 					</div>
 
 					<div className="col-md-12 row-spaced">
-						{this.state.settings !== null && this.state.settings.length > 0
+						{this.state.settings
 							&& <Table
 								columns={columns}
-								data={this.state.settings
-									.filter((v) => v.category === this.state.selectedCategory)}
+								data={
+									this.state.settings
+										.filter((v) => this.state.defaultProperties.indexOf(v.property) < 0)
+								}
 							/>
 						}
 
-						{this.state.settings === null
+						{!this.state.settings
 							&& <Loading
 								height={300}
 							/>
 						}
-
-						{this.state.settings !== null && this.state.settings.length === 0
-							&& <Message
-								height={300}
-								text={"No setting found"}
-							/>
-						}
-					</div>
-
-					<div className="col-md-12">
-						<Info
-							content={<div>
-								<div>Here are the main settings:</div>
-								<ul>
-									<li>PROJECT_NAME : The global name of your project/organization</li>
-									<li>ADMIN_PLATFORM_NAME : Name of the platform you currenly are on.</li>
-									<li>
-										PRIVATE_SPACE_PLATFORM_NAME : Name of the platform where
-										the community can manage its data (Cf. fo-private repository).
-									</li>
-									<li>
-										EMAIL_ADDRESS : Email address of contact for the project.
-									</li>
-									<li>
-										PHONE_NUMBER : Phone number of contact for the project.
-									</li>
-									<li>
-										POSTAL_ADDRESS : Postal address of contact for the project.
-									</li>
-									<li>
-										ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE : &#34;TRUE&#34; to be activated.<br/>
-										This setting allows the users to create an article.<br/>
-										This also gives the access to the article page on the private space.<br/>
-										This won&#39;t be activated if this setting is not configured.<br/>
-									</li>
-									<li>
-										ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT : &#34;TRUE&#34; to be activated.<br/>
-										This setting gives access on article content edition on the private space.<br/>
-										Otherwise, only the metadata and the link of the article is editable.<br/>
-										This won&#39;t be activated if this setting is not configured.
-									</li>
-									<li>
-										ALLOW_ECOSYSTEM_TO_EDIT_LOGO : &#34;TRUE&#34; to be activated.<br/>
-										This setting gives access on the logo generator page on the private space.
-									</li>
-									<li>
-										DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE : &#34;TRUE&#34; to be activated.<br/>
-										The content creation and modification from the ecosystem are
-										directly publish (without passing throught request to be validated
-										by admins).<br/>
-										This won&#39;t be possible if the setting is not provided.
-									</li>
-									<li>
-										AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM : &#34;TYPE1,TYPE2&#34;
-										to be activated.<br/>
-										This is the list or article types that the ecosystem can publish/edit.<br/>
-										The full list is available on the resource public/get_article_enums.<br/>
-										No type is available if this setting is not configured.
-									</li>
-								</ul>
-								<div>
-									You can then manage additional settings for customized usage.
-									Please remain aware that those settings will be available publicly
-									via the resource public/get_public_settings.
-								</div>
-							</div>}
-						/>
 					</div>
 				</div>
 			</div>
