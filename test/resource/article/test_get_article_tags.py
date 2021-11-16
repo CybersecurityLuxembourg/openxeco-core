@@ -30,7 +30,6 @@ class TestGetArticleTags(BaseCase):
                     'image': None,
                     'is_cybersecurity_core_business': 0,
                     'is_startup': 0,
-                    'is_targeting_sme': 0,
                     'name': 'COMPANY',
                     'trade_register_number': None,
                     'website': None
@@ -43,7 +42,6 @@ class TestGetArticleTags(BaseCase):
                     'image': None,
                     'is_cybersecurity_core_business': 0,
                     'is_startup': 0,
-                    'is_targeting_sme': 0,
                     'name': 'COMPANY2',
                     'trade_register_number': None,
                     'website': None

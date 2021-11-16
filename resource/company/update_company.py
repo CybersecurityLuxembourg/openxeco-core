@@ -32,7 +32,6 @@ class UpdateCompany(MethodResource, Resource):
         'website': fields.Str(required=False, allow_none=True),
         'is_startup': fields.Bool(required=False),
         'is_cybersecurity_core_business': fields.Bool(required=False),
-        'is_targeting_sme': fields.Bool(required=False),
         'status': fields.Str(required=False, validate=lambda x: x in ['ACTIVE', 'INACTIVE', 'DELETED']),
     })
     @jwt_required

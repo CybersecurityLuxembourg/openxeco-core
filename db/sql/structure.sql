@@ -145,7 +145,6 @@ CREATE TABLE `Company` (
   `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_startup` tinyint(1) NOT NULL DEFAULT '0',
   `is_cybersecurity_core_business` tinyint(1) NOT NULL DEFAULT '0',
-  `is_targeting_sme` tinyint(1) NOT NULL DEFAULT '0',
   `status` enum('active','inactive') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
