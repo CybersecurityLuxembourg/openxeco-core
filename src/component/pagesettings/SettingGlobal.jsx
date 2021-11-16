@@ -34,8 +34,8 @@ export default class SettingGlobal extends React.Component {
 				"ALLOW_ECOSYSTEM_TO_EDIT_LOGO",
 				"DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE",
 			],
-			property: null,
-			value: null,
+			property: "",
+			value: "",
 		};
 	}
 

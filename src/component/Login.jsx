@@ -21,9 +21,9 @@ export default class Login extends React.Component {
 
 		this.state = {
 			settings: null,
-			email: null,
-			password: null,
-			passwordConfirmation: null,
+			email: "",
+			password: "",
+			passwordConfirmation: "",
 			view: getUrlParameter("action") === "reset_password" ? "reset" : "login",
 		};
 	}
