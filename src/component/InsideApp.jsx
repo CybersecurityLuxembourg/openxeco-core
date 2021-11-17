@@ -69,7 +69,7 @@ export default class InsideApp extends React.Component {
 
 	render() {
 		return (
-			<div id="InsideApp">
+			<div id="InsideApp" className={"fade-in"}>
 				<Menu
 					selectedMenu={this.state.selectedMenu}
 					changeMenu={this.changeMenu}

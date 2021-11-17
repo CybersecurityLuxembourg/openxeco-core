@@ -33,7 +33,7 @@ html, body, #root {
     width: 100%;
     height: 100%;
     overflow-y: hidden;
-
+    background: linear-gradient(110deg, #EEE 60%, #E9E9E9 60%);
 }
 
 h1 {
@@ -370,13 +370,6 @@ textarea {
 @-ms-keyframes fadeIn {
 	0% {opacity:0;}
 	100% {opacity:1;}
-}
-
-.resize-animation {
-	-webkit-transition:width 300ms ease-in-out, max-height 300ms ease-in-out;
-	-moz-transition:width 300ms ease-in-out, max-height 300ms ease-in-out;
-	-o-transition:width 300ms ease-in-out, max-height 300ms ease-in-out;
-	transition:width 300ms ease-in-out, max-height 300ms ease-in-out;
 }
 
 /* NOTIFICATION */

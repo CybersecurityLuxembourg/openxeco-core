@@ -168,8 +168,8 @@ export default class Login extends React.Component {
 						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
 					</ul>
 				</div>
-				<div id="Login-box" className="resize-animation">
-					<div id="Login-inner-box" className={"fade-in"}>
+				<div id="Login-box" className={"fade-in"}>
+					<div id="Login-inner-box">
 						{this.state.view === "login"
 							&& <div className="row">
 								<div className="top-right-buttons">

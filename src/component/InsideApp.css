@@ -8,6 +8,5 @@
     float: right;
     width: calc(100% - 62px);
     height: 100%;
-    background: linear-gradient(110deg, #EEE 60%, #E9E9E9 60%);
     overflow-y: auto;
 }

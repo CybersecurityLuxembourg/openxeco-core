@@ -34,6 +34,7 @@ export default class Menu extends React.Component {
 	render() {
 		return (
 			<SideNav
+				className={"fade-in"}
 				onSelect={(selected) => {
 					if (selected === "disconnect") {
 						this.props.cookies.remove("access_token_cookie");
