@@ -6,7 +6,7 @@ export default class Version extends React.Component {
 	render() {
 		return (
 			<div className="Version">
-				v1.5
+				v1.6
 			</div>
 		);
 	}
