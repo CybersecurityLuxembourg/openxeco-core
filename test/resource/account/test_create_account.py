@@ -44,4 +44,4 @@ class TestCreateAccount(BaseCase):
                                          headers=self.get_standard_post_header(None),
                                          json=payload)
 
-        self.assertEqual("403 An account already exists with this email address", response.status)
+        self.assertEqual("422 An account already exists with this email address", response.status)

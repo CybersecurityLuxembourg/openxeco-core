@@ -7,7 +7,7 @@ class TestSendCommunication(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/communication/send_communication")
-    @patch('resource.mail.send_mail.send_email')
+    @patch('resource.communication.send_communication.send_email')
     def test_ok(self, mock_send_mail, token):
         mock_send_mail.return_value = None
 
