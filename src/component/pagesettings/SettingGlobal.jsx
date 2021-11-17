@@ -3,6 +3,7 @@ import "./SettingGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
 import Info from "../box/Info.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
+import { getSettingValue } from "../../utils/setting.jsx";
 import FormLine from "../button/FormLine.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Table from "../table/Table.jsx";
@@ -28,6 +29,7 @@ export default class SettingGlobal extends React.Component {
 				"PHONE_NUMBER",
 				"POSTAL_ADDRESS",
 				"SHOW_COMMUNICATION_PAGE",
+				"SHOW_NETWORK_PAGE",
 				"ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE",
 				"ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT",
 				"AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM",
@@ -98,7 +100,7 @@ export default class SettingGlobal extends React.Component {
 	}
 
 	updateSetting(property, value) {
-		if (this.getSettingValue(property)) {
+		if (getSettingValue(this.state.settings, property)) {
 			const params = {
 				property,
 			};
@@ -119,21 +121,6 @@ export default class SettingGlobal extends React.Component {
 		} else {
 			this.addSetting(property, value);
 		}
-	}
-
-	getSettingValue(property) {
-		if (this.state.settings) {
-			const settings = this.state.settings
-				.filter((s) => s.property === property);
-
-			if (settings.length > 0) {
-				return settings[0].value;
-			}
-
-			return null;
-		}
-
-		return null;
 	}
 
 	changeState(field, value) {
@@ -191,17 +178,17 @@ export default class SettingGlobal extends React.Component {
 					<div className="col-md-12 row-spaced">
 						<FormLine
 							label={"Project name"}
-							value={this.getSettingValue("PROJECT_NAME")}
+							value={getSettingValue(this.state.settings, "PROJECT_NAME")}
 							onBlur={(v) => this.updateSetting("PROJECT_NAME", v)}
 						/>
 						<FormLine
 							label={"Admin platform name"}
-							value={this.getSettingValue("ADMIN_PLATFORM_NAME")}
+							value={getSettingValue(this.state.settings, "ADMIN_PLATFORM_NAME")}
 							onBlur={(v) => this.updateSetting("ADMIN_PLATFORM_NAME", v)}
 						/>
 						<FormLine
 							label={"Private space platform name"}
-							value={this.getSettingValue("PRIVATE_SPACE_PLATFORM_NAME")}
+							value={getSettingValue(this.state.settings, "PRIVATE_SPACE_PLATFORM_NAME")}
 							onBlur={(v) => this.updateSetting("PRIVATE_SPACE_PLATFORM_NAME", v)}
 						/>
 					</div>
@@ -213,17 +200,17 @@ export default class SettingGlobal extends React.Component {
 					<div className="col-md-12 row-spaced">
 						<FormLine
 							label={"Email address"}
-							value={this.getSettingValue("EMAIL_ADDRESS")}
+							value={getSettingValue(this.state.settings, "EMAIL_ADDRESS")}
 							onBlur={(v) => this.updateSetting("EMAIL_ADDRESS", v)}
 						/>
 						<FormLine
 							label={"Phone number"}
-							value={this.getSettingValue("PHONE_NUMBER")}
+							value={getSettingValue(this.state.settings, "PHONE_NUMBER")}
 							onBlur={(v) => this.updateSetting("PHONE_NUMBER", v)}
 						/>
 						<FormLine
 							label={"Postal address"}
-							value={this.getSettingValue("POSTAL_ADDRESS")}
+							value={getSettingValue(this.state.settings, "POSTAL_ADDRESS")}
 							onBlur={(v) => this.updateSetting("POSTAL_ADDRESS", v)}
 						/>
 					</div>
@@ -231,8 +218,8 @@ export default class SettingGlobal extends React.Component {
 					<div className="col-md-12">
 						<h2>
 							Administration platform
-							{this.getSettingValue("ADMIN_PLATFORM_NAME")
-								? " - " + this.getSettingValue("ADMIN_PLATFORM_NAME")
+							{getSettingValue(this.state.settings, "ADMIN_PLATFORM_NAME")
+								? " - " + getSettingValue(this.state.settings, "ADMIN_PLATFORM_NAME")
 								: ""}
 						</h2>
 					</div>
@@ -241,10 +228,19 @@ export default class SettingGlobal extends React.Component {
 						<FormLine
 							type={"checkbox"}
 							label={"Show communication page"}
-							value={this.getSettingValue("SHOW_COMMUNICATION_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"}
 							onChange={(v) => (v
 								? this.addSetting("SHOW_COMMUNICATION_PAGE", "TRUE")
 								: this.deleteSetting("SHOW_COMMUNICATION_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Show network page"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
 							)}
 						/>
 					</div>
@@ -252,8 +248,8 @@ export default class SettingGlobal extends React.Component {
 					<div className="col-md-12">
 						<h2>
 							Private space platform
-							{this.getSettingValue("PRIVATE_SPACE_PLATFORM_NAME")
-								? " - " + this.getSettingValue("PRIVATE_SPACE_PLATFORM_NAME")
+							{getSettingValue(this.state.settings, "PRIVATE_SPACE_PLATFORM_NAME")
+								? " - " + getSettingValue(this.state.settings, "PRIVATE_SPACE_PLATFORM_NAME")
 								: ""}
 						</h2>
 					</div>
@@ -262,7 +258,7 @@ export default class SettingGlobal extends React.Component {
 						<FormLine
 							type={"checkbox"}
 							label={"Allow article edition"}
-							value={this.getSettingValue("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE") === "TRUE"}
 							onChange={(v) => (v
 								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "TRUE")
 								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE")
@@ -271,7 +267,7 @@ export default class SettingGlobal extends React.Component {
 						<FormLine
 							type={"checkbox"}
 							label={"Allow article content edition"}
-							value={this.getSettingValue("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT") === "TRUE"}
+							value={getSettingValue(this.state.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT") === "TRUE"}
 							onChange={(v) => (v
 								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "TRUE")
 								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT")
@@ -279,17 +275,138 @@ export default class SettingGlobal extends React.Component {
 						/>
 						<FormLine
 							label={"Authorized article types"}
-							value={this.getSettingValue("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM")}
+							value={getSettingValue(this.state.settings, "AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM")}
 							onBlur={(v) => this.updateSetting("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM", v)}
 						/>
 						<br/>
 						<FormLine
 							type={"checkbox"}
 							label={"Show logo generator page"}
-							value={this.getSettingValue("ALLOW_ECOSYSTEM_TO_EDIT_LOGO") === "TRUE"}
+							value={getSettingValue(this.state.settings, "ALLOW_ECOSYSTEM_TO_EDIT_LOGO") === "TRUE"}
 							onChange={(v) => (v
 								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO", "TRUE")
 								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO")
+							)}
+						/>
+					</div>
+
+					<div className="col-md-12">
+						<h2>
+							Database compliance
+						</h2>
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<h3>Entities</h3>
+
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without image"}
+							value={getSettingValue(this.state.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_COMMUNICATION_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_COMMUNICATION_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without website"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without postal address"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without phone number"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without email address"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without creation date"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<br/>
+						<h3>Articles</h3>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without title"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without handle"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without publication date"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without content"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight events without start date"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight events without end date"}
+							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
 							)}
 						/>
 					</div>

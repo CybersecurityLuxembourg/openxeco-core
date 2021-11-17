@@ -7,6 +7,7 @@ import SideNav, {
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { Link } from "react-router-dom";
 import { getRequest } from "../utils/request.jsx";
+import { getSettingValue } from "../utils/setting.jsx";
 
 export default class Menu extends React.Component {
 	constructor(props) {
@@ -59,6 +60,7 @@ export default class Menu extends React.Component {
 	render() {
 		return (
 			<SideNav
+				className={"fade-in"}
 				onSelect={(selected) => {
 					if (selected === "disconnect") {
 						this.props.cookies.remove("access_token_cookie");
@@ -111,6 +113,18 @@ export default class Menu extends React.Component {
 							<Link to="/taxonomy">Taxonomies</Link>
 						</NavText>
 					</NavItem>
+					{getSettingValue(this.props.settings, "SHOW_NETWORK_PAGE") === "TRUE"
+						&& <NavItem
+							eventKey="network"
+							active={this.props.selectedMenu === "network"}>
+							<NavIcon>
+								<Link to="/network"><i className="fas fa-globe-europe" style={{ fontSize: "1.75em" }} /></Link>
+							</NavIcon>
+							<NavText>
+								<Link to="/network">Network</Link>
+							</NavText>
+						</NavItem>
+					}
 					<div className="Menu-divider"/>
 					<NavItem
 						eventKey="task"
@@ -123,16 +137,18 @@ export default class Menu extends React.Component {
 						</NavText>
 						{this.getTaskNotificationBlock()}
 					</NavItem>
-					<NavItem
-						eventKey="email"
-						active={this.props.selectedMenu === "email"}>
-						<NavIcon>
-							<Link to="/email"><i className="fas fa-bullhorn" style={{ fontSize: "1.75em" }} /></Link>
-						</NavIcon>
-						<NavText>
-							<Link to="/email">Communication via email</Link>
-						</NavText>
-					</NavItem>
+					{getSettingValue(this.props.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"
+						&& <NavItem
+							eventKey="communication"
+							active={this.props.selectedMenu === "communication"}>
+							<NavIcon>
+								<Link to="/communication"><i className="fas fa-bullhorn" style={{ fontSize: "1.75em" }} /></Link>
+							</NavIcon>
+							<NavText>
+								<Link to="/communication">Communication via email</Link>
+							</NavText>
+						</NavItem>
+					}
 					<NavItem
 						eventKey="media"
 						active={this.props.selectedMenu === "media"}>

@@ -1,0 +1,24 @@
+import React from "react";
+import "./NetworkOverview.css";
+
+export default class NetworkOverview extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+		};
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	render() {
+		return (
+			<div id="NetworkOverview" className="max-sized-page fade-in">
+				<div className={"row"}>
+					<div className="col-md-12">
+						<h1>Logo</h1>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
