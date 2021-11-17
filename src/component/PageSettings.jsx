@@ -5,14 +5,40 @@ import SettingLogo from "./pagesettings/SettingLogo.jsx";
 import SettingMail from "./pagesettings/SettingMail.jsx";
 import SettingCron from "./pagesettings/SettingCron.jsx";
 import Tab from "./tab/Tab.jsx";
+import { getUrlParameter } from "../utils/url.jsx";
 
 export default class PageSettings extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.onMenuClick = this.onMenuClick.bind(this);
+
 		this.state = {
-			selectedMenu: "company_values",
+			selectedMenu: null,
+			tabs: [
+				"global",
+				"logo",
+				"mail",
+				"scheduled_task",
+			],
 		};
+	}
+
+	componentDidMount() {
+		if (getUrlParameter("tab") !== null && this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.state.selectedMenu !== getUrlParameter("tab")
+			&& this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
+	}
+
+	onMenuClick(m) {
+		this.props.history.push("?tab=" + m);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -20,7 +46,10 @@ export default class PageSettings extends React.Component {
 		return (
 			<div id="PageSettings" className="page max-sized-page">
 				<Tab
-					menu={["Global", "Logo", "Mail", "Scheduled task"]}
+					labels={["Global", "Logo", "Mail", "Scheduled task"]}
+					selectedMenu={this.state.selectedMenu}
+					onMenuClick={this.onMenuClick}
+					keys={this.state.tabs}
 					content={[
 						<SettingGlobal
 							key={"global"}

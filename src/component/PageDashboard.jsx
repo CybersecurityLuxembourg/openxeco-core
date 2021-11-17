@@ -6,6 +6,7 @@ import DashboardAnalytics from "./pagedashboard/DashboardAnalytics.jsx";
 import DashboardEcosystem from "./pagedashboard/DashboardEcosystem.jsx";
 import DashboardRecentActivity from "./pagedashboard/DashboardRecentActivity.jsx";
 import Tab from "./tab/Tab.jsx";
+import { getUrlParameter } from "../utils/url.jsx";
 
 export default class PageDashboard extends React.Component {
 	constructor(props) {
@@ -13,15 +14,33 @@ export default class PageDashboard extends React.Component {
 
 		this.getAnalytics = this.getAnalytics.bind(this);
 		this.getCompanies = this.getCompanies.bind(this);
+		this.onMenuClick = this.onMenuClick.bind(this);
 
 		this.state = {
 			analytics: null,
 			companies: null,
+			selectedMenu: null,
+			tabs: [
+				"ecosystem",
+				"analytics",
+				"recent_activities",
+			],
 		};
 	}
 
 	componentDidMount() {
+		if (getUrlParameter("tab") !== null && this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
+
 		this.refresh();
+	}
+
+	componentDidUpdate() {
+		if (this.state.selectedMenu !== getUrlParameter("tab")
+			&& this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
 	}
 
 	refresh() {
@@ -57,11 +76,18 @@ export default class PageDashboard extends React.Component {
 		});
 	}
 
+	onMenuClick(m) {
+		this.props.history.push("?tab=" + m);
+	}
+
 	render() {
 		return (
 			<div id="PageDashboard" className="page max-sized-page">
 				<Tab
-					menu={["Ecosystem", "Analytics", "Recent activities"]}
+					labels={["Ecosystem", "Analytics", "Recent activities"]}
+					selectedMenu={this.state.selectedMenu}
+					onMenuClick={this.onMenuClick}
+					keys={this.state.tabs}
 					content={[
 						<DashboardEcosystem
 							key={"ecosystem"}

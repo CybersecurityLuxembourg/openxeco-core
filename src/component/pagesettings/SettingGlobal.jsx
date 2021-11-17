@@ -1,6 +1,7 @@
 import React from "react";
 import "./SettingGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
+import { Link } from "react-router-dom";
 import Info from "../box/Info.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import { getSettingValue } from "../../utils/setting.jsx";
@@ -292,8 +293,13 @@ export default class SettingGlobal extends React.Component {
 
 					<div className="col-md-12">
 						<h2>
-							Database compliance
+							Data control
 						</h2>
+					</div>
+
+					<div className="col-md-12">
+						<div>Go to the <Link to="/task?tab=data_control">data control page</Link></div>
+						<br/>
 					</div>
 
 					<div className="col-md-12 row-spaced">

@@ -6,18 +6,38 @@ import TaskDataControl from "./pagetask/TaskDataControl.jsx";
 import TaskArticle from "./pagetask/TaskArticle.jsx";
 import Tab from "./tab/Tab.jsx";
 import { getRequest } from "../utils/request.jsx";
+import { getUrlParameter } from "../utils/url.jsx";
 
 export default class PageTask extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.onMenuClick = this.onMenuClick.bind(this);
+
 		this.state = {
 			notifications: null,
+			selectedMenu: null,
+			tabs: [
+				"request",
+				"article_to_review",
+				"data_control",
+			],
 		};
 	}
 
 	componentDidMount() {
+		if (getUrlParameter("tab") !== null && this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
+
 		this.getNotifications();
+	}
+
+	componentDidUpdate() {
+		if (this.state.selectedMenu !== getUrlParameter("tab")
+			&& this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
 	}
 
 	getNotifications() {
@@ -43,20 +63,27 @@ export default class PageTask extends React.Component {
 		return this.state.notifications[type];
 	}
 
+	onMenuClick(m) {
+		this.props.history.push("?tab=" + m);
+	}
+
 	render() {
 		return (
 			<div id="PageTask" className="page max-sized-page">
 				<Tab
-					menu={[
+					labels={[
 						"Request",
 						"Article to review",
 						"Data control",
 					]}
+					selectedMenu={this.state.selectedMenu}
+					onMenuClick={this.onMenuClick}
 					notifications={[
 						this.getTaskNotificationBlock("new_requests"),
 						this.getTaskNotificationBlock("articles_under_review"),
 						this.getTaskNotificationBlock("data_control"),
 					]}
+					keys={this.state.tabs}
 					content={[
 						<TaskRequest
 							key={"task"}
