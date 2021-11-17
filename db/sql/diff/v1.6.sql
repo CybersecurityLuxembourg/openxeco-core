@@ -10,6 +10,13 @@ CREATE TABLE Communication (
 	sys_date timestamp NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ADD NODE TABLE
+
+CREATE TABLE NetworkNode (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+	api_endpoint VARCHAR(255) NOT NULL
+);
+
 -- [OPTIONAL] ADD is_targeting_sme TAXONOMY VALUES TO COMPANIES
 
 INSERT INTO TaxonomyAssignment

@@ -65,7 +65,10 @@ from resource.media.add_image import AddImage
 from resource.media.update_image import UpdateImage
 from resource.media.get_images import GetImages
 from resource.media.get_image import GetImage
+from resource.network.add_network_node import AddNetworkNode
+from resource.network.delete_network_node import DeleteNetworkNode
 from resource.network.get_node_information import GetNodeInformation
+from resource.network.get_network_nodes import GetNetworkNodes
 from resource.private.add_my_article import AddMyArticle
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_article import DeleteMyArticle
