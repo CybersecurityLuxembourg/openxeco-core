@@ -3,6 +3,7 @@ import "./TaskRequest.css";
 import { NotificationManager as nm } from "react-notifications";
 import Message from "../box/Message.jsx";
 import Request from "../item/Request.jsx";
+import Loading from "../box/Loading.jsx";
 import { getRequest } from "../../utils/request.jsx";
 import CheckBox from "../button/CheckBox.jsx";
 import { dictToURI } from "../../utils/url.jsx";
@@ -117,18 +118,26 @@ export default class TaskRequest extends React.Component {
 					</div>
 				</div>
 
-				{this.state.requests !== null && this.state.requests.length === 0
-					? <div className={"row row-spaced"}>
+				{this.state.requests === null
+					&& <div className={"row row-spaced"}>
+						<Loading
+							height={300}
+						/>
+					</div>
+				}
+
+				{this.state.requests && this.state.requests.length === 0
+					&& <div className={"row row-spaced"}>
 						<Message
 							text={"No request found"}
 							height={300}
 						/>
 					</div>
-					: ""}
+				}
 
-				{this.state.requests !== null && this.state.requests
+				{this.state.requests && this.state.requests
 					.filter((r) => r.submission_date > this.state.today).length > 0
-					? <div className={"row row-spaced"}>
+					&& <div className={"row row-spaced"}>
 						{this.state.requests !== null
 							? <div className="col-md-12">
 								<h3>Today</h3>
@@ -143,12 +152,12 @@ export default class TaskRequest extends React.Component {
 							</div>
 							: ""}
 					</div>
-					: ""}
+				}
 
 				{this.state.requests !== null && this.state.requests
 					.filter((r) => r.submission_date < this.state.today)
 					.filter((r) => r.submission_date > this.state.yesterday).length > 0
-					? <div className={"row row-spaced"}>
+					&& <div className={"row row-spaced"}>
 						{this.state.requests !== null
 							? <div className="col-md-12">
 								<h3>Yesterday</h3>
@@ -164,12 +173,12 @@ export default class TaskRequest extends React.Component {
 							</div>
 							: ""}
 					</div>
-					: ""}
+				}
 
 				{this.state.requests !== null && this.state.requests
 					.filter((r) => r.submission_date < this.state.yesterday)
 					.filter((r) => r.submission_date > this.state.lastWeek).length > 0
-					? <div className={"row row-spaced"}>
+					&& <div className={"row row-spaced"}>
 						{this.state.requests !== null
 							? <div className="col-md-12">
 								<h3>Last week</h3>
@@ -185,11 +194,11 @@ export default class TaskRequest extends React.Component {
 							</div>
 							: ""}
 					</div>
-					: ""}
+				}
 
 				{this.state.requests !== null && this.state.requests
 					.filter((r) => r.submission_date < this.state.lastWeek).length > 0
-					? <div className={"row row-spaced"}>
+					&& <div className={"row row-spaced"}>
 						{this.state.requests !== null
 							? <div className="col-md-12">
 								<h3>Others</h3>
@@ -204,7 +213,7 @@ export default class TaskRequest extends React.Component {
 							</div>
 							: ""}
 					</div>
-					: ""}
+				}
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12 centered-buttons">
