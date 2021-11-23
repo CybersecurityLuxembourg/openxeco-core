@@ -9,6 +9,7 @@ import ArticleGlobal from "./article/ArticleGlobal.jsx";
 import ArticleVersion from "./article/ArticleVersion.jsx";
 import ArticleContent from "./article/ArticleContent.jsx";
 import ArticleTag from "./article/ArticleTag.jsx";
+import { getUrlParameter } from "../../utils/url.jsx";
 
 export default class Article extends Component {
 	constructor(props) {
@@ -17,7 +18,27 @@ export default class Article extends Component {
 		this.confirmDeletion = this.confirmDeletion.bind(this);
 
 		this.state = {
+			selectedMenu: null,
+			tabs: [
+				"global",
+				"version",
+				"content",
+				"tag",
+			],
 		};
+	}
+
+	componentDidMount() {
+		if (getUrlParameter("item_tab") !== null && this.state.tabs.indexOf(getUrlParameter("item_tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("item_tab") });
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.state.selectedMenu !== getUrlParameter("item_tab")
+			&& this.state.tabs.indexOf(getUrlParameter("item_tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("item_tab") });
+		}
 	}
 
 	onClick() {
@@ -87,7 +108,10 @@ export default class Article extends Component {
 						</h1>
 
 						<Tab
-							menu={["Global", "Version", "Content", "Tag"]}
+							labels={["Global", "Version", "Content", "Tag"]}
+							selectedMenu={this.state.selectedMenu}
+							onMenuClick={this.onMenuClick}
+							keys={this.state.tabs}
 							content={[
 								<ArticleGlobal
 									key={this.props.id}

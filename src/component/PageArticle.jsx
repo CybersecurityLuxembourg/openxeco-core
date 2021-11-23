@@ -21,7 +21,7 @@ export default class PageArticle extends React.Component {
 	}
 
 	componentDidMount() {
-		if (getUrlParameter("tab") !== null && this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+		if (getUrlParameter("tab") && this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
 			this.setState({ selectedMenu: getUrlParameter("tab") });
 		}
 	}
