@@ -7,6 +7,7 @@ import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Tab from "../tab/Tab.jsx";
 import UserGlobal from "./user/UserGlobal.jsx";
 import UserCompany from "./user/UserCompany.jsx";
+import { getUrlParameter } from "../../utils/url.jsx";
 
 export default class User extends Component {
 	constructor(props) {
@@ -19,7 +20,25 @@ export default class User extends Component {
 
 		this.state = {
 			isDetailOpened: false,
+			selectedMenu: null,
+			tabs: [
+				"global",
+				"company",
+			],
 		};
+	}
+
+	componentDidMount() {
+		if (getUrlParameter("item_tab") !== null && this.state.tabs.indexOf(getUrlParameter("item_tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("item_tab") });
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.state.selectedMenu !== getUrlParameter("item_tab")
+			&& this.state.tabs.indexOf(getUrlParameter("item_tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("item_tab") });
+		}
 	}
 
 	onClick() {
@@ -99,7 +118,10 @@ export default class User extends Component {
 						</h1>
 
 						<Tab
-							menu={["Global", "Company"]}
+							labels={["Global", "Company"]}
+							selectedMenu={this.state.selectedMenu}
+							onMenuClick={this.onMenuClick}
+							keys={this.state.tabs}
 							content={[
 								<UserGlobal
 									key={this.props.id}

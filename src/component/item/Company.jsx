@@ -11,6 +11,7 @@ import CompanyAddress from "./company/CompanyAddress.jsx";
 import CompanyUser from "./company/CompanyUser.jsx";
 import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
 import CompanyWorkforce from "./company/CompanyWorkforce.jsx";
+import { getUrlParameter } from "../../utils/url.jsx";
 
 export default class Company extends Component {
 	constructor(props) {
@@ -23,7 +24,24 @@ export default class Company extends Component {
 
 		this.state = {
 			isDetailOpened: false,
+			selectedMenu: null,
+			tabs: [
+				"global", "contact", "address", "user", "taxonomy", "workforce",
+			],
 		};
+	}
+
+	componentDidMount() {
+		if (getUrlParameter("item_tab") !== null && this.state.tabs.indexOf(getUrlParameter("item_tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("item_tab") });
+		}
+	}
+
+	componentDidUpdate() {
+		if (this.state.selectedMenu !== getUrlParameter("item_tab")
+			&& this.state.tabs.indexOf(getUrlParameter("item_tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("item_tab") });
+		}
 	}
 
 	onClick() {
@@ -109,7 +127,10 @@ export default class Company extends Component {
 						</h1>
 
 						<Tab
-							menu={["Global", "Contact", "Address", "User", "Taxonomy", "Workforce"]}
+							labels={["Global", "Contact", "Address", "User", "Taxonomy", "Workforce"]}
+							selectedMenu={this.state.selectedMenu}
+							onMenuClick={this.onMenuClick}
+							keys={this.state.tabs}
 							content={[
 								<CompanyGlobal
 									key={this.props.id}
