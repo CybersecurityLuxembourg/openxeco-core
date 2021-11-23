@@ -20,11 +20,6 @@ export default class RequestCompanyTaxonomyChange extends Component {
 	}
 
 	refresh() {
-		this.setState({
-			databaseCompanyTaxonomy: null,
-			categoryValues: null,
-		});
-
 		if (this.props.data !== null && this.props.data !== undefined
 			&& this.props.data.category !== null && this.props.data.category !== undefined) {
 			getRequest.call(this, "taxonomy/get_taxonomy_values?category=" + this.props.data.category, (data) => {
@@ -201,9 +196,9 @@ export default class RequestCompanyTaxonomyChange extends Component {
 
 							<div className={"top-right-buttons"}>
 								<button
-									className={"red-background"}
+									className={"grey-background"}
 									onClick={close}>
-									<i className="fas fa-times"></i>
+									<i className="far fa-times-circle"/>
 								</button>
 							</div>
 						</div>

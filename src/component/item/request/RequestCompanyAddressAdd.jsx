@@ -32,9 +32,8 @@ export default class RequestCompanyAddressAdd extends Component {
 
 							<div className={"top-right-buttons"}>
 								<button
-									className={"grey-background"}
 									onClick={close}>
-									<i className="far fa-times-circle"></i>
+									<i className="far fa-times-circle"/>
 								</button>
 							</div>
 						</div>

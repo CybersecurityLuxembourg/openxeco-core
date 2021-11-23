@@ -211,7 +211,7 @@ export default class Request extends Component {
 				onClose={this.onClose}
 				onOpen={this.onOpen}
 			>
-				<div className="row row-spaced">
+				{(close) => <div className="row row-spaced">
 					<div className="col-md-12">
 						<h2>
 							{this.props.info !== undefined && this.props.info !== null
@@ -219,6 +219,15 @@ export default class Request extends Component {
 								: "Unfound request"
 							}
 						</h2>
+						<div className={"top-right-buttons"}>
+							<button
+								className={"grey-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={close}>
+								<span><i className="far fa-times-circle"/></span>
+							</button>
+						</div>
 					</div>
 
 					<div className="col-md-12 row-spaced">
@@ -385,6 +394,7 @@ export default class Request extends Component {
 						}
 					</div>
 				</div>
+				}
 			</Popup>
 		);
 	}

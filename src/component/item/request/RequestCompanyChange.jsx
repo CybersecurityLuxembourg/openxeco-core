@@ -147,9 +147,9 @@ export default class RequestCompanyChange extends Component {
 
 							<div className={"top-right-buttons"}>
 								<button
-									className={"red-background"}
+									className={"grey-background"}
 									onClick={close}>
-									<i className="fas fa-times"></i>
+									<i className="far fa-times-circle"/>
 								</button>
 							</div>
 						</div>
