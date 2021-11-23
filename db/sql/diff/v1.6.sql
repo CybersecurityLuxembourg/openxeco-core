@@ -51,3 +51,12 @@ AND (
 
 ALTER TABLE Company
 DROP COLUMN is_targeting_sme;
+
+-- Resize the abstract field of Article
+
+ALTER TABLE Article
+MODIFY COLUMN `abstract`
+    VARCHAR(500)
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci
+    DEFAULT NULL;
