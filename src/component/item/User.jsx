@@ -98,7 +98,7 @@ export default class User extends Component {
 				onClose={this.onClose}
 				onOpen={this.onOpen}
 			>
-				<div className="row">
+				{(close) => <div className="row">
 					<div className="col-md-12">
 						<div className={"top-right-buttons"}>
 							<DialogConfirmation
@@ -112,6 +112,13 @@ export default class User extends Component {
 								}
 								afterConfirmation={() => this.confirmUserDeletion()}
 							/>
+							<button
+								className={"grey-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={close}>
+								<span><i className="far fa-times-circle"/></span>
+							</button>
 						</div>
 						<h1 className="User-title">
 							{this.props.email}
@@ -136,6 +143,7 @@ export default class User extends Component {
 						/>
 					</div>
 				</div>
+				}
 			</Popup>
 		);
 	}

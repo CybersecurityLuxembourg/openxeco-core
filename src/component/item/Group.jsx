@@ -178,7 +178,7 @@ export default class Group extends Component {
 				onClose={this.onClose}
 				onOpen={this.onOpen}
 			>
-				<div className="Group-popup row">
+				{(close) => <div className="Group-popup row">
 					<div className="col-md-12">
 						<div className={"top-right-buttons"}>
 							<DialogConfirmation
@@ -192,6 +192,13 @@ export default class Group extends Component {
 								}
 								afterConfirmation={() => this.confirmUserDeletion()}
 							/>
+							<button
+								className={"grey-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={close}>
+								<span><i className="far fa-times-circle"/></span>
+							</button>
 						</div>
 						<h1 className="Group-title">
 							{this.state.group !== null ? this.state.group.name : this.props.id}
@@ -312,6 +319,7 @@ export default class Group extends Component {
 						/>
 					}
 				</div>
+				}
 			</Popup>
 		);
 	}

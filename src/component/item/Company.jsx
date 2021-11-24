@@ -100,8 +100,7 @@ export default class Company extends Component {
 				onOpen={this.onOpen}
 				open={this.props.open || this.state.isDetailOpened}
 			>
-				<div className="row row-spaced">
-
+				{(close) => <div className="row row-spaced">
 					<div className="col-md-12">
 						<div className={"top-right-buttons"}>
 							<button
@@ -121,6 +120,13 @@ export default class Company extends Component {
 								}
 								afterConfirmation={() => this.confirmCompanyDeletion()}
 							/>
+							<button
+								className={"grey-background"}
+								data-hover="Close"
+								data-active=""
+								onClick={close}>
+								<span><i className="far fa-times-circle"/></span>
+							</button>
 						</div>
 						<h1 className="Company-title">
 							{this.props.name}
@@ -161,6 +167,7 @@ export default class Company extends Component {
 						/>
 					</div>
 				</div>
+				}
 			</Popup>
 		);
 	}
