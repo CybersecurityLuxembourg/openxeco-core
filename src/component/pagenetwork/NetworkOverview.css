@@ -1,0 +1,35 @@
+
+#NetworkOverview .NetworkOverview-canvas {
+	width: 100%;
+    height: 400px;
+    border: lightgrey 2px solid;
+    border-radius: 0.4rem;
+    background-color: white;
+    margin: 15px 0px 10px 0px;
+}
+
+#NetworkOverview .NetworkOverview-canvas .node > div {
+	border: lightgrey 2px solid;
+	cursor: pointer;
+}
+
+#NetworkOverview .NetworkOverview-canvas .node > div > div:nth-child(1) {
+	background: none !important;
+	padding: 5px 10px 0px 10px;
+}
+
+#NetworkOverview .NetworkOverview-canvas .node > div > div:nth-child(2) {
+	visibility: hidden;
+	height: 5px;
+}
+
+#NetworkOverview .NetworkOverview-canvas .port {
+	position: absolute;
+	top: 10px;
+}
+
+#NetworkOverview .Menu-element {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}

@@ -3,7 +3,7 @@ import "./NetworkOverview.css";
 import createEngine, { DefaultNodeModel, DiagramModel } from "@projectstorm/react-diagrams";
 import { CanvasWidget } from "@projectstorm/react-canvas-core";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request.jsx";
+import { getRequest, postRequest, getForeignRequest } from "../../utils/request.jsx";
 import { validateUrl } from "../../utils/re.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Table from "../table/Table.jsx";
@@ -15,12 +15,16 @@ export default class NetworkOverview extends React.Component {
 		super(props);
 
 		this.addNode = this.addNode.bind(this);
+		this.getNodes = this.getNodes.bind(this);
+		this.fetchNodes = this.fetchNodes.bind(this);
+		this.fetchNode = this.fetchNode.bind(this);
 
 		this.state = {
 			nodes: null,
 			apiEndpointValue: "",
 			nodeInformation: {},
 			engine: null,
+			loadingProgress: null,
 		};
 	}
 
@@ -43,7 +47,6 @@ export default class NetworkOverview extends React.Component {
 
 	refresh() {
 		this.getNodes();
-		this.fetchNodes();
 	}
 
 	getNodes() {
@@ -53,6 +56,8 @@ export default class NetworkOverview extends React.Component {
 			getRequest.call(this, "network/get_network_nodes", (data) => {
 				this.setState({
 					nodes: data,
+				}, () => {
+					this.fetchNodes();
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -105,7 +110,7 @@ export default class NetworkOverview extends React.Component {
 				const nodeInformation = {};
 
 				data.forEach((d, i) => {
-					nodeInformation[this.state.nodes[i]] = d;
+					nodeInformation[this.state.nodes[i].api_endpoint] = d;
 				});
 
 				this.setState({ nodeInformation });
@@ -113,10 +118,10 @@ export default class NetworkOverview extends React.Component {
 		});
 	}
 
-	fetchNode(baseUrl) {
-		const url = baseUrl + "/network/get_node_information";
+	fetchNode(node) {
+		const url = node.api_endpoint + "/network/get_node_information";
 
-		return new Promise((resolve) => getRequest(url, (data) => {
+		return new Promise((resolve) => getForeignRequest(url, (data) => {
 			resolve(data);
 			this.setState({ loadingProgress: this.state.loadingProgress + 1 });
 		}, () => {
@@ -129,15 +134,15 @@ export default class NetworkOverview extends React.Component {
 	}
 
 	buildDiagram() {
-		const canvas = document.getElementById("PageNetwork");
+		const canvas = document.getElementById("NetworkOverview-canvas-wrapper");
 		const centerX = canvas.offsetWidth / 2;
-		const centerY = canvas.offsetHeight / 2;
+		const centerY = 400 / 2;
 
 		const nodes = [];
 
 		const node1 = new DefaultNodeModel({
-			name: "openXeco",
-			color: "#03e3e3",
+			name: "My node",
+			color: "#bcebff",
 		});
 		node1.setPosition(centerX, centerY);
 		node1.setLocked(true);
@@ -152,7 +157,7 @@ export default class NetworkOverview extends React.Component {
 			if (this.state.nodeInformation[n] !== null) {
 				const node2 = new DefaultNodeModel({
 					name: this.state.nodeInformation[n].project_name,
-					color: "#03e3e3",
+					color: "#bcebff",
 				});
 				node2.setPosition(x, y);
 				node2.setLocked(true);
@@ -172,7 +177,7 @@ export default class NetworkOverview extends React.Component {
 				nodes.push(node2);
 				const port2 = node2.addOutPort("Out");
 				const link = port1.link(port2);
-				link.setColor("#ffffff");
+				link.setColor("lightgrey");
 				link.setLocked(true);
 				nodes.push(link);
 			}
@@ -237,10 +242,10 @@ export default class NetworkOverview extends React.Component {
 						<h2>Network representation</h2>
 					</div>
 
-					<div className="col-md-12">
+					<div id="NetworkOverview-canvas-wrapper" className="col-md-12">
 						{this.state.engine
 							? <CanvasWidget
-								className="myDiagramDiv"
+								className="NetworkOverview-canvas"
 								engine={this.state.engine}
 							/>
 							: <Loading
@@ -255,21 +260,20 @@ export default class NetworkOverview extends React.Component {
 						<h2>Network node list</h2>
 					</div>
 
-					<div className="col-xl-12">
+					<div className="col-xl-12 row-spaced">
 						<FormLine
 							label={"API endpoint of the node"}
 							value={this.state.apiEndpointValue}
 							onChange={(v) => this.changeState("apiEndpointValue", v)}
 						/>
-					</div>
-
-					<div className="col-xl-12 right-buttons">
-						<button
-							className={"blue-background"}
-							onClick={this.addNode}
-							disabled={!validateUrl(this.state.apiEndpointValue)}>
-							<i className="fas fa-plus"/> Add node
-						</button>
+						<div className="right-buttons">
+							<button
+								className={"blue-background"}
+								onClick={this.addNode}
+								disabled={!validateUrl(this.state.apiEndpointValue)}>
+								<i className="fas fa-plus"/> Add node
+							</button>
+						</div>
 					</div>
 
 					<div className="col-xl-12">
