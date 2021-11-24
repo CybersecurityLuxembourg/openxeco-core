@@ -171,6 +171,7 @@ export default class EditMetadata extends React.Component {
 								label={"Abstract"}
 								value={this.props.article.abstract}
 								onBlur={(v) => this.props.saveArticleValue("abstract", v)}
+								format={(v) => !v || v.length <= 500}
 							/>
 							<FormLine
 								type={"date"}
