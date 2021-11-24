@@ -240,13 +240,11 @@ export default class EmailSend extends React.Component {
 
 					<div className="col-md-12 row-spaced">
 						{this.state.addresses
-							? <div className="fade-in">
-								<Table
-									columns={columns}
-									data={this.state.addresses}
-									showBottomBar={true}
-								/>
-							</div>
+							? <Table
+								columns={columns}
+								data={this.state.addresses}
+								showBottomBar={true}
+							/>
 							: <Loading
 								height={300}
 							/>

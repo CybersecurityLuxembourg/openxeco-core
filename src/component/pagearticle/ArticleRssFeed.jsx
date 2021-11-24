@@ -179,12 +179,10 @@ export default class ArticleRssFeed extends React.Component {
 
 					<div className="col-md-12">
 						{this.state.rssFeeds
-							? <div className="fade-in">
-								<Table
-									columns={columns}
-									data={this.state.rssFeeds}
-								/>
-							</div>
+							? <Table
+								columns={columns}
+								data={this.state.rssFeeds}
+							/>
 							: <Loading
 								height={300}
 							/>

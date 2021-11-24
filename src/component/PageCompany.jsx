@@ -181,15 +181,13 @@ export default class PageCompany extends React.Component {
 					</div>
 					<div className="col-md-12 PageCompany-table">
 						{this.state.companies !== null
-							? <div className="fade-in">
-								<Table
-									columns={columns}
-									data={this.state.companies
-										.filter((c) => this.props.match.params.id === undefined
-											|| this.props.match.params.id === c.id.toString())}
-									showBottomBar={true}
-								/>
-							</div>
+							? <Table
+								columns={columns}
+								data={this.state.companies
+									.filter((c) => this.props.match.params.id === undefined
+										|| this.props.match.params.id === c.id.toString())}
+								showBottomBar={true}
+							/>
 							:							<Loading
 								height={500}
 							/>

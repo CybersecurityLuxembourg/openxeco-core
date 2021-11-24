@@ -196,12 +196,10 @@ export default class CompanyWorkforce extends React.Component {
 				</div>
 				<div className={"row"}>
 					<div className="col-md-12">
-						<div className="fade-in">
-							<Table
-								columns={columns}
-								data={this.state.workforces}
-							/>
-						</div>
+						<Table
+							columns={columns}
+							data={this.state.workforces}
+						/>
 					</div>
 				</div>
 			</div>

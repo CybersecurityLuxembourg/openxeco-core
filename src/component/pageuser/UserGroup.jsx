@@ -193,13 +193,11 @@ export default class UserGroup extends React.Component {
 					</div>
 					<div className="col-md-12 PageCompany-table">
 						{this.state.groups !== null
-							? <div className="fade-in">
-								<Table
-									columns={columns}
-									data={this.state.groups}
-									showBottomBar={true}
-								/>
-							</div>
+							? <Table
+								columns={columns}
+								data={this.state.groups}
+								showBottomBar={true}
+							/>
 							: <Loading
 								height={500}
 							/>

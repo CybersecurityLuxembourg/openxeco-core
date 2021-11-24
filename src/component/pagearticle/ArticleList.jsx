@@ -135,16 +135,14 @@ export default class ArticleList extends React.Component {
 					</div>
 					<div className="col-md-12">
 						{this.state.articles !== null
-							? <div className="fade-in">
-								<Table
-									columns={columns}
-									data={this.state.articles
-										.filter((a) => this.props.match.params.id === undefined
-											|| this.props.match.params.id === a.id.toString())}
-									showBottomBar={true}
-								/>
-							</div>
-							:							<Loading
+							? <Table
+								columns={columns}
+								data={this.state.articles
+									.filter((a) => this.props.match.params.id === undefined
+										|| this.props.match.params.id === a.id.toString())}
+								showBottomBar={true}
+							/>
+							: <Loading
 								height={500}
 							/>
 						}

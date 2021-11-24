@@ -68,12 +68,10 @@ export default class CompanyUser extends React.Component {
 					</div>
 
 					<div className="col-md-12">
-						<div className="fade-in">
-							<Table
-								columns={columns}
-								data={this.state.users}
-							/>
-						</div>
+						<Table
+							columns={columns}
+							data={this.state.users}
+						/>
 					</div>
 				</div>
 			</div>

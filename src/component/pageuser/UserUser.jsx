@@ -145,14 +145,12 @@ export default class UserUser extends React.Component {
 					</div>
 					<div className="col-md-12 PageCompany-table">
 						{this.state.users !== null
-							? <div className="fade-in">
-								<DynamicTable
-									columns={columns}
-									data={this.state.users}
-									pagination={this.state.pagination}
-									changePage={this.fetchUsers}
-								/>
-							</div>
+							? <DynamicTable
+								columns={columns}
+								data={this.state.users}
+								pagination={this.state.pagination}
+								changePage={this.fetchUsers}
+							/>
 							: <Loading
 								height={500}
 							/>

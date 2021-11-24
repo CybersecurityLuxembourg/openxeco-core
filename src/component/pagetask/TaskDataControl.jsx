@@ -163,14 +163,12 @@ export default class TaskDataControl extends React.Component {
 
 						{this.state.dataControls !== null
 							&& this.state.dataControls.length > 0
-							&& <div className="fade-in">
-								<DynamicTable
-									columns={columns}
-									data={this.state.dataControls}
-									pagination={this.state.pagination}
-									changePage={this.fetchDataControls}
-								/>
-							</div>}
+							&& <DynamicTable
+								columns={columns}
+								data={this.state.dataControls}
+								pagination={this.state.pagination}
+								changePage={this.fetchDataControls}
+							/>}
 
 						{this.state.dataControls !== null
 							&& this.state.dataControls.length === 0
