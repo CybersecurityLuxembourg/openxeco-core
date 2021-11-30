@@ -20,7 +20,7 @@ export default class SettingCron extends React.Component {
 			logs: null,
 			isTaskRunning: false,
 
-			per_page: 20,
+			per_page: 10,
 			page: 1,
 			order: "desc",
 			showLoadMoreButton: true,
