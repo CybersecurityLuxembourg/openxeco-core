@@ -56,20 +56,19 @@ class RunDatabaseCompliance(MethodResource, Resource):
 
         # Treat companies
 
+        settings = self.db.get(self.db.tables["Setting"])
         companies = self.db.get(self.db.tables["Company"])
 
-        anomalies += self._check_company_compliance(companies)
-        anomalies += self._check_company_address_compliance(companies)
-        anomalies += self._check_company_contact_compliance(companies)
-        anomalies += self._check_company_taxonomy_compliance(companies)
+        anomalies += self._check_company_compliance(companies, settings)
+        anomalies += self._check_company_address_compliance(companies, settings)
+        anomalies += self._check_company_contact_compliance(companies, settings)
 
         # Treat public articles
 
         public_articles = self.db.get(self.db.tables["Article"])
 
-        anomalies += self._check_news_compliance(public_articles)
-        anomalies += self._check_events_compliance(public_articles)
-        anomalies += self._check_article_content_compliance(public_articles)
+        anomalies += self._check_article_compliance(public_articles, settings)
+        anomalies += self._check_article_content_compliance(public_articles, settings)
 
         anomalies = [{"category": "DATABASE COMPLIANCE", "value": v} for v in anomalies]
 
@@ -79,154 +78,132 @@ class RunDatabaseCompliance(MethodResource, Resource):
 
     # Company check functions
 
-    def _check_company_compliance(self, companies):
+    def _check_company_compliance(self, companies, settings):
         anomalies = []
 
-        company_columns = self.db.tables["Company"].__table__.columns
+        company_columns = []
+
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE"):
+            company_columns.append("creation_date")
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE"):
+            company_columns.append("website")
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_IMAGE"):
+            company_columns.append("image")
 
         for col in company_columns:
-            if col.name != "status" and col.name != "trade_register_number":
-                empty_valued_companies = [c for c in companies if getattr(c, col.name) is None]
+            empty_valued_companies = [c for c in companies if getattr(c, col) is None]
 
-                if len(empty_valued_companies) > 0:
-                    anomalies += [f"Value '{col.name}' of <COMPANY:{c.id}> is empty" for c in empty_valued_companies]
+            if len(empty_valued_companies) > 0:
+                anomalies += [f"Value '{col}' of <COMPANY:{c.id}> is empty" for c in empty_valued_companies]
 
         return anomalies
 
-    def _check_company_address_compliance(self, companies):
+    def _check_company_address_compliance(self, companies, settings):
         anomalies = []
 
         company_addresses = self.db.get(self.db.tables["Company_Address"])
 
         # Get the companies without addresses
 
-        company_address_ids = [a.company_id for a in company_addresses]
-        companies_without_address = [c.id for c in companies if c.id not in company_address_ids]
-        anomalies += [f"<COMPANY:{c}> has no address registered" for c in companies_without_address]
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS"):
+            company_address_ids = [a.company_id for a in company_addresses]
+            companies_without_address = [c.id for c in companies if c.id not in company_address_ids]
+            anomalies += [f"<COMPANY:{c}> has no address registered" for c in companies_without_address]
 
         # Get the companies with addresses without geolocation
 
-        companies_without_loc = list({a.company_id for a in company_addresses
-                                      if a.latitude is None or a.longitude is None})
-        anomalies += [f"Company <COMPANY:{c}> has at least one address without geolocation"
-                      for c in companies_without_loc]
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION"):
+            companies_without_loc = list({a.company_id for a in company_addresses
+                                          if a.latitude is None or a.longitude is None})
+            anomalies += [f"Company <COMPANY:{c}> has at least one address without geolocation"
+                          for c in companies_without_loc]
 
         return anomalies
 
-    def _check_company_contact_compliance(self, companies):
+    def _check_company_contact_compliance(self, companies, settings):
         anomalies = []
 
         company_contacts = self.db.get(self.db.tables["CompanyContact"])
 
         # Get the companies without phone number
 
-        company_address_ids = [a.company_id for a in company_contacts if a.type == "PHONE NUMBER"]
-        companies_without_address = [c for c in companies if c.id not in company_address_ids]
-        anomalies += [f"<COMPANY:{c.id}> has no phone number registered as a contact"
-                      for c in companies_without_address]
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER"):
+            company_address_ids = [a.company_id for a in company_contacts if a.type == "PHONE NUMBER"]
+            companies_without_address = [c for c in companies if c.id not in company_address_ids]
+            anomalies += [f"<COMPANY:{c.id}> has no phone number registered as a contact"
+                          for c in companies_without_address]
 
-        # Get the companies without phone number
+        # Get the companies without email address
 
-        company_address_ids = [a.company_id for a in company_contacts if a.type == "EMAIL ADDRESS"]
-        companies_without_address = [c for c in companies if c.id not in company_address_ids]
-        anomalies += [f"<COMPANY:{c.id}> has no email address registered  as a contact"
-                      for c in companies_without_address]
-
-        return anomalies
-
-    def _check_company_taxonomy_compliance(self, companies):
-        anomalies = []
-
-        universal_categories = ["ENTITY TYPE"]
-        actor_categories = ["SERVICE GROUP"]
-
-        tv = self.db.session \
-            .query(self.db.tables["TaxonomyValue"]) \
-            .filter(self.db.tables["TaxonomyValue"].category
-                    .in_(universal_categories + actor_categories + ["ECOSYSTEM ROLE"])) \
-            .all()
-
-        tv_per_category = {c: [tv.id for tv in tv if tv.category == c] for c in universal_categories + actor_categories}
-
-        actor_tv = [v for v in tv if v.category == "ECOSYSTEM ROLE" and v.name == "ACTOR"]
-
-        if len(actor_tv) == 0:
-            return []
-
-        actor_tv = actor_tv[0]
-
-        taxonomy_assignments = self.db.session \
-            .query(self.db.tables["TaxonomyAssignment"]).all()
-
-        for company in companies:
-            company_assignments = [a.taxonomy_value for a in taxonomy_assignments if a.company == company.id]
-            categories_to_check = universal_categories \
-                + (actor_categories if actor_tv.id in company_assignments else [])
-
-            for category in categories_to_check:
-                if len(list(set(company_assignments).intersection(tv_per_category[category]))) == 0:
-                    anomalies.append(f"<COMPANY:{company.id}> has no value for taxonomy '{category}'")
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS"):
+            company_address_ids = [a.company_id for a in company_contacts if a.type == "EMAIL ADDRESS"]
+            companies_without_address = [c for c in companies if c.id not in company_address_ids]
+            anomalies += [f"<COMPANY:{c.id}> has no email address registered  as a contact"
+                          for c in companies_without_address]
 
         return anomalies
 
     # Article check functions
 
-    def _check_news_compliance(self, articles):
+    def _check_article_compliance(self, articles, settings):
         anomalies = []
 
-        news = [a for a in articles if a.type == "NEWS"]
-        article_columns = self.db.tables["Article"].__table__.columns
+        article_columns = []
+
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ARTICLE_WITHOUT_TITLE"):
+            article_columns.append("title")
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ARTICLE_WITHOUT_HANDLE"):
+            article_columns.append("handle")
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE"):
+            article_columns.append("publication_date")
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ARTICLE_WITHOUT_START_DATE"):
+            article_columns.append("start_date")
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ARTICLE_WITHOUT_END_DATE"):
+            article_columns.append("end_date")
 
         for col in article_columns:
-            if col.name in ["title", "handle", "publication_date"]:
-                empty_valued_articles = [a for a in news if getattr(a, col.name) is None]
+            empty_valued_articles = [a for a in articles if getattr(a, col) is None]
+            empty_valued_articles = [a for a in empty_valued_articles
+                                     if a.type == "EVENT" or col not in ["start_date", "end_date"]]
 
-                if len(empty_valued_articles) > 0:
-                    anomalies += [f"Value '{col}' of article <ARTICLE:{c.id}> is empty" for c in empty_valued_articles]
+            if len(empty_valued_articles) > 0:
+                anomalies += [f"Value '{col}' of article <ARTICLE:{c.id}> is empty" for c in empty_valued_articles]
 
         return anomalies
 
-    def _check_events_compliance(self, articles):
+    def _check_article_content_compliance(self, articles, settings):
         anomalies = []
 
-        news = [a for a in articles if a.type == "EVENT"]
-        article_columns = self.db.tables["Article"].__table__.columns
+        if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ARTICLE_WITHOUT_CONTENT"):
+            articles_without_link = [a for a in articles if a.link is None or len(a.link) == 0]
+            article_versions = self.db.get(self.db.tables["ArticleVersion"], {"is_main": True})
 
-        for col in article_columns:
-            if col.name in ["title", "handle", "publication_date", "start_date", "end_date"]:
-                empty_valued_articles = [a for a in news if getattr(a, col.name) is None]
+            # Get the articles without main version
 
-                if len(empty_valued_articles) > 0:
-                    anomalies += [f"Value '{col}' of article <ARTICLE:{c.id}> is empty" for c in empty_valued_articles]
+            article_version_ids = [v.id for v in article_versions]
+            article_without_main_version = [a for a in articles_without_link if a.id not in article_version_ids]
+            anomalies += [f"<ARTICLE:{c.id}> has no main version and no link" for c in article_without_main_version]
 
-        return anomalies
+            # Get the articles with a main version without box
 
-    def _check_article_content_compliance(self, articles):
-        anomalies = []
+            article_version_boxes = self.db.get(
+                self.db.tables["ArticleBox"],
+                {"article_version_id": article_version_ids}
+            )
 
-        articles_without_link = [a for a in articles if a.link is None or len(a.link) == 0]
-        article_versions = self.db.get(self.db.tables["ArticleVersion"], {"is_main": True})
+            for a in articles_without_link:
+                version = [v for v in article_versions if v.id == a.id]
 
-        # Get the articles without main version
+                if len(version) == 1:
+                    boxes = [b for b in article_version_boxes if b.article_version_id == version[0].id]
 
-        article_version_ids = [v.id for v in article_versions]
-        article_without_main_version = [a for a in articles_without_link if a.id not in article_version_ids]
-        anomalies += [f"<ARTICLE:{c.id}> has no main version and no link" for c in article_without_main_version]
+                    if len(boxes) == 0:
+                        anomalies.append(f"<ARTICLE:{a.id}> has an empty main version and no link")
 
-        # Get the articles with a main version without box
+            return anomalies
+        return []
 
-        article_version_boxes = self.db.get(
-            self.db.tables["ArticleBox"],
-            {"article_version_id": article_version_ids}
-        )
-
-        for a in articles_without_link:
-            version = [v for v in article_versions if v.id == a.id]
-
-            if len(version) == 1:
-                boxes = [b for b in article_version_boxes if b.article_version_id == version[0].id]
-
-                if len(boxes) == 0:
-                    anomalies.append(f"<ARTICLE:{a.id}> has an empty main version and no link")
-
-        return anomalies
+    @staticmethod
+    def _is_setting_true(settings, setting_value):
+        s = [s for s in settings if s.property == setting_value and s.value == "TRUE"]
+        return len(s) > 0
