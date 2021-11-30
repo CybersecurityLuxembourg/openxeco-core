@@ -36,6 +36,19 @@ export default class SettingGlobal extends React.Component {
 				"AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM",
 				"ALLOW_ECOSYSTEM_TO_EDIT_LOGO",
 				"DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE",
+				"HIGHLIGHT_ARTICLE_WITHOUT_TITLE",
+				"HIGHLIGHT_ARTICLE_WITHOUT_HANDLE",
+				"HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE",
+				"HIGHLIGHT_ARTICLE_WITHOUT_START_DATE",
+				"HIGHLIGHT_ARTICLE_WITHOUT_END_DATE",
+				"HIGHLIGHT_ARTICLE_WITHOUT_CONTENT",
+				"HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE",
+				"HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE",
+				"HIGHLIGHT_ENTITIES_WITHOUT_IMAGE",
+				"HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS",
+				"HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION",
+				"HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER",
+				"HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS",
 			],
 			property: "",
 			value: "",
@@ -51,10 +64,6 @@ export default class SettingGlobal extends React.Component {
 	}
 
 	getSettings() {
-		this.setState({
-			settings: null,
-		});
-
 		getRequest.call(this, "public/get_public_settings", (data) => {
 			this.setState({
 				settings: data,
@@ -308,55 +317,64 @@ export default class SettingGlobal extends React.Component {
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight entities without image"}
-							value={getSettingValue(this.state.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ENTITIES_WITHOUT_IMAGE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_COMMUNICATION_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_COMMUNICATION_PAGE")
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_IMAGE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_IMAGE")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight entities without website"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight entities without postal address"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities with postal address missing geolocation"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight entities without phone number"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight entities without email address"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight entities without creation date"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE")
 							)}
 						/>
 						<br/>
@@ -364,55 +382,55 @@ export default class SettingGlobal extends React.Component {
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight articles without title"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ARTICLE_WITHOUT_TITLE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_TITLE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_TITLE")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight articles without handle"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ARTICLE_WITHOUT_HANDLE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_HANDLE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_HANDLE")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight articles without publication date"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight articles without content"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ARTICLE_WITHOUT_CONTENT") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_CONTENT", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_CONTENT")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight events without start date"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ARTICLE_WITHOUT_START_DATE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_START_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_START_DATE")
 							)}
 						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Highlight events without end date"}
-							value={getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							value={getSettingValue(this.state.settings, "HIGHLIGHT_ARTICLE_WITHOUT_END_DATE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_END_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_END_DATE")
 							)}
 						/>
 					</div>

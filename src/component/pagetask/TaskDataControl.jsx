@@ -205,28 +205,10 @@ export default class TaskDataControl extends React.Component {
 					<div className="col-md-12">
 						<Info
 							content={<div>
-								<div>Checks from &#39;/cron/run_database_compliance&#39; for the entities:</div>
-								<ul>
-									<li>Check if image, website, creation date are not empty</li>
-									<li>Check if there is at least one physical address</li>
-									<li>Check if there is at least one phone number contact</li>
-									<li>Check if there is at least one email address contact</li>
-									<li>Check if there is an ENTITY TYPE from the taxonomy</li>
-									<li>Check if there is at least one SERVICE GROUP from the ACTORs</li>
-								</ul>
-								<div>Checks from &#39;/cron/run_database_compliance&#39; for the news:</div>
-								<ul>
-									<li>Check if title, handle and publication date are not empty</li>
-									<li>Check if it has a link or a main version with at least one content box</li>
-								</ul>
-								<div>Checks from &#39;/cron/run_database_compliance&#39; for the events:</div>
-								<ul>
-									<li>
-										Check if title, handle, publication date, start date
-										and end date are not empty
-									</li>
-									<li>Check if it has a link or a main version with at least one content box</li>
-								</ul>
+								<div>
+									You can configure the checks of &#39;/cron/run_database_compliance&#39; with
+									the &#39;GLOBAL&#39; section of the &#39;SETTINGS&#39; page
+								</div>
 							</div>}
 						/>
 					</div>
