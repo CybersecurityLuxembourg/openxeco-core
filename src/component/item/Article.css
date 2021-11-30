@@ -46,6 +46,7 @@
 
 .Article-title {
     width: calc(100% - 120px);
+    min-height: 40px;
 }
 
 .Article-content {
