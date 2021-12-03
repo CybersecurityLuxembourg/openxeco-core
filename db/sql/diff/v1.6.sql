@@ -60,3 +60,10 @@ MODIFY COLUMN `abstract`
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci
     DEFAULT NULL;
+
+-- Optimization
+
+ALTER TABLE `Article` ADD INDEX `article_type_index` (`type`);
+ALTER TABLE `Article` ADD INDEX `article_status_index` (`status`);
+ALTER TABLE `Company` ADD INDEX `company_status_index` (`status`);
+ALTER TABLE `TaxonomyValue` ADD INDEX `taxonomy_value_name_index` (`name`);
