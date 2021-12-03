@@ -38,7 +38,7 @@ class GetMailAddresses(MethodResource, Resource):
         # Add companies related to the taxonomy
 
         if "taxonomies" in kwargs:
-            taxonomy_companies = self.db.get_filtered_companies({"taxonomy_values": kwargs["taxonomies"]}.all())
+            taxonomy_companies = self.db.get_filtered_companies({"taxonomy_values": kwargs["taxonomies"]}).all()
             taxonomy_company_ids = [c.id for c in taxonomy_companies]
             companies = list(set(companies + taxonomy_company_ids))
 
