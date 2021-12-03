@@ -53,7 +53,7 @@ application.config['SCHEDULER_API_ENABLED'] = False
 application.config['APISPEC_SWAGGER_URL'] = '/doc/json'
 application.config['APISPEC_SWAGGER_UI_URL'] = '/doc/'
 application.config['APISPEC_SPEC'] = APISpec(
-    title='CYBERLUX API',
+    title='openXeco API',
     version='v1.6',
     plugins=[MarshmallowPlugin()],
     openapi_version='2.0.0'
@@ -87,4 +87,4 @@ if __name__ == '__main__':
     set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
 
     application.debug = config.ENVIRONMENT == "dev"
-    application.run()
+    application.run(threaded=True)
