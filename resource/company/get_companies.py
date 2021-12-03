@@ -36,7 +36,7 @@ class GetCompanies(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        company_objects = self.db.get_filtered_companies(kwargs)
+        company_objects = self.db.get_filtered_companies(kwargs).all()
         data = Serializer.serialize(company_objects, self.db.tables["Company"])
 
         return data, "200 "

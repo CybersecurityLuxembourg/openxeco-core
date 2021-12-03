@@ -37,7 +37,7 @@ class GetPublicCompanyGeolocations(MethodResource, Resource):
             if "include_inactive" in kwargs and kwargs["include_inactive"] is True \
             else ["ACTIVE"]
 
-        company_ids = [o.id for o in self.db.get_filtered_companies(kwargs, entities)]
+        company_ids = [o.id for o in self.db.get_filtered_companies(kwargs, entities).all()]
 
         geolocations = self.db.session.query(ca) \
             .with_entities(ca.company_id, ca.latitude, ca.longitude) \

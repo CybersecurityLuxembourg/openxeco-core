@@ -219,7 +219,7 @@ class DB:
 
                 query = query.filter(self.tables["Company"].id.in_(companies_filtered_by_taxonomy))
 
-        return query.all()
+        return query
 
     ###############
     # ARTICLE     #

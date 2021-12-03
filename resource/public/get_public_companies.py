@@ -30,20 +30,24 @@ class GetPublicCompanies(MethodResource, Resource):
         'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'include_inactive': fields.Bool(required=False),
+        'count': fields.Bool(required=False),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
 
         c = self.db.tables["Company"]
-        entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image, c.status
 
         kwargs["status"] = ["ACTIVE", "INACTIVE"] \
             if "include_inactive" in kwargs and kwargs["include_inactive"] is True \
             else ["ACTIVE"]
 
-        companies = [o._asdict() for o in self.db.get_filtered_companies(kwargs, entities)]
+        if "count" in kwargs and kwargs["count"] is True:
+            response = {"count": self.db.get_filtered_companies(kwargs).count()}
+        else:
+            entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image, c.status
+            response = [o._asdict() for o in self.db.get_filtered_companies(kwargs, entities).all()]
 
-        for a in companies:
-            a["creation_date"] = None if a["creation_date"] is None else str(a["creation_date"])
+            for a in response:
+                a["creation_date"] = None if a["creation_date"] is None else str(a["creation_date"])
 
-        return companies, "200 "
+        return response, "200 "

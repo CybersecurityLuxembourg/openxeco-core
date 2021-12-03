@@ -52,7 +52,7 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage global data
 
-        companies = Serializer.serialize(self.db.get_filtered_companies(kwargs), self.db.tables["Company"])
+        companies = Serializer.serialize(self.db.get_filtered_companies(kwargs).all(), self.db.tables["Company"])
         company_ids = [c["id"] for c in companies] \
             if len(companies) < self.db.get_count(self.db.tables["Company"]) else None
 
