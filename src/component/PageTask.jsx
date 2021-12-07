@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import TaskRequest from "./pagetask/TaskRequest.jsx";
 import TaskDataControl from "./pagetask/TaskDataControl.jsx";
 import TaskArticle from "./pagetask/TaskArticle.jsx";
+import TaskUserToAssign from "./pagetask/TaskUserToAssign.jsx";
 import Tab from "./tab/Tab.jsx";
 import { getRequest } from "../utils/request.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
@@ -19,6 +20,7 @@ export default class PageTask extends React.Component {
 			selectedMenu: null,
 			tabs: [
 				"request",
+				"user_to_assign",
 				"article_to_review",
 				"data_control",
 			],
@@ -73,6 +75,7 @@ export default class PageTask extends React.Component {
 				<Tab
 					labels={[
 						"Request",
+						"User to assign",
 						"Article to review",
 						"Data control",
 					]}
@@ -80,6 +83,7 @@ export default class PageTask extends React.Component {
 					onMenuClick={this.onMenuClick}
 					notifications={[
 						this.getTaskNotificationBlock("new_requests"),
+						this.getTaskNotificationBlock("user_to_assign"),
 						this.getTaskNotificationBlock("articles_under_review"),
 						this.getTaskNotificationBlock("data_control"),
 					]}
@@ -87,6 +91,9 @@ export default class PageTask extends React.Component {
 					content={[
 						<TaskRequest
 							key={"task"}
+						/>,
+						<TaskUserToAssign
+							key={"user_to_assign"}
 						/>,
 						<TaskArticle
 							key={"article"}

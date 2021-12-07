@@ -23,7 +23,7 @@ export default class User extends Component {
 			selectedMenu: null,
 			tabs: [
 				"global",
-				"company",
+				"entity",
 			],
 		};
 	}
@@ -125,7 +125,7 @@ export default class User extends Component {
 						</h1>
 
 						<Tab
-							labels={["Global", "Company"]}
+							labels={["Global", "Entity"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}

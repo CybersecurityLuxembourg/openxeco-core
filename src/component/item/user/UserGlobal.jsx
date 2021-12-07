@@ -85,6 +85,7 @@ export default class UserGlobal extends React.Component {
 							value={this.state.user.last_name}
 							onBlur={(s) => this.saveUserValue("last_name", s)}
 						/>
+						<br/>
 						<FormLine
 							label="Is admin"
 							type={"checkbox"}
@@ -96,6 +97,24 @@ export default class UserGlobal extends React.Component {
 							type={"checkbox"}
 							value={this.state.user.is_active}
 							onChange={(s) => this.saveUserValue("is_active", s)}
+						/>
+						<br/>
+						<FormLine
+							label="Accept to receive communications"
+							type={"checkbox"}
+							value={this.state.user.accept_communication}
+							disabled={true}
+						/>
+						<br/>
+						<FormLine
+							label="Provided company on subscription"
+							value={this.state.user.company_on_subscription}
+							disabled={true}
+						/>
+						<FormLine
+							label="Provided department on subscription"
+							value={this.state.user.department_on_subscription}
+							disabled={true}
 						/>
 					</div>
 					: <Loading/>

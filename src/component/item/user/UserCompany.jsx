@@ -4,7 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import Loading from "../../box/Loading.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
-import Table from "../../table/Table.jsx";
+/* import Table from "../../table/Table.jsx"; */
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 
 export default class UserCompany extends React.Component {
@@ -16,9 +16,10 @@ export default class UserCompany extends React.Component {
 		this.deleteUserCompany = this.deleteUserCompany.bind(this);
 
 		this.state = {
-			companies: null,
+			userCompanies: null,
 			selectedCompany: null,
 			allCompanies: null,
+			userCompaniesEnums: null,
 		};
 	}
 
@@ -27,9 +28,19 @@ export default class UserCompany extends React.Component {
 	}
 
 	refresh() {
+		getRequest.call(this, "user/get_user_company_enums", (data) => {
+			this.setState({
+				userCompaniesEnums: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+
 		getRequest.call(this, "user/get_user_companies/" + this.props.id, (data) => {
 			this.setState({
-				companies: data,
+				userCompanies: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -84,15 +95,65 @@ export default class UserCompany extends React.Component {
 		});
 	}
 
+	updateUserCompany(company, department) {
+		const params = {
+			user: this.props.id,
+			company,
+			department,
+		};
+
+		postRequest.call(this, "user/update_user_company", params, () => {
+			this.refresh();
+			nm.info("The assignment has been updated");
+		}, (response) => {
+			this.refresh();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.refresh();
+			nm.error(error.message);
+		});
+	}
+
+	getCompanyFromId(companyId) {
+		if (this.state.allCompanies) {
+			const filteredCompanies = this.state.allCompanies.filter((c) => c.id === companyId);
+
+			if (filteredCompanies.length > 0) {
+				return filteredCompanies[0];
+			}
+			return null;
+		}
+
+		return null;
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
 
 	render() {
-		const columns = [
+		/* const columns = [
 			{
 				Header: "Name",
 				accessor: "name",
+			},
+			{
+				Header: "Department",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<FormLine
+						labelWidth={1}
+						label={null}
+						type={"select"}
+						options={this.state.userCompaniesEnums
+							? this.state.userCompaniesEnums.department
+								.map((c) => ({ label: c.name, value: c.name }))
+							: []
+						}
+						value={value.department}
+						onChange={(v) => this.updateUserCompany(value.id, v)}
+					/>
+				),
 			},
 			{
 				Header: " ",
@@ -111,15 +172,15 @@ export default class UserCompany extends React.Component {
 				),
 				width: 50,
 			},
-		];
+		]; */
 
 		return (
 			<div className={"row"}>
 				<div className="col-md-12">
-					<h2>Entity</h2>
+					<h2>Assigned entities</h2>
 				</div>
 
-				<div className="col-md-12">
+				{/* <div className="col-md-12">
 					{this.state.companies !== null
 						? <Table
 							columns={columns}
@@ -127,10 +188,49 @@ export default class UserCompany extends React.Component {
 						/>
 						: <Loading/>
 					}
+				</div> */}
+
+				<div className="col-md-12">
+					{this.state.userCompanies
+						? (this.state.userCompanies.map((c) => (
+							<div key={c.company_id}>
+								<h4>
+									{this.getCompanyFromId(c.company_id)
+										? this.getCompanyFromId(c.company_id).name
+										: "Name not found"
+									}
+								</h4>
+
+								<FormLine
+									label={"Department"}
+									type={"select"}
+									options={this.state.userCompaniesEnums
+										? this.state.userCompaniesEnums.department
+											.map((d) => ({ label: d, value: d }))
+										: []
+									}
+									value={c.department} // TODO
+									onChange={(v) => this.updateUserCompany(c.company_id, v)}
+								/>
+
+								<DialogConfirmation
+									text={"Are you sure you want to delete this row?"}
+									trigger={
+										<button
+											className={"red-background Table-right-button"}>
+											<i className="fas fa-trash-alt"/> Remove the assignment
+										</button>
+									}
+									afterConfirmation={() => this.deleteUserCompany(c.company_id)}
+								/>
+							</div>
+						)))
+						: <Loading/>
+					}
 				</div>
 
 				<div className="col-md-12">
-					<h2>Add an entity</h2>
+					<h2>Add an assignment to an entity</h2>
 					{this.state.allCompanies !== null
 						? <div>
 							<FormLine
@@ -147,7 +247,7 @@ export default class UserCompany extends React.Component {
 								<button
 									onClick={this.addUserCompany}
 									disabled={this.state.selectedCompany === null}>
-                                    Add the entity
+                                    Add the assignment
 								</button>
 							</div>
 						</div>
