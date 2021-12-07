@@ -49,6 +49,7 @@ export default class PageProfile extends React.Component {
 			telephone: this.state.user.telephone,
 			first_name: this.state.user.first_name,
 			last_name: this.state.user.last_name,
+			accept_communication: this.state.user.accept_communication,
 		};
 
 		postRequest.call(this, "private/update_my_user", params, () => {
@@ -175,6 +176,12 @@ export default class PageProfile extends React.Component {
 								type={"phone"}
 								value={this.state.user.telephone}
 								onChange={(v) => this.changeUser("telephone", v)}
+							/>
+							<FormLine
+								label={"I accept to receive communication via email"}
+								type={"checkbox"}
+								value={this.state.user.accept_communication}
+								onChange={(v) => this.changeUser("accept_communication", v)}
 							/>
 							<div className="right-buttons">
 								<button
