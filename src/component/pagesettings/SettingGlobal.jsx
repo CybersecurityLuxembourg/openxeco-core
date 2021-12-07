@@ -33,6 +33,7 @@ export default class SettingGlobal extends React.Component {
 				"SHOW_NETWORK_PAGE",
 				"ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE",
 				"ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT",
+				"DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE",
 				"AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM",
 				"ALLOW_ECOSYSTEM_TO_EDIT_LOGO",
 				"DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE",
@@ -281,6 +282,15 @@ export default class SettingGlobal extends React.Component {
 							onChange={(v) => (v
 								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "TRUE")
 								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Deactivate review on ecosystem articles"}
+							value={getSettingValue(this.state.settings, "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE", "TRUE")
+								: this.deleteSetting("DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE")
 							)}
 						/>
 						<FormLine
