@@ -124,11 +124,13 @@ from resource.user.delete_user_group_right import DeleteUserGroupRight
 from resource.user.get_users import GetUsers
 from resource.user.get_user import GetUser
 from resource.user.get_user_companies import GetUserCompanies
+from resource.user.get_user_company_enums import GetUserCompanyEnums
 from resource.user.get_user_group_rights import GetUserGroupRights
 from resource.user.get_user_groups import GetUserGroups
 from resource.user.get_user_group import GetUserGroup
 from resource.user.get_user_group_assignments import GetUserGroupAssignments
 from resource.user.update_user import UpdateUser
+from resource.user.update_user_company import UpdateUserCompany
 from resource.user.update_user_group_assignment import UpdateUserGroupAssignment
 from resource.taxonomy.add_taxonomy_assignment import AddTaxonomyAssignment
 from resource.taxonomy.add_taxonomy_category import AddTaxonomyCategory

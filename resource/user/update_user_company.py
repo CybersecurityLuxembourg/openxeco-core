@@ -7,9 +7,10 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from exception.object_not_found import ObjectNotFound
 
 
-class UpdateUser(MethodResource, Resource):
+class UpdateUserCompany(MethodResource, Resource):
 
     db = None
 
@@ -18,21 +19,16 @@ class UpdateUser(MethodResource, Resource):
 
     @log_request
     @doc(tags=['user'],
-         description='Update user. Password and email updated is not accepted on this resource',
+         description='Update user group assignment',
          responses={
              "200": {},
+             "422.a": {"description": "Object not found: group"},
+             "422.b": {"description": "Object not found: user"}
          })
     @use_kwargs({
-        'id': fields.Int(),
-        'last_name': fields.Str(required=False, allow_none=True),
-        'first_name': fields.Str(required=False, allow_none=True),
-        'telephone': fields.Str(required=False, allow_none=True),
-        'is_admin': fields.Bool(required=False),
-        'is_active': fields.Bool(required=False),
-        'accept_communication': fields.Bool(required=False),
-        'company_on_subscription': fields.Str(required=False, allow_none=True),
-        'department_on_subscription': fields.Str(
-            required=False,
+        'user': fields.Int(),
+        'company': fields.Int(),
+        'department': fields.Str(
             allow_none=True,
             validate=lambda x: x in ['TOP MANAGEMENT', 'HUMAN RESOURCE', 'MARKETING', 'FINANCE', 'OPERATION/PRODUCTION',
                                      'INFORMATION TECHNOLOGY', 'OTHER', None]),
@@ -42,6 +38,18 @@ class UpdateUser(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["User"])
+        user_company_assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+            "user_id": kwargs["user"],
+            "company_id": kwargs["company"],
+        })
+
+        if len(user_company_assignments) == 0:
+            raise ObjectNotFound("UserCompanyAssignment")
+
+        self.db.merge({
+            "user_id": kwargs["user"],
+            "company_id": kwargs["company"],
+            "department": kwargs["department"],
+        }, self.db.tables["UserCompanyAssignment"])
 
         return "", "200 "
