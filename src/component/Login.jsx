@@ -97,7 +97,7 @@ export default class Login extends React.Component {
 		const params = {
 			email: this.state.createAccountEmail,
 			company: this.state.company && this.state.company.length > 0 ? this.state.company : null,
-			department: this.state.department ? this.state.department : null,
+			department: this.state.companyDepartment ? this.state.companyDepartment : null,
 		};
 
 		postRequest.call(this, "account/create_account", params, () => {
