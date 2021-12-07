@@ -443,6 +443,9 @@ CREATE TABLE `User` (
   `is_admin` tinyint(1) DEFAULT '0',
   `is_active` tinyint(1) DEFAULT '0',
   `sys_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `accept_communication` tinyint(1) DEFAULT '1',
+  `company_on_subscription` varchar(510) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `department_on_subscription` enum('TOP MANAGEMENT','HUMAN RESOURCE','MARKETING','FINANCE','OPERATION/PRODUCTION','INFORMATION TECHNOLOGY','OTHER') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UC_User_Email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -458,6 +461,7 @@ DROP TABLE IF EXISTS `UserCompanyAssignment`;
 CREATE TABLE `UserCompanyAssignment` (
   `user_id` int NOT NULL,
   `company_id` int NOT NULL,
+  `department` enum('TOP MANAGEMENT','HUMAN RESOURCE','MARKETING','FINANCE','OPERATION/PRODUCTION','INFORMATION TECHNOLOGY','OTHER') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`user_id`,`company_id`),
   KEY `company_id` (`company_id`),
   CONSTRAINT `UserCompanyAssignment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
