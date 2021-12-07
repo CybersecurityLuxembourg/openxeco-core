@@ -18,7 +18,6 @@ class App extends React.Component {
 
 		this.state = {
 			logged: false,
-			settings: null,
 			openMobileDialog: window
 				.matchMedia("only screen and (max-width: 760px)")
 				.matches,
