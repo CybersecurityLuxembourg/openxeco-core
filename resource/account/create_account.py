@@ -35,6 +35,8 @@ class CreateAccount(MethodResource, Resource):
          })
     @use_kwargs({
         'email': fields.Str(),
+        'company': fields.Str(required=False, allow_none=True),
+        'department': fields.Str(required=False, allow_none=True),
     })
     @catch_exception
     def post(self, **kwargs):
@@ -59,7 +61,9 @@ class CreateAccount(MethodResource, Resource):
         user = {
             "email": email,
             "password": generate_password_hash(generated_password),
-            "is_active": 1
+            "is_active": 1,
+            "company_on_subscription": kwargs["company"] if "company" in kwargs else None,
+            "department_on_subscription": kwargs["department"] if "department" in kwargs else None,
         }
 
         try:
