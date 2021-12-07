@@ -26,6 +26,7 @@ class UpdateMyUser(MethodResource, Resource):
         'last_name': fields.Str(required=False, allow_none=True),
         'first_name': fields.Str(required=False, allow_none=True),
         'telephone': fields.Str(required=False, allow_none=True),
+        'accept_communication': fields.Bool(required=False),
     })
     @jwt_required
     @catch_exception
