@@ -122,6 +122,7 @@ export default class FormLine extends React.Component {
 				styles={getSelectStyle()}
 				options={this.props.options}
 				onChange={(v) => this.onChange(v.value)}
+				isDisabled={this.props.disabled}
 			/>;
 		case "multiselect":
 			return <div>

@@ -20,12 +20,28 @@ export default class Login extends React.Component {
 		this.resetPassword = this.resetPassword.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
 
+		let view = null;
+
+		switch (getUrlParameter("action")) {
+		case "reset_password":
+			view = "reset";
+			break;
+		case "create_account":
+			view = "create";
+			break;
+		default:
+			view = "login";
+		}
+
 		this.state = {
 			email: null,
 			createAccountEmail: null,
 			password: null,
 			passwordConfirmation: null,
-			view: getUrlParameter("action") === "reset_password" ? "reset" : "login",
+			view,
+			partOfCompany: false,
+			company: "",
+			companyDepartment: null,
 		};
 	}
 
@@ -41,6 +57,15 @@ export default class Login extends React.Component {
 		// This function to notify if the password has been reset correctly
 
 		Login.notifyForPasswordReset();
+	}
+
+	componentDidUpdate(_, prevState) {
+		if (prevState.partOfCompany && !this.state.partOfCompany) {
+			this.setState({
+				company: "",
+				companyDepartment: null,
+			});
+		}
 	}
 
 	static async notifyForPasswordReset() {
@@ -71,6 +96,8 @@ export default class Login extends React.Component {
 	createAccount() {
 		const params = {
 			email: this.state.createAccountEmail,
+			company: this.state.company && this.state.company.length > 0 ? this.state.company : null,
+			department: this.state.department ? this.state.department : null,
 		};
 
 		postRequest.call(this, "account/create_account", params, () => {
@@ -113,6 +140,7 @@ export default class Login extends React.Component {
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
 		if (event.key === "Enter" || event.code === "NumpadEnter") {
 			if (this.state.view === "login") this.login();
+			if (this.state.view === "create") this.createAccount();
 			if (this.state.view === "forgot") this.requestReset();
 			if (this.state.view === "reset") this.resetPassword();
 		}
@@ -154,6 +182,155 @@ export default class Login extends React.Component {
 					}
 				</div>
 
+				<div className="top-left-buttons">
+					<DialogHint
+						content={
+							<div className="row">
+								<div className="col-md-12">
+									<h2>
+										What is&nbsp;
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "this portal"
+										} ?
+									</h2>
+
+									<p>
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "This portal"
+										} is your Private Space of the
+										{this.props.settings !== null
+											&& this.props.settings.PROJECT_NAME !== undefined
+											? " " + this.props.settings.PROJECT_NAME
+											: ""
+										} portal to
+										manage your contribution to the ecosystem.
+									</p>
+
+									<p>
+										After creating a personal account, you will be able to
+										register your entity and manage its information at any time.
+										You will also have the opportunity to share your entity’s
+										latest news with the cybersecurity ecosystem in Luxembourg and beyond.
+									</p>
+
+									<h3>
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "This portal"
+										} is divided into 3 sections:
+									</h3>
+
+									<h4>
+										My profile
+									</h4>
+
+									<p>
+										Edit your personal profile. You will be the contact person
+										for the entity to which you are assigned. Your personal
+										information will not be made public on the
+										{this.props.settings !== null
+											&& this.props.settings.PROJECT_NAME !== undefined
+											? " " + this.props.settings.PROJECT_NAME
+											: ""
+										} portal. Learn more by visiting this section.
+									</p>
+
+									<h4>
+										My entities
+									</h4>
+
+									<p>
+										Register and edit the information of your entity. Use
+										this section to present and promote your entity’s expertise
+										within the cybersecurity community and beyond.
+									</p>
+
+									<h4>
+										My articles
+									</h4>
+
+									<p>
+										Share and promote your entity’s expertise, latest releases
+										and news by regularly publishing articles on the portal.
+									</p>
+
+									<p>
+										To ease the process as much as possible, all you have to do
+										is reference the link to the article already published on
+										your website.
+									</p>
+
+									<h2>How do I start?</h2>
+
+									<h3>
+										Create your account
+									</h3>
+
+									<p>
+										Fill in your email address and click on “Create account”.
+									</p>
+
+									<img src={"img/hint-create-account.png"}/>
+
+									<h3>
+										Get your temporary password
+									</h3>
+
+									<p>
+										You will receive an email at the email address provided that
+										will contain a temporary password. You will need this temporary
+										password to log in for the first time.
+									</p>
+
+									<h3>
+										Log in to {this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "the portal"
+										}
+									</h3>
+
+									<p>
+										Use the provided email address and your temporary password
+										to log in for the first time. Click on “login” to connect to
+										your private space.
+									</p>
+
+									<img src={"img/hint-connect.png"}/>
+
+									<p>
+										Once logged in, change your password.
+									</p>
+
+									<h2>Hint & tips</h2>
+
+									<p>
+										Throughout your navigation on your private space, you will see
+										this yellow icon:
+									</p>
+
+									<div style={{ textAlign: "center" }}>
+										<i className="DialogHint-icon far fa-question-circle"/>
+									</div>
+
+									<br/>
+
+									<p>
+										Behind this icon is a lot of useful information to make your
+										experience of using your private space pleasant.
+									</p>
+								</div>
+							</div>
+						}
+						validateSelection={(value) => this.onChange(value)}
+					/>
+				</div>
+
 				<div id="Login-area">
 					<ul className="Login-circles">
 						<li style={{ backgroundImage: "url(" + getApiURL() + "public/get_public_image/logo.png)" }}></li>
@@ -172,154 +349,6 @@ export default class Login extends React.Component {
 					<div id="Login-inner-box">
 						{this.state.view === "login"
 							&& <div className="row">
-								<div className="top-right-buttons">
-									<DialogHint
-										content={
-											<div className="row">
-												<div className="col-md-12">
-													<h2>
-														What is&nbsp;
-														{this.props.settings !== null
-															&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-															? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-															: "this portal"
-														} ?
-													</h2>
-
-													<p>
-														{this.props.settings !== null
-															&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-															? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-															: "This portal"
-														} is your Private Space of the
-														{this.props.settings !== null
-															&& this.props.settings.PROJECT_NAME !== undefined
-															? " " + this.props.settings.PROJECT_NAME
-															: ""
-														} portal to
-														manage your contribution to the ecosystem.
-													</p>
-
-													<p>
-														After creating a personal account, you will be able to
-														register your entity and manage its information at any time.
-														You will also have the opportunity to share your entity’s
-														latest news with the cybersecurity ecosystem in Luxembourg and beyond.
-													</p>
-
-													<h3>
-														{this.props.settings !== null
-															&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-															? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-															: "This portal"
-														} is divided into 3 sections:
-													</h3>
-
-													<h4>
-														My profile
-													</h4>
-
-													<p>
-														Edit your personal profile. You will be the contact person
-														for the entity to which you are assigned. Your personal
-														information will not be made public on the
-														{this.props.settings !== null
-															&& this.props.settings.PROJECT_NAME !== undefined
-															? " " + this.props.settings.PROJECT_NAME
-															: ""
-														} portal. Learn more by visiting this section.
-													</p>
-
-													<h4>
-														My entities
-													</h4>
-
-													<p>
-														Register and edit the information of your entity. Use
-														this section to present and promote your entity’s expertise
-														within the cybersecurity community and beyond.
-													</p>
-
-													<h4>
-														My articles
-													</h4>
-
-													<p>
-														Share and promote your entity’s expertise, latest releases
-														and news by regularly publishing articles on the portal.
-													</p>
-
-													<p>
-														To ease the process as much as possible, all you have to do
-														is reference the link to the article already published on
-														your website.
-													</p>
-
-													<h2>How do I start?</h2>
-
-													<h3>
-														Create your account
-													</h3>
-
-													<p>
-														Fill in your email address and click on “Create account”.
-													</p>
-
-													<img src={"img/hint-create-account.png"}/>
-
-													<h3>
-														Get your temporary password
-													</h3>
-
-													<p>
-														You will receive an email at the email address provided that
-														will contain a temporary password. You will need this temporary
-														password to log in for the first time.
-													</p>
-
-													<h3>
-														Log in to {this.props.settings !== null
-															&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-															? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-															: "the portal"
-														}
-													</h3>
-
-													<p>
-														Use the provided email address and your temporary password
-														to log in for the first time. Click on “login” to connect to
-														your private space.
-													</p>
-
-													<img src={"img/hint-connect.png"}/>
-
-													<p>
-														Once logged in, change your password.
-													</p>
-
-													<h2>Hint & tips</h2>
-
-													<p>
-														Throughout your navigation on your private space, you will see
-														this yellow icon:
-													</p>
-
-													<div style={{ textAlign: "center" }}>
-														<i className="DialogHint-icon far fa-question-circle"/>
-													</div>
-
-													<br/>
-
-													<p>
-														Behind this icon is a lot of useful information to make your
-														experience of using your private space pleasant.
-													</p>
-												</div>
-											</div>
-										}
-										validateSelection={(value) => this.onChange(value)}
-									/>
-								</div>
 								<div className="col-md-12">
 									<div className="Login-title">
 										{this.props.settings !== null
@@ -336,13 +365,7 @@ export default class Login extends React.Component {
 										}
 									</div>
 								</div>
-								<div className="col-md-6">
-									<div className="Login-title">
-										<div className={"Login-title-small"}>
-											Login
-										</div>
-									</div>
-
+								<div className="col-md-12">
 									<FormLine
 										label="Email"
 										fullWidth={true}
@@ -364,6 +387,12 @@ export default class Login extends React.Component {
 										<div className="right-buttons">
 											<button
 												className="blue-button"
+												onClick={() => this.changeState("view", "create")}
+											>
+												Create account
+											</button>
+											<button
+												className="blue-button"
 												onClick={this.login}
 											>
 												Login
@@ -379,13 +408,29 @@ export default class Login extends React.Component {
 										</div>
 									</div>
 								</div>
-								<div className="col-md-6">
-									<div className="Login-title">
-										<div className={"Login-title-small"}>
-											Create an account
-										</div>
-									</div>
+							</div>
+						}
 
+						{this.state.view === "create"
+							&& <div className="row">
+								<div className="col-md-12">
+									<div className="Login-title">
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "PRIVATE SPACE"
+										}
+
+										{this.props.settings !== null
+											&& this.props.settings.PROJECT_NAME !== undefined
+											&& <div className={"Login-title-small"}>
+												{this.props.settings.PROJECT_NAME} private space
+											</div>
+										}
+									</div>
+								</div>
+
+								<div className="col-md-12">
 									<FormLine
 										label="Email"
 										fullWidth={true}
@@ -394,13 +439,63 @@ export default class Login extends React.Component {
 										autofocus={true}
 										onKeyDown={this.onKeyDown}
 									/>
+									<br/>
+									<FormLine
+										labelWidth={8}
+										label="I am part of a company"
+										type={"checkbox"}
+										value={this.state.partOfCompany}
+										onChange={(v) => this.changeState("partOfCompany", v)}
+										onKeyDown={this.onKeyDown}
+									/>
+									<FormLine
+										labelWidth={4}
+										label="Company"
+										value={this.state.company}
+										onChange={(v) => this.changeState("company", v)}
+										onKeyDown={this.onKeyDown}
+										disabled={!this.state.partOfCompany}
+									/>
+									<FormLine
+										labelWidth={4}
+										label={"Department"}
+										type={"select"}
+										options={[
+											{ label: "TOP MANAGEMENT", value: "TOP MANAGEMENT" },
+											{ label: "HUMAN RESOURCE", value: "HUMAN RESOURCE" },
+											{ label: "MARKETING", value: "MARKETING" },
+											{ label: "FINANCE", value: "FINANCE" },
+											{ label: "OPERATION/PRODUCTION", value: "OPERATION/PRODUCTION" },
+											{ label: "INFORMATION TECHNOLOGY", value: "INFORMATION TECHNOLOGY" },
+											{ label: "OTHER", value: "OTHER" },
+										]}
+										value={this.state.companyDepartment}
+										onChange={(v) => this.changeState("companyDepartment", v)}
+										disabled={!this.state.partOfCompany}
+									/>
 									<div className="right-buttons">
 										<button
 											className="blue-button"
 											onClick={this.createAccount}
-											disabled={!validateEmail(this.state.createAccountEmail)}
+											disabled={!validateEmail(this.state.createAccountEmail)
+												|| (this.state.partOfCompany
+													&& (
+														!this.state.company
+														|| this.state.company.length === 0
+														|| !this.state.companyDepartment
+													)
+												)
+											}
 										>
 											Create account
+										</button>
+									</div>
+									<div className="left-buttons">
+										<button
+											className="link-button"
+											onClick={() => this.changeState("view", "login")}
+										>
+											Back to login
 										</button>
 									</div>
 								</div>
