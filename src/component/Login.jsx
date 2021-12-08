@@ -387,15 +387,17 @@ export default class Login extends React.Component {
 										<div className="right-buttons">
 											<button
 												className="blue-button"
-												onClick={() => this.changeState("view", "create")}
-											>
-												Create account
-											</button>
-											<button
-												className="blue-button"
 												onClick={this.login}
 											>
 												Login
+											</button>
+										</div>
+										<div className="left-buttons">
+											<button
+												className="link-button"
+												onClick={() => this.changeState("view", "create")}
+											>
+												I want to create an account
 											</button>
 										</div>
 										<div className="left-buttons">
