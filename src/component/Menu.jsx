@@ -74,121 +74,132 @@ export default class Menu extends React.Component {
 				<Nav defaultSelected={this.props.selectedMenu}>
 					<NavItem
 						eventKey=""
-						active={!this.props.selectedMenu}>
+						active={!this.props.selectedMenu}
+						onClick={() => this.props.history.push("/")}>
 						<NavIcon>
-							<Link to="/"><i className="fa fa-tachometer-alt" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fa fa-tachometer-alt" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/">Dashboard</Link>
+							Dashboard
 						</NavText>
 					</NavItem>
 					<div className="Menu-divider"/>
 					<NavItem
 						eventKey="companies"
-						active={this.props.selectedMenu === "companies"}>
+						active={this.props.selectedMenu === "companies"}
+						onClick={() => this.props.history.push("/companies")}>
 						<NavIcon>
-							<Link to="/companies"><i className="fas fa-building" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-building" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/companies">Entities</Link>
+							Entities
 						</NavText>
 					</NavItem>
 					<NavItem
 						eventKey="articles"
-						active={this.props.selectedMenu === "articles"}>
+						active={this.props.selectedMenu === "articles"}
+						onClick={() => this.props.history.push("/articles")}>
 						<NavIcon>
-							<Link to="/articles"><i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/articles">Articles</Link>
+							Articles
 						</NavText>
 					</NavItem>
 					<NavItem
 						eventKey="taxonomy"
-						active={this.props.selectedMenu === "taxonomy"}>
+						active={this.props.selectedMenu === "taxonomy"}
+						onClick={() => this.props.history.push("/taxonomy")}>
 						<NavIcon>
-							<Link to="/taxonomy"><i className="fas fa-project-diagram" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-project-diagram" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/taxonomy">Taxonomies</Link>
+							Taxonomies
 						</NavText>
 					</NavItem>
 					{getSettingValue(this.props.settings, "SHOW_NETWORK_PAGE") === "TRUE"
 						&& <NavItem
 							eventKey="network"
-							active={this.props.selectedMenu === "network"}>
+							active={this.props.selectedMenu === "network"}
+							onClick={() => this.props.history.push("/network")}>
 							<NavIcon>
-								<Link to="/network"><i className="fas fa-globe-europe" style={{ fontSize: "1.75em" }} /></Link>
+								<i className="fas fa-globe-europe" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								<Link to="/network">Network</Link>
+								Network
 							</NavText>
 						</NavItem>
 					}
 					<div className="Menu-divider"/>
 					<NavItem
 						eventKey="task"
-						active={this.props.selectedMenu === "task"}>
+						active={this.props.selectedMenu === "task"}
+						onClick={() => this.props.history.push("/task")}>
 						<NavIcon>
-							<Link to="/task"><i className="fas fa-tasks" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-tasks" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/task">Tasks</Link>
+							Tasks
 						</NavText>
 						{this.getTaskNotificationBlock()}
 					</NavItem>
 					{getSettingValue(this.props.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"
 						&& <NavItem
 							eventKey="communication"
-							active={this.props.selectedMenu === "communication"}>
+							active={this.props.selectedMenu === "communication"}
+							onClick={() => this.props.history.push("/communication")}>
 							<NavIcon>
-								<Link to="/communication"><i className="fas fa-bullhorn" style={{ fontSize: "1.75em" }} /></Link>
+								<i className="fas fa-bullhorn" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								<Link to="/communication">Communication via email</Link>
+								Communication via email
 							</NavText>
 						</NavItem>
 					}
 					<NavItem
 						eventKey="media"
-						active={this.props.selectedMenu === "media"}>
+						active={this.props.selectedMenu === "media"}
+						onClick={() => this.props.history.push("/media")}>
 						<NavIcon>
-							<Link to="/media"><i className="fas fa-photo-video" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-photo-video" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/media">Media</Link>
+							Media
 						</NavText>
 					</NavItem>
 					<div className="Menu-divider"/>
 					<NavItem
 						eventKey="users"
-						active={this.props.selectedMenu === "users"}>
+						active={this.props.selectedMenu === "users"}
+						onClick={() => this.props.history.push("/users")}>
 						<NavIcon>
-							<Link to="/users"><i className="fas fa-user-friends" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-user-friends" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/users">Groups & Users</Link>
+							Groups & Users
 						</NavText>
 					</NavItem>
 					<NavItem
 						eventKey="settings"
-						active={this.props.selectedMenu === "settings"}>
+						active={this.props.selectedMenu === "settings"}
+						onClick={() => this.props.history.push("/settings")}>
 						<NavIcon>
-							<Link to="/settings"><i className="fas fa-cogs" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-cogs" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/settings">Settings</Link>
+							Settings
 						</NavText>
 					</NavItem>
 					<NavItem
 						eventKey="profile"
 						active={this.props.selectedMenu === "profile"}
-						className="Menu-profile-nav-item">
+						className="Menu-profile-nav-item"
+						onClick={() => this.props.history.push("/profile")}>
 						<NavIcon>
-							<Link to="/profile"><i className="fas fa-user-circle" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-user-circle" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/profile">Profile</Link>
+							Profile
 						</NavText>
 					</NavItem>
 					<NavItem
