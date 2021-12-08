@@ -48,36 +48,37 @@ export default class Menu extends React.Component {
 				<Nav defaultSelected={this.props.selectedMenu}>
 					<NavItem
 						eventKey=""
-						active={this.props.selectedMenu === ""}>
+						active={this.props.selectedMenu === ""}
+						onClick={() => this.props.history.push("/")}>
 						<NavIcon>
-							<Link to="/"><i className="fas fa-home" style={{ fontSize: "1.75em" }}/></Link>
+							<i className="fas fa-home" style={{ fontSize: "1.75em" }}/>
 						</NavIcon>
 						<NavText>
-							<Link to="/">Home</Link>
+							Home
 						</NavText>
 					</NavItem>
 					<NavItem
 						eventKey="profile"
-						active={this.props.selectedMenu === "profile"}>
+						active={this.props.selectedMenu === "profile"}
+						onClick={() => this.props.history.push("/profile")}>
 						<NavIcon>
-							<Link to="/profile"><i className="fas fa-user" style={{ fontSize: "1.75em" }}/></Link>
+							<i className="fas fa-user" style={{ fontSize: "1.75em" }}/>
 						</NavIcon>
 						<NavText>
-							<Link to="/profile">My Profile</Link>
+							My Profile
 						</NavText>
 					</NavItem>
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_LOGO === "TRUE"
 						&& <NavItem
 							eventKey={"generator"}
-							active={this.props.selectedMenu === "generator"}>
+							active={this.props.selectedMenu === "generator"}
+							onClick={() => this.props.history.push("/generator")}>
 							<NavIcon>
-								<Link to={"/generator"}>
-									<i className="fas fa-shapes" style={{ fontSize: "1.75em" }} />
-								</Link>
+								<i className="fas fa-shapes" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								<Link to={"/generator"}>Logo generator</Link>
+								Logo generator
 							</NavText>
 						</NavItem>
 					}
@@ -85,14 +86,13 @@ export default class Menu extends React.Component {
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <NavItem
 							eventKey={"articles"}
-							active={this.props.selectedMenu === "articles"}>
+							active={this.props.selectedMenu === "articles"}
+							onClick={() => this.props.history.push("/articles")}>
 							<NavIcon>
-								<Link to={"/articles"}>
-									<i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} />
-								</Link>
+								<i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								<Link to={"/articles"}>My articles</Link>
+								My articles
 							</NavText>
 						</NavItem>
 					}
@@ -103,46 +103,45 @@ export default class Menu extends React.Component {
 						: this.props.myCompanies.map((c) => <NavItem
 							key={c.id}
 							eventKey={"/company/" + c.id}
-							active={this.props.selectedMenu === "company/" + c.id}>
+							active={this.props.selectedMenu === "company/" + c.id}
+							onClick={() => this.props.history.push("/company/" + c.id)}>
 							<NavIcon>
-								<Link to={"/company/" + c.id}>
-									<i className="fas fa-building" style={{ fontSize: "1.75em" }} />
-								</Link>
+								<i className="fas fa-building" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								<Link to={"/company/" + c.id}>Entity: {c.name}</Link>
+								Entity: {c.name}
 							</NavText>
 						</NavItem>)
 					}
 					<NavItem
 						eventKey="/add_company"
-						active={this.props.selectedMenu === "add_company"}>
+						active={this.props.selectedMenu === "add_company"}
+						onClick={() => this.props.history.push("/add_company")}>
 						<NavIcon>
-							<Link to="/add_company">
-								<i
-									className={"fas fa-plus-circle "
-										+ (this.props.myCompanies !== null
-											&& this.props.myCompanies.length === 0
-											&& this.props.selectedMenu !== "/add_company"
-											&& "Menu-highlight")}
-									style={{ fontSize: "1.75em" }}
-								/>
-							</Link>
+							<i
+								className={"fas fa-plus-circle "
+									+ (this.props.myCompanies !== null
+										&& this.props.myCompanies.length === 0
+										&& this.props.selectedMenu !== "/add_company"
+										&& "Menu-highlight")}
+								style={{ fontSize: "1.75em" }}
+							/>
 						</NavIcon>
 						<NavText>
-							<Link to="/add_company">Add or claim an entity</Link>
+							Add or claim an entity
 						</NavText>
 					</NavItem>
 
 					<NavItem
 						className="Menu-bug-nav-item"
 						eventKey="contact"
-						active={this.props.selectedMenu === "contact"}>
+						active={this.props.selectedMenu === "contact"}
+						onClick={() => this.props.history.push("/contact")}>
 						<NavIcon>
-							<Link to="/contact"><i className="fas fa-headset" style={{ fontSize: "1.75em" }} /></Link>
+							<i className="fas fa-headset" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							<Link to="/contact">Contact us</Link>
+							Contact us
 						</NavText>
 						{this.getTaskNotificationBlock("/contact")}
 					</NavItem>

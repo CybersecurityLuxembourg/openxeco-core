@@ -70,7 +70,7 @@ export default class InsideApp extends React.Component {
 	render() {
 		return (
 			<div id="InsideApp" className={"fade-in"}>
-				<Menu
+				<Route render={(props) => <Menu
 					selectedMenu={this.state.selectedMenu}
 					changeMenu={this.changeMenu}
 					disconnect={this.props.disconnect}
@@ -78,7 +78,8 @@ export default class InsideApp extends React.Component {
 					myCompanies={this.state.myCompanies}
 					notifications={this.state.notifications}
 					settings={this.props.settings}
-				/>
+					{...props}
+				/>}/>
 				<div id="InsideApp-content">
 					<Switch>
 						<Route path="/profile" render={(props) => <PageProfile {...props} />}/>
