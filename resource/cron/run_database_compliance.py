@@ -193,7 +193,7 @@ class RunDatabaseCompliance(MethodResource, Resource):
             )
 
             for a in articles_without_link:
-                version = [v for v in article_versions if v.id == a.id]
+                version = [v for v in article_versions if v.article_id == a.id]
 
                 if len(version) == 1:
                     boxes = [b for b in article_version_boxes if b.article_version_id == version[0].id]
