@@ -134,7 +134,7 @@ export default class ArticleGlobal extends React.Component {
 						label={"Abstract"}
 						value={this.state.article.abstract}
 						onBlur={(v) => this.saveArticleValue("abstract", v)}
-						format={(v) => !v || v.length <= 500}
+						format={(v) => !v || v.length < 500}
 					/>
 					<FormLine
 						type={"date"}
