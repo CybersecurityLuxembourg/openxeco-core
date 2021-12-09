@@ -180,12 +180,13 @@ class RunDatabaseCompliance(MethodResource, Resource):
 
             # Get the articles without main version
 
-            article_version_ids = [v.id for v in article_versions]
-            article_without_main_version = [a for a in articles_without_link if a.id not in article_version_ids]
+            article_ids_from_mv = [v.article_id for v in article_versions]
+            article_without_main_version = [a for a in articles_without_link if a.id not in article_ids_from_mv]
             anomalies += [f"<ARTICLE:{c.id}> has no main version and no link" for c in article_without_main_version]
 
             # Get the articles with a main version without box
 
+            article_version_ids = [v.id for v in article_versions]
             article_version_boxes = self.db.get(
                 self.db.tables["ArticleBox"],
                 {"article_version_id": article_version_ids}
