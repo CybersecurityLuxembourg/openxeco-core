@@ -107,10 +107,10 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
             if current_page <= nb_pages:
                 if HTTP_PROXY is not None:
                     http = ProxyManager(HTTP_PROXY)
-                    response = http.request('GET', base_url)
+                    response = http.request('GET', f"{base_url}&page={current_page}")
                     content = response.data
                 else:
-                    response = request.urlopen(base_url)  # nosec
+                    response = request.urlopen(f"{base_url}&page={current_page}")  # nosec
                     content = response.read()
 
                 data = json.loads(content)
