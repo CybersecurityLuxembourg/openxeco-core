@@ -39,7 +39,7 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
         base_url = "https://www.moovijob.com/api/job-offers/search?job_categories[]=informatique-consulting" \
                    "&job_categories[]=informatique-dev&job_categories[]=informatique-infra-reseau&q=security"
 
-        req = request.urlopen(base_url)
+        req = request.Request(base_url)
         if HTTP_PROXY is not None:
             req.set_proxy(HTTP_PROXY, 'http')
         response = request.urlopen(req)  # nosec
