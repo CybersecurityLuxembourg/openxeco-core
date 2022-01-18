@@ -43,10 +43,12 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
         if HTTP_PROXY is not None:
             http = ProxyManager(HTTP_PROXY)
             response = http.request('GET', base_url)
+            content = response.data
         else:
             response = request.urlopen(base_url)  # nosec
+            content = response.read()
 
-        data = json.loads(response.read())
+        data = json.loads(content)
 
         external_references = []
 
