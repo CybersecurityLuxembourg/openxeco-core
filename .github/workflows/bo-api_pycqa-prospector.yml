@@ -1,13 +1,21 @@
-name: Run PyCQA Bandit
+name: bo-api PyCQA Prospector
 on:
   push:
     branches:
       - main
       - validation
+    paths:
+      - 'bo-api/**'
   pull_request:
     branches:
       - main
       - validation
+    paths:
+      - 'bo-api/**'
+
+defaults:
+  run:
+    working-directory: bo-api/
 
 jobs:
   build:
@@ -23,5 +31,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           
-      - name: Run PyCQA Bandit
-        run: bandit -r . -x ./test/,./venv/
+      - name: Run PyCQA Prospector
+        run: |
+          cp config/config.py.sample config/config.py
+          prospector -i venv/ --no-autodetect

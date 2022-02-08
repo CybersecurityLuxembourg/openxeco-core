@@ -1,0 +1,33 @@
+version: "3"
+services:
+  cyberseclux-db:
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - ./run/database:/var/lib/mysql
+      - ../db/sql/:/docker-entrypoint-initdb.d/:ro
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "cyberlux"
+      MYSQL_USER: "cyberlux"
+      MYSQL_PASSWORD: "cyberlux"
+  cyberseclux-bo-api:
+    image: "cyberseclux-bo-api:latest"
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./run/cyberlux_media:/cyberlux_media
+    environment:
+      DEBUG: "true"
+      DB_HOSTNAME: "cyberseclux-db"
+      DB_NAME: "cyberlux"
+      DB_USERNAME: "cyberlux"
+      DB_PASSWORD: "cyberlux"
+      JWT_SECRET_KEY: "some_random_secret"
+      MAIL_DEFAULT_SENDER: "cyberlux@localhost.localdomain"
+      INITIAL_ADMIN_EMAIL: "your.email@localhost.localdomain"
+    depends_on:
+      - cyberseclux-db
+
