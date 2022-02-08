@@ -1,0 +1,25 @@
+
+.SettingLogo-dragdrop {
+	width: 100%;
+	max-height: calc(100vh - 300px);
+	min-height: 300px;
+    border: 7px dashed #8fddff;
+    border-radius: 8px;
+    display: table;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.SettingLogo-dragdrop img {
+	max-width: 100%;
+	margin-bottom: 15px;
+}
+
+.SettingLogo-dragdrop-textContent {
+	display: table-cell;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	color: #8fddff;
+	vertical-align: middle;
+}

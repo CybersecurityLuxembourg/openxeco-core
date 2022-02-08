@@ -1,0 +1,174 @@
+
+.DialogArticleEditor-content {
+    z-index: 100;
+    height: 100% !important;
+    width: 100% !important;
+    line-height: 1.5 !important;
+}
+
+.DialogArticleEditor-content button {
+    display: inline !important;
+    position: relative !important;
+}
+
+.DialogArticleEditor-item-remove-button {
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    z-index: 150;
+}
+
+.DialogArticleEditor-item-remove-button:hover {
+    color: #ffa8b0;
+}
+
+.DialogArticleEditor-item {
+    position: absolute;
+    border: lightgrey 1px solid;
+    background: repeating-linear-gradient(
+      135deg,
+      lightgrey,
+      lightgrey 1px,
+      rgba(0, 0, 0, 0) 1px,
+      rgba(0, 0, 0, 0) 4px
+    );
+}
+
+.DialogArticleEditor-item .col-md-12 {
+    margin: 0;
+}
+
+.DialogArticleEditor-item .FormLine .row div .FormLine-label {
+    padding: 2px 10px !important;
+    cursor: pointer;
+}
+
+.DialogArticleEditor-item .FormLine .row div textarea {
+    height: calc(100% - 11px);
+    resize: none;
+}
+
+.DialogArticleEditor-block-buttons {
+    margin: 15px 0px;
+    text-align: center;
+}
+
+.DialogArticleEditor-layout {
+    margin-left: 15px;
+}
+
+.DialogArticleEditor-item-new {
+    border: #8fddff 1px solid;
+    background: repeating-linear-gradient(
+        135deg,
+        #8fddff,
+        #8fddff 1px,
+        rgba(0, 0, 0, 0) 1px,
+        rgba(0, 0, 0, 0) 4px
+    );
+}
+
+.DialogArticleEditor-item-modified {
+    border: #bcebff 1px solid !important;
+    background: repeating-linear-gradient(
+        135deg,
+        #bcebff,
+        #bcebff 1px,
+        rgba(0, 0, 0, 0) 1px,
+        rgba(0, 0, 0, 0) 4px
+    ) !important;
+}
+
+.DialogArticleEditor-image-wrapper {
+    height: 100%;
+}
+
+.medium-editor-element blockquote {
+    margin: 0px 10px;
+    font-style: italic;
+}
+
+.DialogArticleEditor-item .popup-content {
+    width: 100% !important;
+}
+
+.DialogArticleEditor-top-bar {
+    margin-bottom: 15px;
+}
+
+.DialogArticleEditor-top-bar button {
+    bottom: 5px;
+    right: 0px;
+}
+
+.DialogArticleEditor-content {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.DialogArticleEditor-abstract {
+    font-size: 20px;
+}
+
+.DialogArticleEditor-customised {
+    z-index: 250;
+    position: relative;
+    background-color: #EEE;
+}
+
+.DialogArticleEditor-lock {
+    z-index: 200;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: repeating-linear-gradient( 
+        135deg, rgba(150, 150, 150, 0.5), rgba(150, 150, 150, 0.5) 1px, rgba(150, 150, 150, 0.5) 1px, rgba(0, 0, 0, 0.5) 4px );
+}
+
+.DialogArticleEditor .CheckBox-disabled {
+    background-color: #bcebff !important;
+}
+
+.DialogArticleEditor-lock-buttons {
+    position: fixed;
+    bottom: 20px !important;
+    right: 30px !important;
+    z-index: 260 !important;
+    background-color: #EEE !important;
+    border: 2px solid rgb(187, 187, 187);
+    padding: 2px 10px 8px 10px;
+}
+
+.DialogArticleEditor-lock-buttons button {
+    display: block !important;
+    opacity: 1;
+    width: 100%;
+    text-align: left;
+}
+
+/* ACTION BUTTON */
+
+.Article-action-buttons-wrapper {
+    z-index: 500;
+    position: fixed;
+    bottom: 2.5%;
+    width: 150px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.Article-action-buttons {
+    position: absolute;
+    width: 180px;
+    bottom: 20px;
+    left: -180px;
+    background-color: #EEE !important;
+    border: 2px solid rgb(187, 187, 187);
+    padding: 2px 10px 8px 10px;
+}
+
+.Article-action-buttons > div > button {
+    width: 100%;
+}

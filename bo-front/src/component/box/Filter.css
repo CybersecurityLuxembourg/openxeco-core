@@ -1,0 +1,33 @@
+.Filter {
+    position: relative;
+    width: 100%;
+    background-color: #fed7da;
+    border: 1px solid #e40613;
+    border-radius: 4px;
+    font-size: 12px !important;
+    margin-top: 5px;
+}
+
+.Filter:hover {
+    background-color: #ffa8b0;
+}
+
+.Filter-logo {
+    padding: 5px;
+    position: absolute;
+    top: 0px;
+    left: 2px;
+}
+
+.Filter-delete {
+    padding: 5px;
+    position: absolute;
+    top: 0px;
+    right: 2px;
+}
+
+.Filter-content {
+    padding: 2px 25px;
+    position: relative;
+    top: 0px;
+}

@@ -1,0 +1,54 @@
+
+.Tab {
+}
+
+@media (min-width: 0px) {
+    .Tab-menu {
+    	padding: 20px 0px;
+    }
+}
+
+@media (min-width: 768px) {
+    .Tab-menu {
+        position: fixed;
+        padding: 20px 0px;
+        margin-left: 0px;
+    }
+}
+
+.Tab-menu-el {
+    position: relative;
+	cursor: pointer;
+	color: #010101;
+    text-transform: uppercase;
+    font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    padding: 10px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    width: 100%;
+    max-width:inherit;
+}
+
+.Tab-menu-el:hover {
+	background-color: rgba(0, 159, 227, 0.05);
+}
+
+.Tab-menu-el-selected {
+    border-left: 4px solid #e40613;
+}
+
+.Tab-notification {
+    position: absolute !important;
+    bottom: 0px;
+    right: 0px;
+    color: white;
+    font-size: 12px;
+    height: 20px;
+    line-height: 15px;
+    border-radius: 20px;
+    background-color: #e40613;
+    padding: 3px 7px;
+}

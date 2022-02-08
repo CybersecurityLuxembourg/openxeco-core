@@ -1,0 +1,45 @@
+
+.Image {
+    font-size: 15px;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding: 8px 7px 8px 7px;
+}
+
+.Image:hover {
+    background-color: rgba(0, 159, 227, 0.1);
+}
+
+.Image-selected {
+    background-color: #bcebff !important;
+}
+
+.Image-selected:hover {
+    background-color: #8fddff !important;
+}
+
+.Image-image {
+    width: 100%;
+    text-align: center;
+}
+
+.Image-image img {
+    max-width: 100%;
+}
+
+.Image-text {
+    text-align: center;
+}
+
+.Image img {
+    max-width: 100%;
+}
+
+.Image-title {
+    width: calc(100% - 120px);
+}
+
+.Image-size {
+    text-align: center;
+}

@@ -1,0 +1,26 @@
+
+.CompanyMap-Loading {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 500;
+}
+
+.CompanyMap-buttons {
+	z-index: 994;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+.CompanyMap-company-count {
+	z-index: 994;
+	position: absolute;
+	bottom: 0px;
+	left: 95px;
+}
+
+.CompanyMap-buttons > button {
+	margin-left: 5px;
+}

@@ -1,0 +1,42 @@
+nav {
+	background: #009fe3 !important;
+	font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    z-index: 300 !important;
+}
+
+.Menu-log-out-nav-item {
+	position: absolute !important;
+	bottom: 10px !important;
+	width: 100%;
+}
+
+.Menu-profile-nav-item {
+	position: absolute !important;
+	bottom: 60px !important;
+	width: 100%;
+}
+
+nav i {
+	margin-top: 12px !important;
+}
+
+.Menu-notification {
+	color: white;
+	font-size: 12px;
+	height: 20px;
+	line-height: 15px;
+	border-radius: 20px;
+	background-color: #e40613;
+	padding: 3px 7px;
+	position: absolute;
+	top: 23px;
+	right: 10px;
+}
+
+.Menu-divider {
+	margin: 3px 10px;
+	background-color: white;
+    opacity: 0.4;
+	height: 2px;
+}

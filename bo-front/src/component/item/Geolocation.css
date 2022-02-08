@@ -1,0 +1,47 @@
+
+.Geolocation {
+    position: relative;
+    height: 20px;
+    overflow: visible;
+    margin: 2px 0px;
+    line-height: 1.0;
+    animation: halfFixedPopEffect 0.5s ease;
+    -moz-animation: halfFixedPopEffect 0.5s ease;
+    -webkit-animation: halfFixedPopEffect 0.5s ease;
+    -o-animation: halfFixedPopEffect 0.5s ease;
+}
+
+.Geolocation {
+    font-size: 15px;
+    width: 100%;
+    cursor: pointer;
+    padding: 3px 5px 3px 7px;
+    height: 22px;
+}
+
+.Geolocation-selected {
+    background-color: #bcebff;
+}
+
+.Geolocation:hover {
+    background-color: rgba(0, 159, 227, 0.1);
+}
+
+.Geolocation-name {
+    display:inline-block;
+    width: calc(100% - 14px);
+    padding-left: 7px;
+    padding-top: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+    color: #009fe3;
+}
+
+.Geolocation i {
+    display:inline;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #009fe3;
+}

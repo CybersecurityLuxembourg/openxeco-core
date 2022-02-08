@@ -1,0 +1,100 @@
+
+table {
+	  border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    padding: 20px;
+}
+
+thead {
+	  display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+    margin: 6px 0px;
+}
+
+tr {
+    color: gray;
+    line-height: 1.2;
+    font-weight: unset;
+}
+
+th {
+  	display: table-cell;
+  	padding: 12px 12px;
+  	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: lightgrey;
+}
+
+td {
+  	display: table-cell;
+  	padding: 6px 12px 4px 12px;
+  	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+table td:last {
+    border-right: 0;
+    padding-bottom: 16px !important;
+}
+
+.Table-pagination {
+	padding: 0.5rem;
+  height: 50px;
+}
+
+.Table-pagination-button-left {
+  position: absolute;
+	left: 30px;
+}
+
+.Table-pagination-button-right {
+	position: absolute;
+  right: 30px;
+}
+
+.Table-pagination-center {
+  position: absolute;
+  width: calc(100% - 1rem);
+	margin: auto;
+  text-align: center;
+}
+
+.Table-pagination-center span {
+  line-height: 2.2;
+}
+
+.Table-pagination-center input {
+  display: inline-block;
+  margin: auto;
+}
+
+.Table-pagination-center select {
+  display: inline-block;
+  margin: auto;
+  width: 130px;
+}
+
+.Table-right-button {
+  float: right;
+}
+
+.Table .Table-CheckBox {
+  height: 20px !important;
+  width: 100% !important;
+  padding: 1px !important;
+  line-height: 1;
+}
+
+.Table .Table-CheckBox i {
+  width: 100% !important;
+  margin: 0px !important;
+}
