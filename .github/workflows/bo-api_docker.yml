@@ -2,7 +2,7 @@ name: bo-api Docker build
 
 on:
   push:
-    branches: [ 'main' ] # TODO - set right branch after tests
+    branches: [ 'main' ]
     tags: [ 'v*.*', 'v*.*.*' ]
     paths:
       - 'bo-api/**'
