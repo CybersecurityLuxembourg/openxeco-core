@@ -1,0 +1,23 @@
+.Info {
+    font-size: 13px;
+    margin: 10px 5px;
+    padding: 10px 20px 25px 20px;
+    background-color: #bcebff;
+    border-radius: 0.4rem;
+}
+
+.Info-logo {
+  position: absolute;
+  margin: 5px 0px;
+}
+
+.Info-logo > i {
+  font-size: 25px;
+}
+
+.Info-content {
+  margin-left: 30px;
+  position: relative;
+  top: 8px;
+  left: 15px;
+}

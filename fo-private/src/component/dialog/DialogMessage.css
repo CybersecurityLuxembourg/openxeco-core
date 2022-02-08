@@ -1,0 +1,39 @@
+
+.DialogMessage-overlay {
+	display: block;
+	z-index: 1080 !important;
+	margin: initial;
+	font-size: initial;
+	font-variant: initial;
+	font-weight: initial;
+	width: initial;
+	text-align: initial;
+}
+
+.DialogMessage-content {
+	z-index: 1080 !important;
+	padding: 30px 20px 30px 20px !important;
+	color: grey !important;
+	line-height: 1.5 !important;
+}
+
+.DialogMessage-wrapper {
+    padding-bottom: 80px;
+}
+
+.DialogMessage-trigger {
+	cursor: pointer;
+}
+
+.DialogMessage-content p {
+	text-overflow: unset !important;
+    white-space: normal !important;
+    overflow: show !important;
+}
+
+.DialogMessage-content button {
+	position: relative !important;
+	width: auto !important;
+	bottom: 0 !important;
+	right: 0 !important;
+}

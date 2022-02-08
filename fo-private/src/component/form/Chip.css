@@ -1,0 +1,64 @@
+
+.Chip {
+    position: relative;
+    display: inline-block;
+    background-color: #e5e5e5;
+    border: none;
+    cursor: default;
+    height: 26px;
+    padding: 0;
+    margin: 3px 2px 1px 2px;
+    font-size: 14px;
+    font-color: #333333;
+    font-family:"Open Sans", sans-serif;
+    border-radius: 16px;
+    text-decoration: none;
+    max-width: 100%;
+    line-height: 1;
+}
+
+.Chip-head {
+    position: absolute;
+    overflow: hidden;
+    background-color: #8fddff;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    user-select: none;
+    border-radius: 50%;
+    justify-content: center;
+    width: 26px;
+    color: #fff;
+    height: 26px;
+    font-size: 20px;
+    margin-right: -4px;
+    text-align: center;
+    padding-top: 3px;
+}
+
+.Chip-content {
+    cursor: inherit;
+    display: absolute;
+    align-items: center;
+    user-select: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 6px;
+    padding-left: 32px;
+    padding-right: 25px;
+    width: 100%;
+}
+
+.Chip-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    cursor: pointer;
+    fill: currentColor;
+    font-size: 12px;
+}
+
+.Chip-close:hover {
+    color: #ffa8b0;
+}

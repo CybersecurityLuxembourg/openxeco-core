@@ -1,0 +1,53 @@
+
+.Request {
+    margin: 5px 0px !important;
+}
+
+.Request-link {
+    color: inherit;
+}
+
+.Request-link:hover {
+    color: initial !important;
+    text-decoration: none;
+}
+
+.Request:hover {
+    background-color: rgba(0, 159, 227, 0.05);
+}
+
+.Request .card-img-wrapper {
+    position: relative;
+}
+
+.Request .card-date {
+    position: absolute;
+    background: #009fe3;
+    text-align: center;
+    font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 10px;
+    color: #fff;
+    bottom: 0;
+    right: 10px;
+    text-transform: uppercase;
+}
+
+.Request .card-type {
+    position: absolute;
+    background: #e40613;
+    text-align: center;
+    font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 10px;
+    color: #fff;
+    top: 0;
+    right: 10px;
+    text-transform: uppercase;
+}
+
+.Request img {
+    margin: 10px 0px;
+}
+
+.Request .card-body button {
+    margin-top: 25px;
+}

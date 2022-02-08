@@ -1,0 +1,51 @@
+
+.CheckBox {
+    overflow: hidden;
+    width: 100%;
+    height: 40px;
+    padding: 8px;
+    display: block;
+    line-height: 1.5;
+    color: #495057;
+    border: lightgrey 2px solid;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    text-align: center;
+    -webkit-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.CheckBox:hover {
+    opacity: 0.7;
+}
+
+.CheckBox-on {
+    background-color: #bcebff;
+}
+
+.CheckBox-off {
+    background-color: #fed7da;
+}
+
+.CheckBox-on-no-background {
+    color: #8fddff;
+    background-color: white;
+}
+
+.CheckBox-off-no-background {
+    color: #ffa8b0;
+    background-color: white;
+}
+
+.CheckBox-disabled {
+    background-color: rgba(0, 0, 0, 0) !important;
+    cursor: default;
+}
+
+.CheckBox-disabled:hover {
+    opacity: 1 !important;
+}

@@ -1,0 +1,131 @@
+
+.DialogHint-icon {
+	font-size: 30px;
+	color: #F1C40F;
+}
+
+.DialogHint-icon:hover {
+	cursor: pointer;
+	animation: swing 1s infinite;
+  	-webkit-animation: swing 1s infinite;
+}
+
+.DialogHint-inside-icon-wrapper {
+	text-align: center;
+	margin: 10px 0px;
+}
+
+.DialogHint-inside-icon {
+	display: block;
+	font-size: 70px;
+	color: #F1C40F;
+	animation: swing 1s;
+  	-webkit-animation: swing 1s;
+}
+
+.DialogHint-overlay {
+	display: block;
+	z-index: 1080 !important;
+	margin: initial;
+	font-size: initial;
+	font-variant: initial;
+	font-weight: initial;
+	width: initial;
+	text-align: initial;
+	overflow-y: auto;
+}
+
+.DialogHint-content {
+	z-index: 1080 !important;
+	padding: 30px 20px 30px 20px !important;
+	color: grey !important;
+	line-height: 1.5 !important;
+}
+
+.DialogHint-wrapper {
+    max-height: 100%;
+    text-align: left;
+    font-size: initial;
+    font-weight: initial;
+    font-family: sans-serif;
+    color: grey;
+    line-height: 1.5;
+}
+
+.DialogHint-wrapper img {
+	margin: 20px auto;
+	display: block;
+	max-width: 100%;
+	box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
+.DialogHint-trigger {
+	cursor: pointer;
+}
+
+.DialogHint-content p { 
+    text-overflow: unset !important;
+    white-space: normal !important;
+    overflow: show !important;
+}
+
+.DialogHint-content button {
+	position: relative !important;
+	width: auto !important;
+	bottom: 0 !important;
+	right: 0 !important;
+}
+
+@-webkit-keyframes swing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 30deg);
+    transform: rotate3d(0, 0, 1, 30deg);
+  }
+
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -20deg);
+    transform: rotate3d(0, 0, 1, -20deg);
+  }
+
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 10deg);
+    transform: rotate3d(0, 0, 1, 10deg);
+  }
+
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -10deg);
+    transform: rotate3d(0, 0, 1, -10deg);
+  }
+
+  to {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}
+
+@keyframes swing {
+  20% {
+    -webkit-transform: rotate3d(0, 0, 1, 30deg);
+    transform: rotate3d(0, 0, 1, 30deg);
+  }
+
+  40% {
+    -webkit-transform: rotate3d(0, 0, 1, -20deg);
+    transform: rotate3d(0, 0, 1, -20deg);
+  }
+
+  60% {
+    -webkit-transform: rotate3d(0, 0, 1, 10deg);
+    transform: rotate3d(0, 0, 1, 10deg);
+  }
+
+  80% {
+    -webkit-transform: rotate3d(0, 0, 1, -10deg);
+    transform: rotate3d(0, 0, 1, -10deg);
+  }
+
+  to {
+    -webkit-transform: rotate3d(0, 0, 1, 0deg);
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}

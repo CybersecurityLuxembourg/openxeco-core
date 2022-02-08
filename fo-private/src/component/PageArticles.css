@@ -1,0 +1,20 @@
+
+.PageArticles-legend {
+    padding: 20px 30px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.PageArticles-legend .dot {
+    margin-left: 20px;
+}
+
+.PageArticles-Checkboxes {
+    margin: 7px 0px;
+}
+
+.PageArticles-Checkboxes .CheckBox {
+    display: inline-block;
+    width: fit-content !important;
+    margin: 0px 2px;
+}
