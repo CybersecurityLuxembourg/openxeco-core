@@ -13,6 +13,9 @@ class TestDeleteImage(BaseCase):
            os.path.join(os.path.dirname(os.path.realpath(__file__)),
                         "test_delete_image_temp"))
     def test_ok(self, token):
+        if not os.path.exists(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_image_temp")):
+            os.makedirs(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_image_temp"))
+
         shutil.copy(
             os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_image", "empty_pdf.pdf"),
             os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_image_temp", "50")
@@ -39,6 +42,8 @@ class TestDeleteImage(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["Image"]), 0)
         self.assertFalse(os.path.exists(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                                      "test_delete_image_temp", "50")))
+        if os.path.exists(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_image_temp")):
+            shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_image_temp"))
 
     @BaseCase.login
     @BaseCase.grant_access("/media/delete_image")

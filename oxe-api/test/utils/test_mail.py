@@ -6,7 +6,7 @@ from utils.mail import send_email
 
 class Mail:
     def send(self, message):
-        pass
+        raise Exception("")
 
 
 class TestMail(BaseCase):
@@ -14,10 +14,7 @@ class TestMail(BaseCase):
     def test_ok(self):
         send_email(Mail(), "subject", "recipient", "html_body")
 
-    @patch("test.utils.test_mail.Mail.send")
-    def test_force_connection_error(self, mock_send):
-        mock_send.side_effect = ConnectionRefusedError("")
-
+    def test_force_connection_error(self):
         self.assertRaises(Exception,
                           send_email,
                           Mail(), "subject", "sender", "recipient", "html_body")

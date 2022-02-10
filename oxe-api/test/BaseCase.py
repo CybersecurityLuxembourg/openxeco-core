@@ -14,6 +14,8 @@ class BaseCase(unittest.TestCase):
 
     def setUp(self):
         os.environ["DB_NAME"] = "OPENXECO_TEST"
+        os.environ["MAIL_DEFAULT_SENDER"] = self.email
+
         if "INITIAL_ADMIN_EMAIL" in os.environ:
             del os.environ["INITIAL_ADMIN_EMAIL"]
 

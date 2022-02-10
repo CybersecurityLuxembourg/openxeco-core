@@ -13,12 +13,15 @@ class TestDeleteDocument(BaseCase):
            os.path.join(os.path.dirname(os.path.realpath(__file__)),
                         "test_delete_document_temp"))
     def test_ok(self, token):
+        if not os.path.exists(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_document_temp")):
+            os.makedirs(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_document_temp"))
+
         shutil.copy(
             os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_document", "empty_pdf.pdf"),
             os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_document_temp", "50")
         )
         self.assertTrue(os.path.exists(os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                                     "test_delete_document_temp", "50")))
+                                                    "test_delete_document_temp", "50")))
         self.db.insert({
             "id": 50,
             "filename": "empty_pdf.pdf",
@@ -38,6 +41,9 @@ class TestDeleteDocument(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["Document"]), 0)
         self.assertFalse(os.path.exists(os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                                      "test_delete_document_temp", "50")))
+
+        if os.path.exists(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_document_temp")):
+            shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_delete_document_temp"))
 
     @BaseCase.login
     @BaseCase.grant_access("/media/delete_document")
