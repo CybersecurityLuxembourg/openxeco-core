@@ -20,7 +20,7 @@ class TestGetDocuments(BaseCase):
             "creation_date": datetime.today(),
         }, self.db.tables["Document"])
 
-        response = self.application.get('/media/get_documents',
+        response = self.application.get('/public/get_public_documents',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -64,7 +64,7 @@ class TestGetDocuments(BaseCase):
             "creation_date": datetime.today(),
         }, self.db.tables["Document"])
 
-        response = self.application.get('/media/get_documents?search=empty',
+        response = self.application.get('/public/get_public_documents?search=empty',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -101,7 +101,7 @@ class TestGetDocuments(BaseCase):
             "creation_date": datetime.today(),
         }, self.db.tables["Document"])
 
-        response = self.application.get('/media/get_documents?order=desc',
+        response = self.application.get('/public/get_public_documents?order=desc',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -147,7 +147,7 @@ class TestGetDocuments(BaseCase):
             "keywords": "word company"
         }, self.db.tables["Document"])
 
-        response = self.application.get('/media/get_documents?search=comp',
+        response = self.application.get('/public/get_public_documents?search=comp',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)

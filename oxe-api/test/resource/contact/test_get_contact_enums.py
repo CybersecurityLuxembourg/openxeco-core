@@ -9,6 +9,8 @@ class TestGetContactEnums(BaseCase):
 
         self.assertEqual(response.json, {
             "type": ['EMAIL ADDRESS', 'PHONE NUMBER'],
-            "representative": ['ENTITY', 'PHYSICAL PERSON']
+            "representative": ['ENTITY', 'PHYSICAL PERSON'],
+            "department": ['TOP MANAGEMENT', 'HUMAN RESOURCE', 'MARKETING', 'FINANCE', 'OPERATION/PRODUCTION',
+                           'INFORMATION TECHNOLOGY', 'OTHER']
         })
         self.assertEqual(200, response.status_code)
