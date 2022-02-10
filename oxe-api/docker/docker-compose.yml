@@ -1,0 +1,33 @@
+version: "3"
+services:
+  openxeco-db:
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - ./run/database:/var/lib/mysql
+      - ../db/sql/:/docker-entrypoint-initdb.d/:ro
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: "OPENXECO"
+      MYSQL_USER: "openxeco"
+      MYSQL_PASSWORD: "openxeco-pwd"
+  openxeco-api:
+    image: "openxeco-api:latest"
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./run/openxeco_media:/openxeco_media
+      - ./run/openxeco_document:/openxeco_document
+    environment:
+      DEBUG: "true"
+      DB_HOSTNAME: "openxeco-db"
+      DB_NAME: "OPENXECO"
+      DB_USERNAME: "openxeco"
+      DB_PASSWORD: "openxeco-pwd"
+      JWT_SECRET_KEY: "some_random_secret"
+      MAIL_DEFAULT_SENDER: "openxeco@localhost.localdomain"
+      INITIAL_ADMIN_EMAIL: "your.email@localhost.localdomain"
+    depends_on:
+      - openxeco-db

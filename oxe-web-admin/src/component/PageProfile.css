@@ -1,0 +1,70 @@
+
+#PageProfile .PageProfile-icon {
+	position: relative;
+}
+
+#PageProfile .PageProfile-icon i {
+	font-size: 150px;
+}
+
+#PageProfile .PageProfile-white-box {
+	background-color: rgba(255,255,255,.8);
+	border: solid 1px lightgrey;
+	border-radius: 10px;
+	margin: 10px 0px;
+	padding: 20px;
+}
+
+#PageProfile .PageProfile-divider {
+	background-color: lightgrey;
+	width: calc(100% - 40px);
+	height: 2px;
+	margin: 30px 20px;
+}
+
+#PageProfile .PageProfile-actions > button {
+	width: 100%;
+	margin-top: 10px;
+}
+
+#PageProfile .PageProfile-save-button {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	min-width: 150px;
+	max-width: 600px;
+	width: 50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+	-webkit-animation: PageProfile-save-button-effect 1s ease;
+}
+
+#PageProfile .PageProfile-save-button button {
+	width: 100%;
+	height: 50px;
+	opacity: 1 !important;
+}
+
+@keyframes PageProfile-save-button-effect
+{
+  0% {
+    bottom: -50px;
+  }
+  100% {
+    bottom: 20px;
+  }
+}
+
+#PageProfile .PageProgile-qr-button {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
+
+#PageProfile .PageProgile-qr-button i {
+	font-size: initial !important;
+}
+
+#PageProfile .PageProfile-qr-code {
+	max-width: 100%;
+}

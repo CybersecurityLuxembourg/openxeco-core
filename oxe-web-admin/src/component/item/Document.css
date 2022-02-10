@@ -1,0 +1,42 @@
+
+.Document {
+    font-size: 15px;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding: 8px 7px 8px 7px;
+}
+
+.Document:hover {
+    background-color: rgba(0, 159, 227, 0.1);
+}
+
+.Document-selected {
+    background-color: #bcebff !important;
+}
+
+.Document-selected:hover {
+    background-color: #8fddff !important;
+}
+
+.Document-document {
+    padding: 5px 10px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.Document-document i {
+    font-size: 35px !important;
+}
+
+.Document-link {
+    padding: 2px 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.Document-link:hover {
+    background-color: rgba(0, 159, 227, 0.1);
+}

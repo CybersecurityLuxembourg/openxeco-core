@@ -1,0 +1,61 @@
+
+.DialogAddImage-content {
+	max-height: 100%;
+}
+
+.DialogAddImage-content .right-buttons {
+	width: 100%;
+	margin: 20px 20px 0px 0px;
+}
+
+.DialogAddImage-dragdrop {
+	width: 100%;
+	max-height: calc(100vh - 300px);
+	min-height: 200px;
+    border: 7px dashed #8fddff;
+    border-radius: 8px;
+    display: table;
+    cursor: pointer;
+}
+
+.DialogAddImage-cropper {
+	width: 100%;
+	max-height: calc(100vh - 300px);
+	min-height: 250px;
+}
+
+.DialogAddImage-dragdrop-textContent {
+	display: table-cell;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	color: #8fddff;
+	vertical-align: middle;
+}
+
+.DialogAddImage-dragdrop-textContent i {
+	font-size: 35px;
+}
+
+.DialogAddImage-cropped-image {
+	text-align: center;
+}
+
+.DialogAddImage-cropped-image img {
+	max-width: 100%;
+	max-height: calc(100vh - 300px);
+	border: 7px dashed #8fddff;
+}
+
+.DialogAddImage-or {
+	width: 100%;
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.DialogAddImage-content .FormLine {
+	margin-top: 30px;
+}

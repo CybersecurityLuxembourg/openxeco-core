@@ -1,0 +1,11 @@
+
+.MediaDocument-buttons {
+	width: 100%;
+	text-align: right;
+	margin: 15px 0px;
+}
+
+.MediaDocument-buttons > div {
+	margin: 0px 2px;
+	display: inline;
+}

@@ -1,6 +1,0 @@
-
-ALTER TABLE Article ADD COLUMN is_created_by_admin BOOLEAN DEFAULT FALSE;
-UPDATE Article SET is_created_by_admin = 1 WHERE id > 0;
-
-ALTER TABLE Article MODIFY COLUMN `status` enum('DRAFT','UNDER REVIEW','PUBLIC','ARCHIVE') NOT NULL DEFAULT 'DRAFT';
-ALTER TABLE Article MODIFY COLUMN `publication_date` date DEFAULT (CURRENT_DATE);
