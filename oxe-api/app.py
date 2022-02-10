@@ -8,17 +8,18 @@ from sqlalchemy.engine.url import URL
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
-from dotenv import load_dotenv
 
 from flask_bcrypt import generate_password_hash
 from utils.password import generate_password
 from utils.re import has_mail_format
 
 from db.db import DB
-from config import config
 
-# Load environment variables
+# Load environment variables and config
+from dotenv import load_dotenv
 load_dotenv()
+
+from config import config # pylint: disable=wrong-import-position
 
 # Manage DB connection
 db_uri = URL(**config.DB_CONFIG)
