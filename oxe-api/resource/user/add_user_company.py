@@ -3,6 +3,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
+from sqlalchemy.exc import IntegrityError
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -35,6 +36,12 @@ class AddUserCompany(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.insert(kwargs, self.db.tables["UserCompanyAssignment"])
+        try:
+            self.db.insert(kwargs, self.db.tables["UserCompanyAssignment"])
+        except IntegrityError as e:
+            self.db.session.rollback()
+            if "Duplicate entry" in str(e):
+                raise ObjectAlreadyExisting
+            raise e
 
         return "", "200 "
