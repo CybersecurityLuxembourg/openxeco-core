@@ -127,7 +127,6 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
     def _manage_article(self, a, source, company):
         copied_a = copy.deepcopy(a)
 
-        today = datetime.today().strftime("%Y-%m-%d")
         title = self._get_preferred_lang_info(source['title'])
         handle = f"{source['id']}-{re.sub(r'[^a-z1-9-]', '', title.lower().replace(' ', '-'))[:80]}"
 
@@ -137,9 +136,10 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
         a.title = title if a.title is None else a.title
         a.handle = handle if a.handle is None else a.handle
         a.type = "JOB OFFER" if a.type is None else a.type
-        a.publication_date = today if a.publication_date is None else a.publication_date
+        a.publication_date = source["published_at"].split("T")[0] if a.publication_date is None else a.publication_date
         a.status = "PUBLIC" if a.status is None else a.status
         a.link = self._get_preferred_lang_info(source["urls"]) if a.link is None else a.link
+        a.is_created_by_admin = True
 
         # Save modifications in DB
 
