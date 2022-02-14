@@ -23,22 +23,18 @@ class AddUserCompany(MethodResource, Resource):
              "422.a": {"description": "Object already existing"},
          })
     @use_kwargs({
-        'user': fields.Int(),
-        'company': fields.Int(),
+        'user_id': fields.Int(),
+        'company_id': fields.Int(),
+        'department': fields.Str(
+            allow_none=True,
+            validate=lambda x: x in ['TOP MANAGEMENT', 'HUMAN RESOURCE', 'MARKETING', 'FINANCE', 'OPERATION/PRODUCTION',
+                                     'INFORMATION TECHNOLOGY', 'OTHER', None]),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        row = {
-            "user_id": kwargs["user"],
-            "company_id": kwargs["company"],
-        }
-
-        if len(self.db.get(self.db.tables["UserCompanyAssignment"], row)) > 0:
-            raise ObjectAlreadyExisting
-
-        self.db.insert(row, self.db.tables["UserCompanyAssignment"])
+        self.db.insert(kwargs, self.db.tables["UserCompanyAssignment"])
 
         return "", "200 "

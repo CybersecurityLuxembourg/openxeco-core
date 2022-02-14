@@ -16,6 +16,7 @@ import RequestCompanyAddressAdd from "./request/RequestCompanyAddressAdd.jsx";
 import RequestCompanyAddressChange from "./request/RequestCompanyAddressChange.jsx";
 import RequestCompanyAddressDelete from "./request/RequestCompanyAddressDelete.jsx";
 import RequestCompanyTaxonomyChange from "./request/RequestCompanyTaxonomyChange.jsx";
+import RequestCompanyAccessClaim from "./request/RequestCompanyAccessClaim.jsx";
 
 export default class Request extends Component {
 	constructor(props) {
@@ -76,9 +77,13 @@ export default class Request extends Component {
 			nm.error(error.message);
 		});
 
-		if (this.props.info !== null && this.props.info !== undefined
-			&& this.props.info.company_id !== null && this.props.info.company_id !== undefined) {
-			getRequest.call(this, "company/get_company/" + this.props.info.company_id, (data) => {
+		if (this.props.info && (this.props.info.company_id
+			|| (this.props.info.data && this.props.info.data.company_id))) {
+			const companyId = this.props.info.company_id
+				? this.props.info.company_id
+				: this.props.info.data.company_id;
+
+			getRequest.call(this, "company/get_company/" + companyId, (data) => {
 				this.setState({
 					company: data,
 				});
@@ -263,47 +268,56 @@ export default class Request extends Component {
 					<div className="col-md-12 row-spaced">
 						<h3>Action</h3>
 
+						{this.props.info.type === "ENTITY ACCESS CLAIM"
+							&& this.state.user
+							&& this.state.company
+							&& <RequestCompanyAccessClaim
+								data={this.props.info.data}
+								user={this.state.user}
+								company={this.state.company}
+							/>
+						}
 						{this.props.info.type === "ENTITY CHANGE"
-							&& this.state.user !== null
-							&& this.state.company !== null
+							&& this.state.user
+							&& this.state.company
 							&& <RequestCompanyChange
 								data={this.props.info.data}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADD"
-							&& this.state.user !== null
+							&& this.state.user
 							&& <RequestCompanyAdd
 								data={this.props.info.data}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS CHANGE"
-							&& this.state.user !== null
+							&& this.state.user
 							&& <RequestCompanyAddressChange
 								data={this.props.info.data}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS ADD"
-							&& this.state.user !== null
+							&& this.state.user
 							&& <RequestCompanyAddressAdd
 								data={this.props.info.data}
 								companyId={this.props.info.company_id}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS DELETION"
-							&& this.state.user !== null
+							&& this.state.user
 							&& <RequestCompanyAddressDelete
 								data={this.props.info.data}
 							/>
 						}
 						{this.props.info.type === "ENTITY TAXONOMY CHANGE"
-							&& this.state.user !== null
+							&& this.state.user
 							&& <RequestCompanyTaxonomyChange
 								data={this.props.info.data}
 								companyId={this.props.info.company_id}
 							/>
 						}
 						{this.props.info.type === "ENTITY LOGO CHANGE"
-							&& this.state.user !== null
+							&& this.state.user
 							&& <RequestLogoChange
 								requestId={this.props.info.id}
 								requestStatus={this.props.info.status}
@@ -312,7 +326,7 @@ export default class Request extends Component {
 							/>
 						}
 
-						{this.state.user !== null && this.state.settings !== null
+						{this.state.user && this.state.settings
 							? <DialogSendMail
 								trigger={
 									<button

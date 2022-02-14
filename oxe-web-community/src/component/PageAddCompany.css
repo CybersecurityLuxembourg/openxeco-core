@@ -13,7 +13,7 @@
 	font-size:  35px;
 }
 
-#PageAddCompany .card .card-title {
+#PageAddCompany .card .card-title, #PageAddCompany .card .card-body {
 	text-align: center;
 	font-size:  15px;
 }

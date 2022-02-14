@@ -1,6 +1,7 @@
 import React from "react";
 import "./PageAddCompany.css";
 import { NotificationManager as nm } from "react-notifications";
+import Popup from "reactjs-popup";
 import Loading from "./box/Loading.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import FormLine from "./form/FormLine.jsx";
@@ -23,6 +24,7 @@ export default class PageAddCompany extends React.Component {
 			newCompanyForm: {},
 			searchField: null,
 			notFoundEntity: false,
+			userCompaniesEnums: null,
 
 			fields: {
 				name: "Name",
@@ -39,6 +41,7 @@ export default class PageAddCompany extends React.Component {
 
 	componentDidMount() {
 		this.refreshCompanies();
+		this.getUserCompanyEnums();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -57,6 +60,18 @@ export default class PageAddCompany extends React.Component {
 			nm.warning(response.statusText);
 		}, (error) => {
 			this.setState({ loading: false });
+			nm.error(error.message);
+		});
+	}
+
+	getUserCompanyEnums() {
+		getRequest.call(this, "user/get_user_company_enums", (data) => {
+			this.setState({
+				userCompaniesEnums: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
 			nm.error(error.message);
 		});
 	}
@@ -84,6 +99,7 @@ export default class PageAddCompany extends React.Component {
 			request: "The user requests access to an entity",
 			data: {
 				company_id: companyId,
+				department: this.state.department,
 			},
 		};
 
@@ -228,17 +244,72 @@ export default class PageAddCompany extends React.Component {
 											<i className="fas fa-building card-icon"/>
 											<div className="card-body">
 												<div className="card-title">{c.name}</div>
-												<DialogConfirmation
-													text={"Do you want to request access to: " + c.name + "?"}
+
+												<Popup
+													className="Popup-small-size"
 													trigger={
-														<button
-															className={"blue-background card-button"}
-														>
+														<button className={"card-button"}>
 															Claim access...
 														</button>
 													}
-													afterConfirmation={() => this.submitClaimRequest(c.id)}
-												/>
+													modal
+													closeOnDocumentClick
+												>
+													{(close) => (
+														<div className="row">
+															<div className="col-md-9 row-spaced">
+																<h3>Select your department in the entity</h3>
+															</div>
+
+															<div className={"col-md-3"}>
+																<div className="top-right-buttons">
+																	<button
+																		className={"grey-background"}
+																		data-hover="Close"
+																		data-active=""
+																		onClick={close}>
+																		<span><i className="far fa-times-circle"/></span>
+																	</button>
+																</div>
+															</div>
+
+															<div className="col-md-12">
+																{this.state.userCompaniesEnums
+																	? <FormLine
+																		label={"Department"}
+																		type={"select"}
+																		options={this.state.userCompaniesEnums
+																			? this.state.userCompaniesEnums.department
+																				.map((d) => ({ label: d, value: d }))
+																			: []
+																		}
+																		value={this.props.department}
+																		onChange={(v) => this.setState({ department: v })}
+																	/>
+																	: <Loading
+																		height={200}
+																	/>
+																}
+															</div>
+
+															<div className="col-md-12">
+																<div className="right-buttons">
+																	<DialogConfirmation
+																		text={"Do you want to request access to: " + c.name + "?"}
+																		trigger={
+																			<button
+																				className={"blue-background card-button"}
+																			>
+																				Claim access...
+																			</button>
+																		}
+																		afterConfirmation={() => this.submitClaimRequest(c.id)}
+																	/>
+																</div>
+															</div>
+														</div>
+													)}
+												</Popup>
 											</div>
 										</div>
 									</div>)
