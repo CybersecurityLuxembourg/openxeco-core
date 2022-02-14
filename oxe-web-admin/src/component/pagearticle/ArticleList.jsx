@@ -1,6 +1,7 @@
 import React from "react";
 import "./ArticleList.css";
 import { NotificationManager as nm } from "react-notifications";
+import Popup from "reactjs-popup";
 import Loading from "../box/Loading.jsx";
 import Table from "../table/Table.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
@@ -13,12 +14,9 @@ export default class ArticleList extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-		this.addArticle = this.addArticle.bind(this);
-
 		this.state = {
 			articles: null,
-			newArticleTitle: null,
+			newArticleTitle: "",
 			filters: null,
 		};
 	}
@@ -53,7 +51,7 @@ export default class ArticleList extends React.Component {
 		});
 	}
 
-	addArticle() {
+	addArticleFromTitle() {
 		const params = {
 			title: this.state.newArticleTitle,
 		};
@@ -121,6 +119,48 @@ export default class ArticleList extends React.Component {
 								onClick={() => this.refresh()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
+							<Popup
+								trigger={
+									<button>
+										<i className="fas fa-plus"/>
+									</button>
+								}
+								modal
+							>
+								{(close) => <div className={"row row-spaced"}>
+									<div className={"col-md-9"}>
+										<h2>Add a new article</h2>
+									</div>
+
+									<div className={"col-md-3"}>
+										<div className="top-right-buttons">
+											<button
+												className={"grey-background"}
+												data-hover="Close"
+												data-active=""
+												onClick={close}>
+												<span><i className="far fa-times-circle"/></span>
+											</button>
+										</div>
+									</div>
+
+									<div className="col-md-12">
+										<FormLine
+											label={"Article title"}
+											value={this.state.newArticleTitle}
+											onChange={(v) => this.changeState("newArticleTitle", v)}
+										/>
+										<div className="right-buttons">
+											<button
+												onClick={() => this.addArticleFromTitle()}
+												disabled={this.state.newArticleTitle === null
+													|| this.state.newArticleTitle.length < 3}>
+												<i className="fas fa-plus"/> Add a new article
+											</button>
+										</div>
+									</div>
+								</div>}
+							</Popup>
 							<DialogArticleFilter
 								trigger={
 									<button
@@ -146,24 +186,6 @@ export default class ArticleList extends React.Component {
 								height={500}
 							/>
 						}
-					</div>
-				</div>
-				<div className={"row row-spaced"}>
-					<div className="col-md-6">
-						<h1>Add a new article</h1>
-						<FormLine
-							label={"Article title"}
-							value={this.state.newArticleTitle}
-							onChange={(v) => this.changeState("newArticleTitle", v)}
-						/>
-						<div className="right-buttons">
-							<button
-								onClick={() => this.addArticle()}
-								disabled={this.state.newArticleTitle === null
-									|| this.state.newArticleTitle.length < 3}>
-								<i className="fas fa-plus"/> Add a new article
-							</button>
-						</div>
 					</div>
 				</div>
 			</div>

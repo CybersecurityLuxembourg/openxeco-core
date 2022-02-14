@@ -473,3 +473,11 @@ textarea {
 .content-media img {
     max-width: 100%;
 }
+
+.centered-or {
+    width: 100%;
+    font-style: italic;
+    text-align: center;
+    color: grey;
+    padding: 20px 0px;
+}
