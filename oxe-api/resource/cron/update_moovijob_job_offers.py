@@ -1,7 +1,6 @@
 import copy
 import json
 import re
-from datetime import datetime
 from urllib3 import ProxyManager
 from urllib import request
 
