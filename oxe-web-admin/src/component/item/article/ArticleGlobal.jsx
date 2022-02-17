@@ -17,6 +17,7 @@ export default class ArticleGlobal extends React.Component {
 		this.state = {
 			article: null,
 			articleEnums: null,
+			showOptionalFields: false,
 		};
 	}
 
@@ -154,23 +155,32 @@ export default class ArticleGlobal extends React.Component {
 				</div>
 
 				{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.state.article.type) >= 0
-					? <div className="col-md-12">
-						<h2>Additional {this.state.article.type.toLowerCase()} fields</h2>
-					</div>
-					: ""}
+					&& <div className="col-md-12">
+						<div className="right-buttons">
+							<button
+								className="link-button"
+								onClick={() => this.setState({
+									showOptionalFields: !this.state.showOptionalFields,
+								})}>
+								{this.state.showOptionalFields ? "Hide" : "Show"}
+								&nbsp;optional fields for {this.state.article.type.toLowerCase()}
+							</button>
+						</div>
+					</div>}
 
-				{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.state.article.type) >= 0
-					? <div className="col-md-12">
+				{(["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.state.article.type) >= 0
+					|| this.state.showOptionalFields)
+					&& <div className="col-md-12">
 						<FormLine
 							label={"Link"}
 							value={this.state.article.link}
 							onBlur={(v) => this.saveArticleValue("link", v)}
 						/>
-					</div>
-					: ""}
+					</div>}
 
-				{this.state.article.type === "EVENT"
-					? <div className="col-md-12">
+				{(this.state.article.type === "EVENT"
+					|| this.state.showOptionalFields)
+					&& <div className="col-md-12">
 						<FormLine
 							label={"Start date"}
 							type={"datetime"}
@@ -182,29 +192,28 @@ export default class ArticleGlobal extends React.Component {
 									: v.format("yyyy-MM-DDTHH:mm"),
 							)}
 						/>
-					</div>
-					: ""}
+					</div>}
 
-				{this.state.article.type === "EVENT"
-					? <div className="col-md-12">
+				{(this.state.article.type === "EVENT"
+					|| this.state.showOptionalFields)
+					&& <div className="col-md-12">
 						<FormLine
 							label={"End date"}
 							type={"datetime"}
 							value={this.state.article.end_date}
 							onBlur={(v) => this.saveArticleValue("end_date", v.format("yyyy-MM-DDTHH:mm"))}
 						/>
-					</div>
-					: ""}
+					</div>}
 
-				{this.state.article.type === "JOB OFFER"
-					? <div className="col-md-12">
+				{(this.state.article.type === "JOB OFFER"
+					|| this.state.showOptionalFields)
+					&& <div className="col-md-12">
 						<FormLine
 							label={"External reference"}
 							value={this.state.article.external_reference}
 							disabled={true}
 						/>
-					</div>
-					: ""}
+					</div>}
 			</div>
 		);
 	}
