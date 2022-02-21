@@ -7,7 +7,6 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
-from utils.response import build_no_cors_response
 
 
 class GetPublicVcard(MethodResource, Resource):

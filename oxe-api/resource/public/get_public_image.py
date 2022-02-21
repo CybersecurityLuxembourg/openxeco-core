@@ -9,7 +9,6 @@ from config.config import IMAGE_FOLDER
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from exception.image_not_found import ImageNotFound
-from utils.response import build_no_cors_response
 
 
 class GetPublicImage(MethodResource, Resource):
