@@ -7,6 +7,7 @@ from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from utils.serializer import Serializer
+from utils.response import build_no_cors_response
 
 
 class GetPublicDocuments(MethodResource, Resource):
@@ -33,7 +34,7 @@ class GetPublicDocuments(MethodResource, Resource):
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
         documents = Serializer.serialize(paginate.items, self.db.tables["Document"])
 
-        return {
+        return build_no_cors_response({
             "pagination": {
                 "page": kwargs['page'],
                 "pages": paginate.pages,
@@ -41,4 +42,4 @@ class GetPublicDocuments(MethodResource, Resource):
                 "total": paginate.total,
             },
             "items": documents,
-        }, "200 "
+        })

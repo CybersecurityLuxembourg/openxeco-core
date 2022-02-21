@@ -4,6 +4,7 @@ from flask_restful import Resource
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
+from utils.response import build_no_cors_response
 
 
 class GetNodeInformation(MethodResource, Resource):
@@ -21,13 +22,13 @@ class GetNodeInformation(MethodResource, Resource):
 
         settings = self.db.get(self.db.tables["Setting"])
 
-        return {
+        return build_no_cors_response({
             "project_name": GetNodeInformation.get_config(settings, "PROJECT_NAME"),
             "email_address": GetNodeInformation.get_config(settings, "EMAIL_ADDRESS"),
             "phone_number": GetNodeInformation.get_config(settings, "PHONE_NUMBER"),
             "postal_address": GetNodeInformation.get_config(settings, "POSTAL_ADDRESS"),
-            "version": "1.7",
-        }, "200 "
+            "version": "1.8",
+        })
 
     @staticmethod
     def get_config(settings, setting_name):

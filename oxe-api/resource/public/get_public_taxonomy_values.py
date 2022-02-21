@@ -5,6 +5,7 @@ from flask_restful import Resource
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from utils.serializer import Serializer
+from utils.response import build_no_cors_response
 
 
 class GetPublicTaxonomyValues(MethodResource, Resource):
@@ -23,4 +24,4 @@ class GetPublicTaxonomyValues(MethodResource, Resource):
         data = self.db.get(self.db.tables["TaxonomyValue"])
         data = Serializer.serialize(data, self.db.tables["TaxonomyValue"])
 
-        return data, "200 "
+        return build_no_cors_response(data)

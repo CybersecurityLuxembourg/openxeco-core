@@ -10,6 +10,7 @@ from config.config import DOCUMENT_FOLDER
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from exception.document_not_found import DocumentNotFound
+from utils.response import build_no_cors_response
 
 
 class GetPublicDocument(MethodResource, Resource):

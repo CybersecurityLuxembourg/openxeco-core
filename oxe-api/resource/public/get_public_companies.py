@@ -5,6 +5,7 @@ from webargs import fields
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
+from utils.response import build_no_cors_response
 
 
 class GetPublicCompanies(MethodResource, Resource):
@@ -50,4 +51,4 @@ class GetPublicCompanies(MethodResource, Resource):
             for a in response:
                 a["creation_date"] = None if a["creation_date"] is None else str(a["creation_date"])
 
-        return response, "200 "
+        return build_no_cors_response(response)

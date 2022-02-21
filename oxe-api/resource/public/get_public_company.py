@@ -5,6 +5,7 @@ from flask_restful import Resource
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from exception.object_not_found import ObjectNotFound
+from utils.response import build_no_cors_response
 
 
 class GetPublicCompany(MethodResource, Resource):
@@ -39,4 +40,4 @@ class GetPublicCompany(MethodResource, Resource):
             [self.db.tables["TaxonomyAssignment"].taxonomy_value],
         )]
 
-        return data, "200 "
+        return build_no_cors_response(data)

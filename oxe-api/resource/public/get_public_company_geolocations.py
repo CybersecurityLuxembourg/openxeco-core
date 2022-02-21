@@ -5,6 +5,7 @@ from webargs import fields
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
+from utils.response import build_no_cors_response
 
 
 class GetPublicCompanyGeolocations(MethodResource, Resource):
@@ -53,4 +54,4 @@ class GetPublicCompanyGeolocations(MethodResource, Resource):
             g["latitude"] = float(g["latitude"])
             g["longitude"] = float(g["longitude"])
 
-        return geolocations, "200 "
+        return build_no_cors_response(geolocations)

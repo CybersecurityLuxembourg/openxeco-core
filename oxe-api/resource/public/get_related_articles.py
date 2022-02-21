@@ -9,6 +9,7 @@ from webargs import fields
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from utils.serializer import Serializer
+from utils.response import build_no_cors_response
 
 
 class GetRelatedArticles(MethodResource, Resource):
@@ -79,4 +80,4 @@ class GetRelatedArticles(MethodResource, Resource):
                 a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
                 a["company_tags"] = [t.company for t in company_tags if t.article == a["id"]]
 
-        return data, "200 "
+        return build_no_cors_response(data)

@@ -6,6 +6,7 @@ from webargs import fields, validate
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from utils.serializer import Serializer
+from utils.response import build_no_cors_response
 
 
 class GetPublicArticles(MethodResource, Resource):
@@ -47,7 +48,7 @@ class GetPublicArticles(MethodResource, Resource):
                 a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
                 a["company_tags"] = [t.company for t in company_tags if t.article == a["id"]]
 
-        return {
+        return build_no_cors_response({
             "pagination": {
                 "page": kwargs["page"],
                 "pages": paginate.pages,
@@ -55,4 +56,4 @@ class GetPublicArticles(MethodResource, Resource):
                 "total": paginate.total,
             },
             "items": articles,
-        }, "200 "
+        })

@@ -9,6 +9,7 @@ from webargs import fields
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from utils.serializer import Serializer
+from utils.response import build_no_cors_response
 
 
 class GetArticleContent(MethodResource, Resource):
@@ -77,7 +78,7 @@ class GetArticleContent(MethodResource, Resource):
                                                  self.db.tables["Company"])
         }
 
-        return data, "200 "
+        return build_no_cors_response(data)
 
     def build_markdown(self, article, article_content):
         tags = Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables['TaxonomyValue'])
