@@ -8,7 +8,7 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 			pragma: "no-cache",
 			"cache-control": "no-cache",
 		}),
-		credentials: "include",
+		credentials: url.startsWith("public") ? undefined : "include",
 	}).then((response) => {
 		if (response.status === 200) {
 			return response.json();
