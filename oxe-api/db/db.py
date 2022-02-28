@@ -2,7 +2,7 @@ import os
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_, or_, desc
 from flask_migrate import Migrate, upgrade
 
 import datetime
@@ -334,7 +334,20 @@ class DB:
                 .filter(self.tables["Article"].id.in_(company_subquery)) \
                 .filter(self.tables["Article"].is_created_by_admin.is_(False))
 
-        query = query.order_by(self.tables["Article"].publication_date.desc())
+        if "min_start_date" in filters:
+            print(filters["min_start_date"])
+            query = query.filter(self.tables["Article"].start_date >= filters["min_start_date"])
+
+        if "order_by" in filters:
+            if "order" in filters and filters["order"] == "asc":
+                query = query.order_by(getattr(self.tables["Article"], filters["order_by"]).asc())
+            else:
+                query = query.order_by(getattr(self.tables["Article"], filters["order_by"]).desc())
+        else:
+            if "order" in filters and filters["order"] == "asc":
+                query = query.order_by(self.tables["Article"].publication_date.asc())
+            else:
+                query = query.order_by(self.tables["Article"].publication_date.desc())
 
         return query
 
