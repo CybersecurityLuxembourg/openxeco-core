@@ -335,7 +335,6 @@ class DB:
                 .filter(self.tables["Article"].is_created_by_admin.is_(False))
 
         if "min_start_date" in filters:
-            print(filters["min_start_date"])
             query = query.filter(self.tables["Article"].start_date >= filters["min_start_date"])
 
         if "order_by" in filters:
