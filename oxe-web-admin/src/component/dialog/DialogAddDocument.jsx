@@ -18,7 +18,6 @@ export default class DialogAddDocument extends React.Component {
 	}
 
 	onDrop(files) {
-		console.log(files);
 		if (files.length === 0) {
 			nm.warning("No file has been detected. Please re-check the file extension.");
 			this.setState({
