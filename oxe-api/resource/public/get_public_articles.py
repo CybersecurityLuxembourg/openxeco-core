@@ -37,6 +37,7 @@ class GetPublicArticles(MethodResource, Resource):
             required=False,
         ),
         'min_start_date': fields.Str(required=False),
+        'min_end_date': fields.Str(required=False),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
