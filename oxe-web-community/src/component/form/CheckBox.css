@@ -28,7 +28,7 @@
 }
 
 .CheckBox-off {
-    background-color: #fed7da;
+    background-color: #DDD;
 }
 
 .CheckBox-on-no-background {
@@ -42,7 +42,7 @@
 }
 
 .CheckBox-disabled {
-    background-color: rgba(0, 0, 0, 0) !important;
+    background-color: lightgrey;
     cursor: default;
 }
 

@@ -39,26 +39,28 @@ html, body, #root {
 h1 {
 	color: #010101;
     text-transform: uppercase;
+    border-left: 4px solid #000;
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
-    padding: 0px 10px 0px 55px;
-    margin: 5px 0px 25px 0px;
-    background-image: url("img/polygon-red-bold.svg");
-	background-size: 44px 44px;
-	background-repeat: no-repeat;
-	min-height: 44px;
+    padding: 0px 10px;
+    margin: 25px 0px 15px 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left !important;
 }
 
 h2 {
 	color: #010101;
+    border-left: 4px solid grey;
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
-    padding: 0px 10px 0px 45px;
-    margin: 5px 0px 15px 0px;
-    background-image: url("img/polygon-blue-bold.svg");
-	background-size: 35px 35px;
-	background-repeat: no-repeat;
-	min-height: 35px;
+    padding: 0px 10px;
+    margin: 25px 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left !important;
 }
 
 h3 {
