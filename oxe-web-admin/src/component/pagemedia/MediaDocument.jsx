@@ -76,7 +76,7 @@ export default class MediaDocument extends React.Component {
 
 	render() {
 		return (
-			<div id="MediaDocument" className="page max-sized-page">
+			<div id="MediaDocument" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-12">
 						<h1>Documents</h1>

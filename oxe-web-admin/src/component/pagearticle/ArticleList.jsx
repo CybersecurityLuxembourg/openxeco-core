@@ -110,7 +110,7 @@ export default class ArticleList extends React.Component {
 		];
 
 		return (
-			<div id="ArticleList" className="page max-sized-page">
+			<div id="ArticleList" className="max-sized-page fade-in">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h1>{this.state.articles !== null ? this.state.articles.length : 0} Article{this.state.articles !== null && this.state.articles.length > 1 ? "s" : ""}</h1>

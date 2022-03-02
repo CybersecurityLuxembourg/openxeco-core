@@ -79,7 +79,7 @@ export default class MediaImage extends React.Component {
 
 	render() {
 		return (
-			<div id="MediaImage" className="page max-sized-page">
+			<div id="MediaImage" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-12">
 						<h1>Images</h1>

@@ -107,8 +107,8 @@ export default class ArticleContent extends React.Component {
 						</div>
 					</div>
 
-					<div className="col-md-12">
-						<div className={"row"}>
+					<div className={"row"}>
+						<div className="col-md-12">
 							<h2>Content</h2>
 
 							<div className={"top-right-buttons"}>
@@ -125,6 +125,7 @@ export default class ArticleContent extends React.Component {
 					</div>
 
 					{this.state.selectedVersion !== null && this.state.content !== null
+						&& this.state.content.length > 0
 						&& <div className={"row"}>
 							<div className="col-md-12">
 								{this.state.content !== null
@@ -134,17 +135,32 @@ export default class ArticleContent extends React.Component {
 						</div>
 					}
 
+					{this.state.selectedVersion !== null && this.state.content !== null
+						&& this.state.content.length === 0
+						&& <div className={"row"}>
+							<div className="col-md-12">
+								<Message
+									height={100}
+									text={"No content found"}
+								/>
+							</div>
+						</div>
+					}
+
 					{this.state.selectedVersion !== null && this.state.content === null
 						&& <Loading
-							height={250}
+							height={150}
 						/>
 					}
 
+					<div className={"row"}>
+						<div className="col-md-12">
+							<h2>History</h2>
+						</div>
+					</div>
+
 					{this.state.selectedVersion !== null && this.state.logs !== null
 						&& <div className={"row"}>
-							<div className="col-md-12">
-								<h2>History</h2>
-							</div>
 							<div className="col-md-12">
 								{this.state.logs.length > 0
 									? this.state.logs.map((l, i) => (
@@ -164,9 +180,13 @@ export default class ArticleContent extends React.Component {
 					}
 
 					{this.state.selectedVersion !== null && this.state.logs === null
-						&& <Loading
-							height={250}
-						/>
+						&& <div className={"row"}>
+							<div className="col-md-12">
+								<Loading
+									height={150}
+								/>
+							</div>
+						</div>
 					}
 				</div>
 			</div>

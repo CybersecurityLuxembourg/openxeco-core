@@ -122,7 +122,7 @@ export default class UserUser extends React.Component {
 		];
 
 		return (
-			<div id="UserUser" className="page max-sized-page">
+			<div id="UserUser" className="max-sized-page fade-in">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h1>{this.state.pagination !== null ? this.state.pagination.total : 0} User{this.state.pagination !== null && this.state.pagination.total > 1 ? "s" : ""}</h1>
