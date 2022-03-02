@@ -34,10 +34,12 @@
 
 .Tab-menu-el:hover {
 	background-color: rgba(0, 159, 227, 0.05);
+    color: black !important;
 }
 
 .Tab-menu-el-selected {
-    border-left: 4px solid #e40613;
+    background-color: #009fe3;
+    color: white;
 }
 
 .Tab-notification {
