@@ -2,7 +2,7 @@ import os
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, and_, or_, desc
+from sqlalchemy import func, and_, or_
 from flask_migrate import Migrate, upgrade
 
 import datetime
@@ -247,7 +247,7 @@ class DB:
     # ARTICLE     #
     ###############
 
-    def get_filtered_article_query(self, filters=None, user_id=None):
+    def get_filtered_article_query(self, filters=None, user_id=None):  # noqa: disable=MC0001
         filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Article"])
@@ -402,6 +402,7 @@ class DB:
         return query.all()
 
     ###############
+    # TAXONOMY    #
     # TAXONOMY    #
     ###############
 
