@@ -1,15 +1,13 @@
 name: oxe-api PyCQA Bandit
+
 on:
   push:
-    branches:
-      - main
-      - validation
+    branches: [ 'main', 'validation' ]
+    tags: [ 'v*.*', 'v*.*.*' ]
     paths:
       - 'oxe-api/**'
   pull_request:
-    branches:
-      - main
-      - validation
+    branches: [ main ]
     paths:
       - 'oxe-api/**'
 
