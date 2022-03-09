@@ -119,7 +119,7 @@ export default class NetworkOverview extends React.Component {
 	}
 
 	fetchNode(node) {
-		const url = node.api_endpoint + "/network/get_node_information";
+		const url = node.api_endpoint + "/public/get_public_node_information";
 
 		return new Promise((resolve) => getForeignRequest(url, (data) => {
 			resolve(data);

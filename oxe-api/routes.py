@@ -72,7 +72,6 @@ from resource.media.get_image import GetImage
 from resource.media.get_document import GetDocument
 from resource.network.add_network_node import AddNetworkNode
 from resource.network.delete_network_node import DeleteNetworkNode
-from resource.network.get_node_information import GetNodeInformation
 from resource.network.get_network_nodes import GetNetworkNodes
 from resource.private.add_my_article import AddMyArticle
 from resource.private.add_request import AddRequest
@@ -106,6 +105,7 @@ from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_document import GetPublicDocument
 from resource.public.get_public_documents import GetPublicDocuments
 from resource.public.get_public_image import GetPublicImage
+from resource.public.get_public_node_information import GetPublicNodeInformation
 from resource.public.get_public_settings import GetPublicSettings
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy

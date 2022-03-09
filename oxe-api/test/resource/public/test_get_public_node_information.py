@@ -1,11 +1,11 @@
 from test.BaseCase import BaseCase
 
 
-class TestGetNodeInformation(BaseCase):
+class TestGetPublicNodeInformation(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        response = self.application.get('/network/get_node_information',
+        response = self.application.get('/public/get_public_node_information',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -24,7 +24,7 @@ class TestGetNodeInformation(BaseCase):
         self.db.insert({"property": "PHONE_NUMBER", "value": "my phone"}, self.db.tables["Setting"])
         self.db.insert({"property": "POSTAL_ADDRESS", "value": "my address"}, self.db.tables["Setting"])
 
-        response = self.application.get('/network/get_node_information',
+        response = self.application.get('/public/get_public_node_information',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
