@@ -1,6 +1,7 @@
 import base64
 import io
 import traceback
+import json
 
 from PIL import Image
 from flask_apispec import MethodResource
@@ -77,7 +78,7 @@ class AddRequest(MethodResource, Resource):
             "company_id": kwargs["company_id"] if "company_id" in kwargs else None,
             "request": kwargs["request"],
             "type": kwargs["type"] if "type" in kwargs else None,
-            "data": kwargs["data"] if "data" in kwargs else None,
+            "data": json.dumps(kwargs["data"]) if "data" in kwargs else None,
             "image": image,
         }
 
