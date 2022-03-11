@@ -1,16 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.9.0] - TODO
+## [1.9.0] - TBD
 
 ### Added
 
-- 
+- Setup explanation on the main README.md
  
 ### Changed
   
 - Renamed and moved "network/get_node_information" to "public/get_public_node_information"
 - Conditions of GH action triggers
+- Setup explanation on oxe-api README.md
  
 ### Fixed
  
