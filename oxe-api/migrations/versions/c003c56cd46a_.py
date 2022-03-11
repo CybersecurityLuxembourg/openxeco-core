@@ -269,7 +269,7 @@ def upgrade():
     sa.Column('company_id', mysql.INTEGER(), autoincrement=False, nullable=True),
     sa.Column('status', mysql.ENUM('NEW', 'IN PROCESS', 'PROCESSED', 'REJECTED'), server_default=sa.text("'NEW'"), nullable=False),
     sa.Column('request', mysql.TEXT(charset='utf8mb4', collation='utf8mb4_unicode_ci'), nullable=False),
-    sa.Column('data', mysql.JSON(), nullable=True),
+    sa.Column('data', mysql.TEXT(charset='utf8mb4', collation='utf8mb4_unicode_ci'), nullable=True),
     sa.Column('image', mysql.LONGBLOB(), nullable=True),
     sa.Column('submission_date', mysql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
     sa.Column('type', mysql.ENUM('ENTITY ADD', 'ENTITY CHANGE', 'ENTITY ACCESS CLAIM', 'ENTITY ADDRESS CHANGE', 'ENTITY ADDRESS ADD',

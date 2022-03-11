@@ -78,10 +78,10 @@ export default class Request extends Component {
 		});
 
 		if (this.props.info && (this.props.info.company_id
-			|| (this.props.info.data && this.props.info.data.company_id))) {
+			|| (this.props.info.data && JSON.parse(this.props.info.data).company_id))) {
 			const companyId = this.props.info.company_id
 				? this.props.info.company_id
-				: this.props.info.data.company_id;
+				: JSON.parse(this.props.info.data).company_id;
 
 			getRequest.call(this, "company/get_company/" + companyId, (data) => {
 				this.setState({
@@ -272,7 +272,7 @@ export default class Request extends Component {
 							&& this.state.user
 							&& this.state.company
 							&& <RequestCompanyAccessClaim
-								data={this.props.info.data}
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 								user={this.state.user}
 								company={this.state.company}
 							/>
@@ -281,38 +281,38 @@ export default class Request extends Component {
 							&& this.state.user
 							&& this.state.company
 							&& <RequestCompanyChange
-								data={this.props.info.data}
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADD"
 							&& this.state.user
 							&& <RequestCompanyAdd
-								data={this.props.info.data}
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS CHANGE"
 							&& this.state.user
 							&& <RequestCompanyAddressChange
-								data={this.props.info.data}
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS ADD"
 							&& this.state.user
 							&& <RequestCompanyAddressAdd
-								data={this.props.info.data}
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 								companyId={this.props.info.company_id}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS DELETION"
 							&& this.state.user
 							&& <RequestCompanyAddressDelete
-								data={this.props.info.data}
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY TAXONOMY CHANGE"
 							&& this.state.user
 							&& <RequestCompanyTaxonomyChange
-								data={this.props.info.data}
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 								companyId={this.props.info.company_id}
 							/>
 						}
@@ -401,9 +401,8 @@ export default class Request extends Component {
 
 					<div className="col-md-12 row-spaced">
 						<h3>Data</h3>
-						{this.props.info !== undefined && this.props.info !== null
-							&& this.props.info.data !== undefined && this.props.info.data !== null
-							? JSON.stringify(this.props.info.data)
+						{this.props.info && this.props.info.data
+							? this.props.info.data
 							: <Message
 								text={"No data in this request"}
 								height={50}
