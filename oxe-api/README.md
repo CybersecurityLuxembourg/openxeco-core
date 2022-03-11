@@ -56,7 +56,7 @@ $ pip install -r requirements.txt
 
 For Windows
 ```
-> cd %USERPROFILE%\openxeco-core/oxe-api
+> cd %USERPROFILE%\openxeco-core\oxe-api
 > python -m venv venv
 > .\venv\Scripts\activate
 > pip install -U pip setuptools
@@ -90,7 +90,7 @@ Some resources of the API requires a SMTP server, you can simulate in local envi
 You can also use a docker container to mock the SMTP server. The mail body is retrievable in the STDOUT of the container
 ```
 $ docker pull b2ck/fake-smtpd
-& docker run -p 1025:25 b2ck/fake-smtpd
+$ docker run -p 1025:25 b2ck/fake-smtpd
 ```
 
 # Test and audit the code
