@@ -8,7 +8,7 @@ With the following link: https://nodejs.org/en/download/
 >npm update
 
 # Install the dependencies
->cd ~/openxeco/oxe-web-admin
+>cd ~/project/openxeco/oxe-web-admin
 >npm install
 
 # Run the project

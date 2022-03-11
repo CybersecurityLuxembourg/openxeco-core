@@ -3,34 +3,51 @@
 
 All the versions mentioned are the recommended ones.
 
-# Install local mySQL server
+# Setup development environment
 
-Version 8.0.22
-https://dev.mysql.com/downloads/installer/
+## Create and run MariaDB container
 
-For Windows, MySQL requires those dependencies:
-- Visual Studio 2019: https://visualstudio.microsoft.com/downloads/
-- MySQL for Visual Studio 1.2.9: https://dev.mysql.com/downloads/windows/visualstudio/
-- MySQL Connector .NET 8.0.22: https://dev.mysql.com/downloads/connector/net/
+```
+$ docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=E4syPass -p 3306:3306 -d mariadb:10.7.3
+```
 
-MySQL configuration:
-- For a local environment, you will require a root user with the following password: DBDevSMILE20. You can also change and define an account and a password that you will need to report to config/config.py
-- For Windows only, set the lower_case_table_names=2 on the my.ini (Right value by default on Linux distribs)
+## Edit environment variables
 
-Then, you can run the SQL script with the DB structure in db/structure/001_init.sql
+The project is using the python-dotenv package so you can create a local file ~/project/openxeco-core/oxe-api/.env with such content:
 
-Hint: You can use PHPMyAdmin or MySQL Workbench to administrate your server.
+```
+ENVIRONMENT=dev
 
-# Install Python 3.8.6
+JWT_SECRET_KEY=my_secret_developer_key
+
+DB_HOSTNAME=localhost
+DB_PORT=3306
+DB_NAME=MY_DATABASE
+DB_USERNAME=root
+DB_PASSWORD=E4syPass
+
+MAIL_SERVER=localhost
+MAIL_PORT=1025
+MAIL_USE_TLS=False
+MAIL_USE_SSL=False
+MAIL_DEFAULT_SENDER=my-default-sender@default-domain.com
+
+IMAGE_FOLDER=/var/lib/oxe-api/image_folder
+DOCUMENT_FOLDER=/var/lib/oxe-api/document_folder
+
+INITIAL_ADMIN_EMAIL=my-default-admin@default-domain.com
+```
+
+## Install Python 3.8.6
 
 https://www.python.org/downloads/release/python-386/
 
-# Create Python virtual environment and install dependencies
+## Create Python virtual environment and install dependencies
 
 For Linux:
 ```
 $ sudo apt install mysql-server python3-venv -y
-$ cd ~/project/bo-api
+$ cd ~/project/openxeco-core/oxe-api
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -U pip setuptools
@@ -39,30 +56,19 @@ $ pip install -r requirements.txt
 
 For Windows
 ```
-> cd %USERPROFILE%\project\bo-api
+> cd %USERPROFILE%\openxeco-core/oxe-api
 > python -m venv venv
 > .\venv\Scripts\activate
 > pip install -U pip setuptools
 > pip install -r requirements.txt
 ```
 
-# Import the database structure
-
-- create the cyberlux database, here `$cyberlux_db_name`
-- create a cyberlux database user here `$cyberlux_db_user`and grand it permissions on the database
-- import the initial databases schema:
-
-```
-$ cd ~/project/bo-api
-$ mysql -u "$cyberlux_db_user" -p "$cyberlux_db_name" < ./db/sql/structure.sql
-```
-
-# Run environment
+## Activate the python env and run the project
 
 You have to make sure that the python environment is active
 If not:
 ```
-> cd %USERPROFILE%\project\bo-api
+> cd %USERPROFILE%\project\openxeco-core/oxe-api
 > python -m venv venv
 > .\venv\Scripts\activate
 ```
@@ -74,14 +80,22 @@ $ cp config/config.py.sample config/config.py
 $ python app.py
 ```
 
-# Simulate SMTP server
+## Mock SMTP server
 
 Some resources of the API requires a SMTP server, you can simulate in local environment with this following command:
 ```
 > python -m smtpd -n -c DebuggingServer localhost:1025
 ```
 
-# Run the unittests
+You can also use a docker container to mock the SMTP server. The mail body is retrievable in the STDOUT of the container
+```
+$ docker pull b2ck/fake-smtpd
+& docker run -p 1025:25 b2ck/fake-smtpd
+```
+
+# Test and audit the code
+
+## Run the unittests
 
 To run a single test
 ```
@@ -109,9 +123,9 @@ Run the test coverage report and generate in HTML (with the venv activated)
 > coverage run --source=resource,utils,db,decorator -m unittest discover && coverage html
 ```
 
-# Run the code analysers
+## Run the code analysers
 
-## npm is needed
+npm is required
 
 ```
 $ sudo apt install npm -y

@@ -8,7 +8,7 @@ With the following link: https://nodejs.org/en/download/
 >npm update
 
 # Install the dependencies
->cd ~/openxeco/oxe-web-community
+>cd ~/project/openxeco/oxe-web-community
 >npm install
 
 # Run the project
