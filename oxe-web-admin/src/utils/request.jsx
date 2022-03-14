@@ -7,6 +7,8 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 			Accept: "application/json, text/html",
 			pragma: "no-cache",
 			"cache-control": "no-cache",
+			"Access-Control-Allow-Origin": url.startsWith("public") ? "*" : undefined,
+			"Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
 		}),
 		credentials: url.startsWith("public") ? undefined : "include",
 	}).then((response) => {
@@ -96,19 +98,6 @@ export async function getForeignRequest(url, callback, catchBadResponse, catchEr
 		mode: "cors",
 		headers: {
 			Accept: "application/json, text/html",
-			"Access-Control-Allow-Headers": "Access-Control-Allow-Headers, "
-                + "Origin,Accept, "
-                + "X-Requested-With, "
-                + "Content-Type, "
-                + "Access-Control-Request-Method, "
-                + "Access-Control-Request-Headers, "
-                + "Access-Control-Allow-Origin, "
-                + "Access-Control-Allow-Credentials",
-			"Access-Control-Allow-Origin": "*",
-			"Access-Control-Allow-Methods": "GET,OPTIONS,HEAD",
-			"Access-Control-Allow-Credentials": "true",
-			pragma: "no-cache",
-			"cache-control": "no-cache",
 		},
 	}).then((response) => {
 		if (response.status === 200) {
