@@ -139,7 +139,7 @@ export default class Request extends Component {
 		if (this.props.info !== undefined && this.props.info !== null) {
 			switch (this.props.info.type) {
 			case "ENTITY ACCESS CLAIM":
-				return "Your request to access the claimed entity has been treated.";
+				return "Your request to access the claimed entity has been treated. Please log in to review the data of your entity.";
 			case "ENTITY CHANGE":
 				return "Your request to modify the entity information has been treated.";
 			case "ENTITY ADD":
