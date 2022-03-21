@@ -7,6 +7,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
+from exception.cannot_remove_this_object import CannotRemoveThisObject
 
 
 class DeleteMyRequest(MethodResource, Resource):
@@ -36,10 +37,13 @@ class DeleteMyRequest(MethodResource, Resource):
         })
 
         if len(companies) > 0:
-            self.db.delete(self.db.tables["UserRequest"], {
-                "id": kwargs["id"],
-                "user_id": int(get_jwt_identity())
-            })
+            if companies[0].status == "NEW":
+                self.db.delete(self.db.tables["UserRequest"], {
+                    "id": kwargs["id"],
+                    "user_id": int(get_jwt_identity())
+                })
+            else:
+                raise CannotRemoveThisObject("The status of the request is other than NEW")
         else:
             raise ObjectNotFound
 

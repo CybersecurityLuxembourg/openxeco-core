@@ -50,8 +50,17 @@ export default class Request extends Component {
 			<div className="Request card">
 				<div className="card-horizontal">
 					<div className="card-body">
-						<div className="card-date">{this.props.info.submission_date}</div>
-						<div className="card-type">STATUS: {this.props.info.status}</div>
+						<div className="card-date">
+							{this.props.info.submission_date
+								? this.props.info.submission_date.replace("T", " ")
+								: "NO DATE FOUND"
+							}
+						</div>
+
+						<div className="card-type">
+							STATUS: {this.props.info.status}
+						</div>
+
 						{this.props.info.type !== null
 							? <div>
 								<b>{this.props.info.type}</b>
@@ -85,13 +94,15 @@ export default class Request extends Component {
 							: ""
 						}
 
-						<button
-							className={"red-background"}
-							onClick={this.delete}
-							disabled={this.props.info.link === null}
-						>
-							<i className="fas fa-trash-alt"/> Delete
-						</button>
+						{this.props.info.status === "NEW"
+							&& <button
+								className={"red-background"}
+								onClick={this.delete}
+								disabled={this.props.info.link === null}
+							>
+								<i className="fas fa-trash-alt"/> Delete
+							</button>
+						}
 					</div>
 				</div>
 			</div>
