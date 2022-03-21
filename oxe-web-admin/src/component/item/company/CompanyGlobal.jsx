@@ -95,7 +95,17 @@ export default class CompanyGlobal extends React.Component {
 				<div className="col-md-12">
 					<h2>Global</h2>
 				</div>
+
 				<div className="col-md-12">
+					<FormLine
+						label={"Status"}
+						type={"select"}
+						value={this.state.company.status}
+						options={this.state.companyEnums === null
+							|| typeof this.state.companyEnums.status === "undefined" ? []
+							: this.state.companyEnums.status.map((o) => ({ label: o, value: o }))}
+						onChange={(v) => this.saveCompanyValue("status", v)}
+					/>
 					<FormLine
 						label={"ID"}
 						value={this.state.company.id}
@@ -136,25 +146,37 @@ export default class CompanyGlobal extends React.Component {
 						onChange={(v) => this.saveCompanyValue("creation_date", v)}
 					/>
 					<FormLine
-						label={"Is cybersecurity core business"}
-						type={"checkbox"}
-						value={this.state.company.is_cybersecurity_core_business}
-						onChange={(v) => this.saveCompanyValue("is_cybersecurity_core_business", v)}
-					/>
-					<FormLine
 						label={"Is startup"}
 						type={"checkbox"}
 						value={this.state.company.is_startup}
 						onChange={(v) => this.saveCompanyValue("is_startup", v)}
 					/>
+				</div>
+
+				<div className="col-md-12">
+					<h2>Social network</h2>
+				</div>
+
+				<div className="col-md-12">
 					<FormLine
-						label={"Status"}
-						type={"select"}
-						value={this.state.company.status}
-						options={this.state.companyEnums === null
-                            || typeof this.state.companyEnums.status === "undefined" ? []
-							: this.state.companyEnums.status.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveCompanyValue("status", v)}
+						label={"Linkedin URL"}
+						value={this.state.company.linkedin_url}
+						onBlur={(v) => this.saveCompanyValue("linkedin_url", v)}
+					/>
+					<FormLine
+						label={"Twitter URL"}
+						value={this.state.company.twitter_url}
+						onBlur={(v) => this.saveCompanyValue("twitter_url", v)}
+					/>
+					<FormLine
+						label={"Youtube URL"}
+						value={this.state.company.youtube_url}
+						onBlur={(v) => this.saveCompanyValue("youtube_url", v)}
+					/>
+					<FormLine
+						label={"Discord URL"}
+						value={this.state.company.discord_url}
+						onBlur={(v) => this.saveCompanyValue("discord_url", v)}
 					/>
 				</div>
 			</div>

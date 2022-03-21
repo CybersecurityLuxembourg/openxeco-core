@@ -34,5 +34,5 @@ class TestUpdateCompany(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(companies), 1)
         self.assertEqual(companies[0].name, "My Modified Company")
-        self.assertEqual(companies[0].creation_date, today - datetime. timedelta(days=1))
+        self.assertEqual(companies[0].creation_date, today - datetime.timedelta(days=1))
         self.assertEqual(companies[0].is_startup, False)

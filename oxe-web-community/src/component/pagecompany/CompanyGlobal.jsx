@@ -26,6 +26,10 @@ export default class CompanyGlobal extends React.Component {
 				creation_date: "Creation date",
 				is_cybersecurity_core_business: "Is cybersecurity core business",
 				is_startup: "Is startup",
+				linkedin_url: "Linkedin URL",
+				twitter_url: "Twitter URL",
+				youtube_url: "Youtube URL",
+				discord_url: "Discord URL",
 			},
 		};
 	}
@@ -164,7 +168,36 @@ export default class CompanyGlobal extends React.Component {
 							onChange={(v) => this.updateCompany("is_startup", v)}
 							background={false}
 						/>
+					</div>
 
+					<div className="col-md-12">
+						<h2>Social network</h2>
+					</div>
+
+					<div className="col-md-12">
+						<FormLine
+							label={this.state.fields.linkedin_url}
+							value={this.state.companyInfo.linkedin_url}
+							onBlur={(v) => this.updateCompany("linkedin_url", v)}
+						/>
+						<FormLine
+							label={this.state.fields.twitter_url}
+							value={this.state.companyInfo.twitter_url}
+							onBlur={(v) => this.updateCompany("twitter_url", v)}
+						/>
+						<FormLine
+							label={this.state.fields.youtube_url}
+							value={this.state.companyInfo.youtube_url}
+							onBlur={(v) => this.updateCompany("youtube_url", v)}
+						/>
+						<FormLine
+							label={this.state.fields.discord_url}
+							value={this.state.companyInfo.discord_url}
+							onBlur={(v) => this.updateCompany("discord_url", v)}
+						/>
+					</div>
+
+					<div className="col-md-12">
 						<div className={"right-buttons"}>
 							<DialogConfirmation
 								text={"Do you want to request modifications for those fields : "
