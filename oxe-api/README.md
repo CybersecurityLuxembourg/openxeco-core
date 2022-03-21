@@ -142,3 +142,11 @@ To run the PyCQA/bandit
 > sudo apt install bandit
 > bandit -r .
 ```
+
+# Manage the database structure
+
+The database structure is automatically created/upgraded when starting the API. 
+
+For further information about the structure management, please see the documentation of Flask-Migrate:
+
+https://flask-migrate.readthedocs.io/en/latest/
