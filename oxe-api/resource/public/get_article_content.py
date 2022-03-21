@@ -71,6 +71,7 @@ class GetArticleContent(MethodResource, Resource):
             "end_date": str(article[0].end_date) if article[0].end_date is not None else None,
             "type": article[0].type,
             "link": article[0].link,
+            "handle": article[0].handle,
             "content": Serializer.serialize(article_content, self.db.tables["ArticleBox"]),
             "taxonomy_tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id),
                                                   self.db.tables["TaxonomyValue"]),
