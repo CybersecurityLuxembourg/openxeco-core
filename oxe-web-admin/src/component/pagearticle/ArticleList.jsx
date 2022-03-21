@@ -7,6 +7,8 @@ import Table from "../table/Table.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import Article from "../item/Article.jsx";
 import FormLine from "../button/FormLine.jsx";
+import TwitterLink from "../button/TwitterLink.jsx";
+import LinkedInLink from "../button/LinkedInLink.jsx";
 import { dictToURI } from "../../utils/url.jsx";
 import DialogArticleFilter from "../dialog/DialogArticleFilter.jsx";
 
@@ -105,6 +107,22 @@ export default class ArticleList extends React.Component {
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
 					value.is_created_by_admin === 1 ? "ADMIN" : "COMMUNITY"
+				),
+			},
+			{
+				Header: "Publish",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						<TwitterLink
+							text={value.title}
+							url={value.link}
+						/>
+						<LinkedInLink
+							text={value.title}
+							url={value.link}
+						/>
+					</div>
 				),
 			},
 		];
