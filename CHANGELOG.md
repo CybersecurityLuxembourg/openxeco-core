@@ -5,13 +5,19 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Implementation of taxonomy management on network page
 - Setup explanation on the main README.md
+- Social media fields on Company objects
+- Taxonomy items on admin platform
  
 ### Changed
   
 - Renamed and moved "network/get_node_information" to "public/get_public_node_information"
 - Conditions of GH action triggers
 - Setup explanation on oxe-api README.md
+- Add 'handle' value in public/get_article_content resource
+- Default mail content on ENTITY ACCESS CLAIM process
+- Taxonomy page on oxe-web-admin
  
 ### Fixed
  
