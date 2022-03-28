@@ -64,9 +64,12 @@ class AddUser(MethodResource, Resource):
                 return "", "422 This user is already existing"
             raise
 
+        pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
+        project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
+
         send_email(self.mail,
-                   subject='[CYBERSECURITY LUXEMBOURG] New account',
+                   subject=f"[{project_name}] New account",
                    recipients=[kwargs["email"]],
-                   html_body=render_template('new_account.html', url=origin, password=old_password))
+                   html_body=render_template('new_account.html', url=origin, password=old_password, project_name=project_name))
 
         return "", "200 "
