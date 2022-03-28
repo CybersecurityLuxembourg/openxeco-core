@@ -34,6 +34,7 @@ class ExtractCompanies(MethodResource, Resource):
     @use_kwargs({
         'name': fields.Str(required=False),
         'format': fields.Str(required=False),
+        'include_user': fields.Bool(required=False),
         'include_address': fields.Bool(required=False),
         'include_email': fields.Bool(required=False),
         'include_phone': fields.Bool(required=False),
@@ -73,6 +74,29 @@ class ExtractCompanies(MethodResource, Resource):
             if len(addresses) > 0:
                 df = df.merge(addresses, left_on='Global|id', right_on='Address|company_id', how='left')
                 df = df.drop(['Address|id', 'Address|company_id'], axis=1)
+
+        # Manage users
+
+        if 'include_user' in kwargs and kwargs['include_user'] is True:
+            if company_ids is not None:
+                user_assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+                    "company_id": company_ids,
+                })
+                users = self.db.get(
+                    self.db.tables["User"],
+                    {"user_id": list(set([a.user_id for a in user_assignments]))},
+                    ["id", "email", "last_name", "first_name"]
+                )
+            else:
+                user_assignments = self.db.get(self.db.tables["UserCompanyAssignment"])
+                users = self.db.get(self.db.tables["User"], {}, ["id", "email", "last_name", "first_name"])
+            contacts = Serializer.serialize(users, self.db.tables["User"])
+            contacts = pd.DataFrame(contacts)
+            contacts = contacts.add_prefix('User|')
+
+            if len(contacts) > 0:
+                df = df.merge(contacts, left_on='Global|id', right_on='User|company_id', how='left')
+                df = df.drop(['Email|id', 'Email|company_id', 'Email|type'], axis=1)
 
         # Manage email addresses from contacts
 

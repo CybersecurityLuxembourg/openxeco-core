@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 - Implementation of taxonomy management on network page
 - Setup explanation on the main README.md
 - Social media fields on Company objects
-- Taxonomy items on admin platform
+- Taxonomy items on oxe-web-admin
  
 ### Changed
   
@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Add 'handle' value in public/get_article_content resource
 - Default mail content on ENTITY ACCESS CLAIM process
 - Taxonomy page on oxe-web-admin
+- Option to add the user information on entity extraction on oxe-web-admin
  
 ### Fixed
  
