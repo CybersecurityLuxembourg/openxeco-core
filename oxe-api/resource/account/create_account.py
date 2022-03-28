@@ -93,13 +93,17 @@ class CreateAccount(MethodResource, Resource):
         # Send email
 
         try:
+            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
+            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
+
             send_email(self.mail,
-                       subject='[CYBERSECURITY LUXEMBOURG] New account',
+                       subject=f"[{project_name}] New account",
                        recipients=[email],
                        html_body=render_template(
                            'new_account.html',
                            url=origin + "/login",
-                           password=generated_password)
+                           password=generated_password,
+                           project_name=project_name)
                        )
         except Exception as e:
             self.db.session.rollback()
