@@ -24,6 +24,12 @@ All notable changes to this project will be documented in this file.
  
 -
 
+## [1.8.4] - 2022-03-28
+
+### Fixed
+ 
+- Fix Jinja2 version to make flask starting
+
 ## [1.8.3] - 2022-03-28
 
 ### Fixed
