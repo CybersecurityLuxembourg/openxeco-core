@@ -19,6 +19,7 @@ export default class UserCompany extends React.Component {
 		this.state = {
 			userCompanies: null,
 			selectedCompany: null,
+			selectedDepartment: null,
 			allCompanies: null,
 			userCompaniesEnums: null,
 		};
@@ -65,8 +66,9 @@ export default class UserCompany extends React.Component {
 
 	addUserCompany(close) {
 		const params = {
-			user: this.props.id,
-			company: this.state.selectedCompany,
+			user_id: this.props.id,
+			company_id: this.state.selectedCompany,
+			department: this.state.selectedDepartment,
 		};
 
 		postRequest.call(this, "user/add_user_company", params, () => {
@@ -167,7 +169,8 @@ export default class UserCompany extends React.Component {
 									</div>
 								</div>
 								<div className="col-md-12">
-									{this.state.allCompanies !== null
+									{this.state.allCompanies
+										&& this.state.userCompaniesEnums
 										? <div>
 											<FormLine
 												label={"Company"}
@@ -178,6 +181,19 @@ export default class UserCompany extends React.Component {
 														this.state.allCompanies.map((c) => ({ label: c.name, value: c.id })),
 													)}
 												onChange={(v) => this.setState({ selectedCompany: v })}
+											/>
+											<FormLine
+												label={"Department"}
+												type={"select"}
+												value={this.state.selectedDepartment}
+												options={this.state.userCompaniesEnums === null
+													|| this.state.userCompaniesEnums.department === undefined
+													? []
+													: [{ value: null, label: "-" }].concat(
+														this.state.userCompaniesEnums
+															.department.map((o) => ({ label: o, value: o })),
+													)}
+												onChange={(v) => this.setState({ selectedDepartment: v })}
 											/>
 											<div className="right-buttons">
 												<button
