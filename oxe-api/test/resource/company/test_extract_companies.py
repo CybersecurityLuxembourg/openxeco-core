@@ -32,6 +32,27 @@ class TestExtractCompanies(BaseCase):
         self.assertTrue("Taxonomy|ROLE" not in response.json[0])
 
     @BaseCase.login
+    def test_ok_with_users(self, token):
+        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "email": "myemail@test.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])
+        self.db.insert({"id": 3, "email": "myemai2@test.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])
+        self.db.insert({"user_id": 2, "company_id": 2}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"user_id": 3, "company_id": 2}, self.db.tables["UserCompanyAssignment"])
+
+        response = self.application.get('/company/extract_companies?format=json&include_user=true',
+                                        headers=self.get_standard_header(token))
+
+        self.assertEqual(3, len(response.json))
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(response.json[0]["Global|name"], "My Company")
+        self.assertEqual(response.json[0]["User|email"], "myemail@test.lu")
+        self.assertEqual(response.json[1]["Global|name"], "My Company")
+        self.assertEqual(response.json[1]["User|email"], "myemai2@test.lu")
+        self.assertEqual(response.json[2]["Global|name"], "My Company 2")
+        self.assertEqual(response.json[2]["User|email"], None)
+
+    @BaseCase.login
     def test_ok_with_address(self, token):
         self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])

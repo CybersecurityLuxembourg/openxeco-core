@@ -82,21 +82,25 @@ class ExtractCompanies(MethodResource, Resource):
                 user_assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
                     "company_id": company_ids,
                 })
-                users = self.db.get(
-                    self.db.tables["User"],
-                    {"user_id": list(set([a.user_id for a in user_assignments]))},
-                    ["id", "email", "last_name", "first_name"]
-                )
             else:
                 user_assignments = self.db.get(self.db.tables["UserCompanyAssignment"])
-                users = self.db.get(self.db.tables["User"], {}, ["id", "email", "last_name", "first_name"])
-            contacts = Serializer.serialize(users, self.db.tables["User"])
-            contacts = pd.DataFrame(contacts)
-            contacts = contacts.add_prefix('User|')
 
-            if len(contacts) > 0:
-                df = df.merge(contacts, left_on='Global|id', right_on='User|company_id', how='left')
-                df = df.drop(['Email|id', 'Email|company_id', 'Email|type'], axis=1)
+            users = self.db.get(
+                self.db.tables["User"],
+                {"id": list(set([a.user_id for a in user_assignments]))},
+                ["id", "email", "last_name", "first_name"]
+            )
+
+            user_assignments = Serializer.serialize(user_assignments, self.db.tables["UserCompanyAssignment"])
+            user_assignments = pd.DataFrame(user_assignments)
+            users = pd.DataFrame(users)
+            users = user_assignments.merge(users, left_on='user_id', right_on='id', how='left')
+            users = users.drop(labels=["id"], axis=1)
+            users = users.add_prefix('User|')
+
+            if len(users) > 0:
+                df = df.merge(users, left_on='Global|id', right_on='User|company_id', how='left')
+                df = df.drop(['User|user_id', 'User|company_id'], axis=1)
 
         # Manage email addresses from contacts
 

@@ -24,6 +24,7 @@ export default class PageCompany extends React.Component {
 			newCompanyName: null,
 			filters: null,
 			filtered_companies_only: true,
+			include_user: false,
 			include_address: false,
 			include_email: false,
 			include_phone: false,
@@ -84,6 +85,7 @@ export default class PageCompany extends React.Component {
 		nm.info("The download will start soon...");
 
 		let params = {
+			include_user: this.state.include_user,
 			include_address: this.state.include_address,
 			include_email: this.state.include_email,
 			include_phone: this.state.include_phone,
@@ -220,13 +222,19 @@ export default class PageCompany extends React.Component {
 							onChange={(v) => this.changeState("filtered_companies_only", v)}
 						/>
 						<FormLine
-							label={"Include emails"}
+							label={"Include users"}
+							type={"checkbox"}
+							value={this.state.include_user}
+							onChange={(v) => this.changeState("include_user", v)}
+						/>
+						<FormLine
+							label={"Include contact emails"}
 							type={"checkbox"}
 							value={this.state.include_email}
 							onChange={(v) => this.changeState("include_email", v)}
 						/>
 						<FormLine
-							label={"Include phone numbers"}
+							label={"Include contact phone numbers"}
 							type={"checkbox"}
 							value={this.state.include_phone}
 							onChange={(v) => this.changeState("include_phone", v)}
