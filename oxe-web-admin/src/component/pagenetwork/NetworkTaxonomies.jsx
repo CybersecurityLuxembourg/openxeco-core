@@ -89,19 +89,24 @@ export default class NetworkTaxonomies extends React.Component {
 								key={k}>
 								<h2>{k}</h2>
 
-								{this.state.taxonomies[k].categories
-									? this.state.taxonomies[k].categories.map((t) => (
-										<Taxonomy
-											key={k + "-" + t.name}
-											name={t.name}
-											nodeEndpoint={k}
-										/>
-									))
-									: <Message
-										height={200}
-										text="Error while setting the taxonomies"
-									/>
-								}
+								<div className={"row"}>
+									{this.state.taxonomies[k].categories
+										? this.state.taxonomies[k].categories.map((t) => (
+											<div className="col-md-4" key={k + "-" + t.name}>
+												<Taxonomy
+													name={t.name}
+													nodeEndpoint={k}
+												/>
+											</div>
+										))
+										: <div className="col-md-12">
+											<Message
+												height={200}
+												text="Error while setting the taxonomies"
+											/>
+										</div>
+									}
+								</div>
 							</div>
 						))
 						: <div className="col-md-12">

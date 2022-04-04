@@ -5,8 +5,11 @@ import { NotificationManager as nm } from "react-notifications";
 import { postRequest, getForeignRequest, getRequest } from "../../utils/request.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Tab from "../tab/Tab.jsx";
+import Chip from "../button/Chip.jsx";
+import TaxonomyGlobal from "./taxonomy/TaxonomyGlobal.jsx";
 import TaxonomyValues from "./taxonomy/TaxonomyValues.jsx";
 import TaxonomyHierarchy from "./taxonomy/TaxonomyHierarchy.jsx";
+import TaxonomySync from "./taxonomy/TaxonomySync.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 
 export default class Taxonomy extends Component {
@@ -19,8 +22,10 @@ export default class Taxonomy extends Component {
 			taxonomy: null,
 			selectedMenu: null,
 			tabs: [
+				"Global",
 				"Values",
 				"Hierarchy",
+				"Synchronization",
 			],
 		};
 	}
@@ -47,15 +52,15 @@ export default class Taxonomy extends Component {
 		}
 	}
 
-	confirmDeletion() {
+	confirmDeletion(close) {
 		const params = {
-			category: this.props.category,
+			category: this.props.name,
 		};
 
 		postRequest.call(this, "taxonomy/delete_taxonomy_category", params, () => {
 			document.elementFromPoint(100, 0).click();
 			nm.info("The taxonomy has been deleted");
-
+			close();
 			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -131,14 +136,30 @@ export default class Taxonomy extends Component {
 						</div>
 						<h1 className="Taxonomy-title">
 							Taxonomy: {this.props.name}
+
+							{this.props.nodeEndpoint
+								? <Chip
+									label={"Remote"}
+								/>
+								: <Chip
+									label={"Local"}
+								/>
+							}
 						</h1>
 
 						<Tab
-							labels={["Values", "Hierarchy"]}
+							labels={["Global", "Values", "Hierarchy", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
 							content={[
+								<TaxonomyGlobal
+									key={"global"}
+									name={this.props.name}
+									taxonomy={this.state.taxonomy}
+									editable={!this.props.nodeEndpoint}
+									refresh={() => this.fetchTaxonomy()}
+								/>,
 								<TaxonomyValues
 									key={"values"}
 									name={this.props.name}
@@ -148,6 +169,13 @@ export default class Taxonomy extends Component {
 								/>,
 								<TaxonomyHierarchy
 									key={"hierarchy"}
+									name={this.props.name}
+									taxonomy={this.state.taxonomy}
+									editable={!this.props.nodeEndpoint}
+									refresh={() => this.fetchTaxonomy()}
+								/>,
+								<TaxonomySync
+									key={"sync"}
 									name={this.props.name}
 									taxonomy={this.state.taxonomy}
 									editable={!this.props.nodeEndpoint}

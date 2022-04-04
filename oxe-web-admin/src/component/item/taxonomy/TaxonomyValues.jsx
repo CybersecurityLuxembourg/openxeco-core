@@ -33,7 +33,7 @@ export default class TaxonomyValues extends React.Component {
 				nm.error(error.message);
 			});
 		} else {
-			nm.warning("Cannot modify a taxonomy from a different node");
+			nm.warning("This taxonomy is not editable");
 		}
 	}
 
@@ -55,7 +55,7 @@ export default class TaxonomyValues extends React.Component {
 				nm.error(error.message);
 			});
 		} else {
-			nm.warning("Cannot modify a taxonomy from a different node");
+			nm.warning("This taxonomy is not editable");
 		}
 	}
 
@@ -128,10 +128,11 @@ export default class TaxonomyValues extends React.Component {
 											value={this.state.newValue}
 											onChange={(v) => this.changeState("newValue", v)}
 										/>
-										<div className="col-xl-12 right-buttons">
+										<div className="col-md-12 right-buttons">
 											<button
 												className={"blue-background"}
-												onClick={this.addValue}>
+												disabled={!this.props.editable}
+												onClick={() => this.addValue()}>
 												<i className="fas fa-plus"/> Add value
 											</button>
 										</div>

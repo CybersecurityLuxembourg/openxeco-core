@@ -1,8 +1,8 @@
 import React from "react";
 import "./PageNetwork.css";
 import NetworkOverview from "./pagenetwork/NetworkOverview.jsx";
-import NetworkEntities from "./pagenetwork/NetworkEntities.jsx";
-import NetworkArticles from "./pagenetwork/NetworkArticles.jsx";
+/* import NetworkEntities from "./pagenetwork/NetworkEntities.jsx";
+import NetworkArticles from "./pagenetwork/NetworkArticles.jsx"; */
 import NetworkTaxonomies from "./pagenetwork/NetworkTaxonomies.jsx";
 import Tab from "./tab/Tab.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
@@ -18,8 +18,8 @@ export default class PageNetwork extends React.Component {
 			selectedMenu: null,
 			tabs: [
 				"overview",
-				"entities",
-				"articles",
+				/* "entities",
+				"articles", */
 				"taxonomies",
 			],
 		};
@@ -46,7 +46,7 @@ export default class PageNetwork extends React.Component {
 		return (
 			<div id="PageNetwork" className="page max-sized-page">
 				<Tab
-					labels={["Overview", "Entities", "Articles", "Taxonomies"]}
+					labels={["Overview", /* "Entities", "Articles", */ "Taxonomies"]}
 					selectedMenu={this.state.selectedMenu}
 					onMenuClick={this.onMenuClick}
 					keys={this.state.tabs}
@@ -54,12 +54,12 @@ export default class PageNetwork extends React.Component {
 						<NetworkOverview
 							key={"overview"}
 						/>,
-						<NetworkEntities
+						/* <NetworkEntities
 							key={"entities"}
 						/>,
 						<NetworkArticles
 							key={"articles"}
-						/>,
+						/>, */
 						<NetworkTaxonomies
 							key={"taxonomies"}
 						/>,

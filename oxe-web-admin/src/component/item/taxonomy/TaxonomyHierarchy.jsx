@@ -13,6 +13,8 @@ export default class TaxonomyHierarchy extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.onDragEnd = this.onDragEnd.bind(this);
+
 		this.state = {
 			parentCategoryField: null,
 			childCategoryField: null,
@@ -97,6 +99,84 @@ export default class TaxonomyHierarchy extends React.Component {
 			.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[0]);
 	}
 
+	filterChildCategoryValues(parentValue) {
+		if (this.props.taxonomy) {
+			if (parentValue === undefined) {
+				const parentCategoryValueIDs = this.props.taxonomy.values
+					.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[0])
+					.map((h) => h.id);
+
+				const concernedChildValueIDs = this.props.taxonomy.value_hierarchy
+					.filter((h) => parentCategoryValueIDs.indexOf(h.parent_value) >= 0)
+					.map((h) => h.child_value);
+
+				return this.props.taxonomy.values
+					.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[1])
+					.filter((v) => concernedChildValueIDs.indexOf(v.id) < 0);
+			}
+
+			const concernedValueIDs = this.props.taxonomy.value_hierarchy
+				.filter((v) => v.parent_value === parentValue.id)
+				.map((v) => v.child_value);
+
+			return this.props.taxonomy.values
+				.filter((v) => v.category === this.state.selectedCategoryHierarchy.split(" - ")[1])
+				.filter((v) => concernedValueIDs.indexOf(v.id) >= 0);
+		}
+
+		return [];
+	}
+
+	getCategoryHierarchyOptions() {
+		if (this.props.taxonomy.category_hierarchy) {
+			return this.props.taxonomy.category_hierarchy
+				.filter((h) => h.parent_category === this.props.name
+					|| h.child_category === this.props.name);
+		}
+
+		return [];
+	}
+
+	onDragEnd(result) {
+		if (!result.destination) {
+			return;
+		}
+
+		if (result.destination.droppableId !== "null") {
+			const params = {
+				parent_value: parseInt(result.destination.droppableId, 10),
+				child_value: parseInt(result.draggableId, 10),
+			};
+
+			postRequest.call(this, "taxonomy/add_taxonomy_value_hierarchy", params, () => {
+				nm.info("The modification has been saved");
+
+				this.props.refresh();
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
+
+		if (result.source.droppableId !== "null") {
+			const params = {
+				parent_value: parseInt(result.source.droppableId, 10),
+				child_value: parseInt(result.draggableId, 10),
+			};
+
+			postRequest.call(this, "taxonomy/delete_taxonomy_value_hierarchy", params, () => {
+				nm.info("The modification has been saved");
+
+				this.props.refresh();
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -153,24 +233,21 @@ export default class TaxonomyHierarchy extends React.Component {
 						&& this.getParentCategories()
 						? <div className="row">
 							{this.props.editable
-								&& <div className="col-md-12">
+								&& <div className="col-md-12 right-buttons">
 									<FormLine
 										label={"New parent category"}
 										type={"select"}
-										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
+										options={this.props.taxonomy.categories
+											.filter((c) => c.name !== this.props.name)
+											.map((c) => ({ label: c.name, value: c.name }))}
 										value={this.state.newParentCategory}
 										onChange={(v) => this.changeState("newParentCategory", v)}
 									/>
-									<FormLine
-										label={"New child category"}
-										type={"select"}
-										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
-										value={this.state.newChildCategory}
-										onChange={(v) => this.changeState("newChildCategory", v)}
-									/>
 									<button
 										className={"blue-background"}
-										onClick={this.addCategoryHierarchy}>
+										onClick={() => this.addCategoryHierarchy(
+											this.state.newParentCategory, this.props.name,
+										)}>
 										<i className="fas fa-plus"/> Add hierarchy
 									</button>
 								</div>
@@ -196,24 +273,21 @@ export default class TaxonomyHierarchy extends React.Component {
 						&& this.getChildCategories()
 						? <div className="row">
 							{this.props.editable
-								&& <div className="col-md-12">
-									<FormLine
-										label={"New parent category"}
-										type={"select"}
-										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
-										value={this.state.newParentCategory}
-										onChange={(v) => this.changeState("newParentCategory", v)}
-									/>
+								&& <div className="col-md-12 right-buttons">
 									<FormLine
 										label={"New child category"}
 										type={"select"}
-										options={this.state.categories.map((c) => ({ label: c.name, value: c.name }))}
+										options={this.props.taxonomy.categories
+											.filter((c) => c.name !== this.props.name)
+											.map((c) => ({ label: c.name, value: c.name }))}
 										value={this.state.newChildCategory}
 										onChange={(v) => this.changeState("newChildCategory", v)}
 									/>
 									<button
 										className={"blue-background"}
-										onClick={this.addCategoryHierarchy}>
+										onClick={() => this.addCategoryHierarchy(
+											this.props.name, this.state.newChildCategory,
+										)}>
 										<i className="fas fa-plus"/> Add hierarchy
 									</button>
 								</div>
@@ -233,15 +307,16 @@ export default class TaxonomyHierarchy extends React.Component {
 				</div>
 
 				<div className="col-md-12">
-					<h3>Value hierarchy</h3>
-
-					{this.props.taxonomy.category_hierarchy
-						? <div className="row row-spaced">
-							<div className="col-xl-12">
+					{this.getCategoryHierarchyOptions().length > 0
+						&& <div className="row row-spaced">
+							<div className="col-md-12">
+								<h3>Value hierarchy</h3>
+							</div>
+							<div className="col-md-12">
 								<FormLine
 									label={"Category relation"}
 									type={"select"}
-									options={this.props.taxonomy.category_hierarchy.map((c) => ({
+									options={this.getCategoryHierarchyOptions().map((c) => ({
 										label: c.parent_category + " - " + c.child_category,
 										value: c.parent_category + " - " + c.child_category,
 									}))}
@@ -250,14 +325,10 @@ export default class TaxonomyHierarchy extends React.Component {
 								/>
 							</div>
 						</div>
-						: <Loading
-							height={300}
-						/>
 					}
 
-					{this.state.selectedCategoryHierarchy !== null
-						&& this.props.taxonomy.value_hierarchy !== null
-						&& this.props.taxonomy.values !== null
+					{this.getCategoryHierarchyOptions().length > 0
+						&& this.state.selectedCategoryHierarchy
 						&& <div className="row row-spaced">
 							<div className="col-xl-12">
 								<DragDropContext onDragEnd={this.onDragEnd}>
@@ -337,16 +408,18 @@ export default class TaxonomyHierarchy extends React.Component {
 						</div>
 					}
 
-					{this.state.valueHierarchy === null
+					{this.getCategoryHierarchyOptions().length > 0
+						&& this.state.valueHierarchy === null
 						&& <Loading
 							height={300}
 						/>
 					}
 
-					{this.state.selectedCategoryHierarchy === null
+					{this.getCategoryHierarchyOptions().length > 0
+						&& this.state.selectedCategoryHierarchy === null
 						&& this.state.valueHierarchy !== null
 						&& <Message
-							height={300}
+							height={200}
 							text={"Please select a value hierarchy"}
 						/>
 					}
