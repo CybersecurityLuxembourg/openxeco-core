@@ -9,6 +9,9 @@ All notable changes to this project will be documented in this file.
 - Setup explanation on the main README.md
 - Social media fields on Company objects
 - Taxonomy items on oxe-web-admin
+- Synchronization system on taxonomies
+- Form edition on oxe-web-admin
+- Form display on oxe-web-community
  
 ### Changed
   
