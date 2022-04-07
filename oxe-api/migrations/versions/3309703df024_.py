@@ -22,6 +22,16 @@ def upgrade():
     op.add_column('Company', sa.Column('twitter_url', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=150), nullable=True))
     op.add_column('Company', sa.Column('youtube_url', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=150), nullable=True))
     op.add_column('Company', sa.Column('discord_url', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=150), nullable=True))
+    op.add_column('TaxonomyCategory', sa.Column('sync_node', mysql.INTEGER(), nullable=True))
+    op.add_column('TaxonomyCategory', sa.Column('sync_global', mysql.BOOLEAN()))
+    op.add_column('TaxonomyCategory', sa.Column('sync_values', mysql.BOOLEAN()))
+    op.add_column('TaxonomyCategory', sa.Column('sync_hierarchy', mysql.BOOLEAN()))
+    op.create_foreign_key(
+        'fk_taxonomycategory_networknode',
+        'TaxonomyCategory', 'NetworkNode',
+        ['sync_node'], ['id'],
+        ondelete="SET NULL",
+    )
 
 
 def downgrade():
@@ -29,3 +39,7 @@ def downgrade():
     op.drop_column('Company', 'twitter_url')
     op.drop_column('Company', 'youtube_url')
     op.drop_column('Company', 'discord_url')
+    op.drop_column('TaxonomyCategory', 'sync_node')
+    op.drop_column('TaxonomyCategory', 'sync_global')
+    op.drop_column('TaxonomyCategory', 'sync_values')
+    op.drop_column('TaxonomyCategory', 'sync_hierarchy')
