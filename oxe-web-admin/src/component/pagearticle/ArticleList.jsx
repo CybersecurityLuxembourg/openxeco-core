@@ -88,19 +88,22 @@ export default class ArticleList extends React.Component {
 						open={value.id.toString() === this.props.match.params.id}
 					/>
 				),
-				width: 300,
+				width: 350,
 			},
 			{
 				Header: "TYPE",
 				accessor: "type",
+				width: 100,
 			},
 			{
-				Header: "Publication date",
+				Header: "Pub. date",
 				accessor: "publication_date",
+				width: 100,
 			},
 			{
 				Header: "Status",
 				accessor: "status",
+				width: 100,
 			},
 			{
 				Header: "Initiator",
@@ -108,6 +111,7 @@ export default class ArticleList extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					value.is_created_by_admin === 1 ? "ADMIN" : "COMMUNITY"
 				),
+				width: 100,
 			},
 			{
 				Header: "Publish",
@@ -124,6 +128,7 @@ export default class ArticleList extends React.Component {
 						/>
 					</div>
 				),
+				width: 100,
 			},
 		];
 
