@@ -1,24 +1,118 @@
 import React from "react";
 import "./TaxonomySync.css";
+import { NotificationManager as nm } from "react-notifications";
+import { getRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
+import Info from "../../box/Info.jsx";
+import { getCategory } from "../../../utils/taxonomy.jsx";
 
 export default class TaxonomySync extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			nodes: null,
 		};
+	}
+
+	getNodes() {
+		if (this.props.taxonomy
+			&& !getCategory(this.props.taxonomy, this.props.name).sync_node) {
+			this.setState({
+				nodes: null,
+			}, () => {
+				getRequest.call(this, "network/get_network_nodes", (data) => {
+					this.setState({
+						nodes: data,
+					}, () => {
+						this.fetchNodes();
+					});
+				}, (response) => {
+					nm.warning(response.statusText);
+				}, (error) => {
+					nm.error(error.message);
+				});
+			});
+		}
+	}
+
+	getNodeEndpoint() {
+		if (this.props.taxonomy && getCategory(this.props.taxonomy, this.props.name)
+			&& getCategory(this.props.taxonomy, this.props.name).sync_node
+			&& this.state.nodes) {
+			const nodes = this.state.nodes
+				.filter((c) => c.id === getCategory(this.props.taxonomy, this.props.name).sync_node);
+
+			if (nodes.length > 0) {
+				return nodes[0];
+			}
+
+			return null;
+		}
+
+		return null;
 	}
 
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	render() {
 		return (
-			<div className={"row"}>
+			<div id="TaxonomySync" className={"row"}>
 				<div className="col-md-12">
 					<h2>Synchronization</h2>
+				</div>
+
+				<div className="col-md-12">
+					{this.props.taxonomy
+						&& getCategory(this.props.taxonomy, this.props.name)
+						? <div className="row">
+							{!getCategory(this.props.taxonomy, this.props.name).sync_node
+								&& <div className="col-md-12">
+									<Info
+										content={"This taxonomy is not synchonized to any source"}
+									/>
+								</div>
+							}
+
+							<div className="col-md-12">
+								<FormLine
+									label={"Network node"}
+									value={this.getNodeEndpoint()}
+									disabled={!this.props.editable || true}
+								/>
+								<FormLine
+									type="checkbox"
+									label={"Synchronize global information"}
+									value={getCategory(this.props.taxonomy, this.props.name).sync_global}
+									disabled={!this.props.editable
+										|| !getCategory(this.props.taxonomy, this.props.name).sync_node}
+									onChange={(v) => this.updateCategory("sync_global", v)}
+								/>
+								<FormLine
+									type="checkbox"
+									label={"Synchronize values"}
+									value={getCategory(this.props.taxonomy, this.props.name).sync_values}
+									disabled={!this.props.editable
+										|| !getCategory(this.props.taxonomy, this.props.name).sync_node}
+									onChange={(v) => this.updateCategory("sync_values", v)}
+								/>
+								<FormLine
+									type="checkbox"
+									label={"Synchronize hierarchy"}
+									value={getCategory(this.props.taxonomy, this.props.name).sync_hierarchy}
+									disabled={!this.props.editable
+										|| !getCategory(this.props.taxonomy, this.props.name).sync_node}
+									onChange={(v) => this.updateCategory("sync_hierarchy", v)}
+								/>
+							</div>
+						</div>
+						: <Loading
+							height={300}
+						/>
+					}
 				</div>
 			</div>
 		);

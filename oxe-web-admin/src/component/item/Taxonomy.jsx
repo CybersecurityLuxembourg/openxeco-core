@@ -11,6 +11,8 @@ import TaxonomyValues from "./taxonomy/TaxonomyValues.jsx";
 import TaxonomyHierarchy from "./taxonomy/TaxonomyHierarchy.jsx";
 import TaxonomySync from "./taxonomy/TaxonomySync.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
+import { getCategory } from "../../utils/taxonomy.jsx";
+import FormLine from "../button/FormLine.jsx";
 
 export default class Taxonomy extends Component {
 	constructor(props) {
@@ -27,6 +29,7 @@ export default class Taxonomy extends Component {
 				"Hierarchy",
 				"Synchronization",
 			],
+			sync_hierarchy: true,
 		};
 	}
 
@@ -70,8 +73,8 @@ export default class Taxonomy extends Component {
 	}
 
 	fetchTaxonomy() {
-		if (this.props.nodeEndpoint) {
-			const url = this.props.nodeEndpoint + "/public/get_public_taxonomy";
+		if (this.props.node && this.props.node.api_endpoint) {
+			const url = this.props.node.api_endpoint + "/public/get_public_taxonomy";
 
 			getForeignRequest.call(this, url, (data) => {
 				this.setState({
@@ -95,6 +98,28 @@ export default class Taxonomy extends Component {
 		}
 	}
 
+	importTaxonomy(close) {
+		const params = {
+			network_node_id: this.props.node.id,
+			taxonomy_category: this.props.name,
+			sync_hierarchy: this.state.sync_hierarchy,
+		};
+
+		postRequest.call(this, "network/import_taxonomy", params, () => {
+			if (close) {
+				close();
+			}
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	changeState(field, value) {
+		this.setState({ [field]: value });
+	}
+
 	render() {
 		return (
 			<Popup
@@ -114,7 +139,54 @@ export default class Taxonomy extends Component {
 				{(close) => <div className="Taxonomy-content row row-spaced">
 					<div className="col-md-12">
 						<div className={"top-right-buttons"}>
-							{!this.props.nodeEndpoint
+							{this.props.node
+								&& getCategory(this.state.taxonomy, this.props.name)
+								&& <Popup
+									className="Popup-small-size"
+									trigger={
+										<button
+											title="Import taxonomy">
+											<i className="fas fa-download"/>
+										</button>
+									}
+									modal
+									closeOnDocumentClick
+								>
+									{(close2) => (
+										<div className="row row-spaced">
+											<div className="col-md-12">
+												<h2>Select options and confirm</h2>
+
+												<div className={"top-right-buttons"}>
+													<button
+														className={"grey-background"}
+														onClick={close2}>
+														<i className="far fa-times-circle"/>
+													</button>
+												</div>
+											</div>
+
+											<div className="col-md-12 right-buttons">
+												<FormLine
+													type="checkbox"
+													label={"Synchronize the complete hierarchy"}
+													value={this.state.sync_hierarchy}
+													onChange={(v) => this.changeState("sync_hierarchy", !v)}
+												/>
+											</div>
+
+											<div className="col-md-12 right-buttons">
+												<button
+													title="Import taxonomy"
+													onClick={() => this.importTaxonomy(close2)}>
+													<i className="fas fa-download"/> Import Taxonomy
+												</button>
+											</div>
+										</div>
+									)}
+								</Popup>
+							}
+							{!this.props.node
 								&& <DialogConfirmation
 									text={"Are you sure you want to delete this taxonomy?"}
 									trigger={
@@ -137,12 +209,19 @@ export default class Taxonomy extends Component {
 						<h1 className="Taxonomy-title">
 							Taxonomy: {this.props.name}
 
-							{this.props.nodeEndpoint
+							{this.props.node
 								? <Chip
 									label={"Remote"}
 								/>
 								: <Chip
 									label={"Local"}
+								/>
+							}
+
+							{getCategory(this.state.taxonomy, this.props.name)
+								&& getCategory(this.state.taxonomy, this.props.name).sync_node
+								&& <Chip
+									label={"Synchronized"}
 								/>
 							}
 						</h1>
@@ -157,28 +236,28 @@ export default class Taxonomy extends Component {
 									key={"global"}
 									name={this.props.name}
 									taxonomy={this.state.taxonomy}
-									editable={!this.props.nodeEndpoint}
+									editable={!this.props.node}
 									refresh={() => this.fetchTaxonomy()}
 								/>,
 								<TaxonomyValues
 									key={"values"}
 									name={this.props.name}
 									taxonomy={this.state.taxonomy}
-									editable={!this.props.nodeEndpoint}
+									editable={!this.props.node}
 									refresh={() => this.fetchTaxonomy()}
 								/>,
 								<TaxonomyHierarchy
 									key={"hierarchy"}
 									name={this.props.name}
 									taxonomy={this.state.taxonomy}
-									editable={!this.props.nodeEndpoint}
+									editable={!this.props.node}
 									refresh={() => this.fetchTaxonomy()}
 								/>,
 								<TaxonomySync
 									key={"sync"}
 									name={this.props.name}
 									taxonomy={this.state.taxonomy}
-									editable={!this.props.nodeEndpoint}
+									editable={!this.props.node}
 									refresh={() => this.fetchTaxonomy()}
 								/>,
 							]}

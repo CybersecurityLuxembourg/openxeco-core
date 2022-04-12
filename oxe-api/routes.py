@@ -73,6 +73,7 @@ from resource.media.get_document import GetDocument
 from resource.network.add_network_node import AddNetworkNode
 from resource.network.delete_network_node import DeleteNetworkNode
 from resource.network.get_network_nodes import GetNetworkNodes
+from resource.network.import_taxonomy import ImportTaxonomy
 from resource.private.add_my_article import AddMyArticle
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_article import DeleteMyArticle

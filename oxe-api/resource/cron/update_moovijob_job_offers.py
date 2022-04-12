@@ -1,8 +1,6 @@
 import copy
 import json
 import re
-from urllib3 import ProxyManager
-from urllib import request
 
 from flask_apispec import MethodResource
 from flask_apispec import doc
@@ -15,6 +13,7 @@ from config.config import HTTP_PROXY
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils import request
 
 
 class UpdateMoovijobJobOffers(MethodResource, Resource):
@@ -39,14 +38,7 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
         base_url = "https://www.moovijob.com/api/job-offers/search?job_categories[]=informatique-consulting" \
                    "&job_categories[]=informatique-dev&job_categories[]=informatique-infra-reseau&q=security"
 
-        if HTTP_PROXY is not None:
-            http = ProxyManager(HTTP_PROXY)
-            response = http.request('GET', base_url)
-            content = response.data
-        else:
-            response = request.urlopen(base_url)  # nosec
-            content = response.read()
-
+        content = request.get_request(base_url)
         data = json.loads(content)
 
         external_references = []

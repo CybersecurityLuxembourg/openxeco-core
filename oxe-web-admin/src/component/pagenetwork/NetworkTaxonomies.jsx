@@ -48,7 +48,7 @@ export default class NetworkTaxonomies extends React.Component {
 				const taxonomies = {};
 
 				data.forEach((d, i) => {
-					taxonomies[this.state.nodes[i].api_endpoint] = d;
+					taxonomies[this.state.nodes[i].id] = d;
 				});
 
 				this.setState({ taxonomies });
@@ -87,7 +87,7 @@ export default class NetworkTaxonomies extends React.Component {
 							<div
 								className="col-md-12"
 								key={k}>
-								<h2>{k}</h2>
+								<h2>{this.state.nodes.filter((n) => n.id === parseInt(k, 10))[0].api_endpoint}</h2>
 
 								<div className={"row"}>
 									{this.state.taxonomies[k].categories
@@ -95,7 +95,7 @@ export default class NetworkTaxonomies extends React.Component {
 											<div className="col-md-4" key={k + "-" + t.name}>
 												<Taxonomy
 													name={t.name}
-													nodeEndpoint={k}
+													node={this.state.nodes.filter((n) => n.id === parseInt(k, 10))[0]}
 												/>
 											</div>
 										))

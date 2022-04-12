@@ -5,6 +5,7 @@ import { NotificationManager as nm } from "react-notifications";
 import Loading from "../../box/Loading.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
+import { getCategory } from "../../../utils/taxonomy.jsx";
 
 export default class TaxonomyGlobal extends React.Component {
 	constructor(props) {
@@ -48,21 +49,6 @@ export default class TaxonomyGlobal extends React.Component {
 		});
 	}
 
-	getCategory() {
-		if (this.props.name && this.props.taxonomy) {
-			const categories = this.props.taxonomy.categories
-				.filter((c) => c.name === this.props.name);
-
-			if (categories.length > 0) {
-				return categories[0];
-			}
-
-			return null;
-		}
-
-		return null;
-	}
-
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -77,20 +63,20 @@ export default class TaxonomyGlobal extends React.Component {
 				<div className="col-md-12">
 					{this.props.name && this.props.taxonomy
 						&& this.props.taxonomy.categories
-						&& this.getCategory()
+						&& getCategory(this.props.taxonomy, this.props.name)
 						? <div className="row">
 							<div className="col-md-12">
 								<FormLine
 									type="checkbox"
 									label={"Active on entities"}
-									value={this.getCategory().active_on_companies}
+									value={getCategory(this.props.taxonomy, this.props.name).active_on_companies}
 									disabled={!this.props.editable}
 									onChange={(v) => this.updateCategory("active_on_companies", v)}
 								/>
 								<FormLine
 									type="checkbox"
 									label={"Active on articles"}
-									value={this.getCategory().active_on_articles}
+									value={getCategory(this.props.taxonomy, this.props.name).active_on_articles}
 									disabled={!this.props.editable}
 									onChange={(v) => this.updateCategory("active_on_articles", v)}
 								/>
@@ -104,9 +90,10 @@ export default class TaxonomyGlobal extends React.Component {
 								<Popup
 									trigger={
 										<button
-											disabled={!this.getCategory().active_on_articles || !this.props.editable}>
-											{this.getCategory().accepted_article_types
-												? this.getCategory().accepted_article_types
+											disabled={!getCategory(this.props.taxonomy, this.props.name)
+												.active_on_articles || !this.props.editable}>
+											{getCategory(this.props.taxonomy, this.props.name).accepted_article_types
+												? getCategory(this.props.taxonomy, this.props.name).accepted_article_types
 													.split(",")
 													.filter((w) => w.trim().length > 0).length + " selected"
 												: "All types"
@@ -133,13 +120,15 @@ export default class TaxonomyGlobal extends React.Component {
 										{this.state.articleEnums && this.state.articleEnums.type
 											? <div className={"col-md-12"}>
 												{this.state.articleEnums.type.map((t) => <FormLine
-													key={this.getCategory().name + t}
+													key={getCategory(this.props.taxonomy, this.props.name).name + t}
 													label={t}
 													type={"checkbox"}
-													value={this.getCategory().accepted_article_types
-														&& this.getCategory().accepted_article_types.includes(t)}
+													value={getCategory(this.props.taxonomy, this.props.name)
+														.accepted_article_types
+														&& getCategory(this.props.taxonomy, this.props.name)
+															.accepted_article_types.includes(t)}
 													onChange={(v) => {
-														const oldValue = this.getCategory().accepted_article_types || "";
+														const oldValue = getCategory(this.props.taxonomy, this.props.name).accepted_article_types || "";
 														let newValue = "";
 
 														if (v) {
@@ -170,7 +159,7 @@ export default class TaxonomyGlobal extends React.Component {
 								<FormLine
 									type="checkbox"
 									label={"Is standard?"}
-									value={this.getCategory().is_standard}
+									value={getCategory(this.props.taxonomy, this.props.name).is_standard}
 									disabled={!this.props.editable}
 									onChange={(v) => this.updateCategory("is_standard", v)}
 								/>

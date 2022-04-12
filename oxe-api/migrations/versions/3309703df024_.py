@@ -26,6 +26,8 @@ def upgrade():
     op.add_column('TaxonomyCategory', sa.Column('sync_global', mysql.BOOLEAN()))
     op.add_column('TaxonomyCategory', sa.Column('sync_values', mysql.BOOLEAN()))
     op.add_column('TaxonomyCategory', sa.Column('sync_hierarchy', mysql.BOOLEAN()))
+    op.add_column('TaxonomyCategory', sa.Column('sync_status', mysql.ENUM('OK', 'CONFLICT', 'UNFOUND', 'ERROR'),
+                                                server_default=sa.text("'OK'"), nullable=False))
     op.create_foreign_key(
         'fk_taxonomycategory_networknode',
         'TaxonomyCategory', 'NetworkNode',
@@ -39,7 +41,9 @@ def downgrade():
     op.drop_column('Company', 'twitter_url')
     op.drop_column('Company', 'youtube_url')
     op.drop_column('Company', 'discord_url')
+    op.drop_constraint('fk_taxonomycategory_networknode', 'TaxonomyCategory', 'foreignkey')
     op.drop_column('TaxonomyCategory', 'sync_node')
     op.drop_column('TaxonomyCategory', 'sync_global')
     op.drop_column('TaxonomyCategory', 'sync_values')
     op.drop_column('TaxonomyCategory', 'sync_hierarchy')
+    op.drop_column('TaxonomyCategory', 'sync_status')
