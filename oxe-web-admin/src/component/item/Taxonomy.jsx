@@ -106,6 +106,7 @@ export default class Taxonomy extends Component {
 		};
 
 		postRequest.call(this, "network/import_taxonomy", params, () => {
+			nm.info("The taxonomy has been imported");
 			if (close) {
 				close();
 			}
@@ -195,7 +196,7 @@ export default class Taxonomy extends Component {
 											<i className="fas fa-trash-alt"/>
 										</button>
 									}
-									afterConfirmation={() => this.confirmDeletion()}
+									afterConfirmation={() => this.confirmDeletion(close)}
 								/>
 							}
 							<button

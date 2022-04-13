@@ -73,7 +73,7 @@ class DB:
 
         return data
 
-    def insert(self, data, table, commit=True):
+    def insert(self, data, table, commit=True, flush=False):
         if isinstance(data, dict):
             data = table(**data)
             self.session.add(data)
@@ -85,6 +85,8 @@ class DB:
 
         if commit:
             self.session.commit()
+        if flush:
+            self.session.flush()
 
         return data
 
