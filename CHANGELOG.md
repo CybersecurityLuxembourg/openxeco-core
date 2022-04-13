@@ -14,7 +14,9 @@ All notable changes to this project will be documented in this file.
 - Form display on oxe-web-community
  
 ### Changed
-  
+
+- Database structure on TaxonomyCategory table
+- Database structure on Company table
 - Renamed and moved "network/get_node_information" to "public/get_public_node_information"
 - Conditions of GH action triggers
 - Setup explanation on oxe-api README.md
