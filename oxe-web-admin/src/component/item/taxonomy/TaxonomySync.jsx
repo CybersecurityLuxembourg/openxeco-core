@@ -16,17 +16,28 @@ export default class TaxonomySync extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		this.getNodes();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.taxonomy !== this.props.taxonomy
+			&& prevProps.name !== this.props.name
+			&& !this.state.nodes) {
+			this.getNodes();
+		}
+	}
+
 	getNodes() {
 		if (this.props.taxonomy
-			&& !getCategory(this.props.taxonomy, this.props.name).sync_node) {
+			&& this.props.name
+			&& getCategory(this.props.taxonomy, this.props.name).sync_node) {
 			this.setState({
 				nodes: null,
 			}, () => {
 				getRequest.call(this, "network/get_network_nodes", (data) => {
 					this.setState({
 						nodes: data,
-					}, () => {
-						this.fetchNodes();
 					});
 				}, (response) => {
 					nm.warning(response.statusText);
@@ -38,11 +49,13 @@ export default class TaxonomySync extends React.Component {
 	}
 
 	getNodeEndpoint() {
-		if (this.props.taxonomy && getCategory(this.props.taxonomy, this.props.name)
+		if (this.props.taxonomy
+			&& getCategory(this.props.taxonomy, this.props.name)
 			&& getCategory(this.props.taxonomy, this.props.name).sync_node
 			&& this.state.nodes) {
 			const nodes = this.state.nodes
-				.filter((c) => c.id === getCategory(this.props.taxonomy, this.props.name).sync_node);
+				.filter((c) => c.id
+					=== parseInt(getCategory(this.props.taxonomy, this.props.name).sync_node, 10));
 
 			if (nodes.length > 0) {
 				return nodes[0];
@@ -79,8 +92,13 @@ export default class TaxonomySync extends React.Component {
 
 							<div className="col-md-12">
 								<FormLine
+									label={"Synchronization status"}
+									value={getCategory(this.props.taxonomy, this.props.name).sync_status}
+									disabled={!this.props.editable || true}
+								/>
+								<FormLine
 									label={"Network node"}
-									value={this.getNodeEndpoint()}
+									value={this.getNodeEndpoint() ? this.getNodeEndpoint().api_endpoint : ""}
 									disabled={!this.props.editable || true}
 								/>
 								<FormLine

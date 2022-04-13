@@ -206,6 +206,7 @@ export default class Taxonomy extends Component {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
+
 						<h1 className="Taxonomy-title">
 							Taxonomy: {this.props.name}
 
@@ -222,6 +223,15 @@ export default class Taxonomy extends Component {
 								&& getCategory(this.state.taxonomy, this.props.name).sync_node
 								&& <Chip
 									label={"Synchronized"}
+								/>
+							}
+
+							{getCategory(this.state.taxonomy, this.props.name)
+								&& getCategory(this.state.taxonomy, this.props.name).sync_node
+								&& getCategory(this.state.taxonomy, this.props.name).sync_status
+								&& <Chip
+									label={"SYNC STATUS: "
+										+ getCategory(this.state.taxonomy, this.props.name).sync_status}
 								/>
 							}
 						</h1>
