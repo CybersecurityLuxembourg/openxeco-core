@@ -19,6 +19,12 @@ class GetMyArticleContent(MethodResource, Resource):
          description='Get the content of an article editable by the user authenticated by the token',
          responses={
              "200": {},
+             "422.1": {"description": "Article ID not found"},
+             "422.2": {"description": "Article has no company assigned"},
+             "422.3": {"description": "Article has too much companies assigned"},
+             "422.4": {"description": "User not assign to the company"},
+             "422.5": {"description": "Article main version not found. Please contact the administrator"},
+             "422.6": {"description": "Too much main version found. Please contact the administrator"},
          })
     @jwt_required
     @catch_exception

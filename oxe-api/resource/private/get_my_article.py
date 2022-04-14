@@ -19,6 +19,10 @@ class GetMyArticle(MethodResource, Resource):
          description='Get the information of an article editable by the user authenticated by the token',
          responses={
              "200": {},
+             "422.1": {"description": "Article ID not found"},
+             "422.2": {"description": "Article has no company assigned"},
+             "422.3": {"description": "Article has too much companies assigned"},
+             "422.4": {"description": "User not assign to the company"},
          })
     @jwt_required
     @catch_exception
