@@ -24,8 +24,10 @@ class UpdateFormQuestion(MethodResource, Resource):
          })
     @use_kwargs({
         'id': fields.Int(),
-        'name': fields.Int(required=False, allow_none=True),
-        'description': fields.Int(required=False, allow_none=True),
+        'position': fields.Int(required=False, allow_none=True),
+        'type': fields.Str(required=False, validate=lambda x: x in ['TEXT', 'CHECKBOX', 'OPTIONS']),
+        'options': fields.Str(required=False, allow_none=True),
+        'value': fields.Str(required=False, allow_none=True),
         'status': fields.Str(required=False, validate=lambda x: x in ['ACTIVE', 'INACTIVE', 'DELETED']),
     })
     @jwt_required

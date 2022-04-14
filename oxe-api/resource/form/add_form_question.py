@@ -30,6 +30,20 @@ class AddFormQuestion(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.insert(kwargs, self.db.tables["FormQuestion"])
+        questions = self.db.get(self.db.tables["FormQuestion"], kwargs)
+        biggest_pos = -1
+
+        if len(questions) > 0:
+            biggest_pos = max([q.position for q in questions])
+
+        print({
+            **{"position": biggest_pos + 1},
+            **kwargs,
+        })
+
+        self.db.insert({
+            **{"position": biggest_pos + 1},
+            **kwargs,
+        }, self.db.tables["FormQuestion"])
 
         return "", "200 "
