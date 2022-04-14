@@ -47,7 +47,7 @@ def upgrade():
         sa.Column('id', mysql.INTEGER(), autoincrement=True, nullable=False),
         sa.Column('name', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=200), nullable=False),
         sa.Column('description', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=500), nullable=True),
-        sa.Column('status', mysql.ENUM('ACTIVE', 'INACTIVE', 'DELETED'), server_default=sa.text("'ACTIVE'"), nullable=False),
+        sa.Column('status', mysql.ENUM('ACTIVE', 'INACTIVE', 'DELETED'), server_default=sa.text("'INACTIVE'"), nullable=False),
         sa.PrimaryKeyConstraint('id'),
         mysql_collate='utf8mb4_unicode_ci',
         mysql_default_charset='utf8mb4',
@@ -60,11 +60,11 @@ def upgrade():
         'FormQuestion',
         sa.Column('id', mysql.INTEGER(), autoincrement=True, nullable=False),
         sa.Column('form_id', mysql.INTEGER(), nullable=False),
-        sa.Column('position', mysql.INTEGER()),
-        sa.Column('type', mysql.ENUM('TEXT', 'CHECKBOX', 'OPTIONS'), nullable=False),
-        sa.Column('options', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=500), nullable=False),
+        sa.Column('position', mysql.INTEGER(), nullable=False),
+        sa.Column('type', mysql.ENUM('TEXT', 'CHECKBOX', 'OPTIONS'), server_default=sa.text("'TEXT'"), nullable=False),
+        sa.Column('options', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=500)),
         sa.Column('value', mysql.TEXT(charset='utf8mb4', collation='utf8mb4_unicode_ci')),
-        sa.Column('status', mysql.ENUM('ACTIVE', 'INACTIVE', 'DELETED'), server_default=sa.text("'ACTIVE'"), nullable=False),
+        sa.Column('status', mysql.ENUM('ACTIVE', 'INACTIVE', 'DELETED'), server_default=sa.text("'INACTIVE'"), nullable=False),
         sa.PrimaryKeyConstraint('id'),
         sa.ForeignKeyConstraint(['form_id'], ['Form.id'], name='form_question_ibfk_1', ondelete='CASCADE'),
         mysql_collate='utf8mb4_unicode_ci',
@@ -95,6 +95,7 @@ def downgrade():
     op.drop_column('Company', 'twitter_url')
     op.drop_column('Company', 'youtube_url')
     op.drop_column('Company', 'discord_url')
+
     op.drop_constraint('fk_taxonomycategory_networknode', 'TaxonomyCategory', 'foreignkey')
     op.drop_column('TaxonomyCategory', 'sync_node')
     op.drop_column('TaxonomyCategory', 'sync_global')
@@ -102,6 +103,6 @@ def downgrade():
     op.drop_column('TaxonomyCategory', 'sync_hierarchy')
     op.drop_column('TaxonomyCategory', 'sync_status')
 
-    '''op.drop_table('Form')
+    op.drop_table('FormAnswer')
     op.drop_table('FormQuestion')
-    op.drop_table('FormAnswer')'''
+    op.drop_table('Form')
