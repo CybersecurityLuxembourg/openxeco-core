@@ -48,7 +48,6 @@ def upgrade():
         sa.Column('name', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=200), nullable=False),
         sa.Column('description', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=500), nullable=True),
         sa.Column('status', mysql.ENUM('ACTIVE', 'INACTIVE', 'DELETED'), server_default=sa.text("'ACTIVE'"), nullable=False),
-        sa.Column('keywords', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=510), nullable=True),
         sa.PrimaryKeyConstraint('id'),
         mysql_collate='utf8mb4_unicode_ci',
         mysql_default_charset='utf8mb4',

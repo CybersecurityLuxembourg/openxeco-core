@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Social media fields on Company objects
 - Taxonomy items on oxe-web-admin
 - Import system on taxonomies
+- Database structure for forms (Form, FormQuestion, FormAnswer)
 - Form edition on oxe-web-admin
 - Form display on oxe-web-community
  
