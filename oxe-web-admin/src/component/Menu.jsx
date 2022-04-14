@@ -157,6 +157,19 @@ export default class Menu extends React.Component {
 							</NavText>
 						</NavItem>
 					}
+					{getSettingValue(this.props.settings, "SHOW_FORM_PAGE") === "TRUE"
+						&& <NavItem
+							eventKey="form"
+							active={this.props.selectedMenu === "form"}
+							onClick={() => this.props.history.push("/form")}>
+							<NavIcon>
+								<i className="fas fa-poll-h" style={{ fontSize: "1.75em" }} />
+							</NavIcon>
+							<NavText>
+								Form
+							</NavText>
+						</NavItem>
+					}
 					<NavItem
 						eventKey="media"
 						active={this.props.selectedMenu === "media"}

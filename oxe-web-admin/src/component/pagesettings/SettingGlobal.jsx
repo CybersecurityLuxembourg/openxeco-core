@@ -28,6 +28,7 @@ export default class SettingGlobal extends React.Component {
 				"PHONE_NUMBER",
 				"POSTAL_ADDRESS",
 				"SHOW_COMMUNICATION_PAGE",
+				"SHOW_FORM_PAGE",
 				"SHOW_NETWORK_PAGE",
 				"ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION",
 				"ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE",
@@ -229,6 +230,15 @@ export default class SettingGlobal extends React.Component {
 							onChange={(v) => (v
 								? this.addSetting("SHOW_COMMUNICATION_PAGE", "TRUE")
 								: this.deleteSetting("SHOW_COMMUNICATION_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Show form page"}
+							value={getSettingValue(this.props.settings, "SHOW_FORM_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_FORM_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_FORM_PAGE")
 							)}
 						/>
 						<FormLine

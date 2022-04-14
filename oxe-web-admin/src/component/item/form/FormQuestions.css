@@ -1,0 +1,13 @@
+
+.FormQuestion-question {
+	width: 100%;
+	background-color: #bcebff;
+}
+
+.FormQuestion-question-hidden {
+	background-color: lightgrey !important;
+}
+
+.FormQuestion-question .FormLine-label {
+	font-weight: bold;
+}

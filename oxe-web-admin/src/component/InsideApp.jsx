@@ -13,6 +13,7 @@ import PageNetwork from "./PageNetwork.jsx";
 import PageTask from "./PageTask.jsx";
 import PageUser from "./PageUser.jsx";
 import PageEmail from "./PageEmail.jsx";
+import PageForm from "./PageForm.jsx";
 import PageMedia from "./PageMedia.jsx";
 import PageSettings from "./PageSettings.jsx";
 import PageProfile from "./PageProfile.jsx";
@@ -92,6 +93,10 @@ export default class InsideApp extends React.Component {
 
 						{getSettingValue(this.state.settings, "SHOW_NETWORK_PAGE") === "TRUE"
 							&& <Route path="/network" render={(props) => <PageNetwork {...props} />}/>
+						}
+
+						{getSettingValue(this.state.settings, "SHOW_FORM_PAGE") === "TRUE"
+							&& <Route path="/form" render={(props) => <PageForm {...props} />}/>
 						}
 
 						{getSettingValue(this.state.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"
