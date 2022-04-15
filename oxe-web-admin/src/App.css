@@ -292,6 +292,8 @@ textarea {
 	border-radius: 0.4rem;
 	transition: box-shadow var(--transitionDuration);
 	background-color: white;
+	min-height: 40px !important;
+	border-radius: 4px;
 }
 
 .medium-editor-toolbar button {
