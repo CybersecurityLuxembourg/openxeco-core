@@ -65,6 +65,7 @@ from resource.form.get_form_questions import GetFormQuestions
 from resource.form.get_forms import GetForms
 from resource.form.update_form import UpdateForm
 from resource.form.update_form_question import UpdateFormQuestion
+from resource.form.update_form_question_order import UpdateFormQuestionOrder
 from resource.healthz import Healthz
 from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
