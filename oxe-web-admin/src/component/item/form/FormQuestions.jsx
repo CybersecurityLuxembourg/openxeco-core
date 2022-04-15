@@ -116,13 +116,14 @@ export default class FormQuestions extends React.Component {
 		}
 	}
 
-	updatePositions(positions) {
+	updateQuestionOrder(order) {
 		if (this.props.form.status !== "DELETED") {
 			const params = {
-				positions,
+				form_id: this.props.form.id,
+				question_order: order,
 			};
 
-			postRequest.call(this, "form/update_form_question_positions", params, () => {
+			postRequest.call(this, "form/update_form_question_order", params, () => {
 				this.refresh();
 				nm.info("The question positions has been updated");
 			}, (response) => {
@@ -137,47 +138,15 @@ export default class FormQuestions extends React.Component {
 		}
 	}
 
+	// eslint-disable-next-line class-methods-use-this
 	onDragEnd(result) {
-		if (!result.destination) {
-			return;
-		}
-
-		if (result.destination.droppableId !== "null") {
-			const params = {
-				parent_value: parseInt(result.destination.droppableId, 10),
-				child_value: parseInt(result.draggableId, 10),
-			};
-
-			postRequest.call(this, "taxonomy/add_taxonomy_value_hierarchy", params, () => {
-				nm.info("The modification has been saved");
-
-				this.props.refresh();
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
-		}
-
-		if (result.source.droppableId !== "null") {
-			const params = {
-				parent_value: parseInt(result.source.droppableId, 10),
-				child_value: parseInt(result.draggableId, 10),
-			};
-
-			postRequest.call(this, "taxonomy/delete_taxonomy_value_hierarchy", params, () => {
-				nm.info("The modification has been saved");
-
-				this.props.refresh();
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
-		}
+		const order = this.state.questions.map((q) => (q.id));
+		const element = order[result.source.index];
+		order.splice(result.source.index, 1);
+		order.splice(result.destination.index, 0, element);
+		this.updateQuestionOrder(order);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	getQuestionBox(p, s, question) {
 		const getItemStyle = (isDragging, draggableStyle) => ({
 			...draggableStyle,
@@ -273,7 +242,7 @@ export default class FormQuestions extends React.Component {
 				{this.state.questions && this.state.questionEnums
 					&& (this.state.questions.length > 0
 						? <div className="col-md-12">
-							<DragDropContext onDragEnd={this.onDragEnd}>
+							<DragDropContext onDragEnd={(a) => this.onDragEnd(a)}>
 								<Droppable droppableId="null" direction="vertical">
 									{(provided) => (
 										<div
