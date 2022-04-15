@@ -3,6 +3,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
+from operator import itemgetter
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -32,5 +33,6 @@ class GetFormQuestions(MethodResource, Resource):
 
         data = self.db.get(self.db.tables["FormQuestion"], kwargs)
         data = Serializer.serialize(data, self.db.tables["FormQuestion"])
+        data = sorted(data, key=itemgetter("position"))
 
         return data, "200 "
