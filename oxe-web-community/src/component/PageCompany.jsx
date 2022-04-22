@@ -8,6 +8,7 @@ import CompanyCollaborator from "./pagecompany/CompanyCollaborator.jsx";
 import CompanyRequest from "./pagecompany/CompanyRequest.jsx";
 import CompanyTaxonomy from "./pagecompany/CompanyTaxonomy.jsx";
 import Loading from "./box/Loading.jsx";
+import { getUrlParameter } from "../utils/url.jsx";
 
 export default class PageCompany extends React.Component {
 	constructor(props) {
@@ -15,31 +16,56 @@ export default class PageCompany extends React.Component {
 
 		this.state = {
 			company: null,
+			selectedMenu: null,
+			tabs: [
+				"global_information",
+				"logo",
+				"address",
+				"taxonomy",
+				"collaborator",
+				"request",
+			],
 		};
 	}
 
 	componentDidMount() {
 		this.selectCompany();
+
+		if (getUrlParameter("tab") && this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
 	}
 
 	componentDidUpdate(prevProps) {
 		if (this.props.myCompanies !== prevProps.myCompanies) {
 			this.selectCompany();
 		}
+
+		if (this.state.selectedMenu !== getUrlParameter("tab")
+			&& this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
 	}
 
 	selectCompany() {
 		if (this.props.myCompanies === null
 			|| this.props.match.params.id === null) {
-			this.setState({ company: null });
+			this.setState({ company: null, selectedMenu: null });
 		} else {
 			const c = this.props.myCompanies
 				.filter((m) => m.id === parseInt(this.props.match.params.id, 10));
 
 			if (c.length > 0) {
-				this.setState({ company: c[0] });
+				this.setState({
+					company: c[0],
+					selectedMenu: c[0].id,
+				});
 			}
 		}
+	}
+
+	onMenuClick(m) {
+		this.props.history.push("?tab=" + m);
 	}
 
 	changeState(field, value) {
@@ -65,7 +91,10 @@ export default class PageCompany extends React.Component {
 					<div className="col-md-12">
 						{this.state.company !== null
 							? <Tab
-								menu={[
+								selectedMenu={this.state.selectedMenu}
+								onMenuClick={(m) => this.onMenuClick(m)}
+								keys={this.state.tabs}
+								labels={[
 									"Global information",
 									"Logo",
 									"Address",
