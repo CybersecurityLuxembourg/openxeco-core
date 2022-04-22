@@ -144,6 +144,21 @@ export default class PageHome extends React.Component {
 						</a>
 					</div>
 
+					<div className="col-md-6">
+						<h2>My forms</h2>
+
+						<a
+							onClick={() => this.props.changeMenu("form")}
+						>
+							<Link to="/form">
+								<div className="PageHome-white-block">
+									<i className="fas fa-poll-h"/>
+									<h3>FORMS</h3>
+								</div>
+							</Link>
+						</a>
+					</div>
+
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <div className="col-md-6">
