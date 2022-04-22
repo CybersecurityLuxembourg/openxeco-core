@@ -4,7 +4,7 @@
 
 @media (min-width: 0px) {
     .Tab-menu {
-    	padding: 20px 0px;
+        padding: 20px 0px;
     }
 }
 
@@ -18,8 +18,8 @@
 
 .Tab-menu-el {
     position: relative;
-	cursor: pointer;
-	color: #010101;
+    cursor: pointer;
+    color: #010101;
     text-transform: uppercase;
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;

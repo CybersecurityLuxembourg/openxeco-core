@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { Route, Switch } from "react-router-dom";
 import Menu from "./Menu.jsx";
 import PageHome from "./PageHome.jsx";
+import PageForm from "./PageForm.jsx";
 import PageArticles from "./PageArticles.jsx";
 import PageLogoGenerator from "./PageLogoGenerator.jsx";
 import PageAddCompany from "./PageAddCompany.jsx";
@@ -101,6 +102,10 @@ export default class InsideApp extends React.Component {
 							notifications={this.state.notifications}
 							getNotifications={this.getNotifications}
 							changeMenu={this.changeMenu}
+							{...props}
+						/>}/>
+						<Route path="/form" render={(props) => <PageForm
+							settings={this.props.settings}
 							{...props}
 						/>}/>
 						<Route path="/add_company" render={(props) => <PageAddCompany

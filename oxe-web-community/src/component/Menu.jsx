@@ -68,6 +68,17 @@ export default class Menu extends React.Component {
 							My Profile
 						</NavText>
 					</NavItem>
+					<NavItem
+						eventKey="form"
+						active={this.props.selectedMenu === "form"}
+						onClick={() => this.props.history.push("/form")}>
+						<NavIcon>
+							<i className="fas fa-poll-h" style={{ fontSize: "1.75em" }} />
+						</NavIcon>
+						<NavText>
+							Form
+						</NavText>
+					</NavItem>
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_LOGO === "TRUE"
 						&& <NavItem
