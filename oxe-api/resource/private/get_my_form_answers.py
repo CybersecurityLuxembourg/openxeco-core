@@ -24,15 +24,15 @@ class GetMyFormAnswers(MethodResource, Resource):
              "422.2": {"description": "The requested form is not accessible"},
          })
     @use_kwargs({
-        'id': fields.Int(),
-    })
+        'form_id': fields.Int(),
+    }, location="query")
     @jwt_required
     @catch_exception
-    def get(self, id_):
+    def get(self, **kwargs):
 
         # Check existence and status of the form
 
-        forms = self.db.get(self.db.tables["Form"], {"id": id_})
+        forms = self.db.get(self.db.tables["Form"], {"id": kwargs["form_id"]})
 
         if len(forms) < 1:
             return "", "422 Form ID not found"
@@ -42,7 +42,7 @@ class GetMyFormAnswers(MethodResource, Resource):
 
         # Get the questions of the form
 
-        questions = self.db.get(self.db.tables["FormQuestion"], {"form_id": forms[0].id})
+        questions = self.db.get(self.db.tables["FormQuestion"], {"form_id": forms[0].id, "status": "ACTIVE"})
 
         # Get the user answers
 

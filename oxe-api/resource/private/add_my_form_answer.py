@@ -30,6 +30,6 @@ class AddFormAnswer(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.insert(kwargs, self.db.tables["For m"])
+        self.db.insert(kwargs, self.db.tables["FormAnswer"])
 
         return "", "200 "
