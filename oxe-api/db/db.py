@@ -35,7 +35,6 @@ class DB:
         self.engine = self.instance.engine
 
         # Upgrade the structure to always have the latest version
-
         migration_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "migrations")
         self.migrate = Migrate(app, self.instance, directory=migration_path)
 

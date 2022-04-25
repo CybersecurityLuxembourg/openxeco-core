@@ -19,7 +19,7 @@ from db.db import DB
 from dotenv import load_dotenv
 load_dotenv()
 
-from config import config # pylint: disable=wrong-import-position
+from config import config  # pylint: disable=wrong-import-position
 
 # Manage DB connection
 db_uri = URL(**config.DB_CONFIG)
