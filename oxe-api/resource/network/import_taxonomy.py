@@ -122,7 +122,7 @@ class ImportTaxonomy(MethodResource, Resource):
         category = self.db.insert(category, self.db.tables["TaxonomyCategory"], commit=False, flush=True)
 
         # Clean and insert values
-        print(taxonomy)
+
         values = [deepcopy(v) for v in taxonomy["values"] if v["category"] == category.name]
 
         for v in values:
@@ -142,8 +142,6 @@ class ImportTaxonomy(MethodResource, Resource):
 
         local_parent_values = self.db.get(self.db.tables["TaxonomyValue"], {"category": hierarchy["parent_category"]})
         local_child_values = self.db.get(self.db.tables["TaxonomyValue"], {"category": hierarchy["child_category"]})
-
-        print(parent_values)
 
         value_hierarchy = [h for h in taxonomy["value_hierarchy"]
                            if h["parent_value"] in [v["id"] for v in parent_values]
