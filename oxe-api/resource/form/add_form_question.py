@@ -21,6 +21,7 @@ class AddFormQuestion(MethodResource, Resource):
          description='Add a form',
          responses={
              "200": {},
+             "422": {"description": "The provided form ID does not exist"},
          })
     @use_kwargs({
         'form_id': fields.Int(),
@@ -30,16 +31,14 @@ class AddFormQuestion(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
+        if len(self.db.get(self.db.tables["Form"], {"id": kwargs["form_id"]})) == 0:
+            return "", "422 The provided form ID does not exist"
+
         questions = self.db.get(self.db.tables["FormQuestion"], kwargs)
-        biggest_pos = -1
+        biggest_pos = 0
 
         if len(questions) > 0:
             biggest_pos = max([q.position for q in questions])
-
-        print({
-            **{"position": biggest_pos + 1},
-            **kwargs,
-        })
 
         self.db.insert({
             **{"position": biggest_pos + 1},
