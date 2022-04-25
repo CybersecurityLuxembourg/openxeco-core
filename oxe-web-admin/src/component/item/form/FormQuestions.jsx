@@ -180,6 +180,16 @@ export default class FormQuestions extends React.Component {
 						labelWidth={3}
 					/>
 				</div>
+				{question.type === "OPTIONS"
+					&& <div className="col-md-12">
+						<FormLine
+							label={"Options (Sep. by \"|\")"}
+							value={question.options}
+							onBlur={(v) => this.updateQuestion(question.id, "options", v)}
+							labelWidth={3}
+						/>
+					</div>
+				}
 				<div className="col-md-6">
 					<FormLine
 						type={"select"}
