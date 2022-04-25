@@ -37,7 +37,7 @@ export default class Tab extends React.Component {
 				<div className={"row"}>
 					<div className="col-md-2">
 						<div className={"row"}>
-							<div className="col-md-2">
+							<div className="col-md-12">
 								<div className="Tab-menu">
 									{this.props.keys.map((k, i) => {
 										if (k === null) {
