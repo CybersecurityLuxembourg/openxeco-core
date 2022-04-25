@@ -76,7 +76,7 @@ export default class Menu extends React.Component {
 							<i className="fas fa-poll-h" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							Form
+							Forms
 						</NavText>
 					</NavItem>
 					{this.props.settings

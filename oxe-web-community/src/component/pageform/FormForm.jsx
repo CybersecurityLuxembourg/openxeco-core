@@ -3,6 +3,7 @@ import "./FormForm.css";
 import dompurify from "dompurify";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
+import Message from "../box/Message.jsx";
 import Loading from "../box/Loading.jsx";
 import { dictToURI } from "../../utils/url.jsx";
 import FormLine from "../form/FormLine.jsx";
@@ -55,7 +56,6 @@ export default class FormForm extends React.Component {
 	}
 
 	getAnswers() {
-		console.log(this.props.form);
 		this.setState({
 			answers: null,
 		}, () => {
@@ -75,19 +75,34 @@ export default class FormForm extends React.Component {
 		});
 	}
 
-	updateAnswer(id, field, value) {
-		const params = {
-			id,
-			[field]: value,
-		};
+	updateAnswer(id, answer, value) {
+		if (answer) {
+			const params = {
+				id: answer.id,
+				value,
+			};
 
-		postRequest.call(this, "private/update_my_form_answer", params, () => {
-			nm.info("The answer has been updated");
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+			postRequest.call(this, "private/update_my_form_answer", params, () => {
+				nm.info("The answer has been updated");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		} else {
+			const params = {
+				form_question_id: id,
+				value,
+			};
+
+			postRequest.call(this, "private/add_my_form_answer", params, () => {
+				nm.info("The answer has been added");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
 	}
 
 	getAnswer(q) {
@@ -114,10 +129,11 @@ export default class FormForm extends React.Component {
 			{q.type === "TEXT"
 				&& <div className="col-md-12 row-spaced">
 					<FormLine
+						type={"editor"}
 						label={""}
 						fullWidth={true}
-						value={this.getAnswer() ? this.getAnswer().value : ""}
-						onBlur={(v) => this.updateAnswer(q.id, "value", v)}
+						value={this.getAnswer(q) ? this.getAnswer(q).value : ""}
+						onBlur={(v) => this.updateAnswer(q.id, this.getAnswer(q), v)}
 					/>
 				</div>
 			}
@@ -128,15 +144,29 @@ export default class FormForm extends React.Component {
 						label={""}
 						fullWidth={true}
 						type={"checkbox"}
-						value={this.getAnswer() ? this.getAnswer().value === "TRUE" : false}
-						onChange={(v) => this.updateAnswer(q.id, "value", v ? "TRUE" : "FALSE")}
+						value={this.getAnswer(q) ? this.getAnswer(q).value === "TRUE" : false}
+						onChange={(v) => this.updateAnswer(q.id, this.getAnswer(q), v ? "TRUE" : "FALSE")}
 					/>
 				</div>
 			}
 
 			{q.type === "OPTIONS"
 				&& <div className="col-md-12 row-spaced">
-
+					{q.options
+						? <FormLine
+							label={"Department"}
+							type={"select"}
+							value={this.getAnswer(q) ? this.getAnswer(q).value : false}
+							options={q.options.split("|").map((o) => ({ label: o, value: o }))}
+							onChange={(v) => this.updateAnswer(q.id, this.getAnswer(q), v)}
+						/>
+						: <div className="col-md-12 row-spaced">
+							<Message
+								height={100}
+								text={"No option found for this question"}
+							/>
+						</div>
+					}
 				</div>
 			}
 		</div>;
@@ -158,7 +188,7 @@ export default class FormForm extends React.Component {
 				</div>
 
 				{this.props.form.description
-					&& <div className={"row"}>
+					&& <div className={"row row-spaced"}>
 						<div className="col-md-12">
 							<div dangerouslySetInnerHTML={{
 								__html:
