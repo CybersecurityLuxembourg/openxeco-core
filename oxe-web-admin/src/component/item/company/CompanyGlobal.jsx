@@ -96,7 +96,7 @@ export default class CompanyGlobal extends React.Component {
 					<h2>Global</h2>
 				</div>
 
-				<div className="col-md-12">
+				<div className="col-md-12 row-spaced">
 					<FormLine
 						label={"Status"}
 						type={"select"}
@@ -154,7 +154,7 @@ export default class CompanyGlobal extends React.Component {
 				</div>
 
 				<div className="col-md-12">
-					<h2>Social network</h2>
+					<h3>Social network</h3>
 				</div>
 
 				<div className="col-md-12">
