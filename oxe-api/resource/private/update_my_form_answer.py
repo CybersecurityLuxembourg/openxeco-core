@@ -24,12 +24,9 @@ class UpdateFormAnswer(MethodResource, Resource):
          })
     @use_kwargs({
         'id': fields.Int(),
-        'name': fields.Int(required=False, allow_none=True),
-        'description': fields.Int(required=False, allow_none=True),
-        'status': fields.Str(required=False, validate=lambda x: x in ['ACTIVE', 'INACTIVE', 'DELETED']),
+        'value': fields.Str(required=False, allow_none=True),
     })
     @jwt_required
-    @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 

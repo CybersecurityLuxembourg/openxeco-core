@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 
@@ -23,13 +23,14 @@ class AddFormAnswer(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
-        'name': fields.Str(),
+        'form_question_id': fields.Int(),
+        'value': fields.Str(),
     })
     @jwt_required
-    @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
+        kwargs["user_id"] = get_jwt_identity()
         self.db.insert(kwargs, self.db.tables["FormAnswer"])
 
         return "", "200 "
