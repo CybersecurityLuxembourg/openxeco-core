@@ -41,8 +41,8 @@ class UpdateFormQuestionOrder(MethodResource, Resource):
             if q.id not in kwargs["question_order"]:
                 return "", "422 The provided question IDs does not match the form questions"
 
-        for i, id in enumerate(kwargs["question_order"], start=1):
-            question = [q for q in questions if q.id == id][0]
+        for i, ident in enumerate(kwargs["question_order"], start=1):
+            question = [q for q in questions if q.id == ident][0]
             question.position = i
 
         self.db.merge(questions, self.db.tables["FormQuestion"])

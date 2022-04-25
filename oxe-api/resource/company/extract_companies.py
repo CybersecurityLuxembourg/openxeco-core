@@ -48,8 +48,8 @@ class ExtractCompanies(MethodResource, Resource):
     }, location="query")
     @jwt_required
     @verify_admin_access
-    @catch_exception  # pylint: disable=too-many-branches
-    def get(self, **kwargs):
+    @catch_exception  # pylint: disable=too-many-branches,too-many-statements
+    def get(self, **kwargs):  # noqa: MC0001
 
         # Manage global data
 
@@ -87,7 +87,7 @@ class ExtractCompanies(MethodResource, Resource):
 
             users = self.db.get(
                 self.db.tables["User"],
-                {"id": list(set([a.user_id for a in user_assignments]))},
+                {"id": list(set([a.user_id for a in user_assignments]))},  # pylint: disable=consider-using-set-comprehension
                 ["id", "email", "last_name", "first_name"]
             )
 

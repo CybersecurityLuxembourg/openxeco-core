@@ -8,6 +8,5 @@ def get_request(target):
         http = ProxyManager(HTTP_PROXY)
         response = http.request('GET', target)
         return response.data
-    else:
-        response = request.urlopen(target)  # nosec
-        return response.read()
+    response = request.urlopen(target)  # nosec
+    return response.read()

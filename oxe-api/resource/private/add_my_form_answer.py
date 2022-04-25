@@ -6,7 +6,6 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from decorator.verify_admin_access import verify_admin_access
 
 
 class AddFormAnswer(MethodResource, Resource):

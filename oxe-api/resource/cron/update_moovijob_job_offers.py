@@ -9,7 +9,6 @@ from flask_restful import Resource
 from sqlalchemy import func
 
 from db.db import DB
-from config.config import HTTP_PROXY
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
@@ -96,14 +95,7 @@ class UpdateMoovijobJobOffers(MethodResource, Resource):
             current_page += 1
 
             if current_page <= nb_pages:
-                if HTTP_PROXY is not None:
-                    http = ProxyManager(HTTP_PROXY)
-                    response = http.request('GET', f"{base_url}&page={current_page}")
-                    content = response.data
-                else:
-                    response = request.urlopen(f"{base_url}&page={current_page}")  # nosec
-                    content = response.read()
-
+                content = request.get_request(f"{base_url}&page={current_page}")
                 data = json.loads(content)
 
         # Deactivate the missing offers
