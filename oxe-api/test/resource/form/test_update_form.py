@@ -1,4 +1,5 @@
 from test.BaseCase import BaseCase
+from utils.serializer import Serializer
 
 
 class TestUpdateForm(BaseCase):
@@ -6,10 +7,12 @@ class TestUpdateForm(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/form/update_form")
     def test_ok(self, token):
-        form = self.db.insert({"name": "FORM1"}, self.db.tables["Form"])
+        form = Serializer.serialize(
+            self.db.insert({"name": "FORM1"}, self.db.tables["Form"]),
+            self.db.tables["Form"])
 
         payload = {
-            "id": form.id,
+            "id": form["id"],
             "name": "FORM2",
             "description": "desc",
             "status": "INACTIVE",
@@ -19,7 +22,7 @@ class TestUpdateForm(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        forms = self.db.get(self.db.tables["Form"], {"id": form.id})
+        forms = self.db.get(self.db.tables["Form"], {"id": form["id"]})
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(forms), 1)
