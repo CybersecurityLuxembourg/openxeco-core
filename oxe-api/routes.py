@@ -90,6 +90,7 @@ from resource.private.add_my_article import AddMyArticle
 from resource.private.add_my_form_answer import AddFormAnswer
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_article import DeleteMyArticle
+from resource.private.delete_my_form_answer import DeleteMyFormAnswer
 from resource.private.delete_my_request import DeleteMyRequest
 from resource.private.delete_my_user import DeleteMyUser
 from resource.private.generate_my_user_handle import GenerateMyUserHandle

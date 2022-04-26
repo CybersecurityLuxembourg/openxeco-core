@@ -32,7 +32,7 @@ class GetMyFormQuestions(MethodResource, Resource):
 
         # Check existence and status of the form
 
-        forms = self.db.get(self.db.tables["Form"], {"id": kwargs["form_id"], "status": "ACTIVE"})
+        forms = self.db.get(self.db.tables["Form"], {"id": kwargs["form_id"]})
 
         if len(forms) < 1:
             return "", "422 Form ID not found"

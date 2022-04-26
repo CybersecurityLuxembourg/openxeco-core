@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from exception.object_not_found import ObjectNotFound
 
 
-class DeleteFormAnswer(MethodResource, Resource):
+class DeleteMyFormAnswer(MethodResource, Resource):
 
     db = None
 
@@ -28,7 +28,6 @@ class DeleteFormAnswer(MethodResource, Resource):
         'id': fields.Int(),
     })
     @jwt_required
-    @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
