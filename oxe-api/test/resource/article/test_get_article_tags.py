@@ -25,26 +25,34 @@ class TestGetArticleTags(BaseCase):
                 {
                     'creation_date': None,
                     'description': None,
+                    'discord_url': None,
                     'status': 'ACTIVE',
                     'id': 10,
                     'image': None,
                     'is_cybersecurity_core_business': 0,
                     'is_startup': 0,
+                    'linkedin_url': None,
                     'name': 'COMPANY',
                     'trade_register_number': None,
-                    'website': None
+                    'twitter_url': None,
+                    'website': None,
+                    'youtube_url': None
                 },
                 {
                     'creation_date': None,
                     'description': None,
+                    'discord_url': None,
                     'status': 'ACTIVE',
                     'id': 11,
                     'image': None,
                     'is_cybersecurity_core_business': 0,
                     'is_startup': 0,
+                    'linkedin_url': None,
                     'name': 'COMPANY2',
                     'trade_register_number': None,
-                    'website': None
+                    'twitter_url': None,
+                    'website': None,
+                    'youtube_url': None
                 }],
             'taxonomy_tags': [
                 {

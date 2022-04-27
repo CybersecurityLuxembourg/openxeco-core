@@ -93,6 +93,7 @@ class TestGetArticleContent(BaseCase):
             'publication_date': '2021-01-24',
             'start_date': None,
             'end_date': None,
+            'handle': 'title',
             'taxonomy_tags': [],
             'company_tags': [],
             'title': 'TITLE',

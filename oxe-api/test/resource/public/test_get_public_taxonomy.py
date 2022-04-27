@@ -1,7 +1,7 @@
 from test.BaseCase import BaseCase
 
 
-class TestGetGlobalAnalytics(BaseCase):
+class TestGetPublicTaxonomy(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
@@ -20,6 +20,11 @@ class TestGetGlobalAnalytics(BaseCase):
                     'active_on_articles': 0,
                     'active_on_companies': 0,
                     'is_standard': 0,
+                    'sync_global': None,
+                    'sync_hierarchy': None,
+                    'sync_node': None,
+                    'sync_status': "OK",
+                    'sync_values': None
                 }
             ],
             "values": [

@@ -11,9 +11,6 @@ class Mail:
 
 class TestMail(BaseCase):
 
-    def test_ok(self):
-        send_email(Mail(), "subject", "recipient", "html_body")
-
     def test_force_connection_error(self):
         self.assertRaises(Exception,
                           send_email,

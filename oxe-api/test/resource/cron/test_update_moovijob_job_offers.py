@@ -8,7 +8,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
-    @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
+    @patch('utils.request.request.urlopen')
     def test_ok(self, mock_urlopen, token):
         self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
@@ -58,7 +58,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
-    @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
+    @patch('utils.request.request.urlopen')
     def test_ok_with_2_pages(self, mock_urlopen, token):
         self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
@@ -85,7 +85,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
-    @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
+    @patch('utils.request.request.urlopen')
     def test_ok_with_existing_articles(self, mock_urlopen, token):
         self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
@@ -149,7 +149,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
-    @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
+    @patch('utils.request.request.urlopen')
     def test_ok_with_existing_articles_2(self, mock_urlopen, token):
         self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 
@@ -217,7 +217,7 @@ class TestUpdateMoovijobJobOffers(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/cron/update_moovijob_job_offers")
-    @patch('resource.cron.update_moovijob_job_offers.request.urlopen')
+    @patch('utils.request.request.urlopen')
     def test_ko_no_article(self, mock_urlopen, token):
         self.db.insert({"id": 1, "name": "Moovijob"}, self.db.tables["Company"])
 

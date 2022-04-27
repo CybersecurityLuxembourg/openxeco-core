@@ -18,14 +18,24 @@ class TestGetTaxonomyCategories(BaseCase):
                 'active_on_articles': 0,
                 'active_on_companies': 0,
                 'is_standard': 0,
-                'name': 'CAT1'
+                'name': 'CAT1',
+                'sync_global': None,
+                'sync_hierarchy': None,
+                'sync_node': None,
+                'sync_status': "OK",
+                'sync_values': None
             },
             {
                 'accepted_article_types': None,
                 'active_on_articles': 0,
                 'active_on_companies': 0,
                 'is_standard': 0,
-                'name': 'CAT2'
+                'name': 'CAT2',
+                'sync_global': None,
+                'sync_hierarchy': None,
+                'sync_node': None,
+                'sync_status': "OK",
+                'sync_values': None
             },
         ], response.json)
 
