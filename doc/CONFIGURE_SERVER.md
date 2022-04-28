@@ -1,8 +1,9 @@
-# Some links
+# Documentation to set up an openXeco instance
 
-https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04
+## Some links
+
+https://docs.docker.com/engine/install/ubuntu/
 https://ubuntu.com/tutorials/install-and-configure-apache#1-overview
-https://asdkazmi.medium.com/deploying-flask-app-with-wsgi-and-apache-server-on-ubuntu-20-04-396607e0e40f
 https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04
 https://ubiq.co/tech-blog/enable-cors-apache-web-server/
 
@@ -10,16 +11,17 @@ https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=674857#25
 https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=932458
 https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931899
 
-# Prerequisite
+## Prerequisite
 
 The DNS should be configured to direct to the target machine. This is necessary to set up SSL configuration on Apache with 'Let's encrypt'. In our example:
 
 ```
-31.22.123.55 A  test-db.cy.lu
-31.22.123.55 A  api.test-db.cy.lu
+XXX.XXX.XXX.XXX A  api.MYDOMAIN.XXX
+XXX.XXX.XXX.XXX A  admin.MYDOMAIN.XXX
+XXX.XXX.XXX.XXX A  community.MYDOMAIN.XXX
 ```
 
-# Initialization of the setup
+## Initialization of the setup
 
 This procedure has been done on the following OS version:
 
@@ -38,7 +40,12 @@ Update the package index
 > sudo apt update
 ```
 
-# Install MySQL Version 8.0.22
+## Installation of Docker
+
+
+
+
+## Install MySQL Version 8.0.22
 
 Previously, you will need to gather the different SQl script from the bo-api project in the bo-api/db/structure directory.
 If you have an up-to-date backup of the database, you can also use this backup.
@@ -139,7 +146,7 @@ mysql>GRANT DELETE, INSERT, SELECT, UPDATE ON CYBERLUX.* TO 'cyberlux'@'localhos
 mysql>FLUSH PRIVILEGES;
 ```
 
-# Install and setup apache server
+## Install and setup apache server
 
 ```
 > sudo apt install apache2
@@ -185,7 +192,7 @@ To take in count the new configuration, we need to run the following:
 > service apache2 reload
 ```
 
-# Install 'Let's encrypt' and setup HTTPS virtual hosts
+## Install 'Let's encrypt' and setup HTTPS virtual hosts
 
 ```
 > #sudo add-apt-repository ppa:certbot/certbot # Not needed on recent versions of Ubuntu
@@ -257,7 +264,7 @@ Let's do this again for the api virtual host
 > sudo certbot --apache -d api.test-db.cy.lu
 ```
 
-# In case Apache is not starting
+## In case Apache is not starting
 
 Here are a set a command that can be useful to track the error when Apache doesn't start properly
 
@@ -268,7 +275,7 @@ sudo journalctl | tail
 sudo cat /var/log/apache2/error.log
 ```
 
-# Install Python and WSGI mode
+## Install Python and WSGI mode
 
 ```
 > sudo apt-get install python3.8
@@ -291,7 +298,7 @@ WSGIApplicationGroup %{GLOBAL}
 </Directory>
 ```
 
-# All set !
+## All set !
 
 The server is configured, we can finish with:
 

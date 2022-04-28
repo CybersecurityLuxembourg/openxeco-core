@@ -69,6 +69,10 @@ https://docs.docker.com/get-docker/
 ```
 $ docker run -p 3306:3306 -e MARIADB_ROOT_PASSWORD=E4syPass mariadb:10.7.3
 $ docker run -p 1025:25 b2ck/fake-smtpd
+& docker build -t oxe-web-admin-v1.8.4 https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-admin-v1.8.4.tar.gz
+$ docker run -p 3000:3000 oxe-web-admin-v1.8.4
+& docker build -t oxe-web-community-v1.8.4 https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-community-v1.8.4.tar.gz
+$ docker run -p 3001:3001 oxe-web-community-v1.8.4
 $ docker run -p 5000:5000
     -e ENVIRONMENT=dev
     -e JWT_SECRET_KEY=my_secret_developer_key
@@ -85,7 +89,7 @@ $ docker run -p 5000:5000
     -e IMAGE_FOLDER=/image_folder
     -e DOCUMENT_FOLDER=/document_folder
     -e INITIAL_ADMIN_EMAIL=my-default-admin@default-domain.com
-    -e ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
+    -e ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4
 ```
 
 ## Enjoy the solution
@@ -99,3 +103,10 @@ Access the community interface:
 An initial account is created with the following email: my-default-admin@default-domain.com
 
 Please, process to the password resetting to define your admin account password. A mocked email with the password resetting URL with be available. You can consult it via the logs of the "b2ck/fake-smtpd" container you have created previously.
+
+# To deploy a production instance
+
+To set up the production instance, please see those files:
+
+- doc/INSTALL_SERVER.md
+- doc/CONFIGURE_SERVER.md
