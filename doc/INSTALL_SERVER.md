@@ -276,7 +276,7 @@ sudo cat /var/log/apache2/error.log
 
 ### Configure the Apache virtual hosts
 
-Add proxy config for oxe-api:
+Add proxy configuration in "/etc/apache2/sites-available/oxe-api-le-ssl.conf" for oxe-api:
 
 ```
 <VirtualHost *:443>
@@ -287,7 +287,7 @@ Add proxy config for oxe-api:
 </VirtualHost>
 ```
 
-For oxe-web-admin:
+In "/etc/apache2/sites-available/oxe-web-admin-le-ssl.conf" For oxe-web-admin:
 
 ```
 <VirtualHost *:443>
@@ -298,7 +298,7 @@ For oxe-web-admin:
 </VirtualHost>
 ```
 
-And for oxe-web-community:
+And in "/etc/apache2/sites-available/oxe-web-community-le-ssl.conf" for oxe-web-community:
 
 ```
 <VirtualHost *:443>
