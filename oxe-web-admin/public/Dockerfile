@@ -11,11 +11,13 @@ WORKDIR /home/static
 
 # Copy the static website
 # Use the .dockerignore file to control what ends up inside the image!
-COPY . .
+COPY --chown=static . .
+
+# Remove exec right on files
+RUN find /home/static -type f -print0 | xargs -0 chmod a-x
 
 EXPOSE 3000
 
-RUN chmod a-x *.html
-
 # Run thttpd
+USER static
 CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "3000", "-d", "/home/static", "-u", "static", "-l", "-", "-M", "60"]
