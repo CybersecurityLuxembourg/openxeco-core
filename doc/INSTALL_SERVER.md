@@ -1,6 +1,6 @@
 # Documentation to set up an openXeco instance
 
-## Some links
+## Interesting links
 
 https://docs.docker.com/engine/install/ubuntu/
 https://ubuntu.com/tutorials/install-and-configure-apache#1-overview
@@ -27,7 +27,7 @@ XXX.XXX.XXX.XXX A  community.MYDOMAIN.XXX
 
 ### Version selection
 
-[v1.8.4] is an example of openXeco version for this documentation. Please see the other versions here:
+[v1.9.0] is an example of openXeco version for this documentation. Please see the other versions here:
 
 https://github.com/CybersecurityLuxembourg/openxeco-core/releases
 
@@ -95,7 +95,7 @@ The database and it structure will be created when the API will be correcly laun
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
     -e INITIAL_ADMIN_EMAIL=my-default-admin@MYDOMAIN.XXX \
-    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4
+    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.9.0
 ```
 
 ### Build and run the webapps images
@@ -104,22 +104,22 @@ For the admin webapp:
 
 ```
 > docker build \
-    -f openxeco-core-oxe-web-admin-v1.8.4/Dockerfile
-    -t oxe-web-admin-v1.8.4 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.8.4
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-admin-v1.8.4.tar.gz
-> docker run -p 3000:3000 oxe-web-admin-v1.8.4
+    -f openxeco-core-oxe-web-admin-v1.9.0/Dockerfile
+    -t oxe-web-admin-v1.9.0 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.9.0
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-admin-v1.9.0.tar.gz
+> docker run -p 3000:3000 oxe-web-admin-v1.9.0
 ```
 
 For the community webapp:
 
 ```
 > docker build \
-    -f openxeco-core-oxe-web-community-v1.8.4/Dockerfile
-    -t oxe-web-community-v1.8.4 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.8.4
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-community-v1.8.4.tar.gz
-> docker run -p 3001:3001 oxe-web-community-v1.8.4
+    -f openxeco-core-oxe-web-community-v1.9.0/Dockerfile
+    -t oxe-web-community-v1.9.0 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.9.0
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-community-v1.9.0.tar.gz
+> docker run -p 3001:3001 oxe-web-community-v1.9.0
 ```
 
 ## Apache server
@@ -276,7 +276,38 @@ sudo cat /var/log/apache2/error.log
 
 ### Configure the Apache virtual hosts
 
+Add proxy config for oxe-api:
 
+```
+<VirtualHost *:443>
+    ...
+
+    ProxyPass / http://127.0.0.1:5000/ retry=0
+    ProxyPassReverse / http://127.0.0.1:5000/
+</VirtualHost>
+```
+
+For oxe-web-admin:
+
+```
+<VirtualHost *:443>
+    ...
+
+    ProxyPass / http://127.0.0.1:3000/ retry=0
+    ProxyPassReverse / http://127.0.0.1:3000/
+</VirtualHost>
+```
+
+And for oxe-web-community:
+
+```
+<VirtualHost *:443>
+    ...
+
+    ProxyPass / http://127.0.0.1:3001/ retry=0
+    ProxyPassReverse / http://127.0.0.1:3001/
+</VirtualHost>
+```
 
 ## All set !
 

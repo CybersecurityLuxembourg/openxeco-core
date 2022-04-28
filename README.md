@@ -50,7 +50,7 @@
 
 # Set up an instance
 
-## For developers
+## For development
 
 To set up the dev environment, please see those sub-project README files:
 
@@ -74,30 +74,32 @@ $ docker run -p 1025:25 b2ck/fake-smtpd
 & docker build \
     -f openxeco-core-oxe-web-admin-v1.8.4/Dockerfile
     -t oxe-web-admin-v1.8.4 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.8.4 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-admin-v1.8.4.tar.gz
 $ docker run -p 3000:3000 oxe-web-admin-v1.8.4
 & docker build \
     -f openxeco-core-oxe-web-community-v1.8.4/Dockerfile
     -t oxe-web-community-v1.8.4 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.8.4 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-community-v1.8.4.tar.gz
 $ docker run -p 3001:3001 oxe-web-community-v1.8.4
-$ docker run -p 5000:5000
-    -e ENVIRONMENT=dev
-    -e JWT_SECRET_KEY=my_secret_developer_key
-    -e DB_HOSTNAME=localhost
-    -e DB_PORT=3306
-    -e DB_NAME=OPENXECO
-    -e DB_USERNAME=root
-    -e DB_PASSWORD=E4syPass
-    -e MAIL_SERVER=localhost
-    -e MAIL_PORT=1025
-    -e MAIL_USE_TLS=False
-    -e MAIL_USE_SSL=False
-    -e MAIL_DEFAULT_SENDER=my-default-sender@default-domain.com
-    -e IMAGE_FOLDER=/image_folder
-    -e DOCUMENT_FOLDER=/document_folder
-    -e INITIAL_ADMIN_EMAIL=my-default-admin@default-domain.com
-    -e ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4
+$ docker run -p 5000:5000 \
+    -e ENVIRONMENT=dev \
+    -e JWT_SECRET_KEY=my_secret_developer_key \
+    -e DB_HOSTNAME=127.0.0.1 \
+    -e DB_PORT=3306 \
+    -e DB_NAME=OPENXECO \
+    -e DB_USERNAME=root \
+    -e DB_PASSWORD=E4syPass \
+    -e MAIL_SERVER=127.0.0.7 \
+    -e MAIL_PORT=1025 \
+    -e MAIL_USE_TLS=False \
+    -e MAIL_USE_SSL=False \
+    -e MAIL_DEFAULT_SENDER=my-default-sender@default-domain.com \
+    -e IMAGE_FOLDER=/image_folder \
+    -e DOCUMENT_FOLDER=/document_folder \
+    -e INITIAL_ADMIN_EMAIL=my-default-admin@default-domain.com \
+    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4 \
 ```
 
 ### Enjoy the solution
@@ -112,7 +114,7 @@ An initial account is created with the following email: my-default-admin@default
 
 Please, process to the password resetting to define your admin account password. A mocked email with the password resetting URL with be available. You can consult it via the logs of the "b2ck/fake-smtpd" container you have created previously.
 
-## For production instance
+## For production server
 
 To set up the production instance, please see those files:
 
