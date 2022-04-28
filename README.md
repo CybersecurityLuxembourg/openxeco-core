@@ -48,7 +48,9 @@
 </tr>
 </table>
 
-# For developers
+# Set up an instance
+
+## For developers
 
 To set up the dev environment, please see those sub-project README files:
 
@@ -56,15 +58,15 @@ To set up the dev environment, please see those sub-project README files:
 - oxe-web-admin/README.md
 - oxe-web-admin/README.md
 
-# For testers
+## For testers
 
 If you want to set up a local instance to test the project, please follow these instructions:
 
-## Install docker
+### Install docker
 
 https://docs.docker.com/get-docker/
 
-## Install and run the openXeco containers and its dependencies
+### Install and run the openXeco containers and its dependencies
 
 ```
 $ docker run -p 3306:3306 -e MARIADB_ROOT_PASSWORD=E4syPass mariadb:10.7.3
@@ -98,7 +100,7 @@ $ docker run -p 5000:5000
     -e ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4
 ```
 
-## Enjoy the solution
+### Enjoy the solution
 
 Access the administrator interface:
 - http://localhost:3000
@@ -110,9 +112,13 @@ An initial account is created with the following email: my-default-admin@default
 
 Please, process to the password resetting to define your admin account password. A mocked email with the password resetting URL with be available. You can consult it via the logs of the "b2ck/fake-smtpd" container you have created previously.
 
-# To deploy a production instance
+## For production instance
 
 To set up the production instance, please see those files:
 
 - doc/INSTALL_SERVER.md
 - doc/CONFIGURE_SERVER.md
+
+# Practice for developers
+
+TODO

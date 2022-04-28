@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 - Database structure for forms (Form, FormQuestion, FormAnswer)
 - Form edition on oxe-web-admin
 - Form display on oxe-web-community
+- Dockerfile to run oxe-web-admin package as a container
+- Dockerfile to run oxe-web-community package as a container
  
 ### Changed
 
@@ -25,10 +27,11 @@ All notable changes to this project will be documented in this file.
 - Default mail content on ENTITY ACCESS CLAIM process
 - Taxonomy page on oxe-web-admin
 - Option to add the user information on entity extraction on oxe-web-admin
+- Documentation to install an instance (doc/INSTALL_SERVER.md)
  
 ### Fixed
- 
--
+
+- Menu is not overiding the article edition mode anymore on oxe-web-admin
 
 ## [1.8.4] - 2022-03-28
 

@@ -13,6 +13,8 @@ https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931899
 
 ## Prerequisite
 
+### DNS configuration
+
 The DNS should be configured to direct to the target machine. This is necessary to set up SSL configuration on Apache with 'Let's encrypt'. In our example:
 
 ```
@@ -20,6 +22,14 @@ XXX.XXX.XXX.XXX A  api.MYDOMAIN.XXX
 XXX.XXX.XXX.XXX A  admin.MYDOMAIN.XXX
 XXX.XXX.XXX.XXX A  community.MYDOMAIN.XXX
 ```
+
+[MYDOMAIN.XXX] represents the domain you own for this instance
+
+### Version selection
+
+[v1.8.4] is an example of openXeco version for this documentation. Please see the other versions here:
+
+https://github.com/CybersecurityLuxembourg/openxeco-core/releases
 
 ## Initialization of the setup
 
@@ -51,7 +61,12 @@ Codename:       focal
 
 ### Installation of Docker
 
-https://docs.docker.com/get-docker/
+```
+> apt-get install docker.io
+> snap install docker
+```
+
+For more information, see: https://docs.docker.com/get-docker/
 
 ### Run the MariaDB image
 
@@ -59,26 +74,28 @@ https://docs.docker.com/get-docker/
 > docker run -p 3306:3306 -e MARIADB_ROOT_PASSWORD=E4syPass mariadb:10.7.3
 ```
 
+The database and it structure will be created when the API will be correcly launched.
+
 ### Run the API image
 
 ```
-> docker run -p 5000:5000
-    -e ENVIRONMENT=prod
-    -e JWT_SECRET_KEY=my_secret_developer_key
-    -e DB_HOSTNAME=localhost
-    -e DB_PORT=3306
-    -e DB_NAME=OPENXECO
-    -e DB_USERNAME=root
-    -e DB_PASSWORD=E4syPass
-    -e MAIL_SERVER=localhost
-    -e MAIL_PORT=1025
-    -e MAIL_USE_TLS=False
-    -e MAIL_USE_SSL=False
-    -e MAIL_DEFAULT_SENDER=my-default-sender@MYDOMAIN.XXX
-    -e IMAGE_FOLDER=/image_folder
-    -e DOCUMENT_FOLDER=/document_folder
-    -e INITIAL_ADMIN_EMAIL=my-default-admin@MYDOMAIN.XXX
-    -e ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4
+> docker run -p 5000:5000 \
+    -e ENVIRONMENT=prod \
+    -e JWT_SECRET_KEY=my_secret_developer_key \
+    -e DB_HOSTNAME=127.0.0.1 \
+    -e DB_PORT=3306 \
+    -e DB_NAME=OPENXECO \
+    -e DB_USERNAME=root \
+    -e DB_PASSWORD=E4syPass \
+    -e MAIL_SERVER=127.0.0.1 \
+    -e MAIL_PORT=1025 \
+    -e MAIL_USE_TLS=False \
+    -e MAIL_USE_SSL=False \
+    -e MAIL_DEFAULT_SENDER=my-default-sender@MYDOMAIN.XXX \
+    -e IMAGE_FOLDER=/image_folder \
+    -e DOCUMENT_FOLDER=/document_folder \
+    -e INITIAL_ADMIN_EMAIL=my-default-admin@MYDOMAIN.XXX \
+    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4
 ```
 
 ### Build and run the webapps images
