@@ -18,8 +18,8 @@ COPY --chown=static $TARGET_DIR/ .
 # Remove exec right on files
 RUN find /home/static -type f -print0 | xargs -0 chmod a-x
 
-EXPOSE 3000
+EXPOSE 3001
 
 # Run thttpd
 USER static
-CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "3000", "-d", "/home/static", "-u", "static", "-l", "-", "-M", "60"]
+CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "3001", "-d", "/home/static", "-u", "static", "-l", "-", "-M", "60"]

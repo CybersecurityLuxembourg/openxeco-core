@@ -106,6 +106,7 @@ For the admin webapp:
 > docker build \
     -f openxeco-core-oxe-web-admin-v1.8.4/Dockerfile
     -t oxe-web-admin-v1.8.4 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.8.4
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-admin-v1.8.4.tar.gz
 > docker run -p 3000:3000 oxe-web-admin-v1.8.4
 ```
@@ -116,6 +117,7 @@ For the community webapp:
 > docker build \
     -f openxeco-core-oxe-web-community-v1.8.4/Dockerfile
     -t oxe-web-community-v1.8.4 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.8.4
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-community-v1.8.4.tar.gz
 > docker run -p 3001:3001 oxe-web-community-v1.8.4
 ```
