@@ -64,14 +64,20 @@ If you want to set up a local instance to test the project, please follow these 
 
 https://docs.docker.com/get-docker/
 
-## Install and run the openXeco docker and its dependencies
+## Install and run the openXeco containers and its dependencies
 
 ```
 $ docker run -p 3306:3306 -e MARIADB_ROOT_PASSWORD=E4syPass mariadb:10.7.3
 $ docker run -p 1025:25 b2ck/fake-smtpd
-& docker build -t oxe-web-admin-v1.8.4 https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-admin-v1.8.4.tar.gz
+& docker build \
+    -f openxeco-core-oxe-web-admin-v1.8.4/Dockerfile
+    -t oxe-web-admin-v1.8.4 \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-admin-v1.8.4.tar.gz
 $ docker run -p 3000:3000 oxe-web-admin-v1.8.4
-& docker build -t oxe-web-community-v1.8.4 https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-community-v1.8.4.tar.gz
+& docker build \
+    -f openxeco-core-oxe-web-community-v1.8.4/Dockerfile
+    -t oxe-web-community-v1.8.4 \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-community-v1.8.4.tar.gz
 $ docker run -p 3001:3001 oxe-web-community-v1.8.4
 $ docker run -p 5000:5000
     -e ENVIRONMENT=dev
