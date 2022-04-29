@@ -69,37 +69,43 @@ https://docs.docker.com/get-docker/
 ### Install and run the openXeco containers and its dependencies
 
 ```
-$ docker run -p 3306:3306 -e MARIADB_ROOT_PASSWORD=E4syPass mariadb:10.7.3
-$ docker run -p 1025:25 b2ck/fake-smtpd
-& docker build \
-    -f openxeco-core-oxe-web-admin-v1.8.4/Dockerfile
-    -t oxe-web-admin-v1.8.4 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.8.4 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-admin-v1.8.4.tar.gz
-$ docker run -p 3000:3000 oxe-web-admin-v1.8.4
-& docker build \
-    -f openxeco-core-oxe-web-community-v1.8.4/Dockerfile
-    -t oxe-web-community-v1.8.4 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.8.4 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.8.4/openxeco-core-oxe-web-community-v1.8.4.tar.gz
-$ docker run -p 3001:3001 oxe-web-community-v1.8.4
-$ docker run -p 5000:5000 \
-    -e ENVIRONMENT=dev \
+> docker run -d \
+    --network openxeco \
+    --network-alias mariadb \
+    -p 3306:3306 \
+    -e MARIADB_ROOT_PASSWORD=E4syPass \
+    mariadb:10.7.3
+> docker run -d -p 1025:25 b2ck/fake-smtpd
+> docker build \
+    -f openxeco-core-oxe-web-admin-v1.9.0/Dockerfile
+    -t oxe-web-admin-v1.9.0 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.9.0 \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-admin-v1.9.0.tar.gz
+> docker run -d -p 3000:3000 oxe-web-admin-v1.9.0
+> docker build \
+    -f openxeco-core-oxe-web-community-v1.9.0/Dockerfile
+    -t oxe-web-community-v1.9.0 \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.9.0 \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-community-v1.9.0.tar.gz
+> docker run -p 3001:3001 oxe-web-community-v1.9.0
+> docker run -d -p 5000:5000 \
+    --network openxeco \
+    -e ENVIRONMENT=prod \
     -e JWT_SECRET_KEY=my_secret_developer_key \
-    -e DB_HOSTNAME=127.0.0.1 \
+    -e DB_HOSTNAME=mariadb \
     -e DB_PORT=3306 \
     -e DB_NAME=OPENXECO \
     -e DB_USERNAME=root \
     -e DB_PASSWORD=E4syPass \
-    -e MAIL_SERVER=127.0.0.7 \
+    -e MAIL_SERVER=127.0.0.1 \
     -e MAIL_PORT=1025 \
     -e MAIL_USE_TLS=False \
     -e MAIL_USE_SSL=False \
-    -e MAIL_DEFAULT_SENDER=my-default-sender@default-domain.com \
+    -e MAIL_DEFAULT_SENDER=my-default-sender@MYDOMAIN.XXX \
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
-    -e INITIAL_ADMIN_EMAIL=my-default-admin@default-domain.com \
-    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.8.4 \
+    -e INITIAL_ADMIN_EMAIL=my-default-admin@MYDOMAIN.XXX \
+    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.9.0
 ```
 
 ### Enjoy the solution
@@ -116,7 +122,7 @@ Please, process to the password resetting to define your admin account password.
 
 ## For production server
 
-To set up the production instance, please see those files:
+To set up the production instance, please see this file:
 
 - doc/INSTALL_SERVER.md
 
