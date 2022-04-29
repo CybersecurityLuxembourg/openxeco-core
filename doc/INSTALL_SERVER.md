@@ -1,4 +1,4 @@
-# Documentation to set up an openXeco instance
+# Documentation to set up an openXeco instance for production
 
 ## Interesting links
 
@@ -12,6 +12,19 @@ https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=932458
 https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931899
 
 ## Prerequisite
+
+## Accessibility to a Ubuntu machine
+
+This procedure has been done on the following OS version:
+
+```
+> lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 20.04.1 LTS
+Release:        20.04
+Codename:       focal
+```
 
 ### DNS configuration
 
@@ -30,19 +43,6 @@ XXX.XXX.XXX.XXX A  community.MYDOMAIN.XXX
 [v1.9.0] is an example of openXeco version for this documentation. Please see the other versions here:
 
 https://github.com/CybersecurityLuxembourg/openxeco-core/releases
-
-## Initialization of the setup
-
-This procedure has been done on the following OS version:
-
-```
-> lsb_release -a
-No LSB modules are available.
-Distributor ID: Ubuntu
-Description:    Ubuntu 20.04.1 LTS
-Release:        20.04
-Codename:       focal
-```
 
 ### Update the package index
 
@@ -78,6 +78,8 @@ The database and it structure will be created when the API will be correcly laun
 
 ### Run the API image
 
+You have to adapt the arguments of this command to set the right configuration:
+
 ```
 > docker run -p 5000:5000 \
     -e ENVIRONMENT=prod \
@@ -104,22 +106,22 @@ For the admin webapp:
 
 ```
 > docker build \
-    -f openxeco-core-oxe-web-admin-v1.9.0/Dockerfile
+    -f openxeco-core-oxe-web-admin-v1.9.0/Dockerfile \
     -t oxe-web-admin-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.9.0
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.9.0 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-admin-v1.9.0.tar.gz
-> docker run -p 3000:3000 oxe-web-admin-v1.9.0
+> docker run -d -p 3000:3000 oxe-web-admin-v1.9.0
 ```
 
 For the community webapp:
 
 ```
 > docker build \
-    -f openxeco-core-oxe-web-community-v1.9.0/Dockerfile
+    -f openxeco-core-oxe-web-community-v1.9.0/Dockerfile \
     -t oxe-web-community-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.9.0
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.9.0 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-community-v1.9.0.tar.gz
-> docker run -p 3001:3001 oxe-web-community-v1.9.0
+> docker run -d -p 3001:3001 oxe-web-community-v1.9.0
 ```
 
 ## Apache server
@@ -129,7 +131,8 @@ For the community webapp:
 ```
 > sudo apt install apache2
 > sudo a2enmod ssl
-> sudo a2emod headers
+> sudo a2enmod headers
+> sudo a2enmod proxy_http
 > sudo mkdir /var/www/oxe-api
 > sudo mkdir /var/www/oxe-web-admin
 > sudo mkdir /var/www/oxe-web-community
