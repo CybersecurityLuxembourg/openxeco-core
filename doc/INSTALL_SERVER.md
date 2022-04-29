@@ -68,10 +68,21 @@ https://github.com/CybersecurityLuxembourg/openxeco-core/releases
 
 For more information, see: https://docs.docker.com/get-docker/
 
-### Run the MariaDB image
+### Create a docker network
 
 ```
-> docker run -p 3306:3306 -e MARIADB_ROOT_PASSWORD=E4syPass mariadb:10.7.3
+> docker network create openxeco
+```
+
+### Create a docker
+
+```
+> docker run -d \
+    --network openxeco \
+    --network-alias mariadb \
+    -p 3306:3306 \
+    -e MARIADB_ROOT_PASSWORD=E4syPass \
+    mariadb:10.7.3
 ```
 
 The database and it structure will be created when the API will be correcly launched.
@@ -81,10 +92,11 @@ The database and it structure will be created when the API will be correcly laun
 You have to adapt the arguments of this command to set the right configuration:
 
 ```
-> docker run -p 5000:5000 \
+> docker run -d -p 5000:5000 \
+    --network openxeco \
     -e ENVIRONMENT=prod \
     -e JWT_SECRET_KEY=my_secret_developer_key \
-    -e DB_HOSTNAME=127.0.0.1 \
+    -e DB_HOSTNAME=mariadb \
     -e DB_PORT=3306 \
     -e DB_NAME=OPENXECO \
     -e DB_USERNAME=root \
