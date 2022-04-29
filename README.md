@@ -119,8 +119,7 @@ Please, process to the password resetting to define your admin account password.
 To set up the production instance, please see those files:
 
 - doc/INSTALL_SERVER.md
-- doc/CONFIGURE_SERVER.md
 
-# Practice for developers
+# Good practice for developers
 
 TODO
