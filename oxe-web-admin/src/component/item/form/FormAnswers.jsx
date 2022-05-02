@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../../utils/request.jsx";
 import { dictToURI } from "../../../utils/url.jsx";
 import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
 import FormAnswer from "../FormAnswer.jsx";
 
 export default class FormAnswers extends Component {
@@ -110,6 +111,13 @@ export default class FormAnswers extends Component {
 						))
 						: <Loading
 							height={300}
+						/>
+					}
+
+					{this.getUsers()
+						&& this.getUsers().length === 0
+						&& <Message
+							text={"No answer found"}
 						/>
 					}
 				</div>
