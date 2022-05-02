@@ -1,7 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.9.0] - TBD
+## [1.9.1] - TBD
+
+### Added
+
+- Tab to consult form answer on oxe-web-admin
+
+## [1.9.0] - 2022-04-29
 
 ### Added
 
