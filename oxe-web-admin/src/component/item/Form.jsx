@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Form.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { postRequest, getForeignRequest, getRequest } from "../../utils/request.jsx";
+import { postRequest } from "../../utils/request.jsx";
 import Tab from "../tab/Tab.jsx";
 import FormGlobal from "./form/FormGlobal.jsx";
 import FormQuestions from "./form/FormQuestions.jsx";
@@ -66,32 +66,6 @@ export default class Form extends Component {
 		});
 	}
 
-	fetchForm() {
-		if (this.props.node && this.props.node.api_endpoint) {
-			const url = this.props.node.api_endpoint + "/public/get_public_forms";
-
-			getForeignRequest.call(this, url, (data) => {
-				this.setState({
-					taxonomy: data,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
-		} else {
-			getRequest.call(this, "public/get_public_taxonomy", (data) => {
-				this.setState({
-					taxonomy: data,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
-		}
-	}
-
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -110,7 +84,6 @@ export default class Form extends Component {
 				}
 				modal
 				closeOnDocumentClick={false}
-				onOpen={() => this.fetchForm()}
 			>
 				{(close) => <div className="Form-content row row-spaced">
 					<div className="col-md-12">
