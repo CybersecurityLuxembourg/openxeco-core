@@ -118,12 +118,10 @@ export default class FormForm extends React.Component {
 	getQuestionAndAnswer(q) {
 		return <div className={"row"}>
 			<div className="col-md-12">
-				<h3>
-					<div dangerouslySetInnerHTML={{
-						__html:
-						dompurify.sanitize(q.value),
-					}} />
-				</h3>
+				<div dangerouslySetInnerHTML={{
+					__html:
+					dompurify.sanitize(q.value),
+				}} />
 			</div>
 
 			{q.type === "TEXT"
@@ -154,8 +152,8 @@ export default class FormForm extends React.Component {
 				&& <div className="col-md-12 row-spaced">
 					{q.options
 						? <FormLine
-							label={"Department"}
 							type={"select"}
+							fullWidth={true}
 							value={this.getAnswer(q) ? this.getAnswer(q).value : false}
 							options={q.options.split("|").map((o) => ({ label: o, value: o }))}
 							onChange={(v) => this.updateAnswer(q.id, this.getAnswer(q), v)}
