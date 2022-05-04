@@ -16,14 +16,12 @@ export default class Form extends Component {
 		this.confirmDeletion = this.confirmDeletion.bind(this);
 
 		this.state = {
-			taxonomy: null,
 			selectedMenu: null,
 			tabs: [
 				"Global",
 				"Questions",
 				"Answers",
 			],
-			sync_hierarchy: true,
 		};
 	}
 
@@ -110,17 +108,14 @@ export default class Form extends Component {
 								<FormGlobal
 									key={"global"}
 									form={this.props.form}
-									refresh={() => this.fetchForm()}
 								/>,
 								<FormQuestions
 									key={"questions"}
 									form={this.props.form}
-									refresh={() => this.fetchForm()}
 								/>,
 								<FormAnswers
 									key={"answers"}
 									form={this.props.form}
-									refresh={() => this.fetchForm()}
 								/>,
 							]}
 						/>

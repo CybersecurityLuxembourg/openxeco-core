@@ -26,7 +26,6 @@ export default class FormGlobal extends React.Component {
 		};
 
 		postRequest.call(this, "form/update_form", params, () => {
-			this.props.refresh();
 			nm.info("The form has been updated");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -74,6 +73,7 @@ export default class FormGlobal extends React.Component {
 									onBlur={(v) => this.updateForm("name", v)}
 								/>
 								<FormLine
+									type="editor"
 									label={"Description"}
 									value={this.props.form.description}
 									disabled={this.props.form.status === "DELETED"}
