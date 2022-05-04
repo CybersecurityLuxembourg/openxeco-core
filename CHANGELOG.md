@@ -1,11 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.9.1] - TBD
+## [1.9.1] - 2022-05-04
 
 ### Added
 
 - Tab to consult form answer on oxe-web-admin
+
+### Changed
+
+- UI on form on community app
+- Set the description field of form as "editor" on admin app
+
+### Fixed
+
+- Error when updating the form global information
+- Remove the hard coded label on option field of forms on community app
 
 ## [1.9.0] - 2022-04-29
 
