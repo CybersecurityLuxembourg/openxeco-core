@@ -36,6 +36,7 @@ export default class SettingGlobal extends React.Component {
 				"DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE",
 				"AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM",
 				"ALLOW_ECOSYSTEM_TO_EDIT_LOGO",
+				"ALLOW_ECOSYSTEM_TO_EDIT_FORM",
 				"DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE",
 				"HIGHLIGHT_ARTICLE_WITHOUT_TITLE",
 				"HIGHLIGHT_ARTICLE_WITHOUT_HANDLE",
@@ -262,6 +263,7 @@ export default class SettingGlobal extends React.Component {
 					</div>
 
 					<div className="col-md-12 row-spaced">
+						<h3>Subscription</h3>
 						<FormLine
 							type={"checkbox"}
 							label={"Allow entity request on subscription"}
@@ -272,6 +274,7 @@ export default class SettingGlobal extends React.Component {
 							)}
 						/>
 						<br/>
+						<h3>Article edition</h3>
 						<FormLine
 							type={"checkbox"}
 							label={"Allow article edition"}
@@ -305,6 +308,16 @@ export default class SettingGlobal extends React.Component {
 							onBlur={(v) => this.updateSetting("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM", v)}
 						/>
 						<br/>
+						<h3>pages</h3>
+						<FormLine
+							type={"checkbox"}
+							label={"Show form page"}
+							value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_FORM") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_FORM", "TRUE")
+								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_FORM")
+							)}
+						/>
 						<FormLine
 							type={"checkbox"}
 							label={"Show logo generator page"}
