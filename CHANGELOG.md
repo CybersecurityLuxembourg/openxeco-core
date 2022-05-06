@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.9.2] - 2022-05-06
+
+### Added
+
+- Setting on oxe-web-admin to hide or show form page on oxe-web-community
+
 ## [1.9.1] - 2022-05-04
 
 ### Added
