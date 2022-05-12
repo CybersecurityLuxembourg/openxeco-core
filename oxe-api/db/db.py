@@ -272,7 +272,7 @@ class DB:
         if "public_only" in filters and filters["public_only"] is True:
             query = query.filter(self.tables["Article"].handle.isnot(None))
             query = query.filter(self.tables["Article"].status == "PUBLIC")
-            query = query.filter(self.tables["Article"].publication_date <= datetime.date.today())
+            query = query.filter(self.tables["Article"].publication_date <= datetime.datetime.now())
 
         if "is_created_by_admin" in filters:
             query = query.filter(self.tables["Article"].is_created_by_admin.is_(filters["is_created_by_admin"]))
