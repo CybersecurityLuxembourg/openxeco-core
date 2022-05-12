@@ -124,7 +124,7 @@
 }
 
 .DialogArticleEditor-menu {
-    background-color: #009fe3;
+    background-color: black;
     padding: 20px 10px;
 }
 
@@ -140,14 +140,16 @@
 }
 
 .DialogArticleEditor-menu .link-button {
-    color: white !important;
-    background-color: #009fe3 !important;
+    color: grey !important;
+    background-color: black !important;
     opacity: 1;
     border-radius: unset;
 }
 
 .DialogArticleEditor-menu .selected-link-button {
     background-color: rgba(0, 0, 0, 0.2) !important;
+    color: white !important;
+    cursor: default;
 }
 
 .DialogArticleEditor-menu .ArticleStatus {
