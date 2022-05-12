@@ -186,6 +186,8 @@ export default class FormLine extends React.Component {
 				disabled={this.props.disabled}
 				autoFocus={this.props.autofocus}
 				onKeyDown={this.props.onKeyDown}
+				dateFormat={"YYYY-MM-DD"}
+				timeFormat={"HH:mm"}
 				renderInput={(props, openCalendar) => <div className={"Formline-datetime"}>
 					<input {...props} />
 					<button onClick={openCalendar}>open calendar</button>

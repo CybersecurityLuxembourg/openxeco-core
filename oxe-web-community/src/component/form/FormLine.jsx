@@ -176,6 +176,8 @@ export default class FormLine extends React.Component {
 				disabled={this.props.disabled}
 				autoFocus={this.props.autofocus}
 				onKeyDown={this.props.onKeyDown}
+				dateFormat={"YYYY-MM-DD"}
+				timeFormat={"HH:mm"}
 			/>;
 		/* case "image":
 			return <div className={"Formline-image-wrapper"}>

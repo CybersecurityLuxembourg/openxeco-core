@@ -138,10 +138,15 @@ export default class ArticleGlobal extends React.Component {
 						format={(v) => !v || v.length < 500}
 					/>
 					<FormLine
-						type={"date"}
+						type={"datetime"}
 						label={"Publication date"}
 						value={this.state.article.publication_date}
-						onBlur={(v) => this.saveArticleValue("publication_date", v)}
+						onBlur={(v) => this.saveArticleValue(
+							"publication_date",
+							typeof v === "string"
+								? this.state.article.start_date
+								: v.format("yyyy-MM-DDTHH:mm"),
+						)}
 					/>
 					<FormLine
 						label={"Status"}
@@ -187,7 +192,7 @@ export default class ArticleGlobal extends React.Component {
 							value={this.state.article.start_date}
 							onBlur={(v) => this.saveArticleValue(
 								"start_date",
-								typeof v === "string"
+								typeof v === "string" || v === null
 									? this.state.article.start_date
 									: v.format("yyyy-MM-DDTHH:mm"),
 							)}
@@ -201,7 +206,12 @@ export default class ArticleGlobal extends React.Component {
 							label={"End date"}
 							type={"datetime"}
 							value={this.state.article.end_date}
-							onBlur={(v) => this.saveArticleValue("end_date", v.format("yyyy-MM-DDTHH:mm"))}
+							onBlur={(v) => this.saveArticleValue(
+								"end_date",
+								typeof v === "string" || v === null
+									? this.state.article.start_date
+									: v.format("yyyy-MM-DDTHH:mm"),
+							)}
 						/>
 					</div>}
 

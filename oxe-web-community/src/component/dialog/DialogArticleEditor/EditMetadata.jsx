@@ -174,10 +174,10 @@ export default class EditMetadata extends React.Component {
 								format={(v) => !v || v.length <= 500}
 							/>
 							<FormLine
-								type={"date"}
+								type={"datetime"}
 								label={"Publication date"}
 								value={this.props.article.publication_date}
-								onBlur={(v) => this.props.saveArticleValue("publication_date", v)}
+								onBlur={(v) => this.props.saveArticleValue("publication_date", v === null ? v : v.format("yyyy-MM-DDTHH:mm"))}
 							/>
 							<FormLine
 								label={"Status"}
