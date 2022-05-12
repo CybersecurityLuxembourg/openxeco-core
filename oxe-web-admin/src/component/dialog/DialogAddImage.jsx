@@ -7,7 +7,9 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { Breadcrumb } from "react-bootstrap";
 import { postRequest, getForeignImage } from "../../utils/request.jsx";
-import { validateUrl } from "../../utils/re.jsx";
+import { validateUrl, validateWord } from "../../utils/re.jsx";
+import Chip from "../button/Chip.jsx";
+import Message from "../box/Message.jsx";
 
 export default class DialogAddImage extends React.Component {
 	constructor(props) {
@@ -18,6 +20,7 @@ export default class DialogAddImage extends React.Component {
 		this.onValidate = this.onValidate.bind(this);
 		this.backToImageSelection = this.backToImageSelection.bind(this);
 		this.backToImageCropping = this.backToImageCropping.bind(this);
+		this.backToKeywordSelection = this.backToKeywordSelection.bind(this);
 
 		this.state = {
 			cropper: null,
@@ -27,6 +30,9 @@ export default class DialogAddImage extends React.Component {
 			imageContent: null,
 
 			croppedImageContent: null,
+			keywords: "",
+			word: "",
+			areKeywordsDefined: false,
 
 			link: "",
 		};
@@ -95,17 +101,36 @@ export default class DialogAddImage extends React.Component {
 		}
 	}
 
+	onKeywordSelectionValidation() {
+		this.setState({
+			areKeywordsDefined: true,
+		});
+	}
+
 	onValidate(close) {
 		const params = {
 			image: this.state.croppedImageContent,
 		};
 
-		postRequest.call(this, "media/add_image", params, () => {
-			if (this.props.afterValidate !== undefined) this.props.afterValidate();
-
-			this.backToImageSelection();
-			close();
+		postRequest.call(this, "media/add_image", params, (image) => {
 			nm.info("The image has been added");
+
+			const params2 = {
+				id: image.id,
+				keywords: this.state.keywords,
+			};
+
+			postRequest.call(this, "media/update_image", params2, () => {
+				if (this.props.afterValidate !== undefined) this.props.afterValidate();
+
+				this.backToImageSelection();
+				close();
+				nm.info("The keywords has been added");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -124,6 +149,35 @@ export default class DialogAddImage extends React.Component {
 		this.setState({
 			croppedImageContent: null,
 		});
+	}
+
+	backToKeywordSelection() {
+		this.setState({
+			areKeywordsDefined: false,
+		});
+	}
+
+	addKeyword(word) {
+		let words;
+
+		if (this.state.keywords) {
+			words = (this.state.keywords + " " + word).toLowerCase();
+		} else {
+			words = word.toLowerCase();
+		}
+
+		this.setState({
+			keywords: words,
+			word: "",
+		});
+	}
+
+	deleteKeyword(word) {
+		if (this.state.keywords) {
+			let words = this.state.keywords.split(" ");
+			words = words.filter((w) => w !== word).join(" ");
+			this.setState({ keywords: words });
+		}
 	}
 
 	changeState(field, value) {
@@ -169,9 +223,16 @@ export default class DialogAddImage extends React.Component {
 								onClick={this.backToImageCropping}>
                                 Crop Image
 							</Breadcrumb.Item>
+							&nbsp;&gt;&nbsp;
+							<Breadcrumb.Item
+								active={this.state.croppedImageContent === null}
+								onClick={this.backToImageCropping}>
+                                Add keywords
+							</Breadcrumb.Item>
                             &nbsp;&gt;&nbsp;
 							<Breadcrumb.Item
-								active={this.state.croppedImageContent === null}>
+								active={!this.state.areKeywordsDefined}
+								onClick={this.backToKeywordSelection}>
                                 Upload Image
 							</Breadcrumb.Item>
 						</Breadcrumb>
@@ -227,7 +288,53 @@ export default class DialogAddImage extends React.Component {
 							/>
 						}
 
+						{this.state.imageContent !== null
+							&& this.state.croppedImageContent !== null
+							&& !this.state.areKeywordsDefined
+							&& <div className="row">
+								<div className="col-md-12">
+									<input
+										autoFocus
+										className={!validateWord(this.state.word) ? "FormLine-wrong-format" : ""}
+										type={"text"}
+										value={this.state.word}
+										onChange={(v) => this.setState({ word: v.target.value })}
+										onKeyPress={(e) => {
+											if (e.key === "Enter" && validateWord(this.state.word)) {
+												this.addKeyword(this.state.word);
+											}
+										}}
+									/>
+								</div>
+
+								<div className="col-md-12 right-buttons">
+									<button
+										onClick={() => this.addKeyword(this.state.word)}
+										disabled={!validateWord(this.state.word)}
+									>
+										Add keyword
+									</button>
+								</div>
+
+								<div className="col-md-12">
+									{this.state.keywords
+										? this.state.keywords.split(" ").map((w) => <Chip
+											key={w}
+											label={w}
+											value={w}
+											onClick={(v) => this.deleteKeyword(v)}
+										/>)
+										: <Message
+											text={"No keyword for this image"}
+											height={150}
+										/>
+									}
+								</div>
+							</div>
+						}
+
 						{this.state.imageContent !== null && this.state.croppedImageContent !== null
+							&& this.state.areKeywordsDefined
 							&& <div
 								className={"DialogAddImage-cropped-image"}>
 								<img src={this.state.croppedImageContent}/>
@@ -236,12 +343,13 @@ export default class DialogAddImage extends React.Component {
 					</div>
 
 					{this.state.croppedImageContent !== null
+						&& !this.state.areKeywordsDefined
 						&& <div className={"right-buttons"}>
 							<button
-								data-hover="Validate image"
+								data-hover="Validate keywords"
 								data-active=""
-								onClick={() => this.onValidate(close)}>
-								<span><i className="far fa-check-circle"/> Upload</span>
+								onClick={() => this.onKeywordSelectionValidation()}>
+								<span><i className="far fa-check-circle"/> Validate keywords</span>
 							</button>
 							<button
 								className={"grey-background"}
@@ -253,7 +361,27 @@ export default class DialogAddImage extends React.Component {
 						</div>
 					}
 
-					{this.state.croppedImageContent === null && this.state.imageContent !== null
+					{this.state.croppedImageContent !== null
+						&& this.state.areKeywordsDefined
+						&& <div className={"right-buttons"}>
+							<button
+								data-hover="Validate image"
+								data-active=""
+								onClick={() => this.onValidate(close)}>
+								<span><i className="far fa-check-circle"/> Upload</span>
+							</button>
+							<button
+								className={"grey-background"}
+								data-hover="Back to keyword selection"
+								data-active=""
+								onClick={this.backToKeywordSelection}>
+								<span><i className="far fa-arrow-alt-circle-left"/> Back to keyword selection</span>
+							</button>
+						</div>
+					}
+
+					{this.state.croppedImageContent === null
+						&& this.state.imageContent !== null
 						&& <div className={"right-buttons"}>
 							<button
 								data-hover="Crop image"
@@ -271,7 +399,8 @@ export default class DialogAddImage extends React.Component {
 						</div>
 					}
 
-					{this.state.croppedImageContent === null && this.state.imageContent === null
+					{this.state.croppedImageContent === null
+						&& this.state.imageContent === null
 						&& <div className={"right-buttons"}>
 							<button
 								className={"grey-background"}
