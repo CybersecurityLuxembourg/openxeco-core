@@ -87,15 +87,15 @@ export default class DialogAddArticle extends React.Component {
 						<div className={"col-md-12"}>
 							<div className={"right-buttons"}>
 								<button
+									className={"grey-background"}
+									onClick={close}>
+									<span><i className="far fa-times-circle"/> Cancel</span>
+								</button>
+								<button
 									onClick={() => this.addArticle(close)}
 									disabled={!validateArticleTitle(this.state.title)
 										|| this.state.company === null}>
 									<span><i className="fas fa-plus"/> Add article</span>
-								</button>
-								<button
-									className={"grey-background"}
-									onClick={close}>
-									<span><i className="far fa-times-circle"/> Cancel</span>
 								</button>
 							</div>
 						</div>
