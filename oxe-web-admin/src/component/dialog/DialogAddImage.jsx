@@ -326,7 +326,7 @@ export default class DialogAddImage extends React.Component {
 										/>)
 										: <Message
 											text={"No keyword for this image"}
-											height={150}
+											height={100}
 										/>
 									}
 								</div>

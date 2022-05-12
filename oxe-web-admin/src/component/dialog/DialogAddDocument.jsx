@@ -5,26 +5,33 @@ import { NotificationManager as nm } from "react-notifications";
 import Dropzone from "react-dropzone";
 import { Breadcrumb } from "react-bootstrap";
 import { postRequest } from "../../utils/request.jsx";
+import { validateWord } from "../../utils/re.jsx";
+import Chip from "../button/Chip.jsx";
+import Message from "../box/Message.jsx";
 
 export default class DialogAddDocument extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
+		const initState = {
 			document: null,
 			filename: null,
 			size: null,
+			keywords: "",
+			word: "",
+			areKeywordsDefined: false,
+		};
+
+		this.state = {
+			...initState,
+			initState,
 		};
 	}
 
 	onDrop(files) {
 		if (files.length === 0) {
 			nm.warning("No file has been detected. Please re-check the file extension.");
-			this.setState({
-				document: null,
-				filename: null,
-				size: null,
-			});
+			this.setState({ ...this.state.initState });
 		} else {
 			const reader = new FileReader();
 
@@ -42,26 +49,72 @@ export default class DialogAddDocument extends React.Component {
 		}
 	}
 
+	onKeywordsValidate() {
+		this.setState({
+			areKeywordsDefined: true,
+		});
+	}
+
 	onValidate(close) {
 		const params = {
 			data: this.state.document,
 			filename: this.state.filename,
 		};
 
-		postRequest.call(this, "media/add_document", params, () => {
-			if (this.props.afterValidate !== undefined) this.props.afterValidate();
-			close();
-			this.setState({
-				document: null,
-				filename: null,
-				size: null,
-			});
+		postRequest.call(this, "media/add_document", params, (document) => {
 			nm.info("The document has been added");
+
+			const params2 = {
+				id: document.id,
+				keywords: this.state.keywords,
+			};
+
+			postRequest.call(this, "media/update_document", params2, () => {
+				if (this.props.afterValidate !== undefined) this.props.afterValidate();
+
+				close();
+				this.setState({ ...this.state.initState });
+				nm.info("The keywords has been added");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
+
+	backToKeywordSelection() {
+		this.setState({
+			areKeywordsDefined: false,
+			word: "",
+		});
+	}
+
+	addKeyword(word) {
+		let words;
+
+		if (this.state.keywords) {
+			words = (this.state.keywords + " " + word).toLowerCase();
+		} else {
+			words = word.toLowerCase();
+		}
+
+		this.setState({
+			keywords: words,
+			word: "",
+		});
+	}
+
+	deleteKeyword(word) {
+		if (this.state.keywords) {
+			let words = this.state.keywords.split(" ");
+			words = words.filter((w) => w !== word).join(" ");
+			this.setState({ keywords: words });
+		}
 	}
 
 	changeState(field, value) {
@@ -96,22 +149,24 @@ export default class DialogAddDocument extends React.Component {
 					<div className={"col-md-12"}>
 						<Breadcrumb>
 							<Breadcrumb.Item
-								onClick={() => this.setState({
-									document: null,
-									filename: null,
-									size: null,
-								})}>
+								onClick={() => this.setState({ ...this.state.initState })}>
                                 Choose Document
+							</Breadcrumb.Item>
+							&nbsp;&gt;&nbsp;
+							<Breadcrumb.Item
+								active={!this.state.document}
+								onClick={() => this.backToKeywordSelection()}>
+								Add keywords
 							</Breadcrumb.Item>
                             &nbsp;&gt;&nbsp;
 							<Breadcrumb.Item
-								active={!this.state.document}>
+								active={!this.state.document || !this.state.areKeywordsDefined}>
                                 Upload Document
 							</Breadcrumb.Item>
 						</Breadcrumb>
 
 						{!this.state.document
-							? <div className={"row"}>
+							&& <div className={"row"}>
 								<div className={"col-md-12"}>
 									<Dropzone
 										accept=".pdf,.mp3"
@@ -144,12 +199,83 @@ export default class DialogAddDocument extends React.Component {
 									</div>
 								</div>
 							</div>
-							: <div className={"row"}>
+						}
+
+						{this.state.document && !this.state.areKeywordsDefined
+							&& <div className="row">
+								<div className="col-md-12">
+									<input
+										autoFocus
+										className={!validateWord(this.state.word) ? "FormLine-wrong-format" : ""}
+										type={"text"}
+										value={this.state.word}
+										onChange={(v) => this.setState({ word: v.target.value })}
+										onKeyPress={(e) => {
+											if (e.key === "Enter" && validateWord(this.state.word)) {
+												this.addKeyword(this.state.word);
+											}
+										}}
+									/>
+								</div>
+
+								<div className="col-md-12 right-buttons">
+									<button
+										onClick={() => this.addKeyword(this.state.word)}
+										disabled={!validateWord(this.state.word)}
+									>
+										Add keyword
+									</button>
+								</div>
+
+								<div className="col-md-12">
+									{this.state.keywords
+										? this.state.keywords.split(" ").map((w) => <Chip
+											key={w}
+											label={w}
+											value={w}
+											onClick={(v) => this.deleteKeyword(v)}
+										/>)
+										: <Message
+											text={"No keyword for this image"}
+											height={100}
+										/>
+									}
+								</div>
+
+								<div className={"col-md-12"}>
+									<div className={"right-buttons"}>
+										<button
+											data-hover="Validate keywords"
+											data-active=""
+											onClick={() => this.onKeywordsValidate()}>
+											<span><i className="far fa-check-circle"/> Validate keywords</span>
+										</button>
+										<button
+											className={"grey-background"}
+											data-active=""
+											onClick={() => this.setState({ ...this.state.initState })}>
+											<span><i className="far fa-arrow-alt-circle-left"/> Back to document selection</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						}
+
+						{this.state.document && this.state.areKeywordsDefined
+							&& <div className={"row"}>
 								<div className={"col-md-12"}>
 									<div className="DialogAddDocument-textContent">
 										<i className="fas fa-file"/>
 										<div>{this.state.filename}</div>
 									</div>
+								</div>
+								<div className={"col-md-12"}>
+									{this.state.keywords
+										&& this.state.keywords.split(" ").map((w) => <Chip
+											key={w}
+											label={w}
+											value={w}
+										/>)}
 								</div>
 								<div className={"col-md-12"}>
 									<div className={"right-buttons"}>
@@ -163,11 +289,10 @@ export default class DialogAddDocument extends React.Component {
 											className={"grey-background"}
 											data-active=""
 											onClick={() => this.setState({
-												document: null,
-												filename: null,
-												size: null,
+												areKeywordsDefined: false,
+												word: "",
 											})}>
-											<span><i className="far fa-arrow-alt-circle-left"/> Back to document selection</span>
+											<span><i className="far fa-arrow-alt-circle-left"/> Back to keyword selection</span>
 										</button>
 									</div>
 								</div>
