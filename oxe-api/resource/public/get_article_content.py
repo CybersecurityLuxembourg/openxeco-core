@@ -36,7 +36,7 @@ class GetArticleContent(MethodResource, Resource):
             .filter((self.db.tables["Article"].id == (int(id_) if id_.isdigit() else id_)) |
                     (self.db.tables["Article"].handle == id_)) \
             .filter(self.db.tables["Article"].status == "PUBLIC") \
-            .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
+            .filter(self.db.tables["Article"].publication_date <= datetime.datetime.now()) \
             .all()
 
         if len(article) < 1:

@@ -37,7 +37,7 @@ class GetRelatedArticles(MethodResource, Resource):
         article = self.db.session.query(self.db.tables["Article"]) \
             .filter(self.db.tables["Article"].handle == id_) \
             .filter(self.db.tables["Article"].status == "PUBLIC") \
-            .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
+            .filter(self.db.tables["Article"].publication_date <= datetime.datetime.now()) \
             .all()
 
         if len(article) < 1:
@@ -60,7 +60,7 @@ class GetRelatedArticles(MethodResource, Resource):
             .filter(self.db.tables["Article"].id != article[0].id) \
             .filter(self.db.tables["Article"].id.in_(article_ids)) \
             .filter(self.db.tables["Article"].status == "PUBLIC") \
-            .filter(self.db.tables["Article"].publication_date <= datetime.date.today()) \
+            .filter(self.db.tables["Article"].publication_date <= datetime.datetime.now()) \
             .filter(self.db.tables["Article"].type == "NEWS")
 
         related_articles = query \
