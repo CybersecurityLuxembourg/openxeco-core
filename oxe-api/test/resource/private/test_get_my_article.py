@@ -31,7 +31,7 @@ class TestGetMyArticle(BaseCase):
                 'image': None,
                 'is_created_by_admin': 0,
                 'link': None,
-                'publication_date': '2021-01-22',
+                'publication_date': '2021-01-22T00:00:00',
                 'start_date': None,
                 'status': 'PUBLIC',
                 'title': 'TITLE2',

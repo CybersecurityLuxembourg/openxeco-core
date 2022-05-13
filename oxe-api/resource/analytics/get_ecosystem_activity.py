@@ -36,7 +36,7 @@ class GetEcosystemActivity(MethodResource, Resource):
         data = {
             "news_publication":
                 {str(o[0]): o[1] for o in self.db.session.query(art)
-                    .with_entities(art.publication_date, func.count(art.id))
+                    .with_entities(func.DATE(art.publication_date), func.count(art.id))
                     .filter(art.type == "NEWS")
                     .filter(art.status == "PUBLIC")
                     .filter(art.is_created_by_admin.is_(False))
@@ -45,7 +45,7 @@ class GetEcosystemActivity(MethodResource, Resource):
                     .all()},
             "event_publication":
                 {str(o[0]): o[1] for o in self.db.session.query(art)
-                    .with_entities(art.publication_date, func.count(art.id))
+                    .with_entities(func.DATE(art.publication_date), func.count(art.id))
                     .filter(art.type == "EVENT")
                     .filter(art.status == "PUBLIC")
                     .filter(art.is_created_by_admin.is_(False))
@@ -54,7 +54,7 @@ class GetEcosystemActivity(MethodResource, Resource):
                     .all()},
             "job_offer_publication":
                 {str(o[0]): o[1] for o in self.db.session.query(art)
-                    .with_entities(art.publication_date, func.count(art.id))
+                    .with_entities(func.DATE(art.publication_date), func.count(art.id))
                     .filter(art.type == "JOB OFFER")
                     .filter(art.status == "PUBLIC")
                     .filter(art.is_created_by_admin.is_(False))

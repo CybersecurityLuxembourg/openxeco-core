@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from test.BaseCase import BaseCase
 
@@ -7,11 +7,15 @@ class TestGetArticles(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 1, "title": "TITLE"}, self.db.tables["Article"])
+        self.db.insert({
+                "id": 1,
+                "title": "TITLE",
+                "publication_date": datetime.date.today() + datetime.timedelta(days=1)
+            }, self.db.tables["Article"])
         self.db.insert({
                 "id": 2,
                 "title": "TITLE2",
-                "publication_date": datetime.strptime('01-22-2021', '%m-%d-%Y').date()
+                "publication_date": datetime.date.today()
             }, self.db.tables["Article"])
 
         response = self.application.get('/article/get_articles',
@@ -28,7 +32,8 @@ class TestGetArticles(BaseCase):
                 'image': None,
                 'is_created_by_admin': 0,
                 'link': None,
-                'publication_date': datetime.today().date().strftime('%Y-%m-%d'),
+                'publication_date': (datetime.date.today() + datetime.timedelta(days=1))
+                    .strftime('%Y-%m-%d') + "T00:00:00",
                 'start_date': None,
                 'status': 'DRAFT',
                 'title': 'TITLE',
@@ -43,10 +48,10 @@ class TestGetArticles(BaseCase):
                 'image': None,
                 'is_created_by_admin': 0,
                 'link': None,
-                'publication_date': '2021-01-22',
+                'publication_date': datetime.datetime.today().strftime('%Y-%m-%d') + "T00:00:00",
                 'start_date': None,
                 'status': 'DRAFT',
                 'title': 'TITLE2',
                 'type': 'NEWS'
-            }
+            },
         ], response.json)

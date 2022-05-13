@@ -90,7 +90,7 @@ class TestGetArticleContent(BaseCase):
             ],
             'image': None,
             'link': None,
-            'publication_date': '2021-01-24',
+            'publication_date': '2021-01-24T00:00:00',
             'start_date': None,
             'end_date': None,
             'handle': 'title',

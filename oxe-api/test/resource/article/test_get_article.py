@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from test.BaseCase import BaseCase
 
@@ -9,7 +9,8 @@ class TestGetArticle(BaseCase):
     def test_ok(self, token):
         self.db.insert({
             "id": 1,
-            "title": "TITLE"
+            "title": "TITLE",
+            "publication_date": datetime.date.today()
         }, self.db.tables["Article"])
 
         response = self.application.get('/article/get_article/1',
@@ -25,7 +26,7 @@ class TestGetArticle(BaseCase):
             'image': None,
             'is_created_by_admin': 0,
             'link': None,
-            'publication_date': datetime.today().date().strftime('%Y-%m-%d'),
+            'publication_date': datetime.datetime.today().date().strftime('%Y-%m-%d') + "T00:00:00",
             'start_date': None,
             'status': 'DRAFT',
             'title': 'TITLE',

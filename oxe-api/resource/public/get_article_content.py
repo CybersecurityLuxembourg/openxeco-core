@@ -66,7 +66,8 @@ class GetArticleContent(MethodResource, Resource):
             "title": article[0].title,
             "abstract": article[0].abstract,
             "image": article[0].image,
-            "publication_date": str(article[0].publication_date) if article[0].publication_date is not None else None,
+            "publication_date": article[0].publication_date.strftime('%Y-%m-%dT%H:%M:%S')
+                if article[0].publication_date is not None else None,
             "start_date": str(article[0].start_date) if article[0].start_date is not None else None,
             "end_date": str(article[0].end_date) if article[0].end_date is not None else None,
             "type": article[0].type,
