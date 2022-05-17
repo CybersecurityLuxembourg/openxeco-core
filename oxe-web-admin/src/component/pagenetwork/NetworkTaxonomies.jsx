@@ -5,6 +5,7 @@ import { getRequest, getForeignRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import Taxonomy from "../item/Taxonomy.jsx";
+import Table from "../table/Table.jsx";
 
 export default class NetworkTaxonomies extends React.Component {
 	constructor(props) {
@@ -71,6 +72,21 @@ export default class NetworkTaxonomies extends React.Component {
 		}));
 	}
 
+	static getColumns(node) {
+		return [
+			{
+				Header: "Taxonomy",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<Taxonomy
+						name={value.name}
+						node={node}
+					/>
+				),
+			},
+		];
+	}
+
 	// eslint-disable-next-line class-methods-use-this
 	render() {
 		return (
@@ -81,7 +97,7 @@ export default class NetworkTaxonomies extends React.Component {
 					</div>
 				</div>
 
-				<div className={"row"}>
+				<div className={"row row-spaced"}>
 					{this.state.taxonomies
 						? Object.keys(this.state.taxonomies).map((k) => (
 							<div
@@ -91,18 +107,17 @@ export default class NetworkTaxonomies extends React.Component {
 
 								<div className={"row"}>
 									{this.state.taxonomies[k].categories
-										? this.state.taxonomies[k].categories.map((t) => (
-											<div className="col-md-4" key={k + "-" + t.name}>
-												<Taxonomy
-													name={t.name}
-													node={this.state.nodes.filter((n) => n.id === parseInt(k, 10))[0]}
-												/>
-											</div>
-										))
+										? <div className="col-md-12">
+											<Table
+												columns={NetworkTaxonomies.getColumns(this.state.nodes
+													.filter((n) => n.id === parseInt(k, 10))[0])}
+												data={this.state.taxonomies[k].categories}
+											/>
+										</div>
 										: <div className="col-md-12">
 											<Message
 												height={200}
-												text="Error while setting the taxonomies"
+												text="Error while getting the taxonomies"
 											/>
 										</div>
 									}
