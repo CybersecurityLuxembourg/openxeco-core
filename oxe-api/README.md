@@ -46,7 +46,6 @@ https://www.python.org/downloads/release/python-386/
 
 For Linux:
 ```
-$ sudo apt install mysql-server python3-venv -y
 $ cd ~/project/openxeco-core/oxe-api
 $ python3 -m venv venv
 $ source venv/bin/activate
