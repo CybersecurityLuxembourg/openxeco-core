@@ -113,7 +113,7 @@ from resource.private.update_my_article_content import UpdateMyArticleContent
 from resource.private.update_my_form_answer import UpdateFormAnswer
 from resource.private.update_my_user import UpdateMyUser
 from resource.public.get_article_content import GetArticleContent
-from resource.public.get_article_enums import GetArticleEnums
+from resource.public.get_public_article_enums import GetArticleEnums
 from resource.public.get_public_article import GetPublicArticle
 from resource.public.get_public_articles import GetPublicArticles
 from resource.public.get_related_articles import GetRelatedArticles
