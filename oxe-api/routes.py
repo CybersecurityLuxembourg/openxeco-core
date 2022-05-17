@@ -38,7 +38,6 @@ from resource.company.get_companies import GetCompanies
 from resource.company.get_company import GetCompany
 from resource.company.get_company_addresses import GetCompanyAddresses
 from resource.company.get_company_contacts import GetCompanyContacts
-from resource.company.get_company_enums import GetCompanyEnums
 from resource.company.get_company_taxonomy import GetCompanyTaxonomy
 from resource.company.get_company_users import GetCompanyUsers
 from resource.company.get_company_workforces import GetCompanyWorkforces
@@ -115,10 +114,12 @@ from resource.private.update_my_form_answer import UpdateFormAnswer
 from resource.private.update_my_user import UpdateMyUser
 from resource.public.get_article_content import GetArticleContent
 from resource.public.get_article_enums import GetArticleEnums
+from resource.public.get_public_article import GetPublicArticle
 from resource.public.get_public_articles import GetPublicArticles
 from resource.public.get_related_articles import GetRelatedArticles
 from resource.public.get_public_analytics import GetPublicAnalytics
 from resource.public.get_public_companies import GetPublicCompanies
+from resource.public.get_public_company_enums import GetPublicCompanyEnums
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_document import GetPublicDocument
