@@ -1,6 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.10.0] - TBD
+
+### Added
+
+- API resource public/get_public_article/{_id}
+- Keyword management when adding an image on oxe-web-admin
+- Keyword management when adding a document on oxe-web-admin
+
+### Changed
+
+- API resource from company/get_company_enums => public/get_public_company_enums
+- Minor UI modification on menu on oxe-web-admin
+- Minor UI modification on menu on oxe-web-community
+- Database structure for "publication_date" of article (Date -> datetime)
+
 ## [1.9.2] - 2022-05-06
 
 ### Added
