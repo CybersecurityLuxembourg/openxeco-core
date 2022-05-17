@@ -13,6 +13,8 @@ All notable changes to this project will be documented in this file.
 
 - API resource from company/get_company_enums => public/get_public_company_enums
 - API resource from public/get_article_enums => public/get_public_article_enums
+- API resource from public/get_article_content => public/get_public_article_content
+- API resource from public/get_related_articles => public/get_public_related_articles
 - Minor UI modification on menu on oxe-web-admin
 - Minor UI modification on menu on oxe-web-community
 - Database structure for "publication_date" of article (Date -> datetime)

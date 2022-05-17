@@ -3,7 +3,7 @@ import datetime
 from test.BaseCase import BaseCase
 
 
-class TestGetRelatedArticles(BaseCase):
+class TestGetPublicRelatedArticles(BaseCase):
 
     def test_ok(self):
 
@@ -49,7 +49,7 @@ class TestGetRelatedArticles(BaseCase):
 
         # Request
 
-        response = self.application.get('/public/get_related_articles/TITLE1')
+        response = self.application.get('/public/get_public_related_articles/TITLE1')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual([
@@ -128,7 +128,7 @@ class TestGetRelatedArticles(BaseCase):
 
         # Request
 
-        response = self.application.get('/public/get_related_articles/TITLE1')
+        response = self.application.get('/public/get_public_related_articles/TITLE1')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual([], response.json)
@@ -164,12 +164,12 @@ class TestGetRelatedArticles(BaseCase):
 
         # Request
 
-        response = self.application.get('/public/get_related_articles/TITLE1')
+        response = self.application.get('/public/get_public_related_articles/TITLE1')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual([], response.json)
 
     def test_ko_no_article(self):
-        response = self.application.get('/public/get_related_articles/TITLE1')
+        response = self.application.get('/public/get_public_related_articles/TITLE1')
 
         self.assertEqual("422 The provided article ID does not exist or is not accessible", response.status)

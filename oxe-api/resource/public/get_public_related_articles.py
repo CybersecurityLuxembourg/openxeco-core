@@ -12,7 +12,7 @@ from utils.serializer import Serializer
 from utils.response import build_no_cors_response
 
 
-class GetRelatedArticles(MethodResource, Resource):
+class GetPublicRelatedArticles(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

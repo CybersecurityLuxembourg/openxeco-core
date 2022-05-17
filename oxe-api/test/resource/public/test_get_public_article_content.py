@@ -6,7 +6,7 @@ import bs4
 from test.BaseCase import BaseCase
 
 
-class TestGetArticleContent(BaseCase):
+class TestGetPublicArticleContent(BaseCase):
 
     complete_article = [
         {
@@ -67,7 +67,7 @@ class TestGetArticleContent(BaseCase):
         self.db.insert({"id": 4, "article_version_id": 2, "position": 2, "type": "TITLE2", "content": "Text2"},
                        self.db.tables["ArticleBox"])
 
-        response = self.application.get('/public/get_article_content/title')
+        response = self.application.get('/public/get_public_article_content/title')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual({
@@ -119,7 +119,7 @@ class TestGetArticleContent(BaseCase):
         self.db.insert({"id": 2, "article_id": 1, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert(self.complete_article, self.db.tables["ArticleBox"])
 
-        response = self.application.get('/public/get_article_content/title?format=html')
+        response = self.application.get('/public/get_public_article_content/title?format=html')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(
@@ -146,7 +146,7 @@ class TestGetArticleContent(BaseCase):
         self.db.insert({"id": 2, "article_id": 1, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert(self.complete_article, self.db.tables["ArticleBox"])
 
-        response = self.application.get('/public/get_article_content/title?format=markdown')
+        response = self.application.get('/public/get_public_article_content/title?format=markdown')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(
@@ -172,7 +172,7 @@ class TestGetArticleContent(BaseCase):
         self.db.insert({"id": 4, "article_version_id": 2, "position": 2, "type": "TITLE2", "content": "Text2"},
                        self.db.tables["ArticleBox"])
 
-        response = self.application.get('/public/get_article_content/title')
+        response = self.application.get('/public/get_public_article_content/title')
 
         self.assertEqual("422 The provided article ID does not exist or is not accessible", response.status)
 
@@ -190,7 +190,7 @@ class TestGetArticleContent(BaseCase):
         self.db.insert({"id": 4, "article_version_id": 2, "position": 2, "type": "TITLE2", "content": "Text2"},
                        self.db.tables["ArticleBox"])
 
-        response = self.application.get('/public/get_article_content/title')
+        response = self.application.get('/public/get_public_article_content/title')
 
         self.assertEqual("422 The provided article ID does not exist or is not accessible", response.status)
 
@@ -208,11 +208,11 @@ class TestGetArticleContent(BaseCase):
         self.db.insert({"id": 4, "article_version_id": 2, "position": 2, "type": "TITLE2", "content": "Text2"},
                        self.db.tables["ArticleBox"])
 
-        response = self.application.get('/public/get_article_content/title')
+        response = self.application.get('/public/get_public_article_content/title')
 
         self.assertEqual("422 The provided article does not have a main version", response.status)
 
     def test_ko_get_unexisting_article(self):
-        response = self.application.get('/public/get_article_content/2')
+        response = self.application.get('/public/get_public_article_content/2')
 
         self.assertEqual("422 The provided article ID does not exist or is not accessible", response.status)
