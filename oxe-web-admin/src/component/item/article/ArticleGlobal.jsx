@@ -1,7 +1,7 @@
 import React from "react";
 import "./ArticleGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request.jsx";
+import { getRequest, getForeignRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import { validateUrlHandle } from "../../../utils/re.jsx";
@@ -11,27 +11,21 @@ export default class ArticleGlobal extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-		this.saveArticleValue = this.saveArticleValue.bind(this);
-
 		this.state = {
-			article: null,
 			articleEnums: null,
 			showOptionalFields: false,
 		};
 	}
 
 	componentDidMount() {
-		this.refresh();
+		this.getArticleEnums();
 	}
 
-	refresh() {
-		getRequest.call(this, "article/get_article/" + this.props.id, (data) => {
-			this.setState({
-				article: data,
-			});
+	getArticleEnums() {
+		if (this.props.node && this.props.node.api_endpoint) {
+			const url = this.props.node.api_endpoint + "/public/get_public_article_enums";
 
-			getRequest.call(this, "public/get_article_enums", (data2) => {
+			getForeignRequest.call(this, url, (data2) => {
 				this.setState({
 					articleEnums: data2,
 				});
@@ -40,11 +34,17 @@ export default class ArticleGlobal extends React.Component {
 			}, (error) => {
 				nm.error(error.message);
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+		} else {
+			getRequest.call(this, "public/get_public_article_enums", (data2) => {
+				this.setState({
+					articleEnums: data2,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
 	}
 
 	saveArticleValue(prop, value) {
@@ -55,10 +55,7 @@ export default class ArticleGlobal extends React.Component {
 			};
 
 			postRequest.call(this, "article/update_article", params, () => {
-				const article = { ...this.state.article };
-
-				article[prop] = value;
-				this.setState({ article });
+				this.props.refresh();
 				nm.info("The property has been updated");
 			}, (response) => {
 				this.refresh();
@@ -71,8 +68,8 @@ export default class ArticleGlobal extends React.Component {
 	}
 
 	render() {
-		if (this.state.article === null || this.state.articleEnums === null) {
-			return <Loading height={300}/>;
+		if (!this.props.article || this.state.articleEnums) {
+			return <Loading height={300} />;
 		}
 
 		return (
@@ -97,133 +94,134 @@ export default class ArticleGlobal extends React.Component {
 				<div className="col-md-12">
 					<h2>Global</h2>
 				</div>
+
 				<div className="col-md-12">
 					<FormLine
 						label={"ID"}
-						value={this.state.article.id}
+						value={this.props.article.id}
 						disabled={true}
 					/>
 					<FormLine
 						type={"image"}
 						label={"Cover image"}
-						value={this.state.article.image}
+						value={this.props.article.image}
 						onChange={(v) => this.saveArticleValue("image", v)}
 						height={200}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Title"}
-						value={this.state.article.title}
+						value={this.props.article.title}
 						onBlur={(v) => this.saveArticleValue("title", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Type"}
 						type={"select"}
-						value={this.state.article.type}
+						value={this.props.article.type}
 						options={this.state.articleEnums === null
-                            || typeof this.state.articleEnums.type === "undefined" ? []
+							|| typeof this.state.articleEnums.type === "undefined" ? []
 							: this.state.articleEnums.type.map((o) => ({ label: o, value: o }))}
 						onChange={(v) => this.saveArticleValue("type", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Handle"}
-						value={this.state.article.handle}
+						value={this.props.article.handle}
 						onBlur={(v) => this.saveArticleValue("handle", v)}
 						format={validateUrlHandle}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						type="editor"
 						label={"Abstract"}
-						value={this.state.article.abstract}
+						value={this.props.article.abstract}
 						onBlur={(v) => this.saveArticleValue("abstract", v)}
 						format={(v) => !v || v.length < 500}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						type={"datetime"}
 						label={"Publication date"}
-						value={this.state.article.publication_date}
+						value={this.props.article.publication_date}
 						onBlur={(v) => this.saveArticleValue(
 							"publication_date",
 							typeof v === "string"
 								? this.state.article.start_date
 								: v.format("yyyy-MM-DDTHH:mm"),
 						)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Status"}
 						type={"select"}
-						value={this.state.article.status}
+						value={this.props.article.status}
 						options={this.state.articleEnums === null
-                            || typeof this.state.articleEnums.status === "undefined" ? []
+							|| typeof this.state.articleEnums.status === "undefined" ? []
 							: this.state.articleEnums.status.map((o) => ({ label: o, value: o }))}
 						onChange={(v) => this.saveArticleValue("status", v)}
+						disabled={!this.props.editable}
 					/>
-				</div>
 
-				{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.state.article.type) >= 0
-					&& <div className="col-md-12">
-						<div className="right-buttons">
+					{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
+						&& <div className="right-buttons">
 							<button
 								className="link-button"
 								onClick={() => this.setState({
 									showOptionalFields: !this.state.showOptionalFields,
 								})}>
 								{this.state.showOptionalFields ? "Hide" : "Show"}
-								&nbsp;optional fields for {this.state.article.type.toLowerCase()}
+								&nbsp;optional fields for {this.props.article.type.toLowerCase()}
 							</button>
-						</div>
-					</div>}
+						</div>}
 
-				{(["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.state.article.type) >= 0
-					|| this.state.showOptionalFields)
-					&& <div className="col-md-12">
-						<FormLine
+					{(["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
+						|| this.state.showOptionalFields)
+						&& <FormLine
 							label={"Link"}
-							value={this.state.article.link}
+							value={this.props.article.link}
 							onBlur={(v) => this.saveArticleValue("link", v)}
-						/>
-					</div>}
+							disabled={!this.props.editable}
+						/>}
 
-				{(this.state.article.type === "EVENT"
-					|| this.state.showOptionalFields)
-					&& <div className="col-md-12">
-						<FormLine
+					{(this.props.article.type === "EVENT"
+						|| this.state.showOptionalFields)
+						&& <FormLine
 							label={"Start date"}
 							type={"datetime"}
-							value={this.state.article.start_date}
+							value={this.props.article.start_date}
 							onBlur={(v) => this.saveArticleValue(
 								"start_date",
 								typeof v === "string" || v === null
-									? this.state.article.start_date
+									? this.props.article.start_date
 									: v.format("yyyy-MM-DDTHH:mm"),
 							)}
-						/>
-					</div>}
+							disabled={!this.props.editable}
+						/>}
 
-				{(this.state.article.type === "EVENT"
-					|| this.state.showOptionalFields)
-					&& <div className="col-md-12">
-						<FormLine
+					{(this.props.article.type === "EVENT"
+						|| this.state.showOptionalFields)
+						&& <FormLine
 							label={"End date"}
 							type={"datetime"}
-							value={this.state.article.end_date}
+							value={this.props.article.end_date}
 							onBlur={(v) => this.saveArticleValue(
 								"end_date",
 								typeof v === "string" || v === null
-									? this.state.article.start_date
+									? this.props.article.start_date
 									: v.format("yyyy-MM-DDTHH:mm"),
 							)}
-						/>
-					</div>}
+							disabled={!this.props.editable}
+						/>}
 
-				{(this.state.article.type === "JOB OFFER"
-					|| this.state.showOptionalFields)
-					&& <div className="col-md-12">
-						<FormLine
+					{(this.props.article.type === "JOB OFFER"
+						|| this.state.showOptionalFields)
+						&& <FormLine
 							label={"External reference"}
-							value={this.state.article.external_reference}
+							value={this.props.article.external_reference}
 							disabled={true}
-						/>
-					</div>}
+						/>}
+				</div>
 			</div>
 		);
 	}

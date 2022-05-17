@@ -14,13 +14,6 @@ export default class CompanyAddress extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-		this.addAddress = this.addAddress.bind(this);
-		this.fetchRawAddresses = this.fetchRawAddresses.bind(this);
-		this.onSneakOpen = this.onSneakOpen.bind(this);
-		this.onSneakClose = this.onSneakClose.bind(this);
-		this.addRawAddress = this.addRawAddress.bind(this);
-
 		this.state = {
 			addresses: null,
 			country: "Luxembourg",
@@ -182,102 +175,105 @@ export default class CompanyAddress extends React.Component {
 		return (
 			<div className={"row"}>
 				<div className="col-md-12">
-					<div className={"top-right-buttons"}>
-						<Popup
-							className="Popup-small-size"
-							trigger={
-								<button
-									className={"blue-background"}>
-									<i className="fas fa-user-ninja"></i> Crawl on the web
-								</button>
-							}
-							modal
-							closeOnDocumentClick
-							onClose={this.onSneakClose}
-							onOpen={this.onSneakOpen}
-						>
-							<div className="row">
-								<div className="col-md-12">
-									<h1>Crawl addresses from the web</h1>
-									<div className="row row-spaced">
-										<div className="col-xl-12">
-											<FormLine
-												label={"Country"}
-												type={"country"}
-												value={this.state.country}
-												onChange={(v) => this.changeState("country", v)}
-											/>
-										</div>
-										<div className="col-xl-12">
-											<FormLine
-												label={"Company name"}
-												value={this.state.companyName}
-												onChange={(v) => this.changeState("companyName", v)}
-											/>
-										</div>
-										<div className="col-xl-12 right-buttons">
-											<button
-												className={"blue-background"}
-												onClick={this.fetchRawAddresses}>
-												<i className="fas fa-plus"/> Search
-											</button>
+					<h2>Address</h2>
+
+					{!this.props.node
+						&& <div className={"top-right-buttons"}>
+							<Popup
+								className="Popup-small-size"
+								trigger={
+									<button
+										className={"blue-background"}>
+										<i className="fas fa-user-ninja"></i> Crawl on the web
+									</button>
+								}
+								modal
+								closeOnDocumentClick
+								onClose={this.onSneakClose}
+								onOpen={this.onSneakOpen}
+							>
+								<div className="row">
+									<div className="col-md-12">
+										<h1>Crawl addresses from the web</h1>
+										<div className="row row-spaced">
+											<div className="col-xl-12">
+												<FormLine
+													label={"Country"}
+													type={"country"}
+													value={this.state.country}
+													onChange={(v) => this.changeState("country", v)}
+												/>
+											</div>
+											<div className="col-xl-12">
+												<FormLine
+													label={"Company name"}
+													value={this.state.companyName}
+													onChange={(v) => this.changeState("companyName", v)}
+												/>
+											</div>
+											<div className="col-xl-12 right-buttons">
+												<button
+													className={"blue-background"}
+													onClick={this.fetchRawAddresses}>
+													<i className="fas fa-plus"/> Search
+												</button>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div className="col-md-12">
-									{Array.isArray(this.state.scrapedAddresses)
-										&& this.state.scrapedAddresses.length === 0
-										&& <Message
-											text="No address found, try another entity name"
-										/>
-									}
+									<div className="col-md-12">
+										{Array.isArray(this.state.scrapedAddresses)
+											&& this.state.scrapedAddresses.length === 0
+											&& <Message
+												text="No address found, try another entity name"
+											/>
+										}
 
-									{Array.isArray(this.state.scrapedAddresses)
-										&& this.state.scrapedAddresses.length > 0
-										&& <div>
-											<div className="row row-spaced">
-												{this.state.elements.map((e) => (
-													<div className="col-md-3" key={e.name}>
-														<span className="dot" style={{ backgroundColor: e.color }}/>
-														{e.name}
+										{Array.isArray(this.state.scrapedAddresses)
+											&& this.state.scrapedAddresses.length > 0
+											&& <div>
+												<div className="row row-spaced">
+													{this.state.elements.map((e) => (
+														<div className="col-md-3" key={e.name}>
+															<span className="dot" style={{ backgroundColor: e.color }}/>
+															{e.name}
+														</div>
+													))}
+												</div>
+												{this.state.scrapedAddresses.map((a) => (
+													<div className="row" key={a}>
+														<div
+															className="col-md-10"
+															dangerouslySetInnerHTML={{
+																__html: dompurify.sanitize(a.highlightedAddress),
+															}}
+														/>
+														<div className="col-md-2">
+															<button
+																className={"blue-background small-button"}
+																onClick={() => this.addRawAddress(a)}>
+																<i className="far fa-check-circle"/>
+															</button>
+														</div>
 													</div>
 												))}
 											</div>
-											{this.state.scrapedAddresses.map((a) => (
-												<div className="row" key={a}>
-													<div
-														className="col-md-10"
-														dangerouslySetInnerHTML={{
-															__html: dompurify.sanitize(a.highlightedAddress),
-														}}
-													/>
-													<div className="col-md-2">
-														<button
-															className={"blue-background small-button"}
-															onClick={() => this.addRawAddress(a)}>
-															<i className="far fa-check-circle"/>
-														</button>
-													</div>
-												</div>
-											))}
-										</div>
-									}
+										}
 
-									{!Array.isArray(this.state.scrapedAddresses)
-										&& <Loading
-											height={100}
-										/>
-									}
+										{!Array.isArray(this.state.scrapedAddresses)
+											&& <Loading
+												height={100}
+											/>
+										}
+									</div>
 								</div>
-							</div>
-						</Popup>
-						<button
-							className={"blue-background"}
-							onClick={() => this.addAddress()}>
-							<i className="fas fa-plus"/> Add an empty address
-						</button>
-					</div>
-					<h2>Address</h2>
+							</Popup>
+							<button
+								className={"blue-background"}
+								onClick={() => this.addAddress()}>
+								<i className="fas fa-plus"/> Add an empty address
+							</button>
+						</div>
+					}
 				</div>
 				<div className="col-md-12">
 					{this.state.addresses.length > 0
@@ -286,6 +282,7 @@ export default class CompanyAddress extends React.Component {
 								key={a.id}
 								info={a}
 								afterAction={this.refresh}
+								disabled={!this.props.editable}
 							/>
 						))
 						: <Message

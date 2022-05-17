@@ -10,14 +10,6 @@ export default class CompanyTaxonomy extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-		this.saveAssignmentChange = this.saveAssignmentChange.bind(this);
-		this.getChildCategories = this.getChildCategories.bind(this);
-		this.getTreeData = this.getTreeData.bind(this);
-		this.fillChildrenRecursively = this.fillChildrenRecursively.bind(this);
-		this.getLevelsOfCategory = this.getLevelsOfCategory.bind(this);
-		this.onNodeClick = this.onNodeClick.bind(this);
-
 		this.state = {
 			companyAssignment: null,
 			categories: null,
@@ -28,7 +20,9 @@ export default class CompanyTaxonomy extends React.Component {
 	}
 
 	componentDidMount() {
-		this.refresh();
+		if (!this.props.node) {
+			this.refresh();
+		}
 	}
 
 	refresh() {
@@ -242,6 +236,13 @@ export default class CompanyTaxonomy extends React.Component {
 	}
 
 	render() {
+		if (this.props.node) {
+			return <Message
+				text={"Not applicable on remote entity"}
+				height={300}
+			/>;
+		}
+
 		if (this.state.companyTaxonomy === null
             || this.state.categories === null
             || this.state.categoryHierarchy === null

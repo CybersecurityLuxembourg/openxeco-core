@@ -116,7 +116,7 @@ export default class NetworkEntities extends React.Component {
 					</div>
 				</div>
 
-				<div className={"row"}>
+				<div className={"row row-spaced"}>
 					{this.state.entities
 						? Object.keys(this.state.entities).map((k) => (
 							<div

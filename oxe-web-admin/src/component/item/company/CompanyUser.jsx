@@ -3,6 +3,7 @@ import "./CompanyUser.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../../utils/request.jsx";
 import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
 import Table from "../../table/Table.jsx";
 import User from "../User.jsx";
 
@@ -10,15 +11,15 @@ export default class CompanyUser extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-
 		this.state = {
 			users: null,
 		};
 	}
 
 	componentDidMount() {
-		this.refresh();
+		if (!this.props.node) {
+			this.refresh();
+		}
 	}
 
 	refresh() {
@@ -43,6 +44,13 @@ export default class CompanyUser extends React.Component {
 	}
 
 	render() {
+		if (this.props.node) {
+			return <Message
+				text={"Not applicable on remote entity"}
+				height={300}
+			/>;
+		}
+
 		if (this.state.users === null) {
 			return <Loading height={300}/>;
 		}

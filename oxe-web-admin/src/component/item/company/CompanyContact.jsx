@@ -11,9 +11,6 @@ export default class CompanyContact extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-		this.addAddress = this.addAddress.bind(this);
-
 		this.state = {
 			addresses: null,
 			companyName: props.name,
@@ -22,7 +19,9 @@ export default class CompanyContact extends React.Component {
 	}
 
 	componentDidMount() {
-		this.refresh();
+		if (!this.props.node) {
+			this.refresh();
+		}
 	}
 
 	refresh() {
@@ -65,7 +64,16 @@ export default class CompanyContact extends React.Component {
 	}
 
 	render() {
-		if (this.state.addresses === null) return <Loading height={300}/>;
+		if (this.props.node) {
+			return <Message
+				text={"Not applicable on remote entity"}
+				height={300}
+			/>;
+		}
+
+		if (this.state.addresses === null) {
+			return <Loading height={300}/>;
+		}
 
 		return (
 			<div className={"row"}>

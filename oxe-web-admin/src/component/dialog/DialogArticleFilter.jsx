@@ -63,7 +63,7 @@ export default class DialogArticleFilter extends React.Component {
 			nm.error(error.message);
 		});
 
-		getRequest.call(this, "public/get_article_enums", (data) => {
+		getRequest.call(this, "public/get_public_article_enums", (data) => {
 			this.setState({
 				articleEnums: data,
 			});

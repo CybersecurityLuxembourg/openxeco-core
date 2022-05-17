@@ -125,7 +125,7 @@ export default class NetworkArticles extends React.Component {
 					</div>
 				</div>
 
-				<div className={"row"}>
+				<div className={"row row-spaced"}>
 					{this.state.articles
 						? Object.keys(this.state.articles).map((k) => (
 							<div

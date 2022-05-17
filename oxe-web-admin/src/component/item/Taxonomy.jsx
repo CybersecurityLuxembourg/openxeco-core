@@ -18,8 +18,6 @@ export default class Taxonomy extends Component {
 	constructor(props) {
 		super(props);
 
-		this.confirmDeletion = this.confirmDeletion.bind(this);
-
 		this.state = {
 			taxonomy: null,
 			selectedMenu: null,
@@ -43,15 +41,6 @@ export default class Taxonomy extends Component {
 		if (this.state.selectedMenu !== getUrlParameter("item_tab")
 			&& this.state.tabs.indexOf(getUrlParameter("item_tab")) >= 0) {
 			this.setState({ selectedMenu: getUrlParameter("item_tab") });
-		}
-	}
-
-	onClick() {
-		if (typeof this.props.disabled !== "undefined" || !this.props.disabled) {
-			this.onOpen();
-
-			const newState = !this.props.selected;
-			if (typeof this.props.onClick !== "undefined") this.props.onClick(this.props.id, newState);
 		}
 	}
 
@@ -180,7 +169,7 @@ export default class Taxonomy extends Component {
 												<button
 													title="Import taxonomy"
 													onClick={() => this.importTaxonomy(close2)}>
-													<i className="fas fa-download"/> Import Taxonomy
+													<i className="fas fa-download"/> Import taxonomy
 												</button>
 											</div>
 										</div>
@@ -209,7 +198,7 @@ export default class Taxonomy extends Component {
 						</div>
 
 						<h1 className="Taxonomy-title">
-							Taxonomy: {this.props.name}
+							<i className="fas fa-project-diagram"/> {this.props.name}
 
 							{this.props.node
 								? <Chip

@@ -212,6 +212,11 @@ button:disabled {
 	cursor: default !important;
 }
 
+select:disabled {
+	background-color: rgba(239, 239, 239, 0.3) !important;
+	cursor: default !important;
+}
+
 @media all and (max-width:30em){
 	button {
 		display:block;

@@ -56,7 +56,7 @@ export default class PageArticles extends React.Component {
 	}
 
 	getArticleEnums() {
-		getRequest.call(this, "public/get_article_enums", (data) => {
+		getRequest.call(this, "public/get_public_article_enums", (data) => {
 			this.setState({
 				articleEnums: data,
 			});

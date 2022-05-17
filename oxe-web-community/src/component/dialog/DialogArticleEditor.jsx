@@ -65,7 +65,7 @@ export default class DialogArticleEditor extends React.Component {
 			articleEnums: null,
 		});
 
-		getRequest.call(this, "public/get_article_enums", (data) => {
+		getRequest.call(this, "public/get_public_article_enums", (data) => {
 			this.setState({
 				articleEnums: data,
 			});

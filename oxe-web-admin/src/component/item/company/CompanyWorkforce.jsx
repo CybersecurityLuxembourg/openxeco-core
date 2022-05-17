@@ -4,16 +4,13 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
 import Table from "../../table/Table.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 
 export default class CompanyWorkforce extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.refresh = this.refresh.bind(this);
-		this.addWorkforce = this.addWorkforce.bind(this);
-		this.deleteWorkforce = this.deleteWorkforce.bind(this);
 
 		this.state = {
 			workforces: null,
@@ -26,7 +23,9 @@ export default class CompanyWorkforce extends React.Component {
 	}
 
 	componentDidMount() {
-		this.refresh();
+		if (!this.props.node) {
+			this.refresh();
+		}
 	}
 
 	refresh() {
@@ -99,6 +98,13 @@ export default class CompanyWorkforce extends React.Component {
 	}
 
 	render() {
+		if (this.props.node) {
+			return <Message
+				text={"Not applicable on remote entity"}
+				height={300}
+			/>;
+		}
+
 		if (this.state.workforces === null || this.state.sources === null) {
 			return <Loading height={300}/>;
 		}

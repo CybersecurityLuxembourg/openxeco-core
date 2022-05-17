@@ -147,6 +147,7 @@ export default class FormLine extends React.Component {
 				className={this.getFormatClassName()}
 				value={this.state.value}
 				onChange={(value) => this.onChange(value)}
+				disabled={this.props.disabled}
 			/>;
 		case "editor":
 			return <Editor
@@ -176,6 +177,7 @@ export default class FormLine extends React.Component {
 				country={this.props.country}
 				value={this.state.value}
 				onChange={(value) => this.onChange(value)}
+				disabled={this.props.disabled}
 			/>;
 		case "datetime":
 			return <Datetime

@@ -1,7 +1,7 @@
 import React from "react";
 import "./CompanyGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../../utils/request.jsx";
+import { getRequest, getForeignRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import DialogAddImage from "../../dialog/DialogAddImage.jsx";
@@ -10,53 +10,50 @@ export default class CompanyGlobal extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-		this.saveCompanyValue = this.saveCompanyValue.bind(this);
-
 		this.state = {
-			company: null,
 			companyEnums: null,
 		};
 	}
 
 	componentDidMount() {
-		this.refresh();
+		this.getCompanyEnums();
 	}
 
-	refresh() {
-		getRequest.call(this, "company/get_company/" + this.props.id, (data) => {
-			this.setState({
-				company: data,
-			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+	getCompanyEnums() {
+		if (this.props.node && this.props.node.api_endpoint) {
+			const url = this.props.node.api_endpoint + "/public/get_public_company_enums";
 
-		getRequest.call(this, "company/get_company_enums", (data) => {
-			this.setState({
-				companyEnums: data,
+			getForeignRequest.call(this, url, (data) => {
+				this.setState({
+					companyEnums: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+		} else {
+			getRequest.call(this, "public/get_public_company_enums", (data) => {
+				this.setState({
+					companyEnums: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
 	}
 
 	saveCompanyValue(prop, value) {
-		if (this.state.company[prop] !== value) {
+		if (this.props.company[prop] !== value) {
 			const params = {
 				id: this.props.id,
 				[prop]: value,
 			};
 
 			postRequest.call(this, "company/update_company", params, () => {
-				const company = { ...this.state.company };
-
-				company[prop] = value;
-				this.setState({ company });
+				this.props.refresh();
 				nm.info("The property has been updated");
 			}, (response) => {
 				this.refresh();
@@ -69,8 +66,8 @@ export default class CompanyGlobal extends React.Component {
 	}
 
 	render() {
-		if (this.state.company === null || this.state.companyEnums === null) {
-			return <Loading height={300}/>;
+		if (!this.props.company || !this.state.companyEnums) {
+			return <Loading height={300} />;
 		}
 
 		return (
@@ -100,56 +97,64 @@ export default class CompanyGlobal extends React.Component {
 					<FormLine
 						label={"Status"}
 						type={"select"}
-						value={this.state.company.status}
+						value={this.props.company.status}
 						options={this.state.companyEnums === null
 							|| typeof this.state.companyEnums.status === "undefined" ? []
 							: this.state.companyEnums.status.map((o) => ({ label: o, value: o }))}
 						onChange={(v) => this.saveCompanyValue("status", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"ID"}
-						value={this.state.company.id}
+						value={this.props.company.id}
 						disabled={true}
 					/>
 					<FormLine
 						type={"image"}
 						label={"Image"}
-						value={this.state.company.image}
+						value={this.props.company.image}
 						onChange={(v) => this.saveCompanyValue("image", v)}
 						height={150}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Name"}
-						value={this.state.company.name}
+						value={this.props.company.name}
 						onBlur={(v) => this.saveCompanyValue("name", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Description"}
 						type={"textarea"}
-						value={this.state.company.description}
+						value={this.props.company.description}
 						onBlur={(v) => this.saveCompanyValue("description", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Trade register number"}
-						value={this.state.company.trade_register_number}
+						value={this.props.company.trade_register_number}
 						onBlur={(v) => this.saveCompanyValue("trade_register_number", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Website"}
-						value={this.state.company.website}
+						value={this.props.company.website}
 						onBlur={(v) => this.saveCompanyValue("website", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Creation date"}
 						type={"date"}
-						value={this.state.company.creation_date}
+						value={this.props.company.creation_date}
 						onChange={(v) => this.saveCompanyValue("creation_date", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Is startup"}
 						type={"checkbox"}
-						value={this.state.company.is_startup}
+						value={this.props.company.is_startup}
 						onChange={(v) => this.saveCompanyValue("is_startup", v)}
+						disabled={!this.props.editable}
 					/>
 				</div>
 
@@ -160,23 +165,27 @@ export default class CompanyGlobal extends React.Component {
 				<div className="col-md-12">
 					<FormLine
 						label={"Linkedin URL"}
-						value={this.state.company.linkedin_url}
+						value={this.props.company.linkedin_url}
 						onBlur={(v) => this.saveCompanyValue("linkedin_url", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Twitter URL"}
-						value={this.state.company.twitter_url}
+						value={this.props.company.twitter_url}
 						onBlur={(v) => this.saveCompanyValue("twitter_url", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Youtube URL"}
-						value={this.state.company.youtube_url}
+						value={this.props.company.youtube_url}
 						onBlur={(v) => this.saveCompanyValue("youtube_url", v)}
+						disabled={!this.props.editable}
 					/>
 					<FormLine
 						label={"Discord URL"}
-						value={this.state.company.discord_url}
+						value={this.props.company.discord_url}
 						onBlur={(v) => this.saveCompanyValue("discord_url", v)}
+						disabled={!this.props.editable}
 					/>
 				</div>
 			</div>

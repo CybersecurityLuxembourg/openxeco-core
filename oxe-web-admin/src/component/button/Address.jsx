@@ -161,6 +161,7 @@ export default class Address extends React.Component {
 							<input
 								value={this.state.info.number}
 								onChange={(v) => this.changeInfoState("number", v.target.value)}
+								disabled={this.props.disabled}
 							/>
 						</div>
 						<div className={"col-md-4"}>
@@ -169,6 +170,7 @@ export default class Address extends React.Component {
 									? "FormLine-right-format" : "FormLine-wrong-format"}
 								value={this.state.info.address_1}
 								onChange={(v) => this.changeInfoState("address_1", v.target.value)}
+								disabled={this.props.disabled}
 							/>
 						</div>
 					</div>
@@ -177,6 +179,7 @@ export default class Address extends React.Component {
 							label={"House, Entrance, appartment... (optional)"}
 							value={this.state.info.address_2}
 							onChange={(v) => this.changeInfoState("address_2", v)}
+							disabled={this.props.disabled}
 						/>
 						: <div className={"row"}>
 							<div className={"col-md-6"}>
@@ -185,6 +188,7 @@ export default class Address extends React.Component {
 								<button
 									className="link-button"
 									onClick={() => this.setState({ showAddress2: true })}
+									disabled={this.props.disabled}
 								>
                                     Add house, entrance, appartment information
 								</button>
@@ -201,6 +205,7 @@ export default class Address extends React.Component {
 							<input
 								value={this.state.info.postal_code}
 								onChange={(v) => this.changeInfoState("postal_code", v.target.value)}
+								disabled={this.props.disabled}
 							/>
 						</div>
 						<div className={"col-md-4"}>
@@ -209,6 +214,7 @@ export default class Address extends React.Component {
 									? "FormLine-right-format" : "FormLine-wrong-format"}
 								value={this.state.info.city}
 								onChange={(v) => this.changeInfoState("city", v.target.value)}
+								disabled={this.props.disabled}
 							/>
 						</div>
 					</div>
@@ -218,6 +224,7 @@ export default class Address extends React.Component {
 						value={this.state.info.country}
 						onChange={(v) => this.changeInfoState("country", v)}
 						format={validateNotNull}
+						disabled={this.props.disabled}
 					/>
 					<FormLine
 						label={"State, Canton"}
@@ -225,6 +232,7 @@ export default class Address extends React.Component {
 						country={this.state.info.country}
 						value={this.state.info.administrative_area}
 						onChange={(v) => this.changeInfoState("administrative_area", v)}
+						disabled={this.props.disabled}
 					/>
 					<div className={"row"}>
 						<div className={"col-md-6"}>
@@ -238,7 +246,8 @@ export default class Address extends React.Component {
 								trigger={
 									<button
 										className={"blue-background full-size"}
-										onClick={() => this.addAddress()}>
+										onClick={() => this.addAddress()}
+										disabled={this.props.disabled}>
 										<i className="fas fa-search-location"/>
 									</button>
 								}
@@ -255,12 +264,14 @@ export default class Address extends React.Component {
 													label={"Full address"}
 													value={this.state.fullAddress}
 													onChange={(v) => this.changeState("fullAddress", v)}
+													disabled={this.props.disabled}
 												/>
 											</div>
 											<div className="col-xl-12 right-buttons">
 												<button
 													className={"blue-background"}
-													onClick={this.fetchGeolocation}>
+													onClick={this.fetchGeolocation}
+													disabled={this.props.disabled}>
 													<i className="fas fa-plus"/> Search
 												</button>
 											</div>
@@ -322,6 +333,7 @@ export default class Address extends React.Component {
 								onChange={(v) => this.changeInfoState("latitude",
 									parseFloat(v.target.value))}
 								type="number"
+								disabled={this.props.disabled}
 							/>
 						</div>
 						<div className={"col-md-2"}>
@@ -330,6 +342,7 @@ export default class Address extends React.Component {
 								onChange={(v) => this.changeInfoState("longitude",
 									parseFloat(v.target.value))}
 								type="number"
+								disabled={this.props.disabled}
 							/>
 						</div>
 					</div>
@@ -339,8 +352,9 @@ export default class Address extends React.Component {
 								<button
 									className={"blue-background"}
 									onClick={() => this.save()}
-									disabled={typeof this.state.info.id !== "undefined"
-                                        && _.isEqual(this.props.info, this.state.info)}
+									disabled={(typeof this.state.info.id !== "undefined"
+                                        && _.isEqual(this.props.info, this.state.info))
+										|| !this.props.editable}
 								>
 									<i className="fas fa-save"/>
 								</button>
@@ -349,7 +363,8 @@ export default class Address extends React.Component {
 										text={"Are you sure you want to delete this address?"}
 										trigger={
 											<button
-												className={"red-background"}>
+												className={"red-background"}
+												disabled={this.props.disabled}>
 												<i className="fas fa-trash-alt"/>
 											</button>
 										}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Company.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { postRequest } from "../../utils/request.jsx";
+import { getRequest, getForeignRequest, postRequest } from "../../utils/request.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Tab from "../tab/Tab.jsx";
 import CompanyGlobal from "./company/CompanyGlobal.jsx";
@@ -11,22 +11,19 @@ import CompanyAddress from "./company/CompanyAddress.jsx";
 import CompanyUser from "./company/CompanyUser.jsx";
 import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
 import CompanyWorkforce from "./company/CompanyWorkforce.jsx";
+import CompanySync from "./company/CompanySync.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
+import Chip from "../button/Chip.jsx";
 
 export default class Company extends Component {
 	constructor(props) {
 		super(props);
 
-		this.onClick = this.onClick.bind(this);
-		this.onClose = this.onClose.bind(this);
-		this.onOpen = this.onOpen.bind(this);
-		this.confirmCompanyDeletion = this.confirmCompanyDeletion.bind(this);
-
 		this.state = {
 			isDetailOpened: false,
 			selectedMenu: null,
 			tabs: [
-				"global", "contact", "address", "user", "taxonomy", "workforce",
+				"global", "contact", "address", "user", "taxonomy", "workforce", "synchronization",
 			],
 		};
 	}
@@ -44,37 +41,63 @@ export default class Company extends Component {
 		}
 	}
 
-	onClick() {
-		if (typeof this.props.disabled !== "undefined" || !this.props.disabled) {
-			this.onOpen();
-
-			const newState = !this.props.selected;
-			if (typeof this.props.onClick !== "undefined") this.props.onClick(this.props.id, newState);
-		}
-	}
-
-	onClose() {
-		this.setState({ isDetailOpened: false }, () => {
-			if (this.props.onClose !== undefined) this.props.onClose();
-		});
-	}
-
-	onOpen() {
-		this.setState({ isDetailOpened: true }, () => {
-			if (this.props.onOpen !== undefined) this.props.onOpen();
-		});
-	}
-
-	confirmCompanyDeletion() {
+	confirmDeletion(close) {
 		const params = {
 			id: this.props.id,
 		};
 
 		postRequest.call(this, "company/delete_company", params, () => {
-			document.elementFromPoint(100, 0).click();
 			nm.info("The entity has been deleted");
+			if (close) {
+				close();
+			}
 
 			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	fetchCompany() {
+		if (this.props.node && this.props.node.api_endpoint) {
+			const url = this.props.node.api_endpoint + "/public/get_public_company/" + this.props.id;
+
+			getForeignRequest.call(this, url, (data) => {
+				this.setState({
+					company: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		} else {
+			getRequest.call(this, "company/get_company/" + this.props.id, (data) => {
+				this.setState({
+					company: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
+	}
+
+	importCompany(close) {
+		const params = {
+			network_node_id: this.props.node.id,
+			company_id: this.state.company.id,
+			sync_address: this.state.sync_address,
+		};
+
+		postRequest.call(this, "network/import_company", params, () => {
+			nm.info("The entity has been imported");
+			if (close) {
+				close();
+			}
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -95,10 +118,8 @@ export default class Company extends Component {
 					</div>
 				}
 				modal
-				closeOnDocumentClick
-				onClose={this.onClose}
-				onOpen={this.onOpen}
-				open={this.props.open || this.state.isDetailOpened}
+				closeOnDocumentClick={false}
+				onOpen={() => this.fetchCompany()}
 			>
 				{(close) => <div className="row row-spaced">
 					<div className="col-md-12">
@@ -118,7 +139,7 @@ export default class Company extends Component {
 										<i className="fas fa-trash-alt"/>
 									</button>
 								}
-								afterConfirmation={() => this.confirmCompanyDeletion()}
+								afterConfirmation={() => this.confirmDeletion(close)}
 							/>
 							<button
 								className={"grey-background"}
@@ -129,11 +150,35 @@ export default class Company extends Component {
 							</button>
 						</div>
 						<h1 className="Company-title">
-							{this.props.name}
+							<i className="fas fa-building"/> {this.props.name}
+
+							{this.props.node
+								? <Chip
+									label={"Remote"}
+								/>
+								: <Chip
+									label={"Local"}
+								/>
+							}
+
+							{this.state.company
+								&& this.state.company.sync_node
+								&& <Chip
+									label={"Synchronized"}
+								/>
+							}
+
+							{this.state.company
+								&& this.state.company.sync_node
+								&& this.state.company.sync_status
+								&& <Chip
+									label={"SYNC STATUS: " + this.state.company.sync_status}
+								/>
+							}
 						</h1>
 
 						<Tab
-							labels={["Global", "Contact", "Address", "User", "Taxonomy", "Workforce"]}
+							labels={["Global", "Contact", "Address", "User", "Taxonomy", "Workforce", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
@@ -141,27 +186,59 @@ export default class Company extends Component {
 								<CompanyGlobal
 									key={this.props.id}
 									id={this.props.id}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
 								/>,
 								<CompanyContact
 									key={this.props.id}
 									id={this.props.id}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
 								/>,
 								<CompanyAddress
 									key={this.props.id}
 									id={this.props.id}
 									name={this.props.name}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
 								/>,
 								<CompanyUser
 									key={this.props.id}
 									id={this.props.id}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
 								/>,
 								<CompanyTaxonomy
 									key={this.props.id}
 									id={this.props.id}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
 								/>,
 								<CompanyWorkforce
 									key={this.props.id}
 									id={this.props.id}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
+								/>,
+								<CompanySync
+									key={this.props.id}
+									id={this.props.id}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
 								/>,
 							]}
 						/>
