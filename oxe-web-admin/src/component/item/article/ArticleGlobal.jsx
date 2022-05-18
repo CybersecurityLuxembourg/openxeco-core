@@ -173,7 +173,7 @@ export default class ArticleGlobal extends React.Component {
 						onBlur={(v) => this.saveArticleValue(
 							"publication_date",
 							typeof v === "string"
-								? this.state.article.start_date
+								? this.props.article.start_date
 								: v.format("yyyy-MM-DDTHH:mm"),
 						)}
 						disabled={!this.props.editable}
