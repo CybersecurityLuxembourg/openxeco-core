@@ -198,7 +198,7 @@ export default class FormLine extends React.Component {
 				inputProps={{
 					disabled: this.props.disabled,
 				}}
-				open={!this.props.disabled}
+				{...(this.props.disabled ? { open: !this.props.disabled } : {})}
 			/>;
 		case "image":
 			return <div className={"Formline-image-wrapper"}>
