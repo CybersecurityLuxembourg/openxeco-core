@@ -91,3 +91,21 @@
 	height: 40px;
 	z-index: 50;
 }
+
+.FormLine div[data-disable-editing="true"] {
+	background-color: rgba(239, 239, 239, 0.3) !important;
+	cursor: default !important;
+}
+
+.FormLine .Formline-datetime input {
+	color: grey !important;
+	border: lightgrey 2px solid;
+}
+
+.FormLine .Formline-datetime input[disabled] {
+	background-color: rgba(239, 239, 239, 0.3) !important;
+}
+
+.FormLine .Formline-datetime input[disabled] + button {
+	cursor: default !important;
+}

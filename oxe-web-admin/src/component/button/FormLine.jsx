@@ -55,17 +55,17 @@ export default class FormLine extends React.Component {
 
 	onClick() {
 		const newState = !this.props.value;
-		if (typeof this.props.onClick !== "undefined" && this.props.disabled !== true) this.props.onClick(newState);
+		if (this.props.onClick && this.props.disabled !== true) this.props.onClick(newState);
 	}
 
 	onChange(value) {
 		this.setState({ value });
 
-		if (typeof this.props.onChange !== "undefined") this.props.onChange(value);
+		if (this.props.onChange) this.props.onChange(value);
 	}
 
 	onBlur(value) {
-		if (typeof this.props.onBlur !== "undefined") this.props.onBlur(value);
+		if (this.props.onBlur) this.props.onBlur(value);
 	}
 
 	addValue(valueToAdd) {
@@ -171,6 +171,7 @@ export default class FormLine extends React.Component {
 						text: "",
 					},
 				}}
+				data-disable-editing={this.props.disabled}
 			/>;
 		case "region":
 			return <RegionDropdown
@@ -186,7 +187,6 @@ export default class FormLine extends React.Component {
 				value={this.state.value === null ? null : moment(this.state.value)}
 				onChange={(v) => this.onChange(v)}
 				onClose={() => this.onBlur(this.state.value)}
-				disabled={this.props.disabled}
 				autoFocus={this.props.autofocus}
 				onKeyDown={this.props.onKeyDown}
 				dateFormat={"YYYY-MM-DD"}
@@ -194,8 +194,11 @@ export default class FormLine extends React.Component {
 				renderInput={(props, openCalendar) => <div className={"Formline-datetime"}>
 					<input {...props} />
 					<button onClick={openCalendar}>open calendar</button>
-				</div>
-				}
+				</div>}
+				inputProps={{
+					disabled: this.props.disabled,
+				}}
+				open={!this.props.disabled}
 			/>;
 		case "image":
 			return <div className={"Formline-image-wrapper"}>
