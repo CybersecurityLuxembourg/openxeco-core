@@ -122,6 +122,7 @@ export default class FormLine extends React.Component {
 				styles={getSelectStyle()}
 				options={this.props.options}
 				onChange={(v) => this.onChange(v.value)}
+				isDisabled={this.props.disabled}
 			/>;
 		case "multiselect":
 			return <div>
@@ -209,23 +210,25 @@ export default class FormLine extends React.Component {
 						: <NoImage/>
 					}
 				</div>
-				<div className={"right-buttons"}>
-					<button
-						className={"red-background"}
-						value={this.state.value}
-						onClick={() => this.onChange(null)}
-						disabled={this.state.value === null}>
-						<i className="fas fa-trash-alt"/> Remove
-					</button>
-					<DialogSelectImage
-						trigger={
-							<button>
-								<i className="fas fa-plus"/> {this.state.value === null ? "Select" : "Change"} image
-							</button>
-						}
-						validateSelection={(value) => this.onChange(value)}
-					/>
-				</div>
+				{!this.props.disabled
+					&& <div className={"right-buttons"}>
+						<button
+							className={"red-background"}
+							value={this.state.value}
+							onClick={() => this.onChange(null)}
+							disabled={this.state.value === null}>
+							<i className="fas fa-trash-alt"/> Remove
+						</button>
+						<DialogSelectImage
+							trigger={
+								<button>
+									<i className="fas fa-plus"/> {this.state.value === null ? "Select" : "Change"} image
+								</button>
+							}
+							validateSelection={(value) => this.onChange(value)}
+						/>
+					</div>
+				}
 			</div>;
 		default:
 			return <input

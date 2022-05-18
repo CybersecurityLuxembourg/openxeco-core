@@ -174,7 +174,7 @@ export default class Address extends React.Component {
 							/>
 						</div>
 					</div>
-					{this.state.showAddress2 || this.state.info.address_2 !== null
+					{(this.state.showAddress2 || this.state.info.address_2 !== null) || this.props.disabled
 						? <FormLine
 							label={"House, Entrance, appartment... (optional)"}
 							value={this.state.info.address_2}
