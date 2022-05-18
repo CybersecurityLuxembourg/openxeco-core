@@ -71,7 +71,7 @@ export default class CompanyGlobal extends React.Component {
 		}
 
 		return (
-			<div className={"row"}>
+			<div id="CompanyGlobal" className={"row"}>
 				{this.props.editable
 					&& <div className="Company-action-buttons-wrapper">
 						<div className={"Company-action-buttons"}>
