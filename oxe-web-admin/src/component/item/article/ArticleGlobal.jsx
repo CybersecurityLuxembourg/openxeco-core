@@ -48,7 +48,7 @@ export default class ArticleGlobal extends React.Component {
 	}
 
 	saveArticleValue(prop, value) {
-		if (this.state.article[prop] !== value) {
+		if (this.props.article[prop] !== value) {
 			const params = {
 				id: this.props.id,
 				[prop]: value,
@@ -58,17 +58,17 @@ export default class ArticleGlobal extends React.Component {
 				this.props.refresh();
 				nm.info("The property has been updated");
 			}, (response) => {
-				this.refresh();
+				this.props.refresh();
 				nm.warning(response.statusText);
 			}, (error) => {
-				this.refresh();
+				this.props.refresh();
 				nm.error(error.message);
 			});
 		}
 	}
 
 	render() {
-		if (!this.props.article || this.state.articleEnums) {
+		if (!this.props.article || !this.state.articleEnums) {
 			return <Loading height={300} />;
 		}
 
@@ -96,25 +96,51 @@ export default class ArticleGlobal extends React.Component {
 				</div>
 
 				<div className="col-md-12">
+					<h3>Identity</h3>
+				</div>
+
+				<div className="col-md-6 row-spaced">
+					<FormLine
+						type={"image"}
+						label={""}
+						value={this.props.article.image}
+						onChange={(v) => this.saveArticleValue("image", v)}
+						height={200}
+						disabled={!this.props.editable}
+						fullWidth={true}
+					/>
+				</div>
+
+				<div className="col-md-6">
+					<FormLine
+						label={"Status"}
+						type={"select"}
+						value={this.props.article.status}
+						options={this.state.articleEnums === null
+							|| typeof this.state.articleEnums.status === "undefined" ? []
+							: this.state.articleEnums.status.map((o) => ({ label: o, value: o }))}
+						onChange={(v) => this.saveArticleValue("status", v)}
+						disabled={!this.props.editable}
+					/>
 					<FormLine
 						label={"ID"}
 						value={this.props.article.id}
 						disabled={true}
 					/>
 					<FormLine
-						type={"image"}
-						label={"Cover image"}
-						value={this.props.article.image}
-						onChange={(v) => this.saveArticleValue("image", v)}
-						height={200}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
 						label={"Title"}
 						value={this.props.article.title}
 						onBlur={(v) => this.saveArticleValue("title", v)}
 						disabled={!this.props.editable}
+						fullWidth={true}
 					/>
+				</div>
+
+				<div className="col-md-12">
+					<h3>Definition</h3>
+				</div>
+
+				<div className="col-md-12">
 					<FormLine
 						label={"Type"}
 						type={"select"}
@@ -152,17 +178,9 @@ export default class ArticleGlobal extends React.Component {
 						)}
 						disabled={!this.props.editable}
 					/>
-					<FormLine
-						label={"Status"}
-						type={"select"}
-						value={this.props.article.status}
-						options={this.state.articleEnums === null
-							|| typeof this.state.articleEnums.status === "undefined" ? []
-							: this.state.articleEnums.status.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveArticleValue("status", v)}
-						disabled={!this.props.editable}
-					/>
+				</div>
 
+				<div className="col-md-12">
 					{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
 						&& <div className="right-buttons">
 							<button
@@ -174,7 +192,9 @@ export default class ArticleGlobal extends React.Component {
 								&nbsp;optional fields for {this.props.article.type.toLowerCase()}
 							</button>
 						</div>}
+				</div>
 
+				<div className="col-md-12">
 					{(["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
 						|| this.state.showOptionalFields)
 						&& <FormLine

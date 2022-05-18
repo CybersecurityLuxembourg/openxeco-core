@@ -56,10 +56,10 @@ export default class CompanyGlobal extends React.Component {
 				this.props.refresh();
 				nm.info("The property has been updated");
 			}, (response) => {
-				this.refresh();
+				this.props.refresh();
 				nm.warning(response.statusText);
 			}, (error) => {
-				this.refresh();
+				this.props.refresh();
 				nm.error(error.message);
 			});
 		}
@@ -95,7 +95,23 @@ export default class CompanyGlobal extends React.Component {
 					<h2>Global</h2>
 				</div>
 
-				<div className="col-md-12 row-spaced">
+				<div className="col-md-12">
+					<h3>Identity</h3>
+				</div>
+
+				<div className="col-md-6 row-spaced">
+					<FormLine
+						type={"image"}
+						label={""}
+						value={this.props.company.image}
+						onChange={(v) => this.saveCompanyValue("image", v)}
+						height={150}
+						disabled={!this.props.editable}
+						fullWidth={true}
+					/>
+				</div>
+
+				<div className="col-md-6">
 					<FormLine
 						label={"Status"}
 						type={"select"}
@@ -112,19 +128,19 @@ export default class CompanyGlobal extends React.Component {
 						disabled={true}
 					/>
 					<FormLine
-						type={"image"}
-						label={"Image"}
-						value={this.props.company.image}
-						onChange={(v) => this.saveCompanyValue("image", v)}
-						height={150}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
 						label={"Name"}
 						value={this.props.company.name}
 						onBlur={(v) => this.saveCompanyValue("name", v)}
 						disabled={!this.props.editable}
+						fullWidth={true}
 					/>
+				</div>
+
+				<div className="col-md-12">
+					<h3>Definition</h3>
+				</div>
+
+				<div className="col-md-12 row-spaced">
 					<FormLine
 						label={"Description"}
 						type={"textarea"}
