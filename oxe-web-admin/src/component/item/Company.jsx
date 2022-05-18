@@ -12,6 +12,7 @@ import CompanyUser from "./company/CompanyUser.jsx";
 import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
 import CompanyWorkforce from "./company/CompanyWorkforce.jsx";
 import CompanySync from "./company/CompanySync.jsx";
+import FormLine from "../button/FormLine.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 import Chip from "../button/Chip.jsx";
 
@@ -129,18 +130,67 @@ export default class Company extends Component {
 								onClick={() => window.open("http://google.com/search?q=" + this.props.name)}>
 								<i className="fab fa-google"></i>
 							</button>
-							<DialogConfirmation
-								text={"This will permanently remove the data. Are you sure you want to delete this entity?"
-									+ "<br/><br/>"
-									+ "Please consider using the 'DELETED' or the 'INACTIVE' status before proceeding."}
-								trigger={
-									<button
-										className={"red-background"}>
-										<i className="fas fa-trash-alt"/>
-									</button>
-								}
-								afterConfirmation={() => this.confirmDeletion(close)}
-							/>
+							{this.props.node
+								&& this.state.company
+								&& <Popup
+									className="Popup-small-size"
+									trigger={
+										<button
+											title="Import article">
+											<i className="fas fa-download"/>
+										</button>
+									}
+									modal
+									closeOnDocumentClick
+								>
+									{(close2) => (
+										<div className="row row-spaced">
+											<div className="col-md-12">
+												<h2>Select options and confirm</h2>
+
+												<div className={"top-right-buttons"}>
+													<button
+														className={"grey-background"}
+														onClick={close2}>
+														<i className="far fa-times-circle"/>
+													</button>
+												</div>
+											</div>
+
+											<div className="col-md-12 right-buttons">
+												<FormLine
+													type="checkbox"
+													label={"Synchronize the content of the entity"}
+													value={this.state.sync_content}
+													onChange={(v) => this.changeState("sync_content", !v)}
+												/>
+											</div>
+
+											<div className="col-md-12 right-buttons">
+												<button
+													title="Import article"
+													onClick={() => this.importCompany(close2)}>
+													<i className="fas fa-download"/> Import entity
+												</button>
+											</div>
+										</div>
+									)}
+								</Popup>
+							}
+							{!this.props.node
+								&& <DialogConfirmation
+									text={"This will permanently remove the data. Are you sure you want to delete this entity?"
+										+ "<br/><br/>"
+										+ "Please consider using the 'DELETED' or the 'INACTIVE' status before proceeding."}
+									trigger={
+										<button
+											className={"red-background"}>
+											<i className="fas fa-trash-alt"/>
+										</button>
+									}
+									afterConfirmation={() => this.confirmDeletion(close)}
+								/>
+							}
 							<button
 								className={"grey-background"}
 								data-hover="Close"

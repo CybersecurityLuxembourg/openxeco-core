@@ -72,22 +72,24 @@ export default class CompanyGlobal extends React.Component {
 
 		return (
 			<div className={"row"}>
-				<div className="Company-action-buttons-wrapper">
-					<div className={"Company-action-buttons"}>
-						<h3>Quick actions</h3>
-						<div>
-							<DialogAddImage
-								trigger={
-									<button
-										className={"blue-background"}
-										data-hover="Filter">
-										<i className="fas fa-plus"/> Add image
-									</button>
-								}
-							/>
+				{this.props.editable
+					&& <div className="Company-action-buttons-wrapper">
+						<div className={"Company-action-buttons"}>
+							<h3>Quick actions</h3>
+							<div>
+								<DialogAddImage
+									trigger={
+										<button
+											className={"blue-background"}
+											data-hover="Filter">
+											<i className="fas fa-plus"/> Add image
+										</button>
+									}
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
+				}
 
 				<div className="col-md-12">
 					<h2>Global</h2>
