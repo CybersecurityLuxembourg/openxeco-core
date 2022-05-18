@@ -222,7 +222,7 @@ export default class FormLine extends React.Component {
 						<DialogSelectImage
 							trigger={
 								<button>
-									<i className="fas fa-plus"/> {this.state.value === null ? "Select" : "Change"} image
+									<i className="fas fa-redo-alt"/> {this.state.value === null ? "Select" : "Change"} image
 								</button>
 							}
 							validateSelection={(value) => this.onChange(value)}
