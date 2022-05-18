@@ -108,7 +108,7 @@ export default class CompanySync extends React.Component {
 								/>
 								<FormLine
 									label={"Company ID"}
-									value={this.getNodeEndpoint() ? this.getNodeEndpoint().api_endpoint : ""}
+									value={this.props.company.sync_id}
 									disabled={!this.props.editable || true}
 								/>
 								<FormLine
