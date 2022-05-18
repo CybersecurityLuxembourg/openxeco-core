@@ -22,18 +22,20 @@ def upgrade():
                     type_=sa.DATETIME(), server_default=sa.sql.func.now(), nullable=True)
 
     op.add_column('Article', sa.Column('sync_node', mysql.INTEGER(), nullable=True))
+    op.add_column('Article', sa.Column('sync_id', mysql.INTEGER()))
     op.add_column('Article', sa.Column('sync_global', mysql.BOOLEAN()))
     op.add_column('Article', sa.Column('sync_content', mysql.BOOLEAN()))
     op.add_column('Article', sa.Column('sync_status', mysql.ENUM('OK', 'CONFLICT', 'UNFOUND', 'ERROR'),
                                                 server_default=sa.text("'OK'"), nullable=False))
     op.create_foreign_key(
         'fk_article_networknode',
-        'TaxonomyCategory', 'NetworkNode',
+        'Article', 'NetworkNode',
         ['sync_node'], ['id'],
         ondelete="SET NULL",
     )
 
     op.add_column('Company', sa.Column('sync_node', mysql.INTEGER(), nullable=True))
+    op.add_column('Company', sa.Column('sync_id', mysql.INTEGER()))
     op.add_column('Company', sa.Column('sync_global', mysql.BOOLEAN()))
     op.add_column('Company', sa.Column('sync_address', mysql.BOOLEAN()))
     op.add_column('Company', sa.Column('sync_status', mysql.ENUM('OK', 'CONFLICT', 'UNFOUND', 'ERROR'),
@@ -52,12 +54,14 @@ def downgrade():
 
     op.drop_constraint('fk_article_networknode', 'Article', 'foreignkey')
     op.drop_column('Article', 'sync_node')
+    op.drop_column('Article', 'sync_id')
     op.drop_column('Article', 'sync_global')
     op.drop_column('Article', 'sync_content')
     op.drop_column('Article', 'sync_status')
 
     op.drop_constraint('fk_company_networknode', 'Company', 'foreignkey')
     op.drop_column('Company', 'sync_node')
+    op.drop_column('Company', 'sync_id')
     op.drop_column('Company', 'sync_global')
     op.drop_column('Company', 'sync_address')
     op.drop_column('Company', 'sync_status')
