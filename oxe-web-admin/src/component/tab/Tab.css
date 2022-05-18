@@ -40,6 +40,12 @@
 .Tab-menu-el-selected {
     background-color: #009fe3;
     color: white;
+    cursor: default;
+}
+
+.Tab-menu-el-selected:hover {
+    background-color: #009fe3;
+    color: white !important;
 }
 
 .Tab-notification {
