@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
 import Info from "../../box/Info.jsx";
 import { getCategory } from "../../../utils/taxonomy.jsx";
 
@@ -49,13 +50,9 @@ export default class ArticleSync extends React.Component {
 	}
 
 	getNodeEndpoint() {
-		if (this.props.taxonomy
-			&& getCategory(this.props.taxonomy, this.props.name)
-			&& getCategory(this.props.taxonomy, this.props.name).sync_node
-			&& this.state.nodes) {
+		if (this.props.article && this.state.nodes) {
 			const nodes = this.state.nodes
-				.filter((c) => c.id
-					=== parseInt(getCategory(this.props.taxonomy, this.props.name).sync_node, 10));
+				.filter((c) => c.id === parseInt(this.props.article.sync_node, 10));
 
 			if (nodes.length > 0) {
 				return nodes[0];
@@ -72,6 +69,13 @@ export default class ArticleSync extends React.Component {
 	}
 
 	render() {
+		if (this.props.node) {
+			return <Message
+				text={"Not applicable on remote article"}
+				height={300}
+			/>;
+		}
+
 		return (
 			<div id="ArticleSync" className={"row"}>
 				<div className="col-md-12">
@@ -79,10 +83,9 @@ export default class ArticleSync extends React.Component {
 				</div>
 
 				<div className="col-md-12">
-					{this.props.taxonomy
-						&& getCategory(this.props.taxonomy, this.props.name)
+					{this.props.article
 						? <div className="row">
-							{!getCategory(this.props.taxonomy, this.props.name).sync_node
+							{!this.props.article.sync_node
 								&& <div className="col-md-12">
 									<Info
 										content={"This article is not synchonized to any source"}
@@ -93,7 +96,7 @@ export default class ArticleSync extends React.Component {
 							<div className="col-md-12">
 								<FormLine
 									label={"Synchronization status"}
-									value={getCategory(this.props.taxonomy, this.props.name).sync_status}
+									value={this.props.article.sync_status}
 									disabled={!this.props.editable || true}
 								/>
 								<FormLine
@@ -102,19 +105,22 @@ export default class ArticleSync extends React.Component {
 									disabled={!this.props.editable || true}
 								/>
 								<FormLine
+									label={"Article ID"}
+									value={this.props.article.sync_id}
+									disabled={!this.props.editable || true}
+								/>
+								<FormLine
 									type="checkbox"
 									label={"Synchronize global information"}
-									value={getCategory(this.props.taxonomy, this.props.name).sync_global}
-									disabled={!this.props.editable
-										|| !getCategory(this.props.taxonomy, this.props.name).sync_node}
+									value={this.props.article.sync_global}
+									disabled={!this.props.editable || !this.props.article.sync_node}
 									onChange={(v) => this.updateCategory("sync_global", v)}
 								/>
 								<FormLine
 									type="checkbox"
 									label={"Synchronize content"}
-									value={getCategory(this.props.taxonomy, this.props.name).sync_content}
-									disabled={!this.props.editable
-										|| !getCategory(this.props.taxonomy, this.props.name).sync_node}
+									value={this.props.article.sync_content}
+									disabled={!this.props.editable || !this.props.article.sync_node}
 									onChange={(v) => this.updateCategory("sync_content", v)}
 								/>
 							</div>

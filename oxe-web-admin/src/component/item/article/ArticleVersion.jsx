@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
 import Table from "../../table/Table.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 import DialogConfirmationWithTextField from "../../dialog/DialogConfirmationWithTextField.jsx";
@@ -116,7 +117,16 @@ export default class ArticleVersion extends React.Component {
 	}
 
 	render() {
-		if (this.state.versions === null) return <Loading height={300}/>;
+		if (this.props.node) {
+			return <Message
+				text={"Not applicable on remote article"}
+				height={300}
+			/>;
+		}
+
+		if (!this.state.versions) {
+			return <Loading height={300}/>;
+		}
 
 		const columns = [
 			{

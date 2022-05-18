@@ -175,16 +175,18 @@ export default class Article extends Component {
 									)}
 								</Popup>
 							}
-							<DialogConfirmation
-								text={"Are you sure you want to delete this article?"}
-								trigger={
-									<button
-										className={"red-background"}>
-										<i className="fas fa-trash-alt"/>
-									</button>
-								}
-								afterConfirmation={() => this.confirmDeletion(close)}
-							/>
+							{!this.props.node
+								&& <DialogConfirmation
+									text={"Are you sure you want to delete this article?"}
+									trigger={
+										<button
+											className={"red-background"}>
+											<i className="fas fa-trash-alt"/>
+										</button>
+									}
+									afterConfirmation={() => this.confirmDeletion(close)}
+								/>
+							}
 							<button
 								className={"grey-background"}
 								data-hover="Close"
@@ -231,6 +233,7 @@ export default class Article extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									article={this.state.article}
+									node={this.props.node}
 									editable={!this.props.node}
 									refresh={() => this.fetchArticle()}
 								/>,
@@ -238,6 +241,7 @@ export default class Article extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									article={this.state.article}
+									node={this.props.node}
 									editable={!this.props.node}
 									refresh={() => this.fetchArticle()}
 								/>,
@@ -245,6 +249,7 @@ export default class Article extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									article={this.state.article}
+									node={this.props.node}
 									editable={!this.props.node}
 									refresh={() => this.fetchArticle()}
 								/>,
@@ -252,6 +257,7 @@ export default class Article extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									article={this.state.article}
+									node={this.props.node}
 									editable={!this.props.node}
 									refresh={() => this.fetchArticle()}
 								/>,
@@ -259,6 +265,7 @@ export default class Article extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									article={this.state.article}
+									node={this.props.node}
 									editable={!this.props.node}
 									refresh={() => this.fetchArticle()}
 								/>,

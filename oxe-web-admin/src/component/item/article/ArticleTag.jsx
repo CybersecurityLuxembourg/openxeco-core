@@ -3,6 +3,7 @@ import "./ArticleTag.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
+import Message from "../../box/Message.jsx";
 import Loading from "../../box/Loading.jsx";
 
 export default class ArticleTag extends React.Component {
@@ -191,7 +192,17 @@ export default class ArticleTag extends React.Component {
 	}
 
 	render() {
-		if (this.state.article === null) return <Loading height={300}/>;
+		if (this.props.node) {
+			return <Message
+				text={"Not applicable on remote article"}
+				height={300}
+			/>;
+		}
+
+		if (!this.state.companies || !this.state.taxonomyValues || !this.state.taxonomyCategories
+			|| !this.state.selectedCompanies || !this.state.selectedCompanies) {
+			return <Loading height={300} />;
+		}
 
 		return (
 			<div className={"row"}>

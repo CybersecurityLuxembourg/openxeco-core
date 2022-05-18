@@ -73,7 +73,7 @@ export default class ArticleGlobal extends React.Component {
 		}
 
 		return (
-			<div className={"row"}>
+			<div id="ArticleGlobal" className={"row"}>
 				<div className="Article-action-buttons-wrapper">
 					<div className={"Article-action-buttons"}>
 						<h3>Quick actions</h3>
