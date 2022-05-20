@@ -1,6 +1,7 @@
 from flask_apispec import MethodResource
-from flask_apispec import doc
+from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
+from webargs import fields, validate
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -20,8 +21,11 @@ class GetPublicCompany(MethodResource, Resource):
              "200": {},
              "422": {"description": "Object not found"}
          })
+    @use_kwargs({
+        'include_assignments': fields.Bool(required=False, missing=False),
+    }, location="query")
     @catch_exception
-    def get(self, id_):
+    def get(self, id_, **kwargs):
 
         c = self.db.tables["Company"]
         entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.trade_register_number, \
@@ -34,10 +38,11 @@ class GetPublicCompany(MethodResource, Resource):
         data = data[0]
         data["creation_date"] = None if data["creation_date"] is None else str(data["creation_date"])
 
-        data["taxonomy_assignment"] = [v[0] for v in self.db.get(
-            self.db.tables["TaxonomyAssignment"],
-            {"company": data['id']},
-            [self.db.tables["TaxonomyAssignment"].taxonomy_value],
-        )]
+        if kwargs["include_assignments"]:
+            data["taxonomy_assignment"] = [v[0] for v in self.db.get(
+                self.db.tables["TaxonomyAssignment"],
+                {"company": data['id']},
+                [self.db.tables["TaxonomyAssignment"].taxonomy_value],
+            )]
 
         return build_no_cors_response(data)
