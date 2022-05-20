@@ -121,6 +121,7 @@ from resource.public.get_public_articles import GetPublicArticles
 from resource.public.get_public_related_articles import GetPublicRelatedArticles
 from resource.public.get_public_analytics import GetPublicAnalytics
 from resource.public.get_public_companies import GetPublicCompanies
+from resource.public.get_public_company_addresses import GetPublicCompanyAddresses
 from resource.public.get_public_company_enums import GetPublicCompanyEnums
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company import GetPublicCompany
