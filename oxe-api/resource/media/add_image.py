@@ -32,6 +32,7 @@ class AddImage(MethodResource, Resource):
          description='Add an image to the media library. Return a dictionary with the data of the new object',
          responses={
              "200": {},
+             "422": {"description": "The data sent is not identified as an image"},
              "500": {"description": "An error occurred while saving the file"},
          })
     @use_kwargs({
@@ -41,13 +42,21 @@ class AddImage(MethodResource, Resource):
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
+        return self.add_image(**kwargs)
+
+    def add_image(self, **kwargs):
 
         thumbnail_stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
 
         # Create Thumbnail file
 
         fixed_height = 100
-        image = Image.open(thumbnail_stream)
+
+        try:
+            image = Image.open(thumbnail_stream)
+        except PIL.UnidentifiedImageError:
+            return "", "422 The data sent is not identified as an image"
+
         height_percent = (fixed_height / float(image.size[1]))
         width_size = int((float(image.size[0]) * float(height_percent)))
         thumbnail = image.resize((width_size, fixed_height), PIL.Image.NEAREST)
