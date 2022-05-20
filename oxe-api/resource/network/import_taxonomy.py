@@ -34,7 +34,9 @@ class ImportTaxonomy(MethodResource, Resource):
     @use_kwargs({
         'network_node_id': fields.Int(),
         'taxonomy_category': fields.Str(),
-        'sync_hierarchy': fields.Bool(required=False),
+        'sync_global': fields.Bool(required=False, missing=False),
+        'sync_values': fields.Bool(required=False, missing=False),
+        'sync_hierarchy': fields.Bool(required=False, missing=False),
     })
     @jwt_required
     @verify_admin_access
@@ -112,8 +114,8 @@ class ImportTaxonomy(MethodResource, Resource):
             **category,
             **{
                 "sync_node": kwargs["network_node_id"],
-                "sync_global": True,
-                "sync_values": True,
+                "sync_global": kwargs["sync_global"],
+                "sync_values": kwargs["sync_values"],
                 "sync_hierarchy": kwargs["sync_hierarchy"],
                 "sync_status": "OK",
             },
