@@ -45,7 +45,7 @@ export default class NetworkEntities extends React.Component {
 
 	fetchEntities() {
 		this.setState({ entities: {} }, () => {
-			Promise.all(this.state.nodes.map(this.fetchEntitiesFromNode)).then((data) => {
+			Promise.all(this.state.nodes.map((n) => this.fetchEntitiesFromNode(n, 1))).then((data) => {
 				const entities = {};
 
 				data.forEach((d, i) => {

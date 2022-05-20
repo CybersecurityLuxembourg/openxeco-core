@@ -45,7 +45,7 @@ export default class NetworkArticles extends React.Component {
 
 	fetchArticles() {
 		this.setState({ articles: {} }, () => {
-			Promise.all(this.state.nodes.map(this.fetchArticlesFromNode)).then((data) => {
+			Promise.all(this.state.nodes.map((n) => this.fetchArticlesFromNode(n, 1))).then((data) => {
 				const articles = {};
 
 				data.forEach((d, i) => {

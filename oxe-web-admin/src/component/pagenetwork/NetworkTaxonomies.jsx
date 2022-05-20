@@ -45,7 +45,7 @@ export default class NetworkTaxonomies extends React.Component {
 
 	fetchTaxonomies() {
 		this.setState({ taxonomies: {} }, () => {
-			Promise.all(this.state.nodes.map(this.fetchTaxonomiesFromNode)).then((data) => {
+			Promise.all(this.state.nodes.map((n) => this.fetchTaxonomiesFromNode(n, 1))).then((data) => {
 				const taxonomies = {};
 
 				data.forEach((d, i) => {
