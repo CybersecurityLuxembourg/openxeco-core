@@ -74,22 +74,24 @@ export default class ArticleGlobal extends React.Component {
 
 		return (
 			<div id="ArticleGlobal" className={"row"}>
-				<div className="Article-action-buttons-wrapper">
-					<div className={"Article-action-buttons"}>
-						<h3>Quick actions</h3>
-						<div>
-							<DialogAddImage
-								trigger={
-									<button
-										className={"blue-background"}
-										data-hover="Filter">
-										<i className="fas fa-plus"/> Add image
-									</button>
-								}
-							/>
+				{this.props.editable
+					&& <div className="Article-action-buttons-wrapper">
+						<div className={"Article-action-buttons"}>
+							<h3>Quick actions</h3>
+							<div>
+								<DialogAddImage
+									trigger={
+										<button
+											className={"blue-background"}
+											data-hover="Filter">
+											<i className="fas fa-plus"/> Add image
+										</button>
+									}
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
+				}
 
 				<div className="col-md-12">
 					<h2>Global</h2>

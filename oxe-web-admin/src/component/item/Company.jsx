@@ -26,6 +26,9 @@ export default class Company extends Component {
 			tabs: [
 				"global", "contact", "address", "user", "taxonomy", "workforce", "synchronization",
 			],
+
+			sync_global: true,
+			sync_content: true,
 		};
 	}
 
@@ -146,7 +149,7 @@ export default class Company extends Component {
 									{(close2) => (
 										<div className="row row-spaced">
 											<div className="col-md-12">
-												<h2>Select options and confirm</h2>
+												<h2>Select options and import</h2>
 
 												<div className={"top-right-buttons"}>
 													<button
@@ -157,7 +160,13 @@ export default class Company extends Component {
 												</div>
 											</div>
 
-											<div className="col-md-12 right-buttons">
+											<div className="col-md-12">
+												<FormLine
+													type="checkbox"
+													label={"Synchronize the global information"}
+													value={this.state.sync_global}
+													onChange={(v) => this.changeState("sync_global", !v)}
+												/>
 												<FormLine
 													type="checkbox"
 													label={"Synchronize the content of the entity"}

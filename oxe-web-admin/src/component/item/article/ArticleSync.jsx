@@ -6,7 +6,6 @@ import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import Info from "../../box/Info.jsx";
-import { getCategory } from "../../../utils/taxonomy.jsx";
 
 export default class ArticleSync extends React.Component {
 	constructor(props) {
@@ -22,17 +21,14 @@ export default class ArticleSync extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.taxonomy !== this.props.taxonomy
-			&& prevProps.name !== this.props.name
+		if (prevProps.article !== this.props.article
 			&& !this.state.nodes) {
 			this.getNodes();
 		}
 	}
 
 	getNodes() {
-		if (this.props.taxonomy
-			&& this.props.name
-			&& getCategory(this.props.taxonomy, this.props.name).sync_node) {
+		if (this.props.article && this.props.article.sync_node) {
 			this.setState({
 				nodes: null,
 			}, () => {

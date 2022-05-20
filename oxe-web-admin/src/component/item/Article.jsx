@@ -28,6 +28,8 @@ export default class Article extends Component {
 				"tag",
 				"synchronization",
 			],
+
+			sync_global: true,
 			sync_content: true,
 		};
 	}
@@ -94,6 +96,7 @@ export default class Article extends Component {
 		const params = {
 			network_node_id: this.props.node.id,
 			article_id: this.state.article.id,
+			sync_global: this.state.sync_global,
 			sync_content: this.state.sync_content,
 		};
 
@@ -144,7 +147,7 @@ export default class Article extends Component {
 									{(close2) => (
 										<div className="row row-spaced">
 											<div className="col-md-12">
-												<h2>Select options and confirm</h2>
+												<h2>Select options and import</h2>
 
 												<div className={"top-right-buttons"}>
 													<button
@@ -155,7 +158,13 @@ export default class Article extends Component {
 												</div>
 											</div>
 
-											<div className="col-md-12 right-buttons">
+											<div className="col-md-12">
+												<FormLine
+													type="checkbox"
+													label={"Synchronize the global information"}
+													value={this.state.sync_global}
+													onChange={(v) => this.changeState("sync_global", !v)}
+												/>
 												<FormLine
 													type="checkbox"
 													label={"Synchronize the content of the article"}
@@ -167,7 +176,7 @@ export default class Article extends Component {
 											<div className="col-md-12 right-buttons">
 												<button
 													title="Import article"
-													onClick={() => this.importTaxonomy(close2)}>
+													onClick={() => this.importArticle(close2)}>
 													<i className="fas fa-download"/> Import article
 												</button>
 											</div>

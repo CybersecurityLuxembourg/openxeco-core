@@ -6,7 +6,6 @@ import FormLine from "../../button/FormLine.jsx";
 import Message from "../../box/Message.jsx";
 import Loading from "../../box/Loading.jsx";
 import Info from "../../box/Info.jsx";
-import { getCategory } from "../../../utils/taxonomy.jsx";
 
 export default class CompanySync extends React.Component {
 	constructor(props) {
@@ -23,7 +22,6 @@ export default class CompanySync extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		if (prevProps.company !== this.props.company
-			&& prevProps.name !== this.props.name
 			&& !this.state.nodes) {
 			this.getNodes();
 		}
@@ -31,8 +29,7 @@ export default class CompanySync extends React.Component {
 
 	getNodes() {
 		if (this.props.company
-			&& this.props.name
-			&& getCategory(this.props.company, this.props.name).sync_node) {
+			&& this.props.company.sync_node) {
 			this.setState({
 				nodes: null,
 			}, () => {

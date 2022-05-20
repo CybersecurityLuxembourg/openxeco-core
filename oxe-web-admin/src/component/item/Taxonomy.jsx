@@ -27,6 +27,9 @@ export default class Taxonomy extends Component {
 				"Hierarchy",
 				"Synchronization",
 			],
+
+			sync_global: true,
+			sync_values: true,
 			sync_hierarchy: true,
 		};
 	}
@@ -145,7 +148,7 @@ export default class Taxonomy extends Component {
 									{(close2) => (
 										<div className="row row-spaced">
 											<div className="col-md-12">
-												<h2>Select options and confirm</h2>
+												<h2>Select options and import</h2>
 
 												<div className={"top-right-buttons"}>
 													<button
@@ -156,7 +159,19 @@ export default class Taxonomy extends Component {
 												</div>
 											</div>
 
-											<div className="col-md-12 right-buttons">
+											<div className="col-md-12">
+												<FormLine
+													type="checkbox"
+													label={"Synchronize the global information"}
+													value={this.state.sync_global}
+													onChange={(v) => this.changeState("sync_global", !v)}
+												/>
+												<FormLine
+													type="checkbox"
+													label={"Synchronize the value"}
+													value={this.state.sync_values}
+													onChange={(v) => this.changeState("sync_values", !v)}
+												/>
 												<FormLine
 													type="checkbox"
 													label={"Synchronize the complete hierarchy"}
