@@ -21,6 +21,27 @@ class TestGetPublicCompany(BaseCase):
             'trade_register_number': None,
             'creation_date': None,
             'description': None,
+            'website': None
+        })
+
+    @BaseCase.login
+    def test_ok_with_assignments(self, token):
+        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+
+        response = self.application.get('/public/get_public_company/2?include_assignments=True',
+                                        headers=self.get_standard_header(token))
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(response.json, {
+            'id': 2,
+            'image': None,
+            'name': 'My Company',
+            'status': 'ACTIVE',
+            'is_startup': 0,
+            'is_cybersecurity_core_business': 0,
+            'trade_register_number': None,
+            'creation_date': None,
+            'description': None,
             'taxonomy_assignment': [],
             'website': None
         })
