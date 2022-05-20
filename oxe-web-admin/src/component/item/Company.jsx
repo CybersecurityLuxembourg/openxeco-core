@@ -28,7 +28,7 @@ export default class Company extends Component {
 			],
 
 			sync_global: true,
-			sync_content: true,
+			sync_address: true,
 		};
 	}
 
@@ -173,9 +173,9 @@ export default class Company extends Component {
 												/>
 												<FormLine
 													type="checkbox"
-													label={"Synchronize the content of the entity"}
-													value={this.state.sync_content}
-													onChange={(v) => this.changeState("sync_content", v)}
+													label={"Synchronize the addresses"}
+													value={this.state.sync_address}
+													onChange={(v) => this.changeState("sync_address", v)}
 												/>
 											</div>
 
