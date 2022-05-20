@@ -116,8 +116,9 @@ class ImportCompany(MethodResource, Resource):
             addresses.append({
                 **address,
                 **{
-                    "company_id": company["id"],
+                    "company_id": company.id,
                 }
             })
 
-        self.db.insert(addresses, self.db.tables["Company_Address"], commit=False, flush=True)
+        if len(addresses) > 0:
+            self.db.insert(addresses, self.db.tables["Company_Address"], commit=False, flush=True)
