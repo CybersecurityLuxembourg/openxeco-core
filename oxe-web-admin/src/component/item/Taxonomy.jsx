@@ -53,7 +53,6 @@ export default class Taxonomy extends Component {
 		};
 
 		postRequest.call(this, "taxonomy/delete_taxonomy_category", params, () => {
-			document.elementFromPoint(100, 0).click();
 			nm.info("The taxonomy has been deleted");
 			close();
 			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
@@ -164,19 +163,19 @@ export default class Taxonomy extends Component {
 													type="checkbox"
 													label={"Synchronize the global information"}
 													value={this.state.sync_global}
-													onChange={(v) => this.changeState("sync_global", !v)}
+													onChange={(v) => this.changeState("sync_global", v)}
 												/>
 												<FormLine
 													type="checkbox"
 													label={"Synchronize the value"}
 													value={this.state.sync_values}
-													onChange={(v) => this.changeState("sync_values", !v)}
+													onChange={(v) => this.changeState("sync_values", v)}
 												/>
 												<FormLine
 													type="checkbox"
 													label={"Synchronize the complete hierarchy"}
 													value={this.state.sync_hierarchy}
-													onChange={(v) => this.changeState("sync_hierarchy", !v)}
+													onChange={(v) => this.changeState("sync_hierarchy", v)}
 												/>
 											</div>
 

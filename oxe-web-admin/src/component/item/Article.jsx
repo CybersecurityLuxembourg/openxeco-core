@@ -112,6 +112,10 @@ export default class Article extends Component {
 		});
 	}
 
+	changeState(field, value) {
+		this.setState({ [field]: value });
+	}
+
 	render() {
 		return (
 			<Popup
@@ -163,13 +167,13 @@ export default class Article extends Component {
 													type="checkbox"
 													label={"Synchronize the global information"}
 													value={this.state.sync_global}
-													onChange={(v) => this.changeState("sync_global", !v)}
+													onChange={(v) => this.changeState("sync_global", v)}
 												/>
 												<FormLine
 													type="checkbox"
 													label={"Synchronize the content of the article"}
 													value={this.state.sync_content}
-													onChange={(v) => this.changeState("sync_content", !v)}
+													onChange={(v) => this.changeState("sync_content", v)}
 												/>
 											</div>
 
