@@ -93,6 +93,8 @@ export default class Taxonomy extends Component {
 		const params = {
 			network_node_id: this.props.node.id,
 			taxonomy_category: this.props.name,
+			sync_global: this.state.sync_global,
+			sync_values: this.state.sync_values,
 			sync_hierarchy: this.state.sync_hierarchy,
 		};
 

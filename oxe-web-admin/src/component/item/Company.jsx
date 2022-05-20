@@ -94,6 +94,7 @@ export default class Company extends Component {
 		const params = {
 			network_node_id: this.props.node.id,
 			company_id: this.state.company.id,
+			sync_global: this.state.sync_global,
 			sync_address: this.state.sync_address,
 		};
 
