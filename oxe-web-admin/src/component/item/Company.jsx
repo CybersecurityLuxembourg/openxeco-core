@@ -56,7 +56,7 @@ export default class Company extends Component {
 				close();
 			}
 
-			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
+			if (this.props.afterDeletion) this.props.afterDeletion();
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
