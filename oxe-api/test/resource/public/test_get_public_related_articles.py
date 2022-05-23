@@ -65,6 +65,11 @@ class TestGetPublicRelatedArticles(BaseCase):
                 'publication_date': (datetime.date.today() - datetime.timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%S"),
                 'start_date': None,
                 'status': 'PUBLIC',
+                'sync_content': None,
+                'sync_global': None,
+                'sync_id': None,
+                'sync_node': None,
+                'sync_status': 'OK',
                 'title': 'TITLE2',
                 'type': 'NEWS'
             },
@@ -80,6 +85,11 @@ class TestGetPublicRelatedArticles(BaseCase):
                 'publication_date': (datetime.date.today() - datetime.timedelta(days=3)).strftime("%Y-%m-%dT%H:%M:%S"),
                 'start_date': None,
                 'status': 'PUBLIC',
+                'sync_content': None,
+                'sync_global': None,
+                'sync_id': None,
+                'sync_node': None,
+                'sync_status': 'OK',
                 'title': 'TITLE3',
                 'type': 'NEWS'
             }], response.json)

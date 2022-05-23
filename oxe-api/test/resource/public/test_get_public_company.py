@@ -18,10 +18,19 @@ class TestGetPublicCompany(BaseCase):
             'status': 'ACTIVE',
             'is_startup': 0,
             'is_cybersecurity_core_business': 0,
-            'trade_register_number': None,
             'creation_date': None,
             'description': None,
-            'website': None
+            'sync_address': None,
+            'sync_global': None,
+            'sync_id': None,
+            'sync_node': None,
+            'sync_status': "OK",
+            'trade_register_number': None,
+            'website': None,
+            'linkedin_url': None,
+            'discord_url': None,
+            'twitter_url': None,
+            'youtube_url': None
         })
 
     @BaseCase.login
@@ -39,11 +48,20 @@ class TestGetPublicCompany(BaseCase):
             'status': 'ACTIVE',
             'is_startup': 0,
             'is_cybersecurity_core_business': 0,
-            'trade_register_number': None,
             'creation_date': None,
             'description': None,
+            'sync_address': None,
+            'sync_global': None,
+            'sync_id': None,
+            'sync_node': None,
+            'sync_status': "OK",
             'taxonomy_assignment': [],
-            'website': None
+            'trade_register_number': None,
+            'website': None,
+            'linkedin_url': None,
+            'discord_url': None,
+            'twitter_url': None,
+            'youtube_url': None
         })
 
     @BaseCase.login

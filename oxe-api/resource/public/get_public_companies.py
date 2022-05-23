@@ -45,7 +45,11 @@ class GetPublicCompanies(MethodResource, Resource):
         if "count" in kwargs and kwargs["count"] is True:
             response = {"count": self.db.get_filtered_companies(kwargs).count()}
         else:
-            entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, c.creation_date, c.image, c.status
+            entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, \
+                c.trade_register_number, c.creation_date, c.description, c.website, c.image, c.status, c.linkedin_url, \
+                c.twitter_url, c.youtube_url, c.discord_url, c.sync_node, c.sync_id, c.sync_global, c.sync_address, \
+                c.sync_status
+
             response = [o._asdict() for o in self.db.get_filtered_companies(kwargs, entities).all()]
 
             for a in response:
