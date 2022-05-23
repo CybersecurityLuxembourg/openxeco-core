@@ -26,9 +26,9 @@ class ImportTaxonomy(MethodResource, Resource):
          description='Import a taxonomy from a network node',
          responses={
              "200": {},
-             "422.a": {"description": "Object already existing: Taxonomy category with this name"},
-             "422.b": {"description": "Object not found: Network node"},
-             "422.c": {"description": "Object not found: Taxonomy category on target node"},
+             "422.a": {"description": "Object already existing : Taxonomy category with this name"},
+             "422.b": {"description": "Object not found : Network node"},
+             "422.c": {"description": "Object not found : Taxonomy category on target node"},
              "500": {"description": "Error while fetching the network node taxonomy"},
          })
     @use_kwargs({
