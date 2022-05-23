@@ -12,7 +12,6 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from exception.object_not_found import ObjectNotFound
 from utils import request
-from urllib.error import HTTPError
 from resource.media.add_image import AddImage
 
 
@@ -77,6 +76,7 @@ class ImportCompany(MethodResource, Resource):
                 company_image = company_image_response[0]
             else:
                 return company_image_response
+
         company = self.create_company(company, company_image, **kwargs)
         self.create_company_addresses(company_addresses, company)
 
