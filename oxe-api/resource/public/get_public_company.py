@@ -1,7 +1,7 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
-from webargs import fields, validate
+from webargs import fields
 
 from db.db import DB
 from decorator.catch_exception import catch_exception

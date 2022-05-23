@@ -67,7 +67,6 @@ class ImportArticle(MethodResource, Resource):
                 article_content = json.loads(article_content)["content"]
             except HTTPError:
                 article_content = {'content': []}
-                pass
         except Exception:
             traceback.print_exc()
             return "", "500 Error while fetching the network node article"

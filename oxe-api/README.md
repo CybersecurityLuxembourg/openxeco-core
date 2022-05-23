@@ -139,7 +139,7 @@ To run the PyCQA/prospector
 To run the PyCQA/bandit 
 ```
 > sudo apt install bandit
-> bandit -r .
+> bandit -r . -x ./test/,./venv/
 ```
 
 # Manage the database structure

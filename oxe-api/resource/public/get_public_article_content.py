@@ -67,17 +67,21 @@ class GetPublicArticleContent(MethodResource, Resource):
             "abstract": article[0].abstract,
             "image": article[0].image,
             "publication_date": article[0].publication_date.strftime('%Y-%m-%dT%H:%M:%S')
-                if article[0].publication_date is not None else None,
+            if article[0].publication_date is not None else None,
             "start_date": str(article[0].start_date) if article[0].start_date is not None else None,
             "end_date": str(article[0].end_date) if article[0].end_date is not None else None,
             "type": article[0].type,
             "link": article[0].link,
             "handle": article[0].handle,
             "content": Serializer.serialize(article_content, self.db.tables["ArticleBox"]),
-            "taxonomy_tags": Serializer.serialize(self.db.get_tags_of_article(article[0].id),
-                                                  self.db.tables["TaxonomyValue"]),
-            "company_tags": Serializer.serialize(self.db.get_companies_of_article(article[0].id),
-                                                 self.db.tables["Company"])
+            "taxonomy_tags": Serializer.serialize(
+                self.db.get_tags_of_article(article[0].id),
+                self.db.tables["TaxonomyValue"]
+            ),
+            "company_tags": Serializer.serialize(
+                self.db.get_companies_of_article(article[0].id),
+                self.db.tables["Company"]
+            )
         }
 
         return build_no_cors_response(data)
