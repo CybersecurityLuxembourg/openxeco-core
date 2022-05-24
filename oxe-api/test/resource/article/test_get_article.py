@@ -29,6 +29,11 @@ class TestGetArticle(BaseCase):
             'publication_date': datetime.datetime.today().date().strftime('%Y-%m-%d') + "T00:00:00",
             'start_date': None,
             'status': 'DRAFT',
+            'sync_address': None,
+            'sync_global': None,
+            'sync_id': None,
+            'sync_node': None,
+            'sync_status': 'OK',
             'title': 'TITLE',
             'type': 'NEWS'
         }, response.json)
