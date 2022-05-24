@@ -57,6 +57,11 @@ class TestGetMyArticles(BaseCase):
                     'publication_date': '2021-01-22T00:00:00',
                     'start_date': None,
                     'status': 'PUBLIC',
+                    'sync_content': None,
+                    'sync_global': None,
+                    'sync_id': None,
+                    'sync_node': None,
+                    'sync_status': 'OK',
                     'taxonomy_tags': [],
                     'title': 'TITLE3',
                     'type': 'NEWS'
@@ -74,6 +79,11 @@ class TestGetMyArticles(BaseCase):
                     'publication_date': '2021-01-22T00:00:00',
                     'start_date': None,
                     'status': 'PUBLIC',
+                    'sync_content': None,
+                    'sync_global': None,
+                    'sync_id': None,
+                    'sync_node': None,
+                    'sync_status': 'OK',
                     'taxonomy_tags': [],
                     'title': 'TITLE2',
                     'type': 'NEWS'
