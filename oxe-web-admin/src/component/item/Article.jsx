@@ -132,7 +132,7 @@ export default class Article extends Component {
 				closeOnDocumentClick={false}
 				onOpen={() => this.fetchArticle()}
 			>
-				{(close) => <div className="Article-content row row-spaced">
+				{(close) => <div className="row row-spaced">
 					<div className="col-md-12">
 						<div className={"top-right-buttons"}>
 							{this.props.node

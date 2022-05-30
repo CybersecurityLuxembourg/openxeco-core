@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 - API resource public/get_public_article/{_id}
 - Keyword management when adding an image on oxe-web-admin
 - Keyword management when adding a document on oxe-web-admin
+- Import system on articles
+- Import system on companies
 
 ### Changed
 
@@ -18,6 +20,11 @@ All notable changes to this project will be documented in this file.
 - Minor UI modification on menu on oxe-web-admin
 - Minor UI modification on menu on oxe-web-community
 - Database structure for "publication_date" of article (Date -> datetime)
+
+### Fixed
+
+- Menu overlay
+- Fix scroll on image selection dialog
 
 ## [1.9.2] - 2022-05-06
 
