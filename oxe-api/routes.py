@@ -50,7 +50,6 @@ from resource.contact.get_contact_enums import GetContactEnums
 from resource.contact.update_contact import UpdateContact
 from resource.cron.run_company_website_check import RunCompanyWebsiteCheck
 from resource.cron.run_database_compliance import RunDatabaseCompliance
-from resource.cron.update_moovijob_job_offers import UpdateMoovijobJobOffers
 from resource.datacontrol.get_data_controls import GetDataControls
 from resource.datacontrol.delete_data_control import DeleteDataControl
 from resource.form.add_form import AddForm

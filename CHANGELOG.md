@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Minor UI modification on menu on oxe-web-admin
 - Minor UI modification on menu on oxe-web-community
 - Database structure for "publication_date" of article (Date -> datetime)
+- Remove Moovijob cron resource
 
 ### Fixed
 
