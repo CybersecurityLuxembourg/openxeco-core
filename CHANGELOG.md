@@ -23,8 +23,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Menu overlay
-- Fix scroll on image selection dialog
+- Menu overlay on oxe-web-admin
+- Scroll on image selection dialog on oxe-web-admin
 
 ## [1.9.2] - 2022-05-06
 
