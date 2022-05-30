@@ -1,6 +1,7 @@
 
 .DialogSelectImage-overlay > .DialogSelectImage-content {
 	width: 80% !important;
+	height: 100%;
 }
 
 .DialogSelectImage-content-image {
