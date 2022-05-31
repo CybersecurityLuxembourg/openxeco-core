@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.10.0] - TBD
+## [1.10.0] - 2022-05-30
 
 ### Added
 
