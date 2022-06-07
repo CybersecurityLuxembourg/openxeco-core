@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.10.1] - 2022-06-07
+
+### Added
+
+- License
+- Links on documentation
+
 ## [1.10.0] - 2022-05-30
 
 ### Added
