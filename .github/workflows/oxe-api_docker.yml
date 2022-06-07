@@ -2,12 +2,7 @@ name: oxe-api Docker build
 
 on:
   push:
-    branches: [ 'main' ]
     tags: [ 'v*.*', 'v*.*.*' ]
-    paths:
-      - 'oxe-api/**'
-  pull_request:
-    branches: [ main ]
     paths:
       - 'oxe-api/**'
 

@@ -2,12 +2,7 @@ name: oxe-web-admin build and release package
 
 on:
   push:
-    branches: [ 'main' ]
     tags: [ 'v*.*', 'v*.*.*' ]
-    paths:
-      - 'oxe-web-admin/**'
-  pull_request:
-    branches: [ main ]
     paths:
       - 'oxe-web-admin/**'
 

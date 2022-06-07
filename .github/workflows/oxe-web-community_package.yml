@@ -2,12 +2,7 @@ name: oxe-web-community build and release package
 
 on:
   push:
-    branches: [ 'main' ]
     tags: [ 'v*.*', 'v*.*.*' ]
-    paths:
-      - 'oxe-web-community/**'
-  pull_request:
-    branches: [ main ]
     paths:
       - 'oxe-web-community/**'
 
