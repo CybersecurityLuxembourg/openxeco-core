@@ -116,7 +116,7 @@ export default class Menu extends React.Component {
 						/>
 						: this.props.myCompanies.map((c) => <NavItem
 							key={c.id}
-							eventKey={"/company/" + c.id}
+							eventKey={"company/" + c.id}
 							active={this.props.selectedMenu === "company/" + c.id}
 							onClick={() => this.props.history.push("/company/" + c.id)}>
 							<NavIcon>
