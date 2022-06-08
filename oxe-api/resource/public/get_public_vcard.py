@@ -37,9 +37,9 @@ class GetPublicVcard(MethodResource, Resource):
         if vcard.vcard is None:
             return "", "422 The user has no vcard"
 
-        if vcard.is_vcard_public is True:
+        if vcard.is_vcard_public == 1:
             return Response(
-                vcard,
+                vcard.vcard.encode('utf-8'),
                 mimetype="text/vcard",
                 headers={"Content-disposition": f"attachment; filename={handle}.vcf"}
             )

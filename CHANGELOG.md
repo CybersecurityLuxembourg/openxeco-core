@@ -119,6 +119,8 @@ All notable changes to this project will be documented in this file.
  
 - Make user/get_user_company_enums accessible to non-admin users
 - Remove the hardcoded names of the original project in the automatic emails
+- private/generate_my_user_handle resource
+- public/get_public_vcard resource
 
 ## [1.8.2] - 2022-02-10
 

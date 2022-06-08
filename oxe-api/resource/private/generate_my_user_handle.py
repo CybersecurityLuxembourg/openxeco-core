@@ -29,7 +29,7 @@ class GenerateMyUserHandle(MethodResource, Resource):
         kwargs["id"] = int(get_jwt_identity())
 
         words = open("template/bip39-words.txt").readlines()
-        handle = "-".join(random.choices(words, k=4))
+        handle = "-".join(random.choices(words, k=4)).replace('\n', '').replace('\r', '')
 
         self.db.merge({"id": kwargs["id"], "handle": handle}, self.db.tables["User"])
 
