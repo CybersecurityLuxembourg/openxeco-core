@@ -61,3 +61,10 @@ nav div {
   50% { color: #e40613; }
   100% { color: #f9dcdd; }
 }
+
+.Menu-divider {
+	margin: 3px 10px;
+	background-color: white;
+  opacity: 0.4;
+	height: 2px;
+}

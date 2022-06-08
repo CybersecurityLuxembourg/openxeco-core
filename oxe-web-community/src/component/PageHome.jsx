@@ -14,7 +14,7 @@ export default class PageHome extends React.Component {
 
 	render() {
 		return (
-			<div className={"PageHome page max-sized-page"}>
+			<div className={"PageHome page max-sized-page row-spaced"}>
 				<div className={"row"}>
 					<div className="col-md-10">
 						<h1>Home</h1>
@@ -130,23 +130,19 @@ export default class PageHome extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-6">
-						<h2>My profile</h2>
-
 						<a
 							onClick={() => this.props.changeMenu("profile")}
 						>
 							<Link to="/profile">
 								<div className="PageHome-white-block">
 									<i className="fas fa-user"/>
-									<h3>{this.props.email.split("@")[0]}</h3>
+									<h3>Profile: {this.props.email.split("@")[0]}</h3>
 								</div>
 							</Link>
 						</a>
 					</div>
 
 					<div className="col-md-6">
-						<h2>My forms</h2>
-
 						<a
 							onClick={() => this.props.changeMenu("form")}
 						>
@@ -162,8 +158,6 @@ export default class PageHome extends React.Component {
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <div className="col-md-6">
-							<h2>My articles</h2>
-
 							<a
 								onClick={() => this.props.changeMenu("articles")}
 							>
@@ -216,7 +210,7 @@ export default class PageHome extends React.Component {
 								<Link to={"/add_company"}>
 									<div className="PageHome-white-block">
 										<i className="fas fa-plus-circle"/>
-										<h3>Add or claim an entity</h3>
+										<h3>Claim or register an entity</h3>
 									</div>
 								</Link>
 							</a>

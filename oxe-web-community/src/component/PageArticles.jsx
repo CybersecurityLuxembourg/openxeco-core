@@ -310,7 +310,7 @@ export default class PageArticles extends React.Component {
 								<a
 									onClick={() => this.props.changeMenu("add_company")}
 								>
-									<Link to="/add_company">&#32;Add or claim an entity&#32;</Link>
+									<Link to="/add_company">&#32;Claim or register an entity&#32;</Link>
 								</a>
 								page to request for it.
 							</p>

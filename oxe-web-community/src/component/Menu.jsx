@@ -57,6 +57,7 @@ export default class Menu extends React.Component {
 							Home
 						</NavText>
 					</NavItem>
+					<div className="Menu-divider"/>
 					<NavItem
 						eventKey="profile"
 						active={this.props.selectedMenu === "profile"}
@@ -65,7 +66,7 @@ export default class Menu extends React.Component {
 							<i className="fas fa-user" style={{ fontSize: "1.75em" }}/>
 						</NavIcon>
 						<NavText>
-							My Profile
+							Profile
 						</NavText>
 					</NavItem>
 					{this.props.settings
@@ -96,6 +97,7 @@ export default class Menu extends React.Component {
 							</NavText>
 						</NavItem>
 					}
+					<div className="Menu-divider"/>
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <NavItem
@@ -142,7 +144,7 @@ export default class Menu extends React.Component {
 							/>
 						</NavIcon>
 						<NavText>
-							Add or claim an entity
+							Claim or register an entity
 						</NavText>
 					</NavItem>
 

@@ -112,7 +112,7 @@ export default class PageProfile extends React.Component {
 			<div className={"PageProfile page max-sized-page"}>
 				<div className={"row"}>
 					<div className="col-md-12">
-						<h1>My profile</h1>
+						<h1>Profile</h1>
 
 						<div className="top-right-buttons">
 							<button

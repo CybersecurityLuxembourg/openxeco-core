@@ -77,6 +77,8 @@ export default class PageForm extends React.Component {
 
 		return (
 			<div id="PageForm" className="page max-sized-page">
+				<h1>Forms</h1>
+
 				<Tab
 					labels={this.state.forms.map((f) => f.name)}
 					selectedMenu={this.state.selectedMenu}
