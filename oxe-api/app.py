@@ -15,6 +15,9 @@ from utils.re import has_mail_format
 
 from db.db import DB
 
+import socket, sys
+from contextlib import closing
+
 # Load environment variables and config
 from dotenv import load_dotenv
 load_dotenv()
@@ -135,6 +138,10 @@ def create_row_if_not_exists(table, row, log_base):
 
 
 if __name__ in ('app', '__main__'):
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+    # TODO: make flask host and port a config parameter
+    if sock.connect_ex((127.0.0.1, 5000)) == 0:
+        sys.exit("Port 5000 is open, maybe you are running a docker container already?")
     if config.INITIAL_ADMIN_EMAIL:
         create_initial_admin(config.INITIAL_ADMIN_EMAIL)
 
