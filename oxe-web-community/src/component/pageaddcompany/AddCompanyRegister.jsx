@@ -104,7 +104,7 @@ export default class AddCompanyRegister extends React.Component {
 						<Info
 							content={
 								<div>
-									You can register your company here.
+									You can register your entity here.
 									Please fill in the form only if you haven&apos;t
 									found your entity in
 									the <Link to="/add_company?tab=claim">Claim an entity</Link> tab.
