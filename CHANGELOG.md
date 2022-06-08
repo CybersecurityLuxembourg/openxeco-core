@@ -11,7 +11,8 @@ All notable changes to this project will be documented in this file.
 
 - Minor UX modifications on home page on oxe-web-community
 - Minor UX modifications on menu on oxe-web-community
-- UX of the "Add or claim entity" page on oxe-web-community
+- UX of the "Claim or register entity" page on oxe-web-community
+- Package versions to remove critical vulnerabilities on oxe-web-admin and on oxe-web-community
 
 ### Fixed
 

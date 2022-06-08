@@ -1,6 +1,6 @@
 {
   "name": "oxe-web-community",
-  "version": "1.9.1",
+  "version": "1.11.0",
   "private": true,
   "dependencies": {
     "@babel/eslint-parser": "^7.5.4",
@@ -29,11 +29,13 @@
     "react-leaflet": "^2.8.0",
     "react-medium-editor": "^1.8.1",
     "react-notifications": "^1.6.0",
+    "react-qr-code": "^2.0.7",
     "react-router-dom": "^5.2.0",
     "react-select": "^3.1.0",
     "react-table": "^7.6.1",
     "react-to-pdf": "0.0.14",
-    "reactjs-popup": "^1.5.0"
+    "reactjs-popup": "^1.5.0",
+    "vcf": "^2.1.0"
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
@@ -47,7 +49,7 @@
   "devDependencies": {
     "eslint-config-airbnb-base": "^14.2.1",
     "react-scripts": "^5.0.0",
-    "source-map-explorer": "^1.6.0"
+    "source-map-explorer": "^2.5.2"
   },
   "browserslist": {
     "production": [
