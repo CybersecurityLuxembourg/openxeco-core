@@ -366,6 +366,9 @@ export default class PageProfile extends React.Component {
 					<div className="col-md-8">
 						<div className={"row row-spaced"}>
 							<div className="col-md-12 PageProfile-white-box">
+								<h3>Accessibility</h3>
+								<br/>
+
 								<FormLine
 									label={"Make my profile public"}
 									type={"checkbox"}

@@ -1,81 +1,53 @@
 import React from "react";
 import "./PageProfile.css";
+import vCard from "vcf";
+import QRCode from "react-qr-code";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import _ from "lodash";
-import Loading from "./box/Loading.jsx";
+import Info from "./box/Info.jsx";
 import FormLine from "./form/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
-import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
-import DialogHint from "./dialog/DialogHint.jsx";
+import { getApiURL } from "../utils/env.jsx";
+import Loading from "./box/Loading.jsx";
+import Message from "./box/Message.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refreshUser = this.refreshUser.bind(this);
+		this.refreshProfile = this.refreshProfile.bind(this);
 		this.changePassword = this.changePassword.bind(this);
+		this.generateHandle = this.generateHandle.bind(this);
 
 		this.state = {
 			user: null,
+			dbVcard: null,
+			currentVcard: null,
+
 			password: null,
 			newPassword: null,
 			newPasswordConfirmation: null,
+
+			fullName: "",
+			title: "",
+			email: "",
 		};
 	}
 
 	componentDidMount() {
-		this.refreshUser();
+		this.refreshProfile();
 	}
 
-	refreshUser() {
-		this.setState({
-			user: null,
-		});
-
+	refreshProfile() {
 		getRequest.call(this, "private/get_my_user", (data) => {
 			this.setState({
 				user: data,
+				/* eslint-disable-next-line new-cap */
+				dbVcard: data.vcard ? new vCard().parse(data.vcard) : new vCard(),
+				/* eslint-disable-next-line new-cap */
+				currentVcard: data.vcard ? new vCard().parse(data.vcard) : new vCard(),
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
-	saveUser() {
-		const params = {
-			telephone: this.state.user.telephone,
-			first_name: this.state.user.first_name,
-			last_name: this.state.user.last_name,
-			accept_communication: this.state.user.accept_communication,
-		};
-
-		postRequest.call(this, "private/update_my_user", params, () => {
-			this.setState({
-				hasModification: false,
-			});
-			nm.info("The information has been saved");
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
-	changeUser(field, value) {
-		const user = _.cloneDeep(this.state.user);
-		user[field] = value;
-		this.setState({
-			user,
-			hasModification: true,
-		});
-	}
-
-	deleteUser() {
-		postRequest.call(this, "private/delete_my_user", {}, () => {
-			window.location.reload(true);
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -103,233 +75,425 @@ export default class PageProfile extends React.Component {
 		});
 	}
 
+	getVcardValue(key) {
+		if (this.state.currentVcard && this.state.currentVcard.get(key)) {
+			if (key === "socialprofile" && !Array.isArray(this.state.currentVcard.get(key))) {
+				return [this.state.currentVcard.get(key)];
+			}
+			return this.state.currentVcard.get(key);
+		}
+
+		return null;
+	}
+
+	updateCurrentVcard(key, value, params) {
+		if (this.state.currentVcard) {
+			this.state.currentVcard.set(key, value && value.length > 0 ? value : null, params);
+			this.forceUpdate();
+		}
+	}
+
+	updateSocialeProfilePlatform(pos, value) {
+		let properties = this.state.currentVcard.get("socialprofile");
+		let loop = 0;
+
+		if (!Array.isArray(this.state.currentVcard.get("socialprofile"))) {
+			properties = [properties];
+		}
+
+		properties.forEach((p, i) => {
+			if (loop === 0) {
+				this.state.currentVcard.set("socialprofile", p.valueOf(), { type: pos === i ? value : p.type });
+				loop++;
+			} else {
+				this.state.currentVcard.add("socialprofile", p.valueOf(), { type: pos === i ? value : p.type });
+			}
+		});
+
+		this.forceUpdate();
+	}
+
+	updateSocialeProfileLink(pos, value) {
+		let properties = this.state.currentVcard.get("socialprofile");
+		let loop = 0;
+
+		if (!Array.isArray(this.state.currentVcard.get("socialprofile"))) {
+			properties = [properties];
+		}
+
+		properties.forEach((p, i) => {
+			if (loop === 0) {
+				this.state.currentVcard.set("socialprofile", pos === i ? value : p.valueOf(), { type: p.type });
+				loop++;
+			} else {
+				this.state.currentVcard.add("socialprofile", pos === i ? value : p.valueOf(), { type: p.type });
+			}
+		});
+
+		this.forceUpdate();
+	}
+
+	addCurrentVcardSocialeProfile() {
+		this.state.currentVcard.add("socialprofile", "", { type: "Personal website" });
+		this.forceUpdate();
+	}
+
+	deleteSocialeProfile(pos) {
+		let properties = this.state.currentVcard.get("socialprofile");
+		let loop = 0;
+
+		if (!Array.isArray(this.state.currentVcard.get("socialprofile"))) {
+			properties = [properties];
+		}
+
+		properties.filter((p, i) => i !== pos).forEach((p) => {
+			if (loop === 0) {
+				this.state.currentVcard.set("socialprofile", p.valueOf(), { type: p.type });
+				loop++;
+			} else {
+				this.state.currentVcard.add("socialprofile", p.valueOf(), { type: p.type });
+			}
+		});
+
+		this.forceUpdate();
+	}
+
+	updateUser(property, value) {
+		const params = {
+			[property]: value,
+		};
+
+		postRequest.call(this, "private/update_my_user", params, () => {
+			this.refreshProfile();
+			nm.info("The information has been updated");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	generateHandle(property, value) {
+		const params = {
+			[property]: value,
+		};
+
+		postRequest.call(this, "private/generate_my_user_handle", params, () => {
+			this.refreshProfile();
+			nm.info("The information has been updated");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
 
 	render() {
-		return (
-			<div className={"PageProfile page max-sized-page"}>
-				<div className={"row"}>
-					<div className="col-md-12">
-						<h1>Profile</h1>
+		if (!this.state.user) {
+			return <div id={"PageProfile"} className={"page max-sized-page"}>
+				<Loading
+					height={300}
+				/>
+			</div>;
+		}
 
-						<div className="top-right-buttons">
-							<button
-								onClick={() => this.refreshUser()}>
-								<i className="fas fa-redo-alt"/>
-							</button>
+		return (
+			<div id={"PageProfile"} className={"page max-sized-page"}>
+				<div className={"row row-spaced"}>
+					<div className="col-md-4">
+						<div className={"row"}>
+							<div className="col-md-12">
+								<div className="PageProfile-white-box">
+									<div className="PageProfile-icon centered">
+										<i className="fas fa-user-circle"/>
+
+										{this.state.user.handle
+											&& <Popup
+												className="Popup-small-size"
+												trigger={
+													<button className="PageProgile-qr-button blue-button">
+														<i className="fas fa-qrcode"/>
+													</button>
+												}
+												modal
+												closeOnDocumentClick
+											>
+												{(close) => <div className="row">
+													<div className="col-md-12">
+														<h2>Profile QR code</h2>
+
+														<div className={"top-right-buttons"}>
+															<button
+																className={"grey-background"}
+																data-hover="Close"
+																data-active=""
+																onClick={close}>
+																<span><i className="far fa-times-circle"/></span>
+															</button>
+														</div>
+													</div>
+													<div className="col-md-12 centered">
+														<QRCode
+															className="PageProfile-qr-code"
+															value={
+																getApiURL()
+																+ "public/get_public_vcard/"
+																+ this.state.user.handle
+															}
+															bgColor={"#EEEEEE"}
+															level={"M"}
+														/>
+													</div>
+												</div>}
+											</Popup>
+										}
+									</div>
+									<FormLine
+										label={"Full name"}
+										value={this.getVcardValue("fn")}
+										onChange={(v) => this.updateCurrentVcard("fn", v)}
+										fullWidth={true}
+									/>
+									<FormLine
+										label={"Title"}
+										value={this.getVcardValue("title")}
+										onChange={(v) => this.updateCurrentVcard("title", v)}
+										fullWidth={true}
+									/>
+								</div>
+							</div>
+
+							<div className="col-md-12">
+								<div className="PageProfile-white-box PageProfile-actions">
+									<h3>Actions</h3>
+
+									<Popup
+										className="Popup-small-size"
+										trigger={
+											<button className="blue-button"
+												onClick={this.resetPassword}
+											>
+												Change password
+											</button>
+										}
+										modal
+										closeOnDocumentClick
+									>
+										{(close) => <div className="row">
+											<div className="col-md-12">
+												<h2>Reset password</h2>
+
+												<div className={"top-right-buttons"}>
+													<button
+														className={"grey-background"}
+														data-hover="Close"
+														data-active=""
+														onClick={close}>
+														<span><i className="far fa-times-circle"/></span>
+													</button>
+												</div>
+											</div>
+											<div className="col-md-12">
+												<FormLine
+													label={"Current password"}
+													value={this.state.password}
+													onChange={(v) => this.changeState("password", v)}
+													format={validatePassword}
+													type={"password"}
+												/>
+												<Info
+													content={
+														<div>
+															The password must:<br/>
+															<li>contain at least 1 lowercase alphabetical character</li>
+															<li>contain at least 1 uppercase alphabetical character</li>
+															<li>contain at least 1 numeric character</li>
+															<li>contain at least 1 special character such as !@#$%^&*</li>
+															<li>be between 8 and 30 characters long</li>
+														</div>
+													}
+												/>
+												<FormLine
+													label={"New password"}
+													value={this.state.newPassword}
+													onChange={(v) => this.changeState("newPassword", v)}
+													format={validatePassword}
+													type={"password"}
+												/>
+												<FormLine
+													label={"New password confirmation"}
+													value={this.state.newPasswordConfirmation}
+													onChange={(v) => this.changeState("newPasswordConfirmation", v)}
+													format={validatePassword}
+													type={"password"}
+												/>
+												<div className="right-buttons">
+													<button
+														onClick={() => this.changePassword()}
+														disabled={!validatePassword(this.state.password)
+															|| !validatePassword(this.state.newPassword)
+															|| !validatePassword(this.state.newPasswordConfirmation)
+															|| this.state.newPassword !== this.state.newPasswordConfirmation}>
+														Change password
+													</button>
+												</div>
+											</div>
+										</div>}
+									</Popup>
+
+									<button
+										className="blue-button"
+										onClick={() => window.open(
+											getApiURL() + "public/get_public_vcard/" + this.state.user.handle,
+											"_blank",
+										)}
+										disabled={!this.state.user.is_vcard_public || !this.state.user.handle}
+										title={(!this.state.user.is_vcard_public || !this.state.user.handle)
+											&& "The profile must be public with an handle"
+										}
+									>
+										Open VCF file
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div className="col-md-8">
+						<div className={"row row-spaced"}>
+							<div className="col-md-12 PageProfile-white-box">
+								<h3>Accessibility</h3>
+								<br/>
+
+								<FormLine
+									label={"Make my profile public"}
+									type={"checkbox"}
+									value={this.state.user.is_vcard_public}
+									onChange={(v) => this.updateUser("is_vcard_public", v)}
+								/>
+								<FormLine
+									label={"Handle"}
+									disabled={true}
+									value={this.state.user.handle}
+								/>
+								<div className="right-buttons">
+									<button
+										onClick={this.generateHandle}
+										disabled={this.state.value === null}>
+										Generate new handle
+									</button>
+								</div>
+							</div>
+							<div className="col-md-12 PageProfile-white-box">
+								<h3>Contact</h3>
+								<br/>
+								<FormLine
+									label={"Email"}
+									value={this.state.user.email}
+									disabled={true}
+								/>
+								<FormLine
+									label={"Include email in my profile"}
+									type={"checkbox"}
+									value={this.getVcardValue("email")}
+									onChange={(v) => this.updateCurrentVcard("email", v ? this.state.user.email : null)}
+								/>
+								<FormLine
+									label={"Telephone"}
+									value={this.getVcardValue("tel")}
+									onChange={(v) => this.updateCurrentVcard("tel", v)}
+								/>
+							</div>
+							<div className="col-md-12 PageProfile-white-box">
+								<h3>Social media and website</h3>
+								<br/>
+
+								{this.getVcardValue("socialprofile")
+									? [].concat(this.getVcardValue("socialprofile")).map((s, i) => (
+										<div
+											className="row row-spaced"
+											key={i}>
+											<div className="col-md-6">
+												<FormLine
+													label={"Plateform"}
+													type={"select"}
+													options={[
+														{ label: "Personal website", value: "Personal website" },
+														{ label: "LinkedIn", value: "LinkedIn" },
+														{ label: "Twitter", value: "Twitter" },
+														{ label: "Instragram", value: "Instragram" },
+														{ label: "Medium", value: "Medium" },
+														{ label: "GitHub", value: "GitHub" },
+														{ label: "BitBucket", value: "BitBucket" },
+														{ label: "Other", value: "Other" },
+													]}
+													value={s.type}
+													onChange={(v) => this.updateSocialeProfilePlatform(i, v)}
+													disabled={true}
+													fullWidth={true}
+												/>
+											</div>
+											<div className="col-md-6">
+												<FormLine
+													label={"Link"}
+													value={s.valueOf() ? s.valueOf() : ""}
+													onChange={(v) => this.updateSocialeProfileLink(i, v)}
+													fullWidth={true}
+												/>
+											</div>
+											<div className="col-md-12">
+												<div className="right-buttons">
+													<button
+														className={"red-background"}
+														onClick={() => this.deleteSocialeProfile(i)}>
+														<i className="fas fa-trash-alt"/>
+													</button>
+												</div>
+											</div>
+										</div>
+									))
+									: <Message
+										text={"No social media provided"}
+										height={100}
+									/>
+								}
+
+								<div className="right-buttons">
+									<button
+										onClick={() => this.addCurrentVcardSocialeProfile()}>
+										<i className="fas fa-plus"/> Add
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<div className={"row row-spaced"}>
-					<div className="col-md-10">
-						<h2>My information</h2>
-					</div>
-
-					<div className="col-md-2 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>Who can see this information?</h2>
-
-										<p>
-											The information is not shared publicly.
-										</p>
-
-										<p>
-											The collaborators from your entities only
-											can see your email address, first name and last name.
-										</p>
-
-										<p>
-											The phone number is accessible by the administration team only.
-											It allows the administrators to contact you directly.
-										</p>
-									</div>
-								</div>
-							}
-						/>
-					</div>
-
-					{this.state.user !== null
-						? <div className="col-md-12">
-							<FormLine
-								label={"Email"}
-								value={this.state.user.email}
-								disabled={true}
-							/>
-							<FormLine
-								label={"First name"}
-								value={this.state.user.first_name}
-								onChange={(v) => this.changeUser("first_name", v)}
-							/>
-							<FormLine
-								label={"Last name"}
-								value={this.state.user.last_name}
-								onChange={(v) => this.changeUser("last_name", v)}
-							/>
-							<FormLine
-								label={"Phone"}
-								type={"phone"}
-								value={this.state.user.telephone}
-								onChange={(v) => this.changeUser("telephone", v)}
-							/>
-							<FormLine
-								label={"I accept to receive communication via email"}
-								type={"checkbox"}
-								value={this.state.user.accept_communication}
-								onChange={(v) => this.changeUser("accept_communication", v)}
-							/>
-							<div className="right-buttons">
+				{((this.state.dbVcard && !this.state.currentVcard)
+					|| (!this.state.dbVcard && this.state.currentVcard)
+					|| this.state.dbVcard.toString("4.0") !== this.state.currentVcard.toString("4.0"))
+					&& <div className="PageProfile-save-button">
+						<div className="row">
+							<div className="col-md-6">
 								<button
-									onClick={() => this.saveUser()}
-									disabled={!this.state.hasModification}>
-									<i className="far fa-save"/> Save
+									className={"red-background"}
+									onClick={this.refreshProfile}>
+									<i className="far fa-times-circle"/> Discard changes
+								</button>
+							</div>
+							<div className="col-md-6">
+								<button
+									onClick={() => this.updateUser("vcard", this.state.currentVcard.toString("4.0"))}>
+									<i className="fas fa-save"/> Save profile
 								</button>
 							</div>
 						</div>
-						: <div className="col-md-12">
-							<Loading
-								height={300}
-							/>
-						</div>
-					}
-				</div>
-
-				<div className={"row row-spaced"}>
-					<div className="col-md-6">
-						<div className={"row row-spaced"}>
-							<div className="col-md-10">
-								<h2>Change password</h2>
-							</div>
-
-							<div className="col-md-2 top-title-menu">
-								<DialogHint
-									content={
-										<div className="row">
-											<div className="col-md-12">
-												<h2>What are the password criteria?</h2>
-
-												The password must:<br/>
-												<li>contain at least 1 lowercase alphabetical character</li>
-												<li>contain at least 1 uppercase alphabetical character</li>
-												<li>contain at least 1 numeric character</li>
-												<li>contain at least 1 special character such as !@#$%^&*</li>
-												<li>be between 8 and 30 characters long</li>
-											</div>
-										</div>
-									}
-								/>
-							</div>
-
-							<div className="col-md-12">
-								{this.state.user !== null
-									? <div>
-										<FormLine
-											label={"Current password"}
-											value={this.state.password}
-											onChange={(v) => this.changeState("password", v)}
-											format={this.state.password === null
-												|| this.state.password.length === 0
-												? undefined : validatePassword}
-											type={"password"}
-										/>
-										<br/>
-										<FormLine
-											label={"New password"}
-											value={this.state.newPassword}
-											onChange={(v) => this.changeState("newPassword", v)}
-											format={this.state.newPassword === null
-												|| this.state.newPassword.length === 0
-												? undefined : validatePassword}
-											type={"password"}
-										/>
-										<FormLine
-											label={"New password confirmation"}
-											value={this.state.newPasswordConfirmation}
-											onChange={(v) => this.changeState("newPasswordConfirmation", v)}
-											format={this.state.newPasswordConfirmation === null
-												|| this.state.newPasswordConfirmation.length === 0
-												? undefined : validatePassword}
-											type={"password"}
-										/>
-										<div className="right-buttons">
-											<button
-												onClick={() => this.changePassword()}
-												disabled={!validatePassword(this.state.password)
-													|| !validatePassword(this.state.newPassword)
-													|| !validatePassword(this.state.newPasswordConfirmation)
-													|| this.state.newPassword !== this.state.newPasswordConfirmation}>
-												<i className="far fa-save"/> Change password
-											</button>
-										</div>
-									</div>
-									: <Loading
-										height={150}
-									/>
-								}
-							</div>
-						</div>
 					</div>
-
-					<div className="col-md-6">
-						<div className={"row row-spaced"}>
-							<div className="col-md-10">
-								<h2>Delete account</h2>
-							</div>
-
-							<div className="col-md-2 top-title-menu">
-								<DialogHint
-									content={
-										<div className="row">
-											<div className="col-md-12">
-												<h2>What happens when I delete my account?</h2>
-
-												<p>
-													Deleting your account will remove all your personal information.
-													You won&#39;t be able to retrieve your personal information
-													after confirmation. It will also
-													be impossible for you to log in to the portal.
-												</p>
-
-												<p>
-													However, the data concerning the entities and its articles
-													will be remaining on the database and accessible online for
-													the ones that are public.
-												</p>
-											</div>
-										</div>
-									}
-								/>
-							</div>
-
-							<div className="col-md-12">
-								{this.state.user !== null
-									? <div>
-										<DialogConfirmation
-											text={"Do you want to delete your account? This will be irreversible"}
-											trigger={
-												<div className="right-buttons">
-													<button
-														className={"red-button"}>
-														<i className="far fa-trash-alt"/> Delete account...
-													</button>
-												</div>
-											}
-											afterConfirmation={this.deleteUser}
-										/>
-									</div>
-									: <Loading
-										height={150}
-									/>
-								}
-							</div>
-						</div>
-					</div>
-				</div>
+				}
 			</div>
 		);
 	}

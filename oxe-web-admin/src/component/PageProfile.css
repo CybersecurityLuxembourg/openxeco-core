@@ -3,7 +3,7 @@
 	position: relative;
 }
 
-#PageProfile .PageProfile-icon i {
+#PageProfile .PageProfile-icon > i {
 	font-size: 150px;
 }
 
