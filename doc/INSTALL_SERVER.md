@@ -31,12 +31,12 @@ Codename:       focal
 The DNS should be configured to direct to the target machine. This is necessary to set up SSL configuration on Apache with 'Let's encrypt'. In our example:
 
 ```
-XXX.XXX.XXX.XXX A  api.MYDOMAIN.XXX
-XXX.XXX.XXX.XXX A  admin.MYDOMAIN.XXX
-XXX.XXX.XXX.XXX A  community.MYDOMAIN.XXX
+XXX.XXX.XXX.XXX A  api.example.org
+XXX.XXX.XXX.XXX A  admin.example.org
+XXX.XXX.XXX.XXX A  community.example.org
 ```
 
-[MYDOMAIN.XXX] represents the domain you own for this instance
+[example.org] represents the domain you own for this instance
 
 ### Version selection
 
@@ -105,10 +105,10 @@ You have to adapt the arguments of this command to set the right configuration:
     -e MAIL_PORT=1025 \
     -e MAIL_USE_TLS=False \
     -e MAIL_USE_SSL=False \
-    -e MAIL_DEFAULT_SENDER=my-default-sender@MYDOMAIN.XXX \
+    -e MAIL_DEFAULT_SENDER=my-default-sender@example.org \
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
-    -e INITIAL_ADMIN_EMAIL=my-default-admin@MYDOMAIN.XXX \
+    -e INITIAL_ADMIN_EMAIL=my-default-admin@example.org \
     ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.9.0
 ```
 
@@ -165,8 +165,8 @@ You can edit oxe-api.conf as follow:
 
 ```
 <VirtualHost *:80>
-    ServerAdmin admin@MYDOMAIN.XXX
-    ServerName api.MYDOMAIN.XXX
+    ServerAdmin admin@example.org
+    ServerName api.example.org
     DocumentRoot /var/www/oxe-api/
 </VirtualHost>
 ```
@@ -175,8 +175,8 @@ You can edit oxe-web-admin.conf as follow:
 
 ```
 <VirtualHost *:80>
-    ServerAdmin admin@MYDOMAIN.XXX
-    ServerName admin.MYDOMAIN.XXX
+    ServerAdmin admin@example.org
+    ServerName admin.example.org
     DocumentRoot /var/www/oxe-web-admin/
 </VirtualHost>
 ```
@@ -185,8 +185,8 @@ You can edit oxe-web-community.conf as follow:
 
 ```
 <VirtualHost *:80>
-    ServerAdmin admin@MYDOMAIN.XXX
-    ServerName community.MYDOMAIN.XXX
+    ServerAdmin admin@example.org
+    ServerName community.example.org
     DocumentRoot /var/www/oxe-web-community/
 </VirtualHost>
 ```
@@ -210,11 +210,11 @@ To take in count the new configuration, we need to run the following:
 ### Setup HTTPS virtual hosts
 
 ```
-> sudo certbot --apache -d api.MYDOMAIN.XXX
+> sudo certbot --apache -d api.example.org
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator apache, Installer apache
 Enter email address (used for urgent renewal and security notices) (Enter 'c' to
-cancel): admin@MYDOMAIN.XXX
+cancel): admin@example.org
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Please read the Terms of Service at
@@ -250,10 +250,10 @@ Enabled Apache rewrite module
 Redirecting vhost in /etc/apache2/sites-enabled/oxe-api.conf to ssl vhost in /etc/apache2/sites-available/oxe-api-le-ssl.conf
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Congratulations! You have successfully enabled https://api.MYDOMAIN.XXX
+Congratulations! You have successfully enabled https://api.example.org
 
 You should test your configuration at:
-https://www.ssllabs.com/ssltest/analyze.html?d=api.MYDOMAIN.XXX
+https://www.ssllabs.com/ssltest/analyze.html?d=api.example.org
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 IMPORTANT NOTES:
@@ -274,8 +274,8 @@ IMPORTANT NOTES:
 Let's do this again for the oxe-web-admin and oxe-web-community virtual hosts
 
 ```
-> sudo certbot --apache -d admin.MYDOMAIN.XXX
-> sudo certbot --apache -d community.MYDOMAIN.XXX
+> sudo certbot --apache -d admin.example.org
+> sudo certbot --apache -d community.example.org
 ```
 
 ### In case Apache is not starting

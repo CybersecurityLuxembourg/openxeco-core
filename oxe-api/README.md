@@ -30,12 +30,12 @@ MAIL_SERVER=127.0.0.1
 MAIL_PORT=1025
 MAIL_USE_TLS=False
 MAIL_USE_SSL=False
-MAIL_DEFAULT_SENDER=my-default-sender@default-domain.com
+MAIL_DEFAULT_SENDER=my-default-sender@example.org
 
 IMAGE_FOLDER=/var/lib/oxe-api/image_folder
 DOCUMENT_FOLDER=/var/lib/oxe-api/document_folder
 
-INITIAL_ADMIN_EMAIL=my-default-admin@default-domain.com
+INITIAL_ADMIN_EMAIL=my-default-admin@example.org
 ```
 
 ## Install Python 3.8.6
