@@ -433,7 +433,6 @@ export default class PageProfile extends React.Component {
 													]}
 													value={s.type}
 													onChange={(v) => this.updateSocialeProfilePlatform(i, v)}
-													disabled={true}
 													fullWidth={true}
 												/>
 											</div>
