@@ -1,3 +1,9 @@
+"""
+This file not meant to be modified to configure a local nor a production instance.
+To configure the instance, please consider:
+    - editing a ".env" file at the root of the "oxe-api" directory
+    - passing the environment variables via "-e" flag if you use a docker container
+"""
 import os
 
 
