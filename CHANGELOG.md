@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- 
+- Url parameter handling to redirect to an entity claimin popup (?claim_entity={id}) on oxe-web-community
 
 ### Changed
 
@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
--
+- Menu highlight on oxe-web-community
 
 ## [1.10.1] - 2022-06-07
 

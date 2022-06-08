@@ -17,3 +17,11 @@
 	text-align: center;
 	font-size:  15px;
 }
+
+.PageAddCompany-claim-message div {
+	text-align: center;
+}
+
+.PageAddCompany-claim-message i {
+	font-size: 35px;
+}

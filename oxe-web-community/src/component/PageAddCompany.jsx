@@ -9,6 +9,7 @@ import Info from "./box/Info.jsx";
 import Message from "./box/Message.jsx";
 import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
 import DialogHint from "./dialog/DialogHint.jsx";
+import { getUrlParameter } from "../utils/url.jsx";
 
 export default class PageAddCompany extends React.Component {
 	constructor(props) {
@@ -42,6 +43,10 @@ export default class PageAddCompany extends React.Component {
 	componentDidMount() {
 		this.refreshCompanies();
 		this.getUserCompanyEnums();
+
+		if (getUrlParameter("claim_entity")) {
+			this.onClaimEntityPopupOpen();
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -56,10 +61,8 @@ export default class PageAddCompany extends React.Component {
 				companies: data,
 			});
 		}, (response) => {
-			this.setState({ loading: false });
 			nm.warning(response.statusText);
 		}, (error) => {
-			this.setState({ loading: false });
 			nm.error(error.message);
 		});
 	}
@@ -136,6 +139,24 @@ export default class PageAddCompany extends React.Component {
 
 	static isFieldCompleted(v) {
 		return v !== undefined && v.length > 0;
+	}
+
+	onClaimEntityPopupOpen() {
+		getRequest.call(this, "public/get_public_company/" + getUrlParameter("claim_entity"), (data) => {
+			this.setState({
+				company: data,
+			});
+		}, (response) => {
+			this.setState({
+				company: "Entity not found",
+			});
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.setState({
+				company: "Entity not found",
+			});
+			nm.error(error.message);
+		});
 	}
 
 	render() {
@@ -455,6 +476,93 @@ export default class PageAddCompany extends React.Component {
 					</div>
 				}
 
+				<Popup
+					className="Popup-small-size"
+					modal
+					closeOnDocumentClick
+					open={getUrlParameter("claim_entity") !== null}
+					onOpen={() => this.onClaimEntityPopupOpen()}
+				>
+					{(close) => (
+						<div className="row">
+							<div className="col-md-9 row-spaced">
+								<h3>Claim access to the entity</h3>
+							</div>
+
+							<div className={"col-md-3"}>
+								<div className="top-right-buttons">
+									<button
+										className={"grey-background"}
+										data-hover="Close"
+										data-active=""
+										onClick={close}>
+										<span><i className="far fa-times-circle"/></span>
+									</button>
+								</div>
+							</div>
+
+							{this.state.company && typeof this.state.company === "object"
+								&& <div className="col-md-12">
+									<FormLine
+										label={"Entity"}
+										value={this.state.company.name}
+										disabled={true}
+									/>
+
+									{this.state.userCompaniesEnums
+										? <FormLine
+											label={"Department"}
+											type={"select"}
+											options={this.state.userCompaniesEnums
+												? this.state.userCompaniesEnums.department
+													.map((d) => ({ label: d, value: d }))
+												: []
+											}
+											value={this.props.department}
+											onChange={(v) => this.setState({ department: v })}
+										/>
+										: <Loading
+											height={200}
+										/>
+									}
+
+									<div className="right-buttons">
+										<DialogConfirmation
+											text={"Do you want to request access to: " + this.state.company.name + "?"}
+											trigger={
+												<button
+													className={"blue-background card-button"}
+												>
+													Claim access...
+												</button>
+											}
+											afterConfirmation={() => this.submitClaimRequest(this.state.company.id)}
+										/>
+									</div>
+								</div>
+							}
+
+							{this.state.company && typeof this.state.company !== "object"
+								&& <div className="col-md-12">
+									<Message
+										className={"PageAddCompany-claim-message"}
+										height={200}
+										text={<div>
+											<div><i className="fas fa-exclamation-circle"/></div>
+											<div>{this.state.company}</div>
+										</div>}
+									/>
+								</div>
+							}
+
+							{!this.state.company
+								&& <Loading
+									height={200}
+								/>
+							}
+						</div>
+					)}
+				</Popup>
 			</div>
 		);
 	}
