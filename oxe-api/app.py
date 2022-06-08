@@ -15,7 +15,8 @@ from utils.re import has_mail_format
 
 from db.db import DB
 
-import socket, sys
+import socket
+import sys
 
 # Load environment variables and config
 from dotenv import load_dotenv
