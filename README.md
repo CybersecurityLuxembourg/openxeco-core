@@ -91,13 +91,13 @@ $ docker run -d \
     mariadb:10.7.3
 $ docker run -d -p 1025:25 b2ck/fake-smtpd
 $ docker build \
-    -f oxe-web-admin/Dockerfile \
+    -f openxeco-core-oxe-web-admin-v1.10.1/Dockerfile \
     -t oxe-web-admin-v1.10.1 \
     --build-arg TARGET_DIR=oxe-web-admin \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-admin-v1.10.1.tar.gz
 $ docker run -d -p 3000:3000 oxe-web-admin-v1.10.1
 $ docker build \
-    -f oxe-web-community/Dockerfile \
+    -f openxeco-core-oxe-web-community-v1.10.1/Dockerfile \
     -t oxe-web-community-v1.10.1 \
     --build-arg TARGET_DIR=oxe-web-community \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-community-v1.10.1.tar.gz
