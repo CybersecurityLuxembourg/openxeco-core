@@ -18,7 +18,7 @@ https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931899
 This procedure has been done on the following OS version:
 
 ```
-> lsb_release -a
+$ lsb_release -a
 No LSB modules are available.
 Distributor ID: Ubuntu
 Description:    Ubuntu 20.04.1 LTS
@@ -31,30 +31,28 @@ Codename:       focal
 The DNS should be configured to direct to the target machine. This is necessary to set up SSL configuration on Apache with 'Let's encrypt'. In our example:
 
 ```
-XXX.XXX.XXX.XXX A  api.example.org
-XXX.XXX.XXX.XXX A  admin.example.org
-XXX.XXX.XXX.XXX A  community.example.org
+192.0.2.42 A  api.example.org
+192.0.2.42 A  admin.example.org
+192.0.2.42 A  community.example.org
 ```
 
 [example.org] represents the domain you own for this instance
 
 ### Version selection
 
-[v1.9.0] is an example of openXeco version for this documentation. Please see the other versions here:
-
-https://github.com/CybersecurityLuxembourg/openxeco-core/releases
+[v1.10.1] is an example of openXeco version for this documentation. Please see the [other versions here.](https://github.com/CybersecurityLuxembourg/openxeco-core/releases)
 
 ### Update the package index
 
 ```
-> sudo apt update
+$ sudo apt update
 ```
 
 ### Create directories for documents and images
 
 ```
-> mkdir /image_folder
-> mkdir /document_folder
+$ sudo mkdir -p /var/lib/oxe-api/image_folder
+$ sudo mkdir -p /var/lib/oxe-api/document_folder
 ```
 
 ## Docker
@@ -62,22 +60,28 @@ https://github.com/CybersecurityLuxembourg/openxeco-core/releases
 ### Installation of Docker
 
 ```
-> apt-get install docker.io
-> snap install docker
+$ sudo mkdir -p /etc/apt/keyrings/
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$ sudo apt update && sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+$ sudo adduser <your-oxe-user> docker
+$ newgrp docker
+# If you want to verify your docker install run: docker run hello-world
 ```
 
-For more information, see: https://docs.docker.com/get-docker/
+For more information, see the [official docker site.](https://docs.docker.com/get-docker/)
 
 ### Create a docker network
 
 ```
-> docker network create openxeco
+$ docker network create openxeco
 ```
 
-### Create a docker
+### Create and run a docker mariadb 10.7.3 container
 
 ```
-> docker run -d \
+$ docker run -d \
     --network openxeco \
     --network-alias mariadb \
     -p 3306:3306 \
@@ -92,7 +96,7 @@ The database and it structure will be created when the API will be correcly laun
 You have to adapt the arguments of this command to set the right configuration:
 
 ```
-> docker run -d -p 5000:5000 \
+$ docker run -d -p 5000:5000 \
     --network openxeco \
     -e ENVIRONMENT=prod \
     -e JWT_SECRET_KEY=my_secret_developer_key \
@@ -109,7 +113,7 @@ You have to adapt the arguments of this command to set the right configuration:
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
     -e INITIAL_ADMIN_EMAIL=my-default-admin@example.org \
-    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.9.0
+    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.10.1
 ```
 
 ### Build and run the webapps images
@@ -117,23 +121,23 @@ You have to adapt the arguments of this command to set the right configuration:
 For the admin webapp:
 
 ```
-> docker build \
-    -f openxeco-core-oxe-web-admin-v1.9.0/Dockerfile \
-    -t oxe-web-admin-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.9.0 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-admin-v1.9.0.tar.gz
-> docker run -d -p 3000:3000 oxe-web-admin-v1.9.0
+$ docker build \
+    -f oxe-web-admin/Dockerfile \
+    -t oxe-web-admin-v1.10.1 \
+    --build-arg TARGET_DIR=oxe-web-admin \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-admin-v1.10.1.tar.gz
+$ docker run -d -p 3000:3000 oxe-web-admin-v1.10.1
 ```
 
 For the community webapp:
 
 ```
-> docker build \
-    -f openxeco-core-oxe-web-community-v1.9.0/Dockerfile \
-    -t oxe-web-community-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.9.0 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-community-v1.9.0.tar.gz
-> docker run -d -p 3001:3001 oxe-web-community-v1.9.0
+$ docker build \
+    -f oxe-web-community/Dockerfile \
+    -t oxe-web-community-v1.10.1 \
+    --build-arg TARGET_DIR=oxe-web-community \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-community-v1.10.1.tar.gz
+$ docker run -d -p 3001:3001 oxe-web-community-v1.10.1
 ```
 
 ## Apache server
@@ -141,13 +145,13 @@ For the community webapp:
 ### Install apache server
 
 ```
-> sudo apt install apache2
-> sudo a2enmod ssl
-> sudo a2enmod headers
-> sudo a2enmod proxy_http
-> sudo mkdir /var/www/oxe-api
-> sudo mkdir /var/www/oxe-web-admin
-> sudo mkdir /var/www/oxe-web-community
+$ sudo apt install apache2
+$ sudo a2enmod ssl
+$ sudo a2enmod headers
+$ sudo a2enmod proxy_http
+$ sudo mkdir /var/www/oxe-api
+$ sudo mkdir /var/www/oxe-web-admin
+$ sudo mkdir /var/www/oxe-web-community
 ```
 
 ### Create and init the configuration files
@@ -194,23 +198,22 @@ You can edit oxe-web-community.conf as follow:
 To take in count the new configuration, we need to run the following:
 
 ```
-> sudo a2ensite oxe-api.conf
-> sudo a2ensite oxe-web-admin.conf
-> sudo a2ensite oxe-web-community.conf
-> service apache2 reload
+$ sudo a2ensite oxe-api.conf
+$ sudo a2ensite oxe-web-admin.conf
+$ sudo a2ensite oxe-web-community.conf
+$ service apache2 reload
 ```
 
 ### Install 'Let's encrypt'
 
 ```
-> #sudo add-apt-repository ppa:certbot/certbot # Not needed on recent versions of Ubuntu
-> sudo apt install python3-certbot-apache
+$ sudo apt install python3-certbot-apache
 ```
 
 ### Setup HTTPS virtual hosts
 
 ```
-> sudo certbot --apache -d api.example.org
+$ sudo certbot --apache -d api.example.org
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator apache, Installer apache
 Enter email address (used for urgent renewal and security notices) (Enter 'c' to
@@ -274,8 +277,8 @@ IMPORTANT NOTES:
 Let's do this again for the oxe-web-admin and oxe-web-community virtual hosts
 
 ```
-> sudo certbot --apache -d admin.example.org
-> sudo certbot --apache -d community.example.org
+$ sudo certbot --apache -d admin.example.org
+$ sudo certbot --apache -d community.example.org
 ```
 
 ### In case Apache is not starting
@@ -283,10 +286,10 @@ Let's do this again for the oxe-web-admin and oxe-web-community virtual hosts
 Here are a set a command that can be useful to track the error when Apache doesn't start properly
 
 ```
-sudo apache2 -t -D DUMP_VHOSTS
-sudo apache2ctl configtest
-sudo journalctl | tail
-sudo cat /var/log/apache2/error.log
+$ sudo apache2 -t -D DUMP_VHOSTS
+$ sudo apache2ctl configtest
+$ sudo journalctl | tail
+$ sudo cat /var/log/apache2/error.log
 ```
 
 ### Configure the Apache virtual hosts
@@ -329,5 +332,5 @@ And in "/etc/apache2/sites-available/oxe-web-community-le-ssl.conf" for oxe-web-
 The server is configured, we can finish with:
 
 ```
-> sudo service apache2 restart
+$ sudo service apache2 restart
 ```
