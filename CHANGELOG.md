@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Menu highlight on oxe-web-community
+- QR code sizing on profile page of oxe-web-admin
 
 ## [1.10.1] - 2022-06-07
 

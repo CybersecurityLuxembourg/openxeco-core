@@ -63,7 +63,7 @@ export default class Menu extends React.Component {
 						active={this.props.selectedMenu === "profile"}
 						onClick={() => this.props.history.push("/profile")}>
 						<NavIcon>
-							<i className="fas fa-user" style={{ fontSize: "1.75em" }}/>
+							<i className="fas fa-user-circle" style={{ fontSize: "1.75em" }}/>
 						</NavIcon>
 						<NavText>
 							Profile
