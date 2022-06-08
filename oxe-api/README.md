@@ -1,17 +1,16 @@
-
 # Outlines
 
 All the versions mentioned are the recommended ones.
 
 # Setup development environment
 
-## Create and run MariaDB container
+## Create and run the MariaDB container
 
 ```
 $ docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=E4syPass -p 3306:3306 -d mariadb:10.7.3
 ```
 
-## Edit environment variables
+## Edit the environment variables
 
 The project is using the python-dotenv package so you can copy and adjust the local file *openxeco-core/oxe-api/.env.example* with such content:
 
@@ -49,10 +48,11 @@ For Linux:
 ```bash
 $ cd ~/project/openxeco-core/oxe-api
 $ cp .env.example .env
+$ sudo apt install python3-venv
 $ python3 -m venv venv
 $ source ./venv/bin/activate
 $ pip install -U pip setuptools
-$ pip install -r requirements.txt
+$ pip install -U -r requirements.txt
 ```
 
 For Windows
@@ -62,21 +62,21 @@ For Windows
 > python -m venv venv
 > .\venv\Scripts\activate
 > pip install -U pip setuptools
-> pip install -r requirements.txt
+> pip install -U -r requirements.txt
 ```
 
-## Activate the python env and run the project
+## Run the project
 
-You have to make sure that the python environment is active
-If not:
+You have to make sure that the python environment is active, to double check:
 
 ```
-> cd %USERPROFILE%\project\openxeco-core/oxe-api
-> python -m venv venv
-> .\venv\Scripts\activate
+$ echo ${VIRTUAL_ENV}
+/home/luser/openxeco-core/oxe-api/venv
 ```
 
-Then:
+If not, repeat the steps above.
+
+### Copy the config and run the app
 
 ```
 # Copy and edit sample config
@@ -86,13 +86,13 @@ $ python app.py
 
 ## Mock SMTP server
 
-Some resources of the API requires a SMTP server, you can simulate in local environment with this following command:
+Some resources of the API requires a SMTP server, you can simulate in local environment with the following command:
 
 ```
 $ python -m smtpd -n -c DebuggingServer localhost:1025
 ```
 
-You can also use a docker container to mock the SMTP server. The mail body is retrievable in the STDOUT of the container
+Alternatively you can use a docker container for the fake SMTP server. The mail body is retrievable in STDOUT of the container.
 
 ```
 $ docker pull b2ck/fake-smtpd
@@ -109,26 +109,26 @@ To run a single test
 $ python -m unittest test/resource/company/test_get_company.py
 ```
 
-To run the whole set
-Here --buffer or -b is used to discard the output on a successful test run
+To run the whole set use the command below.
+(Here --buffer or -b is used to discard the output on a successful test run.)
 
 ```
 $ python -m unittest --buffer
 ```
 
-Run the test coverage report (with the venv activated)
+Run the test coverage report (with the venv activated).
 
 ```
 $ coverage run --source=resource,utils,db,decorator -m unittest discover && coverage report
 ```
 
-Run the test coverage report (with the venv activated) for a specific package
+Run the test coverage report (with the venv activated) for a specific package.
 
 ```
 $ coverage run --source=resource/user -m unittest discover test/resource/user/ && coverage report
 ```
 
-Run the test coverage report and generate in HTML (with the venv activated)
+Run the test coverage report and generate in HTML (with the venv activated).
 
 ```
 $ coverage run --source=resource,utils,db,decorator -m unittest discover && coverage html
@@ -142,14 +142,14 @@ npm is required
 $ sudo apt install npm -y
 ```
 
-To run the PyCQA/prospector
+To run the PyCQA/prospector use the command below.
 
 ```
 $ npm install prospector
 $ prospector -i venv/ --no-autodetect
 ```
 
-To run the PyCQA/bandit 
+To run the PyCQA/bandit use the command below.
 
 ```
 $ sudo apt install bandit
@@ -160,6 +160,5 @@ $ bandit -r . -x ./test/,./venv/
 
 The database structure is automatically created/upgraded when starting the API. 
 
-For further information about the structure management, please see the documentation of Flask-Migrate:
+For further information about the structure management, please see the [documentation of Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/).
 
-https://flask-migrate.readthedocs.io/en/latest/
