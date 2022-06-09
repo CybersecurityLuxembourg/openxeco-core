@@ -397,15 +397,21 @@ export default class PageProfile extends React.Component {
 									disabled={true}
 								/>
 								<FormLine
-									label={"Include email in my profile"}
+									label={"Include email in my public profile"}
 									type={"checkbox"}
-									value={this.getVcardValue("email")}
+									value={this.getVcardValue("email") !== null}
 									onChange={(v) => this.updateCurrentVcard("email", v ? this.state.user.email : null)}
 								/>
 								<FormLine
 									label={"Telephone"}
-									value={this.getVcardValue("tel")}
-									onChange={(v) => this.updateCurrentVcard("tel", v)}
+									value={this.state.user.telephone}
+									onBlur={(v) => this.updateUser("telephone", v)}
+								/>
+								<FormLine
+									label={"Include telephone in my public profile"}
+									type={"checkbox"}
+									value={this.getVcardValue("tel") !== null}
+									onChange={(v) => this.updateCurrentVcard("tel", v ? this.state.user.telephone : null)}
 								/>
 							</div>
 							<div className="col-md-12 PageProfile-white-box">
