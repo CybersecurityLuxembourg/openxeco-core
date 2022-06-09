@@ -93,13 +93,13 @@ $ docker run -d -p 1025:25 b2ck/fake-smtpd
 $ docker build \
     -f openxeco-core-oxe-web-admin-v1.10.1/Dockerfile \
     -t oxe-web-admin-v1.10.1 \
-    --build-arg TARGET_DIR=oxe-web-admin \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.10.1 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-admin-v1.10.1.tar.gz
 $ docker run -d -p 3000:3000 oxe-web-admin-v1.10.1
 $ docker build \
     -f openxeco-core-oxe-web-community-v1.10.1/Dockerfile \
     -t oxe-web-community-v1.10.1 \
-    --build-arg TARGET_DIR=oxe-web-community \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.10.1 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-community-v1.10.1.tar.gz
 $ docker run -p 3001:3001 oxe-web-community-v1.10.1
 $ docker run -d -p 5000:5000 \
