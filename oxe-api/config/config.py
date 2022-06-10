@@ -5,6 +5,10 @@ To configure the instance, please consider:
     - passing the environment variables via "-e" flag if you use a docker container
 """
 import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 def _getenv(key, default=None, mandatory=True):
@@ -46,7 +50,8 @@ INITIAL_ADMIN_EMAIL = _getenv('INITIAL_ADMIN_EMAIL', mandatory=False)
 IMAGE_FOLDER        = _getenv('IMAGE_FOLDER',    default="/openxeco_image")
 DOCUMENT_FOLDER     = _getenv('DOCUMENT_FOLDER', default="/openxeco_document")
 
-CORS_DOMAINS        = _getenv('CORS_DOMAINS',    default="localhost:\\d*")
+CORS_DOMAINS        = _getenv('CORS_DOMAINS',    mandatory=ENVIRONMENT != "dev",
+                              default="localhost:\\d*" if ENVIRONMENT == "dev" else None)
 # remove extra spaces, remove empty items
 domains = filter(len, map(str.strip, CORS_DOMAINS.split(",")))
 # pylint: disable=unnecessary-lambda

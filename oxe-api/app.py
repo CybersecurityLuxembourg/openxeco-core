@@ -15,10 +15,6 @@ from utils.re import has_mail_format
 
 from db.db import DB
 
-# Load environment variables and config
-from dotenv import load_dotenv
-load_dotenv()
-
 from config import config  # pylint: disable=wrong-import-position
 
 # Manage DB connection
