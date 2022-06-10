@@ -7,13 +7,15 @@ All the versions mentioned are the recommended ones.
 ## Create and run the MariaDB container
 
 ```
-$ docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=E4syPass -p 3306:3306 -d mariadb:10.7.3
+# Change 3306 to 3307 if another local MariaDB is installed. Make sure to adapt config files.
+$ docker run --name mariadbtest -e MARIADB_ROOT_PASSWORD=E4syPass -p 3306:3306 -d mariadb:10.7.3
 ```
 
 ## Edit the environment variables
 
 The project is using the python-dotenv package so you can copy and adjust the local file *openxeco-core/oxe-api/.env.example* with such content:
 
+.env.example
 ```
 ENVIRONMENT=dev
 
@@ -46,9 +48,10 @@ INITIAL_ADMIN_EMAIL=my-default-admin@example.org
 For Linux:
 
 ```bash
-$ cd ~/project/openxeco-core/oxe-api
-$ cp .env.example .env
-$ sudo apt install python3-venv
+$ git clone https://github.com/CybersecurityLuxembourg/openxeco-core.git
+$ cd openxeco-core/oxe-api
+$ cp .env.example .env # Edit accordingly
+$ sudo apt install python3-venv -y
 $ python3 -m venv venv
 $ source ./venv/bin/activate
 $ pip install -U pip setuptools
@@ -79,8 +82,6 @@ If not, repeat the steps above.
 ### Copy the config and run the app
 
 ```
-# Copy and edit sample config
-$ cp config/config.py.sample config/config.py
 $ python app.py
 ```
 
@@ -91,6 +92,8 @@ Some resources of the API requires a SMTP server, you can simulate in local envi
 ```
 $ python -m smtpd -n -c DebuggingServer localhost:1025
 ```
+
+### Optional
 
 Alternatively you can use a docker container for the fake SMTP server. The mail body is retrievable in STDOUT of the container.
 
@@ -161,4 +164,3 @@ $ bandit -r . -x ./test/,./venv/
 The database structure is automatically created/upgraded when starting the API. 
 
 For further information about the structure management, please see the [documentation of Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/).
-
