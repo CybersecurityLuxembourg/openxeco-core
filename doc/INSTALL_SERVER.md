@@ -177,8 +177,8 @@ You can edit oxe-web-admin.conf as follow:
 
     DocumentRoot /var/www/oxe-web-admin/
 
-    ErrorLog ${APACHE_LOG_DIR}/admin.example.org_p80_error.log
-    CustomLog ${APACHE_LOG_DIR}/admin.example.org_p80_access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/admin.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/admin.example.org_p443_access.log combined
 </VirtualHost>
 ```
 
@@ -191,8 +191,8 @@ You can edit oxe-web-community.conf as follow:
 
     DocumentRoot /var/www/oxe-web-community/
 
-    ErrorLog ${APACHE_LOG_DIR}/community.example.org_p80_error.log
-    CustomLog ${APACHE_LOG_DIR}/community.example.org_p80_access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/community.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/community.example.org_p443_access.log combined
 </VirtualHost>
 ```
 
@@ -202,10 +202,10 @@ To take in count the new configuration, we need to run the following:
 $ sudo a2ensite oxe-api.conf
 $ sudo a2ensite oxe-web-admin.conf
 $ sudo a2ensite oxe-web-community.conf
-$ service apache2 reload
+$ sudo systemctl restart apache2
 ```
 
-### Install 'Let's encrypt'
+### Install Let's encrypt
 
 ```
 $ sudo apt install python3-certbot-apache
@@ -214,11 +214,11 @@ $ sudo apt install python3-certbot-apache
 ### Setup HTTPS virtual hosts
 
 ```
-$ sudo certbot --apache -d api.example.org
+$ sudo certbot --apache -d api.example.org -d admin.example.org -d community.example.org
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator apache, Installer apache
 Enter email address (used for urgent renewal and security notices) (Enter 'c' to
-cancel): admin@example.org
+cancel): ssl-admin@example.org
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Please read the Terms of Service at
@@ -237,7 +237,9 @@ encrypting the web, EFF news, campaigns, and ways to support digital freedom.
 (Y)es/(N)o: N
 Obtaining a new certificate
 Performing the following challenges:
-http-01 challenge for test-db.cy.lu
+http-01 challenge for api.example.org
+http-01 challenge for admin.example.org
+http-01 challenge for community.example.org
 Enabled Apache rewrite module
 Deploying Certificate to VirtualHost /etc/apache2/sites-available/oxe-api-le-ssl.conf
 Enabling available site: /etc/apache2/sites-available/oxe-api-le-ssl.conf
@@ -262,9 +264,9 @@ https://www.ssllabs.com/ssltest/analyze.html?d=api.example.org
 
 IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/test-db.cy.lu/fullchain.pem
+   /etc/letsencrypt/live/api.example.org/fullchain.pem
    Your key file has been saved at:
-   /etc/letsencrypt/live/test-db.cy.lu/privkey.pem
+   /etc/letsencrypt/live/api.example.org/privkey.pem
    Your cert will expire on 2021-03-02. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot again
    with the "certonly" option. To non-interactively renew *all* of
@@ -275,16 +277,59 @@ IMPORTANT NOTES:
    Donating to EFF:                    https://eff.org/donate-le
 ```
 
-Let's do this again for the oxe-web-admin and oxe-web-community virtual hosts
+
+### Let's encrypt issues
+
+#### Challenge failed
+
+In case you get the following error:
 
 ```
-$ sudo certbot --apache -d admin.example.org
-$ sudo certbot --apache -d community.example.org
+Challenge failed for domain admin.example.org
+Challenge failed for domain community.example.org
+```
+
+Double check the *ServerName/ServerAlias* in the apache config.
+
+#### Cannot connect
+
+Check if the firewall is active:
+
+```
+$ sudo ufw status
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), deny (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22                         ALLOW IN    Anywhere                  
+22 (v6)                    ALLOW IN    Anywhere (v6)             
+```
+
+The above has only SSH access allowed. Add port 80/443:
+
+```
+$ sudo ufw allow 80/tcp
+Rule added
+Rule added (v6)
+$ sudo ufw allow 443/tcp
+Rule added
+Rule added (v6)
+```
+
+#### Automatically renew the certificates
+
+Add the following to the root users' crontab.
+
+```
+15 3 * * * /usr/bin/certbot renew --quiet
 ```
 
 ### In case Apache is not starting
 
-Here are a set a command that can be useful to track the error when Apache doesn't start properly
+Below are some commands that can be useful to track the error when Apache doesn't start properly.
 
 ```
 $ sudo apache2 -t -D DUMP_VHOSTS
@@ -295,11 +340,16 @@ $ sudo cat /var/log/apache2/error.log
 
 ### Configure the Apache virtual hosts
 
+Configure reverse proxy and specify seperate Apache Log for port 443.
+
 Add proxy configuration in "/etc/apache2/sites-available/oxe-api-le-ssl.conf" for oxe-api:
 
 ```
 <VirtualHost *:443>
     ...
+
+    ErrorLog ${APACHE_LOG_DIR}/api.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/api.example.org_p443_access.log combined
 
     ProxyPass / http://127.0.0.1:5000/ retry=0
     ProxyPassReverse / http://127.0.0.1:5000/
@@ -312,6 +362,9 @@ In "/etc/apache2/sites-available/oxe-web-admin-le-ssl.conf" For oxe-web-admin:
 <VirtualHost *:443>
     ...
 
+    ErrorLog ${APACHE_LOG_DIR}/admin.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/admin.example.org_p443_access.log combined
+
     ProxyPass / http://127.0.0.1:3000/ retry=0
     ProxyPassReverse / http://127.0.0.1:3000/
 </VirtualHost>
@@ -322,6 +375,9 @@ And in "/etc/apache2/sites-available/oxe-web-community-le-ssl.conf" for oxe-web-
 ```
 <VirtualHost *:443>
     ...
+
+    ErrorLog ${APACHE_LOG_DIR}/community.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/community.example.org_p443_access.log combined
 
     ProxyPass / http://127.0.0.1:3001/ retry=0
     ProxyPassReverse / http://127.0.0.1:3001/
