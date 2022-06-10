@@ -15,6 +15,9 @@ from utils.re import has_mail_format
 
 from db.db import DB
 
+import socket
+import sys
+
 from config import config  # pylint: disable=wrong-import-position
 
 # Manage DB connection
@@ -131,6 +134,13 @@ def create_row_if_not_exists(table, row, log_base):
 
 
 if __name__ in ('app', '__main__'):
+    # TODO: make flask host and port a config parameter
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(3) # 3 second timeout
+    result = sock.connect_ex(('127.0.0.1',5000))
+    if result == 0:
+        sys.exit("Port 5000 is open, maybe you are running a docker container already?")
+
     if config.INITIAL_ADMIN_EMAIL:
         create_initial_admin(config.INITIAL_ADMIN_EMAIL)
 
