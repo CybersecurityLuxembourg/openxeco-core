@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - UX of the "Claim or register entity" page on oxe-web-community
 - Apply the VCARD UX from oxe-web-admin to oxe-web-community
 - Package versions to remove critical vulnerabilities on oxe-web-admin and on oxe-web-community
+- CORS_DOMAINS setting mandatory if ENVIRONMENT != "dev"
 
 ### Fixed
 
