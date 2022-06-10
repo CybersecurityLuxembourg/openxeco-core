@@ -1,19 +1,8 @@
 # Documentation to set up an openXeco instance for production
 
-## Interesting links
-
-https://docs.docker.com/engine/install/ubuntu/
-https://ubuntu.com/tutorials/install-and-configure-apache#1-overview
-https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04
-https://ubiq.co/tech-blog/enable-cors-apache-web-server/
-
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=674857#25
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=932458
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931899
-
 ## Prerequisite
 
-## Accessibility to a Ubuntu machine
+### Ubuntu Server 20.04 LTS
 
 This procedure has been done on the following OS version:
 
@@ -36,7 +25,7 @@ The DNS should be configured to direct to the target machine. This is necessary 
 192.0.2.42 A  community.example.org
 ```
 
-[example.org] represents the domain you own for this instance
+[example.org] represents the domain you own for this instance.
 
 ### Version selection
 
@@ -124,7 +113,7 @@ For the admin webapp:
 $ docker build \
     -f openxeco-core-oxe-web-admin-v1.10.1/Dockerfile \
     -t oxe-web-admin-v1.10.1 \
-    --build-arg TARGET_DIR=oxe-web-admin \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.10.1 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-admin-v1.10.1.tar.gz
 $ docker run -d -p 3000:3000 oxe-web-admin-v1.10.1
 ```
@@ -135,7 +124,7 @@ For the community webapp:
 $ docker build \
     -f openxeco-core-oxe-web-community-v1.10.1/Dockerfile \
     -t oxe-web-community-v1.10.1 \
-    --build-arg TARGET_DIR=oxe-web-community \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.10.1 \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.10.1/openxeco-core-oxe-web-community-v1.10.1.tar.gz
 $ docker run -d -p 3001:3001 oxe-web-community-v1.10.1
 ```
@@ -149,9 +138,9 @@ $ sudo apt install apache2
 $ sudo a2enmod ssl
 $ sudo a2enmod headers
 $ sudo a2enmod proxy_http
-$ sudo mkdir /var/www/oxe-api
-$ sudo mkdir /var/www/oxe-web-admin
-$ sudo mkdir /var/www/oxe-web-community
+$ sudo mkdir -p /var/www/oxe-api
+$ sudo mkdir -p /var/www/oxe-web-admin
+$ sudo mkdir -p /var/www/oxe-web-community
 ```
 
 ### Create and init the configuration files
@@ -171,7 +160,11 @@ You can edit oxe-api.conf as follow:
 <VirtualHost *:80>
     ServerAdmin admin@example.org
     ServerName api.example.org
+
     DocumentRoot /var/www/oxe-api/
+
+    ErrorLog ${APACHE_LOG_DIR}/api.example.org_p80_error.log
+    CustomLog ${APACHE_LOG_DIR}/api.example.org_p80_access.log combined
 </VirtualHost>
 ```
 
@@ -181,7 +174,11 @@ You can edit oxe-web-admin.conf as follow:
 <VirtualHost *:80>
     ServerAdmin admin@example.org
     ServerName admin.example.org
+
     DocumentRoot /var/www/oxe-web-admin/
+
+    ErrorLog ${APACHE_LOG_DIR}/admin.example.org_p80_error.log
+    CustomLog ${APACHE_LOG_DIR}/admin.example.org_p80_access.log combined
 </VirtualHost>
 ```
 
@@ -191,7 +188,11 @@ You can edit oxe-web-community.conf as follow:
 <VirtualHost *:80>
     ServerAdmin admin@example.org
     ServerName community.example.org
+
     DocumentRoot /var/www/oxe-web-community/
+
+    ErrorLog ${APACHE_LOG_DIR}/community.example.org_p80_error.log
+    CustomLog ${APACHE_LOG_DIR}/community.example.org_p80_access.log combined
 </VirtualHost>
 ```
 
@@ -334,3 +335,10 @@ The server is configured, we can finish with:
 ```
 $ sudo service apache2 restart
 ```
+
+## Interesting links
+
+[Official Docker Install Docs on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+[Install and Configure Apache](https://ubuntu.com/tutorials/install-and-configure-apache#1-overview)
+[Secure Apache with Let's Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04)
+[Enable CORS on Apache](https://ubiq.co/tech-blog/enable-cors-apache-web-server/)
