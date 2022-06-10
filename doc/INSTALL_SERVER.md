@@ -27,6 +27,8 @@ The DNS should be configured to direct to the target machine. This is necessary 
 
 [example.org] represents the domain you own for this instance.
 
+If [example.org] is not explicit enough, prefixing the domain names might be an idea, e.g: oxe-api.example.org or api.oxe.example.org
+
 ### Version selection
 
 [v1.10.1] is an example of openXeco version for this documentation. Please see the [other versions here.](https://github.com/CybersecurityLuxembourg/openxeco-core/releases)
