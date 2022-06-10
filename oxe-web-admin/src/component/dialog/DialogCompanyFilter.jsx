@@ -66,7 +66,7 @@ export default class DialogCompanyFilter extends React.Component {
 	}
 
 	fetchCompanyEnums() {
-		getRequest.call(this, "company/get_company_enums", (data) => {
+		getRequest.call(this, "public/get_public_company_enums", (data) => {
 			this.setState({
 				companyEnums: data,
 			});

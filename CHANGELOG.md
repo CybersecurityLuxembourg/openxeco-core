@@ -23,6 +23,12 @@ All notable changes to this project will be documented in this file.
 - private/generate_my_user_handle resource
 - public/get_public_vcard resource
 
+## [1.10.2] - 2022-06-10
+
+### Fixed
+
+- Filter form loading on "Entities" page on oxe-web-admin
+
 ## [1.10.1] - 2022-06-07
 
 ### Added
