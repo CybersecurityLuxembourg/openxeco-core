@@ -78,6 +78,10 @@
 	background-color:  black;
 }
 
+.medium-editor-element {
+	white-space:normal !important;
+}
+
 .Formline-datetime input {
 	position: absolute;
 }

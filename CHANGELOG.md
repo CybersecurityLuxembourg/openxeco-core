@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.10.3] - 2022-06-13
+
+### Fixed
+
+- Medium editor fields
+
 ## [1.10.2] - 2022-06-10
 
 ### Fixed
