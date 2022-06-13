@@ -23,6 +23,12 @@ All notable changes to this project will be documented in this file.
 - private/generate_my_user_handle resource
 - public/get_public_vcard resource
 
+## [1.10.3] - 2022-06-13
+
+### Fixed
+
+- Medium editor fields
+
 ## [1.10.2] - 2022-06-10
 
 ### Fixed

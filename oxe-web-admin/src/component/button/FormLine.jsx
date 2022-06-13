@@ -171,7 +171,7 @@ export default class FormLine extends React.Component {
 						text: "",
 					},
 				}}
-				data-disable-editing={this.props.disabled}
+				data-disable-editing={this.props.disabled || undefined}
 			/>;
 		case "region":
 			return <RegionDropdown
