@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Url parameter handling to redirect to an entity claiming popup (?claim_entity={id}) on oxe-web-community
+- favicon.ico and robots.txt on oxe-web-community and oxe-web-admin
 
 ### Changed
 
@@ -15,6 +16,10 @@ All notable changes to this project will be documented in this file.
 - Apply the VCARD UX from oxe-web-admin to oxe-web-community
 - Package versions to remove critical vulnerabilities on oxe-web-admin and on oxe-web-community
 - CORS_DOMAINS setting mandatory if ENVIRONMENT != "dev"
+- Review doc/INSTALL_SERVER.md
+- Review README.md
+- Package name from GH actions
+- Removed all "cybersecurity corebusiness" fields on oxe-web-community and oxe-web-admin
 
 ### Fixed
 
