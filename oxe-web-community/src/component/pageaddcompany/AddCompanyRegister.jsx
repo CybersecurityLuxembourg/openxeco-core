@@ -22,7 +22,6 @@ export default class AddCompanyRegister extends React.Component {
 				trade_register_number: "Trade register number",
 				website: "Website",
 				creation_date: "Creation date",
-				is_cybersecurity_core_business: "Is cybersecurity core business",
 				is_startup: "Is startup",
 			},
 		};
@@ -157,14 +156,6 @@ export default class AddCompanyRegister extends React.Component {
 							onChange={(v) => this.updateNewCompany("creation_date", v)}
 							format={!this.state.notFoundEntity ? undefined
 								: (v) => AddCompanyRegister.isFieldCompleted(v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={this.state.fields.is_cybersecurity_core_business}
-							type={"checkbox"}
-							value={this.state.newCompanyForm.is_cybersecurity_core_business}
-							onChange={(v) => this.updateNewCompany("is_cybersecurity_core_business", v)}
-							background={false}
 							disabled={!this.state.notFoundEntity}
 						/>
 						<FormLine

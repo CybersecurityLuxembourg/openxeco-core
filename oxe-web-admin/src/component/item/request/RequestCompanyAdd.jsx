@@ -107,12 +107,6 @@ export default class RequestCompanyAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"Is cybersecurity core business"}
-								type={"checkbox"}
-								value={this.props.data.is_cybersecurity_core_business}
-								disabled={true}
-							/>
-							<FormLine
 								label={"Is startup"}
 								type={"checkbox"}
 								value={this.props.data.is_startup}

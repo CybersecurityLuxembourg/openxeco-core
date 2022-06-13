@@ -180,7 +180,7 @@ export default class DashboardEcosystem extends React.Component {
 				filteredCompanies = filteredCompanies
 					.filter((o) => minDate < o.creation_date && o.creation_date <= maxDate);
 			} else {
-				// Filter the selected company attribute such as is_cybersecurity_core_business, ...
+				// Filter the selected company attribute such as is_startup, ...
 
 				filteredCompanies = filteredCompanies
 					.filter((o) => o[axis] === (this.state.filters[axis] ? 1 : 0));

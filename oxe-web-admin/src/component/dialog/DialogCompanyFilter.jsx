@@ -22,11 +22,10 @@ export default class DialogCompanyFilter extends React.Component {
 		this.fetchCompanyEnums = this.fetchCompanyEnums.bind(this);
 
 		this.initialState = {
-			allowedFilters: ["name", "startup_only", "corebusiness_only", "status"],
+			allowedFilters: ["name", "startup_only", "status"],
 
 			name: null,
 			startup_only: false,
-			corebusiness_only: false,
 			status: null,
 
 			categories: null,
@@ -197,12 +196,6 @@ export default class DialogCompanyFilter extends React.Component {
 						type={"checkbox"}
 						value={this.state.startup_only}
 						onChange={(v) => this.changeState("startup_only", v)}
-					/>
-					<FormLine
-						label="Only core-business"
-						type={"checkbox"}
-						value={this.state.corebusiness_only}
-						onChange={(v) => this.changeState("corebusiness_only", v)}
 					/>
 					{this.state.categories !== null && this.state.taxonomy_values !== null
 						? this.state.categories

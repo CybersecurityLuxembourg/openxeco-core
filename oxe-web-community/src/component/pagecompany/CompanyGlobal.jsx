@@ -24,7 +24,6 @@ export default class CompanyGlobal extends React.Component {
 				trade_register_number: "Trade register number",
 				website: "Website",
 				creation_date: "Creation date",
-				is_cybersecurity_core_business: "Is cybersecurity core business",
 				is_startup: "Is startup",
 				linkedin_url: "Linkedin URL",
 				twitter_url: "Twitter URL",
@@ -153,13 +152,6 @@ export default class CompanyGlobal extends React.Component {
 							type={"date"}
 							value={this.state.companyInfo.creation_date}
 							onChange={(v) => this.updateCompany("creation_date", v)}
-						/>
-						<FormLine
-							label={this.state.fields.is_cybersecurity_core_business}
-							type={"checkbox"}
-							value={this.state.companyInfo.is_cybersecurity_core_business}
-							onChange={(v) => this.updateCompany("is_cybersecurity_core_business", v)}
-							background={false}
 						/>
 						<FormLine
 							label={this.state.fields.is_startup}
