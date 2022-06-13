@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -49,7 +49,7 @@ app.config['PROPAGATE_EXCEPTIONS'] = config.ENVIRONMENT == "dev"
 app.config['SCHEDULER_API_ENABLED'] = False
 
 app.config['APISPEC_SWAGGER_URL'] = '/doc/json'
-app.config['APISPEC_SWAGGER_UI_URL'] = '/doc/'
+app.config['APISPEC_SWAGGER_UI_URL'] = '/doc'
 app.config['APISPEC_SPEC'] = APISpec(
     title='openXeco API',
     version='v1.11',
@@ -74,6 +74,11 @@ api = Api(app)
 @app.route('/<generic>')
 def undefined_route(_):
     return '', 404
+
+
+@app.route('/')
+def root_route():
+    return redirect("/doc", code=302)
 
 
 def create_initial_admin(email):
