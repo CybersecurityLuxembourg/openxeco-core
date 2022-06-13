@@ -77,17 +77,17 @@ https://docs.docker.com/get-docker/
     mariadb:10.7.3
 > docker run -d -p 1025:25 b2ck/fake-smtpd
 > docker build \
-    -f openxeco-core-oxe-web-admin-v1.9.0/Dockerfile
-    -t oxe-web-admin-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.9.0 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-admin-v1.9.0.tar.gz
-> docker run -d -p 3000:3000 oxe-web-admin-v1.9.0
+    -f openxeco-core-oxe-web-admin/Dockerfile
+    -t oxe-web-admin \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-admin.tar.gz
+> docker run -d -p 3000:3000 oxe-web-admin
 > docker build \
-    -f openxeco-core-oxe-web-community-v1.9.0/Dockerfile
-    -t oxe-web-community-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.9.0 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-community-v1.9.0.tar.gz
-> docker run -p 3001:3001 oxe-web-community-v1.9.0
+    -f openxeco-core-oxe-web-community/Dockerfile
+    -t oxe-web-community \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-community.tar.gz
+> docker run -p 3001:3001 oxe-web-community
 > docker run -d -p 5000:5000 \
     --network openxeco \
     -e ENVIRONMENT=prod \
@@ -105,7 +105,7 @@ https://docs.docker.com/get-docker/
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
     -e INITIAL_ADMIN_EMAIL=my-default-admin@MYDOMAIN.XXX \
-    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.9.0
+    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
 ```
 
 ### Enjoy the solution

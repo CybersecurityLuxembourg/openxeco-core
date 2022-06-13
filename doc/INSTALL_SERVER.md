@@ -40,7 +40,7 @@ XXX.XXX.XXX.XXX A  community.example.org
 
 ### Version selection
 
-[v1.9.0] is an example of openXeco version for this documentation. Please see the other versions here:
+This documentation will target the latest version. Please see the other versions here:
 
 https://github.com/CybersecurityLuxembourg/openxeco-core/releases
 
@@ -109,7 +109,7 @@ You have to adapt the arguments of this command to set the right configuration:
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
     -e INITIAL_ADMIN_EMAIL=my-default-admin@example.org \
-    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:v1.9.0
+    ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
 ```
 
 ### Build and run the webapps images
@@ -118,22 +118,22 @@ For the admin webapp:
 
 ```
 > docker build \
-    -f openxeco-core-oxe-web-admin-v1.9.0/Dockerfile \
-    -t oxe-web-admin-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin-v1.9.0 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-admin-v1.9.0.tar.gz
-> docker run -d -p 3000:3000 oxe-web-admin-v1.9.0
+    -f openxeco-core-oxe-web-admin/Dockerfile \
+    -t oxe-web-admin \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-admin.tar.gz
+> docker run -d -p 3000:3000 oxe-web-admin
 ```
 
 For the community webapp:
 
 ```
 > docker build \
-    -f openxeco-core-oxe-web-community-v1.9.0/Dockerfile \
-    -t oxe-web-community-v1.9.0 \
-    --build-arg TARGET_DIR=openxeco-core-oxe-web-community-v1.9.0 \
-    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/download/v1.9.0/openxeco-core-oxe-web-community-v1.9.0.tar.gz
-> docker run -d -p 3001:3001 oxe-web-community-v1.9.0
+    -f openxeco-core-oxe-web-community/Dockerfile \
+    -t oxe-web-community \
+    --build-arg TARGET_DIR=openxeco-core-oxe-web-community \
+    https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-community.tar.gz
+> docker run -d -p 3001:3001 oxe-web-community
 ```
 
 ## Apache server
