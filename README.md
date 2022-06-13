@@ -64,12 +64,26 @@ If you want to set up a local instance to test the project, please follow these 
 
 ### Install docker
 
-https://docs.docker.com/get-docker/
+[Get Docker](https://docs.docker.com/get-docker/)
+
+Linux:
+
+```
+$ sudo mkdir -p /etc/apt/keyrings/
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$ sudo apt update && sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+$ sudo adduser <your-oxe-user> docker
+$ newgrp docker
+# If you want to verify your docker install run: docker run hello-world
+```
 
 ### Install and run the openXeco containers and its dependencies
 
 ```
-> docker run -d \
+$ docker network create openxeco
+$ docker run -d \
     --network openxeco \
     --network-alias mariadb \
     -p 3306:3306 \
@@ -77,13 +91,13 @@ https://docs.docker.com/get-docker/
     mariadb:10.7.3
 > docker run -d -p 1025:25 b2ck/fake-smtpd
 > docker build \
-    -f openxeco-core-oxe-web-admin/Dockerfile
+    -f openxeco-core-oxe-web-admin/Dockerfile \
     -t oxe-web-admin \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-admin.tar.gz
 > docker run -d -p 3000:3000 oxe-web-admin
 > docker build \
-    -f openxeco-core-oxe-web-community/Dockerfile
+    -f openxeco-core-oxe-web-community/Dockerfile \
     -t oxe-web-community \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-community \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-community.tar.gz
@@ -101,10 +115,10 @@ https://docs.docker.com/get-docker/
     -e MAIL_PORT=1025 \
     -e MAIL_USE_TLS=False \
     -e MAIL_USE_SSL=False \
-    -e MAIL_DEFAULT_SENDER=my-default-sender@MYDOMAIN.XXX \
+    -e MAIL_DEFAULT_SENDER=my-default-sender@example.org \
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
-    -e INITIAL_ADMIN_EMAIL=my-default-admin@MYDOMAIN.XXX \
+    -e INITIAL_ADMIN_EMAIL=my-default-admin@example.org \
     ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
 ```
 
@@ -116,7 +130,7 @@ Access the administrator interface:
 Access the community interface:
 - http://localhost:3001
 
-An initial account is created with the following email: my-default-admin@default-domain.com
+An initial account is created with the following email: my-default-admin@example.org
 
 Please, process to the password resetting to define your admin account password. A mocked email with the password resetting URL with be available. You can consult it via the logs of the "b2ck/fake-smtpd" container you have created previously.
 
@@ -125,4 +139,3 @@ Please, process to the password resetting to define your admin account password.
 To set up the production instance, please see this file:
 
 - [doc/INSTALL_SERVER.md](doc/INSTALL_SERVER.md)
-

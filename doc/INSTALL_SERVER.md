@@ -1,24 +1,13 @@
 # Documentation to set up an openXeco instance for production
 
-## Interesting links
-
-https://docs.docker.com/engine/install/ubuntu/
-https://ubuntu.com/tutorials/install-and-configure-apache#1-overview
-https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04
-https://ubiq.co/tech-blog/enable-cors-apache-web-server/
-
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=674857#25
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=932458
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931899
-
 ## Prerequisite
 
-## Accessibility to a Ubuntu machine
+### Ubuntu Server 20.04 LTS
 
 This procedure has been done on the following OS version:
 
 ```
-> lsb_release -a
+$ lsb_release -a
 No LSB modules are available.
 Distributor ID: Ubuntu
 Description:    Ubuntu 20.04.1 LTS
@@ -31,30 +20,30 @@ Codename:       focal
 The DNS should be configured to direct to the target machine. This is necessary to set up SSL configuration on Apache with 'Let's encrypt'. In our example:
 
 ```
-XXX.XXX.XXX.XXX A  api.example.org
-XXX.XXX.XXX.XXX A  admin.example.org
-XXX.XXX.XXX.XXX A  community.example.org
+192.0.2.42 A  api.example.org
+192.0.2.42 A  admin.example.org
+192.0.2.42 A  community.example.org
 ```
 
-[example.org] represents the domain you own for this instance
+[example.org] represents the domain you own for this instance.
+
+If [example.org] is not explicit enough, prefixing the domain names might be an idea, e.g: oxe-api.example.org or api.oxe.example.org
 
 ### Version selection
 
-This documentation will target the latest version. Please see the other versions here:
-
-https://github.com/CybersecurityLuxembourg/openxeco-core/releases
+This documentation will target the latest version. Please see the [other versions here.](https://github.com/CybersecurityLuxembourg/openxeco-core/releases)
 
 ### Update the package index
 
 ```
-> sudo apt update
+$ sudo apt update
 ```
 
 ### Create directories for documents and images
 
 ```
-> mkdir /image_folder
-> mkdir /document_folder
+$ sudo mkdir -p /var/lib/oxe-api/image_folder
+$ sudo mkdir -p /var/lib/oxe-api/document_folder
 ```
 
 ## Docker
@@ -62,22 +51,28 @@ https://github.com/CybersecurityLuxembourg/openxeco-core/releases
 ### Installation of Docker
 
 ```
-> apt-get install docker.io
-> snap install docker
+$ sudo mkdir -p /etc/apt/keyrings/
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+$ sudo apt update && sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+$ sudo adduser <your-oxe-user> docker
+$ newgrp docker
+# If you want to verify your docker install run: docker run hello-world
 ```
 
-For more information, see: https://docs.docker.com/get-docker/
+For more information, see the [official docker site.](https://docs.docker.com/get-docker/)
 
 ### Create a docker network
 
 ```
-> docker network create openxeco
+$ docker network create openxeco
 ```
 
-### Create a docker
+### Create and run a docker mariadb 10.7.3 container
 
 ```
-> docker run -d \
+$ docker run -d \
     --network openxeco \
     --network-alias mariadb \
     -p 3306:3306 \
@@ -92,7 +87,7 @@ The database and it structure will be created when the API will be correcly laun
 You have to adapt the arguments of this command to set the right configuration:
 
 ```
-> docker run -d -p 5000:5000 \
+$ docker run -d -p 5000:5000 \
     --network openxeco \
     -e ENVIRONMENT=prod \
     -e JWT_SECRET_KEY=my_secret_developer_key \
@@ -117,23 +112,23 @@ You have to adapt the arguments of this command to set the right configuration:
 For the admin webapp:
 
 ```
-> docker build \
+$ docker build \
     -f openxeco-core-oxe-web-admin/Dockerfile \
     -t oxe-web-admin \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-admin.tar.gz
-> docker run -d -p 3000:3000 oxe-web-admin
+$ docker run -d -p 3000:3000 oxe-web-admin
 ```
 
 For the community webapp:
 
 ```
-> docker build \
+$ docker build \
     -f openxeco-core-oxe-web-community/Dockerfile \
     -t oxe-web-community \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-community \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-community.tar.gz
-> docker run -d -p 3001:3001 oxe-web-community
+$ docker run -d -p 3001:3001 oxe-web-community
 ```
 
 ## Apache server
@@ -141,13 +136,13 @@ For the community webapp:
 ### Install apache server
 
 ```
-> sudo apt install apache2
-> sudo a2enmod ssl
-> sudo a2enmod headers
-> sudo a2enmod proxy_http
-> sudo mkdir /var/www/oxe-api
-> sudo mkdir /var/www/oxe-web-admin
-> sudo mkdir /var/www/oxe-web-community
+$ sudo apt install apache2
+$ sudo a2enmod ssl
+$ sudo a2enmod headers
+$ sudo a2enmod proxy_http
+$ sudo mkdir -p /var/www/oxe-api
+$ sudo mkdir -p /var/www/oxe-web-admin
+$ sudo mkdir -p /var/www/oxe-web-community
 ```
 
 ### Create and init the configuration files
@@ -167,7 +162,11 @@ You can edit oxe-api.conf as follow:
 <VirtualHost *:80>
     ServerAdmin admin@example.org
     ServerName api.example.org
+
     DocumentRoot /var/www/oxe-api/
+
+    ErrorLog ${APACHE_LOG_DIR}/api.example.org_p80_error.log
+    CustomLog ${APACHE_LOG_DIR}/api.example.org_p80_access.log combined
 </VirtualHost>
 ```
 
@@ -177,7 +176,11 @@ You can edit oxe-web-admin.conf as follow:
 <VirtualHost *:80>
     ServerAdmin admin@example.org
     ServerName admin.example.org
+
     DocumentRoot /var/www/oxe-web-admin/
+
+    ErrorLog ${APACHE_LOG_DIR}/admin.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/admin.example.org_p443_access.log combined
 </VirtualHost>
 ```
 
@@ -187,34 +190,37 @@ You can edit oxe-web-community.conf as follow:
 <VirtualHost *:80>
     ServerAdmin admin@example.org
     ServerName community.example.org
+
     DocumentRoot /var/www/oxe-web-community/
+
+    ErrorLog ${APACHE_LOG_DIR}/community.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/community.example.org_p443_access.log combined
 </VirtualHost>
 ```
 
 To take in count the new configuration, we need to run the following:
 
 ```
-> sudo a2ensite oxe-api.conf
-> sudo a2ensite oxe-web-admin.conf
-> sudo a2ensite oxe-web-community.conf
-> service apache2 reload
+$ sudo a2ensite oxe-api.conf
+$ sudo a2ensite oxe-web-admin.conf
+$ sudo a2ensite oxe-web-community.conf
+$ sudo systemctl restart apache2
 ```
 
-### Install 'Let's encrypt'
+### Install Let's encrypt
 
 ```
-> #sudo add-apt-repository ppa:certbot/certbot # Not needed on recent versions of Ubuntu
-> sudo apt install python3-certbot-apache
+$ sudo apt install python3-certbot-apache
 ```
 
 ### Setup HTTPS virtual hosts
 
 ```
-> sudo certbot --apache -d api.example.org
+$ sudo certbot --apache -d api.example.org -d admin.example.org -d community.example.org
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 Plugins selected: Authenticator apache, Installer apache
 Enter email address (used for urgent renewal and security notices) (Enter 'c' to
-cancel): admin@example.org
+cancel): ssl-admin@example.org
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Please read the Terms of Service at
@@ -233,7 +239,9 @@ encrypting the web, EFF news, campaigns, and ways to support digital freedom.
 (Y)es/(N)o: N
 Obtaining a new certificate
 Performing the following challenges:
-http-01 challenge for test-db.cy.lu
+http-01 challenge for api.example.org
+http-01 challenge for admin.example.org
+http-01 challenge for community.example.org
 Enabled Apache rewrite module
 Deploying Certificate to VirtualHost /etc/apache2/sites-available/oxe-api-le-ssl.conf
 Enabling available site: /etc/apache2/sites-available/oxe-api-le-ssl.conf
@@ -258,9 +266,9 @@ https://www.ssllabs.com/ssltest/analyze.html?d=api.example.org
 
 IMPORTANT NOTES:
  - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/test-db.cy.lu/fullchain.pem
+   /etc/letsencrypt/live/api.example.org/fullchain.pem
    Your key file has been saved at:
-   /etc/letsencrypt/live/test-db.cy.lu/privkey.pem
+   /etc/letsencrypt/live/api.example.org/privkey.pem
    Your cert will expire on 2021-03-02. To obtain a new or tweaked
    version of this certificate in the future, simply run certbot again
    with the "certonly" option. To non-interactively renew *all* of
@@ -271,31 +279,79 @@ IMPORTANT NOTES:
    Donating to EFF:                    https://eff.org/donate-le
 ```
 
-Let's do this again for the oxe-web-admin and oxe-web-community virtual hosts
+
+### Let's encrypt issues
+
+#### Challenge failed
+
+In case you get the following error:
 
 ```
-> sudo certbot --apache -d admin.example.org
-> sudo certbot --apache -d community.example.org
+Challenge failed for domain admin.example.org
+Challenge failed for domain community.example.org
+```
+
+Double check the *ServerName/ServerAlias* in the apache config.
+
+#### Cannot connect
+
+Check if the firewall is active:
+
+```
+$ sudo ufw status
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), deny (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22                         ALLOW IN    Anywhere                  
+22 (v6)                    ALLOW IN    Anywhere (v6)             
+```
+
+The above has only SSH access allowed. Add port 80/443:
+
+```
+$ sudo ufw allow 80/tcp
+Rule added
+Rule added (v6)
+$ sudo ufw allow 443/tcp
+Rule added
+Rule added (v6)
+```
+
+#### Automatically renew the certificates
+
+Add the following to the root users' crontab.
+
+```
+15 3 * * * /usr/bin/certbot renew --quiet
 ```
 
 ### In case Apache is not starting
 
-Here are a set a command that can be useful to track the error when Apache doesn't start properly
+Below are some commands that can be useful to track the error when Apache doesn't start properly.
 
 ```
-sudo apache2 -t -D DUMP_VHOSTS
-sudo apache2ctl configtest
-sudo journalctl | tail
-sudo cat /var/log/apache2/error.log
+$ sudo apache2 -t -D DUMP_VHOSTS
+$ sudo apache2ctl configtest
+$ sudo journalctl | tail
+$ sudo cat /var/log/apache2/error.log
 ```
 
 ### Configure the Apache virtual hosts
+
+Configure reverse proxy and specify seperate Apache Log for port 443.
 
 Add proxy configuration in "/etc/apache2/sites-available/oxe-api-le-ssl.conf" for oxe-api:
 
 ```
 <VirtualHost *:443>
     ...
+
+    ErrorLog ${APACHE_LOG_DIR}/api.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/api.example.org_p443_access.log combined
 
     ProxyPass / http://127.0.0.1:5000/ retry=0
     ProxyPassReverse / http://127.0.0.1:5000/
@@ -308,6 +364,9 @@ In "/etc/apache2/sites-available/oxe-web-admin-le-ssl.conf" For oxe-web-admin:
 <VirtualHost *:443>
     ...
 
+    ErrorLog ${APACHE_LOG_DIR}/admin.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/admin.example.org_p443_access.log combined
+
     ProxyPass / http://127.0.0.1:3000/ retry=0
     ProxyPassReverse / http://127.0.0.1:3000/
 </VirtualHost>
@@ -319,6 +378,9 @@ And in "/etc/apache2/sites-available/oxe-web-community-le-ssl.conf" for oxe-web-
 <VirtualHost *:443>
     ...
 
+    ErrorLog ${APACHE_LOG_DIR}/community.example.org_p443_error.log
+    CustomLog ${APACHE_LOG_DIR}/community.example.org_p443_access.log combined
+
     ProxyPass / http://127.0.0.1:3001/ retry=0
     ProxyPassReverse / http://127.0.0.1:3001/
 </VirtualHost>
@@ -329,5 +391,12 @@ And in "/etc/apache2/sites-available/oxe-web-community-le-ssl.conf" for oxe-web-
 The server is configured, we can finish with:
 
 ```
-> sudo service apache2 restart
+$ sudo service apache2 restart
 ```
+
+## Interesting links
+
+[Official Docker Install Docs on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+[Install and Configure Apache](https://ubuntu.com/tutorials/install-and-configure-apache#1-overview)
+[Secure Apache with Let's Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04)
+[Enable CORS on Apache](https://ubiq.co/tech-blog/enable-cors-apache-web-server/)
