@@ -138,13 +138,16 @@ def create_row_if_not_exists(table, row, log_base):
     return obj
 
 
-if __name__ in ('app', '__main__'):
-    # TODO: make flask host and port a config parameter
+def check_port():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(3) # 3 second timeout
-    result = sock.connect_ex(('127.0.0.1',5000))
+    sock.settimeout(3)  # 3 second timeout
+    result = sock.connect_ex(('127.0.0.1', int(config.PORT)))
     if result == 0:
-        sys.exit("Port 5000 is open, maybe you are running a docker container already?")
+        sys.exit(f"Port {config.PORT} is used, maybe you are already running a docker container?")
+
+
+if __name__ in ('app', '__main__'):
+    check_port()
 
     if config.INITIAL_ADMIN_EMAIL:
         create_initial_admin(config.INITIAL_ADMIN_EMAIL)
@@ -154,4 +157,4 @@ if __name__ in ('app', '__main__'):
 
     app.debug = config.ENVIRONMENT == "dev"
     if __name__ == "__main__":
-        app.run()
+        app.run(port=int(config.PORT))

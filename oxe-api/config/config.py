@@ -20,6 +20,7 @@ def _getenv(key, default=None, mandatory=True):
 
 
 ENVIRONMENT         = _getenv('ENVIRONMENT',    default='dev')
+PORT                = _getenv('PORT',           default='5000')
 
 JWT_SECRET_KEY      = _getenv('JWT_SECRET_KEY', mandatory=True)
 
