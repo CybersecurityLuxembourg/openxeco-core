@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 - Documentation description and version in resource public/get_public_node_information
 - Chips display on popups
+- Paragraph display on article preview and article edition
 
 ## [1.10.3] - 2022-06-13
 
