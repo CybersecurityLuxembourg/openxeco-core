@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.10.4] - 2022-06-14
+
+### Fixed
+
+- Documentation description and version in resource public/get_public_node_information
+- Chips display on popups
+
 ## [1.10.3] - 2022-06-13
 
 ### Fixed
