@@ -12,7 +12,7 @@ class GetPublicNodeInformation(MethodResource, Resource):
     def __init__(self, db: DB):
         self.db = db
 
-    @doc(tags=['network'],
+    @doc(tags=['public'],
          description='Get the global information of the node',
          responses={
              "200": {},
@@ -27,7 +27,7 @@ class GetPublicNodeInformation(MethodResource, Resource):
             "email_address": GetPublicNodeInformation.get_config(settings, "EMAIL_ADDRESS"),
             "phone_number": GetPublicNodeInformation.get_config(settings, "PHONE_NUMBER"),
             "postal_address": GetPublicNodeInformation.get_config(settings, "POSTAL_ADDRESS"),
-            "version": "1.9",
+            "version": "1.10",
         })
 
     @staticmethod
