@@ -29,6 +29,8 @@ All notable changes to this project will be documented in this file.
 - QR code sizing on profile page of oxe-web-admin
 - private/generate_my_user_handle resource
 - public/get_public_vcard resource
+- Dockerfile on oxe-web-admin and on oxe-web-community to take the mod_rewrite in count for Single Page App
+- Dockerized solution to mock the SMTP
 
 ## [1.10.4] - 2022-06-14
 
