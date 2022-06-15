@@ -88,7 +88,7 @@ def create_initial_admin(email, password):
         raise Exception("The email does not have the right format")
 
     if db.get_count(db.tables["User"]) > 0:
-        logging.warning("The initial admin has been ignored as there is at least one user in the database")
+        app.logger.warning("The initial admin has been ignored as there is at least one user in the database")
         return
 
     admin = create_row_if_not_exists(
@@ -120,7 +120,7 @@ def create_initial_admin(email, password):
         "User group assignment"
     )
 
-    logging.warning(f"The initial admin has been created with the following password: {password}")
+    app.logger.warning(f"The initial admin has been created with the following password: {password}")
 
 
 def create_row_if_not_exists(table, row, log_base):
@@ -152,6 +152,12 @@ def check_port():
 
 
 if __name__ in ('app', '__main__'):
+
+    # Add log handler for gunicorn used on the dockerized version
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
+
     check_port()
 
     if config.INITIAL_ADMIN_EMAIL:
