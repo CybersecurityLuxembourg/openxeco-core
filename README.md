@@ -40,6 +40,16 @@
 
 <table>
 <tr>
+  <td>Licence</td>
+</tr>
+<tr>
+  <td>FOSSA</td>
+  <td><a href="https://app.fossa.com/projects/git%2Bgithub.com%2FCybersecurityLuxembourg%2Fopenxeco-core?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FCybersecurityLuxembourg%2Fopenxeco-core.svg?type=shield"/></a></td>
+</tr>
+</table>
+
+<table>
+<tr>
   <td>Social networks</td>
 </tr>
 <tr>
