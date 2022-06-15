@@ -9,7 +9,6 @@ from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 
-from flask_bcrypt import generate_password_hash
 from utils.re import has_mail_format
 
 from db.db import DB
@@ -96,7 +95,7 @@ def create_initial_admin(email, password):
         db.tables["User"],
         {
             "email": email,
-            "password": generate_password_hash(password),
+            "password": bcrypt.generate_password_hash(password),
             "is_active": 1,
             "is_admin": 1
         },
@@ -121,7 +120,7 @@ def create_initial_admin(email, password):
         "User group assignment"
     )
 
-    logging.warning(f"The initial admin has been created with the following password: '{password}'")
+    logging.warning(f"The initial admin has been created with the following password: {password}")
 
 
 def create_row_if_not_exists(table, row, log_base):
