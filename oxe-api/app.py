@@ -10,13 +10,13 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 
 from flask_bcrypt import generate_password_hash
-from utils.password import generate_password
 from utils.re import has_mail_format
 
 from db.db import DB
 
 import socket
 import sys
+import logging
 
 from config import config  # pylint: disable=wrong-import-position
 
@@ -84,15 +84,19 @@ def root_route():
     return redirect("/doc", code=302)
 
 
-def create_initial_admin(email):
+def create_initial_admin(email, password):
     if not has_mail_format(email):
         raise Exception("The email does not have the right format")
+
+    if db.get_count(db.tables["User"]) > 0:
+        logging.warning("The initial admin has been ignored as there is at least one user in the database")
+        return
 
     admin = create_row_if_not_exists(
         db.tables["User"],
         {
             "email": email,
-            "password": generate_password_hash(generate_password()),
+            "password": generate_password_hash(password),
             "is_active": 1,
             "is_admin": 1
         },
@@ -116,6 +120,8 @@ def create_initial_admin(email):
         {"user_id": admin.id, "group_id": user_group.id},
         "User group assignment"
     )
+
+    logging.warning(f"The initial admin has been created with the following password: '{password}'")
 
 
 def create_row_if_not_exists(table, row, log_base):
@@ -150,7 +156,7 @@ if __name__ in ('app', '__main__'):
     check_port()
 
     if config.INITIAL_ADMIN_EMAIL:
-        create_initial_admin(config.INITIAL_ADMIN_EMAIL)
+        create_initial_admin(config.INITIAL_ADMIN_EMAIL, config.INITIAL_ADMIN_PASSWORD)
 
     from routes import set_routes
     set_routes({"api": api, "db": db, "mail": mail, "docs": docs})

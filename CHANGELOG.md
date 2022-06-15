@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 - Url parameter handling to redirect to an entity claiming popup (?claim_entity={id}) on oxe-web-community
 - favicon.ico and robots.txt on oxe-web-community and oxe-web-admin
+- INITIAL_ADMIN_PASSWORD config for the API
 
 ### Changed
 
@@ -20,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Review README.md
 - Package name from GH actions
 - Removed all "cybersecurity corebusiness" fields on oxe-web-community and oxe-web-admin
+- The initial admin is created with a password (cf:INITIAL_ADMIN_PASSWORD) if there is no user in the database
 
 ### Fixed
 

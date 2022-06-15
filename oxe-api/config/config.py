@@ -44,15 +44,15 @@ MAIL_DEFAULT_SENDER = _getenv('MAIL_DEFAULT_SENDER', mandatory=True)
 
 HTTP_PROXY          = _getenv('HTTP_PROXY', mandatory=False)
 
-# if set the initial admin must issue a forgot password request
-# this implies mail delivery is properly configured
-INITIAL_ADMIN_EMAIL = _getenv('INITIAL_ADMIN_EMAIL', mandatory=False)
+INITIAL_ADMIN_EMAIL =       _getenv('INITIAL_ADMIN_EMAIL',      mandatory=False)
+INITIAL_ADMIN_PASSWORD =    _getenv('INITIAL_ADMIN_PASSWORD',   default="password")
 
 IMAGE_FOLDER        = _getenv('IMAGE_FOLDER',    default="/openxeco_image")
 DOCUMENT_FOLDER     = _getenv('DOCUMENT_FOLDER', default="/openxeco_document")
 
 CORS_DOMAINS        = _getenv('CORS_DOMAINS',    mandatory=ENVIRONMENT != "dev",
                               default="localhost:\\d*" if ENVIRONMENT == "dev" else None)
+
 # remove extra spaces, remove empty items
 domains = filter(len, map(str.strip, CORS_DOMAINS.split(",")))
 # pylint: disable=unnecessary-lambda
