@@ -152,7 +152,7 @@ def check_port():
 
 
 if __name__ in ('app', '__main__'):
-    check_port()
+    # check_port()
 
     if config.INITIAL_ADMIN_EMAIL:
         create_initial_admin(config.INITIAL_ADMIN_EMAIL, config.INITIAL_ADMIN_PASSWORD)

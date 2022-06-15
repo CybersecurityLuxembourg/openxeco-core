@@ -145,6 +145,9 @@ Access the administrator interface:
 Access the community interface:
 - http://localhost:3001
 
+Access the API documentation:
+- http://localhost:5000
+
 Access the emails sent on the SMTP mock:
 - http://localhost:1080
 
