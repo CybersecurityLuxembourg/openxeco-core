@@ -152,12 +152,6 @@ def check_port():
 
 
 if __name__ in ('app', '__main__'):
-
-    # Add log handler for gunicorn used on the dockerized version
-    gunicorn_logger = logging.getLogger('gunicorn.error')
-    app.logger.handlers = gunicorn_logger.handlers
-    app.logger.setLevel(gunicorn_logger.level)
-
     check_port()
 
     if config.INITIAL_ADMIN_EMAIL:

@@ -119,7 +119,7 @@ $ docker build \
 $ docker run -d -p 3001:80 oxe-web-community
 $ docker run -d -p 5000:5000 \
     --network openxeco \
-    -e ENVIRONMENT=prod \
+    -e ENVIRONMENT=dev \
     -e JWT_SECRET_KEY=my_secret_developer_key \
     -e DB_HOSTNAME=mariadb \
     -e DB_PORT=3306 \
