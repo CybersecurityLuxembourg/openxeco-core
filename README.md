@@ -100,7 +100,7 @@ $ docker run -d \
     -e MARIADB_ROOT_PASSWORD=E4syPass \
     mariadb:10.7.3
 $ docker run -d -p 1025:25 b2ck/fake-smtpd
- docker build \
+$ docker build \
     -f openxeco-core-oxe-web-admin/Dockerfile \
     -t oxe-web-admin \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
