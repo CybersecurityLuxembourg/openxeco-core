@@ -99,19 +99,24 @@ $ docker run -d \
     -p 3306:3306 \
     -e MARIADB_ROOT_PASSWORD=E4syPass \
     mariadb:10.7.3
-$ docker run -d -p 1025:25 b2ck/fake-smtpd
+$ docker run -d \
+  --network openxeco \
+  --network-alias smtp \
+  -p 1025:1025 \
+  -p 1080:1080 \
+  reachfive/fake-smtp-server
 $ docker build \
     -f openxeco-core-oxe-web-admin/Dockerfile \
     -t oxe-web-admin \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-admin.tar.gz
-$ docker run -d -p 3000:3000 oxe-web-admin
+$ docker run -d -p 3000:80 oxe-web-admin
 $ docker build \
     -f openxeco-core-oxe-web-community/Dockerfile \
     -t oxe-web-community \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-community \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-community.tar.gz
-$ docker run -d -p 3001:3001 oxe-web-community
+$ docker run -d -p 3001:80 oxe-web-community
 $ docker run -d -p 5000:5000 \
     --network openxeco \
     -e ENVIRONMENT=prod \
@@ -121,9 +126,9 @@ $ docker run -d -p 5000:5000 \
     -e DB_NAME=OPENXECO \
     -e DB_USERNAME=root \
     -e DB_PASSWORD=E4syPass \
-    -e MAIL_SERVER=127.0.0.1 \
+    -e MAIL_SERVER=smtp \
     -e MAIL_PORT=1025 \
-    -e MAIL_USE_TLS=False \
+    -e MAIL_USE_TLS=True \
     -e MAIL_USE_SSL=False \
     -e MAIL_DEFAULT_SENDER=my-default-sender@example.org \
     -e IMAGE_FOLDER=/image_folder \
@@ -140,10 +145,11 @@ Access the administrator interface:
 Access the community interface:
 - http://localhost:3001
 
+Access the emails sent on the SMTP mock:
+- http://localhost:1080
+
 An initial account is created with the following email: "my-default-admin@example.org"
 And a default password: "password"
-
-You can consult the email bodies (from password resetting, communication functionnality, ...) via the logs of the "b2ck/fake-smtpd" container you have created previously.
 
 ## For production server
 
