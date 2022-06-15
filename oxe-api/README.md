@@ -8,7 +8,12 @@ All the versions mentioned are the recommended ones.
 
 ```
 # Change 3306 to 3307 if another local MariaDB is installed. Make sure to adapt config files.
-$ docker run --name mariadbtest -e MARIADB_ROOT_PASSWORD=E4syPass -p 3306:3306 -d mariadb:10.7.3
+$ docker run -d \
+    --network openxeco \
+    --network-alias mariadb \
+    -p 3306:3306 \
+    -e MARIADB_ROOT_PASSWORD=E4syPass \
+    mariadb:10.7.3
 ```
 
 ## Edit the environment variables
@@ -95,12 +100,18 @@ $ python -m smtpd -n -c DebuggingServer localhost:1025
 
 ### Optional
 
-Alternatively you can use a docker container for the fake SMTP server. The mail body is retrievable in STDOUT of the container.
+Alternatively you can use a docker container for the fake SMTP server.
 
 ```
-$ docker pull b2ck/fake-smtpd
-$ docker run -p 1025:25 b2ck/fake-smtpd
+$ docker run -d \
+  --network openxeco \
+  --network-alias smtp \
+  -p 1025:1025 \
+  -p 1080:1080 \
+  reachfive/fake-smtp-server
 ```
+
+The mails are via [http://localhost:1080](http://localhost:1080).
 
 # Test and audit the code
 
