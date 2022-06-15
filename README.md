@@ -99,20 +99,20 @@ $ docker run -d \
     -p 3306:3306 \
     -e MARIADB_ROOT_PASSWORD=E4syPass \
     mariadb:10.7.3
-> docker run -d -p 1025:25 b2ck/fake-smtpd
-> docker build \
+$ docker run -d -p 1025:25 b2ck/fake-smtpd
+ docker build \
     -f openxeco-core-oxe-web-admin/Dockerfile \
     -t oxe-web-admin \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-admin \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-admin.tar.gz
-> docker run -d -p 3000:3000 oxe-web-admin
-> docker build \
+$ docker run -d -p 3000:3000 oxe-web-admin
+$ docker build \
     -f openxeco-core-oxe-web-community/Dockerfile \
     -t oxe-web-community \
     --build-arg TARGET_DIR=openxeco-core-oxe-web-community \
     https://github.com/CybersecurityLuxembourg/openxeco-core/releases/latest/download/openxeco-core-oxe-web-community.tar.gz
-> docker run -p 3001:3001 oxe-web-community
-> docker run -d -p 5000:5000 \
+$ docker run -d -p 3001:3001 oxe-web-community
+$ docker run -d -p 5000:5000 \
     --network openxeco \
     -e ENVIRONMENT=prod \
     -e JWT_SECRET_KEY=my_secret_developer_key \
@@ -140,9 +140,10 @@ Access the administrator interface:
 Access the community interface:
 - http://localhost:3001
 
-An initial account is created with the following email: my-default-admin@example.org
+An initial account is created with the following email: "my-default-admin@example.org"
+And a default password: "password"
 
-Please, process to the password resetting to define your admin account password. A mocked email with the password resetting URL with be available. You can consult it via the logs of the "b2ck/fake-smtpd" container you have created previously.
+You can consult the email bodies (from password resetting, communication functionnality, ...) via the logs of the "b2ck/fake-smtpd" container you have created previously.
 
 ## For production server
 
