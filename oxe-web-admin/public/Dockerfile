@@ -1,25 +1,15 @@
-# See: https://lipanski.com/posts/smallest-docker-image-static-website
-FROM alpine:3.13.2
+FROM httpd:2.4
 
 ARG TARGET_DIR
+COPY $TARGET_DIR/ /usr/local/apache2/htdocs/
 
-# Install thttpd
-RUN apk add thttpd
+RUN echo "LoadModule rewrite_module modules/mod_rewrite.so" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "<Directory '/usr/local/apache2/htdocs'>" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "RewriteEngine On" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "RewriteCond %{REQUEST_FILENAME} -f [OR]" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "RewriteCond %{REQUEST_FILENAME} -d" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "RewriteRule ^ - [L]" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "RewriteRule ^ index.html [L]" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "</Directory>" >> /usr/local/apache2/conf/httpd.conf
 
-# Create a non-root user to own the files and run our server
-RUN adduser -D static
-USER static
-WORKDIR /home/static
-
-# Copy the static website
-# Use the .dockerignore file to control what ends up inside the image!
-COPY --chown=static $TARGET_DIR/ .
-
-# Remove exec right on files
-RUN find /home/static -type f -print0 | xargs -0 chmod a-x
-
-EXPOSE 3000
-
-# Run thttpd
-USER static
-CMD ["thttpd", "-D", "-h", "0.0.0.0", "-p", "3000", "-d", "/home/static", "-u", "static", "-l", "-", "-M", "60"]
+EXPOSE 80
