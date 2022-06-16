@@ -111,7 +111,7 @@ $ docker run -d \
   reachfive/fake-smtp-server
 ```
 
-The mails are via [http://localhost:1080](http://localhost:1080).
+The mails are retrievable via [http://localhost:1080](http://localhost:1080).
 
 # Test and audit the code
 
