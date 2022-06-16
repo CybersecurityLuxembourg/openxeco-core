@@ -15,7 +15,6 @@ from db.db import DB
 
 import socket
 import sys
-import logging
 
 from config import config  # pylint: disable=wrong-import-position
 
