@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 - Url parameter handling to redirect to an entity claiming popup (?claim_entity={id}) on oxe-web-community
 - favicon.ico and robots.txt on oxe-web-community and oxe-web-admin
 - INITIAL_ADMIN_PASSWORD config for the API
+- Add "form_responses" value on notification/get_notifications resource
+- Display the number of form responses on oxe-web-admin "Forms" menu
 
 ### Changed
 

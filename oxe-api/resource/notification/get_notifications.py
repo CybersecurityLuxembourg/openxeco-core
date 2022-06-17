@@ -25,6 +25,12 @@ class GetNotifications(MethodResource, Resource):
     @catch_exception
     def get(self):
 
+        active_form_ids = [r[0] for r in self.db.session
+                           .query(self.db.tables["Form"])
+                           .with_entities(self.db.tables["Form"].id)
+                           .filter(self.db.tables["Form"].status == "ACTIVE")
+                           .all()]
+
         data = {
             "new_requests": self.db.session
                                 .query(self.db.tables["UserRequest"])
@@ -37,6 +43,14 @@ class GetNotifications(MethodResource, Resource):
                                          .query(self.db.tables["Article"])
                                          .filter(self.db.tables["Article"].status == "UNDER REVIEW")
                                          .count(),
+            "form_responses": self.db.session
+                                .query(self.db.tables["FormQuestion"], self.db.tables["FormAnswer"])
+                                .filter(self.db.tables["FormQuestion"].form_id.in_(active_form_ids))
+                                .join(self.db.tables["FormQuestion"],
+                                      self.db.tables["FormQuestion"].id
+                                      == self.db.tables["FormAnswer"].form_question_id)
+                                .group_by(self.db.tables["FormQuestion"].form_id, self.db.tables["FormAnswer"].user_id)
+                                .count(),
         }
 
         return data, "200 "

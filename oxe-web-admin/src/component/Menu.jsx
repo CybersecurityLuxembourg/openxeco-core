@@ -58,6 +58,20 @@ export default class Menu extends React.Component {
 		</Link>;
 	}
 
+	getFormNotificationBlock() {
+		if (this.state.notifications === null
+			|| this.state.notifications.form_responses === undefined
+			|| this.state.notifications.form_responses === 0) {
+			return "";
+		}
+
+		return <Link to="/form">
+			<div className={"Menu-notification"}>
+				{this.state.notifications.form_responses}
+			</div>
+		</Link>;
+	}
+
 	render() {
 		return (
 			<SideNav
@@ -168,6 +182,7 @@ export default class Menu extends React.Component {
 							<NavText>
 								Form
 							</NavText>
+							{this.getFormNotificationBlock()}
 						</NavItem>
 					}
 					<NavItem
