@@ -27,7 +27,7 @@ class GetPublicNodeInformation(MethodResource, Resource):
             "email_address": GetPublicNodeInformation.get_config(settings, "EMAIL_ADDRESS"),
             "phone_number": GetPublicNodeInformation.get_config(settings, "PHONE_NUMBER"),
             "postal_address": GetPublicNodeInformation.get_config(settings, "POSTAL_ADDRESS"),
-            "version": "1.10",
+            "version": "v1.11",
         })
 
     @staticmethod
