@@ -26,7 +26,7 @@ class UpdateArticle(MethodResource, Resource):
         'id': fields.Int(),
         'handle': fields.Str(required=False, allow_none=True),
         'title': fields.Str(required=False, allow_none=True),
-        'abstract': fields.Str(required=False, allow_none=True),
+        'abstract': fields.Str(required=False, allow_none=True, validate=lambda x: x is None or len(x) <= 500),
         'publication_date': fields.Str(required=False, allow_none=True),
         'start_date': fields.Str(required=False, allow_none=True),
         'end_date': fields.Str(required=False, allow_none=True),

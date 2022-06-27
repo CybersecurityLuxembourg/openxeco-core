@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.11.1] - 2022-06-??
+
+### Fixed
+
+- Set right error message when updating an article abstract
+
 ## [1.11.0] - 2022-06-21
 
 ### Added
