@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 - Database structure of Workforce table (FK and nullability on "source" column)
 - Remove the "Source" table
+- Adapt UI for entity workforce on oxe-web-admin
 
 ### Fixed
 
