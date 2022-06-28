@@ -14,7 +14,6 @@ export default class CompanyWorkforce extends React.Component {
 
 		this.state = {
 			workforces: null,
-			sources: null,
 			workforce: null,
 			date: null,
 			source: null,
@@ -31,22 +30,11 @@ export default class CompanyWorkforce extends React.Component {
 	refresh() {
 		this.setState({
 			workforces: null,
-			sources: null,
 		});
 
 		getRequest.call(this, "company/get_company_workforces/" + this.props.id, (data) => {
 			this.setState({
 				workforces: data,
-			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-
-		getRequest.call(this, "source/get_all_sources", (data) => {
-			this.setState({
-				sources: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -60,7 +48,7 @@ export default class CompanyWorkforce extends React.Component {
 			company: this.props.id,
 			workforce: parseInt(this.state.workforce, 10),
 			source: this.state.source,
-			date: this.state.date,
+			date: this.state.date || undefined,
 			is_estimated: this.state.is_estimated,
 		};
 
@@ -105,7 +93,7 @@ export default class CompanyWorkforce extends React.Component {
 			/>;
 		}
 
-		if (this.state.workforces === null || this.state.sources === null) {
+		if (this.state.workforces === null) {
 			return <Loading height={300}/>;
 		}
 
@@ -172,11 +160,7 @@ export default class CompanyWorkforce extends React.Component {
 					<div className="col-md-3">
 						<FormLine
 							label={"Source"}
-							type={"select"}
 							value={this.state.source}
-							options={[{ value: null, label: "-" }].concat(
-								this.state.sources.map((o) => ({ label: o, value: o })),
-							)}
 							onChange={(v) => this.changeState("source", v)}
 							fullWidth={true}
 						/>
@@ -193,9 +177,8 @@ export default class CompanyWorkforce extends React.Component {
 					<div className="col-md-12 right-buttons">
 						<button
 							className={"blue-background"}
-							onClick={this.addWorkforce}
-							disabled={this.state.source === null || this.state.workforce === null
-                                || this.state.date === null}>
+							onClick={() => this.addWorkforce()}
+							disabled={this.state.workforce === null}>
 							<i className="fas fa-plus"/> Add
 						</button>
 					</div>

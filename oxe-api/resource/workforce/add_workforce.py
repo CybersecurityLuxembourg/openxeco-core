@@ -3,6 +3,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
+from datetime import datetime
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -23,16 +24,14 @@ class AddWorkforce(MethodResource, Resource):
          responses={
              "200": {},
              "422.a": {"description": "Provided date does not have the right format (expected: YYYY-mm-dd)"},
-             "422.b": {"description": "Provided source not existing"},
              "422.c": {"description": "Provided company not existing"}
          })
     @use_kwargs({
         'company': fields.Int(),
-        'field': fields.Int(),
         'workforce': fields.Int(),
-        'date': fields.Str(),
-        'is_estimated': fields.Bool(),
-        'source': fields.Str(),
+        'date': fields.Str(required=False, missing=datetime.today().strftime('%Y-%m-%d')),
+        'is_estimated': fields.Bool(required=False, missing=False),
+        'source': fields.Str(required=False, allow_none=True),
     })
     @jwt_required
     @verify_admin_access
@@ -43,13 +42,6 @@ class AddWorkforce(MethodResource, Resource):
 
         if not has_date_format(kwargs["date"]):
             return "", "422 Provided date does not have the right format (expected: YYYY-mm-dd)"
-
-        # Checking source
-
-        source = self.db.get(self.db.tables["Source"], {"name": kwargs["source"]})
-
-        if len(source) == 0:
-            return "", "422 Provided source not existing"
 
         # Checking company
 
