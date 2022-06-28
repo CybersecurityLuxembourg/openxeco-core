@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.11.2] - 2022-??-??
+
+### Fixed
+
+- company/extract_companies resources when no user assignments
+
 ## [1.11.1] - 2022-06-28
 
 ### Changed
