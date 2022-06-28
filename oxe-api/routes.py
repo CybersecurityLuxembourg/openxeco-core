@@ -144,7 +144,6 @@ from resource.setting.add_setting import AddSetting
 from resource.setting.delete_setting import DeleteSetting
 from resource.setting.upload_favicon import UploadFavicon
 from resource.setting.upload_logo import UploadLogo
-from resource.source.get_all_sources import GetAllSources
 from resource.user.add_user import AddUser
 from resource.user.add_user_company import AddUserCompany
 from resource.user.add_user_group import AddUserGroup
