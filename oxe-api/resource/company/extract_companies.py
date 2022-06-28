@@ -88,17 +88,18 @@ class ExtractCompanies(MethodResource, Resource):
             users = self.db.get(
                 self.db.tables["User"],
                 {"id": list(set([a.user_id for a in user_assignments]))},  # pylint: disable=consider-using-set-comprehension
-                ["id", "email", "last_name", "first_name"]
+                ["id", "email"]
             )
 
             user_assignments = Serializer.serialize(user_assignments, self.db.tables["UserCompanyAssignment"])
-            user_assignments = pd.DataFrame(user_assignments)
-            users = pd.DataFrame(users)
-            users = user_assignments.merge(users, left_on='user_id', right_on='id', how='left')
-            users = users.drop(labels=["id"], axis=1)
-            users = users.add_prefix('User|')
 
             if len(users) > 0:
+                user_assignments = pd.DataFrame(user_assignments)
+                users = pd.DataFrame(users)
+                users = user_assignments.merge(users, left_on='user_id', right_on='id', how='left')
+                users = users.drop(labels=["id"], axis=1)
+                users = users.add_prefix('User|')
+
                 df = df.merge(users, left_on='Global|id', right_on='User|company_id', how='left')
                 df = df.drop(['User|user_id', 'User|company_id'], axis=1)
 
