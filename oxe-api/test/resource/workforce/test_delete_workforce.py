@@ -6,7 +6,6 @@ class TestDeleteWorkforce(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/workforce/delete_workforce")
     def test_ok(self, token):
-        self.db.insert({"name": "Newspaper"}, self.db.tables["Source"])
         self.db.insert({"id": 1, "name": "Company1"}, self.db.tables["Company"])
         self.db.insert({
             "id": 1,
