@@ -20,6 +20,7 @@ class AddFormAnswer(MethodResource, Resource):
          description='Add a form',
          responses={
              "200": {},
+             "500": {"description": "Too much answers found for this question"},
          })
     @use_kwargs({
         'form_question_id': fields.Int(),
@@ -29,7 +30,18 @@ class AddFormAnswer(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        kwargs["user_id"] = get_jwt_identity()
-        self.db.insert(kwargs, self.db.tables["FormAnswer"])
+        answers = self.db.get(self.db.tables["FormAnswer"], {
+            "user_id": get_jwt_identity(),
+            "form_question_id": kwargs["form_question_id"],
+        })
+
+        if len(answers) == 0:
+            kwargs["user_id"] = get_jwt_identity()
+            self.db.insert(kwargs, self.db.tables["FormAnswer"])
+        elif len(answers) == 1:
+            answers[0].value = kwargs["value"]
+            self.db.merge(answers[0], self.db.tables["FormAnswer"])
+        else:
+            return "", "500 Too much answers found for this question"
 
         return "", "200 "

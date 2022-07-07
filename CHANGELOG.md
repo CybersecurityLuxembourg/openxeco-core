@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.11.3] - 2022-07-08
+
+### Fixed
+
+- form/add_my_form_answer and form/update_my_form_answer resources
+- FormAnswer table with unicity constraint
+
 ## [1.11.2] - 2022-06-29
 
 ### Fixed
