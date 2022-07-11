@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.11.3] - 2022-07-08
+## [1.11.3] - 2022-07-11
 
 ### Fixed
 
