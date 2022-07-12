@@ -26,4 +26,4 @@ class GetPublicCompanyEnums(MethodResource, Resource):
             "status": self.db.tables["Company"].status.prop.columns[0].type.enums
         }
 
-        return build_no_cors_response(data), "200 "
+        return build_no_cors_response(data)

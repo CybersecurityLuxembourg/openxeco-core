@@ -26,4 +26,4 @@ class GetNetworkNodes(MethodResource, Resource):
             self.db.tables["NetworkNode"]
         )
 
-        return build_no_cors_response(nodes), "200 "
+        return build_no_cors_response(nodes)

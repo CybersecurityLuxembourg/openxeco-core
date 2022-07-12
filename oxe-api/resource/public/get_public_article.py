@@ -32,4 +32,4 @@ class GetPublicArticle(MethodResource, Resource):
 
         data = Serializer.serialize(data, self.db.tables["Article"])
 
-        return build_no_cors_response(data[0]), "200 "
+        return build_no_cors_response(data[0])

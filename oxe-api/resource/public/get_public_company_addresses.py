@@ -24,4 +24,4 @@ class GetPublicCompanyAddresses(MethodResource, Resource):
         data = self.db.get(self.db.tables["Company_Address"], {"company_id": id_})
         data = Serializer.serialize(data, self.db.tables["Company_Address"])
 
-        return build_no_cors_response(data), "200 "
+        return build_no_cors_response(data)
