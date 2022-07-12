@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.12.0] - 2022-XX-XX
+
+### Fixed
+
+- Ignore CORS on GET /public/ resources
+
 ## [1.11.3] - 2022-07-11
 
 ### Fixed

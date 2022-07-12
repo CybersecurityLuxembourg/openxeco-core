@@ -5,6 +5,7 @@ from flask_restful import Resource
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from utils.response import build_no_cors_response
 
 
 class GetPublicCompanyEnums(MethodResource, Resource):
@@ -25,4 +26,4 @@ class GetPublicCompanyEnums(MethodResource, Resource):
             "status": self.db.tables["Company"].status.prop.columns[0].type.enums
         }
 
-        return data, "200 "
+        return build_no_cors_response(data), "200 "

@@ -7,6 +7,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
 from utils.serializer import Serializer
+from utils.response import build_no_cors_response
 
 
 class GetPublicArticle(MethodResource, Resource):
@@ -31,4 +32,4 @@ class GetPublicArticle(MethodResource, Resource):
 
         data = Serializer.serialize(data, self.db.tables["Article"])
 
-        return data[0], "200 "
+        return build_no_cors_response(data[0]), "200 "
