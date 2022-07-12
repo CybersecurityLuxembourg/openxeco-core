@@ -164,7 +164,7 @@ export default class NetworkOverview extends React.Component {
 				nodes.push(node2);
 				const port2 = node2.addOutPort("Out");
 				const link = port1.link(port2);
-				link.setColor("#ffffff");
+				link.setColor("#dddddd");
 				link.setLocked(true);
 				nodes.push(link);
 			} else {
