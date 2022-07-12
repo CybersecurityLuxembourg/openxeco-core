@@ -1,7 +1,7 @@
 import React from "react";
 import "./CompanySync.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest } from "../../../utils/request.jsx";
+import { getNoCorsRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Message from "../../box/Message.jsx";
 import Loading from "../../box/Loading.jsx";
@@ -33,7 +33,7 @@ export default class CompanySync extends React.Component {
 			this.setState({
 				nodes: null,
 			}, () => {
-				getRequest.call(this, "network/get_network_nodes", (data) => {
+				getNoCorsRequest.call(this, "network/get_network_nodes", (data) => {
 					this.setState({
 						nodes: data,
 					});

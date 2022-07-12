@@ -1,7 +1,7 @@
 import React from "react";
 import "./NetworkTaxonomies.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, getForeignRequest } from "../../utils/request.jsx";
+import { getForeignRequest, getNoCorsRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import Taxonomy from "../item/Taxonomy.jsx";
@@ -29,7 +29,7 @@ export default class NetworkTaxonomies extends React.Component {
 		this.setState({
 			nodes: null,
 		}, () => {
-			getRequest.call(this, "network/get_network_nodes", (data) => {
+			getNoCorsRequest.call(this, "network/get_network_nodes", (data) => {
 				this.setState({
 					nodes: data,
 				}, () => {

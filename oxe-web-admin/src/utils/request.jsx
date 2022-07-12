@@ -32,6 +32,32 @@ export async function getRequest(url, callback, catchBadResponse, catchError) {
 	});
 }
 
+export async function getNoCorsRequest(url, callback, catchBadResponse, catchError) {
+	fetch(getApiURL() + url, {
+		method: "GET",
+		mode: "cors",
+		headers: {
+			Accept: "application/json, text/html",
+		},
+	}).then((response) => {
+		if (response.status === 200) {
+			return response.json();
+		}
+		if (response.status === 403) {
+			window.location.replace("/?status=expiredSession");
+		}
+		if (catchBadResponse !== null) {
+			catchBadResponse(response);
+			throw new Error(response.error);
+		}
+		throw new Error("An error happened while requesting the server");
+	}).then((jsonBody) => {
+		if (typeof jsonBody !== "undefined") callback(jsonBody);
+	}).catch((error) => {
+		catchError(error);
+	});
+}
+
 export async function getBlobRequest(url, callback, catchBadResponse, catchError) {
 	fetch(getApiURL() + url, {
 		method: "GET",

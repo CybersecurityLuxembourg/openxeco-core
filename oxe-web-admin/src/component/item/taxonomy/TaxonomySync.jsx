@@ -1,7 +1,7 @@
 import React from "react";
 import "./TaxonomySync.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest } from "../../../utils/request.jsx";
+import { getNoCorsRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import Info from "../../box/Info.jsx";
@@ -35,7 +35,7 @@ export default class TaxonomySync extends React.Component {
 			this.setState({
 				nodes: null,
 			}, () => {
-				getRequest.call(this, "network/get_network_nodes", (data) => {
+				getNoCorsRequest.call(this, "network/get_network_nodes", (data) => {
 					this.setState({
 						nodes: data,
 					});

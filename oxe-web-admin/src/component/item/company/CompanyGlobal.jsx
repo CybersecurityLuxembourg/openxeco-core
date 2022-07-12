@@ -1,7 +1,7 @@
 import React from "react";
 import "./CompanyGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, getForeignRequest, postRequest } from "../../../utils/request.jsx";
+import { getForeignRequest, postRequest, getRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import DialogAddImage from "../../dialog/DialogAddImage.jsx";
