@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Ignore CORS on GET /public/ resources
+- Minor UI bug on node network on oxe-web-admin
+- Show user email address on FormAnswer component on oxe-web-admin
 
 ## [1.11.3] - 2022-07-11
 

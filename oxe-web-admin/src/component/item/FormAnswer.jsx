@@ -1,16 +1,38 @@
 import React, { Component } from "react";
 import "./FormAnswer.css";
+import { NotificationManager as nm } from "react-notifications";
 import dompurify from "dompurify";
 import Popup from "reactjs-popup";
 import Message from "../box/Message.jsx";
+import Loading from "../box/Loading.jsx";
 import User from "./User.jsx";
+import { getRequest } from "../../utils/request.jsx";
 
 export default class FormAnswer extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
+			user: null,
 		};
+	}
+
+	getUser() {
+		if (this.props.user) {
+			getRequest.call(this, "user/get_user/" + this.props.user, (data) => {
+				this.setState({
+					user: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
+	}
+
+	onOpen() {
+		this.getUser();
 	}
 
 	getAnswerOfQuestion(q) {
@@ -41,6 +63,7 @@ export default class FormAnswer extends Component {
 				}
 				modal
 				closeOnDocumentClick={false}
+				onOpen={() => this.onOpen()}
 			>
 				{(close) => <div className="FormAnswer-content row row-spaced">
 					<div className="col-md-12">
@@ -66,9 +89,15 @@ export default class FormAnswer extends Component {
 					</div>
 
 					<div className="col-md-12">
-						<User
-							id={this.props.user}
-						/>
+						{this.state.user
+							? <User
+								id={this.state.user.id}
+								email={this.state.user.email}
+							/>
+							: <Loading
+								height={100}
+							/>
+						}
 					</div>
 
 					<div className="col-md-12">
