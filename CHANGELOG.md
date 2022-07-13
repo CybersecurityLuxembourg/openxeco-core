@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
--
+- Set "company_id" params as not required for address/update_address resource
 
 ### Fixed
 

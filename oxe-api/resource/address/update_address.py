@@ -24,7 +24,7 @@ class UpdateAddress(MethodResource, Resource):
          })
     @use_kwargs({
         "id": fields.Int(),
-        'company_id': fields.Int(),
+        'company_id': fields.Int(required=False),
         'address_1': fields.Str(required=False),
         'address_2': fields.Str(required=False, allow_none=True),
         'number': fields.Str(required=False, allow_none=True),
