@@ -43,12 +43,12 @@ export default class Address extends React.Component {
 	}
 
 	save() {
-		if (typeof this.state.info.id !== "undefined") {
+		if (this.state.info && this.state.info.id) {
 			const params = _.cloneDeep(this.state.info);
-			delete params.company_id;
+			// delete params.company_id;
 
 			postRequest.call(this, "address/update_address", params, () => {
-				if (typeof this.props.afterAction !== "undefined") {
+				if (this.props.afterAction) {
 					this.props.afterAction();
 				}
 
@@ -60,7 +60,7 @@ export default class Address extends React.Component {
 			});
 		} else {
 			postRequest.call(this, "address/add_address", this.state.info, () => {
-				if (typeof this.props.afterAction !== "undefined") {
+				if (this.props.afterAction) {
 					this.props.afterAction();
 				}
 
@@ -74,13 +74,13 @@ export default class Address extends React.Component {
 	}
 
 	remove() {
-		if (typeof this.state.info.id !== "undefined") {
+		if (this.state.info && this.state.info.id) {
 			const params = {
 				id: this.state.info.id,
 			};
 
 			postRequest.call(this, "address/delete_address", params, () => {
-				if (typeof this.props.afterAction !== "undefined") {
+				if (this.props.afterAction) {
 					this.props.afterAction();
 				}
 
@@ -354,7 +354,7 @@ export default class Address extends React.Component {
 									onClick={() => this.save()}
 									disabled={(typeof this.state.info.id !== "undefined"
                                         && _.isEqual(this.props.info, this.state.info))
-										|| !this.props.editable}
+										|| this.props.disabled}
 								>
 									<i className="fas fa-save"/>
 								</button>

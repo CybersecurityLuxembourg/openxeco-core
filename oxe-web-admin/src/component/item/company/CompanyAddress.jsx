@@ -281,7 +281,7 @@ export default class CompanyAddress extends React.Component {
 							<Address
 								key={a.id}
 								info={a}
-								afterAction={this.refresh}
+								afterAction={() => this.refresh()}
 								disabled={!this.props.editable}
 							/>
 						))
