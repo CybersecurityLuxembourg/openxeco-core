@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Add DELETE as a possible resource type on API
+- Add "ignored_taxonomy_values" param on article/get_articles and public/get_public_articles
 
 ### Changed
 
@@ -16,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Ignore CORS on GET /public/ resources
 - Minor UI bug on node network on oxe-web-admin
 - Show user email address on FormAnswer component on oxe-web-admin
+- Address management for companies on oxe-web-admin
 
 ## [1.11.3] - 2022-07-11
 
