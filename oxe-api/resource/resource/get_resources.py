@@ -33,7 +33,7 @@ class GetResources(MethodResource, Resource):
                     and "/doc/" not in str(route) \
                     and "/flask-apispec/" not in str(route) \
                     and str(route) not in ["/static/<path:filename>", "/<generic>", "/account/forgot_password",
-                                           "/account/create_account", "/account/refresh", "/healthz"]:
+                                           "/account/create_account", "/account/refresh", "/healthz", "/doc", "/"]:
                 routes.append('%s' % route)
 
         return routes, "200 "
