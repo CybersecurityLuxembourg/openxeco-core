@@ -27,6 +27,7 @@ class GetArticles(MethodResource, Resource):
         'type': fields.DelimitedList(fields.Str(), required=False),
         'status': fields.Str(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'ignored_taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'is_created_by_admin': fields.Bool(required=False),
         'order_by': fields.Str(
             validate=lambda x: x in ['publication_date', 'start_date', 'end_date'],

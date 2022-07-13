@@ -157,6 +157,13 @@ class TestGetPublicArticles(BaseCase):
             "status": "PUBLIC",
             "publication_date": "2021-01-24"
         }, self.db.tables["Article"])
+        self.db.insert({
+            "id": 3,
+            "title": "TITLE3",
+            "handle": "handle-3",
+            "status": "PUBLIC",
+            "publication_date": "2021-01-24"
+        }, self.db.tables["Article"])
 
         self.db.insert({"id": 1, "name": "COMPANY"}, self.db.tables["Company"])
         self.db.insert({"article": 2, "company": 1}, self.db.tables["ArticleCompanyTag"])
@@ -165,7 +172,7 @@ class TestGetPublicArticles(BaseCase):
         self.db.insert({"id": 3, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"article": 2, "taxonomy_value": 3}, self.db.tables["ArticleTaxonomyTag"])
 
-        response = self.application.get('/public/get_public_articles?include_tags=true')
+        response = self.application.get('/public/get_public_articles?include_tags=true&taxonomy_values=VALUE')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual({
@@ -197,6 +204,60 @@ class TestGetPublicArticles(BaseCase):
                     'type': 'NEWS',
                     'company_tags': [1],
                     'taxonomy_tags': [3],
+                },
+            ]
+        }, response.json)
+
+    def test_ok_with_ignored_tags(self):
+        self.db.insert({
+            "id": 2,
+            "title": "TITLE2",
+            "handle": "handle-2",
+            "status": "PUBLIC",
+            "publication_date": "2021-01-24"
+        }, self.db.tables["Article"])
+        self.db.insert({
+            "id": 3,
+            "title": "TITLE3",
+            "handle": "handle-3",
+            "status": "PUBLIC",
+            "publication_date": "2021-01-24"
+        }, self.db.tables["Article"])
+
+        self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
+        self.db.insert({"id": 3, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
+        self.db.insert({"article": 2, "taxonomy_value": 3}, self.db.tables["ArticleTaxonomyTag"])
+
+        response = self.application.get('/public/get_public_articles?ignored_taxonomy_values=VALUE')
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual({
+            "pagination": {
+                "page": 1,
+                "pages": 1,
+                "per_page": 50,
+                "total": 1,
+            },
+            "items": [
+                {
+                    'abstract': None,
+                    'end_date': None,
+                    'external_reference': None,
+                    'handle': 'handle-3',
+                    'id': 3,
+                    'image': None,
+                    'is_created_by_admin': 0,
+                    'link': None,
+                    'publication_date': '2021-01-24T00:00:00',
+                    'start_date': None,
+                    'status': 'PUBLIC',
+                    'sync_content': None,
+                    'sync_global': None,
+                    'sync_id': None,
+                    'sync_node': None,
+                    'sync_status': 'OK',
+                    'title': 'TITLE3',
+                    'type': 'NEWS',
                 },
             ]
         }, response.json)

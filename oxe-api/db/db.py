@@ -308,6 +308,38 @@ class DB:
 
                 query = query.filter(self.tables["Article"].id.in_(article_filtered_by_taxonomy))
 
+        if "ignored_taxonomy_values" in filters:
+            tmp_taxonomy_values = filters["ignored_taxonomy_values"] \
+                if isinstance(filters["ignored_taxonomy_values"], list) \
+                else filters["ignored_taxonomy_values"].split(",")
+            taxonomy_values = []
+
+            for tv in tmp_taxonomy_values:
+                if tv.isdigit():
+                    taxonomy_values.append(int(tv))
+                else:
+                    db_values = self.get(self.tables["TaxonomyValue"], {"name": tv})
+                    taxonomy_values += [v.id for v in db_values]
+
+            if len(taxonomy_values) > 0:
+                tch = taxonomy_values
+
+                while len(tch) > 0:
+                    taxonomy_values = tch
+                    tch = self.session \
+                        .query(self.tables["TaxonomyValueHierarchy"]) \
+                        .filter(self.tables["TaxonomyValueHierarchy"].parent_value.in_(tch)).all()
+                    tch = [t.child_value for t in tch]
+
+                article_filtered_by_taxonomy = self.session \
+                    .query(self.tables["ArticleTaxonomyTag"]) \
+                    .with_entities(self.tables["ArticleTaxonomyTag"].article) \
+                    .distinct(self.tables["ArticleTaxonomyTag"].article) \
+                    .filter(self.tables["ArticleTaxonomyTag"].taxonomy_value.in_(taxonomy_values)) \
+                    .subquery()
+
+                query = query.filter(self.tables["Article"].id.notin_(article_filtered_by_taxonomy))
+
         if "companies" in filters:
             article_filtered_by_companies = self.session \
                 .query(self.tables["ArticleCompanyTag"]) \
