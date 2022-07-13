@@ -10,6 +10,7 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 
 from utils.re import has_mail_format
+from utils.resource import get_admin_post_resources
 
 from db.db import DB
 
@@ -107,11 +108,12 @@ def create_initial_admin(email, password):
         "'Administrator' user group"
     )
 
-    create_row_if_not_exists(
-        db.tables["UserGroupRight"],
-        {"group_id": user_group.id, "resource": "/user/add_user_group_right"},
-        "User group right '/user/add_user_group_right'"
-    )
+    for resource in get_admin_post_resources(api):
+        create_row_if_not_exists(
+            db.tables["UserGroupRight"],
+            {"group_id": user_group.id, "resource": resource},
+            "User group right '/user/add_user_group_right'"
+        )
 
     create_row_if_not_exists(
         db.tables["UserGroupAssignment"],
@@ -153,11 +155,11 @@ def check_port():
 if __name__ in ('app', '__main__'):
     # check_port()
 
-    if config.INITIAL_ADMIN_EMAIL:
-        create_initial_admin(config.INITIAL_ADMIN_EMAIL, config.INITIAL_ADMIN_PASSWORD)
-
     from routes import set_routes
     set_routes({"api": api, "db": db, "mail": mail, "docs": docs})
+
+    if config.INITIAL_ADMIN_EMAIL:
+        create_initial_admin(config.INITIAL_ADMIN_EMAIL, config.INITIAL_ADMIN_PASSWORD)
 
     app.debug = config.ENVIRONMENT == "dev"
     if __name__ == "__main__":

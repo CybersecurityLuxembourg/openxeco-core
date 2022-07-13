@@ -6,6 +6,7 @@ from flask_restful import Resource
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils.resource import get_admin_post_resources
 
 
 class GetResources(MethodResource, Resource):
@@ -25,15 +26,4 @@ class GetResources(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        routes = []
-
-        for route in self.api.app.url_map.iter_rules():
-            if "/get_" not in str(route) \
-                and "/private/" not in str(route) \
-                    and "/doc/" not in str(route) \
-                    and "/flask-apispec/" not in str(route) \
-                    and str(route) not in ["/static/<path:filename>", "/<generic>", "/account/forgot_password",
-                                           "/account/create_account", "/account/refresh", "/healthz", "/doc", "/"]:
-                routes.append('%s' % route)
-
-        return routes, "200 "
+        return get_admin_post_resources(self.api), "200 "
