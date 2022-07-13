@@ -195,7 +195,7 @@ def set_routes(*args):
         endpoint = res[1].__module__.replace("resource.", ".", 1).replace(".", "/")
 
         functions = inspect.getmembers(res[1], predicate=inspect.isfunction)
-        http_functions = [f for n, f in functions if n in ["get", "post"]]
+        http_functions = [f for n, f in functions if n in ["get", "post", "delete"]]
 
         if len(http_functions) == 0:
             raise Exception(f"No http function found on resource {res[1].__module__}")

@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 ## [1.12.0] - 2022-XX-XX
 
+### Added
+
+- Add DELETE as a possible resource type on API
+
+### Changed
+
+-
+
 ### Fixed
 
 - Ignore CORS on GET /public/ resources
