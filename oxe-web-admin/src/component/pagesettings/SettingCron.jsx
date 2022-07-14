@@ -126,7 +126,7 @@ export default class SettingCron extends React.Component {
 
 	render() {
 		return (
-			<div id="SettingCron" className="max-sized-page fade-in">
+			<div id="SettingCron" className="fade-in">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h1>Scheduled task</h1>

@@ -154,7 +154,7 @@ export default class SettingGlobal extends React.Component {
 		];
 
 		return (
-			<div id="SettingGlobal" className="max-sized-page fade-in">
+			<div id="SettingGlobal" className="fade-in">
 				<div className={"row"}>
 					<div className="col-md-12">
 						<h1>Global</h1>
