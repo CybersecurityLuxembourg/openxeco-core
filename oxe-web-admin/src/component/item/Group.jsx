@@ -111,7 +111,6 @@ export default class Group extends Component {
 		};
 
 		postRequest.call(this, "user/delete_user_group", params, () => {
-			document.elementFromPoint(100, 0).click();
 			nm.info("The group has been deleted");
 
 			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
@@ -136,20 +135,24 @@ export default class Group extends Component {
 
 		if (result.destination.droppableId === "yes") {
 			postRequest.call(this, "user/add_user_group_right", params, () => {
-				nm.info("The right has been granted");
 				this.getRights();
+				nm.info("The right has been granted");
 			}, (response) => {
+				this.getRights();
 				nm.warning(response.statusText);
 			}, (error) => {
+				this.getRights();
 				nm.error(error.message);
 			});
 		} else {
 			postRequest.call(this, "user/delete_user_group_right", params, () => {
-				nm.info("The right has been revoked");
 				this.getRights();
+				nm.info("The right has been revoked");
 			}, (response) => {
+				this.getRights();
 				nm.warning(response.statusText);
 			}, (error) => {
+				this.getRights();
 				nm.error(error.message);
 			});
 		}
@@ -188,7 +191,7 @@ export default class Group extends Component {
 										<i className="fas fa-trash-alt"/>
 									</button>
 								}
-								afterConfirmation={() => this.confirmUserDeletion()}
+								afterConfirmation={() => this.confirmGroupDeletion()}
 							/>
 							<button
 								className={"grey-background"}
