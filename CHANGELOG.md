@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Add DELETE as a possible resource type on API
+- Add DELETE and PUT as a possible resource type on API
 - Add "ignored_taxonomy_values" param on article/get_articles and public/get_public_articles
 - Add all rights to "Administrator" user group on API init
 - CompanyRelationship and CompanyRelationshipType table on database structure
