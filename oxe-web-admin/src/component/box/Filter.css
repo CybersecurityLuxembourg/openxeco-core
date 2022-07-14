@@ -20,6 +20,7 @@
 }
 
 .Filter-delete {
+    cursor: pointer;
     padding: 5px;
     position: absolute;
     top: 0px;
