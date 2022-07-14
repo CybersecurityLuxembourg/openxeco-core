@@ -24,9 +24,7 @@ export default class DialogCompanyFilter extends React.Component {
 		this.initialState = {
 			allowedFilters: ["name", "startup_only", "status"],
 
-			name: null,
-			startup_only: false,
-			status: null,
+			...this.props.filters,
 
 			categories: null,
 			taxonomy_values: null,

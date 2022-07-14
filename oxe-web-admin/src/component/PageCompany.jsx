@@ -1,46 +1,47 @@
 import React from "react";
 import "./PageCompany.css";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "./box/Loading.jsx";
-import Table from "./table/Table.jsx";
-import { getRequest, postRequest, getBlobRequest } from "../utils/request.jsx";
-import Company from "./item/Company.jsx";
-import Website from "./item/Website.jsx";
-import FormLine from "./button/FormLine.jsx";
-import DialogCompanyFilter from "./dialog/DialogCompanyFilter.jsx";
-import { dictToURI } from "../utils/url.jsx";
-import CompanyMap from "./map/CompanyMap.jsx";
+import CompanyCompanies from "./pagecompany/CompanyCompanies.jsx";
+import CompanyMap from "./pagecompany/CompanyMap.jsx";
+import CompanyExport from "./pagecompany/CompanyExport.jsx";
+import Tab from "./tab/Tab.jsx";
+import { getUrlParameter, dictToURI } from "../utils/url.jsx";
+import { getRequest } from "../utils/request.jsx";
 
 export default class PageCompany extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refreshCompanies = this.refreshCompanies.bind(this);
-		this.addCompany = this.addCompany.bind(this);
-		this.export = this.export.bind(this);
+		this.onMenuClick = this.onMenuClick.bind(this);
 
 		this.state = {
-			companies: null,
-			newCompanyName: null,
+			notifications: null,
+			selectedMenu: null,
 			filters: null,
-			filtered_companies_only: true,
-			include_user: false,
-			include_address: false,
-			include_email: false,
-			include_phone: false,
-			include_taxonomy: false,
-			include_workforce: false,
-
-			showMap: false,
+			companies: null,
+			tabs: [
+				"companies",
+				"map",
+				"export",
+			],
 		};
 	}
 
 	componentDidMount() {
 		this.refreshCompanies();
+
+		if (getUrlParameter("tab") !== null && this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(_, prevState) {
 		if (prevState.filters !== this.state.filters) this.refreshCompanies();
+
+		if (this.state.selectedMenu !== getUrlParameter("tab")
+			&& this.state.tabs.indexOf(getUrlParameter("tab")) >= 0) {
+			this.setState({ selectedMenu: getUrlParameter("tab") });
+		}
 	}
 
 	refreshCompanies() {
@@ -65,206 +66,47 @@ export default class PageCompany extends React.Component {
 		});
 	}
 
-	addCompany() {
-		const params = {
-			name: this.state.newCompanyName,
-		};
-
-		postRequest.call(this, "company/add_company", params, () => {
-			this.refreshCompanies();
-			this.setState({ newCompanyName: null });
-			nm.info("The entity has been added");
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+	applyFilter(filters) {
+		this.setState({ filters });
 	}
 
-	export() {
-		nm.info("The download will start soon...");
-
-		let params = {
-			include_user: this.state.include_user,
-			include_address: this.state.include_address,
-			include_email: this.state.include_email,
-			include_phone: this.state.include_phone,
-			include_taxonomy: this.state.include_taxonomy,
-			include_workforce: this.state.include_workforce,
-		};
-
-		if (this.state.filtered_companies_only) params = { ...params, ...this.state.filters };
-
-		getBlobRequest.call(this, "company/extract_companies?" + dictToURI(params), (blob) => {
-			const url = window.URL.createObjectURL(new Blob([blob]));
-			const link = document.createElement("a");
-			link.href = url;
-			link.setAttribute("download", "Company export.xlsx");
-			document.body.appendChild(link);
-			link.click();
-			link.parentNode.removeChild(link);
-		}, (response) => {
-			this.setState({ loading: false });
-			nm.warning(response.statusText);
-		}, (error) => {
-			this.setState({ loading: false });
-			nm.error(error.message);
-		});
-	}
-
-	changeState(field, value) {
-		this.setState({ [field]: value });
+	onMenuClick(m) {
+		this.props.history.push("?tab=" + m);
 	}
 
 	render() {
-		if (this.state.showMap) {
-			return <CompanyMap
-				onClose={() => this.setState({ showMap: false })}
-			/>;
-		}
-
-		const columns = [
-			{
-				Header: "Name",
-				accessor: (x) => x,
-				Cell: ({ cell: { value } }) => (
-					<Company
-						id={value.id}
-						name={value.name}
-						afterDeletion={() => this.refreshCompanies()}
-						onOpen={() => this.props.history.push("/companies/" + value.id)}
-						onClose={() => this.props.history.push("/companies")}
-						open={value.id.toString() === this.props.match.params.id}
-					/>
-				),
-			},
-			{
-				Header: "Trade register number",
-				accessor: "trade_register_number",
-			},
-			{
-				Header: "Website",
-				accessor: "website",
-				Cell: ({ cell: { value } }) => (
-					<Website
-						url={value}
-					/>
-				),
-			},
-		];
-
 		return (
 			<div id="PageCompany" className="page max-sized-page">
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
-						<h1>{this.state.companies !== null
-							? this.state.companies.length : 0} Entit{this.state.companies !== null
-								&& this.state.companies.length > 1 ? "ies" : "y"}</h1>
-						<div className="top-right-buttons">
-							<button
-								onClick={() => this.setState({ showMap: true })}>
-								<i className="fas fa-map-marked-alt"/>
-							</button>
-							<button
-								onClick={() => this.refreshCompanies()}>
-								<i className="fas fa-redo-alt"/>
-							</button>
-							<DialogCompanyFilter
-								trigger={
-									<button
-										className={"blue-background"}
-										data-hover="Filter">
-										<i className="fas fa-search"/>
-									</button>
-								}
-								applyFilter={(filters) => this.changeState("filters", filters)}
-							/>
-						</div>
-					</div>
-					<div className="col-md-12 PageCompany-table">
-						{this.state.companies !== null
-							? <Table
-								columns={columns}
-								data={this.state.companies
-									.filter((c) => this.props.match.params.id === undefined
-										|| this.props.match.params.id === c.id.toString())}
-								showBottomBar={true}
-							/>
-							:							<Loading
-								height={500}
-							/>
-						}
-					</div>
-				</div>
-				<div className={"row row-spaced"}>
-					<div className="col-md-6">
-						<h1>Add a new entity</h1>
-						<FormLine
-							label={"Name"}
-							value={this.state.newCompanyName}
-							onChange={(v) => this.changeState("newCompanyName", v)}
-						/>
-						<div className="right-buttons">
-							<button
-								onClick={() => this.addCompany()}
-								disabled={this.state.newCompanyName === null
-									|| this.state.newCompanyName.length < 3}>
-								<i className="fas fa-plus"/> Add a new entity
-							</button>
-						</div>
-					</div>
-					<div className="col-md-6">
-						<h1>Export into XLSX</h1>
-						<FormLine
-							label={"Get filtered entities only"}
-							type={"checkbox"}
-							value={this.state.filtered_companies_only}
-							onChange={(v) => this.changeState("filtered_companies_only", v)}
-						/>
-						<FormLine
-							label={"Include users"}
-							type={"checkbox"}
-							value={this.state.include_user}
-							onChange={(v) => this.changeState("include_user", v)}
-						/>
-						<FormLine
-							label={"Include contact emails"}
-							type={"checkbox"}
-							value={this.state.include_email}
-							onChange={(v) => this.changeState("include_email", v)}
-						/>
-						<FormLine
-							label={"Include contact phone numbers"}
-							type={"checkbox"}
-							value={this.state.include_phone}
-							onChange={(v) => this.changeState("include_phone", v)}
-						/>
-						<FormLine
-							label={"Include addresses"}
-							type={"checkbox"}
-							value={this.state.include_address}
-							onChange={(v) => this.changeState("include_address", v)}
-						/>
-						<FormLine
-							label={"Include taxonomy"}
-							type={"checkbox"}
-							value={this.state.include_taxonomy}
-							onChange={(v) => this.changeState("include_taxonomy", v)}
-						/>
-						<FormLine
-							label={"Include workforce"}
-							type={"checkbox"}
-							value={this.state.include_workforce}
-							onChange={(v) => this.changeState("include_workforce", v)}
-						/>
-						<div className="right-buttons">
-							<button
-								onClick={this.export}>
-								<i className="far fa-file-excel"/> Export
-							</button>
-						</div>
-					</div>
-				</div>
+				<Tab
+					labels={["Entities", "Map", "Export"]}
+					selectedMenu={this.state.selectedMenu}
+					onMenuClick={this.onMenuClick}
+					keys={this.state.tabs}
+					content={[
+						<CompanyCompanies
+							key={"companies"}
+							companies={this.state.companies}
+							refreshCompanies={() => this.refreshCompanies()}
+							filters={this.state.filters}
+							applyFilter={(f) => this.applyFilter(f)}
+							{...this.props}
+						/>,
+						<CompanyMap
+							key={"map"}
+							companies={this.state.companies}
+							refreshCompanies={() => this.refreshCompanies()}
+							filters={this.state.filters}
+							applyFilter={(f) => this.applyFilter(f)}
+							{...this.props}
+						/>,
+						<CompanyExport
+							key={"export"}
+							filters={this.state.filters}
+							applyFilter={(f) => this.applyFilter(f)}
+							{...this.props}
+						/>,
+					]}
+				/>
 			</div>
 		);
 	}
