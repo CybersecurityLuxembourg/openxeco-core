@@ -7,7 +7,7 @@ class TestGetCompany(BaseCase):
     def test_ok(self, token):
         self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
         self.db.insert({"id": 2, "company_id": 1, "address_1": "a", "city": "a", "country": "b"},
-                       self.db.tables["Company_Address"])
+                       self.db.tables["CompanyAddress"])
 
         response = self.application.get('/address/get_address/2',
                                         headers=self.get_standard_header(token))

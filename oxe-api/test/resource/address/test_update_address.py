@@ -19,7 +19,7 @@ class TestUpdateAddress(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         payload = {
             "id": 1,
@@ -39,7 +39,7 @@ class TestUpdateAddress(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        address = self.db.get(self.db.tables["Company_Address"], {"id": 1})
+        address = self.db.get(self.db.tables["CompanyAddress"], {"id": 1})
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(address), 1)

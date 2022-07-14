@@ -18,7 +18,7 @@ class TestGetAllAddresses(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         response = self.application.get('/address/get_all_addresses', headers=self.get_standard_header(token))
 

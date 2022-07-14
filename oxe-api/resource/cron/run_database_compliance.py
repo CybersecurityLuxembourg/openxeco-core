@@ -101,7 +101,7 @@ class RunDatabaseCompliance(MethodResource, Resource):
     def _check_company_address_compliance(self, companies, settings):
         anomalies = []
 
-        company_addresses = self.db.get(self.db.tables["Company_Address"])
+        company_addresses = self.db.get(self.db.tables["CompanyAddress"])
 
         # Get the companies without addresses
 

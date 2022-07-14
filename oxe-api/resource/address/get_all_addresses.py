@@ -25,7 +25,7 @@ class GetAllAddresses(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        data = self.db.get(self.db.tables["Company_Address"])
-        data = Serializer.serialize(data, self.db.tables["Company_Address"])
+        data = self.db.get(self.db.tables["CompanyAddress"])
+        data = Serializer.serialize(data, self.db.tables["CompanyAddress"])
 
         return data, "200 "

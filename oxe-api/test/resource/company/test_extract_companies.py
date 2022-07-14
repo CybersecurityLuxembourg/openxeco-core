@@ -68,7 +68,7 @@ class TestExtractCompanies(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         response = self.application.get('/company/extract_companies?format=json&include_address=true',
                                         headers=self.get_standard_header(token))

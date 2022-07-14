@@ -21,7 +21,7 @@ class TestGetPublicCompanyGeolocations(BaseCase):
             "country": "Luxembourg",
             "latitude": 1,
             "longitude": 2,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         self.db.insert({
             "id": 2,
@@ -35,7 +35,7 @@ class TestGetPublicCompanyGeolocations(BaseCase):
             "country": "Luxembourg",
             "latitude": 13,
             "longitude": 14,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         response = self.application.get('/public/get_public_company_geolocations',
                                         headers=self.get_standard_header(token))
@@ -68,7 +68,7 @@ class TestGetPublicCompanyGeolocations(BaseCase):
             "country": "Luxembourg",
             "latitude": 1,
             "longitude": 2,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         self.db.insert({
             "id": 2,
@@ -82,7 +82,7 @@ class TestGetPublicCompanyGeolocations(BaseCase):
             "country": "Luxembourg",
             "latitude": 13,
             "longitude": 14,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         response = self.application.get('/public/get_public_company_geolocations?include_inactive=true',
                                         headers=self.get_standard_header(token))

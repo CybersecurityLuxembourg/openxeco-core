@@ -64,10 +64,10 @@ class ExtractCompanies(MethodResource, Resource):
 
         if 'include_address' in kwargs and kwargs['include_address'] is True:
             if company_ids is not None:
-                addresses = self.db.get(self.db.tables["Company_Address"], {"company_id": company_ids})
+                addresses = self.db.get(self.db.tables["CompanyAddress"], {"company_id": company_ids})
             else:
-                addresses = self.db.get(self.db.tables["Company_Address"])
-            addresses = Serializer.serialize(addresses, self.db.tables["Company_Address"])
+                addresses = self.db.get(self.db.tables["CompanyAddress"])
+            addresses = Serializer.serialize(addresses, self.db.tables["CompanyAddress"])
             addresses = pd.DataFrame(addresses)
             addresses = addresses.add_prefix('Address|')
 

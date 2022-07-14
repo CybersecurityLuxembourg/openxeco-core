@@ -40,6 +40,6 @@ class UpdateAddress(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["Company_Address"])
+        self.db.merge(kwargs, self.db.tables["CompanyAddress"])
 
         return "", "200 "

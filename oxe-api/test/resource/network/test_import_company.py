@@ -37,7 +37,7 @@ class TestImportCompany(BaseCase):
                                          json=payload)
 
         companies = self.db.get(self.db.tables["Company"])
-        addresses = self.db.get(self.db.tables["Company_Address"])
+        addresses = self.db.get(self.db.tables["CompanyAddress"])
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(companies), 1)
@@ -114,7 +114,7 @@ class TestImportCompany(BaseCase):
                                          json=payload)
 
         companies = self.db.get(self.db.tables["Company"])
-        addresses = self.db.get(self.db.tables["Company_Address"])
+        addresses = self.db.get(self.db.tables["CompanyAddress"])
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(companies), 1)
@@ -144,7 +144,7 @@ class TestImportCompany(BaseCase):
             }]
         )
         self.assertEqual(
-            Serializer.serialize(addresses, self.db.tables["Company_Address"]),
+            Serializer.serialize(addresses, self.db.tables["CompanyAddress"]),
             [
                 {
                     "address_1": "a",

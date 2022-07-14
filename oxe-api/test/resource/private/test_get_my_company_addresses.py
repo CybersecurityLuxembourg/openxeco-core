@@ -27,7 +27,7 @@ class TestGetMyCompanyAddresses(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         self.db.insert({
             "id": 2,
@@ -41,7 +41,7 @@ class TestGetMyCompanyAddresses(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         response = self.application.get('/private/get_my_company_addresses/1',
                                         headers=self.get_standard_header(token))
@@ -70,7 +70,7 @@ class TestGetMyCompanyAddresses(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         response = self.application.get('/private/get_my_company_addresses/1',
                                         headers=self.get_standard_header(token))

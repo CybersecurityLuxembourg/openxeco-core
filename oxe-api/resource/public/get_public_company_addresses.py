@@ -21,7 +21,7 @@ class GetPublicCompanyAddresses(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
-        data = self.db.get(self.db.tables["Company_Address"], {"company_id": id_})
-        data = Serializer.serialize(data, self.db.tables["Company_Address"])
+        data = self.db.get(self.db.tables["CompanyAddress"], {"company_id": id_})
+        data = Serializer.serialize(data, self.db.tables["CompanyAddress"])
 
         return build_no_cors_response(data)

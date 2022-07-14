@@ -18,7 +18,7 @@ class TestGetCompanyAddresses(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
         self.db.insert({
             "id": 2,
             "company_id": 2,
@@ -31,7 +31,7 @@ class TestGetCompanyAddresses(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         response = self.application.get('/company/get_company_addresses/2', headers=self.get_standard_header(token))
 

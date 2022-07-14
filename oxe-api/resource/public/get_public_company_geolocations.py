@@ -32,7 +32,7 @@ class GetPublicCompanyGeolocations(MethodResource, Resource):
     def get(self, **kwargs):
 
         c = self.db.tables["Company"]
-        ca = self.db.tables["Company_Address"]
+        ca = self.db.tables["CompanyAddress"]
         entities = (c.id, )
 
         kwargs["status"] = ["ACTIVE", "INACTIVE"] \

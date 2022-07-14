@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Ignore "/" and "/doc" in resource/get_resources resource
 - Restructure the Entity page on oxe-web-admin
 - Rename "ecosystem" to community on UI on oxe-web-admin
+- Rename "Company_Address" table to "CompanyAddress"
 
 ### Fixed
 

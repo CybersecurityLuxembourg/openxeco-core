@@ -47,6 +47,6 @@ class AddAddress(MethodResource, Resource):
 
         # Insert
 
-        self.db.insert(kwargs, self.db.tables["Company_Address"])
+        self.db.insert(kwargs, self.db.tables["CompanyAddress"])
 
         return "", "200 "

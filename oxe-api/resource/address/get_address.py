@@ -28,11 +28,11 @@ class GetAddress(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
-        data = self.db.get(self.db.tables["Company_Address"], {"id": id_})
+        data = self.db.get(self.db.tables["CompanyAddress"], {"id": id_})
 
         if len(data) < 1:
             raise ObjectNotFound
 
-        data = Serializer.serialize(data, self.db.tables["Company_Address"])
+        data = Serializer.serialize(data, self.db.tables["CompanyAddress"])
 
         return data[0], "200 "

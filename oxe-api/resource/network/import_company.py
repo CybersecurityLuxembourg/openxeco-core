@@ -121,4 +121,4 @@ class ImportCompany(MethodResource, Resource):
             })
 
         if len(addresses) > 0:
-            self.db.insert(addresses, self.db.tables["Company_Address"], commit=False, flush=True)
+            self.db.insert(addresses, self.db.tables["CompanyAddress"], commit=False, flush=True)

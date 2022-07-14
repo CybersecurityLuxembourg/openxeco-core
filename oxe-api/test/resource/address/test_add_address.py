@@ -26,7 +26,7 @@ class TestAddAddress(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(self.db.get_count(self.db.tables["Company_Address"]), 1)
+        self.assertEqual(self.db.get_count(self.db.tables["CompanyAddress"]), 1)
 
     @BaseCase.login
     @BaseCase.grant_access("/address/add_address")

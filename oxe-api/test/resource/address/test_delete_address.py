@@ -19,7 +19,7 @@ class TestDeleteAddress(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["Company_Address"])
+        }, self.db.tables["CompanyAddress"])
 
         payload = {
             "id": 1
@@ -30,7 +30,7 @@ class TestDeleteAddress(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(self.db.get_count(self.db.tables["Company_Address"]), 0)
+        self.assertEqual(self.db.get_count(self.db.tables["CompanyAddress"]), 0)
 
     @BaseCase.login
     @BaseCase.grant_access("/address/delete_address")

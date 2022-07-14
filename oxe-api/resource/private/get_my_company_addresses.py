@@ -38,10 +38,10 @@ class GetMyCompanyAddresses(MethodResource, Resource):
 
         data = Serializer.serialize(
             self.db.session
-                .query(self.db.tables["Company_Address"])
-                .filter(self.db.tables["Company_Address"].company_id == int(id_))
+                .query(self.db.tables["CompanyAddress"])
+                .filter(self.db.tables["CompanyAddress"].company_id == int(id_))
                 .all(),
-            self.db.tables["Company_Address"]
+            self.db.tables["CompanyAddress"]
         )
 
         return data, "200 "

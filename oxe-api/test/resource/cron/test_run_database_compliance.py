@@ -58,7 +58,7 @@ class TestRunDatabaseCompliance(BaseCase):
         self.db.insert({"id": 22, "company_id": 1, "type": "PHONE NUMBER", "representative": "ENTITY",
                         "value": "045065561"}, self.db.tables["CompanyContact"])
         self.db.insert({"id": 31, "company_id": 1, "address_1": "", "city": "",
-                        "country": "", "latitude": 1, "longitude": 1}, self.db.tables["Company_Address"])
+                        "country": "", "latitude": 1, "longitude": 1}, self.db.tables["CompanyAddress"])
 
         response = self.application.post('/cron/run_database_compliance',
                                          headers=self.get_standard_post_header(token))
