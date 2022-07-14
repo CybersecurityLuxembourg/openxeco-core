@@ -23,8 +23,8 @@ class GetRelationshipTypes(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        relationships = self.session \
-            .query(self.tables["CompanyRelationshipType"]) \
+        relationships = self.db.session \
+            .query(self.db.tables["CompanyRelationshipType"]) \
             .all()
 
         relationships = Serializer.serialize(relationships, self.db.tables["CompanyRelationshipType"])
