@@ -101,6 +101,8 @@ export default class PageCompany extends React.Component {
 						/>,
 						<CompanyExport
 							key={"export"}
+							companies={this.state.companies}
+							refreshCompanies={() => this.refreshCompanies()}
 							filters={this.state.filters}
 							applyFilter={(f) => this.applyFilter(f)}
 							{...this.props}

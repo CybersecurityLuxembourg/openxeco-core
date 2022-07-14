@@ -81,6 +81,11 @@ export default class CompanyMap extends React.Component {
 
 				<div className={"row row-spaced CompanyMap-buttons"}>
 					<div className="col-md-12">
+						<h1>
+							{this.props.companies ? this.props.companies.length : 0}
+							&nbsp;Entit{this.props.companies && this.props.companies.length > 1 ? "ies" : "y"}
+						</h1>
+
 						<div className="top-right-buttons">
 							<button
 								className={"blue-background"}

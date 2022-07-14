@@ -63,7 +63,10 @@ export default class CompanyExport extends React.Component {
 			<div id="CompanyExport">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h1>Export into XLSX</h1>
+						<h1>
+							{this.props.companies ? this.props.companies.length : 0}
+							&nbsp;Entit{this.props.companies && this.props.companies.length > 1 ? "ies" : "y"}
+						</h1>
 
 						<div className="top-right-buttons">
 							<button
@@ -85,6 +88,8 @@ export default class CompanyExport extends React.Component {
 					</div>
 
 					<div className="col-md-12">
+						<h2>Export into XLSX</h2>
+
 						<FormLine
 							label={"Get filtered entities only"}
 							type={"checkbox"}
