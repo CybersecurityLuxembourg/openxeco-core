@@ -21,7 +21,7 @@ export default class PageDashboard extends React.Component {
 			companies: null,
 			selectedMenu: null,
 			tabs: [
-				"ecosystem",
+				"community",
 				"analytics",
 				"recent_activities",
 			],
@@ -84,13 +84,13 @@ export default class PageDashboard extends React.Component {
 		return (
 			<div id="PageDashboard" className="page max-sized-page">
 				<Tab
-					labels={["Ecosystem", "Analytics", "Recent activities"]}
+					labels={["Community", "Analytics", "Recent activities"]}
 					selectedMenu={this.state.selectedMenu}
 					onMenuClick={this.onMenuClick}
 					keys={this.state.tabs}
 					content={[
 						<DashboardEcosystem
-							key={"ecosystem"}
+							key={"community"}
 							analytics={this.state.analytics}
 							companies={this.state.companies}
 						/>,

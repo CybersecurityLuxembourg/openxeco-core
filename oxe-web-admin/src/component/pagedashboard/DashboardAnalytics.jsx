@@ -272,7 +272,7 @@ export default class DashboardAnalytics extends React.Component {
 					</div>
 
 					<div className="col-md-6 row-spaced">
-						<h3>Number of news publicated by the ecosystem</h3>
+						<h3>Number of news publicated by the community</h3>
 
 						{this.state.activity
 							? <div>
@@ -294,7 +294,7 @@ export default class DashboardAnalytics extends React.Component {
 					</div>
 
 					<div className="col-md-6 row-spaced">
-						<h3>Number of events publicated by the ecosystem</h3>
+						<h3>Number of events publicated by the community</h3>
 
 						{this.state.activity
 							? <div>
@@ -316,7 +316,7 @@ export default class DashboardAnalytics extends React.Component {
 					</div>
 
 					<div className="col-md-6 row-spaced">
-						<h3>Number of job offers publicated by the ecosystem</h3>
+						<h3>Number of job offers publicated by the community</h3>
 
 						{this.state.activity
 							? <div>
