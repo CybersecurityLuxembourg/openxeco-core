@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 - Add DELETE as a possible resource type on API
 - Add "ignored_taxonomy_values" param on article/get_articles and public/get_public_articles
 - Add all rights to "Administrator" user group on API init
+- CompanyRelationship and CompanyRelationshipType table on database structure
+- Company relationship management on oxe-web-admin
+- public/get_public_company_relationships resource
+- relationship/add_relationship resource
+- relationship/add_relationship_type resource
+- relationship/get_relationship_types resource
+- relationship/delete_relationship resource
+- relationship/delete_relationship_type resource
+- relationship/update_relationship resource
+- relationship/update_relationship_type resource
 
 ### Changed
 

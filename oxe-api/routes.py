@@ -132,6 +132,13 @@ from resource.public.get_public_settings import GetPublicSettings
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.public.get_public_vcard import GetPublicVcard
+from resource.relationship.add_relationship import AddRelationship
+from resource.relationship.add_relationship_type import AddRelationshipType
+from resource.relationship.get_relationship_types import GetRelationshipTypes
+from resource.relationship.delete_relationship import DeleteRelationship
+from resource.relationship.delete_relationship_type import DeleteRelationshipType
+from resource.relationship.update_relationship import UpdateRelationship
+from resource.relationship.update_relationship_type import UpdateRelationshipType
 from resource.request.get_requests import GetRequests
 from resource.request.get_request_enums import GetRequestEnums
 from resource.request.update_request import UpdateRequest
