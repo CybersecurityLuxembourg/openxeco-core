@@ -262,11 +262,13 @@ export default class FormLine extends React.Component {
 		return (
 			<div className={"FormLine"}>
 				<div className={"row"}>
-					<div className={labelWidth}>
-						<div className={"FormLine-label"}>
-							{this.props.label}
+					{this.props.label
+						&& <div className={labelWidth}>
+							<div className={"FormLine-label"}>
+								{this.props.label}
+							</div>
 						</div>
-					</div>
+					}
 					<div className={fieldWidth}>
 						{this.getField()}
 					</div>
