@@ -7,6 +7,7 @@ import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Tab from "../tab/Tab.jsx";
 import CompanyGlobal from "./company/CompanyGlobal.jsx";
 import CompanyContact from "./company/CompanyContact.jsx";
+import CompanyRelationship from "./company/CompanyRelationship.jsx";
 import CompanyAddress from "./company/CompanyAddress.jsx";
 import CompanyUser from "./company/CompanyUser.jsx";
 import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
@@ -24,7 +25,14 @@ export default class Company extends Component {
 			isDetailOpened: false,
 			selectedMenu: null,
 			tabs: [
-				"global", "contact", "address", "user", "taxonomy", "workforce", "synchronization",
+				"global",
+				"contact",
+				"address",
+				"user",
+				"relationship",
+				"taxonomy",
+				"workforce",
+				"synchronization",
 			],
 
 			sync_global: true,
@@ -242,7 +250,7 @@ export default class Company extends Component {
 						</h1>
 
 						<Tab
-							labels={["Global", "Contact", "Address", "User", "Taxonomy", "Workforce", "Synchronization"]}
+							labels={["Global", "Contact", "Address", "User", "Relationship", "Taxonomy", "Workforce", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
@@ -273,6 +281,14 @@ export default class Company extends Component {
 									refresh={() => this.fetchCompany()}
 								/>,
 								<CompanyUser
+									key={this.props.id}
+									id={this.props.id}
+									company={this.state.company}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchCompany()}
+								/>,
+								<CompanyRelationship
 									key={this.props.id}
 									id={this.props.id}
 									company={this.state.company}
