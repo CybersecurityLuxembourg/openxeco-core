@@ -312,6 +312,14 @@ textarea {
 	text-align: center;
 }
 
+.centered-middled {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+
 /* POPUP */
 
 .Popup-full-size-content {

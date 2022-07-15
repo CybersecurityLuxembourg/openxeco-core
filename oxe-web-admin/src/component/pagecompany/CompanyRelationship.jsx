@@ -160,7 +160,7 @@ export default class CompanyRelationship extends React.Component {
 								</div>
 
 								<div className="col-md-2">
-									<div className="CompanyRelationship-update-arrow">
+									<div className="centered-middled">
 										<i className="fas fa-arrow-right"/>
 									</div>
 								</div>
