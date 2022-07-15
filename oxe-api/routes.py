@@ -123,6 +123,7 @@ from resource.public.get_public_companies import GetPublicCompanies
 from resource.public.get_public_company_addresses import GetPublicCompanyAddresses
 from resource.public.get_public_company_enums import GetPublicCompanyEnums
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
+from resource.public.get_public_company_relationship_types import GetPublicCompanyRelationshipTypes
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_document import GetPublicDocument
 from resource.public.get_public_documents import GetPublicDocuments
@@ -134,7 +135,6 @@ from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.public.get_public_vcard import GetPublicVcard
 from resource.relationship.add_relationship import AddRelationship
 from resource.relationship.add_relationship_type import AddRelationshipType
-from resource.relationship.get_relationship_types import GetRelationshipTypes
 from resource.relationship.delete_relationship import DeleteRelationship
 from resource.relationship.delete_relationship_type import DeleteRelationshipType
 from resource.relationship.update_relationship import UpdateRelationship

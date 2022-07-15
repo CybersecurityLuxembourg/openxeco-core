@@ -19,8 +19,11 @@ depends_on = None
 
 def upgrade():
     op.create_table('CompanyRelationshipType',
+    sa.Column('id', mysql.INTEGER(), autoincrement=True, nullable=False),
     sa.Column('name', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=100), nullable=False),
-    sa.PrimaryKeyConstraint('name'),
+    sa.Column('is_directional', mysql.TINYINT(display_width=1), server_default=sa.text("'0'"), autoincrement=False, nullable=False),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('name', name='company_relationship_type_unique_name'),
     mysql_collate='utf8mb4_unicode_ci',
     mysql_default_charset='utf8mb4',
     mysql_engine='InnoDB'

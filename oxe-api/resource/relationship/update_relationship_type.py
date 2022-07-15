@@ -23,14 +23,15 @@ class UpdateRelationshipType(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
-        "current_name": fields.Str(required=True, allow_none=False),
-        "new_name": fields.Str(required=True, allow_none=False),
+        "id": fields.Int(required=True, allow_none=False),
+        "name": fields.Str(required=False, allow_none=False),
+        "is_directional": fields.Bool(required=False, allow_none=False),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["CompanyRelationShip"])
+        self.db.merge(kwargs, self.db.tables["CompanyRelationshipType"])
 
         return "", "200 "

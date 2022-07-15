@@ -10,7 +10,7 @@ from utils.serializer import Serializer
 from utils.response import build_no_cors_response
 
 
-class GetRelationshipTypes(MethodResource, Resource):
+class GetPublicCompanyRelationshipTypes(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
