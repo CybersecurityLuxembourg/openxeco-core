@@ -1,5 +1,5 @@
 import React from "react";
-import "./SettingGlobal.css";
+import "./CompanyRelationship.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
@@ -8,7 +8,7 @@ import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Table from "../table/Table.jsx";
 import Loading from "../box/Loading.jsx";
 
-export default class SettingRelationship extends React.Component {
+export default class CompanyRelationship extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -72,7 +72,7 @@ export default class SettingRelationship extends React.Component {
 			new_name: newName,
 		};
 
-		postRequest.call(this, "relationship/delete_relationship_type", params, () => {
+		postRequest.call(this, "relationship/update_relationship_type", params, () => {
 			this.getRelationshipTypes();
 			nm.info("The relationship type has been updated");
 		}, (response) => {
@@ -116,7 +116,7 @@ export default class SettingRelationship extends React.Component {
 							}
 							modal
 						>
-							{(close) => <div className={"row row-spaced"}>
+							{(close) => <div className={"row"}>
 								<div className={"col-md-9"}>
 									<h2>Update a relationship type</h2>
 								</div>
@@ -143,7 +143,9 @@ export default class SettingRelationship extends React.Component {
 								</div>
 
 								<div className="col-md-2">
-									=&gt;
+									<div className="CompanyRelationship-update-arrow">
+										<i className="fas fa-arrow-right"/>
+									</div>
 								</div>
 
 								<div className="col-md-5">
@@ -176,10 +178,10 @@ export default class SettingRelationship extends React.Component {
 		];
 
 		return (
-			<div id="SettingRelationship" className="fade-in">
+			<div id="CompanyRelationship" className="fade-in">
 				<div className={"row"}>
 					<div className="col-md-12">
-						<h1>Entity relationship</h1>
+						<h1>Relationship</h1>
 						<div className="top-right-buttons">
 							<button
 								onClick={() => this.getRelationshipTypes()}>
@@ -190,7 +192,13 @@ export default class SettingRelationship extends React.Component {
 				</div>
 
 				<div className={"row"}>
-					<div className="col-md-12 row-spaced">
+					<div className="col-md-12">
+						<h2>types</h2>
+					</div>
+				</div>
+
+				<div className={"row"}>
+					<div className="col-md-12">
 						<FormLine
 							label={"Name"}
 							value={this.state.name}

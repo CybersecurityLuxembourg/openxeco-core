@@ -2,6 +2,7 @@ import React from "react";
 import "./PageCompany.css";
 import { NotificationManager as nm } from "react-notifications";
 import CompanyCompanies from "./pagecompany/CompanyCompanies.jsx";
+import CompanyRelationship from "./pagecompany/CompanyRelationship.jsx";
 import CompanyMap from "./pagecompany/CompanyMap.jsx";
 import CompanyExport from "./pagecompany/CompanyExport.jsx";
 import Tab from "./tab/Tab.jsx";
@@ -23,6 +24,7 @@ export default class PageCompany extends React.Component {
 				"companies",
 				"map",
 				"export",
+				"relationship",
 			],
 		};
 	}
@@ -78,7 +80,7 @@ export default class PageCompany extends React.Component {
 		return (
 			<div id="PageCompany" className="page max-sized-page">
 				<Tab
-					labels={["Entities", "Map", "Export"]}
+					labels={["Entities", "Map", "Export", "Relationship"]}
 					selectedMenu={this.state.selectedMenu}
 					onMenuClick={this.onMenuClick}
 					keys={this.state.tabs}
@@ -105,6 +107,10 @@ export default class PageCompany extends React.Component {
 							refreshCompanies={() => this.refreshCompanies()}
 							filters={this.state.filters}
 							applyFilter={(f) => this.applyFilter(f)}
+							{...this.props}
+						/>,
+						<CompanyRelationship
+							key={"relationship"}
 							{...this.props}
 						/>,
 					]}
