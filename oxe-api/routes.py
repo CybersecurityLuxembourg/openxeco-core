@@ -124,6 +124,7 @@ from resource.public.get_public_company_addresses import GetPublicCompanyAddress
 from resource.public.get_public_company_enums import GetPublicCompanyEnums
 from resource.public.get_public_company_geolocations import GetPublicCompanyGeolocations
 from resource.public.get_public_company_relationship_types import GetPublicCompanyRelationshipTypes
+from resource.public.get_public_company_relationships import GetPublicCompanyRelationships
 from resource.public.get_public_company import GetPublicCompany
 from resource.public.get_public_document import GetPublicDocument
 from resource.public.get_public_documents import GetPublicDocuments

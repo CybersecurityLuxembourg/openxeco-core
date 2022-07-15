@@ -26,10 +26,10 @@ class GetPublicCompanyRelationships(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        relationships = self.session \
-            .query(self.tables["CompanyRelationship"]) \
-            .filter(or_(self.tables["CompanyRelationship"].company_1.in_(kwargs["ids"]),
-                        self.tables["CompanyRelationship"].company_2.in_(kwargs["ids"]))) \
+        relationships = self.db.session \
+            .query(self.db.tables["CompanyRelationship"]) \
+            .filter(or_(self.db.tables["CompanyRelationship"].company_1.in_(kwargs["ids"]),
+                        self.db.tables["CompanyRelationship"].company_2.in_(kwargs["ids"]))) \
             .all()
 
         relationships = Serializer.serialize(relationships, self.db.tables["CompanyRelationship"])

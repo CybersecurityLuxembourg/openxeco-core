@@ -23,7 +23,7 @@ class AddRelationship(MethodResource, Resource):
          })
     @use_kwargs({
         'company_1': fields.Int(required=True, allow_none=False),
-        'type': fields.Str(required=True, allow_none=False),
+        'type': fields.Int(required=True, allow_none=False),
         'company_2': fields.Int(required=True, allow_none=False),
     })
     @jwt_required

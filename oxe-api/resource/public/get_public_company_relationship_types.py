@@ -15,7 +15,7 @@ class GetPublicCompanyRelationshipTypes(MethodResource, Resource):
     def __init__(self, db: DB):
         self.db = db
 
-    @doc(tags=['relationship'],
+    @doc(tags=['public'],
          description='Get relationship types',
          responses={
              "200": {},
@@ -23,10 +23,10 @@ class GetPublicCompanyRelationshipTypes(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        relationships = self.db.session \
+        types = self.db.session \
             .query(self.db.tables["CompanyRelationshipType"]) \
             .all()
 
-        relationships = Serializer.serialize(relationships, self.db.tables["CompanyRelationshipType"])
+        types = Serializer.serialize(types, self.db.tables["CompanyRelationshipType"])
 
-        return relationships, "200 "
+        return build_no_cors_response(types)
