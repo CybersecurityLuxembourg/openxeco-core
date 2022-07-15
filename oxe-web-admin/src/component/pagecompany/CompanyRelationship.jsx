@@ -2,8 +2,9 @@ import React from "react";
 import "./CompanyRelationship.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, postRequest } from "../../utils/request.jsx";
+import { getNoCorsRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
+import CheckBox from "../button/CheckBox.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Table from "../table/Table.jsx";
 import Loading from "../box/Loading.jsx";
@@ -24,7 +25,7 @@ export default class CompanyRelationship extends React.Component {
 	}
 
 	getRelationshipTypes() {
-		getRequest.call(this, "relationship/get_relationship_types", (data) => {
+		getNoCorsRequest.call(this, "public/get_public_company_relationship_types", (data) => {
 			this.setState({
 				types: data,
 			});
@@ -66,10 +67,10 @@ export default class CompanyRelationship extends React.Component {
 		});
 	}
 
-	updateRelationshipType(currentName, newName) {
+	updateRelationshipType(id, field, value) {
 		const params = {
-			current_name: currentName,
-			new_name: newName,
+			id,
+			[field]: value,
 		};
 
 		postRequest.call(this, "relationship/update_relationship_type", params, () => {
@@ -89,10 +90,26 @@ export default class CompanyRelationship extends React.Component {
 	render() {
 		const columns = [
 			{
+				id: 1,
 				Header: "Name",
 				accessor: "name",
 			},
 			{
+				id: 2,
+				Header: <div align="center">Is directional</div>,
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<CheckBox
+						className={"Table-CheckBox"}
+						value={value.is_directional}
+						onClick={(v) => this.updateRelationshipType(value.id, "is_directional", v)}
+					/>
+				),
+				width: 50,
+				maxWidth: 50,
+			},
+			{
+				id: 3,
 				Header: " ",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
@@ -118,7 +135,7 @@ export default class CompanyRelationship extends React.Component {
 						>
 							{(close) => <div className={"row"}>
 								<div className={"col-md-9"}>
-									<h2>Update a relationship type</h2>
+									<h2>Rename a relationship type</h2>
 								</div>
 
 								<div className={"col-md-3"}>
@@ -161,11 +178,11 @@ export default class CompanyRelationship extends React.Component {
 									<div className="right-buttons">
 										<button
 											onClick={() => this.updateRelationshipType(
-												value.name, this.state.updatedName,
+												value.id, "name", this.state.updatedName,
 											)}
 											disabled={!this.state.updatedName
 												|| this.state.updatedName.length < 3}>
-											<i className="fas fa-edit"/> Update
+											<i className="fas fa-edit"/> Rename
 										</button>
 									</div>
 								</div>
@@ -193,7 +210,7 @@ export default class CompanyRelationship extends React.Component {
 
 				<div className={"row"}>
 					<div className="col-md-12">
-						<h2>types</h2>
+						<h2>Manage relationship types</h2>
 					</div>
 				</div>
 
