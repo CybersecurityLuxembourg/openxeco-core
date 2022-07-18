@@ -18,14 +18,15 @@ export default class CompanyRelationship extends React.Component {
 			isCurrentCompanyFirst: true,
 			selectedOtherEntity: null,
 			selectedType: null,
-			companyOptions: [],
+			companies: null,
+			companyOptions: null,
 		};
 	}
 
 	componentDidMount() {
 		if (!this.props.node) {
 			this.refresh();
-			this.getCompanies();
+			this.getAllCompanies();
 		}
 	}
 
@@ -56,13 +57,15 @@ export default class CompanyRelationship extends React.Component {
 		});
 	}
 
-	getCompanies() {
+	getAllCompanies() {
 		this.setState({
+			companies: null,
 			companyOptions: null,
 		});
 
 		getRequest.call(this, "company/get_companies", (data) => {
 			this.setState({
+				companies: data,
 				companyOptions: data.map((c) => ({
 					label: c.name,
 					value: c.id,
@@ -143,7 +146,15 @@ export default class CompanyRelationship extends React.Component {
 		const columns = [
 			{
 				Header: "Entity 1",
-				accessor: "company_1",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						{this.state.companies
+							.filter((c) => c.id === value.company_1)
+							.map((c) => (c.name))
+						}
+					</div>
+				),
 			},
 			{
 				Header: " ",
@@ -153,7 +164,15 @@ export default class CompanyRelationship extends React.Component {
 			},
 			{
 				Header: "Type",
-				accessor: "type",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						{this.state.types
+							.filter((c) => c.id === value.type)
+							.map((c) => (c.name))
+						}
+					</div>
+				),
 			},
 			{
 				Header: "  ",
@@ -170,7 +189,15 @@ export default class CompanyRelationship extends React.Component {
 			},
 			{
 				Header: "Entity 2",
-				accessor: "company_2",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<div>
+						{this.state.companies
+							.filter((c) => c.id === value.company_2)
+							.map((c) => (c.name))
+						}
+					</div>
+				),
 			},
 			{
 				Header: "   ",
