@@ -511,3 +511,31 @@ class DB:
             query = query.order_by(self.tables["Document"].creation_date.asc())
 
         return query
+
+    ###############
+    # NOTE        #
+    ###############
+
+    def get_filtered_note_query(self, filters=None):
+        filters = {} if filters is None else filters
+
+        query = self.session.query(self.tables["Note"])
+
+        if "company" in filters:
+            query = query.filter(self.tables["Note"].company == filters["company"])
+
+        if "article" in filters:
+            query = query.filter(self.tables["Note"].article == filters["article"])
+
+        if "taxonomy_category" in filters:
+            query = query.filter(self.tables["Note"].taxonomy_category == filters["taxonomy_category"])
+
+        if "user" in filters:
+            query = query.filter(self.tables["Note"].user == filters["user"])
+
+        if "order" in filters and filters["order"] == "desc":
+            query = query.order_by(self.tables["Note"].creation_date.desc())
+        else:
+            query = query.order_by(self.tables["Note"].creation_date.asc())
+
+        return query

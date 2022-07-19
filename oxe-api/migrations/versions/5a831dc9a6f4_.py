@@ -43,11 +43,32 @@ def upgrade():
     mysql_engine='InnoDB'
     )
 
+    op.create_table('Note',
+    sa.Column('id', mysql.INTEGER(), autoincrement=True, nullable=False),
+    sa.Column('content', mysql.TEXT(charset='utf8mb4', collation='utf8mb4_unicode_ci'), nullable=True),
+    sa.Column('admin', mysql.INTEGER(), nullable=True),
+    sa.Column('company', mysql.INTEGER(), nullable=True),
+    sa.Column('article', mysql.INTEGER(), nullable=True),
+    sa.Column('taxonomy_category', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=80), nullable=True),
+    sa.Column('user', mysql.INTEGER(), nullable=True),
+    sa.Column('sys_date', mysql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=True),
+    sa.PrimaryKeyConstraint('id'),
+    sa.ForeignKeyConstraint(['admin'], ['User.id'], name='note_admin_ibfk', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['company'], ['Company.id'], name='note_company_ibfk', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['article'], ['Article.id'], name='note_article_ibfk', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['taxonomy_category'], ['TaxonomyCategory.name'], name='note_taxonomy_ibfk', ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['user'], ['User.id'], name='note_user_ibfk', ondelete='CASCADE'),
+    mysql_collate='utf8mb4_unicode_ci',
+    mysql_default_charset='utf8mb4',
+    mysql_engine='InnoDB'
+    )
+
     op.rename_table('Company_Address', 'CompanyAddress')
 
 
 def downgrade():
     op.drop_table('CompanyRelationship')
     op.drop_table('CompanyRelationshipType')
+    op.drop_table('Note')
 
     op.rename_table('CompanyAddress', 'Company_Address')
