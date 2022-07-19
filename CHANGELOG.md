@@ -28,7 +28,6 @@ All notable changes to this project will be documented in this file.
 - Noting system for taxonomies on oxe-web-admin
 - Noting system for user on oxe-web-admin
 
-
 ### Changed
 
 - Set "company_id" params as not required for address/update_address resource

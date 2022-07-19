@@ -534,8 +534,8 @@ class DB:
             query = query.filter(self.tables["Note"].user == filters["user"])
 
         if "order" in filters and filters["order"] == "desc":
-            query = query.order_by(self.tables["Note"].creation_date.desc())
+            query = query.order_by(self.tables["Note"].sys_date.desc())
         else:
-            query = query.order_by(self.tables["Note"].creation_date.asc())
+            query = query.order_by(self.tables["Note"].sys_date.asc())
 
         return query

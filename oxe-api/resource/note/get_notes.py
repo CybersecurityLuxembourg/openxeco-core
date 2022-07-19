@@ -21,12 +21,14 @@ class GetNotes(MethodResource, Resource):
          description='Get notes from a company, an article, a taxonomy category or a user',
          responses={
              "200": {},
-             "422.a": {"description": "At least one of those params should be set: company, article, taxonomy_category, user"},
-             "422.b": {"description": "Only one params should be set amongst those: company, article, taxonomy_category, user"},
+             "422.a": {"description": "At least one of those params should be set: company, article, "
+                                      "taxonomy_category, user"},
+             "422.b": {"description": "Only one params should be set amongst those: company, article, "
+                                      "taxonomy_category, user"},
          })
     @use_kwargs({
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
-        'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
+        'per_page': fields.Int(required=False, missing=10, validate=validate.Range(min=1, max=10)),
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
         'company': fields.Int(required=False),
         'article': fields.Int(required=False),
@@ -50,4 +52,12 @@ class GetNotes(MethodResource, Resource):
         pagination = note_query.paginate(kwargs["page"], kwargs["per_page"])
         data = Serializer.serialize(pagination.items, self.db.tables["Note"])
 
-        return data, "200 "
+        return {
+           "pagination": {
+               "page": kwargs["page"],
+               "pages": pagination.pages,
+               "per_page": kwargs["per_page"],
+               "total": pagination.total,
+           },
+           "items": data,
+        }, "200 "

@@ -22,10 +22,7 @@ class AddNote(MethodResource, Resource):
          description='Add a note on a company, an article, a taxonomy category or a user',
          responses={
              "200": {},
-             "422.a": {"description": "At least one of those params should be set: company, article, "
-                                      "taxonomy_category, user"},
-             "422.b": {"description": "Only one params should be set amongst those: company, article, "
-                                      "taxonomy_category, user"},
+             "422": {"description": "A company is already existing with that name"},
          })
     @use_kwargs({
         'content': fields.Str(required=False),

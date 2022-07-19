@@ -47,6 +47,7 @@ class Login(MethodResource, Resource):
         refresh_token = create_refresh_token(identity=str(data[0].id), expires_delta=refresh_token_expires)
 
         return {
+            "user": data[0].id,
             "access_token": access_token,
             "refresh_token": refresh_token,
         }, "200 "
