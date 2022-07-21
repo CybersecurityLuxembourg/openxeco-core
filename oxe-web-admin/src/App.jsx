@@ -17,6 +17,7 @@ class App extends React.Component {
 		this.connect = this.connect.bind(this);
 
 		this.state = {
+			user: null,
 			logged: false,
 			openMobileDialog: window
 				.matchMedia("only screen and (max-width: 760px)")
@@ -29,8 +30,9 @@ class App extends React.Component {
 		document.getElementById("favicon").href = getApiURL() + "public/get_public_image/favicon.ico";
 	}
 
-	connect() {
+	connect(user) {
 		this.setState({
+			user,
 			logged: true,
 		});
 	}
@@ -42,6 +44,7 @@ class App extends React.Component {
 					? <BrowserRouter>
 						<InsideApp
 							cookies={this.props.cookies}
+							user={this.state.user}
 						/>
 					</BrowserRouter>
 					: <Login

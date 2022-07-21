@@ -51,6 +51,7 @@ export default class PageArticle extends React.Component {
 					content={[
 						<ArticleList
 							key={"articles"}
+							user={this.props.user}
 							{...this.props}
 						/>,
 						<ArticleRssFeed
