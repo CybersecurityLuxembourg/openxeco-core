@@ -111,6 +111,7 @@ export default class UserUser extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					value.is_admin === 1 ? "Yes" : ""
 				),
+				width: 50,
 			},
 			{
 				Header: "Is active",
@@ -118,6 +119,7 @@ export default class UserUser extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					value.is_active === 1 ? "Yes" : ""
 				),
+				width: 50,
 			},
 		];
 

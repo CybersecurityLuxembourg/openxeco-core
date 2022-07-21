@@ -62,15 +62,17 @@ export default class User extends Component {
 		});
 	}
 
-	confirmUserDeletion() {
+	confirmUserDeletion(close) {
 		const params = {
 			id: this.props.id,
 		};
 
 		postRequest.call(this, "user/delete_user", params, () => {
-			document.elementFromPoint(100, 0).click();
 			nm.info("The user has been deleted");
 
+			if (close) {
+				close();
+			}
 			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
 		}, (response) => {
 			this.refreshUserData();
@@ -110,7 +112,7 @@ export default class User extends Component {
 										<i className="fas fa-trash-alt"/>
 									</button>
 								}
-								afterConfirmation={() => this.confirmUserDeletion()}
+								afterConfirmation={() => this.confirmUserDeletion(close)}
 							/>
 							<button
 								className={"grey-background"}
