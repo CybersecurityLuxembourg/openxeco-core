@@ -122,7 +122,6 @@ export default class CompanyRelationship extends React.Component {
 		if (!this.state.types || !typeId) {
 			return false;
 		}
-		console.log(typeId, this.state.types);
 
 		return this.state.types.filter((t) => t.id === typeId)[0].is_directional;
 	}
