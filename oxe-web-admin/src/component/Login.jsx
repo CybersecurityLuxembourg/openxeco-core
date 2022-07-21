@@ -80,7 +80,7 @@ export default class Login extends React.Component {
 		postRequest.call(this, "account/login", params, (response) => {
 			// TODO use httponly cookies
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-			this.props.connect();
+			this.props.connect(response.user);
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {

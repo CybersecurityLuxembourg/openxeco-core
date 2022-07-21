@@ -86,6 +86,7 @@ export default class ArticleList extends React.Component {
 						onOpen={() => this.props.history.push("/articles/" + value.id)}
 						onClose={() => this.props.history.push("/articles")}
 						open={value.id.toString() === this.props.match.params.id}
+						user={this.props.user}
 					/>
 				),
 				width: 350,
