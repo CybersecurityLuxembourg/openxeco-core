@@ -17,6 +17,7 @@ export default class UserNote extends React.Component {
 			notes: null,
 			page: null,
 			pages: null,
+			users: null,
 			content: "",
 		};
 	}
@@ -68,6 +69,20 @@ export default class UserNote extends React.Component {
 			this.refresh();
 			nm.error(error.message);
 		});
+	}
+
+	getOwnerUser(userId) {
+		if (!userId || !this.state.users) {
+			return null;
+		}
+
+		const users = this.state.user.filter((u) => u.id === userId);
+
+		if (users.length === 0) {
+			return null;
+		}
+
+		return users[0];
 	}
 
 	changeState(field, value) {
@@ -152,6 +167,7 @@ export default class UserNote extends React.Component {
 										key={n.id}
 										note={n}
 										user={this.props.user}
+										ownerUser={this.getOwnerUser(n.admin)}
 										afterDelete={() => this.refresh()}
 										afterUpdate={() => this.refresh()}
 									/>
