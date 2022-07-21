@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - note/add_note resource
 - note/delete_note resource
 - note/get_notes resource
+- note/update_note resource
 - Company relationship management on oxe-web-admin
 - Noting system for companies on oxe-web-admin
 - Noting system for articles on oxe-web-admin

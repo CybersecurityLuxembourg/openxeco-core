@@ -1,5 +1,5 @@
 import React from "react";
-import "./ArticleNote.css";
+import "./UserNote.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
@@ -9,7 +9,7 @@ import Message from "../../box/Message.jsx";
 import Note from "../Note.jsx";
 import FormLine from "../../button/FormLine.jsx";
 
-export default class ArticleNote extends React.Component {
+export default class UserNote extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -31,7 +31,7 @@ export default class ArticleNote extends React.Component {
 
 	getNotes(page) {
 		const params = {
-			article: this.props.id,
+			user: this.props.id,
 			page: page || 1,
 		};
 
@@ -52,7 +52,7 @@ export default class ArticleNote extends React.Component {
 	addNote(close) {
 		const params = {
 			content: this.state.content,
-			article: this.props.id,
+			user: this.props.id,
 		};
 
 		postRequest.call(this, "note/add_note", params, () => {
@@ -75,15 +75,8 @@ export default class ArticleNote extends React.Component {
 	}
 
 	render() {
-		if (this.props.node) {
-			return <Message
-				text={"Not applicable on remote article"}
-				height={300}
-			/>;
-		}
-
 		return (
-			<div id={"ArticleNote"} className={"row"}>
+			<div id={"UserNote"} className={"row"}>
 				<div className="col-md-12">
 					<div className={"row"}>
 						<div className="col-md-12">

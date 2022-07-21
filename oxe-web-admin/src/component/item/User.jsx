@@ -7,6 +7,7 @@ import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Tab from "../tab/Tab.jsx";
 import UserGlobal from "./user/UserGlobal.jsx";
 import UserCompany from "./user/UserCompany.jsx";
+import UserNote from "./user/UserNote.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 
 export default class User extends Component {
@@ -24,6 +25,7 @@ export default class User extends Component {
 			tabs: [
 				"global",
 				"entity",
+				"note",
 			],
 		};
 	}
@@ -127,7 +129,7 @@ export default class User extends Component {
 						</h1>
 
 						<Tab
-							labels={["Global", "Entity"]}
+							labels={["Global", "Entity", "Notes"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
@@ -140,6 +142,11 @@ export default class User extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									name={this.props.name}
+								/>,
+								<UserNote
+									key={"note"}
+									id={this.props.id}
+									user={this.props.user}
 								/>,
 							]}
 						/>

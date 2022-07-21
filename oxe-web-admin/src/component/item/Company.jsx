@@ -12,6 +12,7 @@ import CompanyAddress from "./company/CompanyAddress.jsx";
 import CompanyUser from "./company/CompanyUser.jsx";
 import CompanyTaxonomy from "./company/CompanyTaxonomy.jsx";
 import CompanyWorkforce from "./company/CompanyWorkforce.jsx";
+import CompanyNote from "./company/CompanyNote.jsx";
 import CompanySync from "./company/CompanySync.jsx";
 import FormLine from "../button/FormLine.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
@@ -32,6 +33,7 @@ export default class Company extends Component {
 				"relationship",
 				"taxonomy",
 				"workforce",
+				"note",
 				"synchronization",
 			],
 
@@ -250,7 +252,8 @@ export default class Company extends Component {
 						</h1>
 
 						<Tab
-							labels={["Global", "Contact", "Address", "User", "Relationship", "Taxonomy", "Workforce", "Synchronization"]}
+							labels={["Global", "Contact", "Address", "User", "Relationship",
+								"Taxonomy", "Workforce", "Notes", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
@@ -311,6 +314,13 @@ export default class Company extends Component {
 									node={this.props.node}
 									editable={!this.props.node}
 									refresh={() => this.fetchCompany()}
+								/>,
+								<CompanyNote
+									key={this.props.id}
+									id={this.props.id}
+									node={this.props.node}
+									refresh={() => this.fetchCompany()}
+									user={this.props.user}
 								/>,
 								<CompanySync
 									key={this.props.id}

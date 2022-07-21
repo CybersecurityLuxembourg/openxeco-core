@@ -9,6 +9,7 @@ import Chip from "../button/Chip.jsx";
 import TaxonomyGlobal from "./taxonomy/TaxonomyGlobal.jsx";
 import TaxonomyValues from "./taxonomy/TaxonomyValues.jsx";
 import TaxonomyHierarchy from "./taxonomy/TaxonomyHierarchy.jsx";
+import TaxonomyNote from "./taxonomy/TaxonomyNote.jsx";
 import TaxonomySync from "./taxonomy/TaxonomySync.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 import { getCategory } from "../../utils/taxonomy.jsx";
@@ -25,6 +26,7 @@ export default class Taxonomy extends Component {
 				"Global",
 				"Values",
 				"Hierarchy",
+				"Notes",
 				"Synchronization",
 			],
 
@@ -243,7 +245,7 @@ export default class Taxonomy extends Component {
 						</h1>
 
 						<Tab
-							labels={["Global", "Values", "Hierarchy", "Synchronization"]}
+							labels={["Global", "Values", "Hierarchy", "Notes", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
@@ -268,6 +270,13 @@ export default class Taxonomy extends Component {
 									taxonomy={this.state.taxonomy}
 									editable={!this.props.node}
 									refresh={() => this.fetchTaxonomy()}
+								/>,
+								<TaxonomyNote
+									key={"note"}
+									id={this.props.name}
+									node={this.props.node}
+									refresh={() => this.fetchTaxonomy()}
+									user={this.props.user}
 								/>,
 								<TaxonomySync
 									key={"sync"}

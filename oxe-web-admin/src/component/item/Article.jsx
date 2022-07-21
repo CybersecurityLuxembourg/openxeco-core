@@ -280,7 +280,6 @@ export default class Article extends Component {
 									key={this.props.id}
 									id={this.props.id}
 									node={this.props.node}
-									editable={!this.props.node}
 									refresh={() => this.fetchArticle()}
 									user={this.props.user}
 								/>,
