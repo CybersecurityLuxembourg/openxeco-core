@@ -24,6 +24,7 @@ class GetUsers(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
+        'ids': fields.DelimitedList(fields.Int(), required=False),
         'email': fields.Str(required=False),
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
@@ -41,6 +42,9 @@ class GetUsers(MethodResource, Resource):
                            self.db.tables["User"].is_active,
                            self.db.tables["User"].accept_communication) \
             .order_by(self.db.tables["User"].email.asc())
+
+        if "ids" in kwargs:
+            query = query.filter(self.tables["User"].id.in_(kwargs['ids']))
 
         if "email" in kwargs:
             query = query.filter(func.lower(self.db.tables["User"].email).like("%" + kwargs["email"] + "%"))
