@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 
@@ -22,7 +22,8 @@ class DeleteNote(MethodResource, Resource):
          description='Delete a note',
          responses={
              "200": {},
-             "422": {"description": "Object not found"},
+             "422.a": {"description": "Object not found"},
+             "422.b": {"description": "Your user is not the owner of the note"},
          })
     @use_kwargs({
         'id': fields.Int(),
@@ -35,7 +36,9 @@ class DeleteNote(MethodResource, Resource):
         note = self.db.get(self.db.tables["Note"], {"id": kwargs["id"]})
 
         if len(note) > 0:
-            self.db.delete(self.db.tables["Note"], {"id": kwargs["id"]})
+            if note[0].admin != int(get_jwt_identity()):
+                return "", "422 Your user is not the owner of the note"
+            self.db.delete_by_id(kwargs['id'], self.db.tables["Note"])
         else:
             raise ObjectNotFound
 

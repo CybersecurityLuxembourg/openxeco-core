@@ -89,6 +89,7 @@ from resource.network.import_taxonomy import ImportTaxonomy
 from resource.note.add_note import AddNote
 from resource.note.delete_note import DeleteNote
 from resource.note.get_notes import GetNotes
+from resource.note.update_note import UpdateNote
 from resource.private.add_my_article import AddMyArticle
 from resource.private.add_my_form_answer import AddFormAnswer
 from resource.private.add_request import AddRequest
