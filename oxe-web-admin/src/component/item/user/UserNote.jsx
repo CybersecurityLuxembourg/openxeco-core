@@ -39,9 +39,32 @@ export default class UserNote extends React.Component {
 		getRequest.call(this, "note/get_notes?" + dictToURI(params), (data) => {
 			this.setState({
 				notes: this.state.notes && params.page !== 1
-					? this.state.notes.concat(data.items) : data.items,
+					? this.state.notes.concat(data.items)
+					: data.items,
 				page: data.pagination.page,
 				pages: data.pagination.pages,
+			}, () => {
+				const userIds = this.state.users
+					? this.state.users.map((u) => (u.id))
+					: [];
+
+				const missingUserIds = [...new Set(data.items
+					.filter((i) => userIds.indexOf(i.admin) < 0)
+					.map((i) => i.admin))];
+
+				if (missingUserIds.length > 0) {
+					getRequest.call(this, "user/get_users?ids=" + missingUserIds.join(","), (data2) => {
+						this.setState({
+							users: this.state.users
+								? this.state.users.concat(data2.items)
+								: data2.items,
+						});
+					}, (response) => {
+						nm.warning(response.statusText);
+					}, (error) => {
+						nm.error(error.message);
+					});
+				}
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -76,7 +99,7 @@ export default class UserNote extends React.Component {
 			return null;
 		}
 
-		const users = this.state.user.filter((u) => u.id === userId);
+		const users = this.state.users.filter((u) => u.id === userId);
 
 		if (users.length === 0) {
 			return null;

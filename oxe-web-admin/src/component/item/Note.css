@@ -12,6 +12,11 @@
     padding: 20px;
 }
 
+.Note .Note-user {
+    padding: 5px 0px 0px 8px;
+    vertical-align: middle;
+}
+
 .Note .Note-time {
     padding: 5px 8px 0px 0px;
     text-align: right;

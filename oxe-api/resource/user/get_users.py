@@ -44,7 +44,7 @@ class GetUsers(MethodResource, Resource):
             .order_by(self.db.tables["User"].email.asc())
 
         if "ids" in kwargs:
-            query = query.filter(self.tables["User"].id.in_(kwargs['ids']))
+            query = query.filter(self.db.tables["User"].id.in_(kwargs['ids']))
 
         if "email" in kwargs:
             query = query.filter(func.lower(self.db.tables["User"].email).like("%" + kwargs["email"] + "%"))

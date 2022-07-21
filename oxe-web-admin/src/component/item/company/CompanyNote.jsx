@@ -17,6 +17,7 @@ export default class CompanyNote extends React.Component {
 			notes: null,
 			page: null,
 			pages: null,
+			users: null,
 			content: "",
 		};
 	}
@@ -41,6 +42,28 @@ export default class CompanyNote extends React.Component {
 					? this.state.notes.concat(data.items) : data.items,
 				page: data.pagination.page,
 				pages: data.pagination.pages,
+			}, () => {
+				const userIds = this.state.users
+					? this.state.users.map((u) => (u.id))
+					: [];
+
+				const missingUserIds = [...new Set(data.items
+					.filter((i) => userIds.indexOf(i.admin) < 0)
+					.map((i) => i.admin))];
+
+				if (missingUserIds.length > 0) {
+					getRequest.call(this, "user/get_users?ids=" + missingUserIds.join(","), (data2) => {
+						this.setState({
+							users: this.state.users
+								? this.state.users.concat(data2.items)
+								: data2.items,
+						});
+					}, (response) => {
+						nm.warning(response.statusText);
+					}, (error) => {
+						nm.error(error.message);
+					});
+				}
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -68,6 +91,20 @@ export default class CompanyNote extends React.Component {
 			this.refresh();
 			nm.error(error.message);
 		});
+	}
+
+	getOwnerUser(userId) {
+		if (!userId || !this.state.users) {
+			return null;
+		}
+
+		const users = this.state.users.filter((u) => u.id === userId);
+
+		if (users.length === 0) {
+			return null;
+		}
+
+		return users[0];
 	}
 
 	changeState(field, value) {
@@ -159,6 +196,7 @@ export default class CompanyNote extends React.Component {
 										key={n.id}
 										note={n}
 										user={this.props.user}
+										ownerUser={this.getOwnerUser(n.admin)}
 										afterDelete={() => this.refresh()}
 										afterUpdate={() => this.refresh()}
 									/>

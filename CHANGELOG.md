@@ -36,6 +36,7 @@ All notable changes to this project will be documented in this file.
 - Restructure the Entity page on oxe-web-admin
 - Rename "ecosystem" to community on UI on oxe-web-admin
 - Rename "Company_Address" table to "CompanyAddress"
+- Add "ids" params on user/get_users resource
 
 ### Fixed
 

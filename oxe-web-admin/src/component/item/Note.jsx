@@ -3,7 +3,6 @@ import "./Note.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import dompurify from "dompurify";
-import User from "./User.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import { postRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
@@ -13,6 +12,7 @@ export default class Note extends Component {
 		super(props);
 
 		this.state = {
+			userComponent: null,
 			updateContent: "",
 		};
 	}
@@ -57,6 +57,14 @@ export default class Note extends Component {
 		});
 	}
 
+	getUserDescription(user, id) {
+		if (this.props.ownerUser) {
+			return this.props.ownerUser.email;
+		}
+
+		return "User: " + id;
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -65,9 +73,9 @@ export default class Note extends Component {
 		return (
 			<div className="Note row">
 				<div className="col-md-6">
-					<User
-						id={this.props.note.admin}
-					/>
+					<div className="Note-user">
+						{this.getUserDescription(this.props.ownerUser, this.props.note.admin)}
+					</div>
 				</div>
 
 				<div className="col-md-6">
