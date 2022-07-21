@@ -9,6 +9,7 @@ import ArticleGlobal from "./article/ArticleGlobal.jsx";
 import ArticleVersion from "./article/ArticleVersion.jsx";
 import ArticleContent from "./article/ArticleContent.jsx";
 import ArticleTag from "./article/ArticleTag.jsx";
+import ArticleNote from "./article/ArticleNote.jsx";
 import ArticleSync from "./article/ArticleSync.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 import FormLine from "../button/FormLine.jsx";
@@ -26,6 +27,7 @@ export default class Article extends Component {
 				"version",
 				"content",
 				"tag",
+				"notes",
 				"synchronization",
 			],
 
@@ -237,7 +239,7 @@ export default class Article extends Component {
 						</h1>
 
 						<Tab
-							labels={["Global", "Version", "Content", "Tag", "Synchronization"]}
+							labels={["Global", "Version", "Content", "Tag", "Notes", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
@@ -273,6 +275,14 @@ export default class Article extends Component {
 									node={this.props.node}
 									editable={!this.props.node}
 									refresh={() => this.fetchArticle()}
+								/>,
+								<ArticleNote
+									key={this.props.id}
+									id={this.props.id}
+									node={this.props.node}
+									editable={!this.props.node}
+									refresh={() => this.fetchArticle()}
+									user={this.props.user}
 								/>,
 								<ArticleSync
 									key={this.props.id}
