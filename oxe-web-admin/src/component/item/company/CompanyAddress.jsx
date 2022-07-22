@@ -189,8 +189,8 @@ export default class CompanyAddress extends React.Component {
 								}
 								modal
 								closeOnDocumentClick
-								onClose={this.onSneakClose}
-								onOpen={this.onSneakOpen}
+								onClose={() => this.onSneakClose()}
+								onOpen={() => this.onSneakOpen()}
 							>
 								<div className="row">
 									<div className="col-md-12">
@@ -214,7 +214,7 @@ export default class CompanyAddress extends React.Component {
 											<div className="col-xl-12 right-buttons">
 												<button
 													className={"blue-background"}
-													onClick={this.fetchRawAddresses}>
+													onClick={() => this.fetchRawAddresses()}>
 													<i className="fas fa-plus"/> Search
 												</button>
 											</div>
@@ -270,7 +270,7 @@ export default class CompanyAddress extends React.Component {
 							<button
 								className={"blue-background"}
 								onClick={() => this.addAddress()}>
-								<i className="fas fa-plus"/> Add an empty address
+								<i className="fas fa-plus"/>
 							</button>
 						</div>
 					}
