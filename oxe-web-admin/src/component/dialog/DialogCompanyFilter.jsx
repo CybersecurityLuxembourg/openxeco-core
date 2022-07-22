@@ -22,7 +22,7 @@ export default class DialogCompanyFilter extends React.Component {
 		this.fetchCompanyEnums = this.fetchCompanyEnums.bind(this);
 
 		this.initialState = {
-			allowedFilters: ["name", "startup_only", "status"],
+			allowedFilters: ["name", "startup_only", "status", "legal_status"],
 
 			...this.props.filters,
 
@@ -186,7 +186,23 @@ export default class DialogCompanyFilter extends React.Component {
 							onChange={(v) => this.changeState("status", v)}
 						/>
 						: <Loading
-							height={100}
+							height={50}
+						/>
+					}
+					{this.state.companyEnums !== null
+						? <FormLine
+							label={"Legal status"}
+							type={"select"}
+							value={this.state.legal_status}
+							options={this.state.companyEnums === null
+                                || typeof this.state.companyEnums.legal_status === "undefined" ? []
+								: [{ value: null, label: "-" }].concat(
+									this.state.companyEnums.legal_status.map((o) => ({ label: o, value: o })),
+								)}
+							onChange={(v) => this.changeState("legal_status", v)}
+						/>
+						: <Loading
+							height={50}
 						/>
 					}
 					<FormLine

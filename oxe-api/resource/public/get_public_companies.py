@@ -26,15 +26,15 @@ class GetPublicCompanies(MethodResource, Resource):
     @use_kwargs({
         'ids': fields.DelimitedList(fields.Int(), required=False),
         'name': fields.Str(required=False),
-        'legal_status': fields.DelimitedList(fields.Str(
-            validate=lambda x: x in ['JURIDICAL PERSON', 'NATURAL PERSON', 'OTHER'],
-            required=False,
-        )),
         'startup_only': fields.Bool(required=False),
         'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'include_inactive': fields.Bool(required=False),
         'count': fields.Bool(required=False),
+        'legal_status': fields.DelimitedList(fields.Str(
+            validate=lambda x: x in ['JURIDICAL PERSON', 'NATURAL PERSON', 'OTHER'],
+            required=False,
+        )),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):

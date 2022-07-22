@@ -24,12 +24,14 @@ class GetCompanies(MethodResource, Resource):
          })
     @use_kwargs({
         'name': fields.Str(required=False),
-        'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
-        'entity_type': fields.DelimitedList(fields.Str(), required=False),
         'startup_only': fields.Bool(required=False),
         'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'status': fields.DelimitedList(fields.Str(), required=False),
+        'legal_status': fields.DelimitedList(fields.Str(
+            validate=lambda x: x in ['JURIDICAL PERSON', 'NATURAL PERSON', 'OTHER'],
+            required=False,
+        )),
     }, location="query")
     @jwt_required
     @verify_admin_access

@@ -175,6 +175,9 @@ class DB:
         if "status" in filters and filters['status'] is not None:
             query = query.filter(self.tables["Company"].status.in_(filters['status']))
 
+        if "legal_status" in filters and filters['legal_status'] is not None:
+            query = query.filter(self.tables["Company"].legal_status.in_(filters['legal_status']))
+
         if "startup_only" in filters and filters['startup_only'] is True:
             query = query.filter(self.tables["Company"].is_startup.is_(True))
 
