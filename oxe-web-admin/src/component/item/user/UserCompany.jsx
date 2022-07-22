@@ -148,7 +148,7 @@ export default class UserCompany extends React.Component {
 							trigger={
 								<button
 									className={"blue-background"}>
-									<i className="fas fa-plus"/> Add an entity
+									<i className="fas fa-plus"/>
 								</button>
 							}
 							modal
