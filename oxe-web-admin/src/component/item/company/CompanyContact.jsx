@@ -82,7 +82,7 @@ export default class CompanyContact extends React.Component {
 						<button
 							className={"blue-background"}
 							onClick={() => this.addAddress()}>
-							<i className="fas fa-plus"/> Add an empty contact point
+							<i className="fas fa-plus"/>
 						</button>
 					</div>
 					<h2>Contact points</h2>
