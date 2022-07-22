@@ -92,6 +92,7 @@ export default class DashboardRecentActivity extends React.Component {
 										key={o.id}
 										id={o.id}
 										name={o.name}
+										legalStatus={o.legal_status}
 									/>
 								))
 							: <Loading

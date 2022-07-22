@@ -33,6 +33,8 @@ class UpdateCompany(MethodResource, Resource):
         'is_startup': fields.Bool(required=False),
         'is_cybersecurity_core_business': fields.Bool(required=False),
         'status': fields.Str(required=False, validate=lambda x: x in ['ACTIVE', 'INACTIVE', 'DELETED']),
+        'legal_status': fields.Str(required=False,
+                                   validate=lambda x: x in ['JURIDICAL PERSON', 'NATURAL PERSON', 'OTHER']),
         'linkedin_url': fields.Str(required=False, allow_none=True),
         'twitter_url': fields.Str(required=False, allow_none=True),
         'youtube_url': fields.Str(required=False, allow_none=True),

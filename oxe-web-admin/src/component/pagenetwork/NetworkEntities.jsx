@@ -94,6 +94,7 @@ export default class NetworkEntities extends React.Component {
 					<Company
 						id={value.id}
 						name={value.name}
+						legalStatus={value.legal_status}
 						node={node}
 					/>
 				),

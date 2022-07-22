@@ -123,6 +123,16 @@ export default class CompanyGlobal extends React.Component {
 						disabled={!this.props.editable}
 					/>
 					<FormLine
+						label={"Legal status"}
+						type={"select"}
+						value={this.props.company.legal_status}
+						options={this.state.companyEnums === null
+							|| typeof this.state.companyEnums.legal_status === "undefined" ? []
+							: this.state.companyEnums.legal_status.map((o) => ({ label: o, value: o }))}
+						onChange={(v) => this.saveCompanyValue("legal_status", v)}
+						disabled={!this.props.editable}
+					/>
+					<FormLine
 						label={"ID"}
 						value={this.props.company.id}
 						disabled={true}

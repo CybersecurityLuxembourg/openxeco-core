@@ -369,6 +369,7 @@ export default class Request extends Component {
 							? <Company
 								id={this.state.company.id}
 								name={this.state.company.name}
+								legalStatus={this.state.company.legal_status}
 							/>
 							: <Message
 								text={"No entity in this request"}

@@ -65,6 +65,8 @@ def upgrade():
 
     op.rename_table('Company_Address', 'CompanyAddress')
 
+    op.add_column('Company', sa.Column('legal_status', mysql.ENUM('JURIDICAL PERSON', 'NATURAL PERSON', 'OTHER'), server_default=sa.text("'JURIDICAL PERSON'"), nullable=False))
+
 
 def downgrade():
     op.drop_table('CompanyRelationship')
@@ -72,3 +74,5 @@ def downgrade():
     op.drop_table('Note')
 
     op.rename_table('CompanyAddress', 'Company_Address')
+
+    op.drop_column('Company', 'legal_status')

@@ -23,7 +23,8 @@ class GetPublicCompanyEnums(MethodResource, Resource):
     def get(self):
 
         data = {
-            "status": self.db.tables["Company"].status.prop.columns[0].type.enums
+            "status": self.db.tables["Company"].status.prop.columns[0].type.enums,
+            "legal_status": self.db.tables["Company"].legal_status.prop.columns[0].type.enums,
         }
 
         return build_no_cors_response(data)

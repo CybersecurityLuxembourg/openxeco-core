@@ -99,6 +99,7 @@ export default class RequestCompanyAccessClaim extends Component {
 							<Company
 								id={this.props.company.id}
 								name={this.props.company.name}
+								legalStatus={this.props.company.legal_status}
 							/>
 						</div>
 

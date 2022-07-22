@@ -23,6 +23,7 @@ export default class Company extends Component {
 		super(props);
 
 		this.state = {
+			company: null,
 			isDetailOpened: false,
 			selectedMenu: null,
 			tabs: [
@@ -130,7 +131,18 @@ export default class Company extends Component {
 				className="Popup-full-size"
 				trigger={
 					<div className={"Company"}>
-						<i className="fas fa-building"/>
+						{this.props.legalStatus === "JURIDICAL PERSON"
+							&& <i className="fas fa-building"/>
+						}
+						{this.props.legalStatus === "NATURAL PERSON"
+							&& <i className="fas fa-address-card"/>
+						}
+						{this.props.legalStatus === "OTHER"
+							&& <i className="fas fa-circle"/>
+						}
+						{!this.props.legalStatus
+							&& <i className="fas fa-question"/>
+						}
 						<div className={"Company-name"}>
 							{this.props.name}
 						</div>

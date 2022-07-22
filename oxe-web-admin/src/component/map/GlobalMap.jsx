@@ -17,7 +17,7 @@ export default class GlobalMap extends React.Component {
 			lng: 6.1319,
 			zoom: 10,
 			selectedCompanyId: null,
-			selectedCompanyName: null,
+			selectedCompanyData: null,
 		};
 	}
 
@@ -26,7 +26,7 @@ export default class GlobalMap extends React.Component {
             && this.state.selectedCompanyId !== null) {
 			getRequest.call(this, "company/get_company/" + this.state.selectedCompanyId, (data) => {
 				this.setState({
-					selectedCompanyName: data.name,
+					selectedCompanyData: data.name,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -37,7 +37,7 @@ export default class GlobalMap extends React.Component {
 	}
 
 	handlePopupClose() {
-		this.setState({ selectedCompanyId: null, selectedCompanyName: null });
+		this.setState({ selectedCompanyId: null, selectedCompanyData: null });
 	}
 
 	handlePopupOpen(companyId) {
@@ -100,7 +100,8 @@ export default class GlobalMap extends React.Component {
 						</div>
 						<Company
 							id={this.state.selectedCompanyId}
-							name={this.state.selectedCompanyName}
+							name={this.state.selectedCompanyData.name}
+							legalStatus={this.state.selectedCompanyData.legal_status}
 						/>
 					</div>
 					: ""}

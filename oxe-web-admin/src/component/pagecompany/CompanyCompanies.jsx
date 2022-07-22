@@ -48,16 +48,13 @@ export default class CompanyCompanies extends React.Component {
 					<Company
 						id={value.id}
 						name={value.name}
+						legalStatus={value.legal_status}
 						afterDeletion={() => this.props.refreshCompanies()}
 						onOpen={() => this.props.history.push("/companies/" + value.id)}
 						onClose={() => this.props.history.push("/companies")}
 						open={value.id.toString() === this.props.match.params.id}
 					/>
 				),
-			},
-			{
-				Header: "Trade register number",
-				accessor: "trade_register_number",
 			},
 			{
 				Header: "Website",

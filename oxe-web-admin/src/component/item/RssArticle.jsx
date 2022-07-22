@@ -79,6 +79,7 @@ export default class RssArticle extends Component {
 						&& <Company
 							id={this.props.company.id}
 							name={this.props.company.name}
+							legalStatus={this.props.company.legal_status}
 						/>
 					}
 				</div>
@@ -164,6 +165,7 @@ export default class RssArticle extends Component {
 									<Company
 										id={this.props.company.id}
 										name={this.props.company.name}
+										legalStatus={this.props.company.legal_status}
 									/>
 								</div>
 							}
