@@ -1,5 +1,6 @@
 import React from "react";
 import "./ArticleVersion.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
@@ -94,7 +95,7 @@ export default class ArticleVersion extends React.Component {
 		});
 	}
 
-	addArticleVersion() {
+	addArticleVersion(close) {
 		const params = {
 			article_id: this.props.id,
 			name: this.state.newVersionName,
@@ -102,6 +103,9 @@ export default class ArticleVersion extends React.Component {
 
 		postRequest.call(this, "article/add_article_version", params, () => {
 			this.refresh();
+			if (close) {
+				close();
+			}
 			nm.info("The version has been added");
 		}, (response) => {
 			this.refresh();
@@ -195,9 +199,59 @@ export default class ArticleVersion extends React.Component {
 			<div className={"row row-spaced"}>
 				<div className="col-md-12">
 					<div className={"row"}>
-						<div className="col-md-12">
+						<div className="col-md-9">
 							<h2>Version</h2>
 						</div>
+
+						<div className="col-md-3">
+							<div className="top-right-buttons">
+								<Popup
+									trigger={
+										<button
+											disabled={!this.props.editable}>
+											<i className="fas fa-plus"/>
+										</button>
+									}
+									modal
+								>
+									{(close) => <div className={"row row-spaced"}>
+										<div className={"col-md-9"}>
+											<h2>Add a new version</h2>
+										</div>
+
+										<div className={"col-md-3"}>
+											<div className="top-right-buttons">
+												<button
+													className={"grey-background"}
+													data-hover="Close"
+													data-active=""
+													onClick={close}>
+													<span><i className="far fa-times-circle"/></span>
+												</button>
+											</div>
+										</div>
+
+										<div className="col-md-12">
+											<FormLine
+												label={"Name"}
+												value={this.state.newVersionName}
+												onChange={(v) => this.changeState("newVersionName", v)}
+											/>
+										</div>
+
+										<div className="col-md-12 right-buttons">
+											<button
+												onClick={() => this.addArticleVersion(close)}
+												disabled={this.state.newVersionName === null
+													|| this.state.newVersionName.length < 2}>
+												<i className="fas fa-plus"/> Add a new version
+											</button>
+										</div>
+									</div>}
+								</Popup>
+							</div>
+						</div>
+
 						<div className="col-md-12">
 							<Table
 								columns={columns}
@@ -205,24 +259,6 @@ export default class ArticleVersion extends React.Component {
 								showBottomBar={true}
 								useFlexLayout={true}
 							/>
-						</div>
-					</div>
-					<div className={"row"}>
-						<div className="col-md-6">
-							<h2>Add a new version</h2>
-							<FormLine
-								label={"Name"}
-								value={this.state.newVersionName}
-								onChange={(v) => this.changeState("newVersionName", v)}
-							/>
-							<div className="right-buttons">
-								<button
-									onClick={() => this.addArticleVersion()}
-									disabled={this.state.newVersionName === null
-										|| this.state.newVersionName.length < 2}>
-									<i className="fas fa-plus"/> Add a new version
-								</button>
-							</div>
 						</div>
 					</div>
 				</div>

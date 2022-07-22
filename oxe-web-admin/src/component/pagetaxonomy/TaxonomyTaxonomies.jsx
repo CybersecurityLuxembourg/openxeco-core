@@ -113,12 +113,14 @@ export default class TaxonomyTaxonomies extends React.Component {
 		return (
 			<div id="TaxonomyTaxonomies" className="max-sized-page">
 				<div className={"row"}>
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h1>
 							{this.state.categories ? this.state.categories.length : 0}
 							&nbsp;Taxonom{this.state.categories && this.state.categories.length > 1 ? "ies" : "y"}
 						</h1>
+					</div>
 
+					<div className="col-md-3">
 						<div className="top-right-buttons">
 							<button
 								onClick={() => this.refresh()}>
