@@ -188,7 +188,7 @@ export default class EmailSend extends React.Component {
 		];
 
 		return (
-			<div id="EmailSend" className="page max-sized-page">
+			<div id="EmailSend" className="max-sized-page fade-in">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h1>Send a communication via email</h1>
