@@ -14,19 +14,22 @@ class GetPublicCompanies(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get the full list of public companies.\n\n'
-                     'Companies with the INACTIVE status are not in the list by default, '
+         description='Get the list or the count of public entities.\n\n'
+                     'Entities with the INACTIVE status are not in the list by default, '
                      'please see the "include_inactive" parameter.\n\n'
                      'The request returns a restricted amount of information '
-                     '(id, name, is_startup, is_cybersecurity_core_business, creation_date, image, status)',
+                     '(id, name, legal_status, is_startup, is_cybersecurity_core_business, '
+                     'creation_date, image, status)',
          responses={
              "200": {},
          })
     @use_kwargs({
         'ids': fields.DelimitedList(fields.Int(), required=False),
         'name': fields.Str(required=False),
-        'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
-        'entity_type': fields.DelimitedList(fields.Str(), required=False),
+        'legal_status': fields.DelimitedList(fields.Str(
+            validate=lambda x: x in ['JURIDICAL PERSON', 'NATURAL PERSON', 'OTHER'],
+            required=False,
+        )),
         'startup_only': fields.Bool(required=False),
         'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
@@ -45,7 +48,7 @@ class GetPublicCompanies(MethodResource, Resource):
         if "count" in kwargs and kwargs["count"] is True:
             response = {"count": self.db.get_filtered_companies(kwargs).count()}
         else:
-            entities = c.id, c.name, c.is_startup, c.is_cybersecurity_core_business, \
+            entities = c.id, c.name, c.legal_status, c.is_startup, c.is_cybersecurity_core_business, \
                 c.trade_register_number, c.creation_date, c.description, c.website, c.image, c.status, c.linkedin_url, \
                 c.twitter_url, c.youtube_url, c.discord_url, c.sync_node, c.sync_id, c.sync_global, c.sync_address, \
                 c.sync_status

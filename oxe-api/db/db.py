@@ -175,44 +175,6 @@ class DB:
         if "status" in filters and filters['status'] is not None:
             query = query.filter(self.tables["Company"].status.in_(filters['status']))
 
-        if "ecosystem_role" in filters and filters['ecosystem_role'] is not None:
-            ecosystem_roles = filters['ecosystem_role'] if isinstance(filters['ecosystem_role'], list) else \
-                filters['ecosystem_role'].split(',')
-
-            ecosystem_role_values = self.session \
-                .query(self.tables["TaxonomyValue"]) \
-                .with_entities(self.tables["TaxonomyValue"].id) \
-                .filter(self.tables["TaxonomyValue"].category == "ECOSYSTEM ROLE") \
-                .filter(self.tables["TaxonomyValue"].name.in_(ecosystem_roles)) \
-                .subquery()
-
-            assigned_company = self.session \
-                .query(self.tables["TaxonomyAssignment"]) \
-                .with_entities(self.tables["TaxonomyAssignment"].company) \
-                .filter(self.tables["TaxonomyAssignment"].taxonomy_value.in_(ecosystem_role_values)) \
-                .subquery()
-
-            query = query.filter(self.tables["Company"].id.in_(assigned_company))
-
-        if "entity_type" in filters and filters['entity_type'] is not None:
-            entity_types = filters['entity_type'] if isinstance(filters['entity_type'], list) \
-                else filters['entity_type'].split(',')
-
-            entity_type_values = self.session \
-                .query(self.tables["TaxonomyValue"]) \
-                .with_entities(self.tables["TaxonomyValue"].id) \
-                .filter(self.tables["TaxonomyValue"].category == "ENTITY TYPE") \
-                .filter(self.tables["TaxonomyValue"].name.in_(entity_types)) \
-                .subquery()
-
-            assigned_company = self.session \
-                .query(self.tables["TaxonomyAssignment"]) \
-                .with_entities(self.tables["TaxonomyAssignment"].company) \
-                .filter(self.tables["TaxonomyAssignment"].taxonomy_value.in_(entity_type_values)) \
-                .subquery()
-
-            query = query.filter(self.tables["Company"].id.in_(assigned_company))
-
         if "startup_only" in filters and filters['startup_only'] is True:
             query = query.filter(self.tables["Company"].is_startup.is_(True))
 
