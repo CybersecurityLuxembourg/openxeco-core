@@ -13,21 +13,16 @@ export default class Website extends Component {
 		return (
 			<a
 				rel="noreferrer"
-				className={this.props.url !== null && this.props.url.length > 0 ? "" : "Website-link-disabled"}
-				href={(this.props.url !== null && (this.props.url.startsWith("/") || this.props.url.startsWith("http")) ? "" : "https://") + this.props.url}
+				className={this.props.url && this.props.url.length > 0 ? "" : "Website-link-disabled"}
+				href={(this.props.url && (this.props.url.startsWith("/") || this.props.url.startsWith("http")) ? "" : "https://") + this.props.url}
 				target="_blank">
 				<div className={"Website "
-                    + (this.props.url !== null && this.props.url.length > 0 ? "" : "Website-disabled")}>
+                    + (this.props.url && this.props.url.length > 0 ? "" : "Website-disabled")}>
 					<i className="fas fa-globe-europe"/>
 					<div className={"Website-name"}>
-						{this.props.url !== null && this.props.url.length > 0 && this.props.label !== undefined
-							&& this.props.label
-						}
-						{this.props.url !== null && this.props.url.length > 0 && this.props.label === undefined
-							&& this.props.url
-						}
-						{(this.props.url === null || this.props.url.length === 0)
-							&& this.props.url
+						{this.props.url && this.props.url.length > 0
+							? this.props.url
+							: "No website"
 						}
 					</div>
 				</div>
