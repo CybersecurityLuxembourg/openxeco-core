@@ -1,5 +1,6 @@
 import React from "react";
 import "./CompanyRelationship.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, getNoCorsRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
@@ -78,7 +79,7 @@ export default class CompanyRelationship extends React.Component {
 		});
 	}
 
-	addRelationship() {
+	addRelationship(close) {
 		const params = {
 			company_1: this.state.isCurrentCompanyFirst
 				? this.props.id
@@ -91,6 +92,9 @@ export default class CompanyRelationship extends React.Component {
 
 		postRequest.call(this, "relationship/add_relationship", params, () => {
 			this.refresh();
+			if (close) {
+				close();
+			}
 			nm.info("The property has been added");
 		}, (response) => {
 			this.refresh();
@@ -221,84 +225,117 @@ export default class CompanyRelationship extends React.Component {
 
 		return (
 			<div>
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+				<div id="CompanyRelationship" className={"row row-spaced"}>
+					<div className="col-md-9">
 						<h2>Relationship</h2>
 					</div>
+
 					<div className="col-md-3">
-						<FormLine
-							type={this.state.isCurrentCompanyFirst
-								? "text"
-								: "select"
-							}
-							value={this.state.isCurrentCompanyFirst
-								? this.props.company.name
-								: this.state.selectedOtherEntity
-							}
-							options={this.state.companyOptions}
-							fullWidth={true}
-							onChange={(v) => this.changeState("selectedOtherEntity", v)}
-							disabled={this.state.isCurrentCompanyFirst}
-						/>
-					</div>
-					<div className="col-md-1">
-						<div className="centered-middled">
-							<i className="fas fa-minus"/>
+						<div className="top-right-buttons">
+							<Popup
+								className="CompanyRelationship-add-popup"
+								trigger={
+									<button
+										disabled={!this.props.editable}>
+										<i className="fas fa-plus"/>
+									</button>
+								}
+								modal
+							>
+								{(close) => <div className={"row row-spaced"}>
+									<div className={"col-md-9"}>
+										<h2>Add a new entity relationship</h2>
+									</div>
+
+									<div className={"col-md-3"}>
+										<div className="top-right-buttons">
+											<button
+												className={"grey-background"}
+												data-hover="Close"
+												data-active=""
+												onClick={close}>
+												<span><i className="far fa-times-circle"/></span>
+											</button>
+										</div>
+									</div>
+
+									<div className="col-md-3">
+										<FormLine
+											type={this.state.isCurrentCompanyFirst
+												? "text"
+												: "select"
+											}
+											value={this.state.isCurrentCompanyFirst
+												? this.props.company.name
+												: this.state.selectedOtherEntity
+											}
+											options={this.state.companyOptions}
+											fullWidth={true}
+											onChange={(v) => this.changeState("selectedOtherEntity", v)}
+											disabled={this.state.isCurrentCompanyFirst}
+										/>
+									</div>
+									<div className="col-md-1">
+										<div className="centered-middled">
+											<i className="fas fa-minus"/>
+										</div>
+									</div>
+									<div className="col-md-4">
+										<FormLine
+											type={"select"}
+											value={this.state.selectedType}
+											options={this.state.types.map((t) => ({
+												label: t.name,
+												value: t.id,
+											}))}
+											fullWidth={true}
+											onChange={(v) => this.changeState("selectedType", v)}
+										/>
+									</div>
+									<div className="col-md-1">
+										<div className="centered-middled">
+											{this.isRelationshipTypeDirectional(this.state.selectedType)
+												? <i className="fas fa-arrow-right"/>
+												: <i className="fas fa-minus"/>
+											}
+										</div>
+									</div>
+									<div className="col-md-3">
+										<FormLine
+											type={this.state.isCurrentCompanyFirst
+												? "select"
+												: "text"
+											}
+											value={this.state.isCurrentCompanyFirst
+												? this.state.selectedOtherEntity
+												: this.props.company.name
+											}
+											options={this.state.companyOptions}
+											fullWidth={true}
+											onChange={(v) => this.changeState("selectedOtherEntity", v)}
+											disabled={!this.state.isCurrentCompanyFirst}
+										/>
+									</div>
+									<div className="col-md-12 right-buttons">
+										<button
+											className={"blue-background"}
+											onClick={() => this.addRelationship(close)}
+											disabled={!this.state.selectedType || !this.state.selectedOtherEntity}>
+											<i className="fas fa-plus"/> Add
+										</button>
+										<button
+											className={"blue-background"}
+											onClick={() => this.changeState(
+												"isCurrentCompanyFirst", !this.state.isCurrentCompanyFirst,
+											)}>
+											<i className="fas fa-sync"/> Reverse position
+										</button>
+									</div>
+								</div>}
+							</Popup>
 						</div>
 					</div>
-					<div className="col-md-4">
-						<FormLine
-							type={"select"}
-							value={this.state.selectedType}
-							options={this.state.types.map((t) => ({
-								label: t.name,
-								value: t.id,
-							}))}
-							fullWidth={true}
-							onChange={(v) => this.changeState("selectedType", v)}
-						/>
-					</div>
-					<div className="col-md-1">
-						<div className="centered-middled">
-							{this.isRelationshipTypeDirectional(this.state.selectedType)
-								? <i className="fas fa-arrow-right"/>
-								: <i className="fas fa-minus"/>
-							}
-						</div>
-					</div>
-					<div className="col-md-3">
-						<FormLine
-							type={this.state.isCurrentCompanyFirst
-								? "select"
-								: "text"
-							}
-							value={this.state.isCurrentCompanyFirst
-								? this.state.selectedOtherEntity
-								: this.props.company.name
-							}
-							options={this.state.companyOptions}
-							fullWidth={true}
-							onChange={(v) => this.changeState("selectedOtherEntity", v)}
-							disabled={!this.state.isCurrentCompanyFirst}
-						/>
-					</div>
-					<div className="col-md-12 right-buttons">
-						<button
-							className={"blue-background"}
-							onClick={() => this.addRelationship()}
-							disabled={!this.state.selectedType || !this.state.selectedOtherEntity}>
-							<i className="fas fa-plus"/> Add
-						</button>
-						<button
-							className={"blue-background"}
-							onClick={() => this.changeState(
-								"isCurrentCompanyFirst", !this.state.isCurrentCompanyFirst,
-							)}>
-							<i className="fas fa-sync"/> Reverse position
-						</button>
-					</div>
-				</div>
-				<div className={"row"}>
+
 					<div className="col-md-12">
 						<Table
 							columns={columns}

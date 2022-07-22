@@ -1,5 +1,6 @@
 import React from "react";
 import "./CompanyWorkforce.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
@@ -43,7 +44,7 @@ export default class CompanyWorkforce extends React.Component {
 		});
 	}
 
-	addWorkforce() {
+	addWorkforce(close) {
 		const params = {
 			company: this.props.id,
 			workforce: parseInt(this.state.workforce, 10),
@@ -54,6 +55,9 @@ export default class CompanyWorkforce extends React.Component {
 
 		postRequest.call(this, "workforce/add_workforce", params, () => {
 			this.refresh();
+			if (close) {
+				close();
+			}
 			nm.info("The property has been added");
 		}, (response) => {
 			this.refresh();
@@ -136,54 +140,86 @@ export default class CompanyWorkforce extends React.Component {
 		return (
 			<div>
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h2>Workforce</h2>
 					</div>
+
 					<div className="col-md-3">
-						<FormLine
-							label={"Workforce"}
-							type={"number"}
-							value={this.state.workforce}
-							fullWidth={true}
-							onChange={(v) => this.changeState("workforce", v)}
-						/>
+						<div className="top-right-buttons">
+							<Popup
+								trigger={
+									<button
+										disabled={!this.props.editable}>
+										<i className="fas fa-plus"/>
+									</button>
+								}
+								modal
+							>
+								{(close) => <div className={"row row-spaced"}>
+									<div className={"col-md-9"}>
+										<h2>Add workforce</h2>
+									</div>
+
+									<div className={"col-md-3"}>
+										<div className="top-right-buttons">
+											<button
+												className={"grey-background"}
+												data-hover="Close"
+												data-active=""
+												onClick={close}>
+												<span><i className="far fa-times-circle"/></span>
+											</button>
+										</div>
+									</div>
+
+									<div className="col-md-3">
+										<FormLine
+											label={"Workforce"}
+											type={"number"}
+											value={this.state.workforce}
+											fullWidth={true}
+											onChange={(v) => this.changeState("workforce", v)}
+										/>
+									</div>
+									<div className="col-md-3">
+										<FormLine
+											label={"Date"}
+											type={"date"}
+											value={this.state.date}
+											fullWidth={true}
+											onChange={(v) => this.changeState("date", v)}
+										/>
+									</div>
+									<div className="col-md-3">
+										<FormLine
+											label={"Source"}
+											value={this.state.source}
+											onChange={(v) => this.changeState("source", v)}
+											fullWidth={true}
+										/>
+									</div>
+									<div className="col-md-3">
+										<FormLine
+											label={"Is estimated?"}
+											type={"checkbox"}
+											value={this.state.is_estimated}
+											onChange={(v) => this.changeState("is_estimated", v)}
+											fullWidth={true}
+										/>
+									</div>
+									<div className="col-md-12 right-buttons">
+										<button
+											className={"blue-background"}
+											onClick={() => this.addWorkforce(close)}
+											disabled={this.state.workforce === null}>
+											<i className="fas fa-plus"/> Add workforce
+										</button>
+									</div>
+								</div>}
+							</Popup>
+						</div>
 					</div>
-					<div className="col-md-3">
-						<FormLine
-							label={"Date"}
-							type={"date"}
-							value={this.state.date}
-							fullWidth={true}
-							onChange={(v) => this.changeState("date", v)}
-						/>
-					</div>
-					<div className="col-md-3">
-						<FormLine
-							label={"Source"}
-							value={this.state.source}
-							onChange={(v) => this.changeState("source", v)}
-							fullWidth={true}
-						/>
-					</div>
-					<div className="col-md-3">
-						<FormLine
-							label={"Is estimated?"}
-							type={"checkbox"}
-							value={this.state.is_estimated}
-							onChange={(v) => this.changeState("is_estimated", v)}
-							fullWidth={true}
-						/>
-					</div>
-					<div className="col-md-12 right-buttons">
-						<button
-							className={"blue-background"}
-							onClick={() => this.addWorkforce()}
-							disabled={this.state.workforce === null}>
-							<i className="fas fa-plus"/> Add
-						</button>
-					</div>
-				</div>
-				<div className={"row"}>
+
 					<div className="col-md-12">
 						<Table
 							columns={columns}
