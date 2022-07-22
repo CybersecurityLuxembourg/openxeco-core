@@ -1,5 +1,6 @@
 import React from "react";
 import "./TaxonomyValues.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import Loading from "../../box/Loading.jsx";
 import Table from "../../table/Table.jsx";
@@ -16,7 +17,7 @@ export default class TaxonomyValues extends React.Component {
 		};
 	}
 
-	addValue() {
+	addValue(close) {
 		if (this.props.editable) {
 			const params = {
 				category: this.props.name,
@@ -26,6 +27,9 @@ export default class TaxonomyValues extends React.Component {
 			postRequest.call(this, "taxonomy/add_taxonomy_value", params, () => {
 				this.props.refresh();
 				this.setState({ newValue: "" });
+				if (close) {
+					close();
+				}
 				nm.info("The value has been added");
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -111,8 +115,56 @@ export default class TaxonomyValues extends React.Component {
 
 		return (
 			<div className={"row"}>
-				<div className="col-md-12">
+				<div className="col-md-9">
 					<h2>Values</h2>
+				</div>
+
+				<div className="col-md-3">
+					<div className="top-right-buttons">
+						<Popup
+							trigger={
+								<button
+									disabled={!this.props.editable}>
+									<i className="fas fa-plus"/>
+								</button>
+							}
+							modal
+						>
+							{(close) => <div className={"row row-spaced"}>
+								<div className={"col-md-9"}>
+									<h2>Add a new value</h2>
+								</div>
+
+								<div className={"col-md-3"}>
+									<div className="top-right-buttons">
+										<button
+											className={"grey-background"}
+											data-hover="Close"
+											data-active=""
+											onClick={close}>
+											<span><i className="far fa-times-circle"/></span>
+										</button>
+									</div>
+								</div>
+
+								<div className="col-md-12">
+									<FormLine
+										label={"Value name"}
+										value={this.state.newValue}
+										onChange={(v) => this.changeState("newValue", v)}
+									/>
+								</div>
+								<div className="col-md-12 right-buttons">
+									<button
+										className={"blue-background"}
+										disabled={!this.props.editable}
+										onClick={() => this.addValue(close)}>
+										<i className="fas fa-plus"/> Add value
+									</button>
+								</div>
+							</div>}
+						</Popup>
+					</div>
 				</div>
 
 				<div className="col-md-12">
@@ -121,24 +173,6 @@ export default class TaxonomyValues extends React.Component {
 						&& this.getValues()
 						? this.getValues()
 							&& <div className="row">
-								{this.props.editable
-									&& <div className="col-md-12">
-										<FormLine
-											label={"Add a new value"}
-											value={this.state.newValue}
-											onChange={(v) => this.changeState("newValue", v)}
-										/>
-										<div className="col-md-12 right-buttons">
-											<button
-												className={"blue-background"}
-												disabled={!this.props.editable}
-												onClick={() => this.addValue()}>
-												<i className="fas fa-plus"/> Add value
-											</button>
-										</div>
-									</div>
-								}
-
 								<div className="col-md-12">
 									<Table
 										keyBase={"CategoryValue"}

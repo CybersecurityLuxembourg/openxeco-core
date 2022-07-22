@@ -1,5 +1,6 @@
 import React from "react";
 import "./TaxonomyHierarchy.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Loading from "../../box/Loading.jsx";
@@ -22,7 +23,7 @@ export default class TaxonomyHierarchy extends React.Component {
 		};
 	}
 
-	addCategoryHierarchy(parentCategory, childCategory) {
+	addCategoryHierarchy(parentCategory, childCategory, close) {
 		if (this.props.editable) {
 			const params = {
 				parent_category: parentCategory,
@@ -35,6 +36,9 @@ export default class TaxonomyHierarchy extends React.Component {
 					newParentCategory: null,
 					newChildCategory: null,
 				});
+				if (close) {
+					close();
+				}
 				nm.info("The hierarchy has been added");
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -227,83 +231,163 @@ export default class TaxonomyHierarchy extends React.Component {
 				</div>
 
 				<div className="col-md-6 row-spaced">
-					<h3>Parent categories</h3>
+					<div className={"row"}>
+						<div className="col-md-9">
+							<h3>Parent categories</h3>
+						</div>
 
-					{this.props.name && this.props.taxonomy
-						&& this.getParentCategories()
-						? <div className="row">
-							{this.props.editable
-								&& <div className="col-md-12 right-buttons">
-									<FormLine
-										label={"New parent category"}
-										type={"select"}
-										options={this.props.taxonomy.categories
-											.filter((c) => c.name !== this.props.name)
-											.map((c) => ({ label: c.name, value: c.name }))}
-										value={this.state.newParentCategory}
-										onChange={(v) => this.changeState("newParentCategory", v)}
-									/>
-									<button
-										className={"blue-background"}
-										onClick={() => this.addCategoryHierarchy(
-											this.state.newParentCategory, this.props.name,
-										)}>
-										<i className="fas fa-plus"/> Add hierarchy
-									</button>
-								</div>
-							}
-							<div className="col-md-12">
-								<Table
-									keyBase={"CategoryHierarchy"}
-									columns={categoryHierarchyColumns}
-									data={this.getParentCategories()}
-								/>
+						<div className="col-md-3">
+							<div className="right-buttons">
+								<Popup
+									trigger={
+										<button
+											disabled={!this.props.editable}>
+											<i className="fas fa-plus"/>
+										</button>
+									}
+									modal
+								>
+									{(close) => <div className={"row row-spaced"}>
+										<div className={"col-md-9"}>
+											<h2>Add a new parent category</h2>
+										</div>
+
+										<div className={"col-md-3"}>
+											<div className="top-right-buttons">
+												<button
+													className={"grey-background"}
+													data-hover="Close"
+													data-active=""
+													onClick={close}>
+													<span><i className="far fa-times-circle"/></span>
+												</button>
+											</div>
+										</div>
+
+										<div className="col-md-12">
+											<FormLine
+												label={"New parent category"}
+												type={"select"}
+												options={this.props.taxonomy.categories
+													.filter((c) => c.name !== this.props.name)
+													.map((c) => ({ label: c.name, value: c.name }))}
+												value={this.state.newParentCategory}
+												onChange={(v) => this.changeState("newParentCategory", v)}
+											/>
+										</div>
+
+										<div className="col-md-12 right-buttons">
+											<button
+												className={"blue-background"}
+												onClick={() => this.addCategoryHierarchy(
+													this.state.newParentCategory, this.props.name, close,
+												)}>
+												<i className="fas fa-plus"/> Add parent category
+											</button>
+										</div>
+									</div>}
+								</Popup>
 							</div>
 						</div>
-						: <Loading
-							height={200}
-						/>
-					}
+
+						<div className="col-md-12">
+							{this.props.name && this.props.taxonomy
+								&& this.getParentCategories()
+								? <div className="row">
+									<div className="col-md-12">
+										<Table
+											keyBase={"CategoryHierarchy"}
+											columns={categoryHierarchyColumns}
+											data={this.getParentCategories()}
+										/>
+									</div>
+								</div>
+								: <Loading
+									height={200}
+								/>
+							}
+						</div>
+					</div>
 				</div>
 
 				<div className="col-md-6 row-spaced">
-					<h3>Child categories</h3>
+					<div className={"row"}>
+						<div className="col-md-9">
+							<h3>Child categories</h3>
+						</div>
 
-					{this.props.name && this.props.taxonomy
-						&& this.getChildCategories()
-						? <div className="row">
-							{this.props.editable
-								&& <div className="col-md-12 right-buttons">
-									<FormLine
-										label={"New child category"}
-										type={"select"}
-										options={this.props.taxonomy.categories
-											.filter((c) => c.name !== this.props.name)
-											.map((c) => ({ label: c.name, value: c.name }))}
-										value={this.state.newChildCategory}
-										onChange={(v) => this.changeState("newChildCategory", v)}
-									/>
-									<button
-										className={"blue-background"}
-										onClick={() => this.addCategoryHierarchy(
-											this.props.name, this.state.newChildCategory,
-										)}>
-										<i className="fas fa-plus"/> Add hierarchy
-									</button>
-								</div>
-							}
-							<div className="col-md-12">
-								<Table
-									keyBase={"CategoryHierarchy"}
-									columns={categoryHierarchyColumns}
-									data={this.getChildCategories()}
-								/>
+						<div className="col-md-3">
+							<div className="right-buttons">
+								<Popup
+									trigger={
+										<button
+											disabled={!this.props.editable}>
+											<i className="fas fa-plus"/>
+										</button>
+									}
+									modal
+								>
+									{(close) => <div className={"row row-spaced"}>
+										<div className={"col-md-9"}>
+											<h2>Add a new child category</h2>
+										</div>
+
+										<div className={"col-md-3"}>
+											<div className="top-right-buttons">
+												<button
+													className={"grey-background"}
+													data-hover="Close"
+													data-active=""
+													onClick={close}>
+													<span><i className="far fa-times-circle"/></span>
+												</button>
+											</div>
+										</div>
+
+										<div className="col-md-12">
+											<FormLine
+												label={"New child category"}
+												type={"select"}
+												options={this.props.taxonomy.categories
+													.filter((c) => c.name !== this.props.name)
+													.map((c) => ({ label: c.name, value: c.name }))}
+												value={this.state.newChildCategory}
+												onChange={(v) => this.changeState("newChildCategory", v)}
+											/>
+										</div>
+
+										<div className="col-md-12 right-buttons">
+											<button
+												className={"blue-background"}
+												onClick={() => this.addCategoryHierarchy(
+													this.props.name, this.state.newChildCategory, close,
+												)}>
+												<i className="fas fa-plus"/> Add child category
+											</button>
+										</div>
+									</div>}
+								</Popup>
 							</div>
 						</div>
-						: <Loading
-							height={200}
-						/>
-					}
+
+						<div className="col-md-12">
+							{this.props.name && this.props.taxonomy
+								&& this.getChildCategories()
+								? <div className="row">
+									<div className="col-md-12">
+										<Table
+											keyBase={"CategoryHierarchy"}
+											columns={categoryHierarchyColumns}
+											data={this.getChildCategories()}
+										/>
+									</div>
+								</div>
+								: <Loading
+									height={200}
+								/>
+							}
+						</div>
+					</div>
 				</div>
 
 				<div className="col-md-12">
