@@ -105,13 +105,18 @@ export default class CompanyGlobal extends React.Component {
 						label={""}
 						value={this.props.company.image}
 						onChange={(v) => this.saveCompanyValue("image", v)}
-						height={150}
+						height={160}
 						disabled={!this.props.editable}
 						fullWidth={true}
 					/>
 				</div>
 
 				<div className="col-md-6">
+					<FormLine
+						label={"ID"}
+						value={this.props.company.id}
+						disabled={true}
+					/>
 					<FormLine
 						label={"Status"}
 						type={"select"}
@@ -131,11 +136,6 @@ export default class CompanyGlobal extends React.Component {
 							: this.state.companyEnums.legal_status.map((o) => ({ label: o, value: o }))}
 						onChange={(v) => this.saveCompanyValue("legal_status", v)}
 						disabled={!this.props.editable}
-					/>
-					<FormLine
-						label={"ID"}
-						value={this.props.company.id}
-						disabled={true}
 					/>
 					<FormLine
 						label={"Name"}

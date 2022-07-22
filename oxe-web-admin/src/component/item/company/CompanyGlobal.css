@@ -2,3 +2,7 @@
 #CompanyGlobal .Formline-image-wrapper .right-buttons > button {
 	float: none !important;
 }
+
+#CompanyGlobal .Formline-image-display-wrapper {
+	display: block !important;
+}

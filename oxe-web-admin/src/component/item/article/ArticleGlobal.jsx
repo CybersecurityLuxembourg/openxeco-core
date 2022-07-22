@@ -107,13 +107,18 @@ export default class ArticleGlobal extends React.Component {
 						label={""}
 						value={this.props.article.image}
 						onChange={(v) => this.saveArticleValue("image", v)}
-						height={200}
+						height={160}
 						disabled={!this.props.editable}
 						fullWidth={true}
 					/>
 				</div>
 
 				<div className="col-md-6">
+					<FormLine
+						label={"ID"}
+						value={this.props.article.id}
+						disabled={true}
+					/>
 					<FormLine
 						label={"Status"}
 						type={"select"}
@@ -123,11 +128,6 @@ export default class ArticleGlobal extends React.Component {
 							: this.state.articleEnums.status.map((o) => ({ label: o, value: o }))}
 						onChange={(v) => this.saveArticleValue("status", v)}
 						disabled={!this.props.editable}
-					/>
-					<FormLine
-						label={"ID"}
-						value={this.props.article.id}
-						disabled={true}
 					/>
 					<FormLine
 						label={"Title"}
