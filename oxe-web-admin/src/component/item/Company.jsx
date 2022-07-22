@@ -155,11 +155,6 @@ export default class Company extends Component {
 				{(close) => <div className="row row-spaced">
 					<div className="col-md-12">
 						<div className={"top-right-buttons"}>
-							<button
-								className={"blue-background"}
-								onClick={() => window.open("http://google.com/search?q=" + this.props.name)}>
-								<i className="fab fa-google"></i>
-							</button>
 							{this.props.node
 								&& this.state.company
 								&& <Popup
