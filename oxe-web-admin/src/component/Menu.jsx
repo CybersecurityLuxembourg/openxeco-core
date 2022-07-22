@@ -104,10 +104,10 @@ export default class Menu extends React.Component {
 						active={this.props.selectedMenu === "companies"}
 						onClick={() => this.props.history.push("/companies")}>
 						<NavIcon>
-							<i className="fas fa-building" style={{ fontSize: "1.75em" }} />
+							<i className="fas fa-shapes" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							Entities
+							Entity
 						</NavText>
 					</NavItem>
 					<NavItem
@@ -146,18 +146,6 @@ export default class Menu extends React.Component {
 						</NavItem>
 					}
 					<div className="Menu-divider"/>
-					<NavItem
-						eventKey="task"
-						active={this.props.selectedMenu === "task"}
-						onClick={() => this.props.history.push("/task")}>
-						<NavIcon>
-							<i className="fas fa-tasks" style={{ fontSize: "1.75em" }} />
-						</NavIcon>
-						<NavText>
-							Tasks
-						</NavText>
-						{this.getTaskNotificationBlock()}
-					</NavItem>
 					{getSettingValue(this.props.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"
 						&& <NavItem
 							eventKey="communication"
@@ -197,6 +185,18 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 					<div className="Menu-divider"/>
+					<NavItem
+						eventKey="task"
+						active={this.props.selectedMenu === "task"}
+						onClick={() => this.props.history.push("/task")}>
+						<NavIcon>
+							<i className="fas fa-tasks" style={{ fontSize: "1.75em" }} />
+						</NavIcon>
+						<NavText>
+							Tasks
+						</NavText>
+						{this.getTaskNotificationBlock()}
+					</NavItem>
 					<NavItem
 						eventKey="users"
 						active={this.props.selectedMenu === "users"}
