@@ -167,7 +167,7 @@ export default class DialogCompanyFilter extends React.Component {
 						<span><i className="fas fa-eraser"/> Erase filters</span>
 					</button>
 					<FormLine
-						label="Company name"
+						label="Entity name"
 						fullWidth={true}
 						value={this.state.name}
 						onChange={(v) => this.changeState("name", v)}
