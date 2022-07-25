@@ -1,5 +1,6 @@
 import React from "react";
 import "./ArticleRssFeed.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import Loading from "../box/Loading.jsx";
 import Warning from "../box/Warning.jsx";
@@ -76,13 +77,16 @@ export default class ArticleRssFeed extends React.Component {
 		});
 	}
 
-	addRssFeed() {
+	addRssFeed(close) {
 		const params = {
 			url: this.state.rssFeedField,
 		};
 
 		postRequest.call(this, "rss/add_rss_feed", params, () => {
 			this.refresh();
+			if (close) {
+				close();
+			}
 			nm.info("The RSS feed has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -284,24 +288,50 @@ export default class ArticleRssFeed extends React.Component {
 								onClick={() => this.refresh()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
+							<Popup
+								trigger={
+									<button>
+										<i className="fas fa-plus"/>
+									</button>
+								}
+								modal
+							>
+								{(close) => <div className={"row row-spaced"}>
+									<div className={"col-md-9"}>
+										<h2>Add a new RSS feed</h2>
+									</div>
+
+									<div className={"col-md-3"}>
+										<div className="top-right-buttons">
+											<button
+												className={"grey-background"}
+												data-hover="Close"
+												data-active=""
+												onClick={close}>
+												<span><i className="far fa-times-circle"/></span>
+											</button>
+										</div>
+									</div>
+
+									<div className="col-md-12">
+										<FormLine
+											label={"Add a RSS Feed"}
+											value={this.state.rssFeedField}
+											onChange={(v) => this.changeState("rssFeedField", v)}
+										/>
+
+										<div className="right-buttons row-spaced">
+											<button
+												className={"blue-background"}
+												onClick={() => this.addRssFeed(close)}
+												disabled={!validateUrl(this.state.rssFeedField)}>
+												<i className="fas fa-plus"/> Add RSS Feed
+											</button>
+										</div>
+									</div>
+								</div>}
+							</Popup>
 						</div>
-					</div>
-
-					<div className="col-md-12">
-						<FormLine
-							label={"Add a RSS Feed"}
-							value={this.state.rssFeedField}
-							onChange={(v) => this.changeState("rssFeedField", v)}
-						/>
-					</div>
-
-					<div className="col-md-12 right-buttons row-spaced">
-						<button
-							className={"blue-background"}
-							onClick={this.addRssFeed}
-							disabled={!validateUrl(this.state.rssFeedField)}>
-							<i className="fas fa-plus"/> Add RSS Feed
-						</button>
 					</div>
 
 					<div className="col-md-12">
