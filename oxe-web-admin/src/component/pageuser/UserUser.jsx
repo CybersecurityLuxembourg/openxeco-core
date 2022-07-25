@@ -1,6 +1,7 @@
 import React from "react";
 import "./UserUser.css";
 import { NotificationManager as nm } from "react-notifications";
+import Popup from "reactjs-popup";
 import Loading from "../box/Loading.jsx";
 import Info from "../box/Info.jsx";
 import DynamicTable from "../table/DynamicTable.jsx";
@@ -71,7 +72,7 @@ export default class UserUser extends React.Component {
 		});
 	}
 
-	addUser() {
+	addUser(close) {
 		const params = {
 			email: this.state.email,
 			password: this.state.provisoryPassword,
@@ -80,6 +81,9 @@ export default class UserUser extends React.Component {
 		postRequest.call(this, "user/add_user", params, () => {
 			this.refresh();
 			this.setState({ email: null });
+			if (close) {
+				close();
+			}
 			nm.info("The user has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -133,6 +137,75 @@ export default class UserUser extends React.Component {
 								onClick={() => this.refresh()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
+							<Popup
+								trigger={
+									<button>
+										<i className="fas fa-plus"/>
+									</button>
+								}
+								modal
+							>
+								{(close) => <div className={"row row-spaced"}>
+									<div className={"col-md-9"}>
+										<h2>Add a new user</h2>
+									</div>
+
+									<div className={"col-md-3"}>
+										<div className="top-right-buttons">
+											<button
+												className={"grey-background"}
+												data-hover="Close"
+												data-active=""
+												onClick={close}>
+												<span><i className="far fa-times-circle"/></span>
+											</button>
+										</div>
+									</div>
+
+									<div className="col-md-12">
+										<FormLine
+											label={"Email"}
+											value={this.state.email}
+											onChange={(v) => this.changeState("email", v)}
+											format={validateEmail}
+										/>
+										<FormLine
+											label={"Provisory password"}
+											value={this.state.provisoryPassword}
+											onChange={(v) => this.changeState("provisoryPassword", v)}
+											format={validatePassword}
+										/>
+										<Info
+											content={
+												<div>
+													The password must:<br/>
+													<li>contain at least 1 lowercase alphabetical character</li>
+													<li>contain at least 1 uppercase alphabetical character</li>
+													<li>contain at least 1 numeric character</li>
+													<li>contain at least 1 special character such as !@#$%^&*</li>
+													<li>be between 8 and 30 characters long</li>
+												</div>
+											}
+										/>
+										<Info
+											content={
+												<div>
+													{// eslint-disable-next-line
+													}An email will be sent to the new user&#39;s address with the provisory password
+												</div>
+											}
+										/>
+										<div className="right-buttons">
+											<button
+												onClick={() => this.addUser(close)}
+												disabled={!validateEmail(this.state.email)
+													|| !validatePassword(this.state.provisoryPassword)}>
+												<i className="fas fa-plus"/> Add a new user
+											</button>
+										</div>
+									</div>
+								</div>}
+							</Popup>
 							<DialogUserFilter
 								trigger={
 									<button
@@ -157,51 +230,6 @@ export default class UserUser extends React.Component {
 								height={500}
 							/>
 						}
-					</div>
-				</div>
-				<div className={"row row-spaced"}>
-					<div className="col-md-6">
-						<h1>Add a new user</h1>
-						<FormLine
-							label={"Email"}
-							value={this.state.email}
-							onChange={(v) => this.changeState("email", v)}
-							format={validateEmail}
-						/>
-						<FormLine
-							label={"Provisory password"}
-							value={this.state.provisoryPassword}
-							onChange={(v) => this.changeState("provisoryPassword", v)}
-							format={validatePassword}
-						/>
-						<Info
-							content={
-								<div>
-                                    The password must:<br/>
-									<li>contain at least 1 lowercase alphabetical character</li>
-									<li>contain at least 1 uppercase alphabetical character</li>
-									<li>contain at least 1 numeric character</li>
-									<li>contain at least 1 special character such as !@#$%^&*</li>
-									<li>be between 8 and 30 characters long</li>
-								</div>
-							}
-						/>
-						<Info
-							content={
-								<div>
-									{// eslint-disable-next-line
-									}A mail will be sent to the new user&#39;s address with the provisory password
-								</div>
-							}
-						/>
-						<div className="right-buttons">
-							<button
-								onClick={() => this.addUser()}
-								disabled={!validateEmail(this.state.email)
-                                    || !validatePassword(this.state.provisoryPassword)}>
-								<i className="fas fa-plus"/> Add a new user
-							</button>
-						</div>
 					</div>
 				</div>
 			</div>

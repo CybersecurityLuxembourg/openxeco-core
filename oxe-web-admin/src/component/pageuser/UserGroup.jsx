@@ -1,5 +1,6 @@
 import React from "react";
 import "./UserGroup.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Loading from "../box/Loading.jsx";
@@ -86,13 +87,16 @@ export default class UserGroup extends React.Component {
 		});
 	}
 
-	addGroup() {
+	addGroup(close) {
 		const params = {
 			name: this.state.newGroup,
 		};
 
 		postRequest.call(this, "user/add_user_group", params, () => {
 			this.getGroups();
+			if (close) {
+				close();
+			}
 			nm.info("The value has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -171,26 +175,55 @@ export default class UserGroup extends React.Component {
 								onClick={() => this.refresh()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
+							<Popup
+								trigger={
+									<button>
+										<i className="fas fa-plus"/>
+									</button>
+								}
+								modal
+							>
+								{(close) => <div className={"row row-spaced"}>
+									<div className={"col-md-9"}>
+										<h2>Add a new group</h2>
+									</div>
+
+									<div className={"col-md-3"}>
+										<div className="top-right-buttons">
+											<button
+												className={"grey-background"}
+												data-hover="Close"
+												data-active=""
+												onClick={close}>
+												<span><i className="far fa-times-circle"/></span>
+											</button>
+										</div>
+									</div>
+
+									<div className="col-md-12">
+										<div className="col-xl-12">
+											<FormLine
+												label={"New group"}
+												value={this.state.newGroup}
+												onChange={(v) => this.changeState("newGroup", v)}
+											/>
+										</div>
+										<div className="col-xl-12 right-buttons">
+											<button
+												className={"blue-background"}
+												onClick={() => this.addGroup(close)}
+												disabled={this.state.newGroup === null || this.state.newGroup.length < 3}>
+												<i className="fas fa-plus"/> Add group
+											</button>
+										</div>
+									</div>
+								</div>}
+							</Popup>
 						</div>
 					</div>
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-xl-12">
-						<FormLine
-							label={"New group"}
-							value={this.state.newGroup}
-							onChange={(v) => this.changeState("newGroup", v)}
-						/>
-					</div>
-					<div className="col-xl-12 right-buttons">
-						<button
-							className={"blue-background"}
-							onClick={this.addGroup}
-							disabled={this.state.newGroup === null || this.state.newGroup.length < 3}>
-							<i className="fas fa-plus"/> Add group
-						</button>
-					</div>
 					<div className="col-md-12 PageCompany-table">
 						{this.state.groups !== null
 							? <Table
