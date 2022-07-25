@@ -36,7 +36,7 @@ export default class CompanyRelationship extends React.Component {
 		});
 	}
 
-	addRelationshipType() {
+	addRelationshipType(close) {
 		const params = {
 			name: this.state.name,
 		};
@@ -44,6 +44,9 @@ export default class CompanyRelationship extends React.Component {
 		postRequest.call(this, "relationship/add_relationship_type", params, () => {
 			this.getRelationshipTypes();
 			this.setState({ name: "" });
+			if (close) {
+				close();
+			}
 			nm.info("The relationship type has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -197,41 +200,64 @@ export default class CompanyRelationship extends React.Component {
 		return (
 			<div id="CompanyRelationship" className="fade-in">
 				<div className={"row"}>
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h1>Relationship</h1>
+					</div>
+
+					<div className="col-md-3">
 						<div className="top-right-buttons">
 							<button
 								onClick={() => this.getRelationshipTypes()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
+							<Popup
+								trigger={
+									<button>
+										<i className="fas fa-plus"/>
+									</button>
+								}
+								modal
+							>
+								{(close) => <div className={"row row-spaced"}>
+									<div className={"col-md-9"}>
+										<h2>Add a new relationship type</h2>
+									</div>
+
+									<div className={"col-md-3"}>
+										<div className="top-right-buttons">
+											<button
+												className={"grey-background"}
+												data-hover="Close"
+												data-active=""
+												onClick={close}>
+												<span><i className="far fa-times-circle"/></span>
+											</button>
+										</div>
+									</div>
+
+									<div className="col-md-12">
+										<FormLine
+											label={"Name"}
+											value={this.state.name}
+											onChange={(v) => this.changeState("name", v)}
+										/>
+										<div className="col-xl-12 right-buttons">
+											<button
+												className={"blue-background"}
+												onClick={() => this.addRelationshipType(close)}
+												disabled={!this.state.name || !this.state.types
+													|| this.state.types.map((t) => t.name).indexOf(this.state.name) >= 0}>
+												<i className="fas fa-plus"/> Add relationship type
+											</button>
+										</div>
+									</div>
+								</div>}
+							</Popup>
 						</div>
 					</div>
 				</div>
 
 				<div className={"row"}>
-					<div className="col-md-12">
-						<h2>Manage relationship types</h2>
-					</div>
-				</div>
-
-				<div className={"row"}>
-					<div className="col-md-12">
-						<FormLine
-							label={"Name"}
-							value={this.state.name}
-							onChange={(v) => this.changeState("name", v)}
-						/>
-						<div className="col-xl-12 right-buttons">
-							<button
-								className={"blue-background"}
-								onClick={() => this.addRelationshipType(this.state.name)}
-								disabled={!this.state.name || !this.state.types
-									|| this.state.types.map((t) => t.name).indexOf(this.state.name) >= 0}>
-								<i className="fas fa-plus"/> Add relationship type
-							</button>
-						</div>
-					</div>
-
 					<div className="col-md-12 row-spaced">
 						{this.state.types
 							&& <Table
