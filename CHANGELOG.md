@@ -1,7 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.12.0] - 2022-07-12
+## [1.12.1] - 2022-07-26
+
+### Fixed
+
+- Displayed versions
+- Prospector compliance
+- Unittests
+
+## [1.12.0] - 2022-07-25
 
 ### Added
 

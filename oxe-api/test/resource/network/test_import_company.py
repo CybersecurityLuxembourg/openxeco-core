@@ -19,6 +19,7 @@ class TestImportCompany(BaseCase):
                 "is_startup": 0,
                 "name": "My Company",
                 "status": "ACTIVE",
+                'legal_status': 'JURIDICAL PERSON',
                 "trade_register_number": None,
                 "website": None
             }),
@@ -52,6 +53,7 @@ class TestImportCompany(BaseCase):
                 'image': None,
                 'is_cybersecurity_core_business': 0,
                 'is_startup': 0,
+                'legal_status': 'JURIDICAL PERSON',
                 'linkedin_url': None,
                 'name': 'My Company',
                 'status': 'ACTIVE',
@@ -129,6 +131,7 @@ class TestImportCompany(BaseCase):
                 'image': None,
                 'is_cybersecurity_core_business': 0,
                 'is_startup': 0,
+                'legal_status': 'JURIDICAL PERSON',
                 'linkedin_url': None,
                 'name': 'My Company',
                 'status': 'ACTIVE',
