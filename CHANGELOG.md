@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.12.2] - 2022-07-??
+
+### Fixed
+
+- dialog behavior after adding an article on oxe-web-admin
+
 ## [1.12.1] - 2022-07-26
 
 ### Fixed

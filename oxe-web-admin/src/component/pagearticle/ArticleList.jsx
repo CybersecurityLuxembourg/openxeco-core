@@ -53,14 +53,17 @@ export default class ArticleList extends React.Component {
 		});
 	}
 
-	addArticleFromTitle() {
+	addArticleFromTitle(close) {
 		const params = {
 			title: this.state.newArticleTitle,
 		};
 
 		postRequest.call(this, "article/add_article", params, () => {
 			this.refresh();
-			this.setState({ newArticleTitle: null });
+			this.setState({ newArticleTitle: "" });
+			if (close) {
+				close();
+			}
 			nm.info("The article has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -176,7 +179,7 @@ export default class ArticleList extends React.Component {
 										/>
 										<div className="right-buttons">
 											<button
-												onClick={() => this.addArticleFromTitle()}
+												onClick={() => this.addArticleFromTitle(close)}
 												disabled={this.state.newArticleTitle === null
 													|| this.state.newArticleTitle.length < 3}>
 												<i className="fas fa-plus"/> Add a new article
