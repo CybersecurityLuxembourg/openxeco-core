@@ -19,14 +19,17 @@ export default class CompanyCompanies extends React.Component {
 		};
 	}
 
-	addCompany() {
+	addCompany(close) {
 		const params = {
 			name: this.state.newCompanyName,
 		};
 
 		postRequest.call(this, "company/add_company", params, () => {
 			this.props.refreshCompanies();
-			this.setState({ newCompanyName: null });
+			this.setState({ newCompanyName: "" });
+			if (close) {
+				close();
+			}
 			nm.info("The entity has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -107,13 +110,13 @@ export default class CompanyCompanies extends React.Component {
 
 									<div className="col-md-12">
 										<FormLine
-											label={"Article title"}
+											label={"Entity name"}
 											value={this.state.newCompanyName}
 											onChange={(v) => this.changeState("newCompanyName", v)}
 										/>
 										<div className="right-buttons">
 											<button
-												onClick={() => this.addCompany()}
+												onClick={() => this.addCompany(close)}
 												disabled={this.state.newCompanyName === null
 													|| this.state.newCompanyName.length < 3}>
 												<i className="fas fa-plus"/> Add a new entity

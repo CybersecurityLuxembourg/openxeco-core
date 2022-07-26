@@ -38,14 +38,17 @@ export default class TaxonomyTaxonomies extends React.Component {
 		});
 	}
 
-	addCategory() {
+	addCategory(close) {
 		const params = {
 			category: this.state.categoryField,
 		};
 
 		postRequest.call(this, "taxonomy/add_taxonomy_category", params, () => {
 			this.refresh();
-			this.setState({ categoryField: null });
+			this.setState({ categoryField: "" });
+			if (close) {
+				close();
+			}
 			nm.info("The category has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -159,7 +162,7 @@ export default class TaxonomyTaxonomies extends React.Component {
 										/>
 										<div className="right-buttons">
 											<button
-												onClick={() => this.addCategory()}
+												onClick={() => this.addCategory(close)}
 												disabled={this.state.categoryField === null
 													|| this.state.categoryField.length < 3}>
 												<i className="fas fa-plus"/> Add a new taxonomy

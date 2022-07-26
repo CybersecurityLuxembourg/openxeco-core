@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - dialog behavior after adding an article on oxe-web-admin
+- dialog behavior after adding a taxonomy on oxe-web-admin
+- dialog behavior after adding an entity on oxe-web-admin
 
 ## [1.12.1] - 2022-07-26
 
