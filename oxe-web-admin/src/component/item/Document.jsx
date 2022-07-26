@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./Document.css";
 import { NotificationManager as nm } from "react-notifications";
 import Popup from "reactjs-popup";
-import { validateWord } from "../../utils/re.jsx";
+import { validateWords } from "../../utils/re.jsx";
 import Chip from "../button/Chip.jsx";
 import Message from "../box/Message.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
@@ -101,11 +101,12 @@ export default class Document extends Component {
 	addKeyword(word) {
 		if (this.state.document) {
 			let words;
+			const wordsToAdd = word.split(" ").filter((w) => w.length > 2);
 
 			if (this.state.document.keywords) {
-				words = (this.state.document.keywords + " " + word).toLowerCase();
+				words = (this.state.document.keywords + " " + wordsToAdd.join(" ")).toLowerCase();
 			} else {
-				words = word.toLowerCase();
+				words = wordsToAdd.join(" ").toLowerCase();
 			}
 
 			this.updateDocument(this.state.document.id, words);
@@ -198,12 +199,12 @@ export default class Document extends Component {
 								<div className="col-md-12">
 									<input
 										autoFocus
-										className={!validateWord(this.state.word) ? "FormLine-wrong-format" : ""}
+										className={!validateWords(this.state.word) ? "FormLine-wrong-format" : ""}
 										type={"text"}
 										value={this.state.word}
 										onChange={(v) => this.setState({ word: v.target.value })}
 										onKeyPress={(e) => {
-											if (e.key === "Enter" && validateWord(this.state.word)) {
+											if (e.key === "Enter" && validateWords(this.state.word)) {
 												this.addKeyword(this.state.word);
 											}
 										}}
@@ -213,7 +214,7 @@ export default class Document extends Component {
 								<div className="col-md-12 right-buttons">
 									<button
 										onClick={() => this.addKeyword(this.state.word)}
-										disabled={!validateWord(this.state.word)}
+										disabled={!validateWords(this.state.word)}
 									>
 										Add keyword
 									</button>

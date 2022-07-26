@@ -7,7 +7,7 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { Breadcrumb } from "react-bootstrap";
 import { postRequest, getForeignImage } from "../../utils/request.jsx";
-import { validateUrl, validateWord } from "../../utils/re.jsx";
+import { validateUrl, validateWords } from "../../utils/re.jsx";
 import Chip from "../button/Chip.jsx";
 import Message from "../box/Message.jsx";
 
@@ -159,11 +159,12 @@ export default class DialogAddImage extends React.Component {
 
 	addKeyword(word) {
 		let words;
+		const wordsToAdd = word.split(" ").filter((w) => w.length > 2);
 
 		if (this.state.keywords) {
-			words = (this.state.keywords + " " + word).toLowerCase();
+			words = (this.state.keywords + " " + wordsToAdd.join(" ")).toLowerCase();
 		} else {
-			words = word.toLowerCase();
+			words = wordsToAdd.join(" ").toLowerCase();
 		}
 
 		this.setState({
@@ -295,12 +296,12 @@ export default class DialogAddImage extends React.Component {
 								<div className="col-md-12">
 									<input
 										autoFocus
-										className={!validateWord(this.state.word) ? "FormLine-wrong-format" : ""}
+										className={!validateWords(this.state.word) ? "FormLine-wrong-format" : ""}
 										type={"text"}
 										value={this.state.word}
 										onChange={(v) => this.setState({ word: v.target.value })}
 										onKeyPress={(e) => {
-											if (e.key === "Enter" && validateWord(this.state.word)) {
+											if (e.key === "Enter" && validateWords(this.state.word)) {
 												this.addKeyword(this.state.word);
 											}
 										}}
@@ -310,7 +311,7 @@ export default class DialogAddImage extends React.Component {
 								<div className="col-md-12 right-buttons">
 									<button
 										onClick={() => this.addKeyword(this.state.word)}
-										disabled={!validateWord(this.state.word)}
+										disabled={!validateWords(this.state.word)}
 									>
 										Add keyword
 									</button>

@@ -5,7 +5,7 @@ import { NotificationManager as nm } from "react-notifications";
 import Dropzone from "react-dropzone";
 import { Breadcrumb } from "react-bootstrap";
 import { postRequest } from "../../utils/request.jsx";
-import { validateWord } from "../../utils/re.jsx";
+import { validateWords } from "../../utils/re.jsx";
 import Chip from "../button/Chip.jsx";
 import Message from "../box/Message.jsx";
 
@@ -96,11 +96,12 @@ export default class DialogAddDocument extends React.Component {
 
 	addKeyword(word) {
 		let words;
+		const wordsToAdd = word.split(" ").filter((w) => w.length > 2);
 
 		if (this.state.keywords) {
-			words = (this.state.keywords + " " + word).toLowerCase();
+			words = (this.state.keywords + " " + wordsToAdd.join(" ")).toLowerCase();
 		} else {
-			words = word.toLowerCase();
+			words = wordsToAdd.join(" ").toLowerCase();
 		}
 
 		this.setState({
@@ -206,12 +207,12 @@ export default class DialogAddDocument extends React.Component {
 								<div className="col-md-12">
 									<input
 										autoFocus
-										className={!validateWord(this.state.word) ? "FormLine-wrong-format" : ""}
+										className={!validateWords(this.state.word) ? "FormLine-wrong-format" : ""}
 										type={"text"}
 										value={this.state.word}
 										onChange={(v) => this.setState({ word: v.target.value })}
 										onKeyPress={(e) => {
-											if (e.key === "Enter" && validateWord(this.state.word)) {
+											if (e.key === "Enter" && validateWords(this.state.word)) {
 												this.addKeyword(this.state.word);
 											}
 										}}
@@ -221,7 +222,7 @@ export default class DialogAddDocument extends React.Component {
 								<div className="col-md-12 right-buttons">
 									<button
 										onClick={() => this.addKeyword(this.state.word)}
-										disabled={!validateWord(this.state.word)}
+										disabled={!validateWords(this.state.word)}
 									>
 										Add keyword
 									</button>
@@ -236,7 +237,7 @@ export default class DialogAddDocument extends React.Component {
 											onClick={(v) => this.deleteKeyword(v)}
 										/>)
 										: <Message
-											text={"No keyword for this image"}
+											text={"No keyword for this document"}
 											height={100}
 										/>
 									}

@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [1.12.2] - 2022-07-??
 
+### Changed
+
+- Can add several keywords at once on Image and Document on oxe-web-admin
+
 ### Fixed
 
 - dialog behavior after adding an article on oxe-web-admin
