@@ -26,7 +26,7 @@ class GetArticles(MethodResource, Resource):
         'title': fields.Str(required=False),
         'type': fields.DelimitedList(fields.Str(), required=False),
         'status': fields.Str(required=False),
-        'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'taxonomy_values': fields.DelimitedList(fields.Int(), required=False),
         'ignored_taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
         'is_created_by_admin': fields.Bool(required=False),
         'order_by': fields.Str(

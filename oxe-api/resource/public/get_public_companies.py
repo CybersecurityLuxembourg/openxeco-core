@@ -28,7 +28,7 @@ class GetPublicCompanies(MethodResource, Resource):
         'name': fields.Str(required=False),
         'startup_only': fields.Bool(required=False),
         'corebusiness_only': fields.Bool(required=False),
-        'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'taxonomy_values': fields.DelimitedList(fields.Int(), required=False),
         'include_inactive': fields.Bool(required=False),
         'count': fields.Bool(required=False),
         'legal_status': fields.DelimitedList(fields.Str(

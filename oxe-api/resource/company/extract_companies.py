@@ -44,7 +44,7 @@ class ExtractCompanies(MethodResource, Resource):
         'entity_type': fields.DelimitedList(fields.Str(), required=False),
         'startup_only': fields.Bool(required=False),
         'corebusiness_only': fields.Bool(required=False),
-        'taxonomy_values': fields.DelimitedList(fields.Str(), required=False),
+        'taxonomy_values': fields.DelimitedList(fields.Int(), required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access
