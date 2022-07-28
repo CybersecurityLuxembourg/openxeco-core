@@ -1,7 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.12.2] - 2022-07-??
+## [1.12.3] - 2022-07-28
+
+### Changed
+
+- Set AND logic when multiple taxonomy_values on public/get_public_companies and company/get_companies
+- Set AND logic when multiple taxonomy_values on public/get_public_articles and article/get_articles
+- Set all "taxonomy_values" resource args as list of Int
+
+## [1.12.2] - 2022-07-27
 
 ### Changed
 
