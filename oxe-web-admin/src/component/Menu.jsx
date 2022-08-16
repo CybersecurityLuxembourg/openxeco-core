@@ -92,7 +92,7 @@ export default class Menu extends React.Component {
 						active={!this.props.selectedMenu}
 						onClick={() => this.props.history.push("/")}>
 						<NavIcon>
-							<i className="fa fa-tachometer-alt" style={{ fontSize: "1.75em" }} />
+							<i className="fas fa-home" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
 							Dashboard
