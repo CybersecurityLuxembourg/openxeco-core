@@ -70,6 +70,20 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 					{this.props.settings
+						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
+						&& <NavItem
+							eventKey={"articles"}
+							active={this.props.selectedMenu === "articles"}
+							onClick={() => this.props.history.push("/articles")}>
+							<NavIcon>
+								<i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} />
+							</NavIcon>
+							<NavText>
+								My articles
+							</NavText>
+						</NavItem>
+					}
+					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_FORM === "TRUE"
 						&& <NavItem
 							eventKey="form"
@@ -98,20 +112,6 @@ export default class Menu extends React.Component {
 						</NavItem>
 					}
 					<div className="Menu-divider"/>
-					{this.props.settings
-						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
-						&& <NavItem
-							eventKey={"articles"}
-							active={this.props.selectedMenu === "articles"}
-							onClick={() => this.props.history.push("/articles")}>
-							<NavIcon>
-								<i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} />
-							</NavIcon>
-							<NavText>
-								My articles
-							</NavText>
-						</NavItem>
-					}
 					{this.props.myCompanies === null
 						? <Loading
 							height={70}

@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.12.4] - 2022-08-17
+
+### Changed
+
+- Review menu and home page elements on oxe-web-community
+
 ## [1.12.3] - 2022-07-28
 
 ### Changed
