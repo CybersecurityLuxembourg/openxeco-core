@@ -1,7 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.12.4] - 2022-08-17
+## [1.12.5] - 2022-08-17
+
+### Fixed
+
+- Error message when adding/modifying contact on Entity item on oxe-web-admin
+
+## [1.12.4] - 2022-08-16
 
 ### Changed
 
