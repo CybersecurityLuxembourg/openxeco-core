@@ -1,7 +1,7 @@
 import React from "react";
 import "./DashboardCommunity.css";
 import CountUp from "react-countup";
-import { Bar } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 import Loading from "../box/Loading.jsx";
 import Filter from "../box/Filter.jsx";
 import Message from "../box/Message.jsx";
@@ -179,6 +179,11 @@ export default class DashboardCommunity extends React.Component {
 
 				filteredCompanies = filteredCompanies
 					.filter((o) => minDate < o.creation_date && o.creation_date <= maxDate);
+			} else if (axis === "legal_status") {
+				filteredCompanies = filteredCompanies
+					.filter((o) => this.state.filters.legal_status === o.legal_status);
+			} else if (axis === "status") {
+				filteredCompanies = filteredCompanies.filter((o) => this.state.filters.status === o.status);
 			} else {
 				// Filter the selected company attribute such as is_startup, ...
 
@@ -338,10 +343,15 @@ export default class DashboardCommunity extends React.Component {
 						<h1>Community</h1>
 					</div>
 
-					<div className="col-md-4">
+					<div className="col-md-12">
+						<h2>Global</h2>
+					</div>
+
+					<div className="col-md-4 row-spaced">
 						<div className={"row"}>
 							<div className="col-md-12">
-								<h2>Total entities</h2>
+								<h3>Total entities</h3>
+
 								<div>
 									{this.state.filteredCompanies
 										&& this.props.companies
@@ -363,7 +373,8 @@ export default class DashboardCommunity extends React.Component {
 							</div>
 
 							<div className="col-md-12">
-								<h2>Startups</h2>
+								<h3>Startups</h3>
+
 								<div>
 									{this.state.filteredCompanies
 										? <div className={"PageDashboard-analytic "
@@ -384,13 +395,13 @@ export default class DashboardCommunity extends React.Component {
 						</div>
 					</div>
 
-					<div className="col-md-8">
+					<div className="col-md-8 row-spaced">
 						<div className={"row"}>
 							<div className="col-md-12">
 								{this.state.filteredCompanies && this.state.filteredCompanies
 									? <Bar
 										data={{
-											labels: ["Total entities", "Startups"],
+											labels: ["TOTAL ENTITIES", "STARTUPS"],
 											datasets: [{
 												label: [null, "is_startup"],
 												data: [
@@ -446,11 +457,110 @@ export default class DashboardCommunity extends React.Component {
 							</div>
 						</div>
 					</div>
+
+					<div className="col-md-6">
+						<h3>Legal status</h3>
+
+						{this.state.filteredCompanies && this.state.filteredCompanies
+							? <Doughnut
+								data={{
+									labels: [...new Set(this.state.filteredCompanies
+										.map((c) => c.legal_status))],
+									datasets: [{
+										label: [...new Set(this.state.filteredCompanies
+											.map((c) => c.legal_status))],
+										data: [...new Set(this.state.filteredCompanies
+											.map((c) => c.legal_status))]
+											.map((s) => this.state.filteredCompanies
+												.filter((o) => o.legal_status === s).length),
+										backgroundColor: this.state.filters.legal_status ? ["#fed7da"]
+											: ["#bcebff", "#bcebff", "#bcebff"],
+										borderColor: this.state.filters.legal_status ? ["#e40613"]
+											: ["#009fe3", "#grey", "lightgrey"],
+										borderWidth: 1,
+									}],
+								}}
+								options={{
+									legend: {
+										display: true,
+										position: "bottom",
+									},
+									onClick: (mouseEvent, data) => {
+										console.log(data);
+										if (data.length > 0) {
+											// eslint-disable-next-line no-underscore-dangle
+											const l = data[0]._chart.config.data.datasets[0].label[data[0]._index];
+											console.log(l);
+											if (this.state.filters.legal_status) {
+												this.manageFilter("legal_status", undefined, false);
+											} else {
+												this.manageFilter("legal_status", l, true);
+											}
+										}
+									},
+								}}
+							/>
+							: <Loading
+								height={300}
+							/>
+						}
+					</div>
+
+					<div className="col-md-6">
+						<h3>Status</h3>
+
+						{this.state.filteredCompanies && this.state.filteredCompanies
+							? <Doughnut
+								data={{
+									labels: [...new Set(this.state.filteredCompanies
+										.map((c) => c.status))],
+									datasets: [{
+										label: [...new Set(this.state.filteredCompanies
+											.map((c) => c.status))],
+										data: [...new Set(this.state.filteredCompanies
+											.map((c) => c.status))]
+											.map((s) => this.state.filteredCompanies
+												.filter((o) => o.status === s).length),
+										backgroundColor: this.state.filters.status ? ["#fed7da"]
+											: ["#bcebff", "#bcebff", "#bcebff"],
+										borderColor: this.state.filters.status ? ["#e40613"]
+											: ["#009fe3", "#grey", "lightgrey"],
+										borderWidth: 1,
+									}],
+								}}
+								options={{
+									legend: {
+										display: true,
+										position: "bottom",
+									},
+									onClick: (mouseEvent, data) => {
+										if (data.length > 0) {
+											// eslint-disable-next-line no-underscore-dangle
+											const l = data[0]._chart.config.data.datasets[0].label[data[0]._index];
+
+											if (this.state.filters.status) {
+												this.manageFilter("status", undefined, false);
+											} else {
+												this.manageFilter("status", l, true);
+											}
+										}
+									},
+								}}
+							/>
+							: <Loading
+								height={300}
+							/>
+						}
+					</div>
 				</div>
 
 				<div className={"row row-spaced"}>
+					<div className="col-md-12">
+						<h2>Age and employees</h2>
+					</div>
+
 					<div className="col-md-6">
-						<h2>Total employees</h2>
+						<h3>Total employees</h3>
 						<div>
 							{this.props.analytics && this.state.filteredCompanies
 								? <div className={"PageDashboard-analytic blue-font"}>
@@ -469,8 +579,8 @@ export default class DashboardCommunity extends React.Component {
 						</div>
 					</div>
 
-					<div className="col-md-6">
-						<h2>Employees per entity size ranges</h2>
+					<div className="col-md-6 row-spaced">
+						<h3>Employees per entity size ranges</h3>
 						{this.props.analytics && this.state.filteredCompanies
 							? <BarWorkforceRange
 								actors={this.state.filteredCompanies}
@@ -484,8 +594,8 @@ export default class DashboardCommunity extends React.Component {
 						}
 					</div>
 
-					<div className="col-md-6">
-						<h2>Age of entities</h2>
+					<div className="col-md-6 row-spaced">
+						<h3>Age of entities</h3>
 						{this.state.filteredCompanies
 							? <BarActorAge
 								actors={this.state.filteredCompanies}
@@ -499,7 +609,7 @@ export default class DashboardCommunity extends React.Component {
 					</div>
 
 					<div className="col-md-6">
-						<h2>Entities per size ranges</h2>
+						<h3>Entities per size ranges</h3>
 						{this.props.analytics && this.state.filteredCompanies
 							? <BarWorkforceRange
 								actors={this.state.filteredCompanies}
@@ -517,17 +627,17 @@ export default class DashboardCommunity extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h1>Taxonomy</h1>
+						<h2>Taxonomy</h2>
 					</div>
 
 					{this.state.filteredCompanies !== null
 						? this.getCompanyTaxonomyCategory()
 							.map((category) => (
 								<div
-									className="col-md-12"
+									className="col-md-12 row-spaced"
 									key={category}
 								>
-									<h2>{category}</h2>
+									<h3>{category}</h3>
 
 									{this.getTreeValues(category) !== null
 										? <TreeMap
