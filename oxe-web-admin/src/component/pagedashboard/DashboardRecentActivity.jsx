@@ -5,18 +5,16 @@ import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Company from "../item/Company.jsx";
 import Article from "../item/Article.jsx";
+import Note from "../item/Note.jsx";
+import Taxonomy from "../item/Taxonomy.jsx";
+import User from "../item/User.jsx";
 
 export default class DashboardRecentActivity extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.getLastNews = this.getLastNews.bind(this);
-		this.getLastEvents = this.getLastEvents.bind(this);
-
 		this.state = {
-			lastEvents: null,
-			lastNews: null,
-			lastJobOffer: null,
+			notes: null,
 		};
 	}
 
@@ -25,16 +23,20 @@ export default class DashboardRecentActivity extends React.Component {
 	}
 
 	refresh() {
-		this.getLastNews();
-		this.getLastEvents();
-		this.getLastJobOffer();
+		this.getLastArticlesByType("lastEvents", "EVENT");
+		this.getLastArticlesByType("lastNews", "NEWS");
+		this.getLastArticlesByType("lastJobOffers", "JOB OFFER");
+		this.getLastArticlesByType("lastServices", "SERVICE");
+		this.getLastArticlesByType("lastTools", "TOOL");
+		this.getLastArticlesByType("lastResources", "RESOURCE");
+		this.getNotes();
 	}
 
-	getLastNews() {
-		this.setState({ lastNews: null }, () => {
-			getRequest.call(this, "public/get_public_articles?type=NEWS&per_page=5", (data) => {
+	getLastArticlesByType(stateVar, type) {
+		this.setState({ [stateVar]: null }, () => {
+			getRequest.call(this, "public/get_public_articles?type=" + type + "&per_page=5", (data) => {
 				this.setState({
-					lastNews: data,
+					[stateVar]: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -44,11 +46,11 @@ export default class DashboardRecentActivity extends React.Component {
 		});
 	}
 
-	getLastEvents() {
-		this.setState({ lastEvents: null }, () => {
-			getRequest.call(this, "public/get_public_articles?type=EVENT&per_page=5", (data) => {
+	getNotes() {
+		this.setState({ notes: null }, () => {
+			getRequest.call(this, "note/get_notes?per_page=10", (data) => {
 				this.setState({
-					lastEvents: data,
+					notes: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -58,119 +60,129 @@ export default class DashboardRecentActivity extends React.Component {
 		});
 	}
 
-	getLastJobOffer() {
-		this.setState({ lastJobOffer: null }, () => {
-			getRequest.call(this, "public/get_public_articles?type=JOB OFFER&per_page=5", (data) => {
-				this.setState({
-					lastJobOffer: data,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
-		});
+	buildArticleBlock(typeName, stateVar) {
+		return <div className="col-md-6 row-spaced">
+			<h3>
+				Last public {typeName}
+			</h3>
+
+			<div>
+				{this.state[stateVar]
+					? this.state[stateVar].items.map((o) => (
+						<Article
+							key={o.id}
+							id={o.id}
+							name={o.title}
+							afterDeletion={() => this.refresh()}
+						/>
+					))
+					: <Loading
+						height={160}
+					/>
+				}
+			</div>
+		</div>;
 	}
 
 	render() {
 		return (
-			<div className={"DashboardRecentActivity row row-spaced"}>
-				<div className="col-md-6 row-spaced">
-					<h4>
-						<i className="fas fa-building"/>
-						<br/>
-						Recently added entities
-					</h4>
+			<div id={"DashboardRecentActivity"}>
+				<div className={"row"}>
+					<div className="col-md-9">
+						<h1>Recent activities</h1>
+					</div>
 
-					<div>
-						{this.props.companies
-							? this.props.companies
-								.slice(Math.max(this.props.companies.length - 5, 0))
-								.reverse()
-								.map((o) => (
-									<Company
-										key={o.id}
-										id={o.id}
-										name={o.name}
-										legalStatus={o.legal_status}
-									/>
-								))
-							: <Loading
-								height={160}
-							/>
-						}
+					<div className="col-md-3">
+						<div className="top-right-buttons">
+							<button
+								onClick={() => this.refresh()}>
+								<i className="fas fa-redo-alt"/>
+							</button>
+						</div>
 					</div>
 				</div>
 
-				<div className="col-md-6 row-spaced">
-					<h4>
-						<i className="fas fa-newspaper"/>
-						<br/>
-						Last public news
-					</h4>
-
-					<div>
-						{this.state.lastNews
-							? this.state.lastNews.items.map((o) => (
-								<Article
-									key={o.id}
-									id={o.id}
-									name={o.title}
-									afterDeletion={() => this.refresh()}
-								/>
-							))
-							: <Loading
-								height={160}
-							/>
-						}
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
+						<h2>Entities</h2>
 					</div>
-				</div>
-
-				<div className="col-md-6 row-spaced">
-					<h4>
-						<i className="fas fa-calendar-alt"/>
-						<br/>
-						Last public events
-					</h4>
-
-					<div>
-						{this.state.lastEvents
-							? this.state.lastEvents.items.map((o) => (
-								<Article
-									key={o.id}
-									id={o.id}
-									name={o.title}
-									afterDeletion={() => this.refresh()}
+					<div className="col-md-12 row-spaced">
+						<div>
+							{this.props.companies
+								? this.props.companies
+									.slice(Math.max(this.props.companies.length - 10, 0))
+									.reverse()
+									.map((o) => (
+										<Company
+											key={o.id}
+											id={o.id}
+											name={o.name}
+											legalStatus={o.legal_status}
+										/>
+									))
+								: <Loading
+									height={160}
 								/>
-							))
-							: <Loading
-								height={160}
-							/>
-						}
+							}
+						</div>
 					</div>
-				</div>
 
-				<div className="col-md-6 row-spaced">
-					<h4>
-						<i className="fas fa-briefcase"/>
-						<br/>
-						Last public job offers
-					</h4>
+					<div className="col-md-12">
+						<h2>Articles</h2>
+					</div>
 
-					<div>
-						{this.state.lastJobOffer
-							? this.state.lastJobOffer.items.map((o) => (
-								<Article
-									key={o.id}
-									id={o.id}
-									name={o.title}
-									afterDeletion={() => this.refresh()}
+					{this.buildArticleBlock("news", "lastNews")}
+					{this.buildArticleBlock("events", "lastEvents")}
+					{this.buildArticleBlock("job offers", "lastJobOffers")}
+					{this.buildArticleBlock("services", "lastServices")}
+					{this.buildArticleBlock("tools", "lastTools")}
+					{this.buildArticleBlock("resources", "lastResources")}
+
+					<div className="col-md-12">
+						<h2>Notes</h2>
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<div>
+							{this.state.notes
+								? this.state.notes.items
+									.map((o) => (
+										<div key={o.id}>
+											{o.company
+												&& <Company
+													id={o.company}
+												/>
+											}
+
+											{o.article
+												&& <Article
+													id={o.article}
+												/>
+											}
+
+											{o.taxonomy_category
+												&& <Taxonomy
+													id={o.taxonomy_category}
+												/>
+											}
+
+											{o.user
+												&& <User
+													id={o.user}
+												/>
+											}
+
+											<Note
+												key={o.id}
+												note={o}
+											/>
+										</div>
+									))
+								: <Loading
+									height={160}
 								/>
-							))
-							: <Loading
-								height={160}
-							/>
-						}
+							}
+						</div>
 					</div>
 				</div>
 			</div>

@@ -3,7 +3,8 @@ import "./PageDashboard.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../utils/request.jsx";
 import DashboardAnalytics from "./pagedashboard/DashboardAnalytics.jsx";
-import DashboardEcosystem from "./pagedashboard/DashboardEcosystem.jsx";
+import DashboardCommunity from "./pagedashboard/DashboardCommunity.jsx";
+import DashboardGraph from "./pagedashboard/DashboardGraph.jsx";
 import DashboardRecentActivity from "./pagedashboard/DashboardRecentActivity.jsx";
 import Tab from "./tab/Tab.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
@@ -22,7 +23,7 @@ export default class PageDashboard extends React.Component {
 			selectedMenu: null,
 			tabs: [
 				"community",
-				"network",
+				"graph",
 				"analytics",
 				"recent_activities",
 			],
@@ -85,18 +86,18 @@ export default class PageDashboard extends React.Component {
 		return (
 			<div id="PageDashboard" className="page max-sized-page">
 				<Tab
-					labels={["Dashboard", "Network", "Analytics", "Recent activities"]}
+					labels={["Community", "Network graph", "Usage analytics", "Recent activities"]}
 					selectedMenu={this.state.selectedMenu}
 					onMenuClick={this.onMenuClick}
 					keys={this.state.tabs}
 					content={[
-						<DashboardEcosystem
+						<DashboardCommunity
 							key={"community"}
 							analytics={this.state.analytics}
 							companies={this.state.companies}
 						/>,
-						<DashboardEcosystem
-							key={"community"}
+						<DashboardGraph
+							key={"graph"}
 							analytics={this.state.analytics}
 							companies={this.state.companies}
 						/>,

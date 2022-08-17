@@ -1,5 +1,5 @@
 import React from "react";
-import "./DashboardEcosystem.css";
+import "./DashboardCommunity.css";
 import CountUp from "react-countup";
 import { Bar } from "react-chartjs-2";
 import Loading from "../box/Loading.jsx";
@@ -10,7 +10,7 @@ import BarWorkforceRange from "../chart/BarWorkforceRange.jsx";
 import TreeMap from "../chart/TreeMap.jsx";
 import { getPastDate } from "../../utils/date.jsx";
 
-export default class DashboardEcosystem extends React.Component {
+export default class DashboardCommunity extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -332,10 +332,10 @@ export default class DashboardEcosystem extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div id="DashboardCommunity">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h1>Global</h1>
+						<h1>Community</h1>
 					</div>
 
 					<div className="col-md-4">

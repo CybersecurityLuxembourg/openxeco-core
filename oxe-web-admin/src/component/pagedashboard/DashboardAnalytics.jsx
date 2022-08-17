@@ -205,8 +205,23 @@ export default class DashboardAnalytics extends React.Component {
 
 	render() {
 		return (
-			<div id="DashboardAnalytics" className={"page max-sized-page"}>
-				<div className={"row row-spaced"}>
+			<div id="DashboardAnalytics">
+				<div className={"row"}>
+					<div className="col-md-9">
+						<h1>Usage analytics</h1>
+					</div>
+
+					<div className="col-md-3">
+						<div className="top-right-buttons">
+							<button
+								onClick={() => this.refresh()}>
+								<i className="fas fa-redo-alt"/>
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div className={"row"}>
 					<div className="col-md-12">
 						{this.state.periods
 							.map((t) => <CheckBox
@@ -217,7 +232,7 @@ export default class DashboardAnalytics extends React.Component {
 							/>)}
 					</div>
 
-					<div className="col-md-12 row-spaced">
+					<div className="col-md-12">
 						{this.state.granularities
 							.map((t) => <CheckBox
 								key={t}
@@ -225,6 +240,10 @@ export default class DashboardAnalytics extends React.Component {
 								value={t === this.state.selectedGranularity}
 								onClick={() => this.changeState("selectedGranularity", t)}
 							/>)}
+					</div>
+
+					<div className="col-md-12">
+						<h2>Users</h2>
 					</div>
 
 					<div className="col-md-6 row-spaced">
@@ -269,6 +288,10 @@ export default class DashboardAnalytics extends React.Component {
 								height={150}
 							/>
 						}
+					</div>
+
+					<div className="col-md-12">
+						<h2>Articles</h2>
 					</div>
 
 					<div className="col-md-6 row-spaced">
@@ -323,6 +346,72 @@ export default class DashboardAnalytics extends React.Component {
 								{Object.keys(this.state.activity.job_offer_publication).length > 0
 									? <Line
 										data={this.getLineData(this.state.activity.job_offer_publication)}
+										options={DashboardAnalytics.getLineOptions()}
+									/>
+									: <Message
+										text={"No data found"}
+										height={150}
+									/>
+								}
+							</div>
+							: <Loading
+								height={150}
+							/>
+						}
+					</div>
+
+					<div className="col-md-6 row-spaced">
+						<h3>Number of services publicated by the community</h3>
+
+						{this.state.activity
+							? <div>
+								{Object.keys(this.state.activity.service_publication).length > 0
+									? <Line
+										data={this.getLineData(this.state.activity.service_publication)}
+										options={DashboardAnalytics.getLineOptions()}
+									/>
+									: <Message
+										text={"No data found"}
+										height={150}
+									/>
+								}
+							</div>
+							: <Loading
+								height={150}
+							/>
+						}
+					</div>
+
+					<div className="col-md-6 row-spaced">
+						<h3>Number of tools publicated by the community</h3>
+
+						{this.state.activity
+							? <div>
+								{Object.keys(this.state.activity.tool_publication).length > 0
+									? <Line
+										data={this.getLineData(this.state.activity.tool_publication)}
+										options={DashboardAnalytics.getLineOptions()}
+									/>
+									: <Message
+										text={"No data found"}
+										height={150}
+									/>
+								}
+							</div>
+							: <Loading
+								height={150}
+							/>
+						}
+					</div>
+
+					<div className="col-md-6 row-spaced">
+						<h3>Number of resources publicated by the community</h3>
+
+						{this.state.activity
+							? <div>
+								{Object.keys(this.state.activity.resource_publication).length > 0
+									? <Line
+										data={this.getLineData(this.state.activity.resource_publication)}
 										options={DashboardAnalytics.getLineOptions()}
 									/>
 									: <Message
