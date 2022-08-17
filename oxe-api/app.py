@@ -54,7 +54,7 @@ app.config['APISPEC_SWAGGER_URL'] = '/doc/json'
 app.config['APISPEC_SWAGGER_UI_URL'] = '/doc'
 app.config['APISPEC_SPEC'] = APISpec(
     title='openXeco API',
-    version='v1.12',
+    version='v1.13',
     plugins=[MarshmallowPlugin()],
     openapi_version='2.0.0'
 )
