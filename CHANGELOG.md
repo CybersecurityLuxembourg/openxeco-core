@@ -1,6 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.13.0] - 2022-08-17
+
+### Added
+
+- Network graph tab on Dashboard page on oxe-web-admin
+
+### Changed
+
+- Allow all type of notes on note/get_notes resource
+- Add info on analytics/get_ecosystem_activity resource
+- Community tab on Dashboard page on oxe-web-admin
+- Usage analytics tab on Dashboard page on oxe-web-admin
+- Recent activity tab on Dashboard page on oxe-web-admin
+
 ## [1.12.5] - 2022-08-17
 
 ### Fixed
