@@ -94,7 +94,7 @@ export default class CompanyContact extends React.Component {
 								key={a.id}
 								info={a}
 								enums={this.state.contactEnums}
-								afterAction={this.refresh}
+								afterAction={() => this.refresh()}
 							/>
 						))
 						: <Message
