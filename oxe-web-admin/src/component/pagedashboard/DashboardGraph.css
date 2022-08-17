@@ -1,0 +1,8 @@
+
+#DashboardGraph .vis-network, #DashboardGraph .vis-network canvas {
+	position: fixed !important;
+	top: 0px !important;
+	left: 0px;
+	width: 100% !important;
+	height: 100% !important;
+}
