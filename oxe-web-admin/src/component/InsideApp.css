@@ -2,7 +2,6 @@
 #InsideApp {
     width: 100%;
     height: 100%;
-    background-color: var(--logo-color) !important;
 }
 
 #InsideApp-content {
@@ -10,5 +9,4 @@
     width: calc(100% - 62px);
     height: 100%;
     overflow-y: auto;
-    background-color: var(--logo-color) !important;
 }

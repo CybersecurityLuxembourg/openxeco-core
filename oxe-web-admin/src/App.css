@@ -1,28 +1,21 @@
 @font-face { font-family: "Fjalla One"; src: url('./font/FjallaOne-Regular.ttf'); }
 
-/*
-
-#009fe3 : blue
-#e40613 : red
-#bcebff : light blue
-#fed7da : light red
-#8fddff : hovered light blue;
-#ffa8b0 : hovered light red
-rgba(0, 159, 227, 0.05) : transparent light blue (usually for background)
-grey
-lightgrey
-
-*/
-
-:root{
-    --logo-color: orange;
+:root {
+    --default-color: grey;
+    --default-light-color: lightgrey;
+    --primary-color: #009fe3;
+    --light-primary-color: #bcebff;
+    --hovered-primary-color: #8fddff;
+    --secondary-color: #009fe3;
+    --light-secondary-color: #bcebff;
+    --hovered-secondary-color: #8fddff;
 }
 
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    color: var(--logo-color);
+    color: var(--default-color);
 }
 
 html, body, #root {
