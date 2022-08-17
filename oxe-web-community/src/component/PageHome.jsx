@@ -17,7 +17,7 @@ export default class PageHome extends React.Component {
 			<div className={"PageHome page max-sized-page row-spaced"}>
 				<div className={"row"}>
 					<div className="col-md-10">
-						<h1>Home</h1>
+						<h1>My activity</h1>
 					</div>
 
 					<div className="col-md-2 top-title-menu">
@@ -142,19 +142,6 @@ export default class PageHome extends React.Component {
 						</a>
 					</div>
 
-					<div className="col-md-6">
-						<a
-							onClick={() => this.props.changeMenu("form")}
-						>
-							<Link to="/form">
-								<div className="PageHome-white-block">
-									<i className="fas fa-poll-h"/>
-									<h3>FORMS</h3>
-								</div>
-							</Link>
-						</a>
-					</div>
-
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <div className="col-md-6">
@@ -170,6 +157,19 @@ export default class PageHome extends React.Component {
 							</a>
 						</div>
 					}
+
+					<div className="col-md-6">
+						<a
+							onClick={() => this.props.changeMenu("form")}
+						>
+							<Link to="/form">
+								<div className="PageHome-white-block">
+									<i className="fas fa-poll-h"/>
+									<h3>FORMS</h3>
+								</div>
+							</Link>
+						</a>
+					</div>
 				</div>
 
 				<div className={"row row-spaced"}>
