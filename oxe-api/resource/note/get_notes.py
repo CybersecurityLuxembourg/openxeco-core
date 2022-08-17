@@ -21,9 +21,7 @@ class GetNotes(MethodResource, Resource):
          description='Get notes from a company, an article, a taxonomy category or a user',
          responses={
              "200": {},
-             "422.a": {"description": "At least one of those params should be set: company, article, "
-                                      "taxonomy_category, user"},
-             "422.b": {"description": "Only one params should be set amongst those: company, article, "
+             "422": {"description": "Maximum one params should be set amongst those: company, article, "
                                       "taxonomy_category, user"},
          })
     @use_kwargs({
@@ -42,10 +40,8 @@ class GetNotes(MethodResource, Resource):
 
         param_count = len([1 for t in ["article", "company", "taxonomy_category", "user"] if t in kwargs])
 
-        if param_count == 0:
-            return "", "422 At least one of those params should be set: company, article, taxonomy_category, user"
         if param_count > 1:
-            return "", "422 Only one params should be set amongst those: company, article, taxonomy_category, user"
+            return "", "422 Maximum one params should be set amongst those: company, article, taxonomy_category, user"
 
         note_query = self.db.get_filtered_note_query(kwargs)
 
