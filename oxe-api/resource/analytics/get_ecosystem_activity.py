@@ -61,6 +61,33 @@ class GetEcosystemActivity(MethodResource, Resource):
                     .filter(art.publication_date > datetime.today() - timedelta(days=365))
                     .group_by(art.publication_date)
                     .all()},
+            "service_publication":
+                {str(o[0]): o[1] for o in self.db.session.query(art)
+                    .with_entities(func.DATE(art.publication_date), func.count(art.id))
+                    .filter(art.type == "SERVICE")
+                    .filter(art.status == "PUBLIC")
+                    .filter(art.is_created_by_admin.is_(False))
+                    .filter(art.publication_date > datetime.today() - timedelta(days=365))
+                    .group_by(art.publication_date)
+                    .all()},
+            "tool_publication":
+                {str(o[0]): o[1] for o in self.db.session.query(art)
+                    .with_entities(func.DATE(art.publication_date), func.count(art.id))
+                    .filter(art.type == "TOOL")
+                    .filter(art.status == "PUBLIC")
+                    .filter(art.is_created_by_admin.is_(False))
+                    .filter(art.publication_date > datetime.today() - timedelta(days=365))
+                    .group_by(art.publication_date)
+                    .all()},
+            "resource_publication":
+                {str(o[0]): o[1] for o in self.db.session.query(art)
+                    .with_entities(func.DATE(art.publication_date), func.count(art.id))
+                    .filter(art.type == "RESOURCE")
+                    .filter(art.status == "PUBLIC")
+                    .filter(art.is_created_by_admin.is_(False))
+                    .filter(art.publication_date > datetime.today() - timedelta(days=365))
+                    .group_by(art.publication_date)
+                    .all()},
 
             "account_creation":
                 {str(o[0]): o[1] for o in self.db.session.query(usr)
