@@ -6,9 +6,9 @@
     --primary-color: #009fe3;
     --light-primary-color: #bcebff;
     --hovered-primary-color: #8fddff;
-    --secondary-color: #009fe3;
-    --light-secondary-color: #bcebff;
-    --hovered-secondary-color: #8fddff;
+    --secondary-color: #e40613;
+    --light-secondary-color: #fed7da;
+    --hovered-secondary-color: #ffa8b0;
 }
 
 body {
