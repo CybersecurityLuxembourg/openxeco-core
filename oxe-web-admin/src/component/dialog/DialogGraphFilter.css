@@ -7,9 +7,9 @@
 }
 
 .DialogGraphFilter-content {
-	max-width: 450px;
+	max-width: 800px;
 	min-width: 300px;
-	width: 35% !important;
+	width: 50% !important;
 	height: calc(100% - 20px);
 	position: absolute !important;
     right: -500px;

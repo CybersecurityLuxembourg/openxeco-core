@@ -8,8 +8,8 @@
 	z-index: 0 !important;
 }
 
-#DashboardGraph .DashboardGraph-top-bar {
-	z-index: 110;
+#DashboardGraph .DashboardGraph-top-bar, #DashboardGraph .DashboardGraph-top-bar div {
+	z-index: 100;
 }
 
 #DashboardGraph .Loading {
