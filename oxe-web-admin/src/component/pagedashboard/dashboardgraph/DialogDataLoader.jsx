@@ -53,7 +53,7 @@ export default class DialogDataLoader extends React.Component {
 									<FormLine
 										label={"ARTICLE: " + t}
 										value={this.props.parentState[t]
-											? `${this.props.parentState[t].length} / ${this.props.parentState[t][0].pagination.pages}`
+											? `${this.props.parentState[t].at(-1).pagination.page} / ${this.props.parentState[t][0].pagination.pages}`
 											: "No data"
 										}
 										disabled={true}
@@ -63,8 +63,11 @@ export default class DialogDataLoader extends React.Component {
 									<button
 										disabled={this.props.parentState[t].length === 0
 											|| this.props.parentState[t][0].pagination.pages
-											=== this.props.parentState[t].length}
-										onClick={() => this.props.getArticles(t, this.props.parentState[t].length + 1)}>
+											<= this.props.parentState[t].at(-1).pagination.page}
+										onClick={() => this.props.getArticles(
+											t,
+											this.props.parentState[t].at(-1).pagination.page + 1,
+										)}>
 										<span><i className="fas fa-plus-circle"/></span>
 									</button>
 								</div>
@@ -88,8 +91,10 @@ export default class DialogDataLoader extends React.Component {
 								className={"grey-background"}
 								disabled={this.props.parentState.users.length === 0
 									|| this.props.parentState.users[0].pagination.pages
-									=== this.props.parentState.users.length}
-								onClick={() => this.props.getUsers(this.props.parentState.users.length + 1)}>
+									<= this.props.parentState.users.at(-1).pagination.page}
+								onClick={() => this.props.getUsers(
+									this.props.parentState.users.at(-1).pagination.page + 1,
+								)}>
 								<span><i className="fas fa-plus-circle"/></span>
 							</button>
 						</div>
