@@ -152,6 +152,12 @@ export default class CompanyGlobal extends React.Component {
 
 				<div className="col-md-12 row-spaced">
 					<FormLine
+						label={"Headline"}
+						value={this.props.company.headline}
+						onBlur={(v) => this.saveCompanyValue("headline", v)}
+						disabled={!this.props.editable}
+					/>
+					<FormLine
 						label={"Description"}
 						type={"textarea"}
 						value={this.props.company.description}

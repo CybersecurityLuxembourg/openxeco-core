@@ -20,8 +20,10 @@ depends_on = None
 def upgrade():
     op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'CHECKBOX', 'OPTIONS', 'SELECT'), server_default=sa.text("'TEXT'"), nullable=False)
     op.alter_column('Form', 'description', type_=mysql.TEXT(charset='utf8mb4', collation='utf8mb4_unicode_ci'),  nullable=True)
+    op.add_column('Company', sa.Column('headline', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=50), nullable=True))
 
 
 def downgrade():
     op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'CHECKBOX', 'OPTIONS'), server_default=sa.text("'TEXT'"), nullable=False)
     op.alter_column('Form', 'description', type_=mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=500), nullable=True)
+    op.drop_column('Company', 'headline')

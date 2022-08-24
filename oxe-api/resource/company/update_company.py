@@ -26,6 +26,7 @@ class UpdateCompany(MethodResource, Resource):
         'id': fields.Int(),
         'trade_register_number': fields.Str(required=False, allow_none=True),
         'name': fields.Str(required=False, allow_none=True),
+        'headline': fields.Str(required=False, allow_none=True),
         'image': fields.Int(required=False, allow_none=True),
         'description': fields.Str(required=False, allow_none=True),
         'creation_date': fields.Str(required=False, allow_none=True),

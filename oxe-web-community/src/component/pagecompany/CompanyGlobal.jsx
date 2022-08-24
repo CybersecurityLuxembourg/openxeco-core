@@ -19,6 +19,7 @@ export default class CompanyGlobal extends React.Component {
 
 			fields: {
 				name: "Name",
+				headline: "Headline",
 				type: "Type",
 				description: "Description",
 				trade_register_number: "Trade register number",
@@ -130,6 +131,11 @@ export default class CompanyGlobal extends React.Component {
 							label={this.state.fields.name}
 							value={this.state.companyInfo.name}
 							onChange={(v) => this.updateCompany("name", v)}
+						/>
+						<FormLine
+							label={this.state.fields.headline}
+							value={this.state.companyInfo.headline}
+							onChange={(v) => this.updateCompany("headline", v)}
 						/>
 						<FormLine
 							label={this.state.fields.description}
