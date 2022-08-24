@@ -4,7 +4,8 @@ import Graph from "react-graph-vis";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
 import { dictToURI } from "../../utils/url.jsx";
-import DialogGraphFilter from "../dialog/DialogGraphFilter.jsx";
+import DialogGraphFilter from "./dashboardgraph/DialogGraphFilter.jsx";
+import DialogDataLoader from "./dashboardgraph/DialogDataLoader.jsx";
 import Loading from "../box/Loading.jsx";
 
 export default class DashboardGraph extends React.Component {
@@ -14,9 +15,11 @@ export default class DashboardGraph extends React.Component {
 		this.state = {
 			entityRelationships: null,
 			entityRelationshipTypes: null,
-			users: null,
+			users: [],
 			userGroups: null,
-			userAssignments: null,
+			userGroupAssignments: null,
+			userCompanyAssignments: null,
+			articleEnums: null,
 
 			filters: {},
 
@@ -39,7 +42,9 @@ export default class DashboardGraph extends React.Component {
 		this.getEntityRelationshipTypes();
 		this.getArticleEnums();
 		this.getUsers();
-		this.getUserGroupsAndAssignments();
+		this.getUserGroups();
+		this.getUserGroupAssignments();
+		this.getUserCompanyAssignments();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -66,11 +71,14 @@ export default class DashboardGraph extends React.Component {
 		});
 
 		getRequest.call(this, "user/get_users?" + params, (data) => {
-			this.setState({
-				users: this.state.users
-					? this.state.users.push(data)
-					: [data],
-			});
+			const currentUsers = this.state.users;
+
+			if (!currentUsers) {
+				this.setState({ users: [data] });
+			} else {
+				currentUsers.push(data);
+				this.setState({ users: currentUsers });
+			}
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -78,7 +86,7 @@ export default class DashboardGraph extends React.Component {
 		});
 	}
 
-	getUserGroupsAndAssignments() {
+	getUserGroups() {
 		this.setState({ userGroups: null }, () => {
 			getRequest.call(this, "user/get_user_groups", (data) => {
 				this.setState({
@@ -90,11 +98,27 @@ export default class DashboardGraph extends React.Component {
 				nm.error(error.message);
 			});
 		});
+	}
 
+	getUserGroupAssignments() {
 		this.setState({ userGroupAssignments: null }, () => {
 			getRequest.call(this, "user/get_user_group_assignments", (data) => {
 				this.setState({
 					userGroupAssignments: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		});
+	}
+
+	getUserCompanyAssignments() {
+		this.setState({ userCompanyAssignments: null }, () => {
+			getRequest.call(this, "user/get_user_company_assignments", (data) => {
+				this.setState({
+					userCompanyAssignments: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -126,11 +150,14 @@ export default class DashboardGraph extends React.Component {
 		});
 
 		getRequest.call(this, "public/get_public_articles?" + params, (data) => {
-			this.setState({
-				[type]: this.state[type]
-					? this.state[type].push(data)
-					: [data],
-			});
+			const currentArticles = this.state[type];
+
+			if (!currentArticles) {
+				this.setState({ [type]: [data] });
+			} else {
+				currentArticles.push(data);
+				this.setState({ [type]: currentArticles });
+			}
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -336,7 +363,7 @@ export default class DashboardGraph extends React.Component {
 							},
 						}
 					)),
-				...this.state.filters.hideUsers && this.state.users
+				...this.state.filters.hideUsers || !this.state.users
 					? []
 					: this.getUsersToShow().map((u) => (
 						{
@@ -354,7 +381,7 @@ export default class DashboardGraph extends React.Component {
 							},
 						}
 					)),
-				...this.state.filters.hideUsers && this.state.userGroups
+				...this.state.filters.hideUsers || !this.state.userGroups
 					? []
 					: this.state.userGroups.map((g) => (
 						{
@@ -382,7 +409,7 @@ export default class DashboardGraph extends React.Component {
 							label: this.getEntityRelationshipTypeById(r.type).name,
 							color: { color: "#bcebff" },
 							font: { color: "#8fddff" },
-							width: 1,
+							width: 2,
 							arrows: {
 								to: {
 									enabled: this.getEntityRelationshipTypeById(r.type).is_directional === 1,
@@ -400,7 +427,7 @@ export default class DashboardGraph extends React.Component {
 							from: "cat-" + v.category,
 							to: "val-" + v.id,
 							color: { color: "#fed7da" },
-							width: 1,
+							width: 2,
 							arrows: {
 								to: {
 									enabled: true,
@@ -420,11 +447,10 @@ export default class DashboardGraph extends React.Component {
 							width: 1,
 							arrows: {
 								to: {
-									enabled: true,
-									scaleFactor: 1,
-									type: "arrow",
+									enabled: false,
 								},
 							},
+							dashes: true,
 						}
 					))
 					: [],
@@ -437,11 +463,10 @@ export default class DashboardGraph extends React.Component {
 							width: 1,
 							arrows: {
 								to: {
-									enabled: true,
-									scaleFactor: 1,
-									type: "arrow",
+									enabled: false,
 								},
 							},
+							dashes: true,
 						}
 					));
 
@@ -456,11 +481,10 @@ export default class DashboardGraph extends React.Component {
 							width: 1,
 							arrows: {
 								to: {
-									enabled: true,
-									scaleFactor: 1,
-									type: "arrow",
+									enabled: false,
 								},
 							},
+							dashes: true,
 						}
 					));
 					return f;
@@ -471,14 +495,24 @@ export default class DashboardGraph extends React.Component {
 							from: "usg-" + a.group_id,
 							to: "usr-" + a.user_id,
 							color: { color: "#ffd394" },
+							width: 2,
+						}
+					))
+					: [],
+				...this.state.userCompanyAssignments
+					? this.state.userCompanyAssignments.map((a) => (
+						{
+							from: "usr-" + a.user_id,
+							to: "ent-" + a.company_id,
+							label: a.department,
+							color: { color: "lightgrey" },
 							width: 1,
 							arrows: {
 								to: {
-									enabled: true,
-									scaleFactor: 1,
-									type: "arrow",
+									enabled: false,
 								},
 							},
+							dashes: true,
 						}
 					))
 					: [],
@@ -557,6 +591,18 @@ export default class DashboardGraph extends React.Component {
 									: <i className="fas fa-icons"/>
 								}
 							</button>
+							<DialogDataLoader
+								trigger={
+									<button
+										className={"blue-background"}
+										data-hover="Load data">
+										<i className="fas fa-tasks"/>
+									</button>
+								}
+								parentState={this.state}
+								getArticles={(t, p) => this.getArticles(t, p)}
+								getUsers={(p) => this.getUsers(p)}
+							/>
 							<DialogGraphFilter
 								trigger={
 									<button

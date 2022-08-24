@@ -490,7 +490,6 @@ export default class DashboardCommunity extends React.Component {
 										if (data.length > 0) {
 											// eslint-disable-next-line no-underscore-dangle
 											const l = data[0]._chart.config.data.datasets[0].label[data[0]._index];
-											console.log(l);
 											if (this.state.filters.legal_status) {
 												this.manageFilter("legal_status", undefined, false);
 											} else {

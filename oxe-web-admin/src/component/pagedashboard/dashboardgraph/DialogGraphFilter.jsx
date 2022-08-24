@@ -2,8 +2,8 @@ import React from "react";
 import "./DialogGraphFilter.css";
 import Popup from "reactjs-popup";
 import _ from "lodash";
-import FormLine from "../button/FormLine.jsx";
-import Loading from "../box/Loading.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
 
 export default class DialogGraphFilter extends React.Component {
 	constructor(props) {
