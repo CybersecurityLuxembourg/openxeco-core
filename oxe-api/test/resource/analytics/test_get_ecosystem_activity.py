@@ -194,4 +194,7 @@ class TestGetEcosystemActivity(BaseCase):
             "action": {
                 (datetime.now() - timedelta(1)).strftime("%Y-%m-%d"): 1
             },
+            "resource_publication": {},
+            "service_publication": {},
+            "tool_publication": {},
         }, response.json)
