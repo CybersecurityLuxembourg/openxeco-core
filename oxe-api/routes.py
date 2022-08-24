@@ -167,6 +167,7 @@ from resource.user.delete_user_group_right import DeleteUserGroupRight
 from resource.user.get_users import GetUsers
 from resource.user.get_user import GetUser
 from resource.user.get_user_companies import GetUserCompanies
+from resource.user.get_user_company_assignments import GetUserCompanyAssignments
 from resource.user.get_user_company_enums import GetUserCompanyEnums
 from resource.user.get_user_group_rights import GetUserGroupRights
 from resource.user.get_user_groups import GetUserGroups

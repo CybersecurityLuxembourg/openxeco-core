@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Network graph tab on Dashboard page on oxe-web-admin
+- resource user/get_user_company_assignments
 
 ### Changed
 
