@@ -56,22 +56,18 @@ export default class FormForm extends React.Component {
 	}
 
 	getAnswers() {
-		this.setState({
-			answers: null,
-		}, () => {
-			const params = {
-				form_id: this.props.form.id,
-			};
+		const params = {
+			form_id: this.props.form.id,
+		};
 
-			getRequest.call(this, "private/get_my_form_answers?" + dictToURI(params), (data) => {
-				this.setState({
-					answers: data,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
+		getRequest.call(this, "private/get_my_form_answers?" + dictToURI(params), (data) => {
+			this.setState({
+				answers: data,
 			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
 		});
 	}
 
@@ -84,6 +80,7 @@ export default class FormForm extends React.Component {
 
 			postRequest.call(this, "private/update_my_form_answer", params, () => {
 				nm.info("The answer has been updated");
+				this.getAnswers();
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -97,6 +94,7 @@ export default class FormForm extends React.Component {
 
 			postRequest.call(this, "private/add_my_form_answer", params, () => {
 				nm.info("The answer has been added");
+				this.getAnswers();
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -106,6 +104,10 @@ export default class FormForm extends React.Component {
 	}
 
 	getAnswer(q) {
+		if (!this.state.answers) {
+			return null;
+		}
+
 		const answers = this.state.answers.filter((a) => a.form_question_id === q.id);
 
 		if (answers.length === 0) {
@@ -140,15 +142,38 @@ export default class FormForm extends React.Component {
 				&& <div className="col-md-12 row-spaced">
 					<FormLine
 						label={""}
+						innerLabel={this.getAnswer(q) && typeof this.getAnswer(q).value !== "undefined"
+							? undefined : "No answer provided yet"}
 						fullWidth={true}
 						type={"checkbox"}
 						value={this.getAnswer(q) ? this.getAnswer(q).value === "TRUE" : false}
 						onChange={(v) => this.updateAnswer(q.id, this.getAnswer(q), v ? "TRUE" : "FALSE")}
+						background={"kkkk"}
 					/>
 				</div>
 			}
 
 			{q.type === "OPTIONS"
+				&& <div className="col-md-12 row-spaced">
+					{q.options
+						? <FormLine
+							type={"multiselect"}
+							fullWidth={true}
+							value={this.getAnswer(q) && this.getAnswer(q).value ? this.getAnswer(q).value.split("|") : []}
+							options={q.options.split("|").map((o) => ({ label: o, value: o }))}
+							onChange={(v) => this.updateAnswer(q.id, this.getAnswer(q), v.join("|"))}
+						/>
+						: <div className="col-md-12 row-spaced">
+							<Message
+								height={100}
+								text={"No option found for this question"}
+							/>
+						</div>
+					}
+				</div>
+			}
+
+			{q.type === "SELECT"
 				&& <div className="col-md-12 row-spaced">
 					{q.options
 						? <FormLine
@@ -196,7 +221,7 @@ export default class FormForm extends React.Component {
 					</div>
 				}
 
-				{this.state.questions && this.state.answers
+				{this.state.questions
 					? <div className={"row"}>
 						<div className="col-md-12">
 							{this.state.questions.map((q) => (

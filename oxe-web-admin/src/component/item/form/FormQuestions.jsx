@@ -180,7 +180,7 @@ export default class FormQuestions extends React.Component {
 						labelWidth={3}
 					/>
 				</div>
-				{question.type === "OPTIONS"
+				{["OPTIONS", "SELECT"].includes(question.type)
 					&& <div className="col-md-12">
 						<FormLine
 							label={"Options (Sep. by \"|\")"}

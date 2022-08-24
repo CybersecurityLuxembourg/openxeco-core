@@ -1,12 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.13.0] - 2022-08-17
+## [1.13.0] - 2022-XX-XX
 
 ### Added
 
 - Network graph tab on Dashboard page on oxe-web-admin
 - resource user/get_user_company_assignments
+- Value "SELECT" on FormQuestion type
 
 ### Changed
 
@@ -15,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Community tab on Dashboard page on oxe-web-admin
 - Usage analytics tab on Dashboard page on oxe-web-admin
 - Recent activity tab on Dashboard page on oxe-web-admin
+- Form management on oxe-web-admin and oxe-web-community
 
 ## [1.12.5] - 2022-08-17
 

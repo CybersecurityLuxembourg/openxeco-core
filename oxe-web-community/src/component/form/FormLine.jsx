@@ -105,6 +105,7 @@ export default class FormLine extends React.Component {
 			/>;
 		case "checkbox":
 			return <CheckBox
+				label={this.props.innerLabel}
 				value={this.state.value}
 				onClick={(v) => this.onChange(v)}
 				disabled={this.props.disabled}
