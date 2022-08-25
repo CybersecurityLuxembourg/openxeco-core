@@ -5,14 +5,14 @@ from requests import Response
 from test.BaseCase import BaseCase
 
 
-class TestRunCompanyWebsiteCheck(BaseCase):
+class TestRunEntityWebsiteCheck(BaseCase):
 
     @BaseCase.login
-    @BaseCase.grant_access("/cron/run_company_website_check")
-    @patch('resource.cron.run_company_website_check.requests.head')
+    @BaseCase.grant_access("/cron/run_entity_website_check")
+    @patch('resource.cron.run_entity_website_check.requests.head')
     def test_ok(self, mock_head, token):
-        self.db.insert({"id": 1, "name": "Company 1", "website": "http://fake-website.com"}, self.db.tables["Company"])
-        self.db.insert({"id": 2, "name": "Company 2", "website": "fake-website.com"}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "Entity 1", "website": "http://fake-website.com"}, self.db.tables["Entity"])
+        self.db.insert({"id": 2, "name": "Entity 2", "website": "fake-website.com"}, self.db.tables["Entity"])
 
         response = Response()
         response.status_code = 200
@@ -22,7 +22,7 @@ class TestRunCompanyWebsiteCheck(BaseCase):
             response
         ]
 
-        response = self.application.post('/cron/run_company_website_check',
+        response = self.application.post('/cron/run_entity_website_check',
                                          headers=self.get_standard_post_header(token))
 
         data_controls = self.db.get(self.db.tables["DataControl"])
@@ -34,24 +34,24 @@ class TestRunCompanyWebsiteCheck(BaseCase):
         self.assertEqual(200, response.status_code)
 
     @BaseCase.login
-    @BaseCase.grant_access("/cron/run_company_website_check")
+    @BaseCase.grant_access("/cron/run_entity_website_check")
     def test_ko_wrong_website_format(self, token):
-        self.db.insert({"id": 1, "name": "Company 1", "website": ""}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "Entity 1", "website": ""}, self.db.tables["Entity"])
 
-        response = self.application.post('/cron/run_company_website_check',
+        response = self.application.post('/cron/run_entity_website_check',
                                          headers=self.get_standard_post_header(token))
 
         data_controls = self.db.get(self.db.tables["DataControl"])
 
         self.assertEqual(len(data_controls), 1)
-        self.assertEqual(data_controls[0].value, "The website of <COMPANY:1> seems unreachable")
+        self.assertEqual(data_controls[0].value, "The website of <ENTITY:1> seems unreachable")
         self.assertEqual(200, response.status_code)
 
     @BaseCase.login
-    @BaseCase.grant_access("/cron/run_company_website_check")
-    @patch('resource.cron.run_company_website_check.requests.head')
+    @BaseCase.grant_access("/cron/run_entity_website_check")
+    @patch('resource.cron.run_entity_website_check.requests.head')
     def test_ko_500_response(self, mock_head, token):
-        self.db.insert({"id": 1, "name": "Company 1", "website": "http://correct-site.com"}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "Entity 1", "website": "http://correct-site.com"}, self.db.tables["Entity"])
 
         response = Response()
         response.status_code = 500
@@ -60,7 +60,7 @@ class TestRunCompanyWebsiteCheck(BaseCase):
             response,
         ]
 
-        response = self.application.post('/cron/run_company_website_check',
+        response = self.application.post('/cron/run_entity_website_check',
                                          headers=self.get_standard_post_header(token))
 
         data_controls = self.db.get(self.db.tables["DataControl"])
@@ -68,5 +68,5 @@ class TestRunCompanyWebsiteCheck(BaseCase):
         self.assertEqual(mock_head.call_args_list[0], call("http://correct-site.com", allow_redirects=True))
         self.assertEqual(mock_head.call_count, 1)
         self.assertEqual(len(data_controls), 1)
-        self.assertEqual(data_controls[0].value, f"The website of <COMPANY:1> returned code 500")
+        self.assertEqual(data_controls[0].value, f"The website of <ENTITY:1> returned code 500")
         self.assertEqual(200, response.status_code)

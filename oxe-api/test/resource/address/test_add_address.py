@@ -6,10 +6,10 @@ class TestAddAddress(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/address/add_address")
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
 
         payload = {
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue",
             "address_2": None,
             "number": None,
@@ -26,13 +26,13 @@ class TestAddAddress(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(self.db.get_count(self.db.tables["CompanyAddress"]), 1)
+        self.assertEqual(self.db.get_count(self.db.tables["EntityAddress"]), 1)
 
     @BaseCase.login
     @BaseCase.grant_access("/address/add_address")
     def test_ok_without_none(self, token):
         payload = {
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue",
             "postal_code": "1515",
             "city": "Luxembourg",
@@ -44,13 +44,13 @@ class TestAddAddress(BaseCase):
                                          json=payload)
 
         self.assertEqual(422, response.status_code)
-        self.assertEqual("422 Provided company not existing", response.status)
+        self.assertEqual("422 Provided entity not existing", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/address/add_address")
-    def test_ko_missing_company(self, token):
+    def test_ko_missing_entity(self, token):
         payload = {
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue",
             "address_2": None,
             "number": None,
@@ -67,4 +67,4 @@ class TestAddAddress(BaseCase):
                                          json=payload)
 
         self.assertEqual(422, response.status_code)
-        self.assertEqual("422 Provided company not existing", response.status)
+        self.assertEqual("422 Provided entity not existing", response.status)

@@ -11,14 +11,14 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 
 
-class GetCompanies(MethodResource, Resource):
+class GetEntities(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @log_request
     @doc(tags=['entity'],
-         description='Get companies',
+         description='Get entities',
          responses={
              "200": {},
          })
@@ -38,7 +38,7 @@ class GetCompanies(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        entity_objects = self.db.get_filtered_companies(kwargs).all()
-        data = Serializer.serialize(entity_objects, self.db.tables["Company"])
+        entity_objects = self.db.get_filtered_entities(kwargs).all()
+        data = Serializer.serialize(entity_objects, self.db.tables["Entity"])
 
         return data, "200 "

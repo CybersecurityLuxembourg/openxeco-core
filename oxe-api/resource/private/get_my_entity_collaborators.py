@@ -9,7 +9,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class GetMyCompanyCollaborators(MethodResource, Resource):
+class GetMyEntityCollaborators(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -27,18 +27,18 @@ class GetMyCompanyCollaborators(MethodResource, Resource):
 
         try:
             self.db.session \
-                .query(self.db.tables["UserCompanyAssignment"]) \
-                .with_entities(self.db.tables["UserCompanyAssignment"].entity_id) \
-                .filter(self.db.tables["UserCompanyAssignment"].user_id == get_jwt_identity()) \
-                .filter(self.db.tables["UserCompanyAssignment"].entity_id == int(id_)) \
+                .query(self.db.tables["UserEntityAssignment"]) \
+                .with_entities(self.db.tables["UserEntityAssignment"].entity_id) \
+                .filter(self.db.tables["UserEntityAssignment"].user_id == get_jwt_identity()) \
+                .filter(self.db.tables["UserEntityAssignment"].entity_id == int(id_)) \
                 .one()
         except NoResultFound:
             return "", "422 Object not found or you don't have the required access to it"
 
         subquery = self.db.session \
-            .query(self.db.tables["UserCompanyAssignment"]) \
-            .with_entities(self.db.tables["UserCompanyAssignment"].user_id) \
-            .filter(self.db.tables["UserCompanyAssignment"].entity_id == int(id_)) \
+            .query(self.db.tables["UserEntityAssignment"]) \
+            .with_entities(self.db.tables["UserEntityAssignment"].user_id) \
+            .filter(self.db.tables["UserEntityAssignment"].entity_id == int(id_)) \
             .subquery()
 
         data = [r._asdict() for r in self.db.session

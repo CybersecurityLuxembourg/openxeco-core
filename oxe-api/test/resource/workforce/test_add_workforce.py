@@ -6,10 +6,10 @@ class TestAddWorkforce(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/workforce/add_workforce")
     def test_ok(self, token):
-        self.db.insert({"id": 1, "name": "Company1"}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "Entity1"}, self.db.tables["Entity"])
 
         payload = {
-            "company": 1,
+            "entity": 1,
             "workforce": 15,
             "date": "2020-01-01",
             "is_estimated": True,
@@ -25,10 +25,10 @@ class TestAddWorkforce(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/workforce/add_workforce")
-    def test_ko_missing_company(self, token):
+    def test_ko_missing_entity(self, token):
 
         payload = {
-            "company": 1,
+            "entity": 1,
             "workforce": 15,
             "date": "2020-01-01",
             "is_estimated": True,
@@ -40,13 +40,13 @@ class TestAddWorkforce(BaseCase):
                                          json=payload)
 
         self.assertEqual(422, response.status_code)
-        self.assertEqual("422 Provided company not existing", response.status)
+        self.assertEqual("422 Provided entity not existing", response.status)
 
     @BaseCase.login
     @BaseCase.grant_access("/workforce/add_workforce")
     def test_ko_wrong_date_format(self, token):
         payload = {
-            "company": 1,
+            "entity": 1,
             "workforce": 15,
             "date": "202a-01-01",
             "is_estimated": True,

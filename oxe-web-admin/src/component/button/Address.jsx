@@ -45,7 +45,7 @@ export default class Address extends React.Component {
 	save() {
 		if (this.state.info && this.state.info.id) {
 			const params = _.cloneDeep(this.state.info);
-			// delete params.company_id;
+			// delete params.entity_id;
 
 			postRequest.call(this, "address/update_address", params, () => {
 				if (this.props.afterAction) {

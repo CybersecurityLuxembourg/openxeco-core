@@ -7,8 +7,8 @@ import PageHome from "./PageHome.jsx";
 import PageForm from "./PageForm.jsx";
 import PageArticles from "./PageArticles.jsx";
 import PageLogoGenerator from "./PageLogoGenerator.jsx";
-import PageAddCompany from "./PageAddCompany.jsx";
-import PageCompany from "./PageCompany.jsx";
+import PageAddEntity from "./PageAddEntity.jsx";
+import PageEntity from "./PageEntity.jsx";
 import PageProfile from "./PageProfile.jsx";
 import PageContact from "./PageContact.jsx";
 import { getRequest } from "../utils/request.jsx";
@@ -19,19 +19,19 @@ export default class InsideApp extends React.Component {
 
 		this.changeState = this.changeState.bind(this);
 		this.getNotifications = this.getNotifications.bind(this);
-		this.getMyCompanies = this.getMyCompanies.bind(this);
+		this.getMyEntities = this.getMyEntities.bind(this);
 		this.changeMenu = this.changeMenu.bind(this);
 
 		this.state = {
 			selectedMenu: window.location.pathname.replace(/\//, ""),
 			notifications: null,
-			myCompanies: null,
+			myEntities: null,
 		};
 	}
 
 	componentDidMount() {
 		this.getNotifications();
-		this.getMyCompanies();
+		this.getMyEntities();
 	}
 
 	getNotifications() {
@@ -46,12 +46,12 @@ export default class InsideApp extends React.Component {
 		});
 	}
 
-	getMyCompanies() {
-		this.setState({ myCompanies: null });
+	getMyEntities() {
+		this.setState({ myEntities: null });
 
-		getRequest.call(this, "private/get_my_companies", (data) => {
+		getRequest.call(this, "private/get_my_entities", (data) => {
 			this.setState({
-				myCompanies: data,
+				myEntities: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -76,7 +76,7 @@ export default class InsideApp extends React.Component {
 					changeMenu={this.changeMenu}
 					disconnect={this.props.disconnect}
 					cookies={this.props.cookies}
-					myCompanies={this.state.myCompanies}
+					myEntities={this.state.myEntities}
 					notifications={this.state.notifications}
 					settings={this.props.settings}
 					{...props}
@@ -88,7 +88,7 @@ export default class InsideApp extends React.Component {
 							&& this.props.settings !== null
 							&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 							&& <Route path="/articles" render={(props) => <PageArticles
-								myCompanies={this.state.myCompanies}
+								myEntities={this.state.myEntities}
 								notifications={this.state.notifications}
 								getNotifications={this.getNotifications}
 								settings={this.props.settings}
@@ -96,9 +96,9 @@ export default class InsideApp extends React.Component {
 								{...props}
 							/>}/>
 						}
-						<Route path="/company/:id?" render={(props) => <PageCompany
+						<Route path="/entity/:id?" render={(props) => <PageEntity
 							key={Date.now()}
-							myCompanies={this.state.myCompanies}
+							myEntities={this.state.myEntities}
 							notifications={this.state.notifications}
 							getNotifications={this.getNotifications}
 							changeMenu={this.changeMenu}
@@ -108,14 +108,14 @@ export default class InsideApp extends React.Component {
 							settings={this.props.settings}
 							{...props}
 						/>}/>
-						<Route path="/add_company" render={(props) => <PageAddCompany
+						<Route path="/add_entity" render={(props) => <PageAddEntity
 							getNotifications={this.getNotifications}
-							myCompanies={this.state.myCompanies}
+							myEntities={this.state.myEntities}
 							{...props}
 						/>}/>
 						<Route path="/generator" render={(props) => <PageLogoGenerator
 							settings={this.props.settings}
-							myCompanies={this.state.myCompanies}
+							myEntities={this.state.myEntities}
 							{...props}
 						/>}/>
 						<Route path="/contact" render={(props) => <PageContact
@@ -126,7 +126,7 @@ export default class InsideApp extends React.Component {
 						<Route path="/" render={(props) => <PageHome
 							settings={this.props.settings}
 							changeMenu={this.changeMenu}
-							myCompanies={this.state.myCompanies}
+							myEntities={this.state.myEntities}
 							email={this.props.email}
 							{...props}
 						/>}/>

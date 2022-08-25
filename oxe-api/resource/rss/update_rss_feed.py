@@ -24,7 +24,7 @@ class UpdateRssFeed(MethodResource, Resource):
          })
     @use_kwargs({
         'url': fields.Str(required=True),
-        'company_id': fields.Int(required=False, allow_none=True),
+        'entity_id': fields.Int(required=False, allow_none=True),
     })
     @jwt_required
     @verify_admin_access

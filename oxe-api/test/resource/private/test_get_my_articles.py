@@ -7,8 +7,8 @@ class TestGetMyArticles(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 14, "name": "My company"}, self.db.tables["Company"])
-        self.db.insert({"user_id": 1, "company_id": 14}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 14, "name": "My entity"}, self.db.tables["Entity"])
+        self.db.insert({"user_id": 1, "entity_id": 14}, self.db.tables["UserEntityAssignment"])
         self.db.insert({
             "id": 1,
             "title": "TITLE",
@@ -29,8 +29,8 @@ class TestGetMyArticles(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "company": 14}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"article": 3, "company": 14}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article": 3, "entity": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_articles?include_tags=true',
                                         headers=self.get_standard_header(token))
@@ -46,7 +46,7 @@ class TestGetMyArticles(BaseCase):
             "items": [
                 {
                     'abstract': None,
-                    'company_tags': [14],
+                    'entity_tags': [14],
                     'end_date': None,
                     'external_reference': None,
                     'handle': 'handle-3',
@@ -68,7 +68,7 @@ class TestGetMyArticles(BaseCase):
                 },
                 {
                     'abstract': None,
-                    'company_tags': [14],
+                    'entity_tags': [14],
                     'end_date': None,
                     'external_reference': None,
                     'handle': 'handle-2',

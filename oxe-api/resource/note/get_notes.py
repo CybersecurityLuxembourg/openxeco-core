@@ -18,17 +18,17 @@ class GetNotes(MethodResource, Resource):
 
     @log_request
     @doc(tags=['note'],
-         description='Get notes from a company, an article, a taxonomy category or a user',
+         description='Get notes from a entity, an article, a taxonomy category or a user',
          responses={
              "200": {},
-             "422": {"description": "Maximum one params should be set amongst those: company, article, "
+             "422": {"description": "Maximum one params should be set amongst those: entity, article, "
                                       "taxonomy_category, user"},
          })
     @use_kwargs({
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=10, validate=validate.Range(min=1, max=10)),
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
-        'company': fields.Int(required=False),
+        'entity': fields.Int(required=False),
         'article': fields.Int(required=False),
         'taxonomy_category': fields.Str(required=False),
         'user': fields.Int(required=False),
@@ -38,10 +38,10 @@ class GetNotes(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        param_count = len([1 for t in ["article", "company", "taxonomy_category", "user"] if t in kwargs])
+        param_count = len([1 for t in ["article", "entity", "taxonomy_category", "user"] if t in kwargs])
 
         if param_count > 1:
-            return "", "422 Maximum one params should be set amongst those: company, article, taxonomy_category, user"
+            return "", "422 Maximum one params should be set amongst those: entity, article, taxonomy_category, user"
 
         note_query = self.db.get_filtered_note_query(kwargs)
 

@@ -17,7 +17,7 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 
 
-class ExtractCompanies(MethodResource, Resource):
+class ExtractEntities(MethodResource, Resource):
 
     db = None
 
@@ -26,7 +26,7 @@ class ExtractCompanies(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Extract an excel file of the companies',
+         description='Extract an excel file of the entities',
          responses={
              "200": {},
              "422": {"description": "Object not found"},
@@ -53,21 +53,21 @@ class ExtractCompanies(MethodResource, Resource):
 
         # Manage global data
 
-        companies = Serializer.serialize(self.db.get_filtered_companies(kwargs).all(), self.db.tables["Company"])
-        entity_ids = [c["id"] for c in companies] \
-            if len(companies) < self.db.get_count(self.db.tables["Company"]) else None
+        entities = Serializer.serialize(self.db.get_filtered_entities(kwargs).all(), self.db.tables["Entity"])
+        entity_ids = [c["id"] for c in entities] \
+            if len(entities) < self.db.get_count(self.db.tables["Entity"]) else None
 
-        df = pd.DataFrame(companies)
+        df = pd.DataFrame(entities)
         df = df.add_prefix('Global|')
 
         # Manage addresses
 
         if 'include_address' in kwargs and kwargs['include_address'] is True:
             if entity_ids is not None:
-                addresses = self.db.get(self.db.tables["CompanyAddress"], {"entity_id": entity_ids})
+                addresses = self.db.get(self.db.tables["EntityAddress"], {"entity_id": entity_ids})
             else:
-                addresses = self.db.get(self.db.tables["CompanyAddress"])
-            addresses = Serializer.serialize(addresses, self.db.tables["CompanyAddress"])
+                addresses = self.db.get(self.db.tables["EntityAddress"])
+            addresses = Serializer.serialize(addresses, self.db.tables["EntityAddress"])
             addresses = pd.DataFrame(addresses)
             addresses = addresses.add_prefix('Address|')
 
@@ -79,11 +79,11 @@ class ExtractCompanies(MethodResource, Resource):
 
         if 'include_user' in kwargs and kwargs['include_user'] is True:
             if entity_ids is not None:
-                user_assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+                user_assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
                     "entity_id": entity_ids,
                 })
             else:
-                user_assignments = self.db.get(self.db.tables["UserCompanyAssignment"])
+                user_assignments = self.db.get(self.db.tables["UserEntityAssignment"])
 
             users = self.db.get(
                 self.db.tables["User"],
@@ -91,7 +91,7 @@ class ExtractCompanies(MethodResource, Resource):
                 ["id", "email"]
             )
 
-            user_assignments = Serializer.serialize(user_assignments, self.db.tables["UserCompanyAssignment"])
+            user_assignments = Serializer.serialize(user_assignments, self.db.tables["UserEntityAssignment"])
 
             if len(users) > 0:
                 user_assignments = pd.DataFrame(user_assignments)
@@ -107,15 +107,15 @@ class ExtractCompanies(MethodResource, Resource):
 
         if 'include_email' in kwargs and kwargs['include_email'] is True:
             if entity_ids is not None:
-                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                contacts = self.db.get(self.db.tables["EntityContact"], {
                     "entity_id": entity_ids,
                     "type": "EMAIL ADDRESS",
                 })
             else:
-                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                contacts = self.db.get(self.db.tables["EntityContact"], {
                     "type": "EMAIL ADDRESS",
                 })
-            contacts = Serializer.serialize(contacts, self.db.tables["CompanyContact"])
+            contacts = Serializer.serialize(contacts, self.db.tables["EntityContact"])
             contacts = pd.DataFrame(contacts)
             contacts = contacts.add_prefix('Email|')
 
@@ -127,15 +127,15 @@ class ExtractCompanies(MethodResource, Resource):
 
         if 'include_phone' in kwargs and kwargs['include_phone'] is True:
             if entity_ids is not None:
-                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                contacts = self.db.get(self.db.tables["EntityContact"], {
                     "entity_id": entity_ids,
                     "type": "PHONE NUMBER",
                 })
             else:
-                contacts = self.db.get(self.db.tables["CompanyContact"], {
+                contacts = self.db.get(self.db.tables["EntityContact"], {
                     "type": "PHONE NUMBER",
                 })
-            contacts = Serializer.serialize(contacts, self.db.tables["CompanyContact"])
+            contacts = Serializer.serialize(contacts, self.db.tables["EntityContact"])
             contacts = pd.DataFrame(contacts)
             contacts = contacts.add_prefix('Phone|')
 
@@ -163,7 +163,7 @@ class ExtractCompanies(MethodResource, Resource):
         # Prepare final export
 
         if 'format' not in kwargs or kwargs['format'] != "json":
-            filename = f"Export - Companies - {datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.xlsx"
+            filename = f"Export - Entities - {datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.xlsx"
 
             res = Response(
                 self.prepare_xlsx(df),
@@ -223,8 +223,8 @@ class ExtractCompanies(MethodResource, Resource):
 
         xlsx = BytesIO()
         writer = pd.ExcelWriter(xlsx, engine='openpyxl')  # pylint: disable=abstract-class-instantiated
-        df.to_excel(writer, startrow=0, sheet_name="Companies")
-        sheet = writer.sheets["Companies"]
+        df.to_excel(writer, startrow=0, sheet_name="Entities")
+        sheet = writer.sheets["Entities"]
         self.apply_style(sheet)
         writer.save()
         xlsx.seek(0)

@@ -78,9 +78,9 @@ class GetPublicArticleContent(MethodResource, Resource):
                 self.db.get_tags_of_article(article[0].id),
                 self.db.tables["TaxonomyValue"]
             ),
-            "company_tags": Serializer.serialize(
-                self.db.get_companies_of_article(article[0].id),
-                self.db.tables["Company"]
+            "entity_tags": Serializer.serialize(
+                self.db.get_entities_of_article(article[0].id),
+                self.db.tables["Entity"]
             )
         }
 

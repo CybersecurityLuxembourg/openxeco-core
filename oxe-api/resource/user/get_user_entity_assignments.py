@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 
 
-class GetUserCompanyAssignments(MethodResource, Resource):
+class GetUserEntityAssignments(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -26,7 +26,7 @@ class GetUserCompanyAssignments(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        data = self.db.get(self.db.tables["UserCompanyAssignment"])
-        data = Serializer.serialize(data, self.db.tables["UserCompanyAssignment"])
+        data = self.db.get(self.db.tables["UserEntityAssignment"])
+        data = Serializer.serialize(data, self.db.tables["UserEntityAssignment"])
 
         return data, "200 "

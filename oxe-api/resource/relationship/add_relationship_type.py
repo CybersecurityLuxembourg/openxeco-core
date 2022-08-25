@@ -19,7 +19,7 @@ class AddRelationshipType(MethodResource, Resource):
          description='Add an relationship type',
          responses={
              "200": {},
-             "422": {"description": "Provided company not existing"},
+             "422": {"description": "Provided entity not existing"},
          })
     @use_kwargs({
         'name': fields.Str(required=True, allow_none=False),
@@ -29,6 +29,6 @@ class AddRelationshipType(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.insert(kwargs, self.db.tables["CompanyRelationshipType"])
+        self.db.insert(kwargs, self.db.tables["EntityRelationshipType"])
 
         return "", "200 "

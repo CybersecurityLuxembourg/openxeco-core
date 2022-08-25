@@ -12,7 +12,7 @@ class TestUpdateTaxonomyCategory(BaseCase):
 
         payload = {
             "name": "CAT",
-            "active_on_companies": True,
+            "active_on_entities": True,
         }
 
         response = self.application.post('/taxonomy/update_taxonomy_category',
@@ -23,4 +23,4 @@ class TestUpdateTaxonomyCategory(BaseCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(users), 1)
-        self.assertEqual(users[0].active_on_companies, 1)
+        self.assertEqual(users[0].active_on_entities, 1)

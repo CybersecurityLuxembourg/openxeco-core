@@ -16,7 +16,7 @@ class TestGetTaxonomyCategories(BaseCase):
             {
                 'accepted_article_types': None,
                 'active_on_articles': 0,
-                'active_on_companies': 0,
+                'active_on_entities': 0,
                 'is_standard': 0,
                 'name': 'CAT1',
                 'sync_global': None,
@@ -28,7 +28,7 @@ class TestGetTaxonomyCategories(BaseCase):
             {
                 'accepted_article_types': None,
                 'active_on_articles': 0,
-                'active_on_companies': 0,
+                'active_on_entities': 0,
                 'is_standard': 0,
                 'name': 'CAT2',
                 'sync_global': None,

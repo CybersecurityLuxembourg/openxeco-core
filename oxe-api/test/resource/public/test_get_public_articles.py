@@ -165,8 +165,8 @@ class TestGetPublicArticles(BaseCase):
             "publication_date": "2021-01-24"
         }, self.db.tables["Article"])
 
-        self.db.insert({"id": 1, "name": "COMPANY"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 1}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"id": 1, "name": "ENTITY"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 1}, self.db.tables["ArticleEntityTag"])
 
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 3, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
@@ -202,7 +202,7 @@ class TestGetPublicArticles(BaseCase):
                     'sync_status': 'OK',
                     'title': 'TITLE2',
                     'type': 'NEWS',
-                    'company_tags': [1],
+                    'entity_tags': [1],
                     'taxonomy_tags': [3],
                 },
             ]
@@ -231,8 +231,8 @@ class TestGetPublicArticles(BaseCase):
             "publication_date": "2021-01-24"
         }, self.db.tables["Article"])
 
-        self.db.insert({"id": 1, "name": "COMPANY"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 1}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"id": 1, "name": "ENTITY"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 1}, self.db.tables["ArticleEntityTag"])
 
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 3, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
@@ -272,7 +272,7 @@ class TestGetPublicArticles(BaseCase):
                     'sync_status': 'OK',
                     'title': 'TITLE2',
                     'type': 'NEWS',
-                    'company_tags': [1],
+                    'entity_tags': [1],
                     'taxonomy_tags': [3, 4],
                 },
             ]
@@ -332,7 +332,7 @@ class TestGetPublicArticles(BaseCase):
             ]
         }, response.json)
 
-    def test_ok_with_company_filter(self):
+    def test_ok_with_entity_filter(self):
         self.db.insert({
             "id": 1,
             "title": "TITLE",
@@ -355,11 +355,11 @@ class TestGetPublicArticles(BaseCase):
             "publication_date": datetime.date.today() - datetime.timedelta(days=1)
         }, self.db.tables["Article"])
 
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
 
-        self.db.insert({"article": 2, "company": 2}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"article": 2, "entity": 2}, self.db.tables["ArticleEntityTag"])
 
-        response = self.application.get('/public/get_public_articles?companies=2')
+        response = self.application.get('/public/get_public_articles?entities=2')
 
         self.assertEqual(200, response.status_code)
         self.assertEqual({

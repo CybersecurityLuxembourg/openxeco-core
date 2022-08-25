@@ -6,10 +6,10 @@ class TestDeleteWorkforce(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/workforce/delete_workforce")
     def test_ok(self, token):
-        self.db.insert({"id": 1, "name": "Company1"}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "Entity1"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "company": 1,
+            "entity": 1,
             "workforce": 15,
             "date": "2020-01-01",
             "is_estimated": True,

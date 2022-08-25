@@ -19,17 +19,17 @@ class AddNote(MethodResource, Resource):
 
     @log_request
     @doc(tags=['note'],
-         description='Add a note on a company, an article, a taxonomy category or a user',
+         description='Add a note on a entity, an article, a taxonomy category or a user',
          responses={
              "200": {},
-             "422.a": {"description": "At least one of those params should be set: company, article, "
+             "422.a": {"description": "At least one of those params should be set: entity, article, "
                                       "taxonomy_category, user"},
-             "422.b": {"description": "Only one params should be set amongst those: company, article, "
+             "422.b": {"description": "Only one params should be set amongst those: entity, article, "
                                       "taxonomy_category, user"},
          })
     @use_kwargs({
         'content': fields.Str(required=False),
-        'company': fields.Int(required=False),
+        'entity': fields.Int(required=False),
         'article': fields.Int(required=False),
         'taxonomy_category': fields.Str(required=False),
         'user': fields.Int(required=False),
@@ -39,12 +39,12 @@ class AddNote(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        param_count = len([1 for t in ["article", "company", "taxonomy_category", "user"] if t in kwargs])
+        param_count = len([1 for t in ["article", "entity", "taxonomy_category", "user"] if t in kwargs])
 
         if param_count == 0:
-            return "", "422 At least one of those params should be set: company, article, taxonomy_category, user"
+            return "", "422 At least one of those params should be set: entity, article, taxonomy_category, user"
         if param_count > 1:
-            return "", "422 Only one params should be set amongst those: company, article, taxonomy_category, user"
+            return "", "422 Only one params should be set amongst those: entity, article, taxonomy_category, user"
 
         kwargs["admin"] = int(get_jwt_identity())
 

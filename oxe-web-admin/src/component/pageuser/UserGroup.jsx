@@ -224,7 +224,7 @@ export default class UserGroup extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12 PageCompany-table">
+					<div className="col-md-12 PageEntity-table">
 						{this.state.groups !== null
 							? <Table
 								columns={columns}

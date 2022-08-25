@@ -35,7 +35,7 @@ class GetMyRequests(MethodResource, Resource):
         }
 
         if "global_only" in kwargs and kwargs["global_only"] is True:
-            params["company_id"] = None
+            params["entity_id"] = None
 
         data = self.db.get(self.db.tables["UserRequest"], params)
         data = Serializer.serialize(data, self.db.tables["UserRequest"])

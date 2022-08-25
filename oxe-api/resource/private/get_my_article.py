@@ -20,9 +20,9 @@ class GetMyArticle(MethodResource, Resource):
          responses={
              "200": {},
              "422.1": {"description": "Article ID not found"},
-             "422.2": {"description": "Article has no company assigned"},
-             "422.3": {"description": "Article has too much companies assigned"},
-             "422.4": {"description": "User not assign to the company"},
+             "422.2": {"description": "Article has no entity assigned"},
+             "422.3": {"description": "Article has too much entities assigned"},
+             "422.4": {"description": "User not assign to the entity"},
          })
     @jwt_required
     @catch_exception
@@ -35,23 +35,23 @@ class GetMyArticle(MethodResource, Resource):
         if len(articles) < 1:
             return "", "422 Article ID not found"
 
-        article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": id_})
+        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article": id_})
 
-        if len(article_companies) < 1:
-            return "", "422 Article has no company assigned"
+        if len(article_entities) < 1:
+            return "", "422 Article has no entity assigned"
 
-        if len(article_companies) > 1:
-            return "", "422 Article has too much companies assigned"
+        if len(article_entities) > 1:
+            return "", "422 Article has too much entities assigned"
 
         # Check right of the user
 
-        assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+        assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "company_id": article_companies[0].company
+            "entity_id": article_entities[0].entity
         })
 
         if len(assignments) < 1:
-            return "", "422 User not assign to the company"
+            return "", "422 User not assign to the entity"
 
         # Fetch and return the data
 

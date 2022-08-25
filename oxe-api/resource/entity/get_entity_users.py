@@ -9,7 +9,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 
 
-class GetCompanyUsers(MethodResource, Resource):
+class GetEntityUsers(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -26,9 +26,9 @@ class GetCompanyUsers(MethodResource, Resource):
     def get(self, id_):
 
         subquery = self.db.session \
-            .query(self.db.tables["UserCompanyAssignment"]) \
-            .with_entities(self.db.tables["UserCompanyAssignment"].user_id) \
-            .filter(self.db.tables["UserCompanyAssignment"].entity_id == int(id_)) \
+            .query(self.db.tables["UserEntityAssignment"]) \
+            .with_entities(self.db.tables["UserEntityAssignment"].user_id) \
+            .filter(self.db.tables["UserEntityAssignment"].entity_id == int(id_)) \
             .subquery()
 
         data = [r._asdict() for r in self.db.session

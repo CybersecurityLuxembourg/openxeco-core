@@ -1,0 +1,56 @@
+
+.DialogEntityFilter-overlay {
+	position: fixed !important;
+	display: block !important;
+	width: 100%;
+	height: 100%;
+}
+
+.DialogEntityFilter-content {
+	max-width: 450px;
+	min-width: 300px;
+	width: 35% !important;
+	height: calc(100% - 20px);
+	position: absolute !important;
+    right: -500px;
+    margin: 10px 0px !important;
+    overflow-y: hidden;
+    padding: 0 !important;
+}
+
+.DialogEntityFilter-form {
+	padding-bottom: 100px !important;
+	overflow-y: auto;
+	padding: 0px 20px 80px 20px;
+	width: 100%;
+	height: 100%;
+}
+
+.DialogEntityFilter-buttons > .bottom-right-buttons {
+	position: absolute !important;
+	bottom: 15px !important;
+	right: 17px !important;
+}
+
+@keyframes slide-in {
+    100% { transform: translateX(-510px); }
+}
+
+@-webkit-keyframes slide-in {
+    100% { -webkit-transform: translateX(-510px); }
+}
+
+.DialogEntityFilter-overlay > .slide-in {
+    animation: slide-in 0.5s forwards;
+    -webkit-animation: slide-in 0.5s forwards;
+}
+
+.DialogEntityFilter-overlay > .slide-in {
+    animation: slide-in 0.5s forwards;
+    -webkit-animation: slide-in 0.5s forwards;
+}
+
+.DialogEntityFilter-button {
+	display: inline-block;
+	margin-left: 5px;
+}

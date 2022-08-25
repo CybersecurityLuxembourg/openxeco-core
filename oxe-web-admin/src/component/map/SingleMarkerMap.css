@@ -1,5 +1,5 @@
 
-.SingleMarkerMap-company {
+.SingleMarkerMap-entity {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -14,6 +14,6 @@
     font-size: 13px;
 }
 
-.SingleMarkerMap-company .Company {
+.SingleMarkerMap-entity .Entity {
 	z-index: 995;
 }

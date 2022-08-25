@@ -26,7 +26,7 @@ class TestGetRequests(BaseCase):
                 {
                     'id': 2,
                     'user_id': 1,
-                    'company_id': None,
+                    'entity_id': None,
                     'status': 'NEW',
                     'request': 'My request 1',
                     'data': None, 'image': None,
@@ -36,7 +36,7 @@ class TestGetRequests(BaseCase):
                 {
                     'id': 3,
                     'user_id': 1,
-                    'company_id': None,
+                    'entity_id': None,
                     'status': 'NEW',
                     'request': 'My request 2',
                     'data': None,
@@ -70,7 +70,7 @@ class TestGetRequests(BaseCase):
                 {
                     'id': 2,
                     'user_id': 1,
-                    'company_id': None,
+                    'entity_id': None,
                     'status': 'NEW',
                     'request': 'My request 1',
                     'data': None,

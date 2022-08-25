@@ -13,27 +13,27 @@ export default class ArticleHorizontal extends Component {
 	constructor(props) {
 		super(props);
 
-		this.getCompanyTagsContent = this.getCompanyTagsContent.bind(this);
+		this.getEntityTagsContent = this.getEntityTagsContent.bind(this);
 
 		this.state = {
 		};
 	}
 
-	getCompanyTagsContent() {
-		if (this.props.myCompanies !== null
-			&& this.props.myCompanies !== undefined
+	getEntityTagsContent() {
+		if (this.props.myEntities !== null
+			&& this.props.myEntities !== undefined
 			&& this.props.info !== undefined
 			&& this.props.info !== null
-			&& this.props.info.company_tags !== undefined) {
-			const companies = this.props.myCompanies
-				.filter((v) => this.props.info.company_tags.indexOf(v.id) >= 0);
+			&& this.props.info.entity_tags !== undefined) {
+			const entities = this.props.myEntities
+				.filter((v) => this.props.info.entity_tags.indexOf(v.id) >= 0);
 
-			if (companies.length === 0) {
+			if (entities.length === 0) {
 				return null;
 			}
 
 			return <div className="card-tags">
-				{companies.map((v) => <Chip
+				{entities.map((v) => <Chip
 					key={v.name}
 					label={v.name}
 				/>)}
@@ -84,7 +84,7 @@ export default class ArticleHorizontal extends Component {
 
 					<h5 className="card-title">{this.props.info.title}</h5>
 
-					{this.getCompanyTagsContent()}
+					{this.getEntityTagsContent()}
 
 					<DialogArticleEditor
 						trigger={<button
@@ -93,7 +93,7 @@ export default class ArticleHorizontal extends Component {
 							<i className="far fa-edit"/> Open editor
 						</button>}
 						article={this.props.info}
-						myCompanies={this.props.myCompanies}
+						myEntities={this.props.myEntities}
 						afterConfirmation={this.getMyArticles}
 						settings={this.props.settings}
 						afterDelete={this.props.afterDelete}

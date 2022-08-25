@@ -100,9 +100,9 @@ export default class Menu extends React.Component {
 					</NavItem>
 					<div className="Menu-divider"/>
 					<NavItem
-						eventKey="companies"
-						active={this.props.selectedMenu === "companies"}
-						onClick={() => this.props.history.push("/companies")}>
+						eventKey="entities"
+						active={this.props.selectedMenu === "entities"}
+						onClick={() => this.props.history.push("/entities")}>
 						<NavIcon>
 							<i className="fas fa-shapes" style={{ fontSize: "1.75em" }} />
 						</NavIcon>

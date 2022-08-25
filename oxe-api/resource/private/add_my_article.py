@@ -10,7 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
-from exception.user_not_assign_to_company import UserNotAssignedToCompany
+from exception.user_not_assign_to_entity import UserNotAssignedToEntity
 from exception.deactivated_article_edition import DeactivatedArticleEdition
 
 
@@ -23,17 +23,17 @@ class AddMyArticle(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Add an article determined by its title and related to an assigned company',
+         description='Add an article determined by its title and related to an assigned entity',
          responses={
              "200": {},
              "403": {"description": "The article edition is deactivated"},
-             "422.1": {"description": "Object not found : Company"},
-             "422.2": {"description": "The user is not assign to the company"},
+             "422.1": {"description": "Object not found : Entity"},
+             "422.2": {"description": "The user is not assign to the entity"},
              "422.3": {"description": "This article seems to already exist"},
          })
     @use_kwargs({
         'title': fields.Str(),
-        'company': fields.Int(),
+        'entity': fields.Int(),
     })
     @jwt_required
     @catch_exception
@@ -47,22 +47,22 @@ class AddMyArticle(MethodResource, Resource):
         if len(allowance_setting) < 1 or allowance_setting[0].value != "TRUE":
             raise DeactivatedArticleEdition()
 
-        # Check the company
+        # Check the entity
 
-        companies = self.db.get(self.db.tables["Company"], {"id": kwargs["company"]})
+        entities = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity"]})
 
-        if len(companies) < 1:
-            raise ObjectNotFound("Company")
+        if len(entities) < 1:
+            raise ObjectNotFound("Entity")
 
         # Check the right of the user
 
-        assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+        assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "company_id": kwargs["company"]
+            "entity_id": kwargs["entity"]
         })
 
         if len(assignments) < 1:
-            raise UserNotAssignedToCompany()
+            raise UserNotAssignedToEntity()
 
         # Insert rows
 
@@ -84,7 +84,7 @@ class AddMyArticle(MethodResource, Resource):
         self.db.insert(
             {
                 "article_id": article.id,
-                "name": "Version 0 [Initiated by the company]",
+                "name": "Version 0 [Initiated by the entity]",
                 "is_main": True
             },
             self.db.tables["ArticleVersion"],
@@ -93,9 +93,9 @@ class AddMyArticle(MethodResource, Resource):
         self.db.insert(
             {
                 "article": article.id,
-                "company": kwargs["company"],
+                "entity": kwargs["entity"],
             },
-            self.db.tables["ArticleCompanyTag"]
+            self.db.tables["ArticleEntityTag"]
         )
 
         return "", "200 "

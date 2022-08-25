@@ -21,13 +21,13 @@ class AddTaxonomyAssignment(MethodResource, Resource):
 
     @log_request
     @doc(tags=['taxonomy'],
-         description='Add a taxonomy assignment to a company',
+         description='Add a taxonomy assignment to a entity',
          responses={
              "200": {},
              "422": {"description": "This assignment is already existing"}
          })
     @use_kwargs({
-        'company': fields.Int(),
+        'entity': fields.Int(),
         'value': fields.Int(),
     })
     @jwt_required
@@ -47,7 +47,7 @@ class AddTaxonomyAssignment(MethodResource, Resource):
             raise ObjectNotFound
 
         row = {
-            "company": kwargs["company"],
+            "entity": kwargs["entity"],
             "taxonomy_value": kwargs["value"]
         }
 

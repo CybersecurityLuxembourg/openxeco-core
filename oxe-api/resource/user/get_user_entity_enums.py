@@ -8,7 +8,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class GetUserCompanyEnums(MethodResource, Resource):
+class GetUserEntityEnums(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -24,7 +24,7 @@ class GetUserCompanyEnums(MethodResource, Resource):
     def get(self):
 
         data = {
-            "department": self.db.tables["UserCompanyAssignment"].department.prop.columns[0].type.enums
+            "department": self.db.tables["UserEntityAssignment"].department.prop.columns[0].type.enums
         }
 
         return data, "200 "

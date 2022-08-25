@@ -6,7 +6,7 @@ import { postRequest } from "../../utils/request.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Tab from "../tab/Tab.jsx";
 import UserGlobal from "./user/UserGlobal.jsx";
-import UserCompany from "./user/UserCompany.jsx";
+import UserEntity from "./user/UserEntity.jsx";
 import UserNote from "./user/UserNote.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 
@@ -138,7 +138,7 @@ export default class User extends Component {
 									key={this.props.id}
 									id={this.props.id}
 								/>,
-								<UserCompany
+								<UserEntity
 									key={this.props.id}
 									id={this.props.id}
 									name={this.props.name}

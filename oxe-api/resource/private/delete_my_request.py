@@ -31,13 +31,13 @@ class DeleteMyRequest(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["UserRequest"], {
+        entities = self.db.get(self.db.tables["UserRequest"], {
             "id": kwargs["id"],
             "user_id": int(get_jwt_identity())
         })
 
-        if len(companies) > 0:
-            if companies[0].status == "NEW":
+        if len(entities) > 0:
+            if entities[0].status == "NEW":
                 self.db.delete(self.db.tables["UserRequest"], {
                     "id": kwargs["id"],
                     "user_id": int(get_jwt_identity())

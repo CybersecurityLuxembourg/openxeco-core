@@ -18,10 +18,10 @@ export default class BarWorkforceRange extends React.Component {
 		const acceptedIDs = this.props.actors.map((a) => a.id);
 
 		for (let i = 0; i < this.props.workforces.length; i++) {
-			if (acceptedIDs.indexOf(this.props.workforces[i].company) >= 0) {
+			if (acceptedIDs.indexOf(this.props.workforces[i].entity) >= 0) {
 				for (let y = 0; y < this.state.ranges.length; y++) {
 					if (this.props.workforces[i].workforce <= this.state.ranges[y]) {
-						if (this.props.companiesAsGranularity) {
+						if (this.props.entitiesAsGranularity) {
 							data[y] += 1;
 						} else {
 							data[y] += this.props.workforces[i].workforce;

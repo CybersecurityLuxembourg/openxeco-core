@@ -9,7 +9,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 
 
-class UpdateCompany(MethodResource, Resource):
+class UpdateEntity(MethodResource, Resource):
 
     db = None
 
@@ -46,6 +46,6 @@ class UpdateCompany(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["Company"])
+        self.db.merge(kwargs, self.db.tables["Entity"])
 
         return "", "200 "

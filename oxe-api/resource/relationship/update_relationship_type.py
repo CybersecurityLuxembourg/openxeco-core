@@ -32,6 +32,6 @@ class UpdateRelationshipType(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["CompanyRelationshipType"])
+        self.db.merge(kwargs, self.db.tables["EntityRelationshipType"])
 
         return "", "200 "

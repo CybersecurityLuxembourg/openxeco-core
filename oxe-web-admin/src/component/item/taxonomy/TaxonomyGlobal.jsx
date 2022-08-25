@@ -69,9 +69,9 @@ export default class TaxonomyGlobal extends React.Component {
 								<FormLine
 									type="checkbox"
 									label={"Active on entities"}
-									value={getCategory(this.props.taxonomy, this.props.name).active_on_companies}
+									value={getCategory(this.props.taxonomy, this.props.name).active_on_entities}
 									disabled={!this.props.editable}
-									onChange={(v) => this.updateCategory("active_on_companies", v)}
+									onChange={(v) => this.updateCategory("active_on_entities", v)}
 								/>
 								<FormLine
 									type="checkbox"

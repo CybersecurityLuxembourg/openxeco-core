@@ -4,19 +4,19 @@ import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import User from "./User.jsx";
-import Company from "./Company.jsx";
+import Entity from "./Entity.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import DialogSendMail from "../dialog/DialogSendMail.jsx";
-import RequestCompanyChange from "./request/RequestCompanyChange.jsx";
-import RequestCompanyAdd from "./request/RequestCompanyAdd.jsx";
+import RequestEntityChange from "./request/RequestEntityChange.jsx";
+import RequestEntityAdd from "./request/RequestEntityAdd.jsx";
 import RequestLogoChange from "./request/RequestLogoChange.jsx";
-import RequestCompanyAddressAdd from "./request/RequestCompanyAddressAdd.jsx";
-import RequestCompanyAddressChange from "./request/RequestCompanyAddressChange.jsx";
-import RequestCompanyAddressDelete from "./request/RequestCompanyAddressDelete.jsx";
-import RequestCompanyTaxonomyChange from "./request/RequestCompanyTaxonomyChange.jsx";
-import RequestCompanyAccessClaim from "./request/RequestCompanyAccessClaim.jsx";
+import RequestEntityAddressAdd from "./request/RequestEntityAddressAdd.jsx";
+import RequestEntityAddressChange from "./request/RequestEntityAddressChange.jsx";
+import RequestEntityAddressDelete from "./request/RequestEntityAddressDelete.jsx";
+import RequestEntityTaxonomyChange from "./request/RequestEntityTaxonomyChange.jsx";
+import RequestEntityAccessClaim from "./request/RequestEntityAccessClaim.jsx";
 
 export default class Request extends Component {
 	constructor(props) {
@@ -30,7 +30,7 @@ export default class Request extends Component {
 
 		this.state = {
 			user: null,
-			company: null,
+			entity: null,
 			requestStatus: null,
 			settings: null,
 		};
@@ -77,15 +77,15 @@ export default class Request extends Component {
 			nm.error(error.message);
 		});
 
-		if (this.props.info && (this.props.info.company_id
-			|| (this.props.info.data && JSON.parse(this.props.info.data).company_id))) {
-			const companyId = this.props.info.company_id
-				? this.props.info.company_id
-				: JSON.parse(this.props.info.data).company_id;
+		if (this.props.info && (this.props.info.entity_id
+			|| (this.props.info.data && JSON.parse(this.props.info.data).entity_id))) {
+			const entityId = this.props.info.entity_id
+				? this.props.info.entity_id
+				: JSON.parse(this.props.info.data).entity_id;
 
-			getRequest.call(this, "company/get_company/" + companyId, (data) => {
+			getRequest.call(this, "entity/get_entity/" + entityId, (data) => {
 				this.setState({
-					company: data,
+					entity: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -270,50 +270,50 @@ export default class Request extends Component {
 
 						{this.props.info.type === "ENTITY ACCESS CLAIM"
 							&& this.state.user
-							&& this.state.company
-							&& <RequestCompanyAccessClaim
+							&& this.state.entity
+							&& <RequestEntityAccessClaim
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 								user={this.state.user}
-								company={this.state.company}
+								entity={this.state.entity}
 							/>
 						}
 						{this.props.info.type === "ENTITY CHANGE"
 							&& this.state.user
-							&& this.state.company
-							&& <RequestCompanyChange
+							&& this.state.entity
+							&& <RequestEntityChange
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADD"
 							&& this.state.user
-							&& <RequestCompanyAdd
+							&& <RequestEntityAdd
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS CHANGE"
 							&& this.state.user
-							&& <RequestCompanyAddressChange
+							&& <RequestEntityAddressChange
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS ADD"
 							&& this.state.user
-							&& <RequestCompanyAddressAdd
+							&& <RequestEntityAddressAdd
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
-								companyId={this.props.info.company_id}
+								entityId={this.props.info.entity_id}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS DELETION"
 							&& this.state.user
-							&& <RequestCompanyAddressDelete
+							&& <RequestEntityAddressDelete
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 							/>
 						}
 						{this.props.info.type === "ENTITY TAXONOMY CHANGE"
 							&& this.state.user
-							&& <RequestCompanyTaxonomyChange
+							&& <RequestEntityTaxonomyChange
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
-								companyId={this.props.info.company_id}
+								entityId={this.props.info.entity_id}
 							/>
 						}
 						{this.props.info.type === "ENTITY LOGO CHANGE"
@@ -322,7 +322,7 @@ export default class Request extends Component {
 								requestId={this.props.info.id}
 								requestStatus={this.props.info.status}
 								image={this.props.info.image}
-								companyId={this.props.info.company_id}
+								entityId={this.props.info.entity_id}
 							/>
 						}
 
@@ -364,12 +364,12 @@ export default class Request extends Component {
 					</div>
 
 					<div className="col-md-6 row-spaced">
-						<h3>Company</h3>
-						{this.state.company !== null
-							? <Company
-								id={this.state.company.id}
-								name={this.state.company.name}
-								legalStatus={this.state.company.legal_status}
+						<h3>Entity</h3>
+						{this.state.entity !== null
+							? <Entity
+								id={this.state.entity.id}
+								name={this.state.entity.name}
+								legalStatus={this.state.entity.legal_status}
 							/>
 							: <Message
 								text={"No entity in this request"}

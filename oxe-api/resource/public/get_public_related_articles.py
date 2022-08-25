@@ -29,7 +29,7 @@ class GetPublicRelatedArticles(MethodResource, Resource):
     @catch_exception
     def get(self, id_, **kwargs):
 
-        act = self.db.tables["ArticleCompanyTag"]
+        act = self.db.tables["ArticleEntityTag"]
         att = self.db.tables["ArticleTaxonomyTag"]
 
         # Fetch the info from the DB
@@ -45,14 +45,14 @@ class GetPublicRelatedArticles(MethodResource, Resource):
 
         # Fetch all the related articles
 
-        company_tags = [t.company for t in self.db.get(act, {"article": article[0].id})]
-        company_tag_articles = [] if len(company_tags) == 0 \
-            else [t.article for t in self.db.get(act, {"company": company_tags})]
+        entity_tags = [t.entity for t in self.db.get(act, {"article": article[0].id})]
+        entity_tag_articles = [] if len(entity_tags) == 0 \
+            else [t.article for t in self.db.get(act, {"entity": entity_tags})]
         taxonomy_tags = [t.taxonomy_value for t in self.db.get(att, {"article": article[0].id})]
         taxonomy_tag_articles = [] if len(taxonomy_tags) == 0 \
             else [t.article for t in self.db.get(att, {"taxonomy_value": taxonomy_tags})]
 
-        article_ids = list(set(company_tag_articles + taxonomy_tag_articles))
+        article_ids = list(set(entity_tag_articles + taxonomy_tag_articles))
 
         # Fetch the two earliest related articles
 
@@ -74,10 +74,10 @@ class GetPublicRelatedArticles(MethodResource, Resource):
             article_ids = [a["id"] for a in data]
 
             taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
-            company_tags = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": article_ids})
+            entity_tags = self.db.get(self.db.tables["ArticleEntityTag"], {"article": article_ids})
 
             for a in data:
                 a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
-                a["company_tags"] = [t.company for t in company_tags if t.article == a["id"]]
+                a["entity_tags"] = [t.entity for t in entity_tags if t.article == a["id"]]
 
         return build_no_cors_response(data)

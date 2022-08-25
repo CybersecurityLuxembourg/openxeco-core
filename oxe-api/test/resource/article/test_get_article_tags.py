@@ -7,10 +7,10 @@ class TestGetArticleTags(BaseCase):
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "TITLE"}, self.db.tables["Article"])
 
-        self.db.insert({"id": 10, "name": "COMPANY"}, self.db.tables["Company"])
-        self.db.insert({"id": 11, "name": "COMPANY2"}, self.db.tables["Company"])
-        self.db.insert({"article": 1, "company": 10}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"article": 1, "company": 11}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"id": 10, "name": "ENTITY"}, self.db.tables["Entity"])
+        self.db.insert({"id": 11, "name": "ENTITY2"}, self.db.tables["Entity"])
+        self.db.insert({"article": 1, "entity": 10}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article": 1, "entity": 11}, self.db.tables["ArticleEntityTag"])
 
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 100, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
@@ -21,7 +21,7 @@ class TestGetArticleTags(BaseCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual({
-            'company_tags': [
+            'entity_tags': [
                 {
                     'creation_date': None,
                     'description': None,
@@ -39,7 +39,7 @@ class TestGetArticleTags(BaseCase):
                     'is_startup': 0,
                     'headline': None,
                     'linkedin_url': None,
-                    'name': 'COMPANY',
+                    'name': 'ENTITY',
                     'trade_register_number': None,
                     'twitter_url': None,
                     'website': None,
@@ -62,7 +62,7 @@ class TestGetArticleTags(BaseCase):
                     'is_startup': 0,
                     'headline': None,
                     'linkedin_url': None,
-                    'name': 'COMPANY2',
+                    'name': 'ENTITY2',
                     'trade_register_number': None,
                     'twitter_url': None,
                     'website': None,

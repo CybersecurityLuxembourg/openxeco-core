@@ -8,7 +8,7 @@ from utils.serializer import Serializer
 from utils.response import build_no_cors_response
 
 
-class GetPublicCompanyAddresses(MethodResource, Resource):
+class GetPublicEntityAddresses(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -21,7 +21,7 @@ class GetPublicCompanyAddresses(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
-        data = self.db.get(self.db.tables["CompanyAddress"], {"entity_id": id_})
-        data = Serializer.serialize(data, self.db.tables["CompanyAddress"])
+        data = self.db.get(self.db.tables["EntityAddress"], {"entity_id": id_})
+        data = Serializer.serialize(data, self.db.tables["EntityAddress"])
 
         return build_no_cors_response(data)

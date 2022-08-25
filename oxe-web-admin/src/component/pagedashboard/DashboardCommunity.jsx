@@ -14,33 +14,33 @@ export default class DashboardCommunity extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.filterCompanies = this.filterCompanies.bind(this);
+		this.filterEntities = this.filterEntities.bind(this);
 		this.getTreeValues = this.getTreeValues.bind(this);
 		this.manageFilter = this.manageFilter.bind(this);
 		this.getTotalEmployees = this.getTotalEmployees.bind(this);
 
 		this.state = {
 			filters: {},
-			filteredCompanies: null,
+			filteredEntities: null,
 		};
 	}
 
 	componentDidMount() {
-		this.filterCompanies();
+		this.filterEntities();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.filters !== this.state.filters
 			|| prevProps.analytics !== this.props.analytics
-			|| prevProps.companies !== this.props.companies) {
-			this.filterCompanies();
+			|| prevProps.entities !== this.props.entities) {
+			this.filterEntities();
 		}
 	}
 
 	/**
 	 * Function to get the taxonomy category
 	 */
-	getCompanyTaxonomyCategory() {
+	getEntityTaxonomyCategory() {
 		if (this.props.analytics) {
 			let concernedValues = this.props.analytics.taxonomy_assignments.map((a) => a.taxonomy_value);
 			concernedValues = [...new Set(concernedValues)];
@@ -50,7 +50,7 @@ export default class DashboardCommunity extends React.Component {
 			let concernedCategories = concernedValues.map((v) => v.category);
 			concernedCategories = [...new Set(concernedCategories)];
 			concernedCategories = this.props.analytics.taxonomy_categories
-				.filter((c) => c.active_on_companies)
+				.filter((c) => c.active_on_entities)
 				.filter((c) => concernedCategories.indexOf(c.name) >= 0)
 				.map((c) => c.name);
 
@@ -99,13 +99,13 @@ export default class DashboardCommunity extends React.Component {
 	}
 
 	/**
-	 * Filter the companies according to the selection defined in this.state.filters
-	 * The result is set in this.state.filteredCompanies
+	 * Filter the entities according to the selection defined in this.state.filters
+	 * The result is set in this.state.filteredEntities
 	 */
-	filterCompanies() {
-		if (!this.props.analytics || !this.props.companies) return;
+	filterEntities() {
+		if (!this.props.analytics || !this.props.entities) return;
 
-		let filteredCompanies = this.props.companies.map((o) => o);
+		let filteredEntities = this.props.entities.map((o) => o);
 
 		for (let key = 0; key < Object.keys(this.state.filters).length; key++) {
 			const axis = Object.keys(this.state.filters)[key];
@@ -114,7 +114,7 @@ export default class DashboardCommunity extends React.Component {
 				// Filter taxonomy values
 
 				for (let i = 0; i < this.state.filters[axis].length; i++) {
-					const tmpFilteredCompanies = [];
+					const tmpFilteredEntities = [];
 
 					const valueName = this.state.filters[axis][i];
 					const value = this.props.analytics.taxonomy_values
@@ -139,61 +139,61 @@ export default class DashboardCommunity extends React.Component {
 						}
 					}
 
-					// Filter the companies according to the assignment
+					// Filter the entities according to the assignment
 
 					const acceptedValueIDs = values.map((v) => v.id);
 
-					filteredCompanies.forEach((filteredCompany) => {
-						const companyValues = this.props.analytics.taxonomy_assignments
-							.filter((a) => a.company === filteredCompany.id)
+					filteredEntities.forEach((filteredEntity) => {
+						const entityValues = this.props.analytics.taxonomy_assignments
+							.filter((a) => a.entity === filteredEntity.id)
 							.map((a) => a.taxonomy_value);
 
-						if (acceptedValueIDs.filter((e) => companyValues.indexOf(e) >= 0).length > 0) {
-							tmpFilteredCompanies.push(filteredCompany);
+						if (acceptedValueIDs.filter((e) => entityValues.indexOf(e) >= 0).length > 0) {
+							tmpFilteredEntities.push(filteredEntity);
 						}
 					});
 
-					filteredCompanies = tmpFilteredCompanies;
+					filteredEntities = tmpFilteredEntities;
 				}
 			} else if (axis === "size_range") {
 				// Filter the selected size range
-				const tmpFilteredCompanies = [];
+				const tmpFilteredEntities = [];
 
-				filteredCompanies.forEach((filteredCompany) => {
+				filteredEntities.forEach((filteredEntity) => {
 					const workforces = this.props.analytics.workforces
-						.filter((w) => w.company === filteredCompany.id);
+						.filter((w) => w.entity === filteredEntity.id);
 
 					if (workforces.length > 0
 						&& this.state.filters.size_range[0] <= workforces[0].workforce
 						&& workforces[0].workforce <= this.state.filters.size_range[1]) {
-						tmpFilteredCompanies.push(filteredCompany);
+						tmpFilteredEntities.push(filteredEntity);
 					}
 				});
 
-				filteredCompanies = tmpFilteredCompanies;
+				filteredEntities = tmpFilteredEntities;
 			} else if (axis === "age_range") {
 				// Filter the selected age range
 
 				const maxDate = getPastDate(this.state.filters.age_range[0]);
 				const minDate = getPastDate(this.state.filters.age_range[1] + 1);
 
-				filteredCompanies = filteredCompanies
+				filteredEntities = filteredEntities
 					.filter((o) => minDate < o.creation_date && o.creation_date <= maxDate);
 			} else if (axis === "legal_status") {
-				filteredCompanies = filteredCompanies
+				filteredEntities = filteredEntities
 					.filter((o) => this.state.filters.legal_status === o.legal_status);
 			} else if (axis === "status") {
-				filteredCompanies = filteredCompanies.filter((o) => this.state.filters.status === o.status);
+				filteredEntities = filteredEntities.filter((o) => this.state.filters.status === o.status);
 			} else {
-				// Filter the selected company attribute such as is_startup, ...
+				// Filter the selected entity attribute such as is_startup, ...
 
-				filteredCompanies = filteredCompanies
+				filteredEntities = filteredEntities
 					.filter((o) => o[axis] === (this.state.filters[axis] ? 1 : 0));
 			}
 		}
 
 		this.setState({
-			filteredCompanies,
+			filteredEntities,
 		});
 	}
 
@@ -202,7 +202,7 @@ export default class DashboardCommunity extends React.Component {
 	 * @param {category} Name of the taxonomy category of the tree chart
 	 */
 	getTreeValues(category) {
-		if (!this.props.analytics || !this.state.filteredCompanies) return [];
+		if (!this.props.analytics || !this.state.filteredEntities) return [];
 
 		const output = [];
 		const dictOutput = {};
@@ -211,13 +211,13 @@ export default class DashboardCommunity extends React.Component {
 			.map((h) => h.parent_category);
 
 		if (parentCategories.indexOf(category) < 0) {
-			const companyIDs = this.state.filteredCompanies.map((o) => o.id);
+			const entityIDs = this.state.filteredEntities.map((o) => o.id);
 			const values = this.props.analytics.taxonomy_values
 				.filter((v) => v.category === category);
 			const valueIDs = values.map((v) => v.id);
 			const assignments = this.props.analytics.taxonomy_assignments
 				.filter((a) => valueIDs.indexOf(a.taxonomy_value) >= 0)
-				.filter((a) => companyIDs.indexOf(a.company) >= 0);
+				.filter((a) => entityIDs.indexOf(a.entity) >= 0);
 
 			for (let i = 0; i < assignments.length; i++) {
 				if (assignments[i].taxonomy_value in dictOutput) {
@@ -275,43 +275,43 @@ export default class DashboardCommunity extends React.Component {
 				}
 			}
 
-			// Build the distribution per company
+			// Build the distribution per entity
 
-			const companyDistribution = {};
-			const companyIDs = this.state.filteredCompanies.map((o) => o.id);
+			const entityDistribution = {};
+			const entityIDs = this.state.filteredEntities.map((o) => o.id);
 
-			for (let i = 0; i < companyIDs.length; i++) {
-				companyDistribution[companyIDs[i]] = [];
-				const companyAssignments = this.props.analytics.taxonomy_assignments
-					.filter((a) => a.company === companyIDs[i]);
+			for (let i = 0; i < entityIDs.length; i++) {
+				entityDistribution[entityIDs[i]] = [];
+				const entityAssignments = this.props.analytics.taxonomy_assignments
+					.filter((a) => a.entity === entityIDs[i]);
 
-				for (let y = 0; y < companyAssignments.length; y++) {
+				for (let y = 0; y < entityAssignments.length; y++) {
 					for (let k = 0; k < dictOutput.length; k++) {
-						if (dictOutput[k].indexOf(companyAssignments[y].taxonomy_value) >= 0
-							&& companyDistribution[companyAssignments[y].company]
-								.indexOf(k) < 0) companyDistribution[companyAssignments[y].company].push(k);
+						if (dictOutput[k].indexOf(entityAssignments[y].taxonomy_value) >= 0
+							&& entityDistribution[entityAssignments[y].entity]
+								.indexOf(k) < 0) entityDistribution[entityAssignments[y].entity].push(k);
 					}
 				}
 			}
 
 			// Do the final count
 
-			const companyDistributionCount = {};
+			const entityDistributionCount = {};
 
 			for (let i = 0; i < values.length; i++) {
-				companyDistributionCount[values[i].id] = 0;
+				entityDistributionCount[values[i].id] = 0;
 			}
 
-			for (let k = 0; k < companyDistribution.length; k++) {
-				for (let i = 0; i < companyDistribution[k].length; i++) {
-					companyDistributionCount[companyDistribution[k][i]] += 1;
+			for (let k = 0; k < entityDistribution.length; k++) {
+				for (let i = 0; i < entityDistribution[k].length; i++) {
+					entityDistributionCount[entityDistribution[k][i]] += 1;
 				}
 			}
 
-			for (let k = 0; k < companyDistributionCount.length; k++) {
+			for (let k = 0; k < entityDistributionCount.length; k++) {
 				output.push({
 					value: values.filter((v) => v.id === parseInt(k, 10))[0].name,
-					amount: companyDistributionCount[k],
+					amount: entityDistributionCount[k],
 				});
 			}
 		}
@@ -320,14 +320,14 @@ export default class DashboardCommunity extends React.Component {
 	}
 
 	/**
-	 * Get the total amount of employees of the filtered companies
+	 * Get the total amount of employees of the filtered entities
 	 */
 	getTotalEmployees() {
 		let total = 0;
-		const acceptedIDs = this.state.filteredCompanies.map((a) => a.id);
+		const acceptedIDs = this.state.filteredEntities.map((a) => a.id);
 
 		for (let i = 0; i < this.props.analytics.workforces.length; i++) {
-			if (acceptedIDs.indexOf(this.props.analytics.workforces[i].company) >= 0) {
+			if (acceptedIDs.indexOf(this.props.analytics.workforces[i].entity) >= 0) {
 				total += this.props.analytics.workforces[i].workforce;
 			}
 		}
@@ -353,14 +353,14 @@ export default class DashboardCommunity extends React.Component {
 								<h3>Total entities</h3>
 
 								<div>
-									{this.state.filteredCompanies
-										&& this.props.companies
+									{this.state.filteredEntities
+										&& this.props.entities
 										? <div className={"PageDashboard-analytic "
-											+ (this.state.filteredCompanies.length === this.props.companies.length
+											+ (this.state.filteredEntities.length === this.props.entities.length
 												? "red-font" : "blue-font")}>
 											<CountUp
 												start={0}
-												end={this.state.filteredCompanies.length}
+												end={this.state.filteredEntities.length}
 												duration={1}
 												delay={0}
 											/>
@@ -376,12 +376,12 @@ export default class DashboardCommunity extends React.Component {
 								<h3>Startups</h3>
 
 								<div>
-									{this.state.filteredCompanies
+									{this.state.filteredEntities
 										? <div className={"PageDashboard-analytic "
 											+ (this.state.filters.is_startup ? "red-font" : "blue-font")}>
 											<CountUp
 												start={0}
-												end={this.state.filteredCompanies.filter((o) => o.is_startup).length}
+												end={this.state.filteredEntities.filter((o) => o.is_startup).length}
 												duration={1.6}
 												delay={0}
 											/>
@@ -398,23 +398,23 @@ export default class DashboardCommunity extends React.Component {
 					<div className="col-md-8 row-spaced">
 						<div className={"row"}>
 							<div className="col-md-12">
-								{this.state.filteredCompanies && this.state.filteredCompanies
+								{this.state.filteredEntities && this.state.filteredEntities
 									? <Bar
 										data={{
 											labels: ["TOTAL ENTITIES", "STARTUPS"],
 											datasets: [{
 												label: [null, "is_startup"],
 												data: [
-													this.state.filteredCompanies.length,
-													this.state.filteredCompanies.filter((o) => o.is_startup).length,
+													this.state.filteredEntities.length,
+													this.state.filteredEntities.filter((o) => o.is_startup).length,
 												],
 												backgroundColor: [
-													this.state.filteredCompanies.length === this.props.companies.length
+													this.state.filteredEntities.length === this.props.entities.length
 														? "#fed7da" : "#bcebff",
 													this.state.filters.is_startup ? "#fed7da" : "#bcebff",
 												],
 												borderColor: [
-													this.state.filteredCompanies.length === this.props.companies.length
+													this.state.filteredEntities.length === this.props.entities.length
 														? "#e40613" : "#009fe3",
 													this.state.filters.is_startup ? "#e40613" : "#009fe3",
 												],
@@ -461,17 +461,17 @@ export default class DashboardCommunity extends React.Component {
 					<div className="col-md-6">
 						<h3>Legal status</h3>
 
-						{this.state.filteredCompanies && this.state.filteredCompanies
+						{this.state.filteredEntities && this.state.filteredEntities
 							? <Doughnut
 								data={{
-									labels: [...new Set(this.state.filteredCompanies
+									labels: [...new Set(this.state.filteredEntities
 										.map((c) => c.legal_status))],
 									datasets: [{
-										label: [...new Set(this.state.filteredCompanies
+										label: [...new Set(this.state.filteredEntities
 											.map((c) => c.legal_status))],
-										data: [...new Set(this.state.filteredCompanies
+										data: [...new Set(this.state.filteredEntities
 											.map((c) => c.legal_status))]
-											.map((s) => this.state.filteredCompanies
+											.map((s) => this.state.filteredEntities
 												.filter((o) => o.legal_status === s).length),
 										backgroundColor: this.state.filters.legal_status ? ["#fed7da"]
 											: ["#bcebff", "#bcebff", "#bcebff"],
@@ -508,17 +508,17 @@ export default class DashboardCommunity extends React.Component {
 					<div className="col-md-6">
 						<h3>Status</h3>
 
-						{this.state.filteredCompanies && this.state.filteredCompanies
+						{this.state.filteredEntities && this.state.filteredEntities
 							? <Doughnut
 								data={{
-									labels: [...new Set(this.state.filteredCompanies
+									labels: [...new Set(this.state.filteredEntities
 										.map((c) => c.status))],
 									datasets: [{
-										label: [...new Set(this.state.filteredCompanies
+										label: [...new Set(this.state.filteredEntities
 											.map((c) => c.status))],
-										data: [...new Set(this.state.filteredCompanies
+										data: [...new Set(this.state.filteredEntities
 											.map((c) => c.status))]
-											.map((s) => this.state.filteredCompanies
+											.map((s) => this.state.filteredEntities
 												.filter((o) => o.status === s).length),
 										backgroundColor: this.state.filters.status ? ["#fed7da"]
 											: ["#bcebff", "#bcebff", "#bcebff"],
@@ -561,7 +561,7 @@ export default class DashboardCommunity extends React.Component {
 					<div className="col-md-6">
 						<h3>Total employees</h3>
 						<div>
-							{this.props.analytics && this.state.filteredCompanies
+							{this.props.analytics && this.state.filteredEntities
 								? <div className={"PageDashboard-analytic blue-font"}>
 									<i className="fas fa-user-tie"/><br/>
 									<CountUp
@@ -580,9 +580,9 @@ export default class DashboardCommunity extends React.Component {
 
 					<div className="col-md-6 row-spaced">
 						<h3>Employees per entity size ranges</h3>
-						{this.props.analytics && this.state.filteredCompanies
+						{this.props.analytics && this.state.filteredEntities
 							? <BarWorkforceRange
-								actors={this.state.filteredCompanies}
+								actors={this.state.filteredEntities}
 								workforces={this.props.analytics.workforces}
 								addRangeFilter={(v) => this.manageFilter("size_range", v, "true")}
 								selected={this.state.filters.size_range}
@@ -595,9 +595,9 @@ export default class DashboardCommunity extends React.Component {
 
 					<div className="col-md-6 row-spaced">
 						<h3>Age of entities</h3>
-						{this.state.filteredCompanies
+						{this.state.filteredEntities
 							? <BarActorAge
-								actors={this.state.filteredCompanies}
+								actors={this.state.filteredEntities}
 								addRangeFilter={(v) => this.manageFilter("age_range", v, "true")}
 								selected={this.state.filters.age_range}
 							/>
@@ -609,11 +609,11 @@ export default class DashboardCommunity extends React.Component {
 
 					<div className="col-md-6">
 						<h3>Entities per size ranges</h3>
-						{this.props.analytics && this.state.filteredCompanies
+						{this.props.analytics && this.state.filteredEntities
 							? <BarWorkforceRange
-								actors={this.state.filteredCompanies}
+								actors={this.state.filteredEntities}
 								workforces={this.props.analytics.workforces}
-								companiesAsGranularity={true}
+								entitiesAsGranularity={true}
 								addRangeFilter={(v) => this.manageFilter("size_range", v, "true")}
 								selected={this.state.filters.size_range}
 							/>
@@ -629,8 +629,8 @@ export default class DashboardCommunity extends React.Component {
 						<h2>Taxonomy</h2>
 					</div>
 
-					{this.state.filteredCompanies !== null
-						? this.getCompanyTaxonomyCategory()
+					{this.state.filteredEntities !== null
+						? this.getEntityTaxonomyCategory()
 							.map((category) => (
 								<div
 									className="col-md-12 row-spaced"

@@ -19,13 +19,13 @@ class DeleteTaxonomyAssignment(MethodResource, Resource):
 
     @log_request
     @doc(tags=['taxonomy'],
-         description='Delete a taxonomy assignment to a company',
+         description='Delete a taxonomy assignment to a entity',
          responses={
              "200": {},
              "422": {"description": "Object not found"},
          })
     @use_kwargs({
-        'company': fields.Int(),
+        'entity': fields.Int(),
         'value': fields.Int(),
     })
     @jwt_required
@@ -34,13 +34,13 @@ class DeleteTaxonomyAssignment(MethodResource, Resource):
     def post(self, **kwargs):
 
         row = {
-            "company": kwargs["company"],
+            "entity": kwargs["entity"],
             "taxonomy_value": kwargs["value"]
         }
 
-        companies = self.db.get(self.db.tables["TaxonomyAssignment"], row)
+        entities = self.db.get(self.db.tables["TaxonomyAssignment"], row)
 
-        if len(companies) > 0:
+        if len(entities) > 0:
             self.db.delete(self.db.tables["TaxonomyAssignment"], row)
         else:
             raise ObjectNotFound

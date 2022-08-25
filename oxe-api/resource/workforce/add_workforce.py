@@ -20,14 +20,14 @@ class AddWorkforce(MethodResource, Resource):
 
     @log_request
     @doc(tags=['user'],
-         description='Add workforce information to a company',
+         description='Add workforce information to a entity',
          responses={
              "200": {},
              "422.a": {"description": "Provided date does not have the right format (expected: YYYY-mm-dd)"},
-             "422.c": {"description": "Provided company not existing"}
+             "422.c": {"description": "Provided entity not existing"}
          })
     @use_kwargs({
-        'company': fields.Int(),
+        'entity': fields.Int(),
         'workforce': fields.Int(),
         'date': fields.Str(required=False, missing=datetime.today().strftime('%Y-%m-%d')),
         'is_estimated': fields.Bool(required=False, missing=False),
@@ -43,12 +43,12 @@ class AddWorkforce(MethodResource, Resource):
         if not has_date_format(kwargs["date"]):
             return "", "422 Provided date does not have the right format (expected: YYYY-mm-dd)"
 
-        # Checking company
+        # Checking entity
 
-        company = self.db.get(self.db.tables["Company"], {"id": kwargs["company"]})
+        entity = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity"]})
 
-        if len(company) == 0:
-            return "", "422 Provided company not existing"
+        if len(entity) == 0:
+            return "", "422 Provided entity not existing"
 
         # Insert
 

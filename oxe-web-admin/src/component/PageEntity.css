@@ -1,0 +1,4 @@
+
+#PageEntity .Tab-menu, #EntityMap .Tab {
+	z-index: 100;
+}

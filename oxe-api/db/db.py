@@ -152,37 +152,37 @@ class DB:
         return True
 
     ###############
-    # COMPANY     #
+    # ENTITY      #
     ###############
 
-    def get_filtered_companies(self, filters=None, entities=None):
+    def get_filtered_entities(self, filters=None, entities=None):
         filters = {} if filters is None else filters
 
-        query = self.session.query(self.tables["Company"])
+        query = self.session.query(self.tables["Entity"])
 
         if entities is not None:
             query = query.with_entities(*entities)
 
         if "ids" in filters and filters['ids'] is not None:
-            query = query.filter(self.tables["Company"].id.in_(filters['ids']))
+            query = query.filter(self.tables["Entity"].id.in_(filters['ids']))
 
         if "name" in filters and filters['name'] is not None:
             words = filters['name'].lower().split(" ")
             for word in words:
-                query = query.filter(or_(func.lower(self.tables["Company"].name).like("%" + word + "%"),
-                                         func.lower(self.tables["Company"].website).like("%" + word + "%")))
+                query = query.filter(or_(func.lower(self.tables["Entity"].name).like("%" + word + "%"),
+                                         func.lower(self.tables["Entity"].website).like("%" + word + "%")))
 
         if "status" in filters and filters['status'] is not None:
-            query = query.filter(self.tables["Company"].status.in_(filters['status']))
+            query = query.filter(self.tables["Entity"].status.in_(filters['status']))
 
         if "legal_status" in filters and filters['legal_status'] is not None:
-            query = query.filter(self.tables["Company"].legal_status.in_(filters['legal_status']))
+            query = query.filter(self.tables["Entity"].legal_status.in_(filters['legal_status']))
 
         if "startup_only" in filters and filters['startup_only'] is True:
-            query = query.filter(self.tables["Company"].is_startup.is_(True))
+            query = query.filter(self.tables["Entity"].is_startup.is_(True))
 
         if "corebusiness_only" in filters and filters['corebusiness_only'] is True:
-            query = query.filter(self.tables["Company"].is_cybersecurity_core_business.is_(True))
+            query = query.filter(self.tables["Entity"].is_cybersecurity_core_business.is_(True))
 
         if "taxonomy_values" in filters:
             taxonomy_values = filters["taxonomy_values"] if isinstance(filters["taxonomy_values"], list) else []
@@ -202,16 +202,16 @@ class DB:
                             .all()
                         tch_tmp = [t.child_value for t in tch_rows]
 
-                    # Get companies having the tag(s)
+                    # Get entities having the tag(s)
 
-                    companies_filtered_by_taxonomy = self.session \
+                    entities_filtered_by_taxonomy = self.session \
                         .query(self.tables["TaxonomyAssignment"]) \
-                        .with_entities(self.tables["TaxonomyAssignment"].company) \
-                        .distinct(self.tables["TaxonomyAssignment"].company) \
+                        .with_entities(self.tables["TaxonomyAssignment"].entity) \
+                        .distinct(self.tables["TaxonomyAssignment"].entity) \
                         .filter(self.tables["TaxonomyAssignment"].taxonomy_value.in_(tch)) \
                         .subquery()
 
-                    query = query.filter(self.tables["Company"].id.in_(companies_filtered_by_taxonomy))
+                    query = query.filter(self.tables["Entity"].id.in_(entities_filtered_by_taxonomy))
 
         return query
 
@@ -265,7 +265,7 @@ class DB:
                         .all()
                     tch_tmp = [t.child_value for t in tch_rows]
 
-                # Get companies having the tag(s)
+                # Get entities having the tag(s)
 
                 article_filtered_by_taxonomy = self.session \
                     .query(self.tables["ArticleTaxonomyTag"]) \
@@ -308,31 +308,31 @@ class DB:
 
                 query = query.filter(self.tables["Article"].id.notin_(article_filtered_by_taxonomy))
 
-        if "companies" in filters:
-            article_filtered_by_companies = self.session \
-                .query(self.tables["ArticleCompanyTag"]) \
-                .with_entities(self.tables["ArticleCompanyTag"].article) \
-                .distinct(self.tables["ArticleCompanyTag"].article) \
-                .filter(self.tables["ArticleCompanyTag"].company.in_(filters["companies"])) \
+        if "entities" in filters:
+            article_filtered_by_entities = self.session \
+                .query(self.tables["ArticleEntityTag"]) \
+                .with_entities(self.tables["ArticleEntityTag"].article) \
+                .distinct(self.tables["ArticleEntityTag"].article) \
+                .filter(self.tables["ArticleEntityTag"].entity.in_(filters["entities"])) \
                 .subquery()
 
-            query = query.filter(self.tables["Article"].id.in_(article_filtered_by_companies))
+            query = query.filter(self.tables["Article"].id.in_(article_filtered_by_entities))
 
         if "editable" in filters and filters["editable"] is True:
             assignment_subquery = self.session \
-                .query(self.tables["UserCompanyAssignment"]) \
-                .with_entities(self.tables["UserCompanyAssignment"].company_id) \
-                .filter(self.tables["UserCompanyAssignment"].user_id == user_id) \
+                .query(self.tables["UserEntityAssignment"]) \
+                .with_entities(self.tables["UserEntityAssignment"].entity_id) \
+                .filter(self.tables["UserEntityAssignment"].user_id == user_id) \
                 .subquery()
 
-            company_subquery = self.session \
-                .query(self.tables["ArticleCompanyTag"]) \
-                .with_entities(self.tables["ArticleCompanyTag"].article) \
-                .filter(self.tables["ArticleCompanyTag"].company.in_(assignment_subquery)) \
+            entity_subquery = self.session \
+                .query(self.tables["ArticleEntityTag"]) \
+                .with_entities(self.tables["ArticleEntityTag"].article) \
+                .filter(self.tables["ArticleEntityTag"].entity.in_(assignment_subquery)) \
                 .subquery()
 
             query = query \
-                .filter(self.tables["Article"].id.in_(company_subquery)) \
+                .filter(self.tables["Article"].id.in_(entity_subquery)) \
                 .filter(self.tables["Article"].is_created_by_admin.is_(False))
 
         if "min_start_date" in filters:
@@ -355,7 +355,7 @@ class DB:
         return query
 
     def get_tags_of_article(self, article_id):
-        companies_filtered_by_taxonomy = self.session \
+        entities_filtered_by_taxonomy = self.session \
             .query(self.tables["ArticleTaxonomyTag"]) \
             .with_entities(self.tables["ArticleTaxonomyTag"].taxonomy_value) \
             .filter(self.tables["ArticleTaxonomyTag"].article == article_id) \
@@ -363,40 +363,40 @@ class DB:
 
         return self.session \
             .query(self.tables["TaxonomyValue"]) \
-            .filter(self.tables["TaxonomyValue"].id.in_(companies_filtered_by_taxonomy)) \
+            .filter(self.tables["TaxonomyValue"].id.in_(entities_filtered_by_taxonomy)) \
             .all()
 
-    def get_companies_of_article(self, article_id):
-        companies_filtered_by_taxonomy = self.session \
-            .query(self.tables["ArticleCompanyTag"]) \
-            .with_entities(self.tables["ArticleCompanyTag"].company) \
-            .filter(self.tables["ArticleCompanyTag"].article == article_id) \
+    def get_entities_of_article(self, article_id):
+        entities_filtered_by_taxonomy = self.session \
+            .query(self.tables["ArticleEntityTag"]) \
+            .with_entities(self.tables["ArticleEntityTag"].entity) \
+            .filter(self.tables["ArticleEntityTag"].article == article_id) \
             .subquery()
 
         return self.session \
-            .query(self.tables["Company"]) \
-            .filter(self.tables["Company"].id.in_(companies_filtered_by_taxonomy)) \
+            .query(self.tables["Entity"]) \
+            .filter(self.tables["Entity"].id.in_(entities_filtered_by_taxonomy)) \
             .all()
 
     ###############
     # WORKFORCE   #
     ###############
 
-    def get_latest_workforce(self, company_ids=None):
+    def get_latest_workforce(self, entity_ids=None):
         sub_query = self.session.query(
-            self.tables["Workforce"].company,
+            self.tables["Workforce"].entity_id,
             func.max(self.tables["Workforce"].date).label('maxdate')
-        ).group_by(self.tables["Workforce"].company).subquery('t2')
+        ).group_by(self.tables["Workforce"].entity_id).subquery('t2')
 
         query = self.session.query(self.tables["Workforce"])
 
-        if company_ids is not None:
-            query = query.filter(self.tables["Workforce"].company.in_(company_ids))
+        if entity_ids is not None:
+            query = query.filter(self.tables["Workforce"].entity_id.in_(entity_ids))
 
         query = query.join(
             sub_query,
             and_(
-                self.tables["Workforce"].company == sub_query.c.company,
+                self.tables["Workforce"].entity_id == sub_query.c.entity_id,
                 self.tables["Workforce"].date == sub_query.c.maxdate
             ))
 
@@ -429,12 +429,12 @@ class DB:
         query = self.session.query(self.tables["Image"])
 
         if "logo_only" in filters and filters["logo_only"] is True:
-            company_image_ids = self.session \
-                .query(self.tables["Company"]) \
-                .with_entities(self.tables["Company"].image) \
+            entity_image_ids = self.session \
+                .query(self.tables["Entity"]) \
+                .with_entities(self.tables["Entity"].image) \
                 .subquery()
 
-            query = query.filter(self.tables["Image"].id.in_(company_image_ids))
+            query = query.filter(self.tables["Image"].id.in_(entity_image_ids))
 
         if "is_in_generator" in filters:
             query = query.filter(self.tables["Image"].is_in_generator.is_(filters["is_in_generator"]))
@@ -443,13 +443,13 @@ class DB:
             words = filters["search"].split(" ")
 
             for w in words:
-                company_image_ids = self.session \
-                    .query(self.tables["Company"]) \
-                    .with_entities(self.tables["Company"].image) \
-                    .filter(self.tables["Company"].name.contains(f"%{w}%")) \
+                entity_image_ids = self.session \
+                    .query(self.tables["Entity"]) \
+                    .with_entities(self.tables["Entity"].image) \
+                    .filter(self.tables["Entity"].name.contains(f"%{w}%")) \
                     .subquery()
 
-                query = query.filter(or_(self.tables["Image"].id.in_(company_image_ids),
+                query = query.filter(or_(self.tables["Image"].id.in_(entity_image_ids),
                                          self.tables["Image"].keywords.contains(f"%{w}%")))
 
         if "order" in filters and filters["order"] == "desc":
@@ -488,8 +488,8 @@ class DB:
 
         query = self.session.query(self.tables["Note"])
 
-        if "company" in filters:
-            query = query.filter(self.tables["Note"].company == filters["company"])
+        if "entity" in filters:
+            query = query.filter(self.tables["Note"].entity == filters["entity"])
 
         if "article" in filters:
             query = query.filter(self.tables["Note"].article == filters["article"])

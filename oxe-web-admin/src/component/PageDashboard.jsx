@@ -14,12 +14,12 @@ export default class PageDashboard extends React.Component {
 		super(props);
 
 		this.getAnalytics = this.getAnalytics.bind(this);
-		this.getCompanies = this.getCompanies.bind(this);
+		this.getEntities = this.getEntities.bind(this);
 		this.onMenuClick = this.onMenuClick.bind(this);
 
 		this.state = {
 			analytics: null,
-			companies: null,
+			entities: null,
 			selectedMenu: null,
 			tabs: [
 				"community",
@@ -47,7 +47,7 @@ export default class PageDashboard extends React.Component {
 
 	refresh() {
 		this.getAnalytics();
-		this.getCompanies();
+		this.getEntities();
 	}
 
 	getAnalytics() {
@@ -64,11 +64,11 @@ export default class PageDashboard extends React.Component {
 		});
 	}
 
-	getCompanies() {
-		this.setState({ companies: null }, () => {
-			getRequest.call(this, "company/get_companies", (data) => {
+	getEntities() {
+		this.setState({ entities: null }, () => {
+			getRequest.call(this, "entity/get_entities", (data) => {
 				this.setState({
-					companies: data,
+					entities: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -94,19 +94,19 @@ export default class PageDashboard extends React.Component {
 						<DashboardCommunity
 							key={"community"}
 							analytics={this.state.analytics}
-							companies={this.state.companies}
+							entities={this.state.entities}
 						/>,
 						<DashboardGraph
 							key={"graph"}
 							analytics={this.state.analytics}
-							companies={this.state.companies}
+							entities={this.state.entities}
 						/>,
 						<DashboardAnalytics
 							key={"analytics"}
 						/>,
 						<DashboardRecentActivity
 							key={"recent_activity"}
-							companies={this.state.companies}
+							entities={this.state.entities}
 						/>,
 					]}
 				/>

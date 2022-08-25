@@ -18,21 +18,21 @@ class UpdateRelationship(MethodResource, Resource):
 
     @log_request
     @doc(tags=['relationship'],
-         description='Update a relationship between two companies',
+         description='Update a relationship between two entities',
          responses={
              "200": {},
          })
     @use_kwargs({
         "id": fields.Int(required=True),
-        'company_1': fields.Int(required=False, allow_none=False),
+        'entity_1': fields.Int(required=False, allow_none=False),
         'type': fields.Str(required=False, allow_none=False),
-        'company_2': fields.Int(required=False, allow_none=False),
+        'entity_2': fields.Int(required=False, allow_none=False),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["CompanyRelationShip"])
+        self.db.merge(kwargs, self.db.tables["EntityRelationShip"])
 
         return "", "200 "

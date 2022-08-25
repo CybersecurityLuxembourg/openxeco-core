@@ -6,10 +6,10 @@ class TestUpdateAddress(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/address/update_address")
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue",
             "address_2": None,
             "number": None,
@@ -19,11 +19,11 @@ class TestUpdateAddress(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["CompanyAddress"])
+        }, self.db.tables["EntityAddress"])
 
         payload = {
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue 2",
             "address_2": None,
             "number": None,
@@ -39,7 +39,7 @@ class TestUpdateAddress(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        address = self.db.get(self.db.tables["CompanyAddress"], {"id": 1})
+        address = self.db.get(self.db.tables["EntityAddress"], {"id": 1})
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(address), 1)

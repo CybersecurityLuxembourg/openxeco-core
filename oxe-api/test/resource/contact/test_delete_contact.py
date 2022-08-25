@@ -6,15 +6,15 @@ class TestDeleteContact(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/contact/delete_contact")
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "type": "PHONE NUMBER",
             "representative": "ENTITY",
             "name": None,
             "value": "+123456896",
-        }, self.db.tables["CompanyContact"])
+        }, self.db.tables["EntityContact"])
 
         payload = {
             "id": 1
@@ -25,7 +25,7 @@ class TestDeleteContact(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(self.db.get_count(self.db.tables["CompanyContact"]), 0)
+        self.assertEqual(self.db.get_count(self.db.tables["EntityContact"]), 0)
 
     @BaseCase.login
     @BaseCase.grant_access("/contact/delete_contact")

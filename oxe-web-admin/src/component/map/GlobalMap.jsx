@@ -5,7 +5,7 @@ import {
 	Map, TileLayer, Marker, Popup,
 } from "react-leaflet";
 import { NotificationManager as nm } from "react-notifications";
-import Company from "../item/Company.jsx";
+import Entity from "../item/Entity.jsx";
 import { getRequest } from "../../utils/request.jsx";
 
 export default class GlobalMap extends React.Component {
@@ -16,17 +16,17 @@ export default class GlobalMap extends React.Component {
 			lat: 49.8116,
 			lng: 6.1319,
 			zoom: 10,
-			selectedCompanyId: null,
-			selectedCompanyData: null,
+			selectedEntityId: null,
+			selectedEntityData: null,
 		};
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevState.selectedCompanyId !== this.state.selectedCompanyId
-            && this.state.selectedCompanyId !== null) {
-			getRequest.call(this, "company/get_company/" + this.state.selectedCompanyId, (data) => {
+		if (prevState.selectedEntityId !== this.state.selectedEntityId
+            && this.state.selectedEntityId !== null) {
+			getRequest.call(this, "entity/get_entity/" + this.state.selectedEntityId, (data) => {
 				this.setState({
-					selectedCompanyData: data.name,
+					selectedEntityData: data.name,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -37,11 +37,11 @@ export default class GlobalMap extends React.Component {
 	}
 
 	handlePopupClose() {
-		this.setState({ selectedCompanyId: null, selectedCompanyData: null });
+		this.setState({ selectedEntityId: null, selectedEntityData: null });
 	}
 
-	handlePopupOpen(companyId) {
-		this.setState({ selectedCompanyId: companyId });
+	handlePopupOpen(entityId) {
+		this.setState({ selectedEntityId: entityId });
 	}
 
 	render() {
@@ -59,7 +59,7 @@ export default class GlobalMap extends React.Component {
 					zoom={this.state.zoom}
 					style={{ width: "100%", height: "100%" }}
 					onPopupClose={() => this.handlePopupClose()}
-					onPopupOpen={(e) => this.handlePopupOpen(e.popup.options.companyId)}
+					onPopupOpen={(e) => this.handlePopupOpen(e.popup.options.entityId)}
 				>
 					{Array.isArray(this.props.addresses)
 						? this.props.addresses
@@ -70,7 +70,7 @@ export default class GlobalMap extends React.Component {
 										position={[a.latitude, a.longitude]}
 										icon={thisIcon}>
 										<Popup
-											companyId={a.company_id}
+											entityId={a.entity_id}
 										>
 											{a.number !== null ? a.number + " " : ""}
 											{a.address_1 !== null ? a.address_1 : ""}
@@ -93,15 +93,15 @@ export default class GlobalMap extends React.Component {
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					/>
 				</Map>
-				{this.state.selectedCompanyId !== null
-					? <div className="GlobalMap-company">
+				{this.state.selectedEntityId !== null
+					? <div className="GlobalMap-entity">
 						<div>
                             Click to access the entity page:
 						</div>
-						<Company
-							id={this.state.selectedCompanyId}
-							name={this.state.selectedCompanyData.name}
-							legalStatus={this.state.selectedCompanyData.legal_status}
+						<Entity
+							id={this.state.selectedEntityId}
+							name={this.state.selectedEntityData.name}
+							legalStatus={this.state.selectedEntityData.legal_status}
 						/>
 					</div>
 					: ""}

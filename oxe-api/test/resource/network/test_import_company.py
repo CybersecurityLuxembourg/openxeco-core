@@ -4,10 +4,10 @@ from unittest.mock import patch
 import json
 
 
-class TestImportCompany(BaseCase):
+class TestImportEntity(BaseCase):
 
     @BaseCase.login
-    @BaseCase.grant_access("/network/import_company")
+    @BaseCase.grant_access("/network/import_entity")
     @patch('resource.network.import_taxonomy.request.get_request')
     def test_ok(self, mock_get_request, token):
         mock_get_request.side_effect = [
@@ -17,7 +17,7 @@ class TestImportCompany(BaseCase):
                 "id": 1,
                 "image": None,
                 "is_startup": 0,
-                "name": "My Company",
+                "name": "My Entity",
                 "headline": None,
                 "status": "ACTIVE",
                 'legal_status': 'JURIDICAL PERSON',
@@ -31,21 +31,21 @@ class TestImportCompany(BaseCase):
 
         payload = {
             "network_node_id": 4,
-            "company_id": 1,
+            "entity_id": 1,
         }
 
-        response = self.application.post('/network/import_company',
+        response = self.application.post('/network/import_entity',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        companies = self.db.get(self.db.tables["Company"])
-        addresses = self.db.get(self.db.tables["CompanyAddress"])
+        entities = self.db.get(self.db.tables["Entity"])
+        addresses = self.db.get(self.db.tables["EntityAddress"])
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(len(companies), 1)
+        self.assertEqual(len(entities), 1)
         self.assertEqual(len(addresses), 0)
         self.assertEqual(
-            Serializer.serialize(companies, self.db.tables["Company"]),
+            Serializer.serialize(entities, self.db.tables["Entity"]),
             [{
                 'creation_date': None,
                 'description': None,
@@ -56,7 +56,7 @@ class TestImportCompany(BaseCase):
                 'is_startup': 0,
                 'legal_status': 'JURIDICAL PERSON',
                 'linkedin_url': None,
-                'name': 'My Company',
+                'name': 'My Entity',
                 'headline': None,
                 'status': 'ACTIVE',
                 'sync_address': 0,
@@ -72,7 +72,7 @@ class TestImportCompany(BaseCase):
         )
 
     @BaseCase.login
-    @BaseCase.grant_access("/network/import_company")
+    @BaseCase.grant_access("/network/import_entity")
     @patch('resource.network.import_taxonomy.request.get_request')
     def test_ok_with_param_and_address(self, mock_get_request, token):
         mock_get_request.side_effect = [
@@ -83,7 +83,7 @@ class TestImportCompany(BaseCase):
                 "image": None,
                 'linkedin_url': None,
                 "is_startup": 0,
-                "name": "My Company",
+                "name": "My Entity",
                 "status": "ACTIVE",
                 "trade_register_number": None,
                 "website": None
@@ -94,7 +94,7 @@ class TestImportCompany(BaseCase):
                     "address_2": "b",
                     "administrative_area": "c",
                     "city": "d",
-                    "company_id": 1,
+                    "entity_id": 1,
                     "country": "e",
                     "id": 1,
                     "latitude": 2,
@@ -109,23 +109,23 @@ class TestImportCompany(BaseCase):
 
         payload = {
             "network_node_id": 4,
-            "company_id": 1,
+            "entity_id": 1,
             'sync_global': True,
             'sync_address': True,
         }
 
-        response = self.application.post('/network/import_company',
+        response = self.application.post('/network/import_entity',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        companies = self.db.get(self.db.tables["Company"])
-        addresses = self.db.get(self.db.tables["CompanyAddress"])
+        entities = self.db.get(self.db.tables["Entity"])
+        addresses = self.db.get(self.db.tables["EntityAddress"])
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(len(companies), 1)
+        self.assertEqual(len(entities), 1)
         self.assertEqual(len(addresses), 1)
         self.assertEqual(
-            Serializer.serialize(companies, self.db.tables["Company"]),
+            Serializer.serialize(entities, self.db.tables["Entity"]),
             [{
                 'creation_date': None,
                 'description': None,
@@ -137,7 +137,7 @@ class TestImportCompany(BaseCase):
                 'is_startup': 0,
                 'legal_status': 'JURIDICAL PERSON',
                 'linkedin_url': None,
-                'name': 'My Company',
+                'name': 'My Entity',
                 'status': 'ACTIVE',
                 'sync_address': 1,
                 'sync_global': 1,
@@ -151,14 +151,14 @@ class TestImportCompany(BaseCase):
             }]
         )
         self.assertEqual(
-            Serializer.serialize(addresses, self.db.tables["CompanyAddress"]),
+            Serializer.serialize(addresses, self.db.tables["EntityAddress"]),
             [
                 {
                     "address_1": "a",
                     "address_2": "b",
                     "administrative_area": "c",
                     "city": "d",
-                    "company_id": 1,
+                    "entity_id": 1,
                     "country": "e",
                     "id": 1,
                     "latitude": 2,
@@ -170,16 +170,16 @@ class TestImportCompany(BaseCase):
         )
 
     @BaseCase.login
-    @BaseCase.grant_access("/network/import_company")
+    @BaseCase.grant_access("/network/import_entity")
     def test_ko_node_not_found(self, token):
         self.db.insert({"id": 5, "api_endpoint": "https://random.url/feed"}, self.db.tables["NetworkNode"])
 
         payload = {
             "network_node_id": 4,
-            "company_id": 1,
+            "entity_id": 1,
         }
 
-        response = self.application.post('/network/import_company',
+        response = self.application.post('/network/import_entity',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
@@ -189,9 +189,9 @@ class TestImportCompany(BaseCase):
         )
 
     @BaseCase.login
-    @BaseCase.grant_access("/network/import_company")
+    @BaseCase.grant_access("/network/import_entity")
     @patch('resource.network.import_taxonomy.request.get_request')
-    def test_ko_remote_company_not_found(self, mock_get_request, token):
+    def test_ko_remote_entity_not_found(self, mock_get_request, token):
         mock_get_request.return_value = json.dumps({
             "categories": [],
             "values": [],
@@ -203,33 +203,33 @@ class TestImportCompany(BaseCase):
 
         payload = {
             "network_node_id": 4,
-            "company_id": 1,
+            "entity_id": 1,
         }
 
-        response = self.application.post('/network/import_company',
+        response = self.application.post('/network/import_entity',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
         self.assertEqual(
-            "500 Error while fetching the network node company",
+            "500 Error while fetching the network node entity",
             response.status
         )
 
     @BaseCase.login
-    @BaseCase.grant_access("/network/import_company")
+    @BaseCase.grant_access("/network/import_entity")
     def test_ko_error_request(self, token):
         self.db.insert({"id": 4, "api_endpoint": "https://random.url/feed"}, self.db.tables["NetworkNode"])
 
         payload = {
             "network_node_id": 4,
-            "company_id": 1,
+            "entity_id": 1,
         }
 
-        response = self.application.post('/network/import_company',
+        response = self.application.post('/network/import_entity',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
         self.assertEqual(
-            "500 Error while fetching the network node company",
+            "500 Error while fetching the network node entity",
             response.status
         )

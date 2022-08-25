@@ -33,12 +33,12 @@ class DeleteArticleVersion(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["ArticleVersion"], {"id": kwargs["id"]})
+        entities = self.db.get(self.db.tables["ArticleVersion"], {"id": kwargs["id"]})
 
-        if len(companies) == 0:
+        if len(entities) == 0:
             raise ObjectNotFound
 
-        if not companies[0].is_main:
+        if not entities[0].is_main:
             self.db.delete(self.db.tables["ArticleVersion"], {"id": kwargs["id"]})
         else:
             return "", "422 Cannot delete a version defined as a main version"

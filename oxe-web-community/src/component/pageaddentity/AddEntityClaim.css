@@ -1,0 +1,22 @@
+
+#PageAddEntity .card {
+	margin-bottom:  10px;
+}
+
+#PageAddEntity .card .card-icon{
+	margin: 25px auto 0px auto;
+	font-size:  35px;
+}
+
+#PageAddEntity .card .card-title, #PageAddEntity .card .card-body {
+	text-align: center;
+	font-size:  15px;
+}
+
+.PageAddEntity-claim-message div {
+	text-align: center;
+}
+
+.PageAddEntity-claim-message i {
+	font-size: 35px;
+}

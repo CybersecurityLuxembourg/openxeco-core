@@ -32,11 +32,11 @@ class AddEntity(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["Company"], {"name": kwargs["name"]})
+        entities = self.db.get(self.db.tables["Entity"], {"name": kwargs["name"]})
 
-        if len(companies) > 0:
+        if len(entities) > 0:
             return "", "422 A entity is already existing with that name"
 
-        entity = self.db.insert(kwargs, self.db.tables["Company"])
+        entity = self.db.insert(kwargs, self.db.tables["Entity"])
 
-        return Serializer.serialize(entity, self.db.tables["Company"]), "200 "
+        return Serializer.serialize(entity, self.db.tables["Entity"]), "200 "

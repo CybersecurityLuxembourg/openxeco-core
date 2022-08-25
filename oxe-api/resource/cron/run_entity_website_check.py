@@ -10,7 +10,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 
 
-class RunCompanyWebsiteCheck(MethodResource, Resource):
+class RunEntityWebsiteCheck(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -36,18 +36,18 @@ class RunCompanyWebsiteCheck(MethodResource, Resource):
 
         self.db.delete(self.db.tables["DataControl"], {"category": "WEBSITE CHECK"})
 
-        companies = self.db.get(self.db.tables["Company"])
+        entities = self.db.get(self.db.tables["Entity"])
 
-        for c in companies:
+        for c in entities:
             if c.website is not None:
                 website = c.website if c.website.startswith("http") else "https://" + c.website
                 try:
                     r = requests.head(website, allow_redirects=True)
 
                     if r.status_code != 200:
-                        anomalies.append(f"The website of <COMPANY:{c.id}> returned code {r.status_code}")
+                        anomalies.append(f"The website of <ENTITY:{c.id}> returned code {r.status_code}")
                 except Exception:
-                    anomalies.append(f"The website of <COMPANY:{c.id}> seems unreachable")
+                    anomalies.append(f"The website of <ENTITY:{c.id}> seems unreachable")
 
         anomalies = [{"category": "WEBSITE CHECK", "value": v} for v in anomalies]
 

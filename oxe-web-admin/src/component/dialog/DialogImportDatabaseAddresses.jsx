@@ -21,8 +21,8 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 
 			taxonomyCategories: null,
 			taxonomyValues: null,
-			companies: null,
-			selectedCompanies: [],
+			entities: null,
+			selectedEntities: [],
 			selectedTaxonomyValues: [],
 
 			addresses: null,
@@ -37,7 +37,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 	componentDidUpdate(_, prevState) {
 		if (prevState.includeContacts !== this.state.includeContacts
 			|| prevState.includeUsers !== this.state.includeUsers
-			|| prevState.selectedCompanies !== this.state.selectedCompanies
+			|| prevState.selectedEntities !== this.state.selectedEntities
 			|| prevState.selectedTaxonomyValues !== this.state.selectedTaxonomyValues) {
 			this.getAddresses();
 		}
@@ -73,9 +73,9 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 			nm.error(error.message);
 		});
 
-		getRequest.call(this, "company/get_companies", (data) => {
+		getRequest.call(this, "entity/get_entities", (data) => {
 			this.setState({
-				companies: data,
+				entities: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -92,7 +92,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 		const params = {
 			include_users: this.state.includeUsers,
 			include_contacts: this.state.includeContacts,
-			companies: this.state.selectedCompanies,
+			entities: this.state.selectedEntities,
 			taxonomies: this.state.selectedTaxonomyValues,
 		};
 
@@ -107,14 +107,14 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 		});
 	}
 
-	getTaxonomyValuesForCompanies() {
+	getTaxonomyValuesForEntities() {
 		if (this.state.taxonomyCategories && this.state.taxonomyValues) {
-			const companyTaxonomies = this.state.taxonomyCategories
-				.filter((c) => c.active_on_companies)
+			const entityTaxonomies = this.state.taxonomyCategories
+				.filter((c) => c.active_on_entities)
 				.map((c) => c.name);
 
 			return this.state.taxonomyValues
-				.filter((v) => companyTaxonomies.indexOf(v.category) >= 0);
+				.filter((v) => entityTaxonomies.indexOf(v.category) >= 0);
 		}
 
 		return [];
@@ -162,7 +162,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 
 					<div className={"col-md-12"}>
 						<FormLine
-							label={"Include contacts from companies"}
+							label={"Include contacts from entities"}
 							type={"checkbox"}
 							value={this.state.includeContacts}
 							onChange={(v) => this.changeState("includeContacts", v)}
@@ -184,7 +184,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 										type={"multiselect"}
 										fullWidth={true}
 										value={this.state.selectedTaxonomyValues}
-										options={this.getTaxonomyValuesForCompanies()
+										options={this.getTaxonomyValuesForEntities()
 											.map((v) => ({ label: v.category + " - " + v.name, value: v.id }))}
 										onChange={(v) => this.changeState("selectedTaxonomyValues", v)}
 									/>
@@ -195,15 +195,15 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 							</div>
 
 							<div className="col-md-6">
-								{this.state.companies !== null
+								{this.state.entities !== null
 									? <FormLine
 										label={"Filter by entity"}
 										type={"multiselect"}
 										fullWidth={true}
-										value={this.state.selectedCompanies}
-										options={this.state.companies
+										value={this.state.selectedEntities}
+										options={this.state.entities
 											.map((v) => ({ label: v.name, value: v.id }))}
-										onChange={(v) => this.changeState("selectedCompanies", v)}
+										onChange={(v) => this.changeState("selectedEntities", v)}
 									/>
 									: <Loading
 										height={150}

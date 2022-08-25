@@ -18,11 +18,11 @@ class AddTaxonomyTag(MethodResource, Resource):
 
     @log_request
     @doc(tags=['article'],
-         description='Add a company tag to an article',
+         description='Add a entity tag to an article',
          responses={
              "200": {},
              "422.a": {"description": "The provided article does not exist"},
-             "422.b": {"description": "The provided company does not exist"},
+             "422.b": {"description": "The provided entity does not exist"},
          })
     @use_kwargs({
         'article': fields.Int(),

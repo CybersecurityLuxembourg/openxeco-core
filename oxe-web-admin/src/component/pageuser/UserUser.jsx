@@ -218,7 +218,7 @@ export default class UserUser extends React.Component {
 							/>
 						</div>
 					</div>
-					<div className="col-md-12 PageCompany-table">
+					<div className="col-md-12 PageEntity-table">
 						{this.state.users !== null
 							? <DynamicTable
 								columns={columns}

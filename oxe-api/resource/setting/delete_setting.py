@@ -32,9 +32,9 @@ class DeleteSetting(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["Setting"], {"property": kwargs["property"]})
+        entities = self.db.get(self.db.tables["Setting"], {"property": kwargs["property"]})
 
-        if len(companies) > 0:
+        if len(entities) > 0:
             self.db.delete(self.db.tables["Setting"], {"property": kwargs["property"]})
         else:
             raise ObjectNotFound

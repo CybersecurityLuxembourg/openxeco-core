@@ -16,13 +16,13 @@ class AddContact(MethodResource, Resource):
 
     @log_request
     @doc(tags=['contact'],
-         description='Add a contact related to a company',
+         description='Add a contact related to a entity',
          responses={
              "200": {},
-             "422": {"description": "Provided company not existing"},
+             "422": {"description": "Provided entity not existing"},
          })
     @use_kwargs({
-        'company_id': fields.Int(),
+        'entity_id': fields.Int(),
         'type': fields.Str(),
         'representative': fields.Str(required=False, allow_none=True),
         'name': fields.Str(required=False, allow_none=True),
@@ -37,15 +37,15 @@ class AddContact(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        # Checking company
+        # Checking entity
 
-        company = self.db.get(self.db.tables["Company"], {"id": kwargs["company_id"]})
+        entity = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity_id"]})
 
-        if len(company) == 0:
-            return "", "422 Provided company not existing"
+        if len(entity) == 0:
+            return "", "422 Provided entity not existing"
 
         # Insert
 
-        self.db.insert(kwargs, self.db.tables["CompanyContact"])
+        self.db.insert(kwargs, self.db.tables["EntityContact"])
 
         return "", "200 "

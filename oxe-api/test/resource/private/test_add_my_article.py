@@ -5,15 +5,15 @@ class TestAddMyArticle(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"user_id": 1, "company_id": 2}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"user_id": 1, "entity_id": 2}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
 
         title = "Article title with-dig1ts-and-letters"
 
         payload = {
             "title": title,
-            "company": 2,
+            "entity": 2,
         }
 
         response = self.application.post('/private/add_my_article',
@@ -30,7 +30,7 @@ class TestAddMyArticle(BaseCase):
 
         payload = {
             "title": title,
-            "company": 2,
+            "entity": 2,
         }
 
         response = self.application.post('/private/add_my_article',
@@ -42,40 +42,40 @@ class TestAddMyArticle(BaseCase):
         self.assertEqual(self.db.get_count(self.db.tables["ArticleVersion"]), 0)
 
     @BaseCase.login
-    def test_ko_no_company(self, token):
+    def test_ko_no_entity(self, token):
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
 
         title = "Article title with-dig1ts-and-letters"
 
         payload = {
             "title": title,
-            "company": 2,
+            "entity": 2,
         }
 
         response = self.application.post('/private/add_my_article',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 Object not found : Company", response.status)
+        self.assertEqual("422 Object not found : Entity", response.status)
         self.assertEqual(self.db.get_count(self.db.tables["Article"]), 0)
         self.assertEqual(self.db.get_count(self.db.tables["ArticleVersion"]), 0)
 
     @BaseCase.login
     def test_ko_no_assignment(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
 
         title = "Article title with-dig1ts-and-letters"
 
         payload = {
             "title": title,
-            "company": 2,
+            "entity": 2,
         }
 
         response = self.application.post('/private/add_my_article',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 The user is not assign to the company", response.status)
+        self.assertEqual("422 The user is not assign to the entity", response.status)
         self.assertEqual(self.db.get_count(self.db.tables["Article"]), 0)
         self.assertEqual(self.db.get_count(self.db.tables["ArticleVersion"]), 0)

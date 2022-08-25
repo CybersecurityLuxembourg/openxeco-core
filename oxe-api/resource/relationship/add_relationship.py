@@ -16,21 +16,21 @@ class AddRelationship(MethodResource, Resource):
 
     @log_request
     @doc(tags=['relationship'],
-         description='Add an relationship between two companies',
+         description='Add an relationship between two entities',
          responses={
              "200": {},
-             "422": {"description": "Provided company not existing"},
+             "422": {"description": "Provided entity not existing"},
          })
     @use_kwargs({
-        'company_1': fields.Int(required=True, allow_none=False),
+        'entity_1': fields.Int(required=True, allow_none=False),
         'type': fields.Int(required=True, allow_none=False),
-        'company_2': fields.Int(required=True, allow_none=False),
+        'entity_2': fields.Int(required=True, allow_none=False),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.insert(kwargs, self.db.tables["CompanyRelationship"])
+        self.db.insert(kwargs, self.db.tables["EntityRelationship"])
 
         return "", "200 "

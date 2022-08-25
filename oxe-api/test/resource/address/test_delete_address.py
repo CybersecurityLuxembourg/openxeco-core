@@ -6,10 +6,10 @@ class TestDeleteAddress(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/address/delete_address")
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue",
             "address_2": None,
             "number": None,
@@ -19,7 +19,7 @@ class TestDeleteAddress(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["CompanyAddress"])
+        }, self.db.tables["EntityAddress"])
 
         payload = {
             "id": 1
@@ -30,7 +30,7 @@ class TestDeleteAddress(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(self.db.get_count(self.db.tables["CompanyAddress"]), 0)
+        self.assertEqual(self.db.get_count(self.db.tables["EntityAddress"]), 0)
 
     @BaseCase.login
     @BaseCase.grant_access("/address/delete_address")

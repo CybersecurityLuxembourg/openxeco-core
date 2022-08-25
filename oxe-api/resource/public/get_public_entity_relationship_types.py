@@ -8,7 +8,7 @@ from utils.serializer import Serializer
 from utils.response import build_no_cors_response
 
 
-class GetPublicCompanyRelationshipTypes(MethodResource, Resource):
+class GetPublicEntityRelationshipTypes(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -22,9 +22,9 @@ class GetPublicCompanyRelationshipTypes(MethodResource, Resource):
     def get(self):
 
         types = self.db.session \
-            .query(self.db.tables["CompanyRelationshipType"]) \
+            .query(self.db.tables["EntityRelationshipType"]) \
             .all()
 
-        types = Serializer.serialize(types, self.db.tables["CompanyRelationshipType"])
+        types = Serializer.serialize(types, self.db.tables["EntityRelationshipType"])
 
         return build_no_cors_response(types)

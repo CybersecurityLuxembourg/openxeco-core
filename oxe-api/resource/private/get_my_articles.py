@@ -44,11 +44,11 @@ class GetMyArticles(MethodResource, Resource):
             article_ids = [a["id"] for a in articles]
 
             taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
-            company_tags = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": article_ids})
+            entity_tags = self.db.get(self.db.tables["ArticleEntityTag"], {"article": article_ids})
 
             for a in articles:
                 a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
-                a["company_tags"] = [t.company for t in company_tags if t.article == a["id"]]
+                a["entity_tags"] = [t.entity for t in entity_tags if t.article == a["id"]]
 
         return {
            "pagination": {

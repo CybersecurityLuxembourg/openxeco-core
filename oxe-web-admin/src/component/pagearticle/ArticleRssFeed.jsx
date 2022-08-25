@@ -8,8 +8,8 @@ import Table from "../table/Table.jsx";
 import { getRequest, postRequest, getRssFeed } from "../../utils/request.jsx";
 import { validateUrl } from "../../utils/re.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
-import DialogSelectCompany from "../dialog/DialogSelectCompany.jsx";
-import Company from "../item/Company.jsx";
+import DialogSelectEntity from "../dialog/DialogSelectEntity.jsx";
+import Entity from "../item/Entity.jsx";
 import FormLine from "../button/FormLine.jsx";
 import RssArticle from "../item/RssArticle.jsx";
 
@@ -27,7 +27,7 @@ export default class ArticleRssFeed extends React.Component {
 			rssFeeds: null,
 			rssArticles: null,
 			requestMessages: [],
-			rssFeedCompanies: null,
+			rssFeedEntities: null,
 		};
 	}
 
@@ -44,21 +44,21 @@ export default class ArticleRssFeed extends React.Component {
 	refresh() {
 		this.setState({
 			rssFeeds: null,
-			rssFeedCompanies: null,
+			rssFeedEntities: null,
 		}, () => {
 			getRequest.call(this, "rss/get_rss_feeds", (data) => {
 				this.setState({
 					rssFeeds: data,
 				}, () => {
-					const companyIds = data
-						.map((f) => f.company_id)
+					const entityIds = data
+						.map((f) => f.entity_id)
 						.filter((f) => f);
 
-					if (companyIds.length > 0) {
-						getRequest.call(this, "public/get_public_companies?ids="
-							+ companyIds.join(","), (data2) => {
+					if (entityIds.length > 0) {
+						getRequest.call(this, "public/get_public_entities?ids="
+							+ entityIds.join(","), (data2) => {
 							this.setState({
-								rssFeedCompanies: data2,
+								rssFeedEntities: data2,
 							});
 						}, (response) => {
 							nm.warning(response.statusText);
@@ -66,7 +66,7 @@ export default class ArticleRssFeed extends React.Component {
 							nm.error(error.message);
 						});
 					} else {
-						this.setState({ rssFeedCompanies: [] });
+						this.setState({ rssFeedEntities: [] });
 					}
 				});
 			}, (response) => {
@@ -140,7 +140,7 @@ export default class ArticleRssFeed extends React.Component {
 									// eslint-disable-next-line no-param-reassign
 									o.source = d.feed.title;
 									// eslint-disable-next-line no-param-reassign
-									o.company_id = this.state.rssFeeds[i].company_id;
+									o.entity_id = this.state.rssFeeds[i].entity_id;
 								});
 							}
 
@@ -208,17 +208,17 @@ export default class ArticleRssFeed extends React.Component {
 				Header: "Entity",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => {
-					if (!value.company_id) {
-						return <div className="ArticleRssFeed-feed-company">
+					if (!value.entity_id) {
+						return <div className="ArticleRssFeed-feed-entity">
 							<span>No entity assigned</span>
 						</div>;
 					}
 
-					return <Company
-						id={value.company_id}
-						name={this.state.rssFeedCompanies
-							&& this.state.rssFeedCompanies.filter((c) => value.company_id === c.id).length > 0
-							? this.state.rssFeedCompanies.filter((c) => value.company_id === c.id)[0].name
+					return <Entity
+						id={value.entity_id}
+						name={this.state.rssFeedEntities
+							&& this.state.rssFeedEntities.filter((c) => value.entity_id === c.id).length > 0
+							? this.state.rssFeedEntities.filter((c) => value.entity_id === c.id)[0].name
 							: "Loading..."}
 						afterDeletion={() => this.refresh()}
 					/>;
@@ -242,7 +242,7 @@ export default class ArticleRssFeed extends React.Component {
 							afterConfirmation={() => this.deleteRssFeed(value.url)}
 						/>
 
-						{value.company_id
+						{value.entity_id
 							? <DialogConfirmation
 								text={"Are you sure you want to remove the entity assignment?"}
 								trigger={
@@ -254,9 +254,9 @@ export default class ArticleRssFeed extends React.Component {
 										<i className="fas fa-building"/>
 									</button>
 								}
-								afterConfirmation={() => this.updateRssFeed(value.url, { company_id: null })}
+								afterConfirmation={() => this.updateRssFeed(value.url, { entity_id: null })}
 							/>
-							: <DialogSelectCompany
+							: <DialogSelectEntity
 								trigger={
 									<button
 										className={"small-button"}
@@ -266,7 +266,7 @@ export default class ArticleRssFeed extends React.Component {
 										<i className="fas fa-building"/>
 									</button>
 								}
-								onConfirmation={(id) => this.updateRssFeed(value.url, { company_id: id })}
+								onConfirmation={(id) => this.updateRssFeed(value.url, { entity_id: id })}
 							/>
 						}
 					</div>
@@ -378,9 +378,9 @@ export default class ArticleRssFeed extends React.Component {
 								key={i}>
 								<RssArticle
 									info={a}
-									company={this.state.rssFeedCompanies
-										&& this.state.rssFeedCompanies.filter((c) => a.company_id === c.id).length > 0
-										? this.state.rssFeedCompanies.filter((c) => a.company_id === c.id)[0]
+									entity={this.state.rssFeedEntities
+										&& this.state.rssFeedEntities.filter((c) => a.entity_id === c.id).length > 0
+										? this.state.rssFeedEntities.filter((c) => a.entity_id === c.id)[0]
 										: null}
 								/>
 							</div>)}

@@ -7,8 +7,8 @@ class TestGetMyArticle(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 14, "name": "My company"}, self.db.tables["Company"])
-        self.db.insert({"user_id": 1, "company_id": 14}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 14, "name": "My entity"}, self.db.tables["Entity"])
+        self.db.insert({"user_id": 1, "entity_id": 14}, self.db.tables["UserEntityAssignment"])
         self.db.insert({
             "id": 2,
             "title": "TITLE2",
@@ -16,7 +16,7 @@ class TestGetMyArticle(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "company": 14}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article/2',
                                         headers=self.get_standard_header(token))
@@ -54,7 +54,7 @@ class TestGetMyArticle(BaseCase):
         self.assertEqual("422 Article ID not found", response.status)
 
     @BaseCase.login
-    def test_ok_no_company_assigned(self, token):
+    def test_ok_no_entity_assigned(self, token):
         self.db.insert({
             "id": 2,
             "title": "TITLE2",
@@ -66,14 +66,14 @@ class TestGetMyArticle(BaseCase):
         response = self.application.get('/private/get_my_article/2',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual("422 Article has no company assigned", response.status)
+        self.assertEqual("422 Article has no entity assigned", response.status)
 
     @BaseCase.login
-    def test_ok_too_much_company_assigned(self, token):
-        self.db.insert({"id": 14, "name": "My company"}, self.db.tables["Company"])
-        self.db.insert({"id": 15, "name": "My company"}, self.db.tables["Company"])
-        self.db.insert({"user_id": 1, "company_id": 14}, self.db.tables["UserCompanyAssignment"])
-        self.db.insert({"user_id": 1, "company_id": 15}, self.db.tables["UserCompanyAssignment"])
+    def test_ok_too_much_entity_assigned(self, token):
+        self.db.insert({"id": 14, "name": "My entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 15, "name": "My entity"}, self.db.tables["Entity"])
+        self.db.insert({"user_id": 1, "entity_id": 14}, self.db.tables["UserEntityAssignment"])
+        self.db.insert({"user_id": 1, "entity_id": 15}, self.db.tables["UserEntityAssignment"])
         self.db.insert({
             "id": 2,
             "title": "TITLE2",
@@ -81,17 +81,17 @@ class TestGetMyArticle(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "company": 14}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"article": 2, "company": 15}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article": 2, "entity": 15}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article/2',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual("422 Article has too much companies assigned", response.status)
+        self.assertEqual("422 Article has too much entities assigned", response.status)
 
     @BaseCase.login
     def test_ok_user_not_assigned(self, token):
-        self.db.insert({"id": 14, "name": "My company"}, self.db.tables["Company"])
+        self.db.insert({"id": 14, "name": "My entity"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 2,
             "title": "TITLE2",
@@ -99,9 +99,9 @@ class TestGetMyArticle(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "company": 14}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article/2',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual("422 User not assign to the company", response.status)
+        self.assertEqual("422 User not assign to the entity", response.status)

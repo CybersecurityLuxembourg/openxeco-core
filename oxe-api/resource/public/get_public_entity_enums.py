@@ -8,7 +8,7 @@ from decorator.log_request import log_request
 from utils.response import build_no_cors_response
 
 
-class GetPublicCompanyEnums(MethodResource, Resource):
+class GetPublicEntityEnums(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -23,8 +23,8 @@ class GetPublicCompanyEnums(MethodResource, Resource):
     def get(self):
 
         data = {
-            "status": self.db.tables["Company"].status.prop.columns[0].type.enums,
-            "legal_status": self.db.tables["Company"].legal_status.prop.columns[0].type.enums,
+            "status": self.db.tables["Entity"].status.prop.columns[0].type.enums,
+            "legal_status": self.db.tables["Entity"].legal_status.prop.columns[0].type.enums,
         }
 
         return build_no_cors_response(data)

@@ -32,10 +32,10 @@ class DeleteRelationshipType(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["CompanyRelationshipType"], {"name": kwargs["name"]})
+        entities = self.db.get(self.db.tables["EntityRelationshipType"], {"name": kwargs["name"]})
 
-        if len(companies) > 0:
-            self.db.delete(self.db.tables["CompanyRelationshipType"], {"name": kwargs["name"]})
+        if len(entities) > 0:
+            self.db.delete(self.db.tables["EntityRelationshipType"], {"name": kwargs["name"]})
         else:
             raise ObjectNotFound
 

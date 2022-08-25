@@ -4,7 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getForeignRequest, getNoCorsRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
-import Company from "../item/Company.jsx";
+import Entity from "../item/Entity.jsx";
 import Table from "../table/Table.jsx";
 
 export default class NetworkEntities extends React.Component {
@@ -58,7 +58,7 @@ export default class NetworkEntities extends React.Component {
 	}
 
 	fetchEntitiesFromNode(node) {
-		const url = node.api_endpoint + "/public/get_public_companies";
+		const url = node.api_endpoint + "/public/get_public_entities";
 
 		return new Promise((resolve) => getForeignRequest(url, (data) => {
 			resolve(data);
@@ -91,7 +91,7 @@ export default class NetworkEntities extends React.Component {
 				Header: "Entity",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<Company
+					<Entity
 						id={value.id}
 						name={value.name}
 						legalStatus={value.legal_status}

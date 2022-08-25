@@ -13,7 +13,7 @@ export default class Menu extends React.Component {
 
 		this.state = {
 			notifications: null,
-			myCompanies: null,
+			myEntities: null,
 		};
 	}
 
@@ -112,15 +112,15 @@ export default class Menu extends React.Component {
 						</NavItem>
 					}
 					<div className="Menu-divider"/>
-					{this.props.myCompanies === null
+					{this.props.myEntities === null
 						? <Loading
 							height={70}
 						/>
-						: this.props.myCompanies.map((c) => <NavItem
+						: this.props.myEntities.map((c) => <NavItem
 							key={c.id}
-							eventKey={"company/" + c.id}
-							active={this.props.selectedMenu === "company/" + c.id}
-							onClick={() => this.props.history.push("/company/" + c.id)}>
+							eventKey={"entity/" + c.id}
+							active={this.props.selectedMenu === "entity/" + c.id}
+							onClick={() => this.props.history.push("/entity/" + c.id)}>
 							<NavIcon>
 								<i className="fas fa-building" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
@@ -130,15 +130,15 @@ export default class Menu extends React.Component {
 						</NavItem>)
 					}
 					<NavItem
-						eventKey="/add_company"
-						active={this.props.selectedMenu === "add_company"}
-						onClick={() => this.props.history.push("/add_company")}>
+						eventKey="/add_entity"
+						active={this.props.selectedMenu === "add_entity"}
+						onClick={() => this.props.history.push("/add_entity")}>
 						<NavIcon>
 							<i
 								className={"fas fa-plus-circle "
-									+ (this.props.myCompanies !== null
-										&& this.props.myCompanies.length === 0
-										&& this.props.selectedMenu !== "/add_company"
+									+ (this.props.myEntities !== null
+										&& this.props.myEntities.length === 0
+										&& this.props.selectedMenu !== "/add_entity"
 										&& "Menu-highlight")}
 								style={{ fontSize: "1.75em" }}
 							/>

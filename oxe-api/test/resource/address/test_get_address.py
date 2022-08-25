@@ -1,13 +1,13 @@
 from test.BaseCase import BaseCase
 
 
-class TestGetCompany(BaseCase):
+class TestGetEntity(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 2, "company_id": 1, "address_1": "a", "city": "a", "country": "b"},
-                       self.db.tables["CompanyAddress"])
+        self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 2, "entity_id": 1, "address_1": "a", "city": "a", "country": "b"},
+                       self.db.tables["EntityAddress"])
 
         response = self.application.get('/address/get_address/2',
                                         headers=self.get_standard_header(token))

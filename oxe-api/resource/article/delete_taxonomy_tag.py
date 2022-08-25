@@ -33,9 +33,9 @@ class DeleteTaxonomyTag(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["ArticleTaxonomyTag"], kwargs)
+        entities = self.db.get(self.db.tables["ArticleTaxonomyTag"], kwargs)
 
-        if len(companies) > 0:
+        if len(entities) > 0:
             self.db.delete(self.db.tables["ArticleTaxonomyTag"], kwargs)
         else:
             raise ObjectNotFound

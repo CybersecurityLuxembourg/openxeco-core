@@ -120,7 +120,7 @@ The mails are retrievable via [http://localhost:1080](http://localhost:1080).
 To run a single test
 
 ```
-$ python -m unittest test/resource/company/test_get_company.py
+$ python -m unittest test/resource/entity/test_get_entity.py
 ```
 
 To run the whole set use the command below.

@@ -1,14 +1,14 @@
 from test.BaseCase import BaseCase
 
 
-class TestExtractCompanies(BaseCase):
+class TestExtractEntities(BaseCase):
 
     @BaseCase.login
     def test_ok_basic(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
 
-        response = self.application.get('/company/extract_companies?format=json',
+        response = self.application.get('/entity/extract_entities?format=json',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(2, len(response.json))
@@ -19,10 +19,10 @@ class TestExtractCompanies(BaseCase):
 
     @BaseCase.login
     def test_ok_with_filter(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
 
-        response = self.application.get('/company/extract_companies?format=json&name=Company 2&include_address=true',
+        response = self.application.get('/entity/extract_entities?format=json&name=Entity 2&include_address=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(1, len(response.json))
@@ -33,32 +33,32 @@ class TestExtractCompanies(BaseCase):
 
     @BaseCase.login
     def test_ok_with_users(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
         self.db.insert({"id": 2, "email": "myemail@test.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])
         self.db.insert({"id": 3, "email": "myemai2@test.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])
-        self.db.insert({"user_id": 2, "company_id": 2}, self.db.tables["UserCompanyAssignment"])
-        self.db.insert({"user_id": 3, "company_id": 2}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"user_id": 2, "entity_id": 2}, self.db.tables["UserEntityAssignment"])
+        self.db.insert({"user_id": 3, "entity_id": 2}, self.db.tables["UserEntityAssignment"])
 
-        response = self.application.get('/company/extract_companies?format=json&include_user=true',
+        response = self.application.get('/entity/extract_entities?format=json&include_user=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(3, len(response.json))
         self.assertEqual(200, response.status_code)
-        self.assertEqual(response.json[0]["Global|name"], "My Company")
+        self.assertEqual(response.json[0]["Global|name"], "My Entity")
         self.assertEqual(response.json[0]["User|email"], "myemail@test.lu")
-        self.assertEqual(response.json[1]["Global|name"], "My Company")
+        self.assertEqual(response.json[1]["Global|name"], "My Entity")
         self.assertEqual(response.json[1]["User|email"], "myemai2@test.lu")
-        self.assertEqual(response.json[2]["Global|name"], "My Company 2")
+        self.assertEqual(response.json[2]["Global|name"], "My Entity 2")
         self.assertEqual(response.json[2]["User|email"], None)
 
     @BaseCase.login
     def test_ok_with_address(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue",
             "address_2": None,
             "number": None,
@@ -68,9 +68,9 @@ class TestExtractCompanies(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["CompanyAddress"])
+        }, self.db.tables["EntityAddress"])
 
-        response = self.application.get('/company/extract_companies?format=json&include_address=true',
+        response = self.application.get('/entity/extract_entities?format=json&include_address=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(2, len(response.json))
@@ -82,12 +82,12 @@ class TestExtractCompanies(BaseCase):
 
     @BaseCase.login
     def test_ok_with_workforce(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
 
         self.db.insert({
             "id": 1,
-            "company": 2,
+            "entity": 2,
             "workforce": 15,
             "date": "2020-01-01",
             "is_estimated": True,
@@ -95,7 +95,7 @@ class TestExtractCompanies(BaseCase):
         }, self.db.tables["Workforce"])
         self.db.insert({
             "id": 2,
-            "company": 2,
+            "entity": 2,
             "workforce": 20,
             "date": "2020-01-05",
             "is_estimated": True,
@@ -103,14 +103,14 @@ class TestExtractCompanies(BaseCase):
         }, self.db.tables["Workforce"])
         self.db.insert({
             "id": 3,
-            "company": 2,
+            "entity": 2,
             "workforce": 25,
             "date": "2018-01-05",
             "is_estimated": True,
             "source": "Newspaper",
         }, self.db.tables["Workforce"])
 
-        response = self.application.get('/company/extract_companies?format=json&include_workforce=true',
+        response = self.application.get('/entity/extract_entities?format=json&include_workforce=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -122,13 +122,13 @@ class TestExtractCompanies(BaseCase):
 
     @BaseCase.login
     def test_ok_with_taxonomy(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"company": 2, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity": 2, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
 
-        response = self.application.get('/company/extract_companies?format=json&include_taxonomy=true',
+        response = self.application.get('/entity/extract_entities?format=json&include_taxonomy=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(2, len(response.json))
@@ -138,8 +138,8 @@ class TestExtractCompanies(BaseCase):
 
     @BaseCase.login
     def test_ok_with_taxonomy_and_hierarchy(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
 
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
@@ -151,9 +151,9 @@ class TestExtractCompanies(BaseCase):
         self.db.insert({"id": 3, "name": "My Value 3", "category": "CAT2"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"parent_value": 1, "child_value": 3}, self.db.tables["TaxonomyValueHierarchy"])
 
-        self.db.insert({"company": 2, "taxonomy_value": 3}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity": 2, "taxonomy_value": 3}, self.db.tables["TaxonomyAssignment"])
 
-        response = self.application.get('/company/extract_companies?format=json&include_taxonomy=true',
+        response = self.application.get('/entity/extract_entities?format=json&include_taxonomy=true',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(2, len(response.json))
@@ -167,10 +167,10 @@ class TestExtractCompanies(BaseCase):
 
     @BaseCase.login
     def test_ok_xlsx(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 3, "name": "My Company 2"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
 
-        response = self.application.get('/company/extract_companies',
+        response = self.application.get('/entity/extract_entities',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)

@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 
 
-class GetCompanyAddresses(MethodResource, Resource):
+class GetEntityAddresses(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -26,7 +26,7 @@ class GetCompanyAddresses(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
-        data = self.db.get(self.db.tables["CompanyAddress"], {"entity_id": id_})
-        data = Serializer.serialize(data, self.db.tables["CompanyAddress"])
+        data = self.db.get(self.db.tables["EntityAddress"], {"entity_id": id_})
+        data = Serializer.serialize(data, self.db.tables["EntityAddress"])
 
         return data, "200 "

@@ -177,21 +177,21 @@ export default class PageHome extends React.Component {
 						<h2>My entities</h2>
 					</div>
 
-					{this.props.myCompanies === null
+					{this.props.myEntities === null
 						&& <Loading
 							height={150}
 						/>
 					}
 
-					{this.props.myCompanies !== null
-						&& this.props.myCompanies.length > 0
-						&& this.props.myCompanies.map((c) => <div
+					{this.props.myEntities !== null
+						&& this.props.myEntities.length > 0
+						&& this.props.myEntities.map((c) => <div
 							key={c.id}
 							className="col-md-6">
 							<a
-								onClick={() => this.props.changeMenu("/company/" + c.id)}
+								onClick={() => this.props.changeMenu("/entity/" + c.id)}
 							>
-								<Link to={"/company/" + c.id}>
+								<Link to={"/entity/" + c.id}>
 									<div className="PageHome-white-block">
 										<i className="fas fa-building"/>
 										<h3>{c.name}</h3>
@@ -201,13 +201,13 @@ export default class PageHome extends React.Component {
 						</div>)
 					}
 
-					{this.props.myCompanies !== null
+					{this.props.myEntities !== null
 						&& <div
 							className="col-md-6">
 							<a
-								onClick={() => this.props.changeMenu("add_company")}
+								onClick={() => this.props.changeMenu("add_entity")}
 							>
-								<Link to={"/add_company"}>
+								<Link to={"/add_entity"}>
 									<div className="PageHome-white-block">
 										<i className="fas fa-plus-circle"/>
 										<h3>Claim or register an entity</h3>

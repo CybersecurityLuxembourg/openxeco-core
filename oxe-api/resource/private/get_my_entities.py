@@ -9,14 +9,14 @@ from decorator.log_request import log_request
 from utils.serializer import Serializer
 
 
-class GetMyCompanies(MethodResource, Resource):
+class GetMyEntities(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @log_request
     @doc(tags=['private'],
-         description='Get the list of companies assigned to the user authenticated by the token',
+         description='Get the list of entities assigned to the user authenticated by the token',
          responses={
              "200": {},
          })
@@ -25,16 +25,16 @@ class GetMyCompanies(MethodResource, Resource):
     def get(self):
 
         subquery = self.db.session \
-            .query(self.db.tables["UserCompanyAssignment"]) \
-            .with_entities(self.db.tables["UserCompanyAssignment"].entity_id) \
-            .filter(self.db.tables["UserCompanyAssignment"].user_id == get_jwt_identity()) \
+            .query(self.db.tables["UserEntityAssignment"]) \
+            .with_entities(self.db.tables["UserEntityAssignment"].entity_id) \
+            .filter(self.db.tables["UserEntityAssignment"].user_id == get_jwt_identity()) \
             .subquery()
 
         data = Serializer.serialize(
             self.db.session
-                .query(self.db.tables["Company"])
-                .filter(self.db.tables["Company"].id.in_(subquery))
+                .query(self.db.tables["Entity"])
+                .filter(self.db.tables["Entity"].id.in_(subquery))
                 .all()
-            , self.db.tables["Company"])
+            , self.db.tables["Entity"])
 
         return data, "200 "

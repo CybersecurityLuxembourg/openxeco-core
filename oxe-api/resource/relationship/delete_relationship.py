@@ -19,7 +19,7 @@ class DeleteRelationship(MethodResource, Resource):
 
     @log_request
     @doc(tags=['relationship'],
-         description='Delete a relationship between two companies',
+         description='Delete a relationship between two entities',
          responses={
              "200": {},
              "422": {"description": "Object not found"},
@@ -32,10 +32,10 @@ class DeleteRelationship(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["CompanyRelationship"], {"id": kwargs["id"]})
+        entities = self.db.get(self.db.tables["EntityRelationship"], {"id": kwargs["id"]})
 
-        if len(companies) > 0:
-            self.db.delete(self.db.tables["CompanyRelationship"], {"id": kwargs["id"]})
+        if len(entities) > 0:
+            self.db.delete(self.db.tables["EntityRelationship"], {"id": kwargs["id"]})
         else:
             raise ObjectNotFound
 

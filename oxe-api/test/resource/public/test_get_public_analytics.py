@@ -6,17 +6,17 @@ class TestGetPublicAnalytics(BaseCase):
     @BaseCase.login
     def test_ok(self, token):
         self.db.insert({
-            "name": "My company",
+            "name": "My entity",
             "creation_date": "2020-06-06",
-        }, self.db.tables["Company"])
+        }, self.db.tables["Entity"])
         self.db.insert({
-            "name": "My company 2",
+            "name": "My entity 2",
             "creation_date": None,
-        }, self.db.tables["Company"])
+        }, self.db.tables["Entity"])
         self.db.insert({
-            "name": "My company 3",
+            "name": "My entity 3",
             "creation_date": None,
-        }, self.db.tables["Company"])
+        }, self.db.tables["Entity"])
 
         response = self.application.get('/public/get_public_analytics',
                                         headers=self.get_standard_header(token))

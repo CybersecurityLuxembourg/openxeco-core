@@ -12,16 +12,16 @@ export default class ArticleTag extends React.Component {
 
 		this.refresh = this.refresh.bind(this);
 		this.addTaxonomyTag = this.addTaxonomyTag.bind(this);
-		this.addCompanyTag = this.addCompanyTag.bind(this);
+		this.addEntityTag = this.addEntityTag.bind(this);
 		this.deleteTaxonomyTag = this.deleteTaxonomyTag.bind(this);
-		this.deleteCompanyTag = this.deleteCompanyTag.bind(this);
+		this.deleteEntityTag = this.deleteEntityTag.bind(this);
 		this.changeState = this.changeState.bind(this);
 
 		this.state = {
-			companies: null,
+			entities: null,
 			taxonomyValues: null,
 			taxonomyCategories: null,
-			selectedCompanies: null,
+			selectedEntities: null,
 			selectedTaxonomyValues: null,
 		};
 	}
@@ -31,16 +31,16 @@ export default class ArticleTag extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevState.selectedCompanies !== this.state.selectedCompanies
-            && prevState.selectedCompanies !== null && this.state.selectedCompanies !== null) {
-			if (prevState.selectedCompanies.length > this.state.selectedCompanies.length) {
-				const removedEl = prevState.selectedCompanies
-					.filter((x) => !this.state.selectedCompanies.includes(x));
-				this.deleteCompanyTag(removedEl[0]);
+		if (prevState.selectedEntities !== this.state.selectedEntities
+            && prevState.selectedEntities !== null && this.state.selectedEntities !== null) {
+			if (prevState.selectedEntities.length > this.state.selectedEntities.length) {
+				const removedEl = prevState.selectedEntities
+					.filter((x) => !this.state.selectedEntities.includes(x));
+				this.deleteEntityTag(removedEl[0]);
 			} else {
-				const removedEl = this.state.selectedCompanies
-					.filter((x) => !prevState.selectedCompanies.includes(x));
-				this.addCompanyTag(removedEl[0]);
+				const removedEl = this.state.selectedEntities
+					.filter((x) => !prevState.selectedEntities.includes(x));
+				this.addEntityTag(removedEl[0]);
 			}
 		}
 
@@ -61,10 +61,10 @@ export default class ArticleTag extends React.Component {
 
 	refresh() {
 		this.setState({
-			companies: null,
+			entities: null,
 			taxonomyValues: null,
 			taxonomyCategories: null,
-			selectedCompanies: null,
+			selectedEntities: null,
 			selectedTaxonomyValues: null,
 		});
 
@@ -88,9 +88,9 @@ export default class ArticleTag extends React.Component {
 			nm.error(error.message);
 		});
 
-		getRequest.call(this, "company/get_companies", (data) => {
+		getRequest.call(this, "entity/get_entities", (data) => {
 			this.setState({
-				companies: data,
+				entities: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -100,7 +100,7 @@ export default class ArticleTag extends React.Component {
 
 		getRequest.call(this, "article/get_article_tags/" + this.props.id, (data) => {
 			this.setState({
-				selectedCompanies: data.company_tags.map((t) => t.id),
+				selectedEntities: data.entity_tags.map((t) => t.id),
 				selectedTaxonomyValues: data.taxonomy_tags.map((t) => t.id),
 			});
 		}, (response) => {
@@ -127,13 +127,13 @@ export default class ArticleTag extends React.Component {
 		});
 	}
 
-	addCompanyTag(companyID) {
+	addEntityTag(entityID) {
 		const params = {
 			article: this.props.id,
-			company: companyID,
+			entity: entityID,
 		};
 
-		postRequest.call(this, "article/add_company_tag", params, () => {
+		postRequest.call(this, "article/add_entity_tag", params, () => {
 			this.refresh();
 		}, (response) => {
 			this.refresh();
@@ -161,13 +161,13 @@ export default class ArticleTag extends React.Component {
 		});
 	}
 
-	deleteCompanyTag(companyID) {
+	deleteEntityTag(entityID) {
 		const params = {
 			article: this.props.id,
-			company: companyID,
+			entity: entityID,
 		};
 
-		postRequest.call(this, "article/delete_company_tag", params, () => {
+		postRequest.call(this, "article/delete_entity_tag", params, () => {
 			this.refresh();
 		}, (response) => {
 			this.refresh();
@@ -199,8 +199,8 @@ export default class ArticleTag extends React.Component {
 			/>;
 		}
 
-		if (!this.state.companies || !this.state.taxonomyValues || !this.state.taxonomyCategories
-			|| !this.state.selectedCompanies || !this.state.selectedCompanies) {
+		if (!this.state.entities || !this.state.taxonomyValues || !this.state.taxonomyCategories
+			|| !this.state.selectedEntities || !this.state.selectedEntities) {
 			return <Loading height={300} />;
 		}
 
@@ -229,16 +229,16 @@ export default class ArticleTag extends React.Component {
 							}
 						</div>
 						<div className="col-md-6">
-							<h3>Company tags</h3>
-							{this.state.companies !== null
+							<h3>Entity tags</h3>
+							{this.state.entities !== null
 								? <FormLine
 									label={"Add entity"}
 									type={"multiselect"}
 									fullWidth={true}
-									value={this.state.selectedCompanies}
-									options={this.state.companies
+									value={this.state.selectedEntities}
+									options={this.state.entities
 										.map((v) => ({ label: v.name, value: v.id }))}
-									onChange={(v) => this.changeState("selectedCompanies", v)}
+									onChange={(v) => this.changeState("selectedEntities", v)}
 								/>
 								: <Loading
 									height={150}

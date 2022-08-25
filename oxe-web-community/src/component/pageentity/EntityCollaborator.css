@@ -1,0 +1,14 @@
+
+#EntityCollaborator .card {
+	margin-bottom:  10px;
+}
+
+#EntityCollaborator .card .card-icon {
+	margin: 25px auto 0px auto;
+	font-size:  35px;
+}
+
+#EntityCollaborator .card .card-title {
+	text-align: center;
+	font-size:  15px;
+}

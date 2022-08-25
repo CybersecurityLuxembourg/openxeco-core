@@ -18,7 +18,7 @@ export default class DashboardGraph extends React.Component {
 			users: [],
 			userGroups: null,
 			userGroupAssignments: null,
-			userCompanyAssignments: null,
+			userEntityAssignments: null,
 			articleEnums: null,
 
 			filters: {},
@@ -35,8 +35,8 @@ export default class DashboardGraph extends React.Component {
 			});
 		}
 
-		if (this.props.companies) {
-			this.getEntityRelationship(this.props.companies.map((c) => c.id));
+		if (this.props.entities) {
+			this.getEntityRelationship(this.props.entities.map((c) => c.id));
 		}
 
 		this.getEntityRelationshipTypes();
@@ -44,7 +44,7 @@ export default class DashboardGraph extends React.Component {
 		this.getUsers();
 		this.getUserGroups();
 		this.getUserGroupAssignments();
-		this.getUserCompanyAssignments();
+		this.getUserEntityAssignments();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -54,8 +54,8 @@ export default class DashboardGraph extends React.Component {
 			});
 		}
 
-		if (this.props.companies && !prevProps.companies) {
-			this.getEntityRelationship(this.props.companies.map((c) => c.id));
+		if (this.props.entities && !prevProps.entities) {
+			this.getEntityRelationship(this.props.entities.map((c) => c.id));
 		}
 
 		if (this.state.articleEnums && !prevState.articleEnums) {
@@ -114,11 +114,11 @@ export default class DashboardGraph extends React.Component {
 		});
 	}
 
-	getUserCompanyAssignments() {
-		this.setState({ userCompanyAssignments: null }, () => {
-			getRequest.call(this, "user/get_user_company_assignments", (data) => {
+	getUserEntityAssignments() {
+		this.setState({ userEntityAssignments: null }, () => {
+			getRequest.call(this, "user/get_user_entity_assignments", (data) => {
 				this.setState({
-					userCompanyAssignments: data,
+					userEntityAssignments: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -171,7 +171,7 @@ export default class DashboardGraph extends React.Component {
 		});
 
 		this.setState({ entityRelationships: null }, () => {
-			getRequest.call(this, "public/get_public_company_relationships?" + params, (data) => {
+			getRequest.call(this, "public/get_public_entity_relationships?" + params, (data) => {
 				this.setState({
 					entityRelationships: data,
 				});
@@ -185,7 +185,7 @@ export default class DashboardGraph extends React.Component {
 
 	getEntityRelationshipTypes() {
 		this.setState({ entityRelationshipTypes: null }, () => {
-			getRequest.call(this, "public/get_public_company_relationship_types", (data) => {
+			getRequest.call(this, "public/get_public_entity_relationship_types", (data) => {
 				this.setState({
 					entityRelationshipTypes: data,
 				});
@@ -280,7 +280,7 @@ export default class DashboardGraph extends React.Component {
 
 	getGraphData() {
 		if (!this.props.analytics
-			|| !this.props.companies
+			|| !this.props.entities
 			|| !this.state.entityRelationships
 			|| !this.state.entityRelationshipTypes) {
 			return {
@@ -293,7 +293,7 @@ export default class DashboardGraph extends React.Component {
 			nodes: [
 				...this.state.filters.hideEntities
 					? []
-					: this.props.companies.map((c) => (
+					: this.props.entities.map((c) => (
 						{
 							id: "ent-" + c.id,
 							label: c.name,
@@ -404,8 +404,8 @@ export default class DashboardGraph extends React.Component {
 				...this.state.entityRelationships
 					? this.state.entityRelationships.map((r) => (
 						{
-							from: "ent-" + r.company_1,
-							to: "ent-" + r.company_2,
+							from: "ent-" + r.entity_1,
+							to: "ent-" + r.entity_2,
 							label: this.getEntityRelationshipTypeById(r.type).name,
 							color: { color: "#bcebff" },
 							font: { color: "#8fddff" },
@@ -441,7 +441,7 @@ export default class DashboardGraph extends React.Component {
 				...this.props.analytics
 					? this.props.analytics.taxonomy_assignments.map((a) => (
 						{
-							from: "ent-" + a.company,
+							from: "ent-" + a.entity,
 							to: "val-" + a.taxonomy_value,
 							color: { color: "lightgrey" },
 							width: 1,
@@ -455,7 +455,7 @@ export default class DashboardGraph extends React.Component {
 					))
 					: [],
 				...this.getArticlesToShow().map((a) => {
-					const f = a.company_tags.map((t) => (
+					const f = a.entity_tags.map((t) => (
 						{
 							from: "art-" + a.id,
 							to: "ent-" + t,
@@ -499,11 +499,11 @@ export default class DashboardGraph extends React.Component {
 						}
 					))
 					: [],
-				...this.state.userCompanyAssignments
-					? this.state.userCompanyAssignments.map((a) => (
+				...this.state.userEntityAssignments
+					? this.state.userEntityAssignments.map((a) => (
 						{
 							from: "usr-" + a.user_id,
-							to: "ent-" + a.company_id,
+							to: "ent-" + a.entity_id,
 							label: a.department,
 							color: { color: "lightgrey" },
 							width: 1,
@@ -522,7 +522,7 @@ export default class DashboardGraph extends React.Component {
 
 	render() {
 		if (!this.props.analytics
-			|| !this.props.companies
+			|| !this.props.entities
 			|| !this.state.entityRelationships
 			|| !this.state.entityRelationshipTypes) {
 			return <div id={"DashboardGraph"}>

@@ -35,7 +35,7 @@ class CreateAccount(MethodResource, Resource):
          })
     @use_kwargs({
         'email': fields.Str(),
-        'company': fields.Str(required=False, allow_none=True),
+        'entity': fields.Str(required=False, allow_none=True),
         'department': fields.Str(required=False, allow_none=True),
     })
     @catch_exception
@@ -71,15 +71,15 @@ class CreateAccount(MethodResource, Resource):
                 raise ObjectAlreadyExisting
             raise e
 
-        # Create the company request if filled
+        # Create the entity request if filled
 
-        if "company" in kwargs and kwargs["company"] is not None \
+        if "entity" in kwargs and kwargs["entity"] is not None \
            and "department" in kwargs and kwargs["department"] is not None:
             try:
                 self.db.insert({
                     "user_id": user.id,
                     "request": "The user requests the access to the entity '"
-                               + kwargs["company"]
+                               + kwargs["entity"]
                                + "' with the following department: '"
                                + kwargs["department"]
                                + "'",

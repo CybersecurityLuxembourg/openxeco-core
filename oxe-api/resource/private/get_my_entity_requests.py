@@ -10,7 +10,7 @@ from decorator.log_request import log_request
 from utils.serializer import Serializer
 
 
-class GetMyCompanyRequests(MethodResource, Resource):
+class GetMyEntityRequests(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -28,10 +28,10 @@ class GetMyCompanyRequests(MethodResource, Resource):
 
         try:
             self.db.session \
-                .query(self.db.tables["UserCompanyAssignment"]) \
-                .with_entities(self.db.tables["UserCompanyAssignment"].entity_id) \
-                .filter(self.db.tables["UserCompanyAssignment"].user_id == get_jwt_identity()) \
-                .filter(self.db.tables["UserCompanyAssignment"].entity_id == int(id_)) \
+                .query(self.db.tables["UserEntityAssignment"]) \
+                .with_entities(self.db.tables["UserEntityAssignment"].entity_id) \
+                .filter(self.db.tables["UserEntityAssignment"].user_id == get_jwt_identity()) \
+                .filter(self.db.tables["UserEntityAssignment"].entity_id == int(id_)) \
                 .one()
         except NoResultFound:
             return "", "422 Object not found or you don't have the required access to it"

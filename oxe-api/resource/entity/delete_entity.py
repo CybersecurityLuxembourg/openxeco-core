@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from exception.object_not_found import ObjectNotFound
 
 
-class DeleteCompany(MethodResource, Resource):
+class DeleteEntity(MethodResource, Resource):
 
     db = None
 
@@ -32,10 +32,10 @@ class DeleteCompany(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["Company"], {"id": kwargs["id"]})
+        entities = self.db.get(self.db.tables["Entity"], {"id": kwargs["id"]})
 
-        if len(companies) > 0:
-            self.db.delete(self.db.tables["Company"], {"id": kwargs["id"]})
+        if len(entities) > 0:
+            self.db.delete(self.db.tables["Entity"], {"id": kwargs["id"]})
         else:
             raise ObjectNotFound
 

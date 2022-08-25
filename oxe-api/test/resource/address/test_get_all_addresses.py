@@ -5,10 +5,10 @@ class TestGetAllAddresses(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "address_1": "Rue inconnue",
             "address_2": None,
             "number": None,
@@ -18,7 +18,7 @@ class TestGetAllAddresses(BaseCase):
             "country": "Luxembourg",
             "latitude": None,
             "longitude": None,
-        }, self.db.tables["CompanyAddress"])
+        }, self.db.tables["EntityAddress"])
 
         response = self.application.get('/address/get_all_addresses', headers=self.get_standard_header(token))
 

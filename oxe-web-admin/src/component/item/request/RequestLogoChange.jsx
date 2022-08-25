@@ -15,19 +15,19 @@ export default class RequestLogoChange extends Component {
 		this.rejectNewLogo = this.rejectNewLogo.bind(this);
 
 		this.state = {
-			databaseCompany: null,
+			databaseEntity: null,
 		};
 	}
 
 	refresh() {
 		this.setState({
-			databaseCompany: null,
+			databaseEntity: null,
 		});
 
-		if (this.props.companyId !== null && this.props.companyId !== undefined) {
-			getRequest.call(this, "company/get_company/" + this.props.companyId, (data) => {
+		if (this.props.entityId !== null && this.props.entityId !== undefined) {
+			getRequest.call(this, "entity/get_entity/" + this.props.entityId, (data) => {
 				this.setState({
-					databaseCompany: data,
+					databaseEntity: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -45,12 +45,12 @@ export default class RequestLogoChange extends Component {
 		postRequest.call(this, "media/add_image", params, (addImageResponse) => {
 			nm.info("The image has been added");
 
-			const companyParams = {
-				id: this.props.companyId,
+			const entityParams = {
+				id: this.props.entityId,
 				image: addImageResponse.id,
 			};
 
-			postRequest.call(this, "company/update_company", companyParams, () => {
+			postRequest.call(this, "entity/update_entity", entityParams, () => {
 				this.refresh();
 				nm.info("The entity has been updated with new image");
 			}, (response) => {
@@ -113,10 +113,10 @@ export default class RequestLogoChange extends Component {
 						<div className="col-md-6">
 							<h3>Current logo</h3>
 
-							{this.state.databaseCompany !== null
+							{this.state.databaseEntity !== null
 								? <img
 									className={"LogArticleVersion-image"}
-									src={getApiURL() + "public/get_public_image/" + this.state.databaseCompany.image}
+									src={getApiURL() + "public/get_public_image/" + this.state.databaseEntity.image}
 								/>
 								: <Loading
 									height={200}
@@ -141,7 +141,7 @@ export default class RequestLogoChange extends Component {
 							<div className="right-buttons block-buttons">
 								<button
 									onClick={this.validateNewLogo}
-									disabled={this.state.databaseCompany === null
+									disabled={this.state.databaseEntity === null
 										|| this.props.image === null
 										|| this.props.image === undefined
 										|| this.props.requestStatus === "PROCESSED"}>

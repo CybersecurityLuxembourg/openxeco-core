@@ -6,7 +6,7 @@ import Menu from "./Menu.jsx";
 import { getRequest } from "../utils/request.jsx";
 import { getSettingValue } from "../utils/setting.jsx";
 import PageDashboard from "./PageDashboard.jsx";
-import PageCompany from "./PageCompany.jsx";
+import PageEntity from "./PageEntity.jsx";
 import PageArticle from "./PageArticle.jsx";
 import PageTaxonomy from "./PageTaxonomy.jsx";
 import PageNetwork from "./PageNetwork.jsx";
@@ -74,7 +74,7 @@ export default class InsideApp extends React.Component {
 				<div id="InsideApp-content">
 					<Switch>
 						<Route path="/home" render={(props) => <PageDashboard {...props} />}/>
-						<Route path="/companies/:id?" render={(props) => <PageCompany {...props} />}/>
+						<Route path="/entities/:id?" render={(props) => <PageEntity {...props} />}/>
 						<Route path="/articles/:id?" render={(props) => <PageArticle
 							{...props}
 							user={this.props.user}

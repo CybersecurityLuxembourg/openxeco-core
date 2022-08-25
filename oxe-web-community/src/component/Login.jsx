@@ -39,9 +39,9 @@ export default class Login extends React.Component {
 			password: null,
 			passwordConfirmation: null,
 			view,
-			partOfCompany: false,
-			company: "",
-			companyDepartment: null,
+			partOfEntity: false,
+			entity: "",
+			entityDepartment: null,
 		};
 	}
 
@@ -60,10 +60,10 @@ export default class Login extends React.Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		if (prevState.partOfCompany && !this.state.partOfCompany) {
+		if (prevState.partOfEntity && !this.state.partOfEntity) {
 			this.setState({
-				company: "",
-				companyDepartment: null,
+				entity: "",
+				entityDepartment: null,
 			});
 		}
 	}
@@ -96,8 +96,8 @@ export default class Login extends React.Component {
 	createAccount() {
 		const params = {
 			email: this.state.createAccountEmail,
-			company: this.state.company && this.state.company.length > 0 ? this.state.company : null,
-			department: this.state.companyDepartment ? this.state.companyDepartment : null,
+			entity: this.state.entity && this.state.entity.length > 0 ? this.state.entity : null,
+			department: this.state.entityDepartment ? this.state.entityDepartment : null,
 		};
 
 		postRequest.call(this, "account/create_account", params, () => {
@@ -447,19 +447,19 @@ export default class Login extends React.Component {
 										&& <div>
 											<FormLine
 												labelWidth={8}
-												label="I am part of a company"
+												label="I am part of a entity"
 												type={"checkbox"}
-												value={this.state.partOfCompany}
-												onChange={(v) => this.changeState("partOfCompany", v)}
+												value={this.state.partOfEntity}
+												onChange={(v) => this.changeState("partOfEntity", v)}
 												onKeyDown={this.onKeyDown}
 											/>
 											<FormLine
 												labelWidth={4}
-												label="Company"
-												value={this.state.company}
-												onChange={(v) => this.changeState("company", v)}
+												label="Entity"
+												value={this.state.entity}
+												onChange={(v) => this.changeState("entity", v)}
 												onKeyDown={this.onKeyDown}
-												disabled={!this.state.partOfCompany}
+												disabled={!this.state.partOfEntity}
 											/>
 											<FormLine
 												labelWidth={4}
@@ -474,9 +474,9 @@ export default class Login extends React.Component {
 													{ label: "INFORMATION TECHNOLOGY", value: "INFORMATION TECHNOLOGY" },
 													{ label: "OTHER", value: "OTHER" },
 												]}
-												value={this.state.companyDepartment}
-												onChange={(v) => this.changeState("companyDepartment", v)}
-												disabled={!this.state.partOfCompany}
+												value={this.state.entityDepartment}
+												onChange={(v) => this.changeState("entityDepartment", v)}
+												disabled={!this.state.partOfEntity}
 											/>
 										</div>
 									}
@@ -485,11 +485,11 @@ export default class Login extends React.Component {
 											className="blue-button"
 											onClick={this.createAccount}
 											disabled={!validateEmail(this.state.createAccountEmail)
-												|| (this.state.partOfCompany
+												|| (this.state.partOfEntity
 													&& (
-														!this.state.company
-														|| this.state.company.length === 0
-														|| !this.state.companyDepartment
+														!this.state.entity
+														|| this.state.entity.length === 0
+														|| !this.state.entityDepartment
 													)
 												)
 											}

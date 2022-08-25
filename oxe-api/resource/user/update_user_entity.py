@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from exception.object_not_found import ObjectNotFound
 
 
-class UpdateUserCompany(MethodResource, Resource):
+class UpdateUserEntity(MethodResource, Resource):
 
     db = None
 
@@ -38,18 +38,18 @@ class UpdateUserCompany(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        user_entity_assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+        user_entity_assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": kwargs["user"],
             "entity_id": kwargs["entity"],
         })
 
         if len(user_entity_assignments) == 0:
-            raise ObjectNotFound("UserCompanyAssignment")
+            raise ObjectNotFound("UserEntityAssignment")
 
         self.db.merge({
             "user_id": kwargs["user"],
             "entity_id": kwargs["entity"],
             "department": kwargs["department"],
-        }, self.db.tables["UserCompanyAssignment"])
+        }, self.db.tables["UserEntityAssignment"])
 
         return "", "200 "

@@ -8,13 +8,13 @@ from decorator.catch_exception import catch_exception
 from utils.response import build_no_cors_response
 
 
-class GetPublicCompanyGeolocations(MethodResource, Resource):
+class GetPublicEntityGeolocations(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get the geolocations of the companies',
+         description='Get the geolocations of the entities',
          responses={
              "200": {},
          })
@@ -31,15 +31,15 @@ class GetPublicCompanyGeolocations(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        c = self.db.tables["Company"]
-        ca = self.db.tables["CompanyAddress"]
+        c = self.db.tables["Entity"]
+        ca = self.db.tables["EntityAddress"]
         entities = (c.id, )
 
         kwargs["status"] = ["ACTIVE", "INACTIVE"] \
             if "include_inactive" in kwargs and kwargs["include_inactive"] is True \
             else ["ACTIVE"]
 
-        entity_ids = [o.id for o in self.db.get_filtered_companies(kwargs, entities).all()]
+        entity_ids = [o.id for o in self.db.get_filtered_entities(kwargs, entities).all()]
 
         geolocations = self.db.session.query(ca) \
             .with_entities(ca.entity_id, ca.latitude, ca.longitude) \

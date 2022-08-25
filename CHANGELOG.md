@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Rename "company" to "entity" at all levels (database, API, UI)
 - Allow all type of notes on note/get_notes resource
 - Add info on analytics/get_ecosystem_activity resource
 - Community tab on Dashboard page on oxe-web-admin

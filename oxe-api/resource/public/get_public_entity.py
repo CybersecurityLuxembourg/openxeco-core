@@ -9,14 +9,14 @@ from exception.object_not_found import ObjectNotFound
 from utils.response import build_no_cors_response
 
 
-class GetPublicCompany(MethodResource, Resource):
+class GetPublicEntity(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @doc(tags=['public'],
          description='Get full information of a entity.'
-                     'Only companies with those following status are accessible: ACTIVE, INACTIVE',
+                     'Only entities with those following status are accessible: ACTIVE, INACTIVE',
          responses={
              "200": {},
              "422": {"description": "Object not found"}
@@ -27,7 +27,7 @@ class GetPublicCompany(MethodResource, Resource):
     @catch_exception
     def get(self, id_, **kwargs):
 
-        c = self.db.tables["Company"]
+        c = self.db.tables["Entity"]
         entities = c.id, c.name, c.headline, c.legal_status, c.is_startup, c.is_cybersecurity_core_business, \
             c.trade_register_number, c.creation_date, c.description, c.website, c.image, c.status, c.linkedin_url, \
             c.twitter_url, c.youtube_url, c.discord_url, c.sync_node, c.sync_id, c.sync_global, c.sync_address, \

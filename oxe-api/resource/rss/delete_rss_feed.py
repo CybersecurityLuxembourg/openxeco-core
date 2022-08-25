@@ -32,9 +32,9 @@ class DeleteRssFeed(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["RssFeed"], {"url": kwargs["url"]})
+        feed = self.db.get(self.db.tables["RssFeed"], {"url": kwargs["url"]})
 
-        if len(companies) > 0:
+        if len(feed) > 0:
             self.db.delete(self.db.tables["RssFeed"], {"url": kwargs["url"]})
         else:
             raise ObjectNotFound

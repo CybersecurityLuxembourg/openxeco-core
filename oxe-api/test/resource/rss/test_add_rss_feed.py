@@ -23,7 +23,7 @@ class TestAddRssFeed(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(feeds), 1)
         self.assertEqual(Serializer.serialize(feeds[0], self.db.tables["RssFeed"]),
-                         {'company_id': None, 'url': 'https://random.url/feed'})
+                         {'entity_id': None, 'url': 'https://random.url/feed'})
 
     @BaseCase.login
     @BaseCase.grant_access("/rss/add_rss_feed")

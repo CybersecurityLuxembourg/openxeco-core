@@ -39,7 +39,7 @@ export default class PageArticles extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(prevProps.myCompanies) !== JSON.stringify(this.props.myCompanies)) {
+		if (JSON.stringify(prevProps.myEntities) !== JSON.stringify(this.props.myEntities)) {
 			this.refresh();
 		}
 
@@ -49,7 +49,7 @@ export default class PageArticles extends React.Component {
 	}
 
 	refresh() {
-		if (this.props.myCompanies !== null && this.props.myCompanies.length > 0) {
+		if (this.props.myEntities !== null && this.props.myEntities.length > 0) {
 			this.getArticleEnums();
 			this.getMyArticles();
 		}
@@ -149,7 +149,7 @@ export default class PageArticles extends React.Component {
 										<p>
 											Every article is edited and published on behalf of an entity.
 											If you are not assigned to any entities, please see
-											&nbsp;<Link to={"/add_company"}>this page</Link>.
+											&nbsp;<Link to={"/add_entity"}>this page</Link>.
 										</p>
 
 										<h2>How can I create an article</h2>
@@ -163,7 +163,7 @@ export default class PageArticles extends React.Component {
 
 										<p>
 											Then, you will find a dialogue box to choose the title
-											and the company that will be marked as an editor of the article.
+											and the entity that will be marked as an editor of the article.
 											The title must be at least 6 characters long.
 										</p>
 
@@ -180,7 +180,7 @@ export default class PageArticles extends React.Component {
 
 										<ul>
 											<li>1. The title of the article</li>
-											<li>2. The company assigned to the article</li>
+											<li>2. The entity assigned to the article</li>
 											<li>
 												3. The status of the article. To have more
 												information about the OFFLINE status,
@@ -207,7 +207,7 @@ export default class PageArticles extends React.Component {
 					</div>
 				</div>
 
-				{this.props.myCompanies !== null && this.props.myCompanies.length > 0
+				{this.props.myEntities !== null && this.props.myEntities.length > 0
 					&& <div className={"row"}>
 						<div className="col-md-8">
 							{this.props.settings
@@ -244,7 +244,7 @@ export default class PageArticles extends React.Component {
 									>
 										<i className="fas fa-plus"/> <i className="fas fa-feather-alt"/>
 									</button>}
-									myCompanies={this.props.myCompanies}
+									myEntities={this.props.myEntities}
 									afterConfirmation={this.getMyArticles}
 								/>
 							</div>
@@ -273,7 +273,7 @@ export default class PageArticles extends React.Component {
 										<ArticleHorizontal
 											info={a}
 											analytics={this.props.analytics}
-											myCompanies={this.props.myCompanies}
+											myEntities={this.props.myEntities}
 											settings={this.props.settings}
 											afterDelete={this.refresh}
 											onCloseEdition={this.refresh}
@@ -298,7 +298,7 @@ export default class PageArticles extends React.Component {
 					</div>
 				}
 
-				{this.props.myCompanies !== null && this.props.myCompanies.length === 0
+				{this.props.myEntities !== null && this.props.myEntities.length === 0
 					&& <Message
 						text={<div>
 							<p>
@@ -308,9 +308,9 @@ export default class PageArticles extends React.Component {
 							<p>
 								Please see the
 								<a
-									onClick={() => this.props.changeMenu("add_company")}
+									onClick={() => this.props.changeMenu("add_entity")}
 								>
-									<Link to="/add_company">&#32;Claim or register an entity&#32;</Link>
+									<Link to="/add_entity">&#32;Claim or register an entity&#32;</Link>
 								</a>
 								page to request for it.
 							</p>
@@ -319,7 +319,7 @@ export default class PageArticles extends React.Component {
 					/>
 				}
 
-				{this.props.myCompanies === null
+				{this.props.myEntities === null
 					&& <Loading
 						height={200}
 					/>

@@ -18,13 +18,13 @@ class UpdateContact(MethodResource, Resource):
 
     @log_request
     @doc(tags=['contact'],
-         description='Update a contact related to a company',
+         description='Update a contact related to a entity',
          responses={
              "200": {},
          })
     @use_kwargs({
         'id': fields.Int(),
-        'company_id': fields.Int(),
+        'entity_id': fields.Int(),
         'type': fields.Str(required=False),
         'representative': fields.Str(required=False, allow_none=True),
         'name': fields.Str(required=False, allow_none=True),
@@ -39,6 +39,6 @@ class UpdateContact(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["CompanyContact"])
+        self.db.merge(kwargs, self.db.tables["EntityContact"])
 
         return "", "200 "

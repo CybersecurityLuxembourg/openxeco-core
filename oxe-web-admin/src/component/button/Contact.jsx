@@ -34,7 +34,7 @@ export default class Contact extends React.Component {
 	save() {
 		if (this.state.info.id !== undefined) {
 			const params = _.cloneDeep(this.state.info);
-			delete params.company_id;
+			delete params.entity_id;
 
 			postRequest.call(this, "contact/update_contact", params, () => {
 				if (this.props.afterAction !== undefined) {
@@ -170,7 +170,7 @@ export default class Contact extends React.Component {
 						<button
 							className={"blue-background"}
 							onClick={() => this.save()}
-							disabled={this.state.info.company_id === undefined
+							disabled={this.state.info.entity_id === undefined
 								|| !validateNotNull(this.state.info.type)
 								|| !validateNotNull(this.state.info.representative)
 								|| (this.state.info.type === "PHONE NUMBER"

@@ -18,13 +18,13 @@ class UpdateAddress(MethodResource, Resource):
 
     @log_request
     @doc(tags=['address'],
-         description='Update an address related to a company',
+         description='Update an address related to a entity',
          responses={
              "200": {},
          })
     @use_kwargs({
         "id": fields.Int(),
-        'company_id': fields.Int(required=False),
+        'entity_id': fields.Int(required=False),
         'address_1': fields.Str(required=False),
         'address_2': fields.Str(required=False, allow_none=True),
         'number': fields.Str(required=False, allow_none=True),
@@ -40,6 +40,6 @@ class UpdateAddress(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["CompanyAddress"])
+        self.db.merge(kwargs, self.db.tables["EntityAddress"])
 
         return "", "200 "

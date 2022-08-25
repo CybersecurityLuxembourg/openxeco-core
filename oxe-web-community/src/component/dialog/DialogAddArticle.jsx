@@ -14,19 +14,19 @@ export default class DialogAddArticle extends React.Component {
 
 		this.state = {
 			title: null,
-			company: this.props.myCompanies !== null
-				&& this.props.myCompanies !== undefined
-				&& this.props.myCompanies.length > 0
-				? this.props.myCompanies[0].id
+			entity: this.props.myEntities !== null
+				&& this.props.myEntities !== undefined
+				&& this.props.myEntities.length > 0
+				? this.props.myEntities[0].id
 				: null,
 		};
 	}
 
 	componentDidUpdate(prevProps) {
-		if ((prevProps.myCompanies === null || prevProps.myCompanies === undefined)
-			&& Array.isArray(this.props.myCompanies)
-			&& this.props.myCompanies.length > 0) {
-			this.setState({ company: this.props.myCompanies[0].id });
+		if ((prevProps.myEntities === null || prevProps.myEntities === undefined)
+			&& Array.isArray(this.props.myEntities)
+			&& this.props.myEntities.length > 0) {
+			this.setState({ entity: this.props.myEntities[0].id });
 		}
 	}
 
@@ -73,14 +73,14 @@ export default class DialogAddArticle extends React.Component {
 							<FormLine
 								label={"Entity"}
 								type={"select"}
-								value={this.state.company}
-								options={this.props.myCompanies === null
-									|| this.props.myCompanies === undefined
+								value={this.state.entity}
+								options={this.props.myEntities === null
+									|| this.props.myEntities === undefined
 									? []
-									: this.props.myCompanies.map((o) => ({ label: o.name, value: o.id }))
+									: this.props.myEntities.map((o) => ({ label: o.name, value: o.id }))
 								}
-								onChange={(v) => this.changeState("company", v)}
-								format={this.state.company === null}
+								onChange={(v) => this.changeState("entity", v)}
+								format={this.state.entity === null}
 							/>
 						</div>
 
@@ -94,7 +94,7 @@ export default class DialogAddArticle extends React.Component {
 								<button
 									onClick={() => this.addArticle(close)}
 									disabled={!validateArticleTitle(this.state.title)
-										|| this.state.company === null}>
+										|| this.state.entity === null}>
 									<span><i className="fas fa-plus"/> Add article</span>
 								</button>
 							</div>

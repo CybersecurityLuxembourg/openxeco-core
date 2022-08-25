@@ -54,14 +54,14 @@ class RunDatabaseCompliance(MethodResource, Resource):
 
         self.db.delete(self.db.tables["DataControl"], {"category": "DATABASE COMPLIANCE"})
 
-        # Treat companies
+        # Treat entities
 
         settings = self.db.get(self.db.tables["Setting"])
-        companies = self.db.get(self.db.tables["Company"])
+        entities = self.db.get(self.db.tables["Entity"])
 
-        anomalies += self._check_company_compliance(companies, settings)
-        anomalies += self._check_company_address_compliance(companies, settings)
-        anomalies += self._check_company_contact_compliance(companies, settings)
+        anomalies += self._check_entity_compliance(entities, settings)
+        anomalies += self._check_entity_address_compliance(entities, settings)
+        anomalies += self._check_entity_contact_compliance(entities, settings)
 
         # Treat public articles
 
@@ -76,70 +76,70 @@ class RunDatabaseCompliance(MethodResource, Resource):
 
         return "", "200 "
 
-    # Company check functions
+    # Entity check functions
 
-    def _check_company_compliance(self, companies, settings):
+    def _check_entity_compliance(self, entities, settings):
         anomalies = []
 
-        company_columns = []
+        entity_columns = []
 
         if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE"):
-            company_columns.append("creation_date")
+            entity_columns.append("creation_date")
         if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE"):
-            company_columns.append("website")
+            entity_columns.append("website")
         if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_IMAGE"):
-            company_columns.append("image")
+            entity_columns.append("image")
 
-        for col in company_columns:
-            empty_valued_companies = [c for c in companies if getattr(c, col) is None]
+        for col in entity_columns:
+            empty_valued_entities = [c for c in entities if getattr(c, col) is None]
 
-            if len(empty_valued_companies) > 0:
-                anomalies += [f"Value '{col}' of <COMPANY:{c.id}> is empty" for c in empty_valued_companies]
+            if len(empty_valued_entities) > 0:
+                anomalies += [f"Value '{col}' of <ENTITY:{c.id}> is empty" for c in empty_valued_entities]
 
         return anomalies
 
-    def _check_company_address_compliance(self, companies, settings):
+    def _check_entity_address_compliance(self, entities, settings):
         anomalies = []
 
-        company_addresses = self.db.get(self.db.tables["CompanyAddress"])
+        entity_addresses = self.db.get(self.db.tables["EntityAddress"])
 
-        # Get the companies without addresses
+        # Get the entities without addresses
 
         if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS"):
-            company_address_ids = [a.company_id for a in company_addresses]
-            companies_without_address = [c.id for c in companies if c.id not in company_address_ids]
-            anomalies += [f"<COMPANY:{c}> has no address registered" for c in companies_without_address]
+            entity_address_ids = [a.entity_id for a in entity_addresses]
+            entities_without_address = [c.id for c in entities if c.id not in entity_address_ids]
+            anomalies += [f"<ENTITY:{c}> has no address registered" for c in entities_without_address]
 
-        # Get the companies with addresses without geolocation
+        # Get the entities with addresses without geolocation
 
         if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION"):
-            companies_without_loc = list({a.company_id for a in company_addresses
+            entities_without_loc = list({a.entity_id for a in entity_addresses
                                           if a.latitude is None or a.longitude is None})
-            anomalies += [f"Company <COMPANY:{c}> has at least one address without geolocation"
-                          for c in companies_without_loc]
+            anomalies += [f"Entity <ENTITY:{c}> has at least one address without geolocation"
+                          for c in entities_without_loc]
 
         return anomalies
 
-    def _check_company_contact_compliance(self, companies, settings):
+    def _check_entity_contact_compliance(self, entities, settings):
         anomalies = []
 
-        company_contacts = self.db.get(self.db.tables["CompanyContact"])
+        entity_contacts = self.db.get(self.db.tables["EntityContact"])
 
-        # Get the companies without phone number
+        # Get the entities without phone number
 
         if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER"):
-            company_address_ids = [a.company_id for a in company_contacts if a.type == "PHONE NUMBER"]
-            companies_without_address = [c for c in companies if c.id not in company_address_ids]
-            anomalies += [f"<COMPANY:{c.id}> has no phone number registered as a contact"
-                          for c in companies_without_address]
+            entity_address_ids = [a.entity_id for a in entity_contacts if a.type == "PHONE NUMBER"]
+            entities_without_address = [c for c in entities if c.id not in entity_address_ids]
+            anomalies += [f"<ENTITY:{c.id}> has no phone number registered as a contact"
+                          for c in entities_without_address]
 
-        # Get the companies without email address
+        # Get the entities without email address
 
         if RunDatabaseCompliance._is_setting_true(settings, "HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS"):
-            company_address_ids = [a.company_id for a in company_contacts if a.type == "EMAIL ADDRESS"]
-            companies_without_address = [c for c in companies if c.id not in company_address_ids]
-            anomalies += [f"<COMPANY:{c.id}> has no email address registered  as a contact"
-                          for c in companies_without_address]
+            entity_address_ids = [a.entity_id for a in entity_contacts if a.type == "EMAIL ADDRESS"]
+            entities_without_address = [c for c in entities if c.id not in entity_address_ids]
+            anomalies += [f"<ENTITY:{c.id}> has no email address registered  as a contact"
+                          for c in entities_without_address]
 
         return anomalies
 

@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 
 
-class GetCompanyTaxonomy(MethodResource, Resource):
+class GetEntityTaxonomy(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db

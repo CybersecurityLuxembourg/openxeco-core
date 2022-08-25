@@ -17,7 +17,7 @@ class GetArticleTags(MethodResource, Resource):
 
     @log_request
     @doc(tags=['article'],
-         description='Get taxonomy and company tags of an article specified by its ID',
+         description='Get taxonomy and entity tags of an article specified by its ID',
          responses={
              "200": {},
          })
@@ -30,15 +30,15 @@ class GetArticleTags(MethodResource, Resource):
             .filter(self.db.tables["ArticleTaxonomyTag"].article == id_) \
             .subquery('t1')
 
-        company_sub_query = self.db.session.query(self.db.tables["ArticleCompanyTag"]) \
-            .with_entities(self.db.tables["ArticleCompanyTag"].company) \
-            .filter(self.db.tables["ArticleCompanyTag"].article == id_) \
+        entity_sub_query = self.db.session.query(self.db.tables["ArticleEntityTag"]) \
+            .with_entities(self.db.tables["ArticleEntityTag"].entity) \
+            .filter(self.db.tables["ArticleEntityTag"].article == id_) \
             .subquery('t2')
 
         data = {
-            "company_tags": Serializer.serialize(self.db.session.query(self.db.tables["Company"])
-                                                 .filter(self.db.tables["Company"].id.in_(company_sub_query))
-                                                 .all(), self.db.tables["Company"]),
+            "entity_tags": Serializer.serialize(self.db.session.query(self.db.tables["Entity"])
+                                                 .filter(self.db.tables["Entity"].id.in_(entity_sub_query))
+                                                 .all(), self.db.tables["Entity"]),
             "taxonomy_tags": Serializer.serialize(self.db.session.query(self.db.tables["TaxonomyValue"])
                                                   .filter(self.db.tables["TaxonomyValue"].id.in_(taxonomy_sub_query))
                                                   .all(), self.db.tables["TaxonomyValue"]),

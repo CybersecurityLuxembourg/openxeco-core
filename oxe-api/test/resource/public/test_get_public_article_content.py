@@ -95,7 +95,7 @@ class TestGetPublicArticleContent(BaseCase):
             'end_date': None,
             'handle': 'title',
             'taxonomy_tags': [],
-            'company_tags': [],
+            'entity_tags': [],
             'title': 'TITLE',
             'type': 'NEWS'
         }, response.json)

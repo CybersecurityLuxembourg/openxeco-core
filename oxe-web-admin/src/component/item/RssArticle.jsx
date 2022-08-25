@@ -6,7 +6,7 @@ import Popup from "reactjs-popup";
 import Chip from "../button/Chip.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import { postRequest } from "../../utils/request.jsx";
-import Company from "./Company.jsx";
+import Entity from "./Entity.jsx";
 
 export default class RssArticle extends Component {
 	constructor(props) {
@@ -37,13 +37,13 @@ export default class RssArticle extends Component {
 			postRequest.call(this, "article/update_article", params, () => {
 				nm.info("The article info has been updated");
 
-				if (this.props.company) {
+				if (this.props.entity) {
 					const params2 = {
 						article: article.id,
-						company: this.props.company.id,
+						entity: this.props.entity.id,
 					};
 
-					postRequest.call(this, "article/add_company_tag", params2, () => {
+					postRequest.call(this, "article/add_entity_tag", params2, () => {
 						nm.info("The entity has been tagged to the article");
 					}, (response) => {
 						nm.warning(response.statusText);
@@ -75,11 +75,11 @@ export default class RssArticle extends Component {
 				</div>
 
 				<div className="card-text">
-					{this.props.company
-						&& <Company
-							id={this.props.company.id}
-							name={this.props.company.name}
-							legalStatus={this.props.company.legal_status}
+					{this.props.entity
+						&& <Entity
+							id={this.props.entity.id}
+							name={this.props.entity.name}
+							legalStatus={this.props.entity.legal_status}
 						/>
 					}
 				</div>
@@ -156,16 +156,16 @@ export default class RssArticle extends Component {
 								/>
 							</div>
 
-							{this.props.company
+							{this.props.entity
 								&& <div className={"col-md-6 row-spaced"}>
 									<h3>
 										Entity
 									</h3>
 
-									<Company
-										id={this.props.company.id}
-										name={this.props.company.name}
-										legalStatus={this.props.company.legal_status}
+									<Entity
+										id={this.props.entity.id}
+										name={this.props.entity.name}
+										legalStatus={this.props.entity.legal_status}
 									/>
 								</div>
 							}

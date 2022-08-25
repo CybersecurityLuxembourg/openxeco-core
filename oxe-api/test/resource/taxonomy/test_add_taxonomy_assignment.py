@@ -10,12 +10,12 @@ class TestAddTaxonomyAssignment(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     def test_ok(self, token):
-        self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
 
         payload = {
-            "company": 1,
+            "entity": 1,
             "value": 1,
         }
 
@@ -29,7 +29,7 @@ class TestAddTaxonomyAssignment(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     def test_ko_assign_from_parent_category(self, token):
-        self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"parent_category": "CAT1", "child_category": "CAT1"},
@@ -37,7 +37,7 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
 
         payload = {
-            "company": 1,
+            "entity": 1,
             "value": 1
         }
 
@@ -52,7 +52,7 @@ class TestAddTaxonomyAssignment(BaseCase):
     def test_ko_object_not_found(self, token):
 
         payload = {
-            "company": 1,
+            "entity": 1,
             "value": 1
         }
 
@@ -65,13 +65,13 @@ class TestAddTaxonomyAssignment(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     def test_ko_duplicate_entry(self, token):
-        self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"company": 1, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity": 1, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
 
         payload = {
-            "company": 1,
+            "entity": 1,
             "value": 1
         }
 
@@ -85,7 +85,7 @@ class TestAddTaxonomyAssignment(BaseCase):
     @BaseCase.grant_access("/taxonomy/add_taxonomy_assignment")
     @patch('db.db.DB.insert')
     def test_ko_force_integrity_error_out_of_duplicate(self, mock_db_insert, token):
-        self.db.session.add(self.db.tables["Company"](**{"id": 1, "name": "My Company"}))
+        self.db.session.add(self.db.tables["Entity"](**{"id": 1, "name": "My Entity"}))
         self.db.session.add(self.db.tables["TaxonomyCategory"](**{"name": "CAT1"}))
         self.db.session.commit()
         self.db.session.add(self.db.tables["TaxonomyValue"](**{"id": 1, "name": "My Value", "category": "CAT1"}))
@@ -93,7 +93,7 @@ class TestAddTaxonomyAssignment(BaseCase):
         mock_db_insert.side_effect = [IntegrityError(None, None, None), None]
 
         payload = {
-            "company": 1,
+            "entity": 1,
             "value": 1
         }
 

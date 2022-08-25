@@ -17,7 +17,7 @@ class GetUserEntities(MethodResource, Resource):
 
     @log_request
     @doc(tags=['user'],
-         description='Get companies assigned to a user by user ID',
+         description='Get entities assigned to a user by user ID',
          responses={
              "200": {},
              "422": {"description": "Object not found"}

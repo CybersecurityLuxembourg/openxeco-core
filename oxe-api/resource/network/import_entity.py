@@ -15,7 +15,7 @@ from utils import request
 from resource.media.add_image import AddImage
 
 
-class ImportCompany(MethodResource, Resource):
+class ImportEntity(MethodResource, Resource):
 
     db = None
 
@@ -105,7 +105,7 @@ class ImportCompany(MethodResource, Resource):
             },
         }
 
-        return self.db.insert(entity, self.db.tables["Company"], commit=False, flush=True)
+        return self.db.insert(entity, self.db.tables["Entity"], commit=False, flush=True)
 
     def create_entity_addresses(self, entity_addresses, entity):
 
@@ -121,4 +121,4 @@ class ImportCompany(MethodResource, Resource):
             })
 
         if len(addresses) > 0:
-            self.db.insert(addresses, self.db.tables["CompanyAddress"], commit=False, flush=True)
+            self.db.insert(addresses, self.db.tables["EntityAddress"], commit=False, flush=True)

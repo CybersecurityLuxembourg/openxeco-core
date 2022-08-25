@@ -6,7 +6,7 @@ import Message from "../box/Message.jsx";
 import Loading from "../box/Loading.jsx";
 import Info from "../box/Info.jsx";
 import DynamicTable from "../table/DynamicTable.jsx";
-import Company from "../item/Company.jsx";
+import Entity from "../item/Entity.jsx";
 import Article from "../item/Article.jsx";
 import FormLine from "../button/FormLine.jsx";
 import { dictToURI } from "../../utils/url.jsx";
@@ -93,8 +93,8 @@ export default class TaskDataControl extends React.Component {
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
 					<div>
-						{value.value.match(/<COMPANY:\d+>/g) !== null
-							&& value.value.match(/<COMPANY:\d+>/g).map((r) => <Company
+						{value.value.match(/<ENTITY:\d+>/g) !== null
+							&& value.value.match(/<ENTITY:\d+>/g).map((r) => <Entity
 								key={value.id}
 								id={parseInt(r.match(/\d+/g)[0], 10)}
 							/>)}
@@ -194,7 +194,7 @@ export default class TaskDataControl extends React.Component {
 										category controls
 									</li>
 									<li>
-										&#39;/cron/run_company_website_check&#39; issues
+										&#39;/cron/run_entity_website_check&#39; issues
 										the &#39;WEBSITE CHECK&#39; category controls
 									</li>
 								</ul>

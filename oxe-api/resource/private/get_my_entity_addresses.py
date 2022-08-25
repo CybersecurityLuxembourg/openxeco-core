@@ -10,7 +10,7 @@ from decorator.log_request import log_request
 from utils.serializer import Serializer
 
 
-class GetMyCompanyAddresses(MethodResource, Resource):
+class GetMyEntityAddresses(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -28,20 +28,20 @@ class GetMyCompanyAddresses(MethodResource, Resource):
 
         try:
             self.db.session \
-                .query(self.db.tables["UserCompanyAssignment"]) \
-                .with_entities(self.db.tables["UserCompanyAssignment"].entity_id) \
-                .filter(self.db.tables["UserCompanyAssignment"].user_id == int(get_jwt_identity())) \
-                .filter(self.db.tables["UserCompanyAssignment"].entity_id == int(id_)) \
+                .query(self.db.tables["UserEntityAssignment"]) \
+                .with_entities(self.db.tables["UserEntityAssignment"].entity_id) \
+                .filter(self.db.tables["UserEntityAssignment"].user_id == int(get_jwt_identity())) \
+                .filter(self.db.tables["UserEntityAssignment"].entity_id == int(id_)) \
                 .one()
         except NoResultFound:
             return "", "422 Object not found or you don't have the required access to it"
 
         data = Serializer.serialize(
             self.db.session
-                .query(self.db.tables["CompanyAddress"])
-                .filter(self.db.tables["CompanyAddress"].entity_id == int(id_))
+                .query(self.db.tables["EntityAddress"])
+                .filter(self.db.tables["EntityAddress"].entity_id == int(id_))
                 .all(),
-            self.db.tables["CompanyAddress"]
+            self.db.tables["EntityAddress"]
         )
 
         return data, "200 "

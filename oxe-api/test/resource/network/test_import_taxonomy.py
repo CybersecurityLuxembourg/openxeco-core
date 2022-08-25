@@ -44,7 +44,7 @@ class TestImportTaxonomy(BaseCase):
             {
                 'accepted_article_types': None,
                 'active_on_articles': 1,
-                'active_on_companies': 0,
+                'active_on_entities': 0,
                 'is_standard': 0,
                 'name': 'CAT',
                 'sync_global': 0,
@@ -61,9 +61,9 @@ class TestImportTaxonomy(BaseCase):
     def test_ok_with_param_and_hierarchy(self, mock_get_request, token):
         mock_get_request.return_value = json.dumps({
             "categories": [
-                {"name": "CAT", "active_on_articles": True, "active_on_companies": True, "is_standard": True,
+                {"name": "CAT", "active_on_articles": True, "active_on_entities": True, "is_standard": True,
                  "accepted_article_types": "JOB"},
-                {"name": "PARENT CAT", "active_on_articles": True, "active_on_companies": True, "is_standard": True,
+                {"name": "PARENT CAT", "active_on_articles": True, "active_on_entities": True, "is_standard": True,
                  "accepted_article_types": "JOB"}
             ],
             "values": [
@@ -108,7 +108,7 @@ class TestImportTaxonomy(BaseCase):
                 {
                     'accepted_article_types': "JOB",
                     'active_on_articles': 1,
-                    'active_on_companies': 1,
+                    'active_on_entities': 1,
                     'is_standard': 1,
                     'name': 'CAT',
                     'sync_global': 1,
@@ -120,7 +120,7 @@ class TestImportTaxonomy(BaseCase):
                 {
                     'accepted_article_types': "JOB",
                     'active_on_articles': 1,
-                    'active_on_companies': 1,
+                    'active_on_entities': 1,
                     'is_standard': 1,
                     'name': 'PARENT CAT',
                     'sync_global': 1,

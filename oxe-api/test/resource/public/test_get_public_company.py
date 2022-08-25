@@ -1,20 +1,20 @@
 from test.BaseCase import BaseCase
 
 
-class TestGetPublicCompany(BaseCase):
+class TestGetPublicEntity(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
 
-        response = self.application.get('/public/get_public_company/2',
+        response = self.application.get('/public/get_public_entity/2',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.json, {
             'id': 2,
             'image': None,
-            'name': 'My Company',
+            'name': 'My Entity',
             'headline': None,
             'status': 'ACTIVE',
             'legal_status': 'JURIDICAL PERSON',
@@ -37,16 +37,16 @@ class TestGetPublicCompany(BaseCase):
 
     @BaseCase.login
     def test_ok_with_assignments(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
 
-        response = self.application.get('/public/get_public_company/2?include_assignments=True',
+        response = self.application.get('/public/get_public_entity/2?include_assignments=True',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.json, {
             'id': 2,
             'image': None,
-            'name': 'My Company',
+            'name': 'My Entity',
             'headline': None,
             'status': 'ACTIVE',
             'legal_status': 'JURIDICAL PERSON',
@@ -70,16 +70,16 @@ class TestGetPublicCompany(BaseCase):
 
     @BaseCase.login
     def test_unexisting_id(self, token):
-        response = self.application.get('/public/get_public_company/4',
+        response = self.application.get('/public/get_public_entity/4',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual("422 Object not found", response.status)
 
     @BaseCase.login
-    def test_ko_deleted_status_company(self, token):
-        self.db.insert({"id": 4, "name": "My Company", "status": "DELETED"}, self.db.tables["Company"])
+    def test_ko_deleted_status_entity(self, token):
+        self.db.insert({"id": 4, "name": "My Entity", "status": "DELETED"}, self.db.tables["Entity"])
 
-        response = self.application.get('/public/get_public_company/4',
+        response = self.application.get('/public/get_public_entity/4',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual("422 Object not found", response.status)

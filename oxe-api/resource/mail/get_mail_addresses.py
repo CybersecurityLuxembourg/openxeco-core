@@ -16,12 +16,12 @@ class GetMailAddresses(MethodResource, Resource):
 
     @log_request
     @doc(tags=['mail'],
-         description='Get the email addresses from the active users and the company contacts',
+         description='Get the email addresses from the active users and the entity contacts',
          responses={
              "200": {},
          })
     @use_kwargs({
-        'companies': fields.List(fields.Str(), required=False),
+        'entities': fields.List(fields.Str(), required=False),
         'taxonomies': fields.List(fields.Str(), required=False),
         'include_contacts': fields.Bool(required=False, allow_none=True, missing=True),
         'include_users': fields.Bool(required=False, allow_none=True, missing=True),
@@ -32,20 +32,20 @@ class GetMailAddresses(MethodResource, Resource):
     def get(self, **kwargs):
 
         addresses = []
-        companies = kwargs["companies"] if "companies" in kwargs else []
+        entities = kwargs["entities"] if "entities" in kwargs else []
         filtered_users = None
 
-        # Add companies related to the taxonomy
+        # Add entities related to the taxonomy
 
         if "taxonomies" in kwargs:
-            taxonomy_companies = self.db.get_filtered_companies({"taxonomy_values": kwargs["taxonomies"]}).all()
-            taxonomy_company_ids = [c.id for c in taxonomy_companies]
-            companies = list(set(companies + taxonomy_company_ids))
+            taxonomy_entities = self.db.get_filtered_entities({"taxonomy_values": kwargs["taxonomies"]}).all()
+            taxonomy_entity_ids = [c.id for c in taxonomy_entities]
+            entities = list(set(entities + taxonomy_entity_ids))
 
-        # Get user IDs respecting the taxonomy and company params
+        # Get user IDs respecting the taxonomy and entity params
 
-        if "companies" in kwargs or "taxonomies" in kwargs:
-            filtered_users = self.db.get(self.db.tables["UserCompanyAssignment"], {"company_id": companies})
+        if "entities" in kwargs or "taxonomies" in kwargs:
+            filtered_users = self.db.get(self.db.tables["UserEntityAssignment"], {"entity_id": entities})
             filtered_users = [u.user_id for u in filtered_users]
 
         # Get the contact addresses
@@ -53,18 +53,18 @@ class GetMailAddresses(MethodResource, Resource):
         if kwargs["include_contacts"] is True:
             filters = {"type": "EMAIL ADDRESS"}
 
-            if "companies" in kwargs or "taxonomies" in kwargs:
-                filters["company_id"] = companies
+            if "entities" in kwargs or "taxonomies" in kwargs:
+                filters["entity_id"] = entities
 
             contacts = self.db.get(
-                self.db.tables["CompanyContact"],
+                self.db.tables["EntityContact"],
                 filters,
                 ["value", "representative", "name"]
             )
 
             for c in contacts:
                 addresses.append({
-                    "source": "CONTACT OF COMPANY",
+                    "source": "CONTACT OF ENTITY",
                     "email": c.value,
                     "information": c.name
                 })

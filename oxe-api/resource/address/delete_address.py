@@ -32,10 +32,10 @@ class DeleteAddress(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["CompanyAddress"], {"id": kwargs["id"]})
+        entities = self.db.get(self.db.tables["EntityAddress"], {"id": kwargs["id"]})
 
-        if len(companies) > 0:
-            self.db.delete(self.db.tables["CompanyAddress"], {"id": kwargs["id"]})
+        if len(entities) > 0:
+            self.db.delete(self.db.tables["EntityAddress"], {"id": kwargs["id"]})
         else:
             raise ObjectNotFound
 

@@ -79,7 +79,7 @@ export default class TaxonomyTaxonomies extends React.Component {
 				Header: <div align="center"><i className="fas fa-building"/></div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<div align="center">{value.active_on_companies ? "Yes" : "No"}</div>
+					<div align="center">{value.active_on_entities ? "Yes" : "No"}</div>
 				),
 				width: 40,
 			},

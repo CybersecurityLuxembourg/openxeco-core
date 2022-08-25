@@ -7,7 +7,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
-from exception.user_not_assign_to_company import UserNotAssignedToCompany
+from exception.user_not_assign_to_entity import UserNotAssignedToEntity
 from exception.deactivated_article_edition import DeactivatedArticleEdition
 
 
@@ -25,9 +25,9 @@ class DeleteMyArticle(MethodResource, Resource):
              "200": {},
              "403": {"description": "The article edition is deactivated"},
              "422.1": {"description": "Object not found : Article"},
-             "422.2": {"description": "Article has no company assigned"},
-             "422.3": {"description": "Article has too much companies assigned"},
-             "422.4": {"description": "The user is not assign to the company"},
+             "422.2": {"description": "Article has no entity assigned"},
+             "422.3": {"description": "Article has too much entities assigned"},
+             "422.4": {"description": "The user is not assign to the entity"},
          })
     @use_kwargs({
         'id': fields.Int(),
@@ -51,23 +51,23 @@ class DeleteMyArticle(MethodResource, Resource):
         if len(articles) < 1:
             raise ObjectNotFound("Article")
 
-        article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["id"]})
+        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article": kwargs["id"]})
 
-        if len(article_companies) < 1:
-            return "", "422 Article has no company assigned"
+        if len(article_entities) < 1:
+            return "", "422 Article has no entity assigned"
 
-        if len(article_companies) > 1:
-            return "", "422 Article has too much companies assigned"
+        if len(article_entities) > 1:
+            return "", "422 Article has too much entities assigned"
 
         # Check right of the user
 
-        assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+        assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "company_id": article_companies[0].company
+            "entity_id": article_entities[0].entity
         })
 
         if len(assignments) < 1:
-            raise UserNotAssignedToCompany()
+            raise UserNotAssignedToEntity()
 
         # Modify article
 

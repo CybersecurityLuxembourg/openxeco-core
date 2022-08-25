@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from exception.object_not_found import ObjectNotFound
 
 
-class DeleteCompanyTag(MethodResource, Resource):
+class DeleteEntityTag(MethodResource, Resource):
 
     db = None
 
@@ -38,10 +38,10 @@ class DeleteCompanyTag(MethodResource, Resource):
             "entity": kwargs["entity"]
         }
 
-        companies = self.db.get(self.db.tables["ArticleCompanyTag"], row)
+        entities = self.db.get(self.db.tables["ArticleEntityTag"], row)
 
-        if len(companies) > 0:
-            self.db.delete(self.db.tables["ArticleCompanyTag"], row)
+        if len(entities) > 0:
+            self.db.delete(self.db.tables["ArticleEntityTag"], row)
         else:
             raise ObjectNotFound
 

@@ -3,7 +3,7 @@ import "./DashboardRecentActivity.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
-import Company from "../item/Company.jsx";
+import Entity from "../item/Entity.jsx";
 import Article from "../item/Article.jsx";
 import Note from "../item/Note.jsx";
 import Taxonomy from "../item/Taxonomy.jsx";
@@ -108,12 +108,12 @@ export default class DashboardRecentActivity extends React.Component {
 					</div>
 					<div className="col-md-12 row-spaced">
 						<div>
-							{this.props.companies
-								? this.props.companies
-									.slice(Math.max(this.props.companies.length - 10, 0))
+							{this.props.entities
+								? this.props.entities
+									.slice(Math.max(this.props.entities.length - 10, 0))
 									.reverse()
 									.map((o) => (
-										<Company
+										<Entity
 											key={o.id}
 											id={o.id}
 											name={o.name}
@@ -148,9 +148,9 @@ export default class DashboardRecentActivity extends React.Component {
 								? this.state.notes.items
 									.map((o) => (
 										<div key={o.id}>
-											{o.company
-												&& <Company
-													id={o.company}
+											{o.entity
+												&& <Entity
+													id={o.entity}
 												/>
 											}
 

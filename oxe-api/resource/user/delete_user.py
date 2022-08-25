@@ -32,9 +32,9 @@ class DeleteUser(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        companies = self.db.get(self.db.tables["User"], {"id": kwargs["id"]})
+        entities = self.db.get(self.db.tables["User"], {"id": kwargs["id"]})
 
-        if len(companies) > 0:
+        if len(entities) > 0:
             self.db.delete(self.db.tables["User"], {"id": kwargs["id"]})
         else:
             raise ObjectNotFound

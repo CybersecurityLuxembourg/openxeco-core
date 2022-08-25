@@ -11,7 +11,7 @@ from exception.object_not_found import ObjectNotFound
 from utils.serializer import Serializer
 
 
-class GetCompany(MethodResource, Resource):
+class GetEntity(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -28,11 +28,11 @@ class GetCompany(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
-        data = self.db.get(self.db.tables["Company"], {"id": id_})
+        data = self.db.get(self.db.tables["Entity"], {"id": id_})
 
         if len(data) < 1:
             raise ObjectNotFound
 
-        data = Serializer.serialize(data, self.db.tables["Company"])
+        data = Serializer.serialize(data, self.db.tables["Entity"])
 
         return data[0], "200 "

@@ -30,7 +30,7 @@ class AddRequest(MethodResource, Resource):
              "422.c": {"description": "Object not found or you don't have the required access to it"}
          })
     @use_kwargs({
-        'company_id': fields.Int(required=False, allow_none=True),
+        'entity_id': fields.Int(required=False, allow_none=True),
         'request': fields.Str(),
         'type': fields.Str(required=False, allow_none=True),
         'data': fields.Dict(required=False, allow_none=True),
@@ -58,15 +58,15 @@ class AddRequest(MethodResource, Resource):
 
             image = base64.b64decode(kwargs["image"].split(",")[-1])
 
-        # Control rights on company
+        # Control rights on entity
 
-        if "company_id" in kwargs:
+        if "entity_id" in kwargs:
             try:
                 self.db.session \
-                    .query(self.db.tables["UserCompanyAssignment"]) \
-                    .with_entities(self.db.tables["UserCompanyAssignment"].company_id) \
-                    .filter(self.db.tables["UserCompanyAssignment"].user_id == get_jwt_identity()) \
-                    .filter(self.db.tables["UserCompanyAssignment"].company_id == kwargs["company_id"]) \
+                    .query(self.db.tables["UserEntityAssignment"]) \
+                    .with_entities(self.db.tables["UserEntityAssignment"].entity_id) \
+                    .filter(self.db.tables["UserEntityAssignment"].user_id == get_jwt_identity()) \
+                    .filter(self.db.tables["UserEntityAssignment"].entity_id == kwargs["entity_id"]) \
                     .one()
             except NoResultFound:
                 return "", "422 Object not found or you don't have the required access to it"
@@ -75,7 +75,7 @@ class AddRequest(MethodResource, Resource):
 
         user_request = {
             "user_id": int(get_jwt_identity()),
-            "company_id": kwargs["company_id"] if "company_id" in kwargs else None,
+            "entity_id": kwargs["entity_id"] if "entity_id" in kwargs else None,
             "request": kwargs["request"],
             "type": kwargs["type"] if "type" in kwargs else None,
             "data": json.dumps(kwargs["data"]) if "data" in kwargs else None,

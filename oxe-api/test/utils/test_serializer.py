@@ -8,55 +8,55 @@ class TestSerializer(BaseCase):
 
     def test_ok_serialize_object(self):
         self.db.insert({
-            "name": "My company",
+            "name": "My entity",
             "creation_date": "2020-06-06",
             "is_startup": True,
-        }, self.db.tables["Company"])
+        }, self.db.tables["Entity"])
 
-        company = self.db.get(self.db.tables["Company"])[0]
+        entity = self.db.get(self.db.tables["Entity"])[0]
 
-        res = Serializer.serialize_object(company, self.db.tables["Company"])
+        res = Serializer.serialize_object(entity, self.db.tables["Entity"])
 
-        self.assertEqual(res["name"], "My company")
+        self.assertEqual(res["name"], "My entity")
         self.assertEqual(res["creation_date"], "2020-06-06")
         self.assertEqual(res["is_startup"], True)
 
     def test_ok_serialize_with_object(self):
         self.db.insert({
-            "name": "My company",
+            "name": "My entity",
             "creation_date": "2020-06-06",
             "is_startup": True,
-        }, self.db.tables["Company"])
+        }, self.db.tables["Entity"])
 
-        company = self.db.get(self.db.tables["Company"])[0]
+        entity = self.db.get(self.db.tables["Entity"])[0]
 
-        res = Serializer.serialize(company, self.db.tables["Company"])
+        res = Serializer.serialize(entity, self.db.tables["Entity"])
 
-        self.assertEqual(res["name"], "My company")
+        self.assertEqual(res["name"], "My entity")
         self.assertEqual(res["creation_date"], "2020-06-06")
         self.assertEqual(res["is_startup"], True)
 
     def test_ok_serialize_with_list(self):
         self.db.insert({
-            "name": "My company",
+            "name": "My entity",
             "creation_date": "2020-06-06",
             "is_startup": True,
-        }, self.db.tables["Company"])
+        }, self.db.tables["Entity"])
         self.db.insert({
-            "name": "My company 2",
+            "name": "My entity 2",
             "creation_date": "2020-06-06",
             "is_startup": True,
-        }, self.db.tables["Company"])
+        }, self.db.tables["Entity"])
 
-        companies = self.db.get(self.db.tables["Company"])
+        entities = self.db.get(self.db.tables["Entity"])
 
-        res = Serializer.serialize(companies, self.db.tables["Company"])
+        res = Serializer.serialize(entities, self.db.tables["Entity"])
 
         self.assertEqual(len(res), 2)
-        self.assertEqual(res[0]["name"], "My company")
+        self.assertEqual(res[0]["name"], "My entity")
         self.assertEqual(res[0]["creation_date"], "2020-06-06")
         self.assertEqual(res[0]["is_startup"], True)
-        self.assertEqual(res[1]["name"], "My company 2")
+        self.assertEqual(res[1]["name"], "My entity 2")
         self.assertEqual(res[1]["creation_date"], "2020-06-06")
         self.assertEqual(res[1]["is_startup"], True)
 

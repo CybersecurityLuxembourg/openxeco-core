@@ -72,7 +72,7 @@ class TestGetImages(BaseCase):
             "creation_date": datetime.today()
         }, self.db.tables["Image"])
 
-        self.db.insert({"id": 2, "name": "My Company", "image": 50}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity", "image": 50}, self.db.tables["Entity"])
 
         response = self.application.get('/media/get_images?logo_only=true',
                                         headers=self.get_standard_header(token))
@@ -173,7 +173,7 @@ class TestGetImages(BaseCase):
             "keywords": "green compass"
         }, self.db.tables["Image"])
 
-        self.db.insert({"id": 2, "name": "My Company", "image": 50}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity", "image": 50}, self.db.tables["Entity"])
 
         response = self.application.get('/media/get_images?search=comp',
                                         headers=self.get_standard_header(token))

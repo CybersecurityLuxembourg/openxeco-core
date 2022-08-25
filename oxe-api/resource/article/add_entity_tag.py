@@ -9,7 +9,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 
 
-class AddCompanyTag(MethodResource, Resource):
+class AddEntityTag(MethodResource, Resource):
 
     db = None
 
@@ -36,9 +36,9 @@ class AddCompanyTag(MethodResource, Resource):
         if len(self.db.get(self.db.tables["Article"], {"id": kwargs["article"]})) == 0:
             return "", "422 The provided article does not exist"
 
-        if len(self.db.get(self.db.tables["Company"], {"id": kwargs["entity"]})) == 0:
+        if len(self.db.get(self.db.tables["Entity"], {"id": kwargs["entity"]})) == 0:
             return "", "422 The provided entity does not exist"
 
-        self.db.insert(kwargs, self.db.tables["ArticleCompanyTag"])
+        self.db.insert(kwargs, self.db.tables["ArticleEntityTag"])
 
         return "", "200 "

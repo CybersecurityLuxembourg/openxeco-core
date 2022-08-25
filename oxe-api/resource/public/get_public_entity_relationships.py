@@ -10,13 +10,13 @@ from utils.serializer import Serializer
 from utils.response import build_no_cors_response
 
 
-class GetPublicCompanyRelationships(MethodResource, Resource):
+class GetPublicEntityRelationships(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get the relationships of companies designated by their IDs',
+         description='Get the relationships of entities designated by their IDs',
          responses={
              "200": {},
          })
@@ -27,11 +27,11 @@ class GetPublicCompanyRelationships(MethodResource, Resource):
     def get(self, **kwargs):
 
         relationships = self.db.session \
-            .query(self.db.tables["CompanyRelationship"]) \
-            .filter(or_(self.db.tables["CompanyRelationship"].entity_1.in_(kwargs["ids"]),
-                        self.db.tables["CompanyRelationship"].entity_2.in_(kwargs["ids"]))) \
+            .query(self.db.tables["EntityRelationship"]) \
+            .filter(or_(self.db.tables["EntityRelationship"].entity_1.in_(kwargs["ids"]),
+                        self.db.tables["EntityRelationship"].entity_2.in_(kwargs["ids"]))) \
             .all()
 
-        relationships = Serializer.serialize(relationships, self.db.tables["CompanyRelationship"])
+        relationships = Serializer.serialize(relationships, self.db.tables["EntityRelationship"])
 
         return build_no_cors_response(relationships)

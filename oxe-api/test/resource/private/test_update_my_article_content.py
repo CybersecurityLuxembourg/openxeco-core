@@ -46,9 +46,9 @@ class TestUpdateMyArticleContent(BaseCase):
     def test_ok(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
-        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
@@ -116,10 +116,10 @@ class TestUpdateMyArticleContent(BaseCase):
         self.assertEqual("422 Object not found : Article", response.status)
 
     @BaseCase.login
-    def test_ko_article_no_company_assigned(self, token):
+    def test_ko_article_no_entity_assigned(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
-        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
@@ -133,15 +133,15 @@ class TestUpdateMyArticleContent(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 The article has no company assigned", response.status)
+        self.assertEqual("422 The article has no entity assigned", response.status)
 
     @BaseCase.login
-    def test_ko_article_too_much_company_assigned(self, token):
+    def test_ko_article_too_much_entity_assigned(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
-        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"id": 4, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"article": 2, "company": 4}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"id": 4, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article": 2, "entity": 4}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
@@ -155,13 +155,13 @@ class TestUpdateMyArticleContent(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 The article has too much companies assigned", response.status)
+        self.assertEqual("422 The article has too much entities assigned", response.status)
 
     @BaseCase.login
-    def test_ko_user_not_assigned_to_company(self, token):
+    def test_ko_user_not_assigned_to_entity(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
-        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
@@ -175,14 +175,14 @@ class TestUpdateMyArticleContent(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("422 The user is not assign to the company", response.status)
+        self.assertEqual("422 The user is not assign to the entity", response.status)
 
     @BaseCase.login
     def test_ko_main_version_not_found(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
-        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
@@ -203,9 +203,9 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 2, "article_id": 2, "name": "VERSION 1", "is_main": 1}, self.db.tables["ArticleVersion"])
-        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
@@ -225,9 +225,9 @@ class TestUpdateMyArticleContent(BaseCase):
     def test_ko_wrong_content_type_found(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
-        self.db.insert({"id": 3, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 2, "company": 3}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"user_id": 1, "company_id": 3}, self.db.tables["UserCompanyAssignment"])
+        self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])

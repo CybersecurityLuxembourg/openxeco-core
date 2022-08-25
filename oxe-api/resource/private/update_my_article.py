@@ -15,7 +15,7 @@ from config.config import IMAGE_FOLDER
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
-from exception.user_not_assign_to_company import UserNotAssignedToCompany
+from exception.user_not_assign_to_entity import UserNotAssignedToEntity
 from exception.deactivated_article_edition import DeactivatedArticleEdition
 from exception.article_type_not_allowed import ArticleTypeNotAllowed
 from exception.error_while_saving_file import ErrorWhileSavingFile
@@ -37,9 +37,9 @@ class UpdateMyArticle(MethodResource, Resource):
              "403.2": {"description": "The article type is not allowed"},
              "422.1": {"description": "Object not found : Article"},
              "422.2": {"description": "The article can only be modified by an admin"},
-             "422.3": {"description": "The article has no company assigned"},
-             "422.4": {"description": "The article has too much companies assigned"},
-             "422.5": {"description": "The user is not assign to the company"},
+             "422.3": {"description": "The article has no entity assigned"},
+             "422.4": {"description": "The article has too much entities assigned"},
+             "422.5": {"description": "The user is not assign to the entity"},
              "422.6": {"description": "The article handle is already used"},
              "422.7": {"description": "The article status can't be set to 'PUBLIC'"},
              "422.8": {"description": "The article status can't be set to 'UNDER REVIEW'"},
@@ -86,23 +86,23 @@ class UpdateMyArticle(MethodResource, Resource):
         if articles[0].is_created_by_admin:
             return "", "422 The article can only be modified by an admin"
 
-        # Check the company of the article
+        # Check the entity of the article
 
-        article_companies = self.db.get(self.db.tables["ArticleCompanyTag"], {"article": kwargs["id"]})
-        ret = self.check_article_companies(article_companies)
+        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article": kwargs["id"]})
+        ret = self.check_article_entities(article_entities)
 
         if ret is not None:
             return ret
 
         # Check right of the user
 
-        assignments = self.db.get(self.db.tables["UserCompanyAssignment"], {
+        assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "company_id": article_companies[0].company
+            "entity_id": article_entities[0].entity
         })
 
         if len(assignments) < 1:
-            raise UserNotAssignedToCompany()
+            raise UserNotAssignedToEntity()
 
         # Valid values of properties
 
@@ -185,12 +185,12 @@ class UpdateMyArticle(MethodResource, Resource):
         return None
 
     @staticmethod
-    def check_article_companies(article_companies):
-        if len(article_companies) < 1:
-            return "", "422 The article has no company assigned"
+    def check_article_entities(article_entities):
+        if len(article_entities) < 1:
+            return "", "422 The article has no entity assigned"
 
-        if len(article_companies) > 1:
-            return "", "422 The article has too much companies assigned"
+        if len(article_entities) > 1:
+            return "", "422 The article has too much entities assigned"
 
         return None
 

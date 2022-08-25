@@ -25,7 +25,7 @@ class UpdateRequest(MethodResource, Resource):
     @use_kwargs({
         'id': fields.Int(),
         'user_id': fields.Int(required=False, allow_none=True),
-        'company_id': fields.Int(required=False, allow_none=True),
+        'entity_id': fields.Int(required=False, allow_none=True),
         'status': fields.Str(required=False),
         'request': fields.Str(required=False, allow_none=True),
         'data': fields.Str(required=False, allow_none=True),

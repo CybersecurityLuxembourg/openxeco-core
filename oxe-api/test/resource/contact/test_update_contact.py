@@ -6,19 +6,19 @@ class TestUpdateContact(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/contact/update_contact")
     def test_ok(self, token):
-        self.db.insert({"id": 2, "name": "My Company"}, self.db.tables["Company"])
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "type": "PHONE NUMBER",
             "representative": "ENTITY",
             "name": None,
             "value": "+123456896",
-        }, self.db.tables["CompanyContact"])
+        }, self.db.tables["EntityContact"])
 
         payload = {
             "id": 1,
-            "company_id": 2,
+            "entity_id": 2,
             "type": "EMAIL ADDRESS",
             "representative": "ENTITY",
             "name": None,
@@ -29,7 +29,7 @@ class TestUpdateContact(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        contact = self.db.get(self.db.tables["CompanyContact"], {"id": 1})
+        contact = self.db.get(self.db.tables["EntityContact"], {"id": 1})
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(contact), 1)

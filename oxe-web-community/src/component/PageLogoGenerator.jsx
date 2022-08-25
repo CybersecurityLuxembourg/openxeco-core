@@ -15,7 +15,7 @@ export default class PageLogoGenerator extends React.Component {
 		super(props);
 
 		this.drawAllWithText = this.drawAllWithText.bind(this);
-		this.drawAllWithCompany = this.drawAllWithCompany.bind(this);
+		this.drawAllWithEntity = this.drawAllWithEntity.bind(this);
 		this.getImageIds = this.getImageIds.bind(this);
 
 		this.state = {
@@ -25,8 +25,8 @@ export default class PageLogoGenerator extends React.Component {
 			subtext: getUrlParameter("subtext")
 				? getUrlParameter("subtext").replace("%20", " ")
 				: "",
-			selectedCompanyId: null,
-			selectedCompany: null,
+			selectedEntityId: null,
+			selectedEntity: null,
 			withTransparentBackground: true,
 			includedImages: null,
 			canvas: [{
@@ -59,7 +59,7 @@ export default class PageLogoGenerator extends React.Component {
 					position: "left",
 				},
 			}],
-			companyCanvas: [{
+			entityCanvas: [{
 				id: "canvas-text-101",
 				status: "Member of the ecosystem",
 				width: 250,
@@ -94,7 +94,7 @@ export default class PageLogoGenerator extends React.Component {
 
 	componentDidMount() {
 		this.drawAllWithText();
-		this.drawAllWithCompany();
+		this.drawAllWithEntity();
 		this.getImagesIncludedInGenerator();
 	}
 
@@ -104,18 +104,18 @@ export default class PageLogoGenerator extends React.Component {
 			this.drawAllWithText();
 		}
 
-		if (prevState.selectedCompanyId !== this.state.selectedCompanyId) {
-			this.getCompany();
+		if (prevState.selectedEntityId !== this.state.selectedEntityId) {
+			this.getEntity();
 		}
 
-		if (prevState.selectedCompany !== this.state.selectedCompany) {
-			this.drawAllWithCompany();
+		if (prevState.selectedEntity !== this.state.selectedEntity) {
+			this.drawAllWithEntity();
 		}
 
 		if (prevState.withTransparentBackground !== this.state.withTransparentBackground
 			|| prevState.includedImages !== this.state.includedImages) {
 			this.drawAllWithText();
-			this.drawAllWithCompany();
+			this.drawAllWithEntity();
 		}
 	}
 
@@ -133,14 +133,14 @@ export default class PageLogoGenerator extends React.Component {
 		});
 	}
 
-	getCompany() {
-		if (!this.state.selectedCompanyId) {
-			this.setState({ selectedCompany: null });
+	getEntity() {
+		if (!this.state.selectedEntityId) {
+			this.setState({ selectedEntity: null });
 		} else {
-			getRequest.call(this, "public/get_public_company/"
-				+ this.state.selectedCompanyId, (data) => {
+			getRequest.call(this, "public/get_public_entity/"
+				+ this.state.selectedEntityId, (data) => {
 				this.setState({
-					selectedCompany: data,
+					selectedEntity: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -157,9 +157,9 @@ export default class PageLogoGenerator extends React.Component {
 		});
 	}
 
-	drawAllWithCompany() {
-		this.state.companyCanvas.map((c) => {
-			this.drawWithProjectLogoAndCompanyLogo(c);
+	drawAllWithEntity() {
+		this.state.entityCanvas.map((c) => {
+			this.drawWithProjectLogoAndEntityLogo(c);
 			return null;
 		});
 	}
@@ -287,20 +287,20 @@ export default class PageLogoGenerator extends React.Component {
 		});
 	}
 
-	drawWithProjectLogoAndCompanyLogo(c) {
-		if (!this.state.selectedCompany || !this.state.selectedCompany.image) {
+	drawWithProjectLogoAndEntityLogo(c) {
+		if (!this.state.selectedEntity || !this.state.selectedEntity.image) {
 			return;
 		}
 
 		// Get the logos
 
 		const imageIds = this.getImageIds();
-		const imagesSrcs = [getApiURL() + "public/get_public_image/" + this.state.selectedCompany.image]
+		const imagesSrcs = [getApiURL() + "public/get_public_image/" + this.state.selectedEntity.image]
 			.concat(imageIds
 				.map((i) => getApiURL() + "public/get_public_image/" + i));
 
 		Promise.all(imagesSrcs.map(PageLogoGenerator.loadImage)).then((images) => {
-			const companyImage = images[0];
+			const entityImage = images[0];
 			images.shift();
 
 			images.forEach((image, i) => {
@@ -344,10 +344,10 @@ export default class PageLogoGenerator extends React.Component {
 					imageHeight,
 				);
 
-				// Integrate company logo
+				// Integrate entity logo
 
 				imageHeight = c.height - 35;
-				imageWidth = companyImage.width * (imageHeight / companyImage.height);
+				imageWidth = entityImage.width * (imageHeight / entityImage.height);
 
 				if (imageWidth > (c.width - 40) / 2) {
 					imageHeight *= ((c.width - 40) / 2) / imageWidth;
@@ -355,7 +355,7 @@ export default class PageLogoGenerator extends React.Component {
 				}
 
 				con.drawImage(
-					companyImage,
+					entityImage,
 					((c.width / 4) * 3) - (imageWidth / 2),
 					10 + ((c.height - 35) / 2) - (imageHeight / 2),
 					imageWidth,
@@ -579,51 +579,51 @@ export default class PageLogoGenerator extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					{this.props.myCompanies && this.props.myCompanies.length > 0
+					{this.props.myEntities && this.props.myEntities.length > 0
 						&& <div className="col-md-12">
 							<div className={"row"}>
 								<div className="col-md-12 row-spaced">
 									<FormLine
 										label={"Select your entity"}
 										type={"select"}
-										value={this.state.selectedCompanyId}
-										options={this.props.myCompanies === null
-											|| this.props.myCompanies === undefined
+										value={this.state.selectedEntityId}
+										options={this.props.myEntities === null
+											|| this.props.myEntities === undefined
 											? []
-											: this.props.myCompanies.map((o) => ({ label: o.name, value: o.id }))
+											: this.props.myEntities.map((o) => ({ label: o.name, value: o.id }))
 										}
-										onChange={(v) => this.changeState("selectedCompanyId", v)}
+										onChange={(v) => this.changeState("selectedEntityId", v)}
 									/>
 								</div>
 
 								<div className="col-md-12 row-spaced">
-									{!this.state.selectedCompanyId
+									{!this.state.selectedEntityId
 										&& <Message
-											text={"Please select a company"}
+											text={"Please select a entity"}
 											height={300}
 										/>
 									}
 
-									{this.state.selectedCompany && !this.state.selectedCompany.image
+									{this.state.selectedEntity && !this.state.selectedEntity.image
 										&& <Message
 											text={"The entity does not have a logo"}
 											height={300}
 										/>
 									}
 
-									{this.state.selectedCompanyId && !this.state.selectedCompany
+									{this.state.selectedEntityId && !this.state.selectedEntity
 										&& <Loading
 											height={300}
 										/>
 									}
 
-									{this.state.selectedCompany && this.state.selectedCompany.image
+									{this.state.selectedEntity && this.state.selectedEntity.image
 										&& <div className={"row"}>
 											{this.getImageIds().map((i) => <div
 												key={i}
 												className="col-md-12">
 												<div className={"row"}>
-													{this.state.companyCanvas.map((c) => <div
+													{this.state.entityCanvas.map((c) => <div
 														key={c.id + "-" + i}
 														className="col-md-4 PageLogoGenerator-canvas-wrapper">
 														<h3>{c.width}x{c.height}</h3>
@@ -683,16 +683,16 @@ export default class PageLogoGenerator extends React.Component {
 							</div>
 						</div>}
 
-					{this.props.myCompanies && this.props.myCompanies.length === 0
+					{this.props.myEntities && this.props.myEntities.length === 0
 						&& <div className="col-md-12">
 							<Message
-								text={"No company assigned"}
+								text={"No entity assigned"}
 								height={300}
 							/>
 						</div>
 					}
 
-					{!this.props.myCompanies
+					{!this.props.myEntities
 						&& <div className="col-md-12">
 							<Loading
 								height={300}

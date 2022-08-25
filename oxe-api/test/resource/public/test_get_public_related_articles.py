@@ -41,11 +41,11 @@ class TestGetPublicRelatedArticles(BaseCase):
         self.db.insert({"article": 1, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
         self.db.insert({"article": 2, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
 
-        # Insertion of company
+        # Insertion of entity
 
-        self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 1, "company": 1}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"article": 3, "company": 1}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 1, "entity": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article": 3, "entity": 1}, self.db.tables["ArticleEntityTag"])
 
         # Request
 
@@ -130,11 +130,11 @@ class TestGetPublicRelatedArticles(BaseCase):
         self.db.insert({"article": 1, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
         self.db.insert({"article": 2, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
 
-        # Insertion of company
+        # Insertion of entity
 
-        self.db.insert({"id": 1, "name": "My Company"}, self.db.tables["Company"])
-        self.db.insert({"article": 1, "company": 1}, self.db.tables["ArticleCompanyTag"])
-        self.db.insert({"article": 3, "company": 1}, self.db.tables["ArticleCompanyTag"])
+        self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"article": 1, "entity": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article": 3, "entity": 1}, self.db.tables["ArticleEntityTag"])
 
         # Request
 
