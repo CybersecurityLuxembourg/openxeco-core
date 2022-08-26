@@ -37,7 +37,7 @@ class GetMyArticleContent(MethodResource, Resource):
         if len(articles) < 1:
             return "", "422 Article ID not found"
 
-        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article": id_})
+        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article_id": id_})
 
         if len(article_entities) < 1:
             return "", "422 Article has no entity assigned"
@@ -49,7 +49,7 @@ class GetMyArticleContent(MethodResource, Resource):
 
         assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "entity_id": article_entities[0].entity
+            "entity_id": article_entities[0].entity_id
         })
 
         if len(assignments) < 1:

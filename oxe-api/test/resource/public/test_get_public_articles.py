@@ -166,11 +166,11 @@ class TestGetPublicArticles(BaseCase):
         }, self.db.tables["Article"])
 
         self.db.insert({"id": 1, "name": "ENTITY"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 1}, self.db.tables["ArticleEntityTag"])
 
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 3, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"article": 2, "taxonomy_value": 3}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 2, "taxonomy_value_id": 3}, self.db.tables["ArticleTaxonomyTag"])
 
         response = self.application.get('/public/get_public_articles?include_tags=true&taxonomy_values=3')
 
@@ -232,15 +232,15 @@ class TestGetPublicArticles(BaseCase):
         }, self.db.tables["Article"])
 
         self.db.insert({"id": 1, "name": "ENTITY"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 1}, self.db.tables["ArticleEntityTag"])
 
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 3, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"id": 4, "name": "VALUE2", "category": "CAT"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"article": 2, "taxonomy_value": 3}, self.db.tables["ArticleTaxonomyTag"])
-        self.db.insert({"article": 3, "taxonomy_value": 3}, self.db.tables["ArticleTaxonomyTag"])
-        self.db.insert({"article": 2, "taxonomy_value": 4}, self.db.tables["ArticleTaxonomyTag"])
-        self.db.insert({"article": 4, "taxonomy_value": 4}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 2, "taxonomy_value_id": 3}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 3, "taxonomy_value_id": 3}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 2, "taxonomy_value_id": 4}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 4, "taxonomy_value_id": 4}, self.db.tables["ArticleTaxonomyTag"])
 
         response = self.application.get('/public/get_public_articles?include_tags=true&taxonomy_values=3,4')
 
@@ -296,7 +296,7 @@ class TestGetPublicArticles(BaseCase):
 
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 3, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"article": 2, "taxonomy_value": 3}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 2, "taxonomy_value_id": 3}, self.db.tables["ArticleTaxonomyTag"])
 
         response = self.application.get('/public/get_public_articles?ignored_taxonomy_values=VALUE')
 
@@ -357,7 +357,7 @@ class TestGetPublicArticles(BaseCase):
 
         self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
 
-        self.db.insert({"article": 2, "entity": 2}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 2}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/public/get_public_articles?entities=2')
 

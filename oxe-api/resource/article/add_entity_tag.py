@@ -25,18 +25,18 @@ class AddEntityTag(MethodResource, Resource):
              "422.b": {"description": "The provided entity does not exist"},
          })
     @use_kwargs({
-        'article': fields.Int(),
-        'entity': fields.Int(),
+        'article_id': fields.Int(),
+        'entity_id': fields.Int(),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        if len(self.db.get(self.db.tables["Article"], {"id": kwargs["article"]})) == 0:
+        if len(self.db.get(self.db.tables["Article"], {"id": kwargs["article_id"]})) == 0:
             return "", "422 The provided article does not exist"
 
-        if len(self.db.get(self.db.tables["Entity"], {"id": kwargs["entity"]})) == 0:
+        if len(self.db.get(self.db.tables["Entity"], {"id": kwargs["entity_id"]})) == 0:
             return "", "422 The provided entity does not exist"
 
         self.db.insert(kwargs, self.db.tables["ArticleEntityTag"])

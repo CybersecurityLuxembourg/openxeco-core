@@ -7,7 +7,7 @@ class TestDeleteMyArticle(BaseCase):
     def test_ok(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
 
@@ -64,8 +64,8 @@ class TestDeleteMyArticle(BaseCase):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"id": 4, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
-        self.db.insert({"article": 2, "entity": 4}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 4}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
 
         payload = {"id": 2}
@@ -80,7 +80,7 @@ class TestDeleteMyArticle(BaseCase):
     def test_ko_user_not_assigned_to_entity(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
 
         payload = {"id": 2}

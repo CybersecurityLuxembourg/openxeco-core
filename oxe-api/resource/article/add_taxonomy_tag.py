@@ -25,18 +25,18 @@ class AddTaxonomyTag(MethodResource, Resource):
              "422.b": {"description": "The provided entity does not exist"},
          })
     @use_kwargs({
-        'article': fields.Int(),
-        'taxonomy_value': fields.Int(),
+        'article_id': fields.Int(),
+        'taxonomy_value_id': fields.Int(),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        if len(self.db.get(self.db.tables["Article"], {"id": kwargs["article"]})) == 0:
+        if len(self.db.get(self.db.tables["Article"], {"id": kwargs["article_id"]})) == 0:
             return "", "422 the provided article does not exist"
 
-        if len(self.db.get(self.db.tables["TaxonomyValue"], {"id": kwargs["taxonomy_value"]})) == 0:
+        if len(self.db.get(self.db.tables["TaxonomyValue"], {"id": kwargs["taxonomy_value_id"]})) == 0:
             return "", "422 the provided taxonomy value does not exist"
 
         self.db.insert(kwargs, self.db.tables["ArticleTaxonomyTag"])

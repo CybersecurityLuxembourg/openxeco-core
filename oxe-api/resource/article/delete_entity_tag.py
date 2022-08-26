@@ -25,23 +25,18 @@ class DeleteEntityTag(MethodResource, Resource):
              "422": {"description": "Object not found"},
          })
     @use_kwargs({
-        'article': fields.Int(),
-        'entity': fields.Int(),
+        'article_id': fields.Int(),
+        'entity_id': fields.Int(),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        row = {
-            "article": kwargs["article"],
-            "entity": kwargs["entity"]
-        }
-
-        entities = self.db.get(self.db.tables["ArticleEntityTag"], row)
+        entities = self.db.get(self.db.tables["ArticleEntityTag"], kwargs)
 
         if len(entities) > 0:
-            self.db.delete(self.db.tables["ArticleEntityTag"], row)
+            self.db.delete(self.db.tables["ArticleEntityTag"], kwargs)
         else:
             raise ObjectNotFound
 

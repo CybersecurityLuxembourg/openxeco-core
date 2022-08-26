@@ -155,7 +155,7 @@ class TestGetMailAddresses(BaseCase):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"id": 2, "name": "My Value2", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"entity": 3, "taxonomy_value": 2}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 3, "taxonomy_value_id": 2}, self.db.tables["TaxonomyAssignment"])
 
         response = self.application.get('/mail/get_mail_addresses?taxonomies=2',
                                         headers=self.get_standard_header(token))
@@ -206,7 +206,7 @@ class TestGetMailAddresses(BaseCase):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"id": 2, "name": "My Value2", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"entity": 3, "taxonomy_value": 2}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 3, "taxonomy_value_id": 2}, self.db.tables["TaxonomyAssignment"])
 
         response = self.application.get('/mail/get_mail_addresses?taxonomies=1',
                                         headers=self.get_standard_header(token))

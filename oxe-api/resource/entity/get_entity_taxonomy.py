@@ -27,6 +27,6 @@ class GetEntityTaxonomy(MethodResource, Resource):
     def get(self, id_):
 
         ta = self.db.tables["TaxonomyAssignment"]
-        data = Serializer.serialize(self.db.get(ta, {"entity": id_}), ta)
+        data = Serializer.serialize(self.db.get(ta, {"entity_id": id_}), ta)
 
         return data, "200 "

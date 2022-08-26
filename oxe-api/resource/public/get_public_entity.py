@@ -43,8 +43,8 @@ class GetPublicEntity(MethodResource, Resource):
         if kwargs["include_assignments"]:
             data["taxonomy_assignment"] = [v[0] for v in self.db.get(
                 self.db.tables["TaxonomyAssignment"],
-                {"entity": data['id']},
-                [self.db.tables["TaxonomyAssignment"].taxonomy_value],
+                {"entity_id": data['id']},
+                [self.db.tables["TaxonomyAssignment"].taxonomy_value_id],
             )]
 
         return build_no_cors_response(data)

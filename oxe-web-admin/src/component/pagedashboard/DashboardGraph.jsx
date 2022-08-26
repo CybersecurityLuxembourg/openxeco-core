@@ -404,8 +404,8 @@ export default class DashboardGraph extends React.Component {
 				...this.state.entityRelationships
 					? this.state.entityRelationships.map((r) => (
 						{
-							from: "ent-" + r.entity_1,
-							to: "ent-" + r.entity_2,
+							from: "ent-" + r.entity_id_1,
+							to: "ent-" + r.entity_id_2,
 							label: this.getEntityRelationshipTypeById(r.type).name,
 							color: { color: "#bcebff" },
 							font: { color: "#8fddff" },

@@ -28,8 +28,8 @@ class GetPublicEntityRelationships(MethodResource, Resource):
 
         relationships = self.db.session \
             .query(self.db.tables["EntityRelationship"]) \
-            .filter(or_(self.db.tables["EntityRelationship"].entity_1.in_(kwargs["ids"]),
-                        self.db.tables["EntityRelationship"].entity_2.in_(kwargs["ids"]))) \
+            .filter(or_(self.db.tables["EntityRelationship"].entity_id_1.in_(kwargs["ids"]),
+                        self.db.tables["EntityRelationship"].entity_id_2.in_(kwargs["ids"]))) \
             .all()
 
         relationships = Serializer.serialize(relationships, self.db.tables["EntityRelationship"])

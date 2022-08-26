@@ -13,7 +13,7 @@ class TestAddMyArticle(BaseCase):
 
         payload = {
             "title": title,
-            "entity": 2,
+            "entity_id": 2,
         }
 
         response = self.application.post('/private/add_my_article',
@@ -30,7 +30,7 @@ class TestAddMyArticle(BaseCase):
 
         payload = {
             "title": title,
-            "entity": 2,
+            "entity_id": 2,
         }
 
         response = self.application.post('/private/add_my_article',
@@ -49,7 +49,7 @@ class TestAddMyArticle(BaseCase):
 
         payload = {
             "title": title,
-            "entity": 2,
+            "entity_id": 2,
         }
 
         response = self.application.post('/private/add_my_article',
@@ -69,7 +69,7 @@ class TestAddMyArticle(BaseCase):
 
         payload = {
             "title": title,
-            "entity": 2,
+            "entity_id": 2,
         }
 
         response = self.application.post('/private/add_my_article',

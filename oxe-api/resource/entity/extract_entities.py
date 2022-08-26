@@ -152,8 +152,8 @@ class ExtractEntities(MethodResource, Resource):
             workforces = workforces.add_prefix('Workforce|')
 
             if len(workforces) > 0:
-                df = df.merge(workforces, left_on='Global|id', right_on='Workforce|entity', how='left')
-                df = df.drop(['Workforce|id', 'Workforce|entity'], axis=1)
+                df = df.merge(workforces, left_on='Global|id', right_on='Workforce|entity_id', how='left')
+                df = df.drop(['Workforce|id', 'Workforce|entity_id'], axis=1)
 
         # Manage taxonomy
 
@@ -186,18 +186,18 @@ class ExtractEntities(MethodResource, Resource):
         parent_categories = [c.parent_category for c in category_hierarchy]
         child_categories = [c.name for c in categories if c.name not in parent_categories]
         child_values = [v.id for v in values if v.category in child_categories]
-        assignments = [a for a in assignments if a.taxonomy_value in child_values]
+        assignments = [a for a in assignments if a.taxonomy_value_id in child_values]
 
         taxonomy = {}
 
         for a in assignments:
-            value = [v for v in values if v.id == a.taxonomy_value][0]
-            self.add_taxonomy_value(taxonomy, a.entity, value)
+            value = [v for v in values if v.id == a.taxonomy_value_id][0]
+            self.add_taxonomy_value(taxonomy, a.entity_id, value)
 
             while value.id in [vh.child_value for vh in value_hierarchy]:
                 vh = [vh for vh in value_hierarchy if vh.child_value == value.id][0]
                 value = [v for v in values if v.id == vh.parent_value][0]
-                self.add_taxonomy_value(taxonomy, a.entity, value)
+                self.add_taxonomy_value(taxonomy, a.entity_id, value)
 
         taxonomy = pd.DataFrame(taxonomy).transpose()
         taxonomy = taxonomy.applymap(lambda x: ";".join(x) if isinstance(x, list) else x)

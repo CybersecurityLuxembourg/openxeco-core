@@ -39,7 +39,7 @@ class GetMyEntityTaxonomy(MethodResource, Resource):
         data = Serializer.serialize(
             self.db.session
                 .query(self.db.tables["TaxonomyAssignment"])
-                .filter(self.db.tables["TaxonomyAssignment"].entity == int(id_))
+                .filter(self.db.tables["TaxonomyAssignment"].entity_id == int(id_))
                 .all(),
             self.db.tables["TaxonomyAssignment"]
         )

@@ -38,14 +38,14 @@ class TestGetPublicRelatedArticles(BaseCase):
 
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"article": 1, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
-        self.db.insert({"article": 2, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 1, "taxonomy_value_id": 1}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 2, "taxonomy_value_id": 1}, self.db.tables["ArticleTaxonomyTag"])
 
         # Insertion of entity
 
         self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 1, "entity": 1}, self.db.tables["ArticleEntityTag"])
-        self.db.insert({"article": 3, "entity": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 1, "entity_id": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 3, "entity_id": 1}, self.db.tables["ArticleEntityTag"])
 
         # Request
 
@@ -127,14 +127,14 @@ class TestGetPublicRelatedArticles(BaseCase):
 
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"article": 1, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
-        self.db.insert({"article": 2, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 1, "taxonomy_value_id": 1}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 2, "taxonomy_value_id": 1}, self.db.tables["ArticleTaxonomyTag"])
 
         # Insertion of entity
 
         self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 1, "entity": 1}, self.db.tables["ArticleEntityTag"])
-        self.db.insert({"article": 3, "entity": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 1, "entity_id": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 3, "entity_id": 1}, self.db.tables["ArticleEntityTag"])
 
         # Request
 

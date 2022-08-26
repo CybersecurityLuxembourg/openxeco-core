@@ -17,16 +17,16 @@ class TestGetMyEntityTaxonomy(BaseCase):
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"id": 2, "name": "My Value2", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"entity": 1, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
-        self.db.insert({"entity": 2, "taxonomy_value": 2}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 1, "taxonomy_value_id": 1}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 2, "taxonomy_value_id": 2}, self.db.tables["TaxonomyAssignment"])
 
         response = self.application.get('/private/get_my_entity_taxonomy/1',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(response.json), 1)
-        self.assertEqual(response.json[0]["entity"], 1)
-        self.assertEqual(response.json[0]["taxonomy_value"], 1)
+        self.assertEqual(response.json[0]["entity_id"], 1)
+        self.assertEqual(response.json[0]["taxonomy_value_id"], 1)
 
     @BaseCase.login
     def test_ko_not_assigned(self, token):

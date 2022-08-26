@@ -8,7 +8,7 @@ class TestGetEntityWorkforces(BaseCase):
         self.db.insert({"id": 1, "name": "Entity1"}, self.db.tables["Entity"])
         self.db.insert({
             "id": 1,
-            "entity": 1,
+            "entity_id": 1,
             "workforce": 15,
             "date": "2020-01-01",
             "is_estimated": True,

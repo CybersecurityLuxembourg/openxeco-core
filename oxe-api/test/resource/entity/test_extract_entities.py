@@ -87,7 +87,7 @@ class TestExtractEntities(BaseCase):
 
         self.db.insert({
             "id": 1,
-            "entity": 2,
+            "entity_id": 2,
             "workforce": 15,
             "date": "2020-01-01",
             "is_estimated": True,
@@ -95,7 +95,7 @@ class TestExtractEntities(BaseCase):
         }, self.db.tables["Workforce"])
         self.db.insert({
             "id": 2,
-            "entity": 2,
+            "entity_id": 2,
             "workforce": 20,
             "date": "2020-01-05",
             "is_estimated": True,
@@ -103,7 +103,7 @@ class TestExtractEntities(BaseCase):
         }, self.db.tables["Workforce"])
         self.db.insert({
             "id": 3,
-            "entity": 2,
+            "entity_id": 2,
             "workforce": 25,
             "date": "2018-01-05",
             "is_estimated": True,
@@ -126,7 +126,7 @@ class TestExtractEntities(BaseCase):
         self.db.insert({"id": 3, "name": "My Entity 2"}, self.db.tables["Entity"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"entity": 2, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 2, "taxonomy_value_id": 1}, self.db.tables["TaxonomyAssignment"])
 
         response = self.application.get('/entity/extract_entities?format=json&include_taxonomy=true',
                                         headers=self.get_standard_header(token))
@@ -151,7 +151,7 @@ class TestExtractEntities(BaseCase):
         self.db.insert({"id": 3, "name": "My Value 3", "category": "CAT2"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"parent_value": 1, "child_value": 3}, self.db.tables["TaxonomyValueHierarchy"])
 
-        self.db.insert({"entity": 2, "taxonomy_value": 3}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 2, "taxonomy_value_id": 3}, self.db.tables["TaxonomyAssignment"])
 
         response = self.application.get('/entity/extract_entities?format=json&include_taxonomy=true',
                                         headers=self.get_standard_header(token))

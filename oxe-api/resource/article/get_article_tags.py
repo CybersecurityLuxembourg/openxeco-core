@@ -26,13 +26,13 @@ class GetArticleTags(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
         taxonomy_sub_query = self.db.session.query(self.db.tables["ArticleTaxonomyTag"]) \
-            .with_entities(self.db.tables["ArticleTaxonomyTag"].taxonomy_value) \
-            .filter(self.db.tables["ArticleTaxonomyTag"].article == id_) \
+            .with_entities(self.db.tables["ArticleTaxonomyTag"].taxonomy_value_id) \
+            .filter(self.db.tables["ArticleTaxonomyTag"].article_id == id_) \
             .subquery('t1')
 
         entity_sub_query = self.db.session.query(self.db.tables["ArticleEntityTag"]) \
-            .with_entities(self.db.tables["ArticleEntityTag"].entity) \
-            .filter(self.db.tables["ArticleEntityTag"].article == id_) \
+            .with_entities(self.db.tables["ArticleEntityTag"].entity_id) \
+            .filter(self.db.tables["ArticleEntityTag"].article_id == id_) \
             .subquery('t2')
 
         data = {

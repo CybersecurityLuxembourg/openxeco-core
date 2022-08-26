@@ -11,8 +11,8 @@ class TestAddTaxonomyTag(BaseCase):
         self.db.insert({"id": 1, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
 
         payload = {
-            "article": 1,
-            "taxonomy_value": 1
+            "article_id": 1,
+            "taxonomy_value_id": 1
         }
 
         response = self.application.post('/article/add_taxonomy_tag',
@@ -23,8 +23,8 @@ class TestAddTaxonomyTag(BaseCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(tags), 1)
-        self.assertEqual(tags[0].article, 1)
-        self.assertEqual(tags[0].taxonomy_value, 1)
+        self.assertEqual(tags[0].article_id, 1)
+        self.assertEqual(tags[0].taxonomy_value_id, 1)
 
     @BaseCase.login
     @BaseCase.grant_access("/article/add_taxonomy_tag")
@@ -33,8 +33,8 @@ class TestAddTaxonomyTag(BaseCase):
         self.db.insert({"id": 1, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
 
         payload = {
-            "article": 1,
-            "taxonomy_value": 1
+            "article_id": 1,
+            "taxonomy_value_id": 1
         }
 
         response = self.application.post('/article/add_taxonomy_tag',
@@ -52,8 +52,8 @@ class TestAddTaxonomyTag(BaseCase):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
 
         payload = {
-            "article": 1,
-            "taxonomy_value": 1
+            "article_id": 1,
+            "taxonomy_value_id": 1
         }
 
         response = self.application.post('/article/add_taxonomy_tag',

@@ -27,15 +27,15 @@ class AddTaxonomyAssignment(MethodResource, Resource):
              "422": {"description": "This assignment is already existing"}
          })
     @use_kwargs({
-        'entity': fields.Int(),
-        'value': fields.Int(),
+        'entity_id': fields.Int(),
+        'taxonomy_value_id': fields.Int(),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        taxonomy_value = self.db.get(self.db.tables["TaxonomyValue"], {"id": kwargs["value"]})
+        taxonomy_value = self.db.get(self.db.tables["TaxonomyValue"], {"id": kwargs["taxonomy_value_id"]})
 
         if len(taxonomy_value) == 1:
             f = {"parent_category": taxonomy_value[0].category}
@@ -46,16 +46,11 @@ class AddTaxonomyAssignment(MethodResource, Resource):
         else:
             raise ObjectNotFound
 
-        row = {
-            "entity": kwargs["entity"],
-            "taxonomy_value": kwargs["value"]
-        }
-
-        if self.db.get_count(self.db.tables["TaxonomyAssignment"], row) > 0:
+        if self.db.get_count(self.db.tables["TaxonomyAssignment"], kwargs) > 0:
             return "", "422 This assignment is already existing"
 
         try:
-            self.db.insert(row, self.db.tables["TaxonomyAssignment"])
+            self.db.insert(kwargs, self.db.tables["TaxonomyAssignment"])
         except IntegrityError as e:
             self.db.session.rollback()
             if "Duplicate entry" in str(e):

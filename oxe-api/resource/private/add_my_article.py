@@ -33,7 +33,7 @@ class AddMyArticle(MethodResource, Resource):
          })
     @use_kwargs({
         'title': fields.Str(),
-        'entity': fields.Int(),
+        'entity_id': fields.Int(),
     })
     @jwt_required
     @catch_exception
@@ -49,7 +49,7 @@ class AddMyArticle(MethodResource, Resource):
 
         # Check the entity
 
-        entities = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity"]})
+        entities = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity_id"]})
 
         if len(entities) < 1:
             raise ObjectNotFound("Entity")
@@ -58,7 +58,7 @@ class AddMyArticle(MethodResource, Resource):
 
         assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "entity_id": kwargs["entity"]
+            "entity_id": kwargs["entity_id"]
         })
 
         if len(assignments) < 1:
@@ -92,8 +92,8 @@ class AddMyArticle(MethodResource, Resource):
 
         self.db.insert(
             {
-                "article": article.id,
-                "entity": kwargs["entity"],
+                "article_id": article.id,
+                "entity_id": kwargs["entity_id"],
             },
             self.db.tables["ArticleEntityTag"]
         )

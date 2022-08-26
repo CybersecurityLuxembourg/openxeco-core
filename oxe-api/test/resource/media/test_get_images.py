@@ -170,12 +170,12 @@ class TestGetImages(BaseCase):
             "width": 10,
             "height": 10,
             "creation_date": datetime.today(),
-            "keywords": "green compass"
+            "keywords": "green entities"
         }, self.db.tables["Image"])
 
         self.db.insert({"id": 2, "name": "My Entity", "image": 50}, self.db.tables["Entity"])
 
-        response = self.application.get('/media/get_images?search=comp',
+        response = self.application.get('/media/get_images?search=enti',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -192,7 +192,7 @@ class TestGetImages(BaseCase):
                     'height': 10,
                     'id': 52,
                     'is_in_generator': 0,
-                    'keywords': "green compass",
+                    'keywords': "green entities",
                     'thumbnail': '',
                     'width': 10
                 },

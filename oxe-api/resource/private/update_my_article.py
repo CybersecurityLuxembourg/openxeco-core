@@ -88,7 +88,7 @@ class UpdateMyArticle(MethodResource, Resource):
 
         # Check the entity of the article
 
-        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article": kwargs["id"]})
+        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article_id": kwargs["id"]})
         ret = self.check_article_entities(article_entities)
 
         if ret is not None:
@@ -98,7 +98,7 @@ class UpdateMyArticle(MethodResource, Resource):
 
         assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "entity_id": article_entities[0].entity
+            "entity_id": article_entities[0].entity_id
         })
 
         if len(assignments) < 1:

@@ -81,11 +81,11 @@ export default class EntityRelationship extends React.Component {
 
 	addRelationship(close) {
 		const params = {
-			entity_1: this.state.isCurrentEntityFirst
+			entity_id_1: this.state.isCurrentEntityFirst
 				? this.props.id
 				: this.state.selectedOtherEntity,
 			type: this.state.selectedType,
-			entity_2: !this.state.isCurrentEntityFirst
+			entity_id_2: !this.state.isCurrentEntityFirst
 				? this.props.id
 				: this.state.selectedOtherEntity,
 		};
@@ -153,7 +153,7 @@ export default class EntityRelationship extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<div>
 						{this.state.entities
-							.filter((c) => c.id === value.entity_1)
+							.filter((c) => c.id === value.entity_id_1)
 							.map((c) => (c.name))
 						}
 					</div>
@@ -196,7 +196,7 @@ export default class EntityRelationship extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<div>
 						{this.state.entities
-							.filter((c) => c.id === value.entity_2)
+							.filter((c) => c.id === value.entity_id_2)
 							.map((c) => (c.name))
 						}
 					</div>

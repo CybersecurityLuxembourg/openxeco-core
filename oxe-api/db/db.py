@@ -206,9 +206,9 @@ class DB:
 
                     entities_filtered_by_taxonomy = self.session \
                         .query(self.tables["TaxonomyAssignment"]) \
-                        .with_entities(self.tables["TaxonomyAssignment"].entity) \
-                        .distinct(self.tables["TaxonomyAssignment"].entity) \
-                        .filter(self.tables["TaxonomyAssignment"].taxonomy_value.in_(tch)) \
+                        .with_entities(self.tables["TaxonomyAssignment"].entity_id) \
+                        .distinct(self.tables["TaxonomyAssignment"].entity_id) \
+                        .filter(self.tables["TaxonomyAssignment"].taxonomy_value_id.in_(tch)) \
                         .subquery()
 
                     query = query.filter(self.tables["Entity"].id.in_(entities_filtered_by_taxonomy))
@@ -269,9 +269,9 @@ class DB:
 
                 article_filtered_by_taxonomy = self.session \
                     .query(self.tables["ArticleTaxonomyTag"]) \
-                    .with_entities(self.tables["ArticleTaxonomyTag"].article) \
-                    .distinct(self.tables["ArticleTaxonomyTag"].article) \
-                    .filter(self.tables["ArticleTaxonomyTag"].taxonomy_value.in_(tch)) \
+                    .with_entities(self.tables["ArticleTaxonomyTag"].article_id) \
+                    .distinct(self.tables["ArticleTaxonomyTag"].article_id) \
+                    .filter(self.tables["ArticleTaxonomyTag"].taxonomy_value_id.in_(tch)) \
                     .subquery()
 
                 query = query.filter(self.tables["Article"].id.in_(article_filtered_by_taxonomy))
@@ -301,9 +301,9 @@ class DB:
 
                 article_filtered_by_taxonomy = self.session \
                     .query(self.tables["ArticleTaxonomyTag"]) \
-                    .with_entities(self.tables["ArticleTaxonomyTag"].article) \
-                    .distinct(self.tables["ArticleTaxonomyTag"].article) \
-                    .filter(self.tables["ArticleTaxonomyTag"].taxonomy_value.in_(taxonomy_values)) \
+                    .with_entities(self.tables["ArticleTaxonomyTag"].article_id) \
+                    .distinct(self.tables["ArticleTaxonomyTag"].article_id) \
+                    .filter(self.tables["ArticleTaxonomyTag"].taxonomy_value_id.in_(taxonomy_values)) \
                     .subquery()
 
                 query = query.filter(self.tables["Article"].id.notin_(article_filtered_by_taxonomy))
@@ -311,9 +311,9 @@ class DB:
         if "entities" in filters:
             article_filtered_by_entities = self.session \
                 .query(self.tables["ArticleEntityTag"]) \
-                .with_entities(self.tables["ArticleEntityTag"].article) \
-                .distinct(self.tables["ArticleEntityTag"].article) \
-                .filter(self.tables["ArticleEntityTag"].entity.in_(filters["entities"])) \
+                .with_entities(self.tables["ArticleEntityTag"].article_id) \
+                .distinct(self.tables["ArticleEntityTag"].article_id) \
+                .filter(self.tables["ArticleEntityTag"].entity_id.in_(filters["entities"])) \
                 .subquery()
 
             query = query.filter(self.tables["Article"].id.in_(article_filtered_by_entities))
@@ -327,8 +327,8 @@ class DB:
 
             entity_subquery = self.session \
                 .query(self.tables["ArticleEntityTag"]) \
-                .with_entities(self.tables["ArticleEntityTag"].article) \
-                .filter(self.tables["ArticleEntityTag"].entity.in_(assignment_subquery)) \
+                .with_entities(self.tables["ArticleEntityTag"].article_id) \
+                .filter(self.tables["ArticleEntityTag"].entity_id.in_(assignment_subquery)) \
                 .subquery()
 
             query = query \
@@ -357,8 +357,8 @@ class DB:
     def get_tags_of_article(self, article_id):
         entities_filtered_by_taxonomy = self.session \
             .query(self.tables["ArticleTaxonomyTag"]) \
-            .with_entities(self.tables["ArticleTaxonomyTag"].taxonomy_value) \
-            .filter(self.tables["ArticleTaxonomyTag"].article == article_id) \
+            .with_entities(self.tables["ArticleTaxonomyTag"].taxonomy_value_id) \
+            .filter(self.tables["ArticleTaxonomyTag"].article_id == article_id) \
             .subquery()
 
         return self.session \
@@ -369,8 +369,8 @@ class DB:
     def get_entities_of_article(self, article_id):
         entities_filtered_by_taxonomy = self.session \
             .query(self.tables["ArticleEntityTag"]) \
-            .with_entities(self.tables["ArticleEntityTag"].entity) \
-            .filter(self.tables["ArticleEntityTag"].article == article_id) \
+            .with_entities(self.tables["ArticleEntityTag"].entity_id) \
+            .filter(self.tables["ArticleEntityTag"].article_id == article_id) \
             .subquery()
 
         return self.session \

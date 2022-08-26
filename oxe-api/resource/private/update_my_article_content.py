@@ -37,7 +37,7 @@ class UpdateMyArticleContent(MethodResource, Resource):
              "422.8": {"description": "Wrong content type found: 'TYPE'"},
          })
     @use_kwargs({
-        'article': fields.Int(),
+        'article_id': fields.Int(),
         'content': fields.List(fields.Dict()),
     })
     @jwt_required
@@ -61,7 +61,7 @@ class UpdateMyArticleContent(MethodResource, Resource):
 
         # Check existence of objects
 
-        articles = self.db.get(self.db.tables["Article"], {"id": kwargs["article"]})
+        articles = self.db.get(self.db.tables["Article"], {"id": kwargs["article_id"]})
 
         if len(articles) < 1:
             raise ObjectNotFound("Article")
@@ -73,7 +73,7 @@ class UpdateMyArticleContent(MethodResource, Resource):
 
         # Check the entity of the article
 
-        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article": kwargs["article"]})
+        article_entities = self.db.get(self.db.tables["ArticleEntityTag"], {"article_id": kwargs["article_id"]})
 
         if len(article_entities) < 1:
             return "", "422 The article has no entity assigned"
@@ -85,7 +85,7 @@ class UpdateMyArticleContent(MethodResource, Resource):
 
         assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
             "user_id": get_jwt_identity(),
-            "entity_id": article_entities[0].entity
+            "entity_id": article_entities[0].entity_id
         })
 
         if len(assignments) < 1:
@@ -95,7 +95,7 @@ class UpdateMyArticleContent(MethodResource, Resource):
 
         article_versions = self.db.get(
             self.db.tables["ArticleVersion"],
-            {"is_main": True, "article_id": kwargs["article"]}
+            {"is_main": True, "article_id": kwargs["article_id"]}
         )
 
         if len(article_versions) < 1:

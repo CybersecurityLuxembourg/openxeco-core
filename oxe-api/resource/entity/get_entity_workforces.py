@@ -26,7 +26,7 @@ class GetEntityWorkforces(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
-        data = self.db.get(self.db.tables["Workforce"], {"entity": id_})
+        data = self.db.get(self.db.tables["Workforce"], {"entity_id": id_})
         data = Serializer.serialize(data, self.db.tables["Workforce"])
 
         return data, "200 "

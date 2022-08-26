@@ -9,11 +9,11 @@ class TestDeleteTaxonomyTag(BaseCase):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
         self.db.insert({"name": "CAT"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "VALUE", "category": "CAT"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"article": 1, "taxonomy_value": 1}, self.db.tables["ArticleTaxonomyTag"])
+        self.db.insert({"article_id": 1, "taxonomy_value_id": 1}, self.db.tables["ArticleTaxonomyTag"])
 
         payload = {
-            "article": 1,
-            "taxonomy_value": 1,
+            "article_id": 1,
+            "taxonomy_value_id": 1,
         }
 
         response = self.application.post('/article/delete_taxonomy_tag',
@@ -29,8 +29,8 @@ class TestDeleteTaxonomyTag(BaseCase):
     @BaseCase.grant_access("/article/delete_taxonomy_tag")
     def test_delete_unexisting(self, token):
         payload = {
-            "article": 1,
-            "taxonomy_value": 1,
+            "article_id": 1,
+            "taxonomy_value_id": 1,
         }
 
         response = self.application.post('/article/delete_taxonomy_tag',

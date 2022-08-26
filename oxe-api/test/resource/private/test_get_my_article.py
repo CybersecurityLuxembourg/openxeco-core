@@ -16,7 +16,7 @@ class TestGetMyArticle(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article/2',
                                         headers=self.get_standard_header(token))
@@ -81,8 +81,8 @@ class TestGetMyArticle(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
-        self.db.insert({"article": 2, "entity": 15}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 15}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article/2',
                                         headers=self.get_standard_header(token))
@@ -99,7 +99,7 @@ class TestGetMyArticle(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article/2',
                                         headers=self.get_standard_header(token))

@@ -11,14 +11,14 @@ class TestGetEntityTaxonomy(BaseCase):
         self.db.insert({"name": "CAT2"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "VAL1", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
         self.db.insert({"id": 2, "name": "VAL2", "category": "CAT2"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"entity": 1, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
-        self.db.insert({"entity": 1, "taxonomy_value": 2}, self.db.tables["TaxonomyAssignment"])
-        self.db.insert({"entity": 2, "taxonomy_value": 2}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 1, "taxonomy_value_id": 1}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 1, "taxonomy_value_id": 2}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 2, "taxonomy_value_id": 2}, self.db.tables["TaxonomyAssignment"])
 
         response = self.application.get('/entity/get_entity_taxonomy/2',
                                         headers=self.get_standard_header(token))
 
-        self.assertEqual([{'entity': 2, 'taxonomy_value': 2}], response.json)
+        self.assertEqual([{'entity_id': 2, 'taxonomy_value_id': 2}], response.json)
         self.assertEqual(200, response.status_code)
 
     @BaseCase.login

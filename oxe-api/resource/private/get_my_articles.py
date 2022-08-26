@@ -43,12 +43,12 @@ class GetMyArticles(MethodResource, Resource):
         if "include_tags" in kwargs and kwargs["include_tags"] is True:
             article_ids = [a["id"] for a in articles]
 
-            taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
-            entity_tags = self.db.get(self.db.tables["ArticleEntityTag"], {"article": article_ids})
+            taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article_id": article_ids})
+            entity_tags = self.db.get(self.db.tables["ArticleEntityTag"], {"article_id": article_ids})
 
             for a in articles:
-                a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
-                a["entity_tags"] = [t.entity for t in entity_tags if t.article == a["id"]]
+                a["taxonomy_tags"] = [t.taxonomy_value_id for t in taxonomy_tags if t.article_id == a["id"]]
+                a["entity_tags"] = [t.entity_id for t in entity_tags if t.article_id == a["id"]]
 
         return {
            "pagination": {

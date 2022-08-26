@@ -22,9 +22,9 @@ class AddRelationship(MethodResource, Resource):
              "422": {"description": "Provided entity not existing"},
          })
     @use_kwargs({
-        'entity_1': fields.Int(required=True, allow_none=False),
+        'entity_id_1': fields.Int(required=True, allow_none=False),
         'type': fields.Int(required=True, allow_none=False),
-        'entity_2': fields.Int(required=True, allow_none=False),
+        'entity_id_2': fields.Int(required=True, allow_none=False),
     })
     @jwt_required
     @verify_admin_access

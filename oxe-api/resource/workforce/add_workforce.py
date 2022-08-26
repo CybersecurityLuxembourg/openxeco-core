@@ -27,7 +27,7 @@ class AddWorkforce(MethodResource, Resource):
              "422.c": {"description": "Provided entity not existing"}
          })
     @use_kwargs({
-        'entity': fields.Int(),
+        'entity_id': fields.Int(),
         'workforce': fields.Int(),
         'date': fields.Str(required=False, missing=datetime.today().strftime('%Y-%m-%d')),
         'is_estimated': fields.Bool(required=False, missing=False),
@@ -45,7 +45,7 @@ class AddWorkforce(MethodResource, Resource):
 
         # Checking entity
 
-        entity = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity"]})
+        entity = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity_id"]})
 
         if len(entity) == 0:
             return "", "422 Provided entity not existing"

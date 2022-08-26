@@ -47,14 +47,14 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -69,7 +69,7 @@ class TestUpdateMyArticleContent(BaseCase):
     def test_ko_article_edition_not_activated(self, token):
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -86,7 +86,7 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -105,7 +105,7 @@ class TestUpdateMyArticleContent(BaseCase):
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -125,7 +125,7 @@ class TestUpdateMyArticleContent(BaseCase):
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -140,14 +140,14 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"id": 4, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
-        self.db.insert({"article": 2, "entity": 4}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 4}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -161,13 +161,13 @@ class TestUpdateMyArticleContent(BaseCase):
     def test_ko_user_not_assigned_to_entity(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -181,14 +181,14 @@ class TestUpdateMyArticleContent(BaseCase):
     def test_ko_main_version_not_found(self, token):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -204,14 +204,14 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 2, "article_id": 2, "name": "VERSION 1", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": content
         }
 
@@ -226,7 +226,7 @@ class TestUpdateMyArticleContent(BaseCase):
         self.db.insert({"id": 2, "title": "My title"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 3, "name": "My Entity"}, self.db.tables["Entity"])
-        self.db.insert({"article": 2, "entity": 3}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 3}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"user_id": 1, "entity_id": 3}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "value": "TRUE"},
@@ -235,7 +235,7 @@ class TestUpdateMyArticleContent(BaseCase):
                        self.db.tables["Setting"])
 
         payload = {
-            "article": 2,
+            "article_id": 2,
             "content": [
               {
                 "type": "OTHER TYPE",

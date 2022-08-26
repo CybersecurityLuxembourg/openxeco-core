@@ -19,7 +19,7 @@ class TestGetMyArticleContent(BaseCase):
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 1, "article_version_id": 1, "position": 1, "type": "TITLE1", "content": "title 1"},
                        self.db.tables["ArticleBox"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article_content/2',
                                         headers=self.get_standard_header(token))
@@ -71,8 +71,8 @@ class TestGetMyArticleContent(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
-        self.db.insert({"article": 2, "entity": 15}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 15}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article_content/2',
                                         headers=self.get_standard_header(token))
@@ -89,7 +89,7 @@ class TestGetMyArticleContent(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article_content/2',
                                         headers=self.get_standard_header(token))
@@ -107,7 +107,7 @@ class TestGetMyArticleContent(BaseCase):
             "status": "PUBLIC",
             "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article_content/2',
                                         headers=self.get_standard_header(token))
@@ -127,7 +127,7 @@ class TestGetMyArticleContent(BaseCase):
         }, self.db.tables["Article"])
         self.db.insert({"id": 1, "article_id": 2, "name": "VERSION 0", "is_main": 1}, self.db.tables["ArticleVersion"])
         self.db.insert({"id": 2, "article_id": 2, "name": "VERSION 1", "is_main": 1}, self.db.tables["ArticleVersion"])
-        self.db.insert({"article": 2, "entity": 14}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
 
         response = self.application.get('/private/get_my_article_content/2',
                                         headers=self.get_standard_header(token))

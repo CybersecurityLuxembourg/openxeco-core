@@ -25,8 +25,8 @@ class DeleteTaxonomyTag(MethodResource, Resource):
              "422": {"description": "Object not found"},
          })
     @use_kwargs({
-        'article': fields.Int(),
-        'taxonomy_value': fields.Int(),
+        'article_id': fields.Int(),
+        'taxonomy_value_id': fields.Int(),
     })
     @jwt_required
     @verify_admin_access

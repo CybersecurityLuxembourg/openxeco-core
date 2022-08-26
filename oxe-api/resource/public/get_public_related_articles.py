@@ -45,12 +45,12 @@ class GetPublicRelatedArticles(MethodResource, Resource):
 
         # Fetch all the related articles
 
-        entity_tags = [t.entity for t in self.db.get(act, {"article": article[0].id})]
+        entity_tags = [t.entity_id for t in self.db.get(act, {"article_id": article[0].id})]
         entity_tag_articles = [] if len(entity_tags) == 0 \
-            else [t.article for t in self.db.get(act, {"entity": entity_tags})]
-        taxonomy_tags = [t.taxonomy_value for t in self.db.get(att, {"article": article[0].id})]
+            else [t.article_id for t in self.db.get(act, {"entity_id": entity_tags})]
+        taxonomy_tags = [t.taxonomy_value_id for t in self.db.get(att, {"article_id": article[0].id})]
         taxonomy_tag_articles = [] if len(taxonomy_tags) == 0 \
-            else [t.article for t in self.db.get(att, {"taxonomy_value": taxonomy_tags})]
+            else [t.article_id for t in self.db.get(att, {"taxonomy_value_id": taxonomy_tags})]
 
         article_ids = list(set(entity_tag_articles + taxonomy_tag_articles))
 
@@ -73,8 +73,8 @@ class GetPublicRelatedArticles(MethodResource, Resource):
         if "include_tags" in kwargs and kwargs["include_tags"] is True:
             article_ids = [a["id"] for a in data]
 
-            taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article": article_ids})
-            entity_tags = self.db.get(self.db.tables["ArticleEntityTag"], {"article": article_ids})
+            taxonomy_tags = self.db.get(self.db.tables["ArticleTaxonomyTag"], {"article_id": article_ids})
+            entity_tags = self.db.get(self.db.tables["ArticleEntityTag"], {"article_id": article_ids})
 
             for a in data:
                 a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]

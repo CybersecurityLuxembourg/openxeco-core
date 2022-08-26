@@ -8,11 +8,11 @@ class TestDeleteEntityTag(BaseCase):
     def test_ok(self, token):
         self.db.insert({"id": 1, "title": "My article"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "name": "ENTITY"}, self.db.tables["Entity"])
-        self.db.insert({"article": 1, "entity": 1}, self.db.tables["ArticleEntityTag"])
+        self.db.insert({"article_id": 1, "entity_id": 1}, self.db.tables["ArticleEntityTag"])
 
         payload = {
-            "article": 1,
-            "entity": 1,
+            "article_id": 1,
+            "entity_id": 1,
         }
 
         response = self.application.post('/article/delete_entity_tag',
@@ -28,8 +28,8 @@ class TestDeleteEntityTag(BaseCase):
     @BaseCase.grant_access("/article/delete_entity_tag")
     def test_delete_unexisting(self, token):
         payload = {
-            "article": 1,
-            "entity": 1,
+            "article_id": 1,
+            "entity_id": 1,
         }
 
         response = self.application.post('/article/delete_entity_tag',

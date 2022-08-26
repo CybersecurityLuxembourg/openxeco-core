@@ -147,7 +147,7 @@ class TestGetDocuments(BaseCase):
             "keywords": "word entity"
         }, self.db.tables["Document"])
 
-        response = self.application.get('/public/get_public_documents?search=comp',
+        response = self.application.get('/public/get_public_documents?search=enti',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)

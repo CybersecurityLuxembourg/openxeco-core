@@ -15,8 +15,8 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
 
         payload = {
-            "entity": 1,
-            "value": 1,
+            "entity_id": 1,
+            "taxonomy_value_id": 1,
         }
 
         response = self.application.post('/taxonomy/add_taxonomy_assignment',
@@ -37,8 +37,8 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
 
         payload = {
-            "entity": 1,
-            "value": 1
+            "entity_id": 1,
+            "taxonomy_value_id": 1
         }
 
         response = self.application.post('/taxonomy/add_taxonomy_assignment',
@@ -52,8 +52,8 @@ class TestAddTaxonomyAssignment(BaseCase):
     def test_ko_object_not_found(self, token):
 
         payload = {
-            "entity": 1,
-            "value": 1
+            "entity_id": 1,
+            "taxonomy_value_id": 1
         }
 
         response = self.application.post('/taxonomy/add_taxonomy_assignment',
@@ -68,11 +68,11 @@ class TestAddTaxonomyAssignment(BaseCase):
         self.db.insert({"id": 1, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"name": "CAT1"}, self.db.tables["TaxonomyCategory"])
         self.db.insert({"id": 1, "name": "My Value", "category": "CAT1"}, self.db.tables["TaxonomyValue"])
-        self.db.insert({"entity": 1, "taxonomy_value": 1}, self.db.tables["TaxonomyAssignment"])
+        self.db.insert({"entity_id": 1, "taxonomy_value_id": 1}, self.db.tables["TaxonomyAssignment"])
 
         payload = {
-            "entity": 1,
-            "value": 1
+            "entity_id": 1,
+            "taxonomy_value_id": 1
         }
 
         response = self.application.post('/taxonomy/add_taxonomy_assignment',
@@ -93,8 +93,8 @@ class TestAddTaxonomyAssignment(BaseCase):
         mock_db_insert.side_effect = [IntegrityError(None, None, None), None]
 
         payload = {
-            "entity": 1,
-            "value": 1
+            "entity_id": 1,
+            "taxonomy_value_id": 1
         }
 
         response = self.application.post('/taxonomy/add_taxonomy_assignment',
