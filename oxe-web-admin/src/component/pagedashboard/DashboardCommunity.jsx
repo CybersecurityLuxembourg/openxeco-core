@@ -486,7 +486,6 @@ export default class DashboardCommunity extends React.Component {
 										position: "bottom",
 									},
 									onClick: (mouseEvent, data) => {
-										console.log(data);
 										if (data.length > 0) {
 											// eslint-disable-next-line no-underscore-dangle
 											const l = data[0]._chart.config.data.datasets[0].label[data[0]._index];
