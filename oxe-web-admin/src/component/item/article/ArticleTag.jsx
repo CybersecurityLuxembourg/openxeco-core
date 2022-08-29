@@ -112,8 +112,8 @@ export default class ArticleTag extends React.Component {
 
 	addTaxonomyTag(taxonomyValueID) {
 		const params = {
-			article: this.props.id,
-			taxonomy_value: taxonomyValueID,
+			article_id: this.props.id,
+			taxonomy_value_id: taxonomyValueID,
 		};
 
 		postRequest.call(this, "article/add_taxonomy_tag", params, () => {
@@ -129,8 +129,8 @@ export default class ArticleTag extends React.Component {
 
 	addEntityTag(entityID) {
 		const params = {
-			article: this.props.id,
-			entity: entityID,
+			article_id: this.props.id,
+			entity_id: entityID,
 		};
 
 		postRequest.call(this, "article/add_entity_tag", params, () => {
@@ -146,8 +146,8 @@ export default class ArticleTag extends React.Component {
 
 	deleteTaxonomyTag(taxonomyValueID) {
 		const params = {
-			article: this.props.id,
-			taxonomy_value: taxonomyValueID,
+			article_id: this.props.id,
+			taxonomy_value_id: taxonomyValueID,
 		};
 
 		postRequest.call(this, "article/delete_taxonomy_tag", params, () => {
@@ -163,8 +163,8 @@ export default class ArticleTag extends React.Component {
 
 	deleteEntityTag(entityID) {
 		const params = {
-			article: this.props.id,
-			entity: entityID,
+			article_id: this.props.id,
+			entity_id: entityID,
 		};
 
 		postRequest.call(this, "article/delete_entity_tag", params, () => {

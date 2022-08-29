@@ -28,7 +28,7 @@ class GetNotes(MethodResource, Resource):
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=10, validate=validate.Range(min=1, max=10)),
         'order': fields.Str(required=False, missing='desc', validate=lambda x: x in ['desc', 'asc']),
-        'entity': fields.Int(required=False),
+        'entity_id': fields.Int(required=False),
         'article': fields.Int(required=False),
         'taxonomy_category': fields.Str(required=False),
         'user': fields.Int(required=False),

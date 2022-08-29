@@ -46,7 +46,7 @@ export default class EntityWorkforce extends React.Component {
 
 	addWorkforce(close) {
 		const params = {
-			entity: this.props.id,
+			entity_id: this.props.id,
 			workforce: parseInt(this.state.workforce, 10),
 			source: this.state.source,
 			date: this.state.date || undefined,

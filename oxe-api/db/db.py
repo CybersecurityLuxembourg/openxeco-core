@@ -488,8 +488,8 @@ class DB:
 
         query = self.session.query(self.tables["Note"])
 
-        if "entity" in filters:
-            query = query.filter(self.tables["Note"].entity == filters["entity"])
+        if "entity_id" in filters:
+            query = query.filter(self.tables["Note"].entity_id == filters["entity_id"])
 
         if "article" in filters:
             query = query.filter(self.tables["Note"].article == filters["article"])

@@ -32,7 +32,7 @@ export default class EntityNote extends React.Component {
 
 	getNotes(page) {
 		const params = {
-			entity: this.props.id,
+			entity_id: this.props.id,
 			page: page || 1,
 		};
 
@@ -75,7 +75,7 @@ export default class EntityNote extends React.Component {
 	addNote(close) {
 		const params = {
 			content: this.state.content,
-			entity: this.props.id,
+			entity_id: this.props.id,
 		};
 
 		postRequest.call(this, "note/add_note", params, () => {

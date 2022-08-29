@@ -29,7 +29,7 @@ class AddNote(MethodResource, Resource):
          })
     @use_kwargs({
         'content': fields.Str(required=False),
-        'entity': fields.Int(required=False),
+        'entity_id': fields.Int(required=False),
         'article': fields.Int(required=False),
         'taxonomy_category': fields.Str(required=False),
         'user': fields.Int(required=False),
@@ -39,12 +39,12 @@ class AddNote(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        param_count = len([1 for t in ["article", "entity", "taxonomy_category", "user"] if t in kwargs])
+        param_count = len([1 for t in ["article", "entity_id", "taxonomy_category", "user"] if t in kwargs])
 
         if param_count == 0:
-            return "", "422 At least one of those params should be set: entity, article, taxonomy_category, user"
+            return "", "422 At least one of those params should be set: entity_id, article, taxonomy_category, user"
         if param_count > 1:
-            return "", "422 Only one params should be set amongst those: entity, article, taxonomy_category, user"
+            return "", "422 Only one params should be set amongst those: entity_id, article, taxonomy_category, user"
 
         kwargs["admin"] = int(get_jwt_identity())
 

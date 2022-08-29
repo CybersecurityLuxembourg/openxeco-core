@@ -152,7 +152,7 @@ export default class EntityTaxonomy extends React.Component {
 				if (this.state.entityAssignment === null) {
 					fillColor = "lightgrey";
 				} else if (this.state.entityAssignment
-					.filter((a) => a.taxonomy_value === childValues[i].id).length > 0) {
+					.filter((a) => a.taxonomy_value_id === childValues[i].id).length > 0) {
 					fillColor = "#bcebff";
 				} else {
 					fillColor = "#fed7da";
@@ -190,11 +190,11 @@ export default class EntityTaxonomy extends React.Component {
 			const childId = info.child_id;
 
 			const matchingEntityAssignment = this.state.entityAssignment
-				.filter((vh) => vh.entity === this.props.id && vh.taxonomy_value === childId);
+				.filter((vh) => vh.entity_id === this.props.id && vh.taxonomy_value_id === childId);
 
 			const params = {
-				entity: this.props.id,
-				value: childId,
+				entity_id: this.props.id,
+				taxonomy_value_id: childId,
 			};
 
 			if (matchingEntityAssignment.length === 0) {
