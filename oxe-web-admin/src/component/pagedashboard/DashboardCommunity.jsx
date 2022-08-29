@@ -42,7 +42,8 @@ export default class DashboardCommunity extends React.Component {
 	 */
 	getEntityTaxonomyCategory() {
 		if (this.props.analytics) {
-			let concernedValues = this.props.analytics.taxonomy_assignments.map((a) => a.taxonomy_value);
+			let concernedValues = this.props.analytics.taxonomy_assignments
+				.map((a) => a.taxonomy_value_id);
 			concernedValues = [...new Set(concernedValues)];
 			concernedValues = this.props.analytics.taxonomy_values
 				.filter((v) => concernedValues.indexOf(v.id) >= 0);
@@ -145,8 +146,8 @@ export default class DashboardCommunity extends React.Component {
 
 					filteredEntities.forEach((filteredEntity) => {
 						const entityValues = this.props.analytics.taxonomy_assignments
-							.filter((a) => a.entity === filteredEntity.id)
-							.map((a) => a.taxonomy_value);
+							.filter((a) => a.entity_id === filteredEntity.id)
+							.map((a) => a.taxonomy_value_id);
 
 						if (acceptedValueIDs.filter((e) => entityValues.indexOf(e) >= 0).length > 0) {
 							tmpFilteredEntities.push(filteredEntity);
@@ -161,7 +162,7 @@ export default class DashboardCommunity extends React.Component {
 
 				filteredEntities.forEach((filteredEntity) => {
 					const workforces = this.props.analytics.workforces
-						.filter((w) => w.entity === filteredEntity.id);
+						.filter((w) => w.entity_id === filteredEntity.id);
 
 					if (workforces.length > 0
 						&& this.state.filters.size_range[0] <= workforces[0].workforce
@@ -216,14 +217,14 @@ export default class DashboardCommunity extends React.Component {
 				.filter((v) => v.category === category);
 			const valueIDs = values.map((v) => v.id);
 			const assignments = this.props.analytics.taxonomy_assignments
-				.filter((a) => valueIDs.indexOf(a.taxonomy_value) >= 0)
-				.filter((a) => entityIDs.indexOf(a.entity) >= 0);
+				.filter((a) => valueIDs.indexOf(a.taxonomy_value_id) >= 0)
+				.filter((a) => entityIDs.indexOf(a.entity_id) >= 0);
 
 			for (let i = 0; i < assignments.length; i++) {
-				if (assignments[i].taxonomy_value in dictOutput) {
-					dictOutput[assignments[i].taxonomy_value] += 1;
+				if (assignments[i].taxonomy_value_id in dictOutput) {
+					dictOutput[assignments[i].taxonomy_value_id] += 1;
 				} else {
-					dictOutput[assignments[i].taxonomy_value] = 1;
+					dictOutput[assignments[i].taxonomy_value_id] = 1;
 				}
 			}
 
@@ -283,13 +284,13 @@ export default class DashboardCommunity extends React.Component {
 			for (let i = 0; i < entityIDs.length; i++) {
 				entityDistribution[entityIDs[i]] = [];
 				const entityAssignments = this.props.analytics.taxonomy_assignments
-					.filter((a) => a.entity === entityIDs[i]);
+					.filter((a) => a.entity_id === entityIDs[i]);
 
 				for (let y = 0; y < entityAssignments.length; y++) {
 					for (let k = 0; k < dictOutput.length; k++) {
-						if (dictOutput[k].indexOf(entityAssignments[y].taxonomy_value) >= 0
-							&& entityDistribution[entityAssignments[y].entity]
-								.indexOf(k) < 0) entityDistribution[entityAssignments[y].entity].push(k);
+						if (dictOutput[k].indexOf(entityAssignments[y].taxonomy_value_id) >= 0
+							&& entityDistribution[entityAssignments[y].entity_id]
+								.indexOf(k) < 0) entityDistribution[entityAssignments[y].entity_id].push(k);
 					}
 				}
 			}
@@ -327,7 +328,7 @@ export default class DashboardCommunity extends React.Component {
 		const acceptedIDs = this.state.filteredEntities.map((a) => a.id);
 
 		for (let i = 0; i < this.props.analytics.workforces.length; i++) {
-			if (acceptedIDs.indexOf(this.props.analytics.workforces[i].entity) >= 0) {
+			if (acceptedIDs.indexOf(this.props.analytics.workforces[i].entity_id) >= 0) {
 				total += this.props.analytics.workforces[i].workforce;
 			}
 		}
