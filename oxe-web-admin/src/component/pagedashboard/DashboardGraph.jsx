@@ -441,8 +441,8 @@ export default class DashboardGraph extends React.Component {
 				...this.props.analytics
 					? this.props.analytics.taxonomy_assignments.map((a) => (
 						{
-							from: "ent-" + a.entity,
-							to: "val-" + a.taxonomy_value,
+							from: "ent-" + a.entity_id,
+							to: "val-" + a.taxonomy_value_id,
 							color: { color: "lightgrey" },
 							width: 1,
 							arrows: {
