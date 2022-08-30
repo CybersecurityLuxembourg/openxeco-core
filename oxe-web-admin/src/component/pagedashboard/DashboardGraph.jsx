@@ -21,7 +21,10 @@ export default class DashboardGraph extends React.Component {
 			userEntityAssignments: null,
 			articleEnums: null,
 
-			filters: {},
+			filters: {
+				hideTaxonomyCategories: true,
+				hideTaxonomyValues: true,
+			},
 
 			network: null,
 			shape: "icon",
@@ -309,42 +312,48 @@ export default class DashboardGraph extends React.Component {
 							},
 						}
 					)),
-				...this.state.filters.hideTaxonomies
+				...this.state.filters.hideTaxonomyCategories
 					? []
-					: this.props.analytics.taxonomy_categories.map((c) => (
-						{
-							id: "cat-" + c.name,
-							label: c.name,
-							color: { border: "#fed7da", background: "#ffa8b0" },
-							font: { color: "grey" },
-							shape: this.state.shape,
-							icon: {
-								face: '"Font Awesome 5 Free"',
-								code: "\uf542",
-								color: "#ffa8b0",
-								weight: 900,
-								size: 40,
-							},
-						}
-					)),
-				...this.state.filters.hideTaxonomies
+					: this.props.analytics.taxonomy_categories
+						.filter((c) => !this.state.filters.taxonomiesToHide
+							|| !this.state.filters.taxonomiesToHide.includes(c.name))
+						.map((c) => (
+							{
+								id: "cat-" + c.name,
+								label: c.name,
+								color: { border: "#fed7da", background: "#ffa8b0" },
+								font: { color: "grey" },
+								shape: this.state.shape,
+								icon: {
+									face: '"Font Awesome 5 Free"',
+									code: "\uf542",
+									color: "#ffa8b0",
+									weight: 900,
+									size: 40,
+								},
+							}
+						)),
+				...this.state.filters.hideTaxonomyValues
 					? []
-					: this.props.analytics.taxonomy_values.map((v) => (
-						{
-							id: "val-" + v.id,
-							label: v.name,
-							color: { border: "#ffa8b0", background: "#fed7da" },
-							font: { color: "grey" },
-							shape: this.state.shape,
-							icon: {
-								face: '"Font Awesome 5 Free"',
-								code: "\uf0c8",
-								color: "#fed7da",
-								weight: 900,
-								size: 30,
-							},
-						}
-					)),
+					: this.props.analytics.taxonomy_values
+						.filter((v) => !this.state.filters.taxonomiesToHide
+							|| !this.state.filters.taxonomiesToHide.includes(v.category))
+						.map((v) => (
+							{
+								id: "val-" + v.id,
+								label: v.name,
+								color: { border: "#ffa8b0", background: "#fed7da" },
+								font: { color: "grey" },
+								shape: this.state.shape,
+								icon: {
+									face: '"Font Awesome 5 Free"',
+									code: "\uf0c8",
+									color: "#fed7da",
+									weight: 900,
+									size: 30,
+								},
+							}
+						)),
 				...this.state.filters.hideArticles
 					? []
 					: this.getArticlesToShow().map((a) => (
@@ -401,7 +410,7 @@ export default class DashboardGraph extends React.Component {
 					)),
 			],
 			edges: [
-				...this.state.entityRelationships
+				...this.state.entityRelationships && !this.state.filters.hideEntityRelationships
 					? this.state.entityRelationships.map((r) => (
 						{
 							from: "ent-" + r.entity_id_1,
@@ -438,7 +447,7 @@ export default class DashboardGraph extends React.Component {
 						}
 					))
 					: [],
-				...this.props.analytics
+				...this.props.analytics && !this.state.filters.hideEntityTaxonomyLinks
 					? this.props.analytics.taxonomy_assignments.map((a) => (
 						{
 							from: "ent-" + a.entity_id,
@@ -454,41 +463,45 @@ export default class DashboardGraph extends React.Component {
 						}
 					))
 					: [],
-				...this.getArticlesToShow().map((a) => {
-					const f = a.entity_tags.map((t) => (
-						{
-							from: "art-" + a.id,
-							to: "ent-" + t,
-							color: { color: "lightgrey" },
-							width: 1,
-							arrows: {
-								to: {
-									enabled: false,
+				...!this.state.filters.hideEntityArticleLinks
+					? this.getArticlesToShow().map((a) => {
+						const f = a.entity_tags.map((t) => (
+							{
+								from: "art-" + a.id,
+								to: "ent-" + t,
+								color: { color: "lightgrey" },
+								width: 1,
+								arrows: {
+									to: {
+										enabled: false,
+									},
 								},
-							},
-							dashes: true,
-						}
-					));
+								dashes: true,
+							}
+						));
 
-					return f;
-				}).flat(),
-				...this.getArticlesToShow().map((a) => {
-					const f = a.taxonomy_tags.map((t) => (
-						{
-							from: "art-" + a.id,
-							to: "val-" + t,
-							color: { color: "lightgrey" },
-							width: 1,
-							arrows: {
-								to: {
-									enabled: false,
+						return f;
+					}).flat()
+					: [],
+				...!this.state.filters.hideTaxonomyArticleLinks
+					? this.getArticlesToShow().map((a) => {
+						const f = a.taxonomy_tags.map((t) => (
+							{
+								from: "art-" + a.id,
+								to: "val-" + t,
+								color: { color: "lightgrey" },
+								width: 1,
+								arrows: {
+									to: {
+										enabled: false,
+									},
 								},
-							},
-							dashes: true,
-						}
-					));
-					return f;
-				}).flat(),
+								dashes: true,
+							}
+						));
+						return f;
+					}).flat()
+					: [],
 				...this.state.userGroupAssignments
 					? this.state.userGroupAssignments.map((a) => (
 						{
@@ -499,7 +512,7 @@ export default class DashboardGraph extends React.Component {
 						}
 					))
 					: [],
-				...this.state.userEntityAssignments
+				...this.state.userEntityAssignments && !this.state.filters.hideEntityUserLinks
 					? this.state.userEntityAssignments.map((a) => (
 						{
 							from: "usr-" + a.user_id,

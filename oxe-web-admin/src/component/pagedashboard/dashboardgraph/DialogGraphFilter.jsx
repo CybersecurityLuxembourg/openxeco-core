@@ -10,14 +10,17 @@ export default class DialogGraphFilter extends React.Component {
 		super(props);
 
 		this.initialState = {
-			filters: {},
+			filters: {
+				hideTaxonomyCategories: true,
+				hideTaxonomyValues: true,
+			},
 		};
 
 		this.state = _.cloneDeep(this.initialState);
 	}
 
 	eraseFilters() {
-		this.setState({ ...this.initialState });
+		this.setState({ filters: {} });
 	}
 
 	getNumberOfFilter() {
@@ -41,9 +44,25 @@ export default class DialogGraphFilter extends React.Component {
 		return n;
 	}
 
-	changeFilter(field, value) {
+	changeFilter(field, value, category) {
 		const filters = _.cloneDeep(this.state.filters);
-		filters[field] = value;
+
+		if (field === "taxonomiesToHide") {
+			if (filters.taxonomiesToHide) {
+				if (value) {
+					filters.taxonomiesToHide.push(category);
+				} else {
+					filters.taxonomiesToHide = filters.taxonomiesToHide.filter((t) => t !== category);
+				}
+			} else if (value) {
+				filters.taxonomiesToHide = [category];
+			} else {
+				filters.taxonomiesToHide = undefined;
+			}
+		} else {
+			filters[field] = value;
+		}
+
 		this.setState({ filters });
 	}
 
@@ -108,10 +127,16 @@ export default class DialogGraphFilter extends React.Component {
 								onChange={(v) => this.changeFilter("hideArticles", v)}
 							/>
 							<FormLine
-								label={"Hide taxonomies"}
+								label={"Hide taxonomy categories"}
 								type={"checkbox"}
-								value={this.state.filters.hideTaxonomies}
-								onChange={(v) => this.changeFilter("hideTaxonomies", v)}
+								value={this.state.filters.hideTaxonomyCategories}
+								onChange={(v) => this.changeFilter("hideTaxonomyCategories", v)}
+							/>
+							<FormLine
+								label={"Hide taxonomy values"}
+								type={"checkbox"}
+								value={this.state.filters.hideTaxonomyValues}
+								onChange={(v) => this.changeFilter("hideTaxonomyValues", v)}
 							/>
 							<FormLine
 								label={"Hide users"}
@@ -120,6 +145,58 @@ export default class DialogGraphFilter extends React.Component {
 								onChange={(v) => this.changeFilter("hideUsers", v)}
 							/>
 						</div>
+
+						<div className="col-md-12">
+							<h3>Hide links</h3>
+
+							<FormLine
+								label={"Hide entity relationships"}
+								type={"checkbox"}
+								value={this.state.filters.hideEntityRelationships}
+								onChange={(v) => this.changeFilter("hideEntityRelationships", v)}
+							/>
+							<FormLine
+								label={"Hide entity-taxonomy links"}
+								type={"checkbox"}
+								value={this.state.filters.hideEntityTaxonomyLinks}
+								onChange={(v) => this.changeFilter("hideEntityTaxonomyLinks", v)}
+							/>
+							<FormLine
+								label={"Hide entity-user links"}
+								type={"checkbox"}
+								value={this.state.filters.hideEntityUserLinks}
+								onChange={(v) => this.changeFilter("hideEntityUserLinks", v)}
+							/>
+							<FormLine
+								label={"Hide entity-article links"}
+								type={"checkbox"}
+								value={this.state.filters.hideEntityArticleLinks}
+								onChange={(v) => this.changeFilter("hideEntityArticleLinks", v)}
+							/>
+							<FormLine
+								label={"Hide taxonomy-article links"}
+								type={"checkbox"}
+								value={this.state.filters.hideTaxonomyArticleLinks}
+								onChange={(v) => this.changeFilter("hideTaxonomyArticleLinks", v)}
+							/>
+						</div>
+
+						{this.props.analytics && !this.state.filters.hideTaxonomies
+							&& <div className="col-md-12">
+								<h3>Hide taxonomy</h3>
+
+								{this.props.analytics.taxonomy_categories.map((c) => (
+									<FormLine
+										key={c.name}
+										label={"Hide: " + c.name}
+										type={"checkbox"}
+										value={this.state.filters.taxonomiesToHide
+											&& this.state.filters.taxonomiesToHide.includes(c.name)}
+										onChange={(v) => this.changeFilter("taxonomiesToHide", v, c.name)}
+									/>
+								))}
+							</div>
+						}
 					</div>
 
 					{this.props.analytics
