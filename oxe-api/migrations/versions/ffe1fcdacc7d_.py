@@ -40,7 +40,9 @@ def upgrade():
     op.alter_column('EntityRelationship', 'company_2', new_column_name='entity_id_2', existing_type=mysql.INTEGER())
     op.alter_column('Note', 'company', new_column_name='entity_id', existing_type=mysql.INTEGER())
     op.alter_column('RssFeed', 'company_id', new_column_name='entity_id', existing_type=mysql.INTEGER())
-    op.alter_column('TaxonomyCategory', 'active_on_companies', new_column_name='active_on_entities', existing_type=mysql.TINYINT(display_width=1), existing_server_default=sa.text("'0'"), existing_nullable=False)
+    op.alter_column('TaxonomyCategory', 'active_on_companies', new_column_name='active_on_entities',
+                    existing_type=mysql.TINYINT(display_width=1), existing_server_default=sa.text("'0'"),
+                    existing_nullable=False)
     op.alter_column('TaxonomyAssignment', 'company', new_column_name='entity_id', existing_type=mysql.INTEGER())
     op.alter_column('TaxonomyAssignment', 'taxonomy_value', new_column_name='taxonomy_value_id', existing_type=mysql.INTEGER())
     op.alter_column('UserEntityAssignment', 'company_id', new_column_name='entity_id', existing_type=mysql.INTEGER())
@@ -63,7 +65,9 @@ def downgrade():
     op.alter_column('EntityRelationship', 'entity_id_2', new_column_name='company_2', existing_type=mysql.INTEGER())
     op.alter_column('Note', 'entity_id', new_column_name='company', existing_type=mysql.INTEGER())
     op.alter_column('RssFeed', 'entity_id', new_column_name='company_id', existing_type=mysql.INTEGER())
-    op.alter_column('TaxonomyCategory', 'active_on_entities', new_column_name='active_on_companies', existing_type=mysql.TINYINT(display_width=1), existing_server_default=sa.text("'0'"), existing_nullable=False)
+    op.alter_column('TaxonomyCategory', 'active_on_entities', new_column_name='active_on_companies',
+                    existing_type=mysql.TINYINT(display_width=1), existing_server_default=sa.text("'0'"),
+                    existing_nullable=False)
     op.alter_column('TaxonomyAssignment', 'entity_id', new_column_name='company', existing_type=mysql.INTEGER())
     op.alter_column('TaxonomyAssignment', 'taxonomy_value_id', new_column_name='taxonomy_value', existing_type=mysql.INTEGER())
     op.alter_column('UserEntityAssignment', 'entity_id', new_column_name='company_id', existing_type=mysql.INTEGER())
