@@ -1,7 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.13.0] - 2022-XX-XX
+## [1.13.1] - 2022-08-31
+
+### Added
+
+- Filters on Network graph tab on Dashboard page on oxe-web-admin
+
+### Changed
+
+- Not loading taxonomies on premise on Network graph tab on Dashboard page on oxe-web-admin
+
+### Fixed
+
+- Article import when content is empty
+
+## [1.13.0] - 2022-08-29
 
 ### Added
 
