@@ -2,7 +2,7 @@ import React from "react";
 import "./Login.css";
 import { NotificationManager as nm } from "react-notifications";
 import FormLine from "./form/FormLine.jsx";
-import { postRequest } from "../utils/request.jsx";
+import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
@@ -52,6 +52,18 @@ export default class Login extends React.Component {
 		if (getUrlParameter("action") === "reset_password") {
 			// TODO use httponly cookies
 			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
+		}
+
+		// Log in the user if there is an existing cookie
+
+		if (this.props.cookies.get("access_token_cookie")) {
+			getRequest.call(this, "private/get_my_user", (data) => {
+				this.props.connect(data.email);
+			}, (response2) => {
+				nm.warning(response2.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}
 
 		// This function to notify if the password has been reset correctly
