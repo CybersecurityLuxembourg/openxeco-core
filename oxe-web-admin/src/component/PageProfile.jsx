@@ -280,6 +280,13 @@ export default class PageProfile extends React.Component {
 												Change password
 											</button>
 										}
+										onClose={() => {
+											this.setState({
+												password: null,
+												newPassword: null,
+												newPasswordConfirmation: null,
+											});
+										}}
 										modal
 										closeOnDocumentClick
 									>
