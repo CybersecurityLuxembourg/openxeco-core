@@ -80,7 +80,19 @@ export default class Login extends React.Component {
 		postRequest.call(this, "account/login", params, (response) => {
 			// TODO use httponly cookies
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-			this.props.connect(response.user);
+
+			getRequest.call(this, "private/get_my_user", (data) => {
+				if (data.is_admin === 1) {
+					this.props.connect(response.user);
+				} else {
+					this.props.cookies.remove("access_token_cookie");
+					nm.warning("This user is not an admin");
+				}
+			}, (response2) => {
+				nm.warning(response2.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
