@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Article import when content is empty
+- ISSUE#36 FIX: Refreshing the page will land you back to the login page
+- ISSUE#38 FIX: "Payment required error" pop up was experienced during a password reset
+- ISSUE#40 FIX: Closing the 'reset password' modal does not remove the data from the form
+- ISSUE#42 FIX: Standard User is allowed to login to admin section
 
 ## [1.13.0] - 2022-08-29
 
