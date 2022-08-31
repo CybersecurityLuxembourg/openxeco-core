@@ -66,7 +66,7 @@ class ImportArticle(MethodResource, Resource):
                     .get_request(f"{node.api_endpoint}/public/get_public_article_content/{kwargs['article_id']}")
                 article_content = json.loads(article_content)["content"]
             except HTTPError:
-                article_content = {'content': []}
+                article_content = []
         except Exception:
             traceback.print_exc()
             return "", "500 Error while fetching the network node article"
