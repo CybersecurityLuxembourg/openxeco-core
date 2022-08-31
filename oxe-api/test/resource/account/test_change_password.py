@@ -61,4 +61,4 @@ class TestChangePassword(BaseCase):
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual("402 The password is wrong", response.status)
+        self.assertEqual("422 The password is wrong", response.status)

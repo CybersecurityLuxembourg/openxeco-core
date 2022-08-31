@@ -25,8 +25,8 @@ class ChangePassword(MethodResource, Resource):
          responses={
              "200": {},
              "401": {"description": "The user has not been found"},
-             "402": {"description": "The password is wrong"},
-             "422": {"description": "The new password does not have the right format"},
+             "422.a": {"description": "The password is wrong"},
+             "422.b": {"description": "The new password does not have the right format"},
          })
     @use_kwargs({
         'password': fields.Str(),
@@ -47,7 +47,7 @@ class ChangePassword(MethodResource, Resource):
         user = data[0]
 
         if not check_password_hash(user.password, kwargs['password']):
-            return "", "402 The password is wrong"
+            return "", "422 The password is wrong"
 
         user.password = generate_password_hash(kwargs["new_password"])
 
