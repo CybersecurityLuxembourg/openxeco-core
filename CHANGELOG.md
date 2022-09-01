@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.13.2] - 2022-XX-XX
+
+### Changed
+
+- Change from log to error dialog when failing to load a file
+
+### Fixed
+
+- ISSUE#39 FIX: Change password reset box to show in green on success rather than in red
+- ISSUE#41 FIX: Claiming an entity requires logout/login to effect change in the profile
+
 ## [1.13.1] - 2022-08-31
 
 ### Added
