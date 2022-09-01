@@ -44,8 +44,8 @@ export default class DialogAddImage extends React.Component {
 				getForeignImage.call(this, this.state.link, (blob) => {
 					const reader = new FileReader();
 
-					reader.onabort = () => console.log("file reading was aborted");
-					reader.onerror = () => console.log("An error happened while reading the file");
+					reader.onabort = () => nm.error("file reading was aborted");
+					reader.onerror = () => nm.error("An error happened while reading the file");
 					reader.onload = () => {
 						const imageUrl = URL.createObjectURL(blob);
 
@@ -79,8 +79,8 @@ export default class DialogAddImage extends React.Component {
 		} else {
 			const reader = new FileReader();
 
-			reader.onabort = () => console.log("file reading was aborted");
-			reader.onerror = () => console.log("An error happened while reading the file");
+			reader.onabort = () => nm.error("file reading was aborted");
+			reader.onerror = () => nm.error("An error happened while reading the file");
 			reader.onload = () => {
 				const blob = new Blob([reader.result], { type: files[0].type });
 				const imageUrl = URL.createObjectURL(blob);

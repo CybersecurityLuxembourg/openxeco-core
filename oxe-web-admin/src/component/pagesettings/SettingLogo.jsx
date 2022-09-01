@@ -78,8 +78,8 @@ export default class SettingLogo extends React.Component {
 		} else {
 			const reader = new FileReader();
 
-			reader.onabort = () => console.log("file reading was aborted");
-			reader.onerror = () => console.log("An error happened while reading the file");
+			reader.onabort = () => nm.error("file reading was aborted");
+			reader.onerror = () => nm.error("An error happened while reading the file");
 			reader.onload = () => {
 				const params = {
 					image: reader.result,
@@ -110,8 +110,8 @@ export default class SettingLogo extends React.Component {
 		} else {
 			const reader = new FileReader();
 
-			reader.onabort = () => console.log("file reading was aborted");
-			reader.onerror = () => console.log("An error happened while reading the file");
+			reader.onabort = () => nm.error("file reading was aborted");
+			reader.onerror = () => nm.error("An error happened while reading the file");
 			reader.onload = () => {
 				const params = {
 					image: reader.result,

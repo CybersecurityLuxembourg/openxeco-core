@@ -46,8 +46,8 @@ export default class EditImage extends React.Component {
 		} else {
 			const reader = new FileReader();
 
-			reader.onabort = () => console.log("File reading was aborted");
-			reader.onerror = () => console.log("An error happened while reading the file");
+			reader.onabort = () => nm.error("File reading was aborted");
+			reader.onerror = () => nm.error("An error happened while reading the file");
 			reader.onload = () => {
 				this.setState({ imageContent: reader.result, importError: null });
 			};
