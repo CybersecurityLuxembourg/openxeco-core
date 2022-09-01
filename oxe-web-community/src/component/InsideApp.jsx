@@ -32,6 +32,10 @@ export default class InsideApp extends React.Component {
 	componentDidMount() {
 		this.getNotifications();
 		this.getMyEntities();
+
+		window.onfocus = () => {
+			this.getMyEntities();
+		};
 	}
 
 	getNotifications() {
@@ -47,12 +51,14 @@ export default class InsideApp extends React.Component {
 	}
 
 	getMyEntities() {
-		this.setState({ myEntities: null });
-
 		getRequest.call(this, "private/get_my_entities", (data) => {
-			this.setState({
-				myEntities: data,
-			});
+			if (!this.state.myEntities
+				|| JSON.stringify(this.state.myEntities.map((e) => e.id))
+					!== JSON.stringify(data.map((e) => e.id))) {
+				this.setState({
+					myEntities: data,
+				});
+			}
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
