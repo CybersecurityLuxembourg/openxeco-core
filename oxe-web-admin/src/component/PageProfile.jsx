@@ -25,9 +25,9 @@ export default class PageProfile extends React.Component {
 			dbVcard: null,
 			currentVcard: null,
 
-			password: null,
-			newPassword: null,
-			newPasswordConfirmation: null,
+			password: "",
+			newPassword: "",
+			newPasswordConfirmation: "",
 
 			fullName: "",
 			title: "",
@@ -55,7 +55,7 @@ export default class PageProfile extends React.Component {
 		});
 	}
 
-	changePassword() {
+	changePassword(close) {
 		const params = {
 			password: this.state.password,
 			new_password: this.state.newPassword,
@@ -63,11 +63,15 @@ export default class PageProfile extends React.Component {
 
 		postRequest.call(this, "account/change_password", params, () => {
 			this.setState({
-				password: null,
-				newPassword: null,
-				newPasswordConfirmation: null,
+				password: "",
+				newPassword: "",
+				newPasswordConfirmation: "",
 			});
 			nm.info("The password has been changed");
+
+			if (close) {
+				close();
+			}
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -282,9 +286,9 @@ export default class PageProfile extends React.Component {
 										}
 										onClose={() => {
 											this.setState({
-												password: null,
-												newPassword: null,
-												newPasswordConfirmation: null,
+												password: "",
+												newPassword: "",
+												newPasswordConfirmation: "",
 											});
 										}}
 										modal
@@ -340,7 +344,7 @@ export default class PageProfile extends React.Component {
 												/>
 												<div className="right-buttons">
 													<button
-														onClick={() => this.changePassword()}
+														onClick={() => this.changePassword(close)}
 														disabled={!validatePassword(this.state.password)
 															|| !validatePassword(this.state.newPassword)
 															|| !validatePassword(this.state.newPasswordConfirmation)
