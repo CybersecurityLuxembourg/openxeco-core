@@ -6,11 +6,14 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Change from log to error dialog when failing to load a file
+- Dependent package versions
+- Recommended NodeJS version to 16.17.0
 
 ### Fixed
 
 - ISSUE#39 FIX: Change password reset box to show in green on success rather than in red
 - ISSUE#41 FIX: Claiming an entity requires logout/login to effect change in the profile
+- Vulnerabilities on dev packages dependencies
 
 ## [1.13.1] - 2022-08-31
 
