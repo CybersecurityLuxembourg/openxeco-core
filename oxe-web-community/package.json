@@ -1,6 +1,6 @@
 {
   "name": "oxe-web-community",
-  "version": "1.11.0",
+  "version": "1.13.2",
   "private": true,
   "dependencies": {
     "@babel/eslint-parser": "^7.5.4",
@@ -62,5 +62,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "overrides": {
+    "eslint": "^8.0.0",
+    "nth-check": "2.0.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.3.1"
   }
 }
