@@ -29,6 +29,7 @@ class UpdateFormQuestion(MethodResource, Resource):
         'options': fields.Str(required=False, allow_none=True),
         'value': fields.Str(required=False, allow_none=True),
         'status': fields.Str(required=False, validate=lambda x: x in ['ACTIVE', 'INACTIVE', 'DELETED']),
+        'reference': fields.Str(required=False, allow_none=True, validate=lambda x: x is None or len(x) <= 20),
     })
     @jwt_required
     @verify_admin_access

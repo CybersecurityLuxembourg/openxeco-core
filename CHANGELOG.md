@@ -1,6 +1,20 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.14.0] - 2022-XX-XX
+
+### Changed
+
+- form/get_forms API resource
+- form/update_form API resource
+- form/update_form_question API resource
+
+### Added
+
+- Column "reference" on Form table of the database structure
+- Column "reference" on FormQuestion table of the database structure
+- Fields "reference" on forms and questions on oxe-web-admin
+
 ## [1.13.2] - 2022-XX-XX
 
 ### Changed
