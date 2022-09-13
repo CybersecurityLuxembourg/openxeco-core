@@ -7,6 +7,7 @@ import Tab from "../tab/Tab.jsx";
 import FormGlobal from "./form/FormGlobal.jsx";
 import FormQuestions from "./form/FormQuestions.jsx";
 import FormAnswers from "./form/FormAnswers.jsx";
+import FormExport from "./form/FormExport.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 
 export default class Form extends Component {
@@ -18,9 +19,10 @@ export default class Form extends Component {
 		this.state = {
 			selectedMenu: null,
 			tabs: [
-				"Global",
-				"Questions",
-				"Answers",
+				"global",
+				"questions",
+				"answers",
+				"export",
 			],
 		};
 	}
@@ -100,21 +102,25 @@ export default class Form extends Component {
 						</h1>
 
 						<Tab
-							labels={["Global", "Questions", "Answers"]}
+							labels={["Global", "Questions", "Answers", "Export"]}
 							selectedMenu={this.state.selectedMenu}
 							onMenuClick={this.onMenuClick}
 							keys={this.state.tabs}
 							content={[
 								<FormGlobal
-									key={"global"}
+									key={this.state.tabs[0]}
 									form={this.props.form}
 								/>,
 								<FormQuestions
-									key={"questions"}
+									key={this.state.tabs[1]}
 									form={this.props.form}
 								/>,
 								<FormAnswers
-									key={"answers"}
+									key={this.state.tabs[2]}
+									form={this.props.form}
+								/>,
+								<FormExport
+									key={this.state.tabs[3]}
 									form={this.props.form}
 								/>,
 							]}
