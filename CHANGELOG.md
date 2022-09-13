@@ -1,13 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.13.2] - 2022-XX-XX
+## [1.13.2] - 2022-09-15
+
+### Added
+
+- Add form/extract_form resource on API
+- "Export" tab on Form item on oxe-web-admin
 
 ### Changed
 
 - Change from log to error dialog when failing to load a file
 - Dependent package versions
 - Recommended NodeJS version to 16.17.0
+- Review doc of entity/extract_entities
 
 ### Fixed
 
