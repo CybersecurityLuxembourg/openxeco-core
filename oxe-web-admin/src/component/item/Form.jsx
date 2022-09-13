@@ -56,7 +56,7 @@ export default class Form extends Component {
 
 		postRequest.call(this, "form/delete_form", params, () => {
 			document.elementFromPoint(100, 0).click();
-			nm.info("The taxonomy has been deleted");
+			nm.info("The form has been deleted");
 			close();
 			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
 		}, (response) => {
