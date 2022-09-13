@@ -47,10 +47,8 @@ export default class EntityExport extends React.Component {
 			link.click();
 			link.parentNode.removeChild(link);
 		}, (response) => {
-			this.setState({ loading: false });
 			nm.warning(response.statusText);
 		}, (error) => {
-			this.setState({ loading: false });
 			nm.error(error.message);
 		});
 	}
