@@ -104,7 +104,16 @@ $ docker run -d -p 5000:5000 \
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
     -e INITIAL_ADMIN_EMAIL=my-default-admin@example.org \
+    -e CORS_DOMAINS=example.org
     ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
+```
+
+With this CORS_DOMAIN set as "example.org", all its subdomains will be allowed by the browser. If it has to be limited to the two webapps of this project, you can set it as follows:
+
+```
+    ...
+    -e CORS_DOMAINS=admin.example.org,community.example.org
+    ...
 ```
 
 ### Build and run the webapps images

@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Dependent package versions
 - Recommended NodeJS version to 16.17.0
 - Review doc of entity/extract_entities
+- Server installation documentation
 
 ### Fixed
 
