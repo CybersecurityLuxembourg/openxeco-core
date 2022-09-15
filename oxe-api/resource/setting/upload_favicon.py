@@ -42,7 +42,8 @@ class UploadFavicon(MethodResource, Resource):
     def post(self, **kwargs):
 
         try:
-            stream = io.BytesIO(base64.b64decode(kwargs["image"].split(",")[-1]))
+            decoded_data = base64.b64decode(kwargs["image"].split(",")[-1])
+            stream = io.BytesIO(decoded_data)
             image = Image.open(stream)
         except Exception:
             traceback.print_exc()
@@ -53,7 +54,7 @@ class UploadFavicon(MethodResource, Resource):
 
         try:
             f = open(os.path.join(IMAGE_FOLDER, "favicon.ico"), 'wb')
-            f.write(stream.read())
+            f.write(decoded_data)
             f.close()
         except Exception:
             traceback.print_exc()
