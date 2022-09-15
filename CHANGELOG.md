@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - ISSUE#39 FIX: Change password reset box to show in green on success rather than in red
 - ISSUE#41 FIX: Claiming an entity requires logout/login to effect change in the profile
 - Vulnerabilities on dev packages dependencies
+- The answer is delete when empty field on forms on oxe-web-community
 
 ## [1.13.1] - 2022-08-31
 

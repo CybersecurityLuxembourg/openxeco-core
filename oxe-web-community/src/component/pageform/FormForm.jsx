@@ -73,20 +73,35 @@ export default class FormForm extends React.Component {
 
 	updateAnswer(id, answer, value) {
 		if (answer) {
-			const params = {
-				id: answer.id,
-				value,
-			};
+			if (value && value.replace(/<\/?[^>]+(>|$)/g, "").replace(/(\r\n|\n|\r)/gm, "").length === 0) {
+				const params = {
+					id: answer.id,
+				};
 
-			postRequest.call(this, "private/update_my_form_answer", params, () => {
-				nm.info("The answer has been updated");
-				this.getAnswers();
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
-		} else {
+				postRequest.call(this, "private/delete_my_form_answer", params, () => {
+					nm.info("The answer has been deleted");
+					this.getAnswers();
+				}, (response) => {
+					nm.warning(response.statusText);
+				}, (error) => {
+					nm.error(error.message);
+				});
+			} else {
+				const params = {
+					id: answer.id,
+					value,
+				};
+
+				postRequest.call(this, "private/update_my_form_answer", params, () => {
+					nm.info("The answer has been updated");
+					this.getAnswers();
+				}, (response) => {
+					nm.warning(response.statusText);
+				}, (error) => {
+					nm.error(error.message);
+				});
+			}
+		} else if (value && value.replace(/<\/?[^>]+(>|$)/g, "").replace(/(\r\n|\n|\r)/gm, "").length > 0) {
 			const params = {
 				form_question_id: id,
 				value,
