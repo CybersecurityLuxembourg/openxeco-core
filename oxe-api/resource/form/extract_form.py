@@ -1,5 +1,3 @@
-import re
-import json
 from datetime import datetime
 from io import BytesIO
 
@@ -148,7 +146,7 @@ class ExtractForm(MethodResource, Resource):
                 if cell.value:
                     dims[cell.column_letter] = max((dims.get(cell.column_letter, 0), len(str(cell.value))))
                     cell.alignment = cell.alignment.copy(alignment=True)
-        for col, value in dims.items():
+        for col, _ in dims.items():
             sheet.column_dimensions[col].width = 30
 
         sheet.column_dimensions["A"].width = 50
