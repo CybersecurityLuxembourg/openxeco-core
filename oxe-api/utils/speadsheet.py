@@ -2,7 +2,7 @@ import re
 
 
 def clean_html(raw_html):
-    if type(raw_html) is not str:
+    if not isinstance(raw_html, str):
         return None
 
     raw_html = raw_html.replace("</p>", "\n").replace("&nbsp;", "")

@@ -6,4 +6,4 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ven
 
 # pylint: disable=wrong-import-position
 from app import app as application
-assert app  # nosec
+assert application  # nosec

@@ -66,7 +66,7 @@ class ExtractForm(MethodResource, Resource):
             .filter(self.db.tables["FormAnswer"].form_question_id.in_([q.id for q in questions])) \
             .all()
 
-        user_ids = list(set([a.user_id for a in answers]))
+        user_ids = list({a.user_id for a in answers})
 
         users = self.db.session \
             .query(self.db.tables["User"]) \
@@ -116,7 +116,7 @@ class ExtractForm(MethodResource, Resource):
         # Clean cells
 
         for c in df.columns:
-            df[c] = df[c].apply(lambda x: clean_html(x))
+            df[c] = df[c].apply(clean_html)
 
         # Build the XLS file
 
