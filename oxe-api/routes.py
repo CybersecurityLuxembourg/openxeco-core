@@ -56,6 +56,7 @@ from resource.form.add_form import AddForm
 from resource.form.add_form_question import AddFormQuestion
 from resource.form.delete_form import DeleteForm
 from resource.form.delete_form_question import DeleteFormQuestion
+from resource.form.extract_form import ExtractForm
 from resource.form.get_form_enums import GetFormEnums
 from resource.form.get_form_answers import GetFormAnswers
 from resource.form.get_form_question_enums import GetFormQuestionEnums
