@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.13.3] - 2022-09-20
+
+### Changed
+
+- Size of the 'headline' column of the Entity table in database structure
+
 ## [1.13.2] - 2022-09-15
 
 ### Added
