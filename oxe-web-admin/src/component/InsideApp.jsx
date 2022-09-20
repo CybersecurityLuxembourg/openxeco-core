@@ -12,7 +12,7 @@ import PageTaxonomy from "./PageTaxonomy.jsx";
 import PageNetwork from "./PageNetwork.jsx";
 import PageTask from "./PageTask.jsx";
 import PageUser from "./PageUser.jsx";
-import PageEmail from "./PageEmail.jsx";
+import PageCampaign from "./PageCampaign.jsx";
 import PageForm from "./PageForm.jsx";
 import PageMedia from "./PageMedia.jsx";
 import PageSettings from "./PageSettings.jsx";
@@ -102,8 +102,8 @@ export default class InsideApp extends React.Component {
 							&& <Route path="/form" render={(props) => <PageForm {...props} />}/>
 						}
 
-						{getSettingValue(this.state.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"
-							&& <Route path="/communication" render={(props) => <PageEmail {...props} />}/>
+						{getSettingValue(this.state.settings, "SHOW_CAMPAIGN_PAGE") === "TRUE"
+							&& <Route path="/campaign" render={(props) => <PageCampaign {...props} />}/>
 						}
 
 						<Route path="/" render={(props) => <PageDashboard {...props} />}/>

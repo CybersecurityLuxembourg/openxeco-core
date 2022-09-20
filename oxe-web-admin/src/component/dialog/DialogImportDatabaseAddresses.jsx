@@ -138,7 +138,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 				className="Popup-full-size"
 				trigger={
 					<button>
-						<i className="fas fa-upload"/> Import from database...
+						<i className="fas fa-cloud-download-alt"/> Import from database...
 					</button>
 				}
 				onOpen={this.onOpen}

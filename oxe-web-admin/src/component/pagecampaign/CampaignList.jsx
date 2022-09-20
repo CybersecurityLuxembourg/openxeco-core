@@ -1,5 +1,5 @@
 import React from "react";
-import "./EmailHistory.css";
+import "./CampaignList.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
 import DynamicTable from "../table/DynamicTable.jsx";
@@ -7,7 +7,7 @@ import Communication from "../item/Communication.jsx";
 import Loading from "../box/Loading.jsx";
 import { dictToURI } from "../../utils/url.jsx";
 
-export default class EmailHistory extends React.Component {
+export default class CampaignList extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -69,10 +69,10 @@ export default class EmailHistory extends React.Component {
 		];
 
 		return (
-			<div id="EmailHistory" className="max-sized-page fade-in">
+			<div id="CampaignList" className="max-sized-page fade-in">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12 row-spaced">
-						<h1>History of communications</h1>
+						<h1>Campaigns</h1>
 					</div>
 
 					<div className={"col-md-12 row-spaced"}>

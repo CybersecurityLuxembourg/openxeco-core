@@ -97,7 +97,7 @@ export default class DialogImportCommunicationContent extends React.Component {
 				className="Popup-full-size"
 				trigger={
 					<button>
-						<i className="fas fa-upload"/> Import from previous communication...
+						<i className="fas fa-history"/> Import from previous campaign...
 					</button>
 				}
 				modal
