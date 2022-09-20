@@ -15,6 +15,12 @@ All notable changes to this project will be documented in this file.
 - Column "reference" on FormQuestion table of the database structure
 - Fields "reference" on forms and questions on oxe-web-admin
 
+## [1.13.3] - 2022-09-20
+
+### Changed
+
+- Size of the 'headline' column of the Entity table in database structure
+
 ## [1.13.2] - 2022-09-15
 
 ### Added
