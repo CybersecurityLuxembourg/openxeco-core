@@ -81,7 +81,7 @@ export default class EditContent extends React.Component {
 
 	saveContent() {
 		const params = {
-			article: this.props.article.id,
+			article_id: this.props.article.id,
 			content: this.state.content.sort((first, second) => first.y - second.y),
 		};
 
