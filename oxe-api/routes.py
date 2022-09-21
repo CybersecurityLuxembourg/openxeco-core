@@ -31,8 +31,8 @@ from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
 from resource.address.update_address import UpdateAddress
 from resource.notification.get_notifications import GetNotifications
-from resource.communication.get_communications import GetCommunications
-from resource.communication.send_communication import SendCommunication
+from resource.campaign.get_campaigns import GetCommunications
+from resource.campaign.send_campaign import SendCommunication
 from resource.entity.extract_entities import ExtractEntities
 from resource.entity.get_entities import GetEntities
 from resource.entity.get_entity import GetEntity
