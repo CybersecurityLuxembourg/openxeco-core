@@ -15,6 +15,13 @@ All notable changes to this project will be documented in this file.
 - Column "reference" on FormQuestion table of the database structure
 - Fields "reference" on forms and questions on oxe-web-admin
 
+## [1.13.4] - 2022-09-21
+
+### Fixed
+
+- Article creation on oxe-web-community
+- Article content modification on oxe-web-community
+
 ## [1.13.3] - 2022-09-20
 
 ### Changed
