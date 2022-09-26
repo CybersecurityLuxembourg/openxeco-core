@@ -9,7 +9,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 
 
-class UpdateCampaign(MethodResource, Resource):
+class DeleteCampaignTemplate(MethodResource, Resource):
 
     db = None
 
@@ -18,23 +18,27 @@ class UpdateCampaign(MethodResource, Resource):
 
     @log_request
     @doc(tags=['campaign'],
-         description='Update a campaign specified by its ID',
+         description='Delete a campaign template',
          responses={
              "200": {},
+             "422": {"description": "Provided campaign template does not exist"},
          })
     @use_kwargs({
         'id': fields.Int(),
-        'name': fields.Str(required=False, allow_none=True),
-        'subject': fields.Str(required=False, allow_none=True),
-        'body': fields.Str(required=False, allow_none=True),
-        'status': fields.Str(required=False, validate=lambda x: x in ['DRAFT', 'PROCESSED']),
-        'template_id': fields.Int(required=False, allow_none=True),
     })
     @jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.merge(kwargs, self.db.tables["Campaign"])
+        campaigns = self.db.get(self.db.tables["CampaignTemplate"], {"id": kwargs["id"]})
+
+        if len(campaigns) == 0:
+            return "", "422 Provided campaign template does not exist"
+
+        self.db.delete(
+            self.db.tables["CampaignTemplate"],
+            {"id": kwargs["id"]}
+        )
 
         return "", "200 "

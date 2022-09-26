@@ -9,7 +9,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 
 
-class AddContact(MethodResource, Resource):
+class AddCampaignAddresses(MethodResource, Resource):
 
     def __init__(self, db):
         self.db = db
@@ -30,15 +30,15 @@ class AddContact(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        # Checking entity
+        # Checking campaign
 
-        entity = self.db.get(self.db.tables["Entity"], {"id": kwargs["campaign_id"]})
+        entity = self.db.get(self.db.tables["Campaign"], {"id": kwargs["campaign_id"]})
 
         if len(entity) == 0:
             return "", "422 Provided campaign does not exist"
 
         # Insert
-
-        self.db.insert(kwargs, self.db.tables["EntityContact"])
+        # TODO check address format
+        self.db.insert(kwargs, self.db.tables["CampaignAddress"])
 
         return "", "200 "

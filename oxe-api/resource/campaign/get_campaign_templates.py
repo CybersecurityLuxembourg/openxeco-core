@@ -10,14 +10,14 @@ from decorator.log_request import log_request
 from utils.serializer import Serializer
 
 
-class GetCampaigns(MethodResource, Resource):
+class GetCampaignTemplates(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @log_request
     @doc(tags=['campaign'],
-         description='Get campaigns',
+         description='Get campaign templates',
          responses={
              "200": {},
          })
@@ -30,9 +30,9 @@ class GetCampaigns(MethodResource, Resource):
     def get(self, **kwargs):
 
         query = self.db.session \
-            .query(self.db.tables["Campaign"])
+            .query(self.db.tables["CampaignTemplate"])
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
-        campaigns = Serializer.serialize(paginate.items, self.db.tables["Campaign"])
+        campaigns = Serializer.serialize(paginate.items, self.db.tables["CampaignTemplate"])
 
         return {
             "pagination": {
