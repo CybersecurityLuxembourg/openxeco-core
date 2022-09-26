@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./Form.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
@@ -9,8 +9,9 @@ import FormQuestions from "./form/FormQuestions.jsx";
 import FormAnswers from "./form/FormAnswers.jsx";
 import FormExport from "./form/FormExport.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
+import Item from "./Item.jsx";
 
-export default class Form extends Component {
+export default class Form extends Item {
 	constructor(props) {
 		super(props);
 
@@ -75,9 +76,9 @@ export default class Form extends Component {
 			<Popup
 				className="Popup-full-size"
 				trigger={
-					<div className={"Form"}>
+					<div className={"Item Form"}>
 						<i className="fas fa-poll-h"/>
-						<div className={"Form-name"}>
+						<div className={"name"}>
 							{this.props.form.name}
 						</div>
 					</div>
@@ -86,8 +87,14 @@ export default class Form extends Component {
 				closeOnDocumentClick={false}
 			>
 				{(close) => <div className="Form-content row row-spaced">
-					<div className="col-md-12">
-						<div className={"top-right-buttons"}>
+					<div className="col-md-9">
+						<h1 className="title">
+							<i className="fas fa-poll-h"/> {this.props.form.name}
+						</h1>
+					</div>
+
+					<div className="col-md-3">
+						<div className={"right-buttons"}>
 							<button
 								className={"grey-background"}
 								data-hover="Close"
@@ -96,11 +103,9 @@ export default class Form extends Component {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
+					</div>
 
-						<h1 className="Form-title">
-							<i className="fas fa-poll-h"/> {this.props.form.name}
-						</h1>
-
+					<div className="col-md-12">
 						<Tab
 							labels={["Global", "Questions", "Answers", "Export"]}
 							selectedMenu={this.state.selectedMenu}
