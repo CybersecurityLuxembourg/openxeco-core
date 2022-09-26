@@ -30,7 +30,8 @@ class GetCampaigns(MethodResource, Resource):
     def get(self, **kwargs):
 
         query = self.db.session \
-            .query(self.db.tables["Campaign"])
+            .query(self.db.tables["Campaign"]) \
+            .order_by(self.db.tables["Campaign"].id.desc())
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
         campaigns = Serializer.serialize(paginate.items, self.db.tables["Campaign"])
 
