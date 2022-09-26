@@ -1,5 +1,5 @@
 import React from "react";
-import "./CampaignList.css";
+import "./CampaignTemplate.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import DynamicTable from "../table/DynamicTable.jsx";
@@ -8,7 +8,7 @@ import Loading from "../box/Loading.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import { dictToURI } from "../../utils/url.jsx";
 
-export default class CampaignList extends React.Component {
+export default class CampaignTemplate extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -80,7 +80,7 @@ export default class CampaignList extends React.Component {
 		];
 
 		return (
-			<div id="CampaignList" className="max-sized-page fade-in">
+			<div id="CampaignTemplate" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-9">
 						<h1>Campaigns</h1>
