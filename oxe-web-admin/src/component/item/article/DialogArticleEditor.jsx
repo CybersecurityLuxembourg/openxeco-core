@@ -3,13 +3,13 @@ import "./DialogArticleEditor.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import RGL, { WidthProvider } from "react-grid-layout";
-import { getRequest, postRequest } from "../../utils/request.jsx";
-import FormLine from "../button/FormLine.jsx";
-import Loading from "../box/Loading.jsx";
-import Message from "../box/Message.jsx";
-import { getContentFromBlock } from "../../utils/article.jsx";
-import DialogConfirmation from "./DialogConfirmation.jsx";
-import DialogAddImage from "./DialogAddImage.jsx";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
+import { getContentFromBlock } from "../../../utils/article.jsx";
+import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
+import DialogAddImage from "../../dialog/DialogAddImage.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
