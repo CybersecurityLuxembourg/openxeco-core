@@ -21,6 +21,7 @@ class UpdateCampaign(MethodResource, Resource):
          description='Update a campaign specified by its ID',
          responses={
              "200": {},
+             "422": {"description": "Provided campaign does not exist"},
          })
     @use_kwargs({
         'id': fields.Int(),
@@ -34,6 +35,11 @@ class UpdateCampaign(MethodResource, Resource):
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
+
+        campaigns = self.db.get(self.db.tables["Campaign"], {"id": kwargs["id"]})
+
+        if len(campaigns) == 0:
+            return "", "422 Provided campaign does not exist"
 
         self.db.merge(kwargs, self.db.tables["Campaign"])
 

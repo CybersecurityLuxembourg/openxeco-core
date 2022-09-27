@@ -21,6 +21,7 @@ class UpdateCampaignTemplate(MethodResource, Resource):
          description='Update a campaign template specified by its ID',
          responses={
              "200": {},
+             "422": {"description": "Provided template does not exist"},
          })
     @use_kwargs({
         'id': fields.Int(),
@@ -31,6 +32,11 @@ class UpdateCampaignTemplate(MethodResource, Resource):
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
+
+        templates = self.db.get(self.db.tables["CampaignTemplate"], {"id": kwargs["id"]})
+
+        if len(templates) == 0:
+            return "", "422 Provided template does not exist"
 
         self.db.merge(kwargs, self.db.tables["CampaignTemplate"])
 

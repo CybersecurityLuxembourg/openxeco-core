@@ -39,6 +39,7 @@ from resource.campaign.delete_campaign_addresses import DeleteCampaignAddresses
 from resource.campaign.delete_campaign_template import DeleteCampaignTemplate
 from resource.campaign.get_campaign import GetCampaign
 from resource.campaign.get_campaign_addresses import GetCampaignAddresses
+from resource.campaign.get_campaign_template import GetCampaignTemplate
 from resource.campaign.get_campaign_templates import GetCampaignTemplates
 from resource.campaign.get_campaigns import GetCampaigns
 from resource.campaign.update_campaign import UpdateCampaign

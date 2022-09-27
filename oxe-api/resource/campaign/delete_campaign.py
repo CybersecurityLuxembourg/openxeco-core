@@ -21,7 +21,7 @@ class DeleteCampaign(MethodResource, Resource):
          description='Delete a campaign',
          responses={
              "200": {},
-             "422": {"description": "Provided campaign ID not existing"},
+             "422": {"description": "Provided campaign does not exist"},
          })
     @use_kwargs({
         'id': fields.Int(),
