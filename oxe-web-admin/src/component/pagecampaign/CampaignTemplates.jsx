@@ -1,37 +1,37 @@
 import React from "react";
-import "./CampaignTemplate.css";
+import "./CampaignTemplates.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import DynamicTable from "../table/DynamicTable.jsx";
-import Campaign from "../item/Campaign.jsx";
+import CampaignTemplate from "../item/CampaignTemplate.jsx";
 import Loading from "../box/Loading.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import { dictToURI } from "../../utils/url.jsx";
 
-export default class CampaignTemplate extends React.Component {
+export default class CampaignTemplates extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			campaigns: null,
+			templates: null,
 			pagination: null,
 			page: 1,
 		};
 	}
 
 	componentDidMount() {
-		this.fetchCampaigns();
+		this.fetchTemplates();
 	}
 
-	fetchCampaigns(page) {
+	fetchTemplates(page) {
 		const filters = {
 			page: Number.isInteger(page) ? page : this.state.page,
 			per_page: 10,
 		};
 
-		getRequest.call(this, "campaign/get_campaigns?" + dictToURI(filters), (data) => {
+		getRequest.call(this, "campaign/get_campaign_templates?" + dictToURI(filters), (data) => {
 			this.setState({
-				campaigns: data.items,
+				templates: data.items,
 				pagination: data.pagination,
 				page,
 			});
@@ -42,10 +42,10 @@ export default class CampaignTemplate extends React.Component {
 		});
 	}
 
-	addCampaign() {
-		postRequest.call(this, "campaign/add_campaign", {}, () => {
-			nm.info("The campaign has been added");
-			this.fetchCampaigns();
+	addTemplate() {
+		postRequest.call(this, "campaign/add_campaign_template", {}, () => {
+			nm.info("The template has been added");
+			this.fetchTemplates();
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -60,46 +60,39 @@ export default class CampaignTemplate extends React.Component {
 	render() {
 		const columns = [
 			{
-				Header: "Campaign",
+				Header: "Template",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<Campaign
+					<CampaignTemplate
 						info={value}
+						onClose={() => this.fetchTemplates(this.state.page)}
 					/>
 				),
 				width: 300,
 			},
-			{
-				Header: "Status",
-				accessor: "status",
-			},
-			{
-				Header: "System date",
-				accessor: "sys_date",
-			},
 		];
 
 		return (
-			<div id="CampaignTemplate" className="max-sized-page fade-in">
+			<div id="CampaignTemplates" className="max-sized-page">
 				<div className={"row"}>
 					<div className="col-md-9">
-						<h1>Campaigns</h1>
+						<h1>Templates</h1>
 					</div>
 
 					<div className="col-md-3">
 						<div className="top-right-buttons">
 							<button
-								onClick={() => this.fetchCampaigns()}>
+								onClick={() => this.fetchTemplates()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
 							<DialogConfirmation
-								text={"Do you want to add a campaign?"}
+								text={"Do you want to add a template?"}
 								trigger={
 									<button>
 										<i className="fas fa-plus"/>
 									</button>
 								}
-								afterConfirmation={() => this.addCampaign()}
+								afterConfirmation={() => this.addTemplate()}
 							/>
 						</div>
 					</div>
@@ -107,12 +100,12 @@ export default class CampaignTemplate extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className={"col-md-12 row-spaced"}>
-						{this.state.campaigns
+						{this.state.templates
 							? <DynamicTable
 								columns={columns}
-								data={this.state.campaigns}
+								data={this.state.templates}
 								pagination={this.state.pagination}
-								changePage={(p) => this.fetchCampaigns(p)}
+								changePage={(p) => this.fetchTemplates(p)}
 							/>
 							: <Loading
 								height={250}

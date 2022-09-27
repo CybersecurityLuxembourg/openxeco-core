@@ -65,6 +65,7 @@ export default class CampaignList extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<Campaign
 						info={value}
+						onClose={() => this.fetchCampaigns(this.state.page)}
 					/>
 				),
 				width: 300,
@@ -80,7 +81,7 @@ export default class CampaignList extends React.Component {
 		];
 
 		return (
-			<div id="CampaignList" className="max-sized-page fade-in">
+			<div id="CampaignList" className="max-sized-page">
 				<div className={"row"}>
 					<div className="col-md-9">
 						<h1>Campaigns</h1>

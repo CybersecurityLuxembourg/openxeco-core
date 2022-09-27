@@ -2,7 +2,7 @@ import React from "react";
 import "./PageArticle.css";
 import Tab from "./tab/Tab.jsx";
 import CampaignList from "./pagecampaign/CampaignList.jsx";
-import CampaignTemplate from "./pagecampaign/CampaignTemplate.jsx";
+import CampaignTemplates from "./pagecampaign/CampaignTemplates.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 
 export default class PageCampaign extends React.Component {
@@ -52,7 +52,7 @@ export default class PageCampaign extends React.Component {
 						<CampaignList
 							key={this.state.tabs[0]}
 						/>,
-						<CampaignTemplate
+						<CampaignTemplates
 							key={this.state.tabs[1]}
 						/>,
 					]}

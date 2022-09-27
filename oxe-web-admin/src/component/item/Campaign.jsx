@@ -53,6 +53,7 @@ export default class Campaign extends Item {
 				modal
 				closeOnDocumentClick={false}
 				onOpen={() => this.fetchCampaign()}
+				onClose={this.props.onClose && (() => this.props.onClose())}
 			>
 				{(close) => <div className="row">
 					<div className={"col-md-9"}>

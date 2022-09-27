@@ -14,9 +14,9 @@ export default class CampaignGlobal extends React.Component {
 	}
 
 	updateCampaign(prop, value) {
-		if (this.props.info[prop] !== value) {
+		if (this.props.campaign[prop] !== value) {
 			const params = {
-				id: this.props.id,
+				id: this.props.campaign.id,
 				[prop]: value,
 			};
 
