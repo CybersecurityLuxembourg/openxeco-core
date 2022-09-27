@@ -21,26 +21,11 @@ class GetCampaignTemplates(MethodResource, Resource):
          responses={
              "200": {},
          })
-    @use_kwargs({
-        'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
-        'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
-    }, location="query")
     @jwt_required
     @catch_exception
-    def get(self, **kwargs):
+    def get(self):
 
-        query = self.db.session \
-            .query(self.db.tables["CampaignTemplate"]) \
-            .order_by(self.db.tables["CampaignTemplate"].id.desc())
-        paginate = query.paginate(kwargs['page'], kwargs['per_page'])
-        campaigns = Serializer.serialize(paginate.items, self.db.tables["CampaignTemplate"])
+        template_objects = self.db.get(self.db.tables["CampaignTemplate"])
+        data = Serializer.serialize(template_objects, self.db.tables["CampaignTemplate"])
 
-        return {
-            "pagination": {
-                "page": kwargs['page'],
-                "pages": paginate.pages,
-                "per_page": kwargs['per_page'],
-                "total": paginate.total,
-            },
-            "items": campaigns,
-        }, "200 "
+        return data, "200 "

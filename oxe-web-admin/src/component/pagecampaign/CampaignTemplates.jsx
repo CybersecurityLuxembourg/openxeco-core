@@ -2,11 +2,10 @@ import React from "react";
 import "./CampaignTemplates.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
-import DynamicTable from "../table/DynamicTable.jsx";
+import Table from "../table/Table.jsx";
 import CampaignTemplate from "../item/CampaignTemplate.jsx";
 import Loading from "../box/Loading.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
-import { dictToURI } from "../../utils/url.jsx";
 
 export default class CampaignTemplates extends React.Component {
 	constructor(props) {
@@ -14,7 +13,6 @@ export default class CampaignTemplates extends React.Component {
 
 		this.state = {
 			templates: null,
-			pagination: null,
 			page: 1,
 		};
 	}
@@ -23,17 +21,10 @@ export default class CampaignTemplates extends React.Component {
 		this.fetchTemplates();
 	}
 
-	fetchTemplates(page) {
-		const filters = {
-			page: Number.isInteger(page) ? page : this.state.page,
-			per_page: 10,
-		};
-
-		getRequest.call(this, "campaign/get_campaign_templates?" + dictToURI(filters), (data) => {
+	fetchTemplates() {
+		getRequest.call(this, "campaign/get_campaign_templates", (data) => {
 			this.setState({
-				templates: data.items,
-				pagination: data.pagination,
-				page,
+				templates: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -65,7 +56,7 @@ export default class CampaignTemplates extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<CampaignTemplate
 						info={value}
-						onClose={() => this.fetchTemplates(this.state.page)}
+						onClose={() => this.fetchTemplates()}
 					/>
 				),
 				width: 300,
@@ -101,11 +92,9 @@ export default class CampaignTemplates extends React.Component {
 				<div className={"row row-spaced"}>
 					<div className={"col-md-12 row-spaced"}>
 						{this.state.templates
-							? <DynamicTable
+							? <Table
 								columns={columns}
 								data={this.state.templates}
-								pagination={this.state.pagination}
-								changePage={(p) => this.fetchTemplates(p)}
 							/>
 							: <Loading
 								height={250}
