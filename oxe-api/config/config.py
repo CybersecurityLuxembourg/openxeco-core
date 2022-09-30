@@ -23,6 +23,8 @@ ENVIRONMENT         = _getenv('ENVIRONMENT',    default='dev')
 PORT                = _getenv('PORT',           default='5000')
 
 JWT_SECRET_KEY      = _getenv('JWT_SECRET_KEY', mandatory=True)
+SECRET_KEY      = _getenv('SECRET_KEY', mandatory=True)
+SECURITY_SALT      = _getenv('SECURITY_SALT', mandatory=True)
 
 DB_CONFIG = {
     'drivername':   _getenv('DB_DRIVER',    default='mysql+pymysql'),
