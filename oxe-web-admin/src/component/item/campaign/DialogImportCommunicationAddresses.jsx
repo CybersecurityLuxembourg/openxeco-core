@@ -2,12 +2,11 @@ import React from "react";
 import "./DialogImportCommunicationAddresses.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest } from "../../utils/request.jsx";
-import DynamicTable from "../table/DynamicTable.jsx";
-import Campaign from "../item/Campaign.jsx";
-import Loading from "../box/Loading.jsx";
-import Chip from "../button/Chip.jsx";
-import { dictToURI } from "../../utils/url.jsx";
+import { getRequest } from "../../../utils/request.jsx";
+import DynamicTable from "../../table/DynamicTable.jsx";
+import Loading from "../../box/Loading.jsx";
+import Chip from "../../button/Chip.jsx";
+import { dictToURI } from "../../../utils/url.jsx";
 
 export default class DialogImportCommunicationAddresses extends React.Component {
 	constructor(props) {
@@ -76,9 +75,7 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 				Header: "Subject",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<Campaign
-						info={value}
-					/>
+					value.name
 				),
 				width: 300,
 			},

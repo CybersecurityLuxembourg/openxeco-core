@@ -1,248 +1,188 @@
 import React from "react";
 import "./CampaignAddresses.css";
+import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, getForeignRequest, postRequest } from "../../../utils/request.jsx";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
-import { validateUrlHandle } from "../../../utils/re.jsx";
-import DialogAddImage from "../../dialog/DialogAddImage.jsx";
+import DialogImportCommunicationAddresses from "./DialogImportCommunicationAddresses.jsx";
+import DialogImportDatabaseAddresses from "./DialogImportDatabaseAddresses.jsx";
+import Table from "../../table/Table.jsx";
+import { extractEmails } from "../../../utils/re.jsx";
+import Chip from "../../button/Chip.jsx";
 
 export default class CampaignAddresses extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			articleEnums: null,
-			showOptionalFields: false,
+			addresses: null,
+			manualAddressField: "",
 		};
 	}
 
 	componentDidMount() {
-		this.getArticleEnums();
+		this.fetchAddresses();
 	}
 
-	getArticleEnums() {
-		if (this.props.node && this.props.node.api_endpoint) {
-			const url = this.props.node.api_endpoint + "/public/get_public_article_enums";
-
-			getForeignRequest.call(this, url, (data2) => {
-				this.setState({
-					articleEnums: data2,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
+	fetchAddresses() {
+		getRequest.call(this, "campaign/get_campaign_addresses?campaign_id=" + this.props.campaign.id, (data) => {
+			this.setState({
+				addresses: data,
 			});
-		} else {
-			getRequest.call(this, "public/get_public_article_enums", (data2) => {
-				this.setState({
-					articleEnums: data2,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
-		}
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
-	saveArticleValue(prop, value) {
-		if (this.props.article[prop] !== value) {
-			const params = {
-				id: this.props.id,
-				[prop]: value,
-			};
+	addAddresses(addresses) {
+		const params = {
+			campaign_id: this.props.campaign.id,
+			addresses,
+		};
 
-			postRequest.call(this, "article/update_article", params, () => {
-				this.props.refresh();
-				nm.info("The property has been updated");
-			}, (response) => {
-				this.props.refresh();
-				nm.warning(response.statusText);
-			}, (error) => {
-				this.props.refresh();
-				nm.error(error.message);
-			});
+		postRequest.call(this, "campaign/add_campaign_adresses", params, () => {
+			this.fetchAddresses();
+			nm.info("The addresses has been added");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	deleteAddresses(addresses) {
+		const params = {
+			campaign_id: this.props.campaign.id,
+			addresses,
+		};
+
+		postRequest.call(this, "campaign/delete_campaign_adresses", params, () => {
+			this.fetchAddresses();
+			nm.info("The addresses has been deleted");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	getAddressesFromText() {
+		if (this.state.manualAddressField) {
+			return extractEmails(this.state.additionalAddressField);
 		}
+
+		return [];
 	}
 
 	render() {
-		if (!this.props.article || !this.state.articleEnums) {
+		if (!this.state.addresses || !this.props.campaign) {
 			return <Loading height={300} />;
 		}
 
+		const columns = [
+			{
+				Header: "Address",
+				accessor: "value",
+			},
+			{
+				id: "124",
+				Header: "Action",
+				accessor: (x) => x,
+				Cell: ({ cell: { value } }) => (
+					<button
+						className={"small-button red-button"}
+						onClick={() => this.removeAddress(value.email)}>
+						<i className="fas fa-trash-alt"/>
+					</button>
+				),
+				width: 60,
+			},
+		];
+
 		return (
 			<div id="CampaignAddresses" className={"row"}>
-				{this.props.editable
-					&& <div className="Article-action-buttons-wrapper">
-						<div className={"Article-action-buttons"}>
-							<h3>Quick actions</h3>
-							<div>
-								<DialogAddImage
-									trigger={
+				<div className="col-md-12">
+					<h2>Addresses</h2>
+				</div>
+
+				<div className="col-md-12 row-spaced">
+					<div className="right-buttons">
+						<DialogImportCommunicationAddresses
+							onConfirmation={(addresses) => this.addAddresses(addresses)}
+						/>
+						<DialogImportDatabaseAddresses
+							onConfirmation={(addresses) => this.addAddresses(addresses)}
+						/>
+						<Popup
+							className="Popup-small-size"
+							trigger={
+								<button>
+									<i className="fas fa-keyboard"/> Add addresses manually...
+								</button>
+							}
+							onOpen={this.fetchCommunications}
+							modal
+						>
+							{(close) => <div className="row">
+								<div className={"col-md-9"}>
+									<h2>Add addresses manually...</h2>
+								</div>
+								<div className={"col-md-3"}>
+									<div className="right-buttons">
 										<button
-											className={"blue-background"}
-											data-hover="Filter">
-											<i className="fas fa-plus"/> Add image
+											className={"grey-background"}
+											data-hover="Close"
+											data-active=""
+											onClick={close}>
+											<span><i className="far fa-times-circle"/></span>
 										</button>
-									}
-								/>
-							</div>
-						</div>
+									</div>
+								</div>
+
+								<div className={"col-md-12"}>
+									<FormLine
+										label={"Add addresses manually"}
+										type={"textarea"}
+										value={this.state.additionalAddressField}
+										onChange={(v) => this.changeState("additionalAddressField", v)}
+									/>
+								</div>
+
+								<div className="offset-md-6 col-md-6">
+									{this.getAddressesFromText().map((a) => <Chip
+										label={a}
+										key={a}
+									/>)}
+								</div>
+
+								<div className={"col-md-12"}>
+									<div className="right-buttons">
+										<button
+											onClick={() => this.addAddresses(this.getAddressesFromText())}
+											disabled={this.getAddressesFromText().length === 0}>
+											<i className="fas fa-plus"/> Add addresses
+										</button>
+									</div>
+								</div>
+							</div>}
+						</Popup>
 					</div>
-				}
-
-				<div className="col-md-12">
-					<h2>Global</h2>
 				</div>
 
-				<div className="col-md-12">
-					<h3>Identity</h3>
-				</div>
-
-				<div className="col-md-6 row-spaced">
-					<FormLine
-						type={"image"}
-						label={""}
-						value={this.props.article.image}
-						onChange={(v) => this.saveArticleValue("image", v)}
-						height={160}
-						disabled={!this.props.editable}
-						fullWidth={true}
-					/>
-				</div>
-
-				<div className="col-md-6">
-					<FormLine
-						label={"ID"}
-						value={this.props.article.id}
-						disabled={true}
-					/>
-					<FormLine
-						label={"Status"}
-						type={"select"}
-						value={this.props.article.status}
-						options={this.state.articleEnums === null
-							|| typeof this.state.articleEnums.status === "undefined" ? []
-							: this.state.articleEnums.status.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveArticleValue("status", v)}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						label={"Title"}
-						value={this.props.article.title}
-						onBlur={(v) => this.saveArticleValue("title", v)}
-						disabled={!this.props.editable}
-						fullWidth={true}
-					/>
-				</div>
-
-				<div className="col-md-12">
-					<h3>Definition</h3>
-				</div>
-
-				<div className="col-md-12">
-					<FormLine
-						label={"Type"}
-						type={"select"}
-						value={this.props.article.type}
-						options={this.state.articleEnums === null
-							|| typeof this.state.articleEnums.type === "undefined" ? []
-							: this.state.articleEnums.type.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveArticleValue("type", v)}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						label={"Handle"}
-						value={this.props.article.handle}
-						onBlur={(v) => this.saveArticleValue("handle", v)}
-						format={validateUrlHandle}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						type="editor"
-						label={"Abstract"}
-						value={this.props.article.abstract}
-						onBlur={(v) => this.saveArticleValue("abstract", v)}
-						format={(v) => !v || v.length < 500}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						type={"datetime"}
-						label={"Publication date"}
-						value={this.props.article.publication_date}
-						onBlur={(v) => this.saveArticleValue(
-							"publication_date",
-							typeof v === "string"
-								? this.props.article.start_date
-								: v.format("yyyy-MM-DDTHH:mm"),
-						)}
-						disabled={!this.props.editable}
-					/>
-				</div>
-
-				<div className="col-md-12">
-					{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
-						&& <div className="right-buttons">
-							<button
-								className="link-button"
-								onClick={() => this.setState({
-									showOptionalFields: !this.state.showOptionalFields,
-								})}>
-								{this.state.showOptionalFields ? "Hide" : "Show"}
-								&nbsp;optional fields for {this.props.article.type.toLowerCase()}
-							</button>
-						</div>}
-				</div>
-
-				<div className="col-md-12">
-					{(["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"Link"}
-							value={this.props.article.link}
-							onBlur={(v) => this.saveArticleValue("link", v)}
-							disabled={!this.props.editable}
-						/>}
-
-					{(this.props.article.type === "EVENT"
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"Start date"}
-							type={"datetime"}
-							value={this.props.article.start_date}
-							onBlur={(v) => this.saveArticleValue(
-								"start_date",
-								typeof v === "string" || v === null
-									? this.props.article.start_date
-									: v.format("yyyy-MM-DDTHH:mm"),
-							)}
-							disabled={!this.props.editable}
-						/>}
-
-					{(this.props.article.type === "EVENT"
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"End date"}
-							type={"datetime"}
-							value={this.props.article.end_date}
-							onBlur={(v) => this.saveArticleValue(
-								"end_date",
-								typeof v === "string" || v === null
-									? this.props.article.start_date
-									: v.format("yyyy-MM-DDTHH:mm"),
-							)}
-							disabled={!this.props.editable}
-						/>}
-
-					{(this.props.article.type === "JOB OFFER"
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"External reference"}
-							value={this.props.article.external_reference}
-							disabled={true}
-						/>}
+				<div className="col-md-12 row-spaced">
+					{this.state.addresses
+						? <Table
+							columns={columns}
+							data={this.state.addresses}
+							showBottomBar={true}
+						/>
+						: <Loading
+							height={300}
+						/>
+					}
 				</div>
 			</div>
 		);

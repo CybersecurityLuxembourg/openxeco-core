@@ -2,11 +2,11 @@ import React from "react";
 import "./DialogImportDatabaseAddresses.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest } from "../../utils/request.jsx";
-import FormLine from "../button/FormLine.jsx";
-import Chip from "../button/Chip.jsx";
-import Loading from "../box/Loading.jsx";
-import { dictToURI } from "../../utils/url.jsx";
+import { getRequest } from "../../../utils/request.jsx";
+import FormLine from "../../button/FormLine.jsx";
+import Chip from "../../button/Chip.jsx";
+import Loading from "../../box/Loading.jsx";
+import { dictToURI } from "../../../utils/url.jsx";
 
 export default class DialogImportDatabaseAddresses extends React.Component {
 	constructor(props) {
