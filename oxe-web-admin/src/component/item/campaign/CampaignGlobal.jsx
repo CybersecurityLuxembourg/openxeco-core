@@ -1,7 +1,7 @@
 import React from "react";
 import "./CampaignGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { postRequest } from "../../../utils/request.jsx";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 
@@ -10,7 +10,24 @@ export default class CampaignGlobal extends React.Component {
 		super(props);
 
 		this.state = {
+			templates: null,
 		};
+	}
+
+	componentDidMount() {
+		this.fetchTemplates();
+	}
+
+	fetchTemplates() {
+		getRequest.call(this, "campaign/get_campaign_templates", (data) => {
+			this.setState({
+				templates: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	updateCampaign(prop, value) {

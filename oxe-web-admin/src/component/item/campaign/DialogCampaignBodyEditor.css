@@ -1,11 +1,11 @@
 
-.DialogTemplateEditor-content {
+.DialogCampaignBodyEditor-content {
     z-index: 900;
     height: 100% !important;
     width: 100% !important;
 }
 
-.DialogTemplateEditor-lock {
+.DialogCampaignBodyEditor-lock {
     z-index: 200;
     position: fixed;
     width: 100%;
@@ -16,7 +16,7 @@
         135deg, rgba(150, 150, 150, 0.5), rgba(150, 150, 150, 0.5) 1px, rgba(150, 150, 150, 0.5) 1px, rgba(0, 0, 0, 0.5) 4px );
 }
 
-.DialogTemplateEditor-lock-buttons {
+.DialogCampaignBodyEditor-lock-buttons {
     position: fixed;
     bottom: 20px !important;
     right: 30px !important;
@@ -26,26 +26,26 @@
     padding: 2px 10px 8px 10px;
 }
 
-.DialogTemplateEditor-lock-buttons button {
+.DialogCampaignBodyEditor-lock-buttons button {
     display: block !important;
     opacity: 1;
     width: 100%;
     text-align: left;
 }
 
-.DialogTemplateEditor-customised {
+.DialogCampaignBodyEditor-customised {
     z-index: 250;
     position: relative;
     background-color: #EEE;
 }
 
-.DialogTemplateEditor-preview-box {
+.DialogCampaignBodyEditor-preview-box {
     display: block;
     border: solid 5px lightgrey;
     background-color: white;
     width: 100%;
 }
 
-.DialogTemplateEditor-preview-box * {
+.DialogCampaignBodyEditor-preview-box * {
     all: revert;
 }
