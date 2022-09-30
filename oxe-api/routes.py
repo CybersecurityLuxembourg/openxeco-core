@@ -138,6 +138,11 @@ from resource.public.get_public_settings import GetPublicSettings
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.public.get_public_vcard import GetPublicVcard
+from resource.public.get_public_countries import GetPublicCountries
+from resource.public.get_public_domains import GetPublicDomains
+from resource.public.get_public_expertise import GetPublicExpertise
+from resource.public.get_public_industries import GetPublicIndustries
+from resource.public.get_public_professions import GetPublicProfessions
 from resource.relationship.add_relationship import AddRelationship
 from resource.relationship.add_relationship_type import AddRelationshipType
 from resource.relationship.delete_relationship import DeleteRelationship
