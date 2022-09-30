@@ -41,6 +41,7 @@ COPY migrations     /app/migrations
 COPY resource       /app/resource
 COPY template       /app/template
 COPY utils          /app/utils
+COPY seeder         /app/seeder
 
 COPY routes.py      /app/
 COPY app.py 		/app/app.py
