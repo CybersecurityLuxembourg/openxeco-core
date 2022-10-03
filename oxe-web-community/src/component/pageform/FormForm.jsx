@@ -239,9 +239,11 @@ export default class FormForm extends React.Component {
 				{this.state.questions
 					? <div className={"row"}>
 						<div className="col-md-12">
-							{this.state.questions.map((q) => (
-								this.getQuestionAndAnswer(q)
-							))}
+							{this.state.questions
+								.sort((a, b) => a.position - b.position)
+								.map((q) => (
+									this.getQuestionAndAnswer(q)
+								))}
 						</div>
 					</div>
 					: <div className={"row"}>
