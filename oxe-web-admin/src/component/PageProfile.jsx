@@ -377,26 +377,33 @@ export default class PageProfile extends React.Component {
 					<div className="col-md-8">
 						<div className={"row row-spaced"}>
 							<div className="col-md-12 PageProfile-white-box">
-								<h3>Accessibility</h3>
-								<br/>
+								<div className={"row"}>
+									<div className="col-md-12">
+										<h3>Accessibility</h3>
+										<br/>
 
-								<FormLine
-									label={"Make my profile public"}
-									type={"checkbox"}
-									value={this.state.user.is_vcard_public}
-									onChange={(v) => this.updateUser("is_vcard_public", v)}
-								/>
-								<FormLine
-									label={"Handle"}
-									disabled={true}
-									value={this.state.user.handle}
-								/>
-								<div className="right-buttons">
-									<button
-										onClick={this.generateHandle}
-										disabled={this.state.value === null}>
-										Generate new handle
-									</button>
+										<FormLine
+											label={"Make my profile public"}
+											type={"checkbox"}
+											value={this.state.user.is_vcard_public}
+											onChange={(v) => this.updateUser("is_vcard_public", v)}
+										/>
+										<FormLine
+											label={"Handle"}
+											disabled={true}
+											value={this.state.user.handle}
+										/>
+									</div>
+
+									<div className="col-md-12">
+										<div className="right-buttons">
+											<button
+												onClick={this.generateHandle}
+												disabled={this.state.value === null}>
+												Generate new handle
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div className="col-md-12 PageProfile-white-box">
@@ -426,63 +433,69 @@ export default class PageProfile extends React.Component {
 								/>
 							</div>
 							<div className="col-md-12 PageProfile-white-box">
-								<h3>Social media and website</h3>
-								<br/>
+								<div className={"row"}>
+									<div className="col-md-12">
+										<h3>Social media and website</h3>
+										<br/>
 
-								{this.getVcardValue("socialprofile")
-									? [].concat(this.getVcardValue("socialprofile")).map((s, i) => (
-										<div
-											className="row row-spaced"
-											key={i}>
-											<div className="col-md-6">
-												<FormLine
-													label={"Plateform"}
-													type={"select"}
-													options={[
-														{ label: "Personal website", value: "Personal website" },
-														{ label: "LinkedIn", value: "LinkedIn" },
-														{ label: "Twitter", value: "Twitter" },
-														{ label: "Instragram", value: "Instragram" },
-														{ label: "Medium", value: "Medium" },
-														{ label: "GitHub", value: "GitHub" },
-														{ label: "BitBucket", value: "BitBucket" },
-														{ label: "Other", value: "Other" },
-													]}
-													value={s.type}
-													onChange={(v) => this.updateSocialeProfilePlatform(i, v)}
-													fullWidth={true}
-												/>
-											</div>
-											<div className="col-md-6">
-												<FormLine
-													label={"Link"}
-													value={s.valueOf() ? s.valueOf() : ""}
-													onChange={(v) => this.updateSocialeProfileLink(i, v)}
-													fullWidth={true}
-												/>
-											</div>
-											<div className="col-md-12">
-												<div className="right-buttons">
-													<button
-														className={"red-background"}
-														onClick={() => this.deleteSocialeProfile(i)}>
-														<i className="fas fa-trash-alt"/>
-													</button>
+										{this.getVcardValue("socialprofile")
+											? [].concat(this.getVcardValue("socialprofile")).map((s, i) => (
+												<div
+													className="row row-spaced"
+													key={i}>
+													<div className="col-md-6">
+														<FormLine
+															label={"Plateform"}
+															type={"select"}
+															options={[
+																{ label: "Personal website", value: "Personal website" },
+																{ label: "LinkedIn", value: "LinkedIn" },
+																{ label: "Twitter", value: "Twitter" },
+																{ label: "Instragram", value: "Instragram" },
+																{ label: "Medium", value: "Medium" },
+																{ label: "GitHub", value: "GitHub" },
+																{ label: "BitBucket", value: "BitBucket" },
+																{ label: "Other", value: "Other" },
+															]}
+															value={s.type}
+															onChange={(v) => this.updateSocialeProfilePlatform(i, v)}
+															fullWidth={true}
+														/>
+													</div>
+													<div className="col-md-6">
+														<FormLine
+															label={"Link"}
+															value={s.valueOf() ? s.valueOf() : ""}
+															onChange={(v) => this.updateSocialeProfileLink(i, v)}
+															fullWidth={true}
+														/>
+													</div>
+													<div className="col-md-12">
+														<div className="right-buttons">
+															<button
+																className={"red-background"}
+																onClick={() => this.deleteSocialeProfile(i)}>
+																<i className="fas fa-trash-alt"/>
+															</button>
+														</div>
+													</div>
 												</div>
-											</div>
-										</div>
-									))
-									: <Message
-										text={"No social media provided"}
-										height={100}
-									/>
-								}
+											))
+											: <Message
+												text={"No social media provided"}
+												height={100}
+											/>
+										}
+									</div>
 
-								<div className="right-buttons">
-									<button
-										onClick={() => this.addCurrentVcardSocialeProfile()}>
-										<i className="fas fa-plus"/> Add
-									</button>
+									<div className="col-md-12">
+										<div className="right-buttons">
+											<button
+												onClick={() => this.addCurrentVcardSocialeProfile()}>
+												<i className="fas fa-plus"/> Add
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

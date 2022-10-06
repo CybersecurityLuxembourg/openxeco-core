@@ -493,13 +493,15 @@ export default class SettingGlobal extends React.Component {
 							value={this.state.newValue}
 							onChange={(v) => this.changeState("newValue", v)}
 						/>
-						<div className="col-xl-12 right-buttons">
-							<button
-								className={"blue-background"}
-								onClick={() => this.addSetting(this.state.newProperty, this.state.newValue)}
-								disabled={this.state.newProperty === null || this.state.newValue === null}>
-								<i className="fas fa-plus"/> Add setting
-							</button>
+						<div className="col-xl-12">
+							<div className="right-buttons">
+								<button
+									className={"blue-background"}
+									onClick={() => this.addSetting(this.state.newProperty, this.state.newValue)}
+									disabled={this.state.newProperty === null || this.state.newValue === null}>
+									<i className="fas fa-plus"/> Add setting
+								</button>
+							</div>
 						</div>
 					</div>
 

@@ -85,6 +85,7 @@ export default class SettingMail extends React.Component {
 						</div>
 					</div>
 				</div>
+
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>New account mail</h2>
@@ -102,9 +103,10 @@ export default class SettingMail extends React.Component {
 						/>
 					</div>
 				</div>
-				<div className={"row row-spaced"}>
-					{this.state.newAccountMail !== null
-						? <div className="col-md-12">
+
+				{this.state.newAccountMail !== null
+					? <div className={"row row-spaced"}>
+						<div className="col-md-12">
 							<FormLine
 								label={"Content"}
 								type={"textarea"}
@@ -112,6 +114,8 @@ export default class SettingMail extends React.Component {
 								onChange={(v) => this.changeState("newAccountMail", v)}
 								fullWidth={true}
 							/>
+						</div>
+						<div className="col-md-12">
 							<div className="right-buttons">
 								<button
 									onClick={() => this.saveTemplate("new_account")}>
@@ -119,11 +123,12 @@ export default class SettingMail extends React.Component {
 								</button>
 							</div>
 						</div>
-						: <Loading
-							height={300}
-						/>
-					}
-				</div>
+					</div>
+					: <Loading
+						height={300}
+					/>
+				}
+
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>Reset password mail</h2>
@@ -142,9 +147,10 @@ export default class SettingMail extends React.Component {
 						/>
 					</div>
 				</div>
-				<div className={"row row-spaced"}>
-					{this.state.resetPasswordMail !== null
-						? <div className="col-md-12">
+
+				{this.state.resetPasswordMail !== null
+					? <div className={"row row-spaced"}>
+						<div className="col-md-12">
 							<FormLine
 								label={"Content"}
 								type={"textarea"}
@@ -152,6 +158,8 @@ export default class SettingMail extends React.Component {
 								onChange={(v) => this.changeState("resetPasswordMailreset_password", v)}
 								fullWidth={true}
 							/>
+						</div>
+						<div className="col-md-12">
 							<div className="right-buttons">
 								<button
 									onClick={() => this.saveTemplate("reset_password")}>
@@ -159,11 +167,11 @@ export default class SettingMail extends React.Component {
 								</button>
 							</div>
 						</div>
-						: <Loading
-							height={300}
-						/>
-					}
-				</div>
+					</div>
+					: <Loading
+						height={300}
+					/>
+				}
 			</div>
 		);
 	}
