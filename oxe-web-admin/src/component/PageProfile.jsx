@@ -342,6 +342,8 @@ export default class PageProfile extends React.Component {
 													format={validatePassword}
 													type={"password"}
 												/>
+											</div>
+											<div className="col-md-12">
 												<div className="right-buttons">
 													<button
 														onClick={() => this.changePassword(close)}
