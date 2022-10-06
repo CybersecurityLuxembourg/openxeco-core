@@ -1,0 +1,27 @@
+#PageAddProfile {
+    /* height: 100vh;
+    overflow: auto; */
+
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+
+.select-with-info {
+    width: 100%;
+    height: 100%;
+}
+
+.select-with-info .select-name {
+    position: relative;
+}
+
+.select-with-info .select-info-toggle {
+    position: relative;
+}
+
+.select-with-info .select-info-toggle .select-info {
+    display: hidden;
+    font-size: 0.8rem;
+}
