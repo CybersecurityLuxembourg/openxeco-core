@@ -29,19 +29,24 @@ export default class Login extends React.Component {
 		case "create_account":
 			view = "create";
 			break;
+		case "verify_account":
+			view = "verify";
+			break;
 		default:
 			view = "login";
 		}
 
 		this.state = {
-			email: null,
-			createAccountEmail: null,
-			password: null,
-			passwordConfirmation: null,
+			email: "",
+			createAccountEmail: "",
+			password: "",
+			passwordConfirmation: "",
 			view,
 			partOfEntity: false,
 			entity: "",
-			entityDepartment: null,
+			entityDepartment: "",
+			checkedVerified: false,
+			verified: false,
 		};
 	}
 
@@ -54,11 +59,14 @@ export default class Login extends React.Component {
 			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
 		}
 
-		// Log in the user if there is an existing cookie
+		// Get the token if the user reaches the app though acounnt verification URL
 
-		if (this.props.cookies.get("access_token_cookie")) {
-			getRequest.call(this, "private/get_my_user", (data) => {
-				this.props.connect(data.email);
+		if (getUrlParameter("action") === "verify_account") {
+			getRequest.call(this, "account/verify_account/" + getUrlParameter("token"), () => {
+				this.setState({
+					checkedVerified: true,
+					verified: true,
+				});
 			}, (response2) => {
 				nm.warning(response2.statusText);
 			}, (error) => {
@@ -66,9 +74,30 @@ export default class Login extends React.Component {
 			});
 		}
 
-		// This function to notify if the password has been reset correctly
+		// Log in the user if there is an existing cookie
 
+		if (this.props.cookies.get("access_token_cookie")) {
+			getRequest.call(this, "private/get_my_user", (data) => {
+				this.props.connect(data.email);
+				this.fetchProfile();
+			}, (response2) => {
+				nm.warning(response2.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
+		// This function to notify if the password has been reset correctly
 		Login.notifyForPasswordReset();
+	}
+
+	fetchProfile() {
+		getRequest.call(this, "private/get_my_profile", () => {
+			this.props.markProfileSet();
+		}, () => {
+			nm.warning("Please complete your profile to continue");
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	componentDidUpdate(_, prevState) {
@@ -108,12 +137,13 @@ export default class Login extends React.Component {
 	createAccount() {
 		const params = {
 			email: this.state.createAccountEmail,
+			password: this.state.password,
 			entity: this.state.entity && this.state.entity.length > 0 ? this.state.entity : null,
 			department: this.state.entityDepartment ? this.state.entityDepartment : null,
 		};
 
 		postRequest.call(this, "account/create_account", params, () => {
-			nm.info("An email has been sent to your mailbox with a generated password");
+			nm.info("An email has been sent to your mailbox with a verification link");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -453,7 +483,30 @@ export default class Login extends React.Component {
 										autofocus={true}
 										onKeyDown={this.onKeyDown}
 									/>
-									<br/>
+									<FormLine
+										label="Password"
+										fullWidth={true}
+										type={"password"}
+										value={this.state.password}
+										onChange={(v) => this.changeState("password", v)}
+										autofocus={true}
+										onKeyDown={this.onKeyDown}
+									/>
+									<br />
+									{!validatePassword(this.state.password)
+										&& <div>
+											<div className="Password-prompt">
+												Your password should:
+												<ul>
+													<li>be between 8 and 20 characters long</li>
+													<li>contain at least one uppercase letter</li>
+													<li>contain at least one lowercase letter</li>
+													<li>contain at least one number</li>
+												</ul>
+											</div>
+											<br />
+										</div>
+									}
 									{this.props.settings
 										&& this.props.settings.ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION === "TRUE"
 										&& <div>
@@ -496,7 +549,9 @@ export default class Login extends React.Component {
 										<button
 											className="blue-button"
 											onClick={this.createAccount}
-											disabled={!validateEmail(this.state.createAccountEmail)
+											disabled={
+												!validateEmail(this.state.createAccountEmail)
+												|| !validatePassword(this.state.password)
 												|| (this.state.partOfEntity
 													&& (
 														!this.state.entity
@@ -612,6 +667,70 @@ export default class Login extends React.Component {
 										Back to login
 									</button>
 								</div>
+							</div>
+						}
+
+						{this.state.view === "verify"
+							&& <div className="row">
+
+								<div className="col-md-12">
+									<div className="Login-title">
+										{this.props.settings !== null
+											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
+											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
+											: "PRIVATE SPACE"
+										}
+
+										{this.props.settings !== null
+											&& this.props.settings.PROJECT_NAME !== undefined
+											&& <div className={"Login-title-small"}>
+												{this.props.settings.PROJECT_NAME} private space
+											</div>
+										}
+									</div>
+								</div>
+
+								{this.state.checkedVerified === false
+									&& <div className="col-md-12">
+										<div className="left-buttons pl-2">
+											Verifying Account...
+										</div>
+									</div>
+								}
+
+								{this.state.verified === true
+									&& <div className="col-md-12">
+										<div className="left-buttons pl-2">
+											Account Verfied Successfully!
+											<button
+												className="link-button"
+												onClick={() => this.changeState("view", "login")}
+											>
+												Proceed to Login
+											</button>
+										</div>
+									</div>
+								}
+
+								{this.state.checkedVerified === true && this.state.verified === false
+									&& <div className="col-md-12">
+										<div className="left-buttons pl-2">
+											Account Verification Failed!
+											<button
+												className="link-button"
+												onClick={() => this.changeState("view", "login")}
+											>
+												Proceed to Login
+											</button>
+										</div>
+									</div>
+								}
+							</div>
+						}
+
+						{this.state.view === "add_profile"
+							&& <div className="row">
+								Add Profile
 							</div>
 						}
 					</div>

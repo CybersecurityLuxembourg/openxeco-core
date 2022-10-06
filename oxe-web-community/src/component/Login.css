@@ -36,6 +36,14 @@
     min-height: 500px;
 }
 
+.Password-prompt {
+    padding: 1rem;
+    background-color: #fdfdfd;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    color: #8a8a8a;
+}
+
 .Login-title {
     font-size: 45px;
     line-height: 1;

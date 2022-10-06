@@ -10,6 +10,7 @@ import Login from "./component/Login.jsx";
 import { getApiURL } from "./utils/env.jsx";
 import { getRequest } from "./utils/request.jsx";
 import DialogMessage from "./component/dialog/DialogMessage.jsx";
+import PageAddProfile from "./component/PageAddProfile.jsx";
 
 class App extends React.Component {
 	constructor(props) {
@@ -17,10 +18,12 @@ class App extends React.Component {
 
 		this.connect = this.connect.bind(this);
 		this.getSettings = this.getSettings.bind(this);
+		this.markProfileSet = this.markProfileSet.bind(this);
 
 		this.state = {
 			settings: null,
 			logged: false,
+			profile: false,
 			email: null,
 			openMobileDialog: window
 				.matchMedia("only screen and (max-width: 760px)").matches,
@@ -58,24 +61,39 @@ class App extends React.Component {
 		});
 	}
 
+	markProfileSet() {
+		this.setState({
+			profile: true,
+		});
+	}
+
 	render() {
 		return (
 			<div id="App">
 				{this.state.logged
-					? <BrowserRouter>
-						<InsideApp
-							settings={this.state.settings}
-							email={this.state.email}
-							cookies={this.props.cookies}
-						/>
-					</BrowserRouter>
+					? <>
+						{this.state.profile
+							? <BrowserRouter>
+								<InsideApp
+									settings={this.state.settings}
+									email={this.state.email}
+									cookies={this.props.cookies}
+								/>
+							</BrowserRouter>
+							: <PageAddProfile
+								settings={this.state.settings}
+								markProfileSet={this.markProfileSet}
+								cookies={this.props.cookies}
+							/>
+						}
+					</>
 					: <Login
 						settings={this.state.settings}
 						connect={this.connect}
+						markProfileSet={this.markProfileSet}
 						cookies={this.props.cookies}
 					/>
 				}
-
 				<NotificationContainer/>
 
 				<DialogMessage

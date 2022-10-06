@@ -12,6 +12,7 @@ import PageEntity from "./PageEntity.jsx";
 import PageProfile from "./PageProfile.jsx";
 import PageContact from "./PageContact.jsx";
 import { getRequest } from "../utils/request.jsx";
+import PageAddProfile from "./PageAddProfile.jsx";
 
 export default class InsideApp extends React.Component {
 	constructor(props) {
@@ -32,7 +33,6 @@ export default class InsideApp extends React.Component {
 	componentDidMount() {
 		this.getNotifications();
 		this.getMyEntities();
-
 		window.onfocus = () => {
 			this.getMyEntities();
 		};
@@ -119,6 +119,10 @@ export default class InsideApp extends React.Component {
 							myEntities={this.state.myEntities}
 							{...props}
 						/>}/>
+						<Route path="/add_profile" render={(props) => <PageAddProfile
+							changeMenu={this.changeMenu}
+							{...props}
+						/>} />
 						<Route path="/generator" render={(props) => <PageLogoGenerator
 							settings={this.props.settings}
 							myEntities={this.state.myEntities}

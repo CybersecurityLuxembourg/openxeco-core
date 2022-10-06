@@ -6,6 +6,7 @@ from resource.account.forgot_password import ForgotPassword
 from resource.account.login import Login
 from resource.account.refresh import Refresh
 from resource.account.reset_password import ResetPassword
+from resource.account.verify_account import VerifyAccount
 from resource.analytics.get_ecosystem_activity import GetEcosystemActivity
 from resource.article.copy_article_version import CopyArticleVersion
 from resource.article.get_articles import GetArticles
@@ -117,6 +118,7 @@ from resource.private.update_my_article import UpdateMyArticle
 from resource.private.update_my_article_content import UpdateMyArticleContent
 from resource.private.update_my_form_answer import UpdateFormAnswer
 from resource.private.update_my_user import UpdateMyUser
+from resource.private.get_my_profile import GetMyProfile
 from resource.public.get_public_article_content import GetPublicArticleContent
 from resource.public.get_public_article_enums import GetArticleEnums
 from resource.public.get_public_article import GetPublicArticle
@@ -138,6 +140,11 @@ from resource.public.get_public_settings import GetPublicSettings
 from resource.public.get_public_taxonomy_values import GetPublicTaxonomyValues
 from resource.public.get_public_taxonomy import GetPublicTaxonomy
 from resource.public.get_public_vcard import GetPublicVcard
+from resource.public.get_public_countries import GetPublicCountries
+from resource.public.get_public_domains import GetPublicDomains
+from resource.public.get_public_expertise import GetPublicExpertise
+from resource.public.get_public_industries import GetPublicIndustries
+from resource.public.get_public_professions import GetPublicProfessions
 from resource.relationship.add_relationship import AddRelationship
 from resource.relationship.add_relationship_type import AddRelationshipType
 from resource.relationship.delete_relationship import DeleteRelationship
@@ -160,6 +167,7 @@ from resource.user.add_user import AddUser
 from resource.user.add_user_entity import AddUserEntity
 from resource.user.add_user_group import AddUserGroup
 from resource.user.add_user_group_right import AddUserGroupRight
+from resource.user.add_user_profile import AddUserProfile
 from resource.user.delete_user import DeleteUser
 from resource.user.delete_user_entity import DeleteUserEntity
 from resource.user.delete_user_group import DeleteUserGroup
