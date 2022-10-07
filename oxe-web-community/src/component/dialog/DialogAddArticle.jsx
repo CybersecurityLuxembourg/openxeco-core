@@ -14,7 +14,7 @@ export default class DialogAddArticle extends React.Component {
 
 		this.state = {
 			title: null,
-			entity: this.props.myEntities !== null
+			entity_id: this.props.myEntities !== null
 				&& this.props.myEntities !== undefined
 				&& this.props.myEntities.length > 0
 				? this.props.myEntities[0].id
@@ -26,7 +26,7 @@ export default class DialogAddArticle extends React.Component {
 		if ((prevProps.myEntities === null || prevProps.myEntities === undefined)
 			&& Array.isArray(this.props.myEntities)
 			&& this.props.myEntities.length > 0) {
-			this.setState({ entity: this.props.myEntities[0].id });
+			this.setState({ entity_id: this.props.myEntities[0].id });
 		}
 	}
 
@@ -73,14 +73,14 @@ export default class DialogAddArticle extends React.Component {
 							<FormLine
 								label={"Entity"}
 								type={"select"}
-								value={this.state.entity}
+								value={this.state.entity_id}
 								options={this.props.myEntities === null
 									|| this.props.myEntities === undefined
 									? []
 									: this.props.myEntities.map((o) => ({ label: o.name, value: o.id }))
 								}
-								onChange={(v) => this.changeState("entity", v)}
-								format={this.state.entity === null}
+								onChange={(v) => this.changeState("entity_id", v)}
+								format={this.state.entity_id === null}
 							/>
 						</div>
 
@@ -94,7 +94,7 @@ export default class DialogAddArticle extends React.Component {
 								<button
 									onClick={() => this.addArticle(close)}
 									disabled={!validateArticleTitle(this.state.title)
-										|| this.state.entity === null}>
+										|| this.state.entity_id === null}>
 									<span><i className="fas fa-plus"/> Add article</span>
 								</button>
 							</div>

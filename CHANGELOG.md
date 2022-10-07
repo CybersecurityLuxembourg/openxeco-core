@@ -1,19 +1,40 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.13.2] - 2022-XX-XX
+## [1.13.4] - 2022-09-21
+
+### Fixed
+
+- Article creation on oxe-web-community
+- Article content modification on oxe-web-community
+
+## [1.13.3] - 2022-09-20
+
+### Changed
+
+- Size of the 'headline' column of the Entity table in database structure
+
+## [1.13.2] - 2022-09-15
+
+### Added
+
+- Add form/extract_form resource on API
+- "Export" tab on Form item on oxe-web-admin
 
 ### Changed
 
 - Change from log to error dialog when failing to load a file
 - Dependent package versions
 - Recommended NodeJS version to 16.17.0
+- Review doc of entity/extract_entities
+- Server installation documentation
 
 ### Fixed
 
 - ISSUE#39 FIX: Change password reset box to show in green on success rather than in red
 - ISSUE#41 FIX: Claiming an entity requires logout/login to effect change in the profile
 - Vulnerabilities on dev packages dependencies
+- The answer is deleted when empty field on forms on oxe-web-community
 
 ## [1.13.1] - 2022-08-31
 

@@ -26,10 +26,9 @@ class ExtractEntities(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Extract an excel file of the entities',
+         description='Extract the entities into a file',
          responses={
              "200": {},
-             "422": {"description": "Object not found"},
          })
     @use_kwargs({
         'name': fields.Str(required=False),
@@ -163,7 +162,7 @@ class ExtractEntities(MethodResource, Resource):
         # Prepare final export
 
         if 'format' not in kwargs or kwargs['format'] != "json":
-            filename = f"Export - Entities - {datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.xlsx"
+            filename = f"Export - entities - {datetime.now().strftime('%Y-%m-%d')}.xlsx"
 
             res = Response(
                 self.prepare_xlsx(df),
