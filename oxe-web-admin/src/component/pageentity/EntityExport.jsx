@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getBlobRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
 import { dictToURI } from "../../utils/url.jsx";
+import { dateToString } from "../../utils/date.jsx";
 import DialogEntityFilter from "../dialog/DialogEntityFilter.jsx";
 
 export default class EntityExport extends React.Component {
@@ -41,15 +42,13 @@ export default class EntityExport extends React.Component {
 			const url = window.URL.createObjectURL(new Blob([blob]));
 			const link = document.createElement("a");
 			link.href = url;
-			link.setAttribute("download", "Entity export.xlsx");
+			link.setAttribute("download", "Export - entities - " + dateToString(new Date()) + ".xlsx");
 			document.body.appendChild(link);
 			link.click();
 			link.parentNode.removeChild(link);
 		}, (response) => {
-			this.setState({ loading: false });
 			nm.warning(response.statusText);
 		}, (error) => {
-			this.setState({ loading: false });
 			nm.error(error.message);
 		});
 	}
