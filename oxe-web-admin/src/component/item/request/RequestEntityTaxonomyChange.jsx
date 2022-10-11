@@ -61,8 +61,8 @@ export default class RequestEntityTaxonomyChange extends Component {
 		}
 
 		const params = {
-			entity: this.props.entityId,
-			value,
+			entity_id: this.props.entityId,
+			taxonomy_value_id: value,
 		};
 
 		postRequest.call(this, "taxonomy/add_taxonomy_assignment", params, () => {
@@ -87,8 +87,8 @@ export default class RequestEntityTaxonomyChange extends Component {
 		}
 
 		const params = {
-			entity: this.props.entityId,
-			value,
+			entity_id: this.props.entityId,
+			taxonomy_value_id: value,
 		};
 
 		postRequest.call(this, "taxonomy/delete_taxonomy_assignment", params, () => {
