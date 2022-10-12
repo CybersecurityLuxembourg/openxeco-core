@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.13.6] - 2022-10-12
+
+### Fixed
+
+- public/get_public_related_articles API resource 
+
 ## [1.13.5] - 2022-10-11
 
 ### Fixed
