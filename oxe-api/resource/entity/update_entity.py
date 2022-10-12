@@ -40,6 +40,17 @@ class UpdateEntity(MethodResource, Resource):
         'twitter_url': fields.Str(required=False, allow_none=True),
         'youtube_url': fields.Str(required=False, allow_none=True),
         'discord_url': fields.Str(required=False, allow_none=True),
+        'address_1': fields.Str(required=False, allow_none=True),
+        'address_2': fields.Str(required=False, allow_none=True),
+        'postal_code': fields.Str(required=False, allow_none=True),
+        'country': fields.Str(required=False, allow_none=True),
+        'city': fields.Str(required=False, allow_none=True),
+        'entity_type': fields.Str(required=False, allow_none=True),
+        'vat_number': fields.Str(required=False, allow_none=True),
+        'size': fields.Str(required=False, allow_none=True),
+        'sector': fields.Str(required=False, allow_none=True),
+        'industry': fields.Str(required=False, allow_none=True),
+        'involvement': fields.Str(required=False, allow_none=True),
     })
     @jwt_required
     @verify_admin_access

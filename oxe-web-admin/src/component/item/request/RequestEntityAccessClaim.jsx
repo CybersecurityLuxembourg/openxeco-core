@@ -15,16 +15,17 @@ export default class RequestEntityAccessClaim extends Component {
 		this.state = {
 			userEntitiesEnums: null,
 			department: props.data && props.data.department ? props.data.department : null,
+			departments: [],
 		};
 	}
 
 	onOpen() {
-		getRequest.call(this, "user/get_user_entity_enums", (data) => {
+		getRequest.call(this, "public/get_public_departments", (data) => {
 			this.setState({
-				userEntitiesEnums: data,
+				departments: data,
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
+		}, (error) => {
+			nm.warning(error.message);
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -104,15 +105,15 @@ export default class RequestEntityAccessClaim extends Component {
 						</div>
 
 						<div className="col-md-12">
-							<h3>Department</h3>
+							<h3>Details</h3>
 
-							{this.state.userEntitiesEnums
+							{this.state.departments
 								? <FormLine
 									label={"Department"}
 									type={"select"}
-									options={this.state.userEntitiesEnums
-										? this.state.userEntitiesEnums.department
-											.map((d) => ({ label: d, value: d }))
+									options={this.state.departments
+										? this.state.departments
+											.map((d) => ({ label: d.name, value: d.name }))
 										: []
 									}
 									value={this.state.department}

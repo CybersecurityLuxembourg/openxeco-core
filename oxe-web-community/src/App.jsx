@@ -18,12 +18,12 @@ class App extends React.Component {
 
 		this.connect = this.connect.bind(this);
 		this.getSettings = this.getSettings.bind(this);
-		this.markProfileSet = this.markProfileSet.bind(this);
+		this.setUserStatus = this.setUserStatus.bind(this);
 
 		this.state = {
 			settings: null,
 			logged: false,
-			profile: false,
+			user_status: "",
 			email: null,
 			openMobileDialog: window
 				.matchMedia("only screen and (max-width: 760px)").matches,
@@ -61,9 +61,9 @@ class App extends React.Component {
 		});
 	}
 
-	markProfileSet() {
+	setUserStatus(status) {
 		this.setState({
-			profile: true,
+			user_status: status,
 		});
 	}
 
@@ -71,26 +71,41 @@ class App extends React.Component {
 		return (
 			<div id="App">
 				{this.state.logged
-					? <>
-						{this.state.profile
-							? <BrowserRouter>
-								<InsideApp
-									settings={this.state.settings}
-									email={this.state.email}
-									cookies={this.props.cookies}
-								/>
-							</BrowserRouter>
-							: <PageAddProfile
+					? <BrowserRouter>
+						{this.state.user_status === "ACCEPTED"
+							&& <InsideApp
 								settings={this.state.settings}
-								markProfileSet={this.markProfileSet}
+								email={this.state.email}
 								cookies={this.props.cookies}
 							/>
 						}
-					</>
+
+						{this.state.user_status === "REJECTED"
+							&& <div className="notification-centre">
+								You request to create an account has not been accepted. We have
+								sent you and email explaining the reasons.
+							</div>
+						}
+
+						{this.state.user_status === "REQUESTED"
+							&& <div className="notification-centre">
+								We will be reviewing your registration. We will contact you shortly
+								by email once the account is approved.
+							</div>
+						}
+
+						{this.state.user_status === "VERIFIED"
+							&& <PageAddProfile
+								settings={this.state.settings}
+								setUserStatus={this.setUserStatus}
+								cookies={this.props.cookies}
+							/>
+						}
+					</BrowserRouter>
 					: <Login
 						settings={this.state.settings}
 						connect={this.connect}
-						markProfileSet={this.markProfileSet}
+						setUserStatus={this.setUserStatus}
 						cookies={this.props.cookies}
 					/>
 				}

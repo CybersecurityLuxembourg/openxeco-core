@@ -45,7 +45,7 @@ class VerifyAccount(MethodResource, Resource):
         user = data[0]
         if user.is_active:
             return "", "422 The verification link is invalid."
-        user.is_active = 1
+        user.status = "VERIFIED"
         self.db.merge(user, self.db.tables["User"])
 
         # Send email

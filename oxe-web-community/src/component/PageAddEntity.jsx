@@ -2,7 +2,7 @@ import React from "react";
 import "./PageAddEntity.css";
 import Tab from "./tab/Tab.jsx";
 import AddEntityClaim from "./pageaddentity/AddEntityClaim.jsx";
-import AddEntityRegister from "./pageaddentity/AddEntityRegister.jsx";
+import AddEntityRegisterNav from "./pageaddentity/AddEntityRegisterNav.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 
 export default class PageAddEntity extends React.Component {
@@ -40,11 +40,11 @@ export default class PageAddEntity extends React.Component {
 	render() {
 		return (
 			<div id="PageAddEntity" className="page max-sized-page">
-				<h1>Claim or register an entity</h1>
+				<h1>Associate with or register an entity</h1>
 
 				<Tab
 					labels={[
-						"Claim an entity",
+						"Associate with an entity",
 						"Register an entity",
 					]}
 					selectedMenu={this.state.selectedMenu}
@@ -55,7 +55,7 @@ export default class PageAddEntity extends React.Component {
 							key={"claim"}
 							getNotifications={this.props.getNotifications}
 						/>,
-						<AddEntityRegister
+						<AddEntityRegisterNav
 							key={"register"}
 							getNotifications={this.props.getNotifications}
 						/>,

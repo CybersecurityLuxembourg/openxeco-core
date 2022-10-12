@@ -26,10 +26,7 @@ class AddUserEntity(MethodResource, Resource):
     @use_kwargs({
         'user_id': fields.Int(),
         'entity_id': fields.Int(),
-        'department': fields.Str(
-            allow_none=True,
-            validate=lambda x: x in ['TOP MANAGEMENT', 'HUMAN RESOURCE', 'MARKETING', 'FINANCE', 'OPERATION/PRODUCTION',
-                                     'INFORMATION TECHNOLOGY', 'OTHER', None]),
+        'department': fields.Str(allow_none=True),
     })
     @jwt_required
     @verify_admin_access

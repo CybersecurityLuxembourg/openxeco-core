@@ -63,7 +63,7 @@ export default class TaskRequest extends React.Component {
 
 		if (this.state.showNew) filters.status.push("NEW");
 		if (this.state.showInProcess) filters.status.push("IN PROCESS");
-		if (this.state.showProcessed) filters.status.push("PROCESSED");
+		if (this.state.showProcessed) filters.status.push("ACCEPTED");
 
 		getRequest.call(this, "request/get_requests?" + dictToURI(filters), (data) => {
 			this.setState({
@@ -111,7 +111,7 @@ export default class TaskRequest extends React.Component {
 								onClick={() => this.changeState("showInProcess", !this.state.showInProcess)}
 							/>
 							<CheckBox
-								label={"PROCESSED"}
+								label={"ACCEPTED"}
 								value={this.state.showProcessed}
 								onClick={() => this.changeState("showProcessed", !this.state.showProcessed)}
 							/>
