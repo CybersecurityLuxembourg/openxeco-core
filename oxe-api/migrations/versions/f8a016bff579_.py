@@ -112,4 +112,9 @@ def upgrade():
 
 
 def downgrade():
-    pass
+    op.drop_table('Country')
+    op.drop_table('Profession')
+    op.drop_table('Expertise')
+    op.drop_table('Industry')
+    op.drop_table('Domain')
+    op.drop_table('UserProfile')

@@ -11,11 +11,11 @@ class TestGetRequestEnums(BaseCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(response.get_json(), {
-            'status': ['NEW', 'IN PROCESS', 'PROCESSED', 'REJECTED'],
+            'status': ['NEW', 'IN PROCESS', 'ACCEPTED', 'REJECTED'],
             'type': [
                 'ENTITY ADD',
                 'ENTITY CHANGE',
-                'ENTITY ACCESS CLAIM',
+                'ENTITY ASSOCIATION CLAIM',
                 'ENTITY ADDRESS CHANGE',
                 'ENTITY ADDRESS ADD',
                 'ENTITY ADDRESS DELETION',

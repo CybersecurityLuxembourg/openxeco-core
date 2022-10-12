@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { NotificationManager as nm } from "react-notifications";
 import Popup from "reactjs-popup";
 import Loading from "../box/Loading.jsx";
+import { validateEmail } from "../../utils/re.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../form/FormLine.jsx";
 import Message from "../box/Message.jsx";
@@ -17,21 +18,34 @@ export default class PageAddEntity extends React.Component {
 		super(props);
 
 		this.state = {
+			email: "",
+			telephone: "",
+			level: "",
+			department: "",
 			entities: null,
 			filteredEntities: null,
 			searchField: null,
 			notFoundEntity: false,
-			userEntitiesEnums: null,
+			departments: [],
 		};
 	}
 
 	componentDidMount() {
 		this.refreshEntities();
-		this.getUserEntityEnums();
 
 		if (getUrlParameter("claim_entity")) {
 			this.onClaimEntityPopupOpen();
 		}
+
+		getRequest.call(this, "public/get_public_departments", (data) => {
+			this.setState({
+				departments: data,
+			});
+		}, (error) => {
+			nm.warning(error.message);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -52,25 +66,30 @@ export default class PageAddEntity extends React.Component {
 		});
 	}
 
-	getUserEntityEnums() {
-		getRequest.call(this, "user/get_user_entity_enums", (data) => {
-			this.setState({
-				userEntitiesEnums: data,
-			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+	isFormValid() {
+		if (this.state.department === ""
+			|| this.state.email === ""
+			|| this.state.telephone === ""
+			|| this.state.level === ""
+		) {
+			return false;
+		}
+		if (validateEmail(this.state.email)) {
+			return true;
+		}
+		return false;
 	}
 
 	submitClaimRequest(entityId, close) {
 		const params = {
-			type: "ENTITY ACCESS CLAIM",
+			type: "ENTITY ASSOCIATION CLAIM",
 			request: "The user requests access to an entity",
 			data: {
 				entity_id: entityId,
 				department: this.state.department,
+				email: this.state.email,
+				telephone: this.state.telephone,
+				level: this.state.level,
 			},
 		};
 
@@ -129,7 +148,7 @@ export default class PageAddEntity extends React.Component {
 					/>
 					: <div className={"row row-spaced"}>
 						<div className="col-md-9">
-							<h2>Claim an entity</h2>
+							<h2>Associate with an entity</h2>
 						</div>
 
 						<div className="col-md-3 top-title-menu">
@@ -137,7 +156,7 @@ export default class PageAddEntity extends React.Component {
 								content={
 									<div className="row">
 										<div className="col-md-12">
-											<h2>Why claiming access to an entity?</h2>
+											<h2>Why associating to an entity?</h2>
 
 											<p>
 												If assigned to an entity, you can request
@@ -190,7 +209,7 @@ export default class PageAddEntity extends React.Component {
 							<Info
 								content={
 									<div>
-										Find and claim your entity here.
+										Find and associate with your entity here.
 										If you haven&apos;t
 										found your entity, please fill in the form in
 										the <Link to="/add_entity?tab=register">Register an entity</Link> tab.
@@ -238,7 +257,7 @@ export default class PageAddEntity extends React.Component {
 													className="Popup-small-size"
 													trigger={
 														<button className={"card-button"}>
-															Claim access...
+															Associate...
 														</button>
 													}
 													modal
@@ -263,16 +282,46 @@ export default class PageAddEntity extends React.Component {
 															</div>
 
 															<div className="col-md-12">
-																{this.state.userEntitiesEnums
+																<FormLine
+																	label="Work Email *"
+																	value={this.state.email}
+																	onChange={(v) => this.changeState("email", v)}
+																	autofocus={true}
+																	onKeyDown={this.onKeyDown}
+																/>
+																<FormLine
+																	label="Work Telephone Number *"
+																	value={this.state.telephone}
+																	onChange={(v) => this.changeState("telephone", v)}
+																	autofocus={true}
+																	onKeyDown={this.onKeyDown}
+																/>
+																<FormLine
+																	label={"Seniority Level *"}
+																	type={"select"}
+																	options={[
+																		{ value: null, label: "-" },
+																		{ value: "Board Member", label: "Board Member" },
+																		{ value: "Executive Management", label: "Executive Management" },
+																		{ value: "Senior Management", label: "Senior Management" },
+																		{ value: "Management", label: "Management" },
+																		{ value: "Senior", label: "Senior" },
+																		{ value: "Intermediate", label: "Intermediate" },
+																		{ value: "Entry-Level", label: "Entry-Level" },
+																	]}
+																	value={this.props.level}
+																	onChange={(v) => this.setState({ level: v })}
+																/>
+																{this.state.departments
 																	? <FormLine
-																		label={"Department"}
+																		label={"Department *"}
 																		type={"select"}
-																		options={this.state.userEntitiesEnums
-																			? this.state.userEntitiesEnums.department
-																				.map((d) => ({ label: d, value: d }))
+																		options={this.state.departments
+																			? this.state.departments
+																				.map((d) => ({ label: d.name, value: d.name }))
 																			: []
 																		}
-																		value={this.props.department}
+																		value={this.state.department}
 																		onChange={(v) => this.setState({ department: v })}
 																	/>
 																	: <Loading
@@ -289,8 +338,11 @@ export default class PageAddEntity extends React.Component {
 																			<button
 																				className={"blue-background card-button"}
 																			>
-																				Claim access...
+																				Associate...
 																			</button>
+																		}
+																		disabled={
+																			!this.isFormValid()
 																		}
 																		afterConfirmation={() => this.submitClaimRequest(c.id, close)}
 																	/>
@@ -318,7 +370,7 @@ export default class PageAddEntity extends React.Component {
 					{(close) => (
 						<div className="row">
 							<div className="col-md-9 row-spaced">
-								<h3>Claim access to the entity</h3>
+								<h3>Associate with the entity</h3>
 							</div>
 
 							<div className={"col-md-3"}>
@@ -341,16 +393,16 @@ export default class PageAddEntity extends React.Component {
 										disabled={true}
 									/>
 
-									{this.state.userEntitiesEnums
+									{this.state.departments
 										? <FormLine
 											label={"Department"}
 											type={"select"}
-											options={this.state.userEntitiesEnums
-												? this.state.userEntitiesEnums.department
-													.map((d) => ({ label: d, value: d }))
+											options={this.state.departments
+												? this.state.departments
+													.map((d) => ({ label: d.name, value: d.id }))
 												: []
 											}
-											value={this.props.department}
+											value={this.state.department}
 											onChange={(v) => this.setState({ department: v })}
 										/>
 										: <Loading
@@ -365,7 +417,7 @@ export default class PageAddEntity extends React.Component {
 												<button
 													className={"blue-background card-button"}
 												>
-													Claim access...
+													Associate...
 												</button>
 											}
 											afterConfirmation={() => this.submitClaimRequest(this.state.entity.id)}

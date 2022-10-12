@@ -26,18 +26,79 @@ export default class RequestEntityAdd extends Component {
 			return;
 		}
 
-		let params = {
+		const params = {
 			name: this.props.data.name,
 		};
 
 		postRequest.call(this, "entity/add_entity", params, (addedEntity) => {
 			nm.info("The entity has been created");
 
-			params = this.props.data;
-			params.id = addedEntity.id;
+			const entityParams = {
+				name: this.props.data.name,
+				description: this.props.data.description,
+				trade_register_number: this.props.data.trade_register_number,
+				creation_date: this.props.data.creation_date,
+				is_startup: this.props.data.is_startup,
+				entity_type: this.props.data.entity_type,
+				vat_number: this.props.data.vat_number,
+				website: this.props.data.website,
+				size: this.props.data.size,
+				sector: this.props.data.sector,
+				industry: this.props.data.industry,
+				involvement: this.props.data.involvement,
+				id: addedEntity.id,
+			};
 
-			postRequest.call(this, "entity/update_entity", params, () => {
+			postRequest.call(this, "entity/update_entity", entityParams, () => {
 				nm.info("The information of the entity has been updated");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+
+			const addressParams = {
+				address_1: this.props.data.address_1,
+				address_2: this.props.data.address_2,
+				postal_code: this.props.data.postal_code,
+				country: this.props.data.country,
+				city: this.props.data.city,
+				entity_id: addedEntity.id,
+			};
+
+			postRequest.call(this, "address/add_address", addressParams, () => {
+				nm.info("The information of the entity has been updated");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+
+			const contactParams = {
+				work_email: this.props.data.company_email,
+				name: this.props.data.primary_contact_name,
+				work_telephone: this.props.data.work_telephone,
+				seniority_level: this.props.data.seniority_level,
+				department: this.props.data.department,
+				entity_id: addedEntity.id,
+			};
+
+			postRequest.call(this, "contact/add_contact", contactParams, () => {
+				nm.info("The user has been added as the primary contact");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+
+			const userEntityParams = {
+				user_id: this.props.userId,
+				entity_id: addedEntity.id,
+				department: this.props.data.department,
+			};
+
+			postRequest.call(this, "user/add_user_entity", userEntityParams, () => {
+				nm.info("The user has been assigned to the entity");
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -96,20 +157,100 @@ export default class RequestEntityAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"Website"}
-								value={this.props.data.website}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Creation date"}
+								label={"Creation Date"}
 								type={"date"}
 								value={this.props.data.creation_date}
 								disabled={true}
 							/>
 							<FormLine
-								label={"Is startup"}
+								label={"Address Line 1"}
+								value={this.props.data.address_1}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Address Line 2"}
+								value={this.props.data.address_2}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Postal Code"}
+								value={this.props.data.postal_code}
+								disabled={true}
+							/>
+							<FormLine
+								label={"City"}
+								value={this.props.data.city}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Country"}
+								value={this.props.data.country}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Entity Type"}
+								value={this.props.data.entity_type}
+								disabled={true}
+							/>
+							<FormLine
+								label={"VAT Number"}
+								value={this.props.data.vat_number}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Website"}
+								value={this.props.data.website}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Company Email"}
+								value={this.props.data.company_email}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Size"}
+								value={this.props.data.size}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Sector"}
+								value={this.props.data.sector}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Industry"}
+								value={this.props.data.industry}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Primary involvement"}
+								value={this.props.data.involvement}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Primary Contact Name"}
+								value={this.props.data.primary_contact_name}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Work Telephone"}
+								value={this.props.data.work_telephone}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Seniority Level"}
+								value={this.props.data.seniority_level}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Department"}
+								value={this.props.data.department}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Accepted Acknowledgements"}
 								type={"checkbox"}
-								value={this.props.data.is_startup}
+								value={this.props.data.acknowledge}
 								disabled={true}
 							/>
 						</div>

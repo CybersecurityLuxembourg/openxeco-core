@@ -1,8 +1,6 @@
 import csv
 
 
-
-
 class DatabaseSeeder:
 
     def __init__(self, db):
@@ -18,7 +16,7 @@ class DatabaseSeeder:
         path = f"seeder/lists/{file}"
 
         with open(path, 'r') as data:
-            for line in csv.DictReader(data):
+            for line in csv.DictReader(data, delimiter=","):
                 if self.db.get_count(self.db.tables[table], line) > 0:
                     continue
                 self.db.insert(line, self.db.tables[table])
