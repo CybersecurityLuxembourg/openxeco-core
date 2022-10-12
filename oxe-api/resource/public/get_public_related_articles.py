@@ -77,7 +77,7 @@ class GetPublicRelatedArticles(MethodResource, Resource):
             entity_tags = self.db.get(self.db.tables["ArticleEntityTag"], {"article_id": article_ids})
 
             for a in data:
-                a["taxonomy_tags"] = [t.taxonomy_value for t in taxonomy_tags if t.article == a["id"]]
-                a["entity_tags"] = [t.entity for t in entity_tags if t.article == a["id"]]
+                a["taxonomy_tags"] = [t.taxonomy_value_id for t in taxonomy_tags if t.article_id == a["id"]]
+                a["entity_tags"] = [t.entity_id for t in entity_tags if t.article_id == a["id"]]
 
         return build_no_cors_response(data)
