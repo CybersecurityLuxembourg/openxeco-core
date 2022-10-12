@@ -25,7 +25,6 @@ db_uri = URL(**config.DB_CONFIG)
 
 # Init Flask and set config
 app = Flask(__name__, template_folder="template")
-
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ERROR_404_HELP"] = False
@@ -159,6 +158,10 @@ FILES_TO_SEED = [
     { "table":"Industry", "file": "industries.csv" },
     { "table":"Profession", "file": "professions.csv" },
     { "table":"Domain", "file": "domains.csv" },
+    { "table":"Location", "file": "locations.csv" },
+    { "table":"Sector", "file": "sectors.csv" },
+    { "table":"Involvement", "file": "involvement.csv" },
+    { "table":"Department", "file": "departments.csv" },
 ]
 
 

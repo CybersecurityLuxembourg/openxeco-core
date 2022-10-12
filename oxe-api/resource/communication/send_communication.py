@@ -37,7 +37,7 @@ class SendCommunication(MethodResource, Resource):
             "addresses": ",".join(kwargs["addresses"]),
             "subject": kwargs["subject"],
             "body": kwargs["body"],
-            "status": "PROCESSED",
+            "status": "ACCEPTED",
         }, self.db.tables["Communication"], commit=False)
 
         send_email(self.mail,

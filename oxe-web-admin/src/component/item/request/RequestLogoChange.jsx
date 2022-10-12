@@ -68,12 +68,12 @@ export default class RequestLogoChange extends Component {
 	rejectNewLogo() {
 		const params = {
 			id: this.props.requestId,
-			status: "PROCESSED",
+			status: "REJECTED",
 		};
 
 		postRequest.call(this, "request/update_request", params, () => {
 			this.refresh();
-			nm.info("The logo has NOT been changed and the request has been set as PROCESSED");
+			nm.info("The logo has NOT been changed and the request has been set as REJECTED");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -144,7 +144,7 @@ export default class RequestLogoChange extends Component {
 									disabled={this.state.databaseEntity === null
 										|| this.props.image === null
 										|| this.props.image === undefined
-										|| this.props.requestStatus === "PROCESSED"}>
+										|| this.props.requestStatus === "ACCEPTED"}>
 									<i className="fas fa-check-circle"/> Add media and change logo
 								</button>
 							</div>

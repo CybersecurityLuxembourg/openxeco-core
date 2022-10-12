@@ -27,10 +27,10 @@ class AddContact(MethodResource, Resource):
         'representative': fields.Str(required=False, allow_none=True),
         'name': fields.Str(required=False, allow_none=True),
         'value': fields.Str(required=False, allow_none=True),
-        'department': fields.Str(
-            allow_none=True,
-            validate=lambda x: x in ['TOP MANAGEMENT', 'HUMAN RESOURCE', 'MARKETING', 'FINANCE', 'OPERATION/PRODUCTION',
-                                     'INFORMATION TECHNOLOGY', 'OTHER', None]),
+        'department': fields.Str(required=True, allow_none=False),
+        'seniority_level': fields.Str(required=True, allow_none=False),
+        'work_email': fields.Str(required=True, allow_none=False),
+        'work_telephone': fields.Str(required=True, allow_none=False),
     })
     @jwt_required
     @verify_admin_access
@@ -46,6 +46,11 @@ class AddContact(MethodResource, Resource):
 
         # Insert
 
-        self.db.insert(kwargs, self.db.tables["EntityContact"])
+        self.db.insert({
+            **kwargs,
+            "representative": "PHYSICAL PERSON",
+            "type": "EMAIL ADDRESS",
+            "value": kwargs["work_email"],
+        }, self.db.tables["EntityContact"])
 
         return "", "200 "

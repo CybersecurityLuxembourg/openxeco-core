@@ -12,7 +12,7 @@ class TestGetNotifications(BaseCase):
         self.db.insert({"id": 3, "title": "TITLE", "status": "UNDER REVIEW"}, self.db.tables["Article"])
         self.db.insert({"id": 1, "user_id": 1, "request": "", "status": "NEW"}, self.db.tables["UserRequest"])
         self.db.insert({"id": 2, "user_id": 1, "request": "", "status": "IN PROCESS"}, self.db.tables["UserRequest"])
-        self.db.insert({"id": 3, "user_id": 1, "request": "", "status": "PROCESSED"}, self.db.tables["UserRequest"])
+        self.db.insert({"id": 3, "user_id": 1, "request": "", "status": "ACCEPTED"}, self.db.tables["UserRequest"])
         self.db.insert({"id": 4, "user_id": 1, "request": "", "status": "REJECTED"}, self.db.tables["UserRequest"])
         self.db.insert({"id": 2, "email": "myemail@test.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])
         self.db.insert({"id": 3, "email": "myemail@tes2.lu", "password": "MyWrongSecretSecret"}, self.db.tables["User"])

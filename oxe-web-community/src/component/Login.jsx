@@ -77,24 +77,18 @@ export default class Login extends React.Component {
 		// Log in the user if there is an existing cookie
 
 		if (this.props.cookies.get("access_token_cookie")) {
-			getRequest.call(this, "private/get_my_user", (data) => {
-				this.props.connect(data.email);
-				this.fetchProfile();
-			}, (response2) => {
-				nm.warning(response2.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
+			this.fetchUser();
 		}
 		// This function to notify if the password has been reset correctly
 		Login.notifyForPasswordReset();
 	}
 
-	fetchProfile() {
-		getRequest.call(this, "private/get_my_profile", () => {
-			this.props.markProfileSet();
-		}, () => {
-			nm.warning("Please complete your profile to continue");
+	fetchUser() {
+		getRequest.call(this, "private/get_my_user", (data) => {
+			this.props.connect(data.email);
+			this.props.setUserStatus(data.status);
+		}, (response2) => {
+			nm.warning(response2.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -127,6 +121,7 @@ export default class Login extends React.Component {
 		postRequest.call(this, "account/login", params, (response) => {
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 			this.props.connect(this.state.email);
+			this.fetchUser();
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {

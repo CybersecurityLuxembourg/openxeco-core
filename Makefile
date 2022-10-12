@@ -1,5 +1,5 @@
 api:
-	cd oxe-api && .\venv\Scripts\activate && python app.py
+	cd oxe-api && ./venv/bin/activate.fish && python app.py
 
 admin:
 	cd oxe-web-admin && npm start

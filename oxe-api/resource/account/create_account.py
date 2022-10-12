@@ -71,24 +71,6 @@ class CreateAccount(MethodResource, Resource):
                 raise ObjectAlreadyExisting
             raise e
 
-        # Create the entity request if filled
-        # if "entity" in kwargs and kwargs["entity"] is not None \
-        #    and "department" in kwargs and kwargs["department"] is not None:
-        #     try:
-        #         self.db.insert({
-        #             "user_id": user.id,
-        #             "request": "The user requests the access to the entity '"
-        #                        + kwargs["entity"]
-        #                        + "' with the following department: '"
-        #                        + kwargs["department"]
-        #                        + "'",
-        #             "type": "ENTITY ACCESS CLAIM",
-        #         }, self.db.tables["UserRequest"])
-        #     except IntegrityError as e:
-        #         self.db.session.rollback()
-        #         self.db.delete(self.db.tables["User"], {"id": user.id})
-        #         raise e
-
         # Send email
         token = generate_confirmation_token(user.email)
         try:

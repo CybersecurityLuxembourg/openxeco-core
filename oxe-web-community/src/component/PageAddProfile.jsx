@@ -30,6 +30,7 @@ export default class PageAddProfile extends React.Component {
 			countries: [],
 			professions: [],
 			domains: [],
+			affiliated: false,
 		};
 	}
 
@@ -136,51 +137,60 @@ export default class PageAddProfile extends React.Component {
 		return this.state.profession_id === role.id;
 	}
 
-	setDomains(id, value) {
-		console.log(id);
-		console.log(value);
-		console.log(this.state.domains_of_interest);
-		const idStr = id.toString();
+	setDomains(name, value) {
 		let domains = [];
 		if (this.state.domains_of_interest !== null) {
-			domains = this.state.domains_of_interest.split(",");
+			domains = this.state.domains_of_interest.split(" | ");
 		}
-		if (value === true && domains.includes(idStr) === false) {
-			domains.push(idStr);
+		if (value === true && domains.includes(name) === false) {
+			domains.push(name);
 		}
-		if (value === false && domains.includes(idStr) === true) {
-			const index = domains.indexOf(idStr);
+		if (value === false && domains.includes(name) === true) {
+			const index = domains.indexOf(name);
 			console.log(index);
 			if (index > -1) {
 				domains.splice(index, 1);
 			}
 		}
-		this.changeState("domains_of_interest", domains.length > 0 ? domains.toString() : null);
-		console.log(domains);
+		this.changeState("domains_of_interest", domains.length > 0 ? domains.join(" | ") : null);
 	}
 
-	save() {
+	submitCreationRequest() {
 		const params = {
-			first_name: this.state.first_name,
-			last_name: this.state.last_name,
-			telephone: this.state.telephone,
-			domains_of_interest: this.state.domains_of_interest,
-			experience: this.state.experience,
-			expertise_id: this.state.expertise_id,
-			gender: this.state.gender,
-			how_heard: this.state.how_heard,
-			industry_id: this.state.industry_id,
-			mobile: this.state.mobile,
-			nationality_id: this.state.nationality_id,
-			profession_id: this.state.profession_id,
-			residency: this.state.residency,
-			sector: this.state.sector,
+			type: "NEW INDIVIDUAL ACCOUNT",
+			request: "The user requests the creation of their profile",
+			data: {
+				first_name: this.state.first_name,
+				last_name: this.state.last_name,
+				telephone: this.state.telephone,
+				domains_of_interest: this.state.domains_of_interest,
+				experience: this.state.experience,
+				expertise_id: this.state.expertise_id,
+				gender: this.state.gender,
+				how_heard: this.state.how_heard,
+				industry_id: this.state.industry_id,
+				mobile: this.state.mobile,
+				nationality_id: this.state.nationality_id,
+				profession_id: this.state.profession_id,
+				residency: this.state.residency,
+				sector: this.state.sector,
+			},
 		};
-		postRequest.call(this, "user/add_user_profile", params, () => {
-			nm.info("Your profile has been created");
-			this.props.markProfileSet();
+		postRequest.call(this, "private/add_request", params, () => {
+			nm.info("The request has been sent and will be reviewed");
+			this.fetchUser();
 		}, (response) => {
 			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	fetchUser() {
+		getRequest.call(this, "private/get_my_user", (data) => {
+			this.props.setUserStatus(data.status);
+		}, (response2) => {
+			nm.warning(response2.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -379,15 +389,21 @@ export default class PageAddProfile extends React.Component {
 										key={c.id}
 										label={c.name}
 										type={"checkbox"}
-										value={0}
-										onChange={(v) => this.setDomains(c.id, v)}
+										value={false}
+										onChange={(v) => this.setDomains(c.name, v)}
 									/>
 								))
 							: <Loading
 								height={200}
 							/>
 						}
-
+						<div style={{ height: 50 }}></div>
+						<FormLine
+							label={"Affiliated with an entity? *"}
+							type={"checkbox"}
+							value={this.state.affiliated}
+							onChange={(v) => this.changeState("affiliated", v)}
+						/>
 					</div>
 				</div>
 
@@ -396,7 +412,7 @@ export default class PageAddProfile extends React.Component {
 						<div className="right-buttons">
 							<button
 								className={"blue-background"}
-								onClick={() => this.save()}
+								onClick={() => this.submitCreationRequest()}
 								disabled={
 									!this.isFormValid()
 								}

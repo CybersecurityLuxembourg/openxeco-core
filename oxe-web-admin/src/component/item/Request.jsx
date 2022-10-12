@@ -17,6 +17,8 @@ import RequestEntityAddressChange from "./request/RequestEntityAddressChange.jsx
 import RequestEntityAddressDelete from "./request/RequestEntityAddressDelete.jsx";
 import RequestEntityTaxonomyChange from "./request/RequestEntityTaxonomyChange.jsx";
 import RequestEntityAccessClaim from "./request/RequestEntityAccessClaim.jsx";
+import RequestIndividualAccountAdd from "./request/RequestIndividualAccountAdd.jsx";
+import { getApiURL } from "../../utils/env.jsx";
 
 export default class Request extends Component {
 	constructor(props) {
@@ -118,7 +120,7 @@ export default class Request extends Component {
 
 				this.setState({ request }, () => {
 					if (prop === "status") {
-						if (value === "PROCESSED"
+						if (value === "ACCEPTED"
 							&& this.state.user !== null) {
 							const element = document.getElementById("Request-send-mail-button");
 							element.click();
@@ -138,7 +140,7 @@ export default class Request extends Component {
 	getMailBody() {
 		if (this.props.info !== undefined && this.props.info !== null) {
 			switch (this.props.info.type) {
-			case "ENTITY ACCESS CLAIM":
+			case "ENTITY ASSOCIATION CLAIM":
 				return "Your request to access the claimed entity has been treated. Please log in to review the data of your entity.";
 			case "ENTITY CHANGE":
 				return "Your request to modify the entity information has been treated.";
@@ -154,6 +156,8 @@ export default class Request extends Component {
 				return "Your request to modify the taxonomy of your entity has been treated.";
 			case "ENTITY LOGO CHANGE":
 				return "Your request to modify the logo of your entity has been treated.";
+			case "NEW INDIVIDUAL ACCOUNT":
+				return "Your request to create your has been treated.";
 			default:
 				return "Your request has been treated.";
 			}
@@ -268,7 +272,7 @@ export default class Request extends Component {
 					<div className="col-md-12 row-spaced">
 						<h3>Action</h3>
 
-						{this.props.info.type === "ENTITY ACCESS CLAIM"
+						{this.props.info.type === "ENTITY ASSOCIATION CLAIM"
 							&& this.state.user
 							&& this.state.entity
 							&& <RequestEntityAccessClaim
@@ -288,6 +292,8 @@ export default class Request extends Component {
 							&& this.state.user
 							&& <RequestEntityAdd
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
+								userId={this.state.user.id}
+								entity={this.state.entity}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS CHANGE"
@@ -325,7 +331,15 @@ export default class Request extends Component {
 								entityId={this.props.info.entity_id}
 							/>
 						}
-
+						{this.props.info.type === "NEW INDIVIDUAL ACCOUNT"
+							&& this.state.user
+							&& <RequestIndividualAccountAdd
+								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
+								requestId={this.props.info.id}
+								userId={this.state.user.id}
+								requestStatus={this.props.info.status}
+							/>
+						}
 						{this.state.user && this.state.settings
 							? <DialogSendMail
 								trigger={
@@ -396,6 +410,19 @@ export default class Request extends Component {
 							<h3>Image</h3>
 							<div className="Request-image">
 								<img src={"data:image/png;base64," + this.props.info.image} />
+							</div>
+						</div>
+					}
+
+					{this.props.info !== undefined && this.props.info !== null
+						&& this.props.info.file !== undefined && this.props.info.file !== null
+						&& <div className="col-md-12 row-spaced">
+							<h3>File</h3>
+							<div>
+								<a href={getApiURL() + "public/get_public_document/" + this.props.info.file}
+									className="btn btn-secondary" rel="noreferrer" target="_blank">
+									{this.props.info.file}
+								</a>
 							</div>
 						</div>
 					}

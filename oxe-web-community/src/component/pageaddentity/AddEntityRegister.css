@@ -1,0 +1,33 @@
+
+.Upload-dragdrop {
+	width: 100%;
+    border: 3px dashed #999;
+    border-radius: 8px;
+    display: table;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.Upload-dragdrop-done {
+	width: 100%;
+    border: 3px solid #999;
+    border-radius: 8px;
+    display: table;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.Upload-dragdrop-textContent {
+	display: table-cell;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	color: rgb(112, 112, 112);
+	vertical-align: middle;
+}
+
+.validation-error {
+    color: rgb(167, 63, 63);
+    font-style: italic;
+    font-size: 0.8rem;
+}
