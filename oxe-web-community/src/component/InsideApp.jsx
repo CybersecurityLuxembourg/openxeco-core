@@ -117,6 +117,8 @@ export default class InsideApp extends React.Component {
 						<Route path="/add_entity" render={(props) => <PageAddEntity
 							getNotifications={this.getNotifications}
 							myEntities={this.state.myEntities}
+							settings={this.props.settings}
+							changeMenu={this.changeMenu}
 							{...props}
 						/>}/>
 						<Route path="/add_profile" render={(props) => <PageAddProfile

@@ -44,6 +44,7 @@ export default class AddEntityRegisterNav extends React.Component {
 				{ this.state.verified
 					? <AddEntityRegister
 						getNotifications={this.props.getNotifications}
+						changeMenu={this.props.changeMenu}
 					/>
 					: <AddEntityRegisterIntro
 						getNotifications={this.props.getNotifications}

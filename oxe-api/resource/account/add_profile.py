@@ -34,14 +34,15 @@ class AddProfile(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
         user_id = kwargs["user_id"]
+
+        self.db.merge({
+            'id': user_id,
+            'first_name': kwargs["data"]['first_name'],
+            'last_name': kwargs["data"]['last_name'],
+            'telephone': kwargs["data"]['telephone'],
+            'status': "ACCEPTED",
+        }, self.db.tables["User"])
         try:
-            self.db.merge({
-                'id': user_id,
-                'first_name': kwargs["data"]['first_name'],
-                'last_name': kwargs["data"]['last_name'],
-                'telephone': kwargs["data"]['telephone'],
-                'status': "ACCEPTED"
-            }, self.db.tables["User"])
             self.db.insert({
                 'user_id': user_id,
                 'gender': kwargs["data"]['gender'],

@@ -15,7 +15,7 @@ export default class RequestEntityAdd extends Component {
 		};
 	}
 
-	insertEntity() {
+	insertEntity(close) {
 		if (this.props.data === undefined || this.props.data === null) {
 			nm.warning("Data to be inserted not found");
 			return;
@@ -32,78 +32,94 @@ export default class RequestEntityAdd extends Component {
 
 		postRequest.call(this, "entity/add_entity", params, (addedEntity) => {
 			nm.info("The entity has been created");
+			this.updateEntity(addedEntity.id);
+			this.addEntityAddress(addedEntity.id);
+			this.addEntityContact(addedEntity.id);
+			this.linkUserEntity(addedEntity.id);
+			close();
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
 
-			const entityParams = {
-				name: this.props.data.name,
-				description: this.props.data.description,
-				trade_register_number: this.props.data.trade_register_number,
-				creation_date: this.props.data.creation_date,
-				is_startup: this.props.data.is_startup,
-				entity_type: this.props.data.entity_type,
-				vat_number: this.props.data.vat_number,
-				website: this.props.data.website,
-				size: this.props.data.size,
-				sector: this.props.data.sector,
-				industry: this.props.data.industry,
-				involvement: this.props.data.involvement,
-				id: addedEntity.id,
-			};
+	updateEntity(newId) {
+		const entityParams = {
+			name: this.props.data.name,
+			description: this.props.data.description,
+			trade_register_number: this.props.data.trade_register_number,
+			creation_date: this.props.data.creation_date,
+			is_startup: this.props.data.is_startup,
+			entity_type: this.props.data.entity_type,
+			vat_number: this.props.data.vat_number,
+			website: this.props.data.website,
+			size: this.props.data.size,
+			sector: this.props.data.sector,
+			industry: this.props.data.industry,
+			involvement: this.props.data.involvement,
+			id: newId,
+		};
 
-			postRequest.call(this, "entity/update_entity", entityParams, () => {
-				nm.info("The information of the entity has been updated");
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
+		postRequest.call(this, "entity/update_entity", entityParams, () => {
+			nm.info("The information of the entity has been updated");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
 
-			const addressParams = {
-				address_1: this.props.data.address_1,
-				address_2: this.props.data.address_2,
-				postal_code: this.props.data.postal_code,
-				country: this.props.data.country,
-				city: this.props.data.city,
-				entity_id: addedEntity.id,
-			};
+	addEntityAddress(newId) {
+		const entityParams = {
+			address_1: this.props.data.address_1,
+			address_2: this.props.data.address_2,
+			city: this.props.data.city,
+			country: this.props.data.country,
+			postal_code: this.props.data.postal_code,
+			entity_id: newId,
+		};
 
-			postRequest.call(this, "address/add_address", addressParams, () => {
-				nm.info("The information of the entity has been updated");
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
+		postRequest.call(this, "address/add_address", entityParams, () => {
+			nm.info("The address for this entity has been saved");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
 
-			const contactParams = {
-				work_email: this.props.data.company_email,
-				name: this.props.data.primary_contact_name,
-				work_telephone: this.props.data.work_telephone,
-				seniority_level: this.props.data.seniority_level,
-				department: this.props.data.department,
-				entity_id: addedEntity.id,
-			};
+	addEntityContact(newId) {
+		const contactParams = {
+			work_email: this.props.data.company_email,
+			name: this.props.data.primary_contact_name,
+			work_telephone: this.props.data.work_telephone,
+			seniority_level: this.props.data.seniority_level,
+			department: this.props.data.department,
+			entity_id: newId,
+			representative: "PHYSICAL PERSON",
+			type: "EMAIL ADDRESS",
+			value: this.props.data.company_email,
+		};
 
-			postRequest.call(this, "contact/add_contact", contactParams, () => {
-				nm.info("The user has been added as the primary contact");
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
+		postRequest.call(this, "contact/add_contact", contactParams, () => {
+			nm.info("The user has been added as the primary contact");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
 
-			const userEntityParams = {
-				user_id: this.props.userId,
-				entity_id: addedEntity.id,
-				department: this.props.data.department,
-			};
+	linkUserEntity(newId) {
+		const userEntityParams = {
+			user_id: this.props.userId,
+			entity_id: newId,
+			department: this.props.data.department,
+		};
 
-			postRequest.call(this, "user/add_user_entity", userEntityParams, () => {
-				nm.info("The user has been assigned to the entity");
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
+		postRequest.call(this, "user/add_user_entity", userEntityParams, () => {
+			nm.info("The user has been assigned to the entity");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -256,12 +272,14 @@ export default class RequestEntityAdd extends Component {
 						</div>
 
 						<div className="col-md-12 right-buttons">
-							<button
-								className={"blue-background"}
-								onClick={this.insertEntity}
-							>
-								<i className="fas fa-plus"/> Add entity
-							</button>
+							{this.props.status !== "REJECTED"
+								&& <button
+									className={"blue-background"}
+									onClick={() => this.insertEntity(close)}
+								>
+									<i className="fas fa-plus" /> Add entity
+								</button>
+							}
 						</div>
 					</div>
 				)}

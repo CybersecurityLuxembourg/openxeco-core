@@ -144,6 +144,7 @@ export default class AddEntityRegister extends React.Component {
 			postRequest.call(this, "private/add_request", params, () => {
 				this.props.getNotifications();
 				nm.info("The request has been sent and will be reviewed");
+				this.props.changeMenu("/");
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -169,7 +170,6 @@ export default class AddEntityRegister extends React.Component {
 	onDropForm(files) {
 		if (files.length > 0) {
 			this.setState({ uploaded_file: files[0] });
-			console.log(this.state.uploaded_file);
 		}
 	}
 

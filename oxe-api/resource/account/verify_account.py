@@ -43,7 +43,7 @@ class VerifyAccount(MethodResource, Resource):
         # Set user to active
         data = self.db.get(self.db.tables["User"], {"email": email})
         user = data[0]
-        if user.is_active:
+        if user.status != "NEW":
             return "", "422 The verification link is invalid."
         user.status = "VERIFIED"
         self.db.merge(user, self.db.tables["User"])
