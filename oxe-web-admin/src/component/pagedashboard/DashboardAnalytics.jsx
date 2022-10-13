@@ -52,8 +52,8 @@ export default class DashboardAnalytics extends React.Component {
 			datasets: [{
 				data: DashboardAnalytics.getData(dictData, labels),
 				borderWidth: 1,
-				borderColor: "#009fe3",
-				backgroundColor: "#bcebff",
+				borderColor: "#2E52C1",
+				backgroundColor: "rgba(46, 83, 193, 0.123)",
 			}],
 		};
 	}

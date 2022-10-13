@@ -23,7 +23,7 @@ export default class EntityAddress extends React.Component {
 				{
 					name: "House number",
 					field: "number",
-					color: "#bcebff",
+					color: "rgba(46, 83, 193, 0.123)",
 					regex: /(\b([0-9]{1,3})([a-zA-Z]{1,2})?([-]{1}[0-9]{0,3}[a-zA-Z]{0,2})?\b)(?![^<]*>|[^<>]*<\/)/,
 				},
 				{

@@ -16,12 +16,12 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	background: repeating-linear-gradient( 
+	background: repeating-linear-gradient(
 		135deg, rgba(150, 150, 150, 0.5), rgba(150, 150, 150, 0.5) 1px, rgba(150, 150, 150, 0.5) 1px, rgba(0, 0, 0, 0.5) 4px );
 }
 
 .EditContent .CheckBox-disabled {
-	background-color: #bcebff !important;
+	background-color: rgba(46, 83, 193, 0.123) !important;
 }
 
 .EditContent-lock-buttons {

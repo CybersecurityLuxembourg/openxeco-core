@@ -39,9 +39,9 @@ export default class BarActorAge extends React.Component {
 						data: this.getData(),
 						borderWidth: 1,
 						borderColor: this.state.ranges.map((o) => (typeof this.props.selected !== "undefined"
-							&& this.props.selected[0] === o ? "#e40613" : "#009fe3")),
+							&& this.props.selected[0] === o ? "#e40613" : "#2E52C1")),
 						backgroundColor: this.state.ranges.map((o) => (typeof this.props.selected !== "undefined"
-							&& this.props.selected[0] === o ? "#fed7da" : "#bcebff")),
+							&& this.props.selected[0] === o ? "#fed7da" : "rgba(46, 83, 193, 0.123)")),
 					}],
 				}}
 				options={{

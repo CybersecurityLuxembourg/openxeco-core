@@ -411,13 +411,13 @@ export default class DashboardCommunity extends React.Component {
 												],
 												backgroundColor: [
 													this.state.filteredEntities.length === this.props.entities.length
-														? "#fed7da" : "#bcebff",
-													this.state.filters.is_startup ? "#fed7da" : "#bcebff",
+														? "#fed7da" : "rgba(46, 83, 193, 0.123)",
+													this.state.filters.is_startup ? "#fed7da" : "rgba(46, 83, 193, 0.123)",
 												],
 												borderColor: [
 													this.state.filteredEntities.length === this.props.entities.length
-														? "#e40613" : "#009fe3",
-													this.state.filters.is_startup ? "#e40613" : "#009fe3",
+														? "#e40613" : "#2E52C1",
+													this.state.filters.is_startup ? "#e40613" : "#2E52C1",
 												],
 												borderWidth: 1,
 											}],
@@ -475,9 +475,9 @@ export default class DashboardCommunity extends React.Component {
 											.map((s) => this.state.filteredEntities
 												.filter((o) => o.legal_status === s).length),
 										backgroundColor: this.state.filters.legal_status ? ["#fed7da"]
-											: ["#bcebff", "#bcebff", "#bcebff"],
+											: ["rgba(46, 83, 193, 0.123)", "rgba(46, 83, 193, 0.123)", "rgba(46, 83, 193, 0.123)"],
 										borderColor: this.state.filters.legal_status ? ["#e40613"]
-											: ["#009fe3", "#grey", "lightgrey"],
+											: ["#2E52C1", "#grey", "lightgrey"],
 										borderWidth: 1,
 									}],
 								}}
@@ -521,9 +521,9 @@ export default class DashboardCommunity extends React.Component {
 											.map((s) => this.state.filteredEntities
 												.filter((o) => o.status === s).length),
 										backgroundColor: this.state.filters.status ? ["#fed7da"]
-											: ["#bcebff", "#bcebff", "#bcebff"],
+											: ["rgba(46, 83, 193, 0.123)", "rgba(46, 83, 193, 0.123)", "rgba(46, 83, 193, 0.123)"],
 										borderColor: this.state.filters.status ? ["#e40613"]
-											: ["#009fe3", "#grey", "lightgrey"],
+											: ["#2E52C1", "#grey", "lightgrey"],
 										borderWidth: 1,
 									}],
 								}}
@@ -658,7 +658,7 @@ export default class DashboardCommunity extends React.Component {
 														&& this.state.filters.taxonomy_values
 														&& this.state.filters.taxonomy_values
 															.indexOf(ctx.dataset.data[ctx.dataIndex].g) >= 0
-															? "#fed7da" : "#bcebff"
+															? "#fed7da" : "rgba(46, 83, 193, 0.123)"
 													),
 													borderWidth: 1,
 												}],

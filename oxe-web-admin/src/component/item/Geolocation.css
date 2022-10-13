@@ -20,7 +20,7 @@
 }
 
 .Geolocation-selected {
-    background-color: #bcebff;
+    background-color: rgba(46, 83, 193, 0.123);
 }
 
 .Geolocation:hover {
@@ -35,12 +35,12 @@
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
-    color: #009fe3;
+    color: #2E52C1;
 }
 
 .Geolocation i {
     display:inline;
     font-size: 14px;
     line-height: 1.2;
-    color: #009fe3;
+    color: #2E52C1;
 }
