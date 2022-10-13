@@ -35,6 +35,7 @@ export default class Request extends Component {
 			entity: null,
 			requestStatus: null,
 			settings: null,
+			currentStatus: this.props.info.status,
 		};
 	}
 
@@ -120,7 +121,7 @@ export default class Request extends Component {
 
 				this.setState({ request }, () => {
 					if (prop === "status") {
-						if (value === "ACCEPTED"
+						if ((value === "ACCEPTED" || value === "REJECTED")
 							&& this.state.user !== null) {
 							const element = document.getElementById("Request-send-mail-button");
 							element.click();
@@ -129,6 +130,9 @@ export default class Request extends Component {
 
 					nm.info("The property has been updated");
 				});
+				if (prop === "status") {
+					this.setState({ currentStatus: value });
+				}
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -294,6 +298,7 @@ export default class Request extends Component {
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 								userId={this.state.user.id}
 								entity={this.state.entity}
+								status={this.state.currentStatus}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS CHANGE"
@@ -367,10 +372,17 @@ export default class Request extends Component {
 					<div className="col-md-6 row-spaced">
 						<h3>User</h3>
 						{this.state.user !== null
-							? <User
-								id={this.state.user.id}
-								email={this.state.user.email}
-							/>
+							? <>
+								{this.state.user.first_name !== null && this.state.user.last_name !== null
+									&& <div>
+										{this.state.user.first_name} {this.state.user.last_name}
+									</div>
+								}
+								<User
+									id={this.state.user.id}
+									email={this.state.user.email}
+								/>
+							</>
 							: <Loading
 								height={50}
 							/>

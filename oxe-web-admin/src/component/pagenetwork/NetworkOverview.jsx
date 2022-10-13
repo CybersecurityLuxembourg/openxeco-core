@@ -142,7 +142,7 @@ export default class NetworkOverview extends React.Component {
 
 		const node1 = new DefaultNodeModel({
 			name: "My node",
-			color: "#bcebff",
+			color: "rgba(46, 83, 193, 0.123)",
 		});
 		node1.setPosition(centerX, centerY);
 		node1.setLocked(true);
@@ -157,7 +157,7 @@ export default class NetworkOverview extends React.Component {
 			if (this.state.nodeInformation[n] !== null) {
 				const node2 = new DefaultNodeModel({
 					name: this.state.nodeInformation[n].project_name,
-					color: "#bcebff",
+					color: "rgba(46, 83, 193, 0.123)",
 				});
 				node2.setPosition(x, y);
 				node2.setLocked(true);

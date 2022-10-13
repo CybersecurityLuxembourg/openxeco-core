@@ -38,19 +38,12 @@ class AddContact(MethodResource, Resource):
     def post(self, **kwargs):
 
         # Checking entity
-
         entity = self.db.get(self.db.tables["Entity"], {"id": kwargs["entity_id"]})
 
         if len(entity) == 0:
             return "", "422 Provided entity not existing"
 
         # Insert
-
-        self.db.insert({
-            **kwargs,
-            "representative": "PHYSICAL PERSON",
-            "type": "EMAIL ADDRESS",
-            "value": kwargs["work_email"],
-        }, self.db.tables["EntityContact"])
+        self.db.insert(kwargs, self.db.tables["EntityContact"])
 
         return "", "200 "

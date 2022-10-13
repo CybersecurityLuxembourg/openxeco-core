@@ -86,12 +86,12 @@ export default class UserGlobal extends React.Component {
 							onBlur={(s) => this.saveUserValue("last_name", s)}
 						/>
 						<br/>
-						<FormLine
+						{/* <FormLine
 							label="Is admin"
 							type={"checkbox"}
 							value={this.state.user.is_admin}
 							onChange={(s) => this.saveUserValue("is_admin", s)}
-						/>
+						/> */}
 						<FormLine
 							label="Is active"
 							type={"checkbox"}

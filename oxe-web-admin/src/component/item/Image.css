@@ -12,7 +12,7 @@
 }
 
 .Image-selected {
-    background-color: #bcebff !important;
+    background-color: rgba(46, 83, 193, 0.123) !important;
 }
 
 .Image-selected:hover {

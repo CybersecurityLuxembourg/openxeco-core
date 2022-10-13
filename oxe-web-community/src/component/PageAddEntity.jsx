@@ -54,10 +54,12 @@ export default class PageAddEntity extends React.Component {
 						<AddEntityClaim
 							key={"claim"}
 							getNotifications={this.props.getNotifications}
+							changeMenu={this.props.changeMenu}
 						/>,
 						<AddEntityRegisterNav
 							key={"register"}
 							getNotifications={this.props.getNotifications}
+							changeMenu={this.props.changeMenu}
 						/>,
 					]}
 				/>
