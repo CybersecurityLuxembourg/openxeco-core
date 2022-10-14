@@ -6,6 +6,7 @@ import { getRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Chip from "../../button/Chip.jsx";
 import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
 import { dictToURI } from "../../../utils/url.jsx";
 
 export default class DialogImportDatabaseAddresses extends React.Component {
@@ -98,7 +99,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 
 		getRequest.call(this, "mail/get_mail_addresses?" + dictToURI(params), (data) => {
 			this.setState({
-				addresses: data,
+				addresses: data.map((a) => a.email),
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -138,15 +139,15 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 				className="Popup-full-size"
 				trigger={
 					<button>
-						<i className="fas fa-cloud-download-alt"/> Import from database...
+						<i className="fas fa-address-book"/> Import from contacts and users...
 					</button>
 				}
 				onOpen={this.onOpen}
 				modal
 			>
 				{(close) => <div className="row">
-					<div className={"col-md-9 row-spaced"}>
-						<h3>Import from database...</h3>
+					<div className={"col-md-9"}>
+						<h2>Import from database...</h2>
 					</div>
 					<div className={"col-md-3"}>
 						<div className="right-buttons">
@@ -160,7 +161,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 						</div>
 					</div>
 
-					<div className={"col-md-12"}>
+					<div className={"col-md-12 row-spaced"}>
 						<FormLine
 							label={"Include contacts from entities"}
 							type={"checkbox"}
@@ -173,59 +174,59 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 							value={this.state.includeUsers}
 							onChange={(v) => this.changeState("includeUsers", v)}
 						/>
+						{this.state.taxonomyValues && this.state.taxonomyCategories
+							? <FormLine
+								label={"Filter by taxonomy value"}
+								type={"multiselect"}
+								value={this.state.selectedTaxonomyValues}
+								options={this.getTaxonomyValuesForEntities()
+									.map((v) => ({ label: v.category + " - " + v.name, value: v.id }))}
+								onChange={(v) => this.changeState("selectedTaxonomyValues", v)}
+							/>
+							: <Loading
+								height={20}
+							/>
+						}
+						{this.state.entities !== null
+							? <FormLine
+								label={"Filter by entity"}
+								type={"multiselect"}
+								value={this.state.selectedEntities}
+								options={this.state.entities
+									.map((v) => ({ label: v.name, value: v.id }))}
+								onChange={(v) => this.changeState("selectedEntities", v)}
+							/>
+							: <Loading
+								height={20}
+							/>
+						}
 					</div>
 
 					<div className="col-md-12">
-						<div className={"row row-spaced"}>
-							<div className="col-md-6">
-								{this.state.taxonomyValues && this.state.taxonomyCategories
-									? <FormLine
-										label={"Filter by taxonomy value"}
-										type={"multiselect"}
-										fullWidth={true}
-										value={this.state.selectedTaxonomyValues}
-										options={this.getTaxonomyValuesForEntities()
-											.map((v) => ({ label: v.category + " - " + v.name, value: v.id }))}
-										onChange={(v) => this.changeState("selectedTaxonomyValues", v)}
-									/>
-									: <Loading
-										height={150}
-									/>
-								}
-							</div>
-
-							<div className="col-md-6">
-								{this.state.entities !== null
-									? <FormLine
-										label={"Filter by entity"}
-										type={"multiselect"}
-										fullWidth={true}
-										value={this.state.selectedEntities}
-										options={this.state.entities
-											.map((v) => ({ label: v.name, value: v.id }))}
-										onChange={(v) => this.changeState("selectedEntities", v)}
-									/>
-									: <Loading
-										height={150}
-									/>
-								}
-							</div>
-						</div>
+						<h3>Selected addresses</h3>
 					</div>
 
 					<div className="col-md-12 row-spaced">
-						{this.state.addresses
-							? <div>
-								<h3>{this.state.addresses.length} addresse{this.state.addresses.length > 1 && "s"} selected</h3>
-
+						{this.state.addresses && this.state.addresses.length > 0
+							&& <div>
 								<div>
 									{this.state.addresses.map((a) => <Chip
-										label={a.email}
-										key={a.email}
+										label={a}
+										key={a}
 									/>)}
 								</div>
 							</div>
-							: <Loading
+						}
+
+						{this.state.addresses && this.state.addresses.length === 0
+							&& <Message
+								text={"No address selected"}
+								height={150}
+							/>
+						}
+
+						{!this.state.addresses
+							&& <Loading
 								height={150}
 							/>
 						}

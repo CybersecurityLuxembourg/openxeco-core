@@ -43,7 +43,7 @@ export default class CampaignAddresses extends React.Component {
 			addresses,
 		};
 
-		postRequest.call(this, "campaign/add_campaign_adresses", params, () => {
+		postRequest.call(this, "campaign/add_campaign_addresses", params, () => {
 			this.fetchAddresses();
 			nm.info("The addresses has been added");
 		}, (response) => {
@@ -59,7 +59,7 @@ export default class CampaignAddresses extends React.Component {
 			addresses,
 		};
 
-		postRequest.call(this, "campaign/delete_campaign_adresses", params, () => {
+		postRequest.call(this, "campaign/delete_campaign_addresses", params, () => {
 			this.fetchAddresses();
 			nm.info("The addresses has been deleted");
 		}, (response) => {
@@ -71,7 +71,7 @@ export default class CampaignAddresses extends React.Component {
 
 	getAddressesFromText() {
 		if (this.state.manualAddressField) {
-			return extractEmails(this.state.additionalAddressField);
+			return extractEmails(this.state.manualAddressField);
 		}
 
 		return [];
@@ -108,7 +108,7 @@ export default class CampaignAddresses extends React.Component {
 					<h2>Addresses</h2>
 				</div>
 
-				<div className="col-md-12 row-spaced">
+				<div className="col-md-12">
 					<div className="right-buttons">
 						<DialogImportCommunicationAddresses
 							onConfirmation={(addresses) => this.addAddresses(addresses)}
@@ -120,7 +120,7 @@ export default class CampaignAddresses extends React.Component {
 							className="Popup-small-size"
 							trigger={
 								<button>
-									<i className="fas fa-keyboard"/> Add addresses manually...
+									<i className="fas fa-keyboard"/> Add manually...
 								</button>
 							}
 							onOpen={this.fetchCommunications}
@@ -128,7 +128,7 @@ export default class CampaignAddresses extends React.Component {
 						>
 							{(close) => <div className="row">
 								<div className={"col-md-9"}>
-									<h2>Add addresses manually...</h2>
+									<h2>Add manually...</h2>
 								</div>
 								<div className={"col-md-3"}>
 									<div className="right-buttons">
@@ -146,8 +146,8 @@ export default class CampaignAddresses extends React.Component {
 									<FormLine
 										label={"Add addresses manually"}
 										type={"textarea"}
-										value={this.state.additionalAddressField}
-										onChange={(v) => this.changeState("additionalAddressField", v)}
+										value={this.state.manualAddressField}
+										onChange={(v) => this.changeState("manualAddressField", v)}
 									/>
 								</div>
 

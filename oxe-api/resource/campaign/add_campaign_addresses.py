@@ -7,6 +7,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils.re import has_mail_format
 
 
 class AddCampaignAddresses(MethodResource, Resource):
@@ -38,7 +39,10 @@ class AddCampaignAddresses(MethodResource, Resource):
             return "", "422 Provided campaign does not exist"
 
         # Insert
-        # TODO check address format
-        self.db.insert(kwargs, self.db.tables["CampaignAddress"])
+
+        self.db.insert(
+            [{"campaign_id": kwargs["campaign_id"], "value": a} for a in kwargs["addresses"] if has_mail_format(a)],
+            self.db.tables["CampaignAddress"]
+        )
 
         return "", "200 "

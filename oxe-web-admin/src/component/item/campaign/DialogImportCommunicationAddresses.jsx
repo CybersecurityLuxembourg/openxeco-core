@@ -106,7 +106,7 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 				className="Popup-full-size"
 				trigger={
 					<button>
-						<i className="fas fa-history"/> Import from previous campaign...
+						<i className="fas fa-history"/> Import from prev. campaign...
 					</button>
 				}
 				onOpen={this.fetchCommunications}
@@ -114,7 +114,7 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 			>
 				{(close) => <div className="row">
 					<div className={"col-md-9 row-spaced"}>
-						<h3>Import addresses from previous communication...</h3>
+						<h3>Import addresses from prev. campaign...</h3>
 					</div>
 					<div className={"col-md-3"}>
 						<div className="right-buttons">
