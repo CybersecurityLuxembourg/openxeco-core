@@ -66,7 +66,7 @@ class AddRequest(MethodResource, Resource):
             image = base64.b64decode(kwargs["image"].split(",")[-1])
 
         if "uploaded_file" in kwargs and kwargs["uploaded_file"] is not None:
-            filename = f"entity_registration_approval_{user_id}_{kwargs['data']['trade_register_number']}.pdf"
+            filename = f"entity_registration_approval_{user_id}_{kwargs['data']['vat_number']}.pdf"
             document = {
                 "filename": filename,
                 "size": len(kwargs["uploaded_file"]),

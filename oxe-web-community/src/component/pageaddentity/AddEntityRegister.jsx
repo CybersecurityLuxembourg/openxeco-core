@@ -13,7 +13,6 @@ import {
 	validateEmail,
 	validateTelephoneNumber,
 	validateVatNumber,
-	validateTradeReg,
 	validateWebsite,
 	validatePostcode,
 } from "../../utils/re.jsx";
@@ -25,10 +24,6 @@ export default class AddEntityRegister extends React.Component {
 		this.onDropForm = this.onDropForm.bind(this);
 		this.state = {
 			name: "",
-			description: "",
-			trade_register_number: "",
-			creation_date: "",
-			is_startup: false,
 			address_1: "",
 			address_2: "",
 			postal_code: "",
@@ -116,10 +111,6 @@ export default class AddEntityRegister extends React.Component {
 				request: "The user requests the creation of an entity",
 				data: {
 					name: this.state.name,
-					description: this.state.description,
-					trade_register_number: this.state.trade_register_number,
-					creation_date: this.state.creation_date,
-					is_startup: this.state.is_startup,
 					address_1: this.state.address_1,
 					address_2: this.state.address_2,
 					postal_code: this.state.postal_code,
@@ -175,16 +166,13 @@ export default class AddEntityRegister extends React.Component {
 
 	formValid() {
 		if (this.state.name === ""
-			|| this.state.description === ""
-			|| !validateTradeReg(this.state.trade_register_number)
-			|| this.state.creation_date === ""
 			|| this.state.city === ""
 			|| !validatePostcode(this.state.postal_code)
 			|| this.state.address_1 === ""
 			|| this.state.entity_type === ""
 			|| !validateVatNumber(this.state.vat_number)
-			|| !validateWebsite(this.state.website)
-			|| !validateEmail(this.state.company_email)
+			|| (this.state.website !== "" && !validateWebsite(this.state.website))
+			|| (this.state.company_email !== "" && !validateEmail(this.state.company_email))
 			|| this.state.size === ""
 			|| this.state.sector === ""
 			|| this.state.industry === ""
@@ -275,44 +263,6 @@ export default class AddEntityRegister extends React.Component {
 							disabled={!this.state.notFoundEntity}
 						/>
 						<FormLine
-							label={"Description *"}
-							type={"textarea"}
-							value={this.state.description}
-							onChange={(v) => this.changeState("description", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={"Trade Register Number *"}
-							value={this.state.trade_register_number}
-							onChange={(v) => this.changeState("trade_register_number", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						{ !validateTradeReg(this.state.trade_register_number) && this.state.trade_register_number !== ""
-							&& <div className="row">
-								<div className="col-md-6"></div>
-								<div className="col-md-6">
-									<div className="validation-error">
-										Accepted Formats: C12345, OC1234, OC12345, P1234, P12345
-									</div>
-								</div>
-							</div>
-						}
-						<FormLine
-							label={"Creation Date *"}
-							type={"date"}
-							value={this.state.creation_date}
-							onChange={(v) => this.changeState("creation_date", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={"Is Startup? *"}
-							type={"checkbox"}
-							value={this.state.is_startup}
-							onChange={(v) => this.changeState("is_startup", v)}
-							background={false}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
 							label={"Registered Address Line 1 *"}
 							value={this.state.address_1}
 							onChange={(v) => this.changeState("address_1", v)}
@@ -394,7 +344,7 @@ export default class AddEntityRegister extends React.Component {
 							</div>
 						}
 						<FormLine
-							label={"Website *"}
+							label={"Website"}
 							value={this.state.website}
 							onChange={(v) => this.changeState("website", v)}
 							disabled={!this.state.notFoundEntity}
@@ -464,11 +414,16 @@ export default class AddEntityRegister extends React.Component {
 							? <FormLine
 								label={"Primary involvement of the organisation in/related to cybersecurity *"}
 								type={"select"}
-								options={this.state.involvements
-									? this.state.involvements
-										.map((d) => ({ label: d.name, value: d.name }))
-									: []
-								}
+								options={[{ value: null, label: "-" }].concat(
+									this.state.involvements.map((o) => ({
+										label: (
+											<>
+												<div title={o.description}>{o.name}</div>
+											</>
+										),
+										value: o.name,
+									})),
+								)}
 								value={this.state.involvement}
 								onChange={(v) => this.setState({ involvement: v })}
 								disabled={!this.state.notFoundEntity}
@@ -572,8 +527,8 @@ export default class AddEntityRegister extends React.Component {
 							</div>
 						</div>
 						<FormLine
-							label={"I acknowledge that the information submitted about the entity may be made public"
-							+ "on the NCC website and other communication platforms"}
+							label={"I acknowledge that he information submitted about the entity may be made "
+								+ "public on NCC platforms."}
 							type="checkbox"
 							value={this.state.acknowledge}
 							onChange={(v) => this.changeState("acknowledge", v)}

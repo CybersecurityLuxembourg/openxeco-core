@@ -86,7 +86,7 @@ def upgrade():
         sa.Column('experience', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=110), nullable=True),
         sa.Column('domains_of_interest', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=110), nullable=True),
         sa.Column('how_heard', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=110), nullable=True),
-        sa.Column('affiliated', mysql.TINYINT(), nullable=True),
+        sa.Column('public', mysql.TINYINT(), nullable=True),
 
         sa.Column('user_id', mysql.INTEGER(), nullable=False),
         sa.Column('profession_id', mysql.INTEGER(), nullable=False),

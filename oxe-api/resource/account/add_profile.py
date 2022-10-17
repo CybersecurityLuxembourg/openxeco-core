@@ -56,6 +56,7 @@ class AddProfile(MethodResource, Resource):
                 'industry_id': kwargs["data"]['industry_id'],
                 'nationality_id': kwargs["data"]['nationality_id'],
                 'expertise_id': kwargs["data"]['expertise_id'],
+                'public': kwargs["data"]['public'],
             }, self.db.tables["UserProfile"])
         except IntegrityError as e:
             self.db.session.rollback()

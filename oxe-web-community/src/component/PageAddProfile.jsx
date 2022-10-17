@@ -25,6 +25,7 @@ export default class PageAddProfile extends React.Component {
 			profession_id: null,
 			residency: null,
 			sector: null,
+			public: false,
 			user_id: null,
 			expertise: [],
 			industries: [],
@@ -196,6 +197,7 @@ export default class PageAddProfile extends React.Component {
 				profession_id: this.state.profession_id,
 				residency: this.state.residency,
 				sector: this.state.sector,
+				public: this.state.public,
 			},
 		};
 		postRequest.call(this, "private/add_request", params, () => {
@@ -393,8 +395,6 @@ export default class PageAddProfile extends React.Component {
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
-					</div>
-					<div className="col-md-6">
 						<FormLine
 							label="How did you hear about the Community *"
 							type="select"
@@ -414,7 +414,9 @@ export default class PageAddProfile extends React.Component {
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
-						<div className="FormLine-label">Domains of interest *</div>
+					</div>
+					<div className="col-md-6">
+						<div className="FormLine-label font-weight-bold">Domains of interest *</div>
 						{this.state.domains !== null
 							? this.state.domains
 								.map((c) => (
@@ -430,8 +432,16 @@ export default class PageAddProfile extends React.Component {
 								height={200}
 							/>
 						}
-						<div style={{ height: 50 }}></div>
-						<div className="FormLine-label">Acknowledgements *</div>
+						<hr />
+						<div className="FormLine-label font-weight-bold">Privacy</div>
+						<FormLine
+							label={"Make my profile public"}
+							type={"checkbox"}
+							value={this.state.public}
+							onChange={(v) => this.setState({ public: v })}
+						/>
+						<hr />
+						<div className="FormLine-label font-weight-bold">Acknowledgements *</div>
 						<FormLine
 							label={"I acknowledge and agree with the Terms & Conditions"}
 							type={"checkbox"}
