@@ -69,8 +69,10 @@ export default class Login extends React.Component {
 				});
 			}, (response2) => {
 				nm.warning(response2.statusText);
+				this.changeState("view", "login");
 			}, (error) => {
 				nm.error(error.message);
+				this.changeState("view", "login");
 			});
 		}
 
@@ -697,6 +699,7 @@ export default class Login extends React.Component {
 									&& <div className="col-md-12">
 										<div className="left-buttons pl-2">
 											Account Verfied Successfully!
+											<br />
 											<button
 												className="link-button"
 												onClick={() => this.changeState("view", "login")}
