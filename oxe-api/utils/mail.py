@@ -1,10 +1,15 @@
 from flask_mail import Message
-from email.mime.text import MIMEText
 
 
 def send_email(mail, subject, recipients, html_body, cc=None, bcc=None):  # pylint: disable=too-many-arguments
     from config.config import MAIL_DEFAULT_SENDER  # pylint: disable=import-outside-toplevel
-    msg = Message(subject, sender=MAIL_DEFAULT_SENDER, recipients=recipients, cc=cc, bcc=bcc)
+    msg = Message(
+        subject,
+        sender=("Do Not Reply NCC Malta at MITA", MAIL_DEFAULT_SENDER),
+        recipients=recipients,
+        cc=cc,
+        bcc=bcc
+    )
     msg.html = html_body
 
     try:
@@ -14,7 +19,13 @@ def send_email(mail, subject, recipients, html_body, cc=None, bcc=None):  # pyli
 
 def send_email_with_attachment(mail, subject, recipients, html_body, file_name, file_type, cc=None, bcc=None):  # pylint: disable=too-many-arguments
     from config.config import MAIL_DEFAULT_SENDER  # pylint: disable=import-outside-toplevel
-    msg = Message(subject, sender=MAIL_DEFAULT_SENDER, recipients=recipients, cc=cc, bcc=bcc)
+    msg = Message(
+        subject,
+        sender=("Do Not Reply NCC Malta at MITA", MAIL_DEFAULT_SENDER),
+        recipients=recipients,
+        cc=cc,
+        bcc=bcc
+    )
     msg.html = html_body
     with open(f"resource/static/{file_name}", 'rb') as f:
         msg.attach(file_name, file_type, f.read())

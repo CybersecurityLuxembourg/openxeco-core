@@ -50,18 +50,15 @@ class VerifyAccount(MethodResource, Resource):
 
         # Send email
         try:
-            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
-            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
-
             send_email(self.mail,
-                       subject=f"[{project_name}] Account verified",
-                       recipients=[email],
-                       html_body=render_template(
-                           'account_verified.html',
-                           first_name=user.first_name,
-                           url=f"{origin}/login",
-                           project_name=project_name)
-                       )
+                subject=f"Account verified",
+                recipients=[email],
+                html_body=render_template(
+                    'account_verified.html',
+                    email=user.email,
+                    url=f"{origin}/login"
+                )
+            )
         except Exception as e:
             pass
 

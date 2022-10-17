@@ -122,34 +122,14 @@ export default class RequestIndividualAccountAdd extends Component {
 
 						<div className="col-md-12">
 							<FormLine
-								label={"First Name"}
+								label={"Name"}
 								value={this.props.data.first_name}
 								disabled={true}
 							/>
 							<FormLine
-								label={"Last Name"}
+								label={"Surname"}
 								type={"textarea"}
 								value={this.props.data.last_name}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Telephone"}
-								value={this.props.data.telephone}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Domains of Interest"}
-								value={this.props.data.domains_of_interest}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Experience"}
-								value={this.props.data.experience}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Area of Expertise"}
-								value={this.state.expertise}
 								disabled={true}
 							/>
 							<FormLine
@@ -158,13 +138,8 @@ export default class RequestIndividualAccountAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"How did you hear about us?"}
-								value={this.props.data.how_heard}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Industry"}
-								value={this.state.industry}
+								label={"Telephone"}
+								value={this.props.data.telephone}
 								disabled={true}
 							/>
 							<FormLine
@@ -173,13 +148,23 @@ export default class RequestIndividualAccountAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"Nationality"}
-								value={this.state.nationality}
+								label={"Role/Profession"}
+								value={this.state.profession}
 								disabled={true}
 							/>
 							<FormLine
-								label={"Profession"}
-								value={this.state.profession}
+								label={"Sector"}
+								value={this.props.data.sector}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Industry"}
+								value={this.state.industry}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Nationality"}
+								value={this.state.country}
 								disabled={true}
 							/>
 							<FormLine
@@ -188,8 +173,29 @@ export default class RequestIndividualAccountAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"Sector"}
-								value={this.props.data.sector}
+								label={"Experience"}
+								value={this.props.data.experience}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Primary Area of Expertise"}
+								value={this.state.expertise}
+								disabled={true}
+							/>
+							<FormLine
+								label={"How did you hear about us?"}
+								value={this.props.data.how_heard}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Domains of Interest"}
+								value={this.props.data.domains_of_interest}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Profile Public?"}
+								type={"checkbox"}
+								value={this.props.data.public}
 								disabled={true}
 							/>
 						</div>

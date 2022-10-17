@@ -58,19 +58,16 @@ class RequestEntityForm(MethodResource, Resource):
         # Send email
         token = generate_confirmation_token(user["email"])
         try:
-            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
-            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
             url = f"{origin}/add_entity?tab=register&action=verify_register&token={token}"
             send_email_with_attachment(self.mail,
-                subject=f"[{project_name}] Entity Registration Request",
+                subject="Entity Registration Request",
                 recipients=[email],
                 html_body=render_template(
                     'entity_registration.html',
                     first_name=user["first_name"],
                     url=url,
-                    project_name=project_name
                 ),
-                file_name="entity_registration_approval.pdf",
+                file_name="Entity Registration Approval form.pdf",
                 file_type="application/pdf",
             )
         except Exception as e:

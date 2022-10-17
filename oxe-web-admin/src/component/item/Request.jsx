@@ -439,7 +439,7 @@ export default class Request extends Component {
 						</div>
 					}
 
-					<div className="col-md-12 row-spaced">
+					{/* <div className="col-md-12 row-spaced">
 						<h3>Data</h3>
 						{this.props.info && this.props.info.data
 							? this.props.info.data
@@ -448,7 +448,7 @@ export default class Request extends Component {
 								height={50}
 							/>
 						}
-					</div>
+					</div> */}
 				</div>
 				}
 			</Popup>

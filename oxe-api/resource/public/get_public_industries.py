@@ -25,8 +25,14 @@ class GetPublicIndustries(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        data = self.db.get(self.db.tables["Industry"])
+        # data = self.db.get(self.db.tables["Industry"]).order_by()
+        data = self.db.session \
+            .query(self.db.tables["Industry"]) \
+            .order_by(self.db.tables["Industry"].id) \
+            .all()
         if len(data) < 1:
             raise ObjectNotFound
         data = Serializer.serialize(data, self.db.tables["Industry"])
+        for item in data:
+            print(item)
         return data, "200 "

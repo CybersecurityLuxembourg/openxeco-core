@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import FormLine from "./form/FormLine.jsx";
 import Loading from "./box/Loading.jsx";
+import { validateNotNull } from "../utils/re.jsx";
 
 export default class PageAddProfile extends React.Component {
 	constructor(props) {
@@ -24,6 +25,7 @@ export default class PageAddProfile extends React.Component {
 			profession_id: null,
 			residency: null,
 			sector: null,
+			public: false,
 			user_id: null,
 			expertise: [],
 			industries: [],
@@ -31,6 +33,9 @@ export default class PageAddProfile extends React.Component {
 			professions: [],
 			domains: [],
 			affiliated: false,
+			agree_terms: false,
+			agree_code: false,
+			agree_privacy: false,
 		};
 	}
 
@@ -91,9 +96,11 @@ export default class PageAddProfile extends React.Component {
 	}
 
 	isFormValid() {
+		let valid = true;
 		const malta = this.state.countries.find(
 			(country) => (country.name === "Malta"),
 		);
+		console.log(malta);
 		if (malta === undefined
 			|| this.state.first_name === ""
 			|| this.state.last_name === ""
@@ -106,35 +113,48 @@ export default class PageAddProfile extends React.Component {
 			|| this.state.profession_id === null
 			|| this.state.residency === null
 			|| (
-				this.isStudent() === false
+				(this.isProfession("Student") === false || this.isProfession("Retired") === false)
 				&& this.sector === null
 				&& this.industry_id === null
 			)
 		) {
-			return false;
+			nm.warning("Please fill in all of the required fields");
+			valid = false;
 		}
-		if (this.state.nationality_id === malta.id || this.state.residency === "Malta") {
-			return true;
+		if (malta !== undefined) {
+			if (this.state.nationality_id !== null && this.state.residency !== ""
+				&& this.state.nationality_id !== malta.id && this.state.residency !== "Malta") {
+				nm.warning("This account is only available to Maltese residents or Maltese nationals");
+				valid = false;
+			}
 		}
-		return false;
+		if (this.agreedToAll() !== true) {
+			nm.warning("Please agree to all acknowledgements");
+			valid = false;
+		}
+		return valid;
 	}
 
 	setRole(value) {
 		this.changeState("profession_id", value);
-		if (this.isStudent() === true) {
-			this.changeState("sector", null);
-			this.changeState("industry_id", null);
+		if (this.isProfession("Student") === true || this.isProfession("Retired") === true) {
+			this.setState({ sector: null });
+			this.setState({ industry_id: null });
 		}
 	}
 
-	isStudent() {
+	isProfession(profession) {
 		const role = this.state.professions.find(
-			(profession) => (profession.name === "Student"),
+			(p) => (p.name === profession),
 		);
 		if (role === undefined) {
 			return false;
 		}
 		return this.state.profession_id === role.id;
+	}
+
+	agreedToAll() {
+		return this.state.agree_code && this.state.agree_privacy && this.state.agree_terms;
 	}
 
 	setDomains(name, value) {
@@ -156,6 +176,9 @@ export default class PageAddProfile extends React.Component {
 	}
 
 	submitCreationRequest() {
+		if (this.isFormValid() === false) {
+			return;
+		}
 		const params = {
 			type: "NEW INDIVIDUAL ACCOUNT",
 			request: "The user requests the creation of their profile",
@@ -174,6 +197,7 @@ export default class PageAddProfile extends React.Component {
 				profession_id: this.state.profession_id,
 				residency: this.state.residency,
 				sector: this.state.sector,
+				public: this.state.public,
 			},
 		};
 		postRequest.call(this, "private/add_request", params, () => {
@@ -209,6 +233,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("first_name", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Surname *"
@@ -217,6 +242,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("last_name", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Gender *"
@@ -234,6 +260,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("gender", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Telephone Number"
@@ -269,6 +296,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.setRole(v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Sector *"
@@ -283,7 +311,8 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("sector", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
-							disabled={this.isStudent()}
+							disabled={this.isProfession("Student") || this.isProfession("Retired")}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Industry *"
@@ -296,7 +325,8 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("industry_id", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
-							disabled={this.isStudent()}
+							disabled={this.isProfession("Student") || this.isProfession("Retired")}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Nationality *"
@@ -309,6 +339,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("nationality_id", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Residency (Location) *"
@@ -324,6 +355,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("residency", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Years of professional experience in/related to cybersecurity *"
@@ -341,6 +373,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("experience", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
 						<FormLine
 							label="Primary area of expertise in/related to cybersecurity *"
@@ -360,9 +393,8 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("expertise_id", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
-					</div>
-					<div className="col-md-6">
 						<FormLine
 							label="How did you hear about the Community *"
 							type="select"
@@ -380,8 +412,11 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("how_heard", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
+							format={validateNotNull}
 						/>
-						<div className="FormLine-label">Domains of interest *</div>
+					</div>
+					<div className="col-md-6">
+						<div className="FormLine-label font-weight-bold">Domains of interest *</div>
 						{this.state.domains !== null
 							? this.state.domains
 								.map((c) => (
@@ -397,12 +432,33 @@ export default class PageAddProfile extends React.Component {
 								height={200}
 							/>
 						}
-						<div style={{ height: 50 }}></div>
+						<hr />
+						<div className="FormLine-label font-weight-bold">Privacy</div>
 						<FormLine
-							label={"Affiliated with an entity? *"}
+							label={"Make my profile public"}
 							type={"checkbox"}
-							value={this.state.affiliated}
-							onChange={(v) => this.changeState("affiliated", v)}
+							value={this.state.public}
+							onChange={(v) => this.setState({ public: v })}
+						/>
+						<hr />
+						<div className="FormLine-label font-weight-bold">Acknowledgements *</div>
+						<FormLine
+							label={"I acknowledge and agree with the Terms & Conditions"}
+							type={"checkbox"}
+							value={this.state.agree_terms}
+							onChange={(v) => this.setState({ agree_terms: v })}
+						/>
+						<FormLine
+							label={"I acknowledge and agree to abide with the Community's Code of Conduct"}
+							type={"checkbox"}
+							value={this.state.agree_code}
+							onChange={(v) => this.setState({ agree_code: v })}
+						/>
+						<FormLine
+							label={"I acknowledge and agree with the Privacy Policy and Cookie Policy"}
+							type={"checkbox"}
+							value={this.state.agree_privacy}
+							onChange={(v) => this.setState({ agree_privacy: v })}
 						/>
 					</div>
 				</div>
@@ -413,9 +469,6 @@ export default class PageAddProfile extends React.Component {
 							<button
 								className={"blue-background"}
 								onClick={() => this.submitCreationRequest()}
-								disabled={
-									!this.isFormValid()
-								}
 							>
 								Save my profile
 							</button>

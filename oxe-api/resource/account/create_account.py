@@ -74,18 +74,16 @@ class CreateAccount(MethodResource, Resource):
         # Send email
         token = generate_confirmation_token(user.email)
         try:
-            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
-            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
             url = f"{origin}/login?action=verify_account&token={token}"
             send_email(self.mail,
-                       subject=f"[{project_name}] New account",
-                       recipients=[email],
-                       html_body=render_template(
-                           'new_account.html',
-                           first_name=user.first_name,
-                           url=url,
-                           project_name=project_name)
-                       )
+                subject=f"New account",
+                recipients=[email],
+                html_body=render_template(
+                    'new_account.html',
+                    email=user.email,
+                    url=url,
+                )
+            )
         except Exception as e:
             self.db.session.rollback()
             self.db.delete(self.db.tables["User"], {"id": user.id})
