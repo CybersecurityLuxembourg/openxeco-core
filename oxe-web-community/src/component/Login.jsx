@@ -189,6 +189,10 @@ export default class Login extends React.Component {
 		this.setState({ [field]: value });
 	}
 
+	static goToView(view) {
+		window.history.replaceState({}, document.title, "/" + view);
+	}
+
 	render() {
 		return (
 			<div id="Login">
@@ -420,6 +424,7 @@ export default class Login extends React.Component {
 										value={this.state.password}
 										onChange={(v) => this.changeState("password", v)}
 										onKeyDown={this.onKeyDown}
+										format={validatePassword}
 									/>
 
 									<div>
@@ -488,21 +493,21 @@ export default class Login extends React.Component {
 										onChange={(v) => this.changeState("password", v)}
 										autofocus={true}
 										onKeyDown={this.onKeyDown}
+										format={validatePassword}
 									/>
 									<br />
 									{!validatePassword(this.state.password)
-										&& <div>
+										&& <>
 											<div className="Password-prompt">
-												Your password should:
-												<ul>
-													<li>be between 8 and 20 characters long</li>
-													<li>contain at least one uppercase letter</li>
-													<li>contain at least one lowercase letter</li>
-													<li>contain at least one number</li>
-												</ul>
+												The password must:<br />
+												<li>contain at least 1 lowercase alphabetical character</li>
+												<li>contain at least 1 uppercase alphabetical character</li>
+												<li>contain at least 1 numeric character</li>
+												<li>contain at least 1 special character such as !@#$%^&*</li>
+												<li>be between 8 and 30 characters long</li>
 											</div>
 											<br />
-										</div>
+										</>
 									}
 									{this.props.settings
 										&& this.props.settings.ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION === "TRUE"
@@ -702,7 +707,7 @@ export default class Login extends React.Component {
 											<br />
 											<button
 												className="link-button"
-												onClick={() => this.changeState("view", "login")}
+												onClick={() => Login.goToView("login")}
 											>
 												Proceed to Login
 											</button>

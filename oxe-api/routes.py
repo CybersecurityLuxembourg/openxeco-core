@@ -192,6 +192,7 @@ from resource.user.get_user_group_assignments import GetUserGroupAssignments
 from resource.user.update_user import UpdateUser
 from resource.user.update_user_entity import UpdateUserEntity
 from resource.user.update_user_group_assignment import UpdateUserGroupAssignment
+from resource.user.get_user_profile import GetUserProfile
 from resource.taxonomy.add_taxonomy_assignment import AddTaxonomyAssignment
 from resource.taxonomy.add_taxonomy_category import AddTaxonomyCategory
 from resource.taxonomy.add_taxonomy_category_hierarchy import AddTaxonomyCategoryHierarchy

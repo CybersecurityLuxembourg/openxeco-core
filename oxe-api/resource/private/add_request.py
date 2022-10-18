@@ -32,7 +32,8 @@ class AddRequest(MethodResource, Resource):
              "200": {},
              "422.a": {"description": "Impossible to read the image"},
              "422.b": {"description": "Image width and height can't be bigger than 500 pixels"},
-             "422.c": {"description": "Object not found or you don't have the required access to it"}
+             "422.c": {"description": "Object not found or you don't have the required access to it"},
+             "422.d": {"description": "Already exists"},
          })
     @use_kwargs({
         'entity_id': fields.Int(required=False, allow_none=True),
@@ -50,6 +51,11 @@ class AddRequest(MethodResource, Resource):
         file = None
         user_id = get_jwt_identity()
         # Control image
+
+        if "vat_number" in kwargs["data"]:
+            data = self.db.get(self.db.tables["Entity"], {"vat_number": kwargs["data"]["vat_number"]})
+            if len(data) > 0:
+                return "", "422 The VAT Number you entered has already been registered"
 
         if "image" in kwargs and kwargs["image"] is not None:
             try:

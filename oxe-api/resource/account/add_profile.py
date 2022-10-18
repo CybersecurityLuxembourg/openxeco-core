@@ -41,6 +41,7 @@ class AddProfile(MethodResource, Resource):
             'last_name': kwargs["data"]['last_name'],
             'telephone': kwargs["data"]['telephone'],
             'status': "ACCEPTED",
+            'is_active': 1,
         }, self.db.tables["User"])
         try:
             self.db.insert({
