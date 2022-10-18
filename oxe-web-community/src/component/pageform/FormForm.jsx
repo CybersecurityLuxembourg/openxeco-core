@@ -144,6 +144,17 @@ export default class FormForm extends React.Component {
 			{q.type === "TEXT"
 				&& <div className="col-md-12 row-spaced">
 					<FormLine
+						label={""}
+						fullWidth={true}
+						value={this.getAnswer(q) ? this.getAnswer(q).value : ""}
+						onBlur={(v) => this.updateAnswer(q.id, this.getAnswer(q), v)}
+					/>
+				</div>
+			}
+
+			{q.type === "TEXTAREA"
+				&& <div className="col-md-12 row-spaced">
+					<FormLine
 						type={"editor"}
 						label={""}
 						fullWidth={true}

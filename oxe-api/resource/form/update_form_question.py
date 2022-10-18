@@ -25,7 +25,7 @@ class UpdateFormQuestion(MethodResource, Resource):
     @use_kwargs({
         'id': fields.Int(),
         'position': fields.Int(required=False, allow_none=True),
-        'type': fields.Str(required=False, validate=lambda x: x in ['TEXT', 'CHECKBOX', 'OPTIONS', 'SELECT']),
+        'type': fields.Str(required=False, validate=lambda x: x in ['TEXT', 'TEXTAREA', 'CHECKBOX', 'OPTIONS', 'SELECT']),
         'options': fields.Str(required=False, allow_none=True),
         'value': fields.Str(required=False, allow_none=True),
         'status': fields.Str(required=False, validate=lambda x: x in ['ACTIVE', 'INACTIVE', 'DELETED']),

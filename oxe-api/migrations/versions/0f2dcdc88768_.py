@@ -53,6 +53,8 @@ def upgrade():
         mysql_engine='InnoDB'
     )
 
+    op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'TEXTAREA', 'CHECKBOX', 'OPTIONS', 'SELECT'), server_default=sa.text("'TEXT'"), nullable=False)
+
 
 def downgrade():
     op.drop_column('Campaign', 'template_id')
@@ -65,3 +67,6 @@ def downgrade():
 
     op.drop_table('CampaignTemplate')
     op.drop_table('CampaignAddress')
+
+    op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'CHECKBOX', 'OPTIONS', 'SELECT'), server_default=sa.text("'TEXT'"), nullable=False)
+
