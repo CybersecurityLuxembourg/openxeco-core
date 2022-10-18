@@ -3,7 +3,7 @@ import "./Request.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
-import User from "./User.jsx";
+import RequestViewUser from "./request/RequestViewUser.jsx";
 import Entity from "./Entity.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
@@ -32,6 +32,7 @@ export default class Request extends Component {
 
 		this.state = {
 			user: null,
+			user_profile: null,
 			entity: null,
 			requestStatus: null,
 			settings: null,
@@ -63,6 +64,16 @@ export default class Request extends Component {
 		getRequest.call(this, "user/get_user/" + this.props.info.user_id, (data) => {
 			this.setState({
 				user: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+
+		getRequest.call(this, "user/get_user_profile/" + this.props.info.user_id, (data) => {
+			this.setState({
+				user_profile: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -184,6 +195,26 @@ export default class Request extends Component {
 		return null;
 	}
 
+	static dateStringToLocal(dateString) {
+		const date = new Date(dateString + "Z");
+		return Request.formatTime(date);
+	}
+
+	static formatTime(date) {
+		const yyyy = date.getFullYear();
+		let mm = date.getMonth() + 1; // Months start at 0!
+		let dd = date.getDate();
+		let hh = date.getHours();
+		let ll = date.getMinutes();
+		let ss = date.getSeconds();
+		if (dd < 10) dd = "0" + dd;
+		if (mm < 10) mm = "0" + mm;
+		if (hh < 10) hh = "0" + hh;
+		if (ll < 10) ll = "0" + ll;
+		if (ss < 10) ss = "0" + ss;
+		return yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + ll + ":" + ss;
+	}
+
 	render() {
 		if (this.props.info === undefined || this.props.info === null) {
 			return <Loading
@@ -216,7 +247,7 @@ export default class Request extends Component {
 
 						<div className={"Request-time"}>
 							{this.props.info !== undefined && this.props.info !== null
-								? this.props.info.submission_date
+								? Request.dateStringToLocal(this.props.info.submission_date)
 								: "Unfound request"
 							}
 						</div>
@@ -371,19 +402,12 @@ export default class Request extends Component {
 
 					<div className="col-md-6 row-spaced">
 						<h3>User</h3>
-						{this.state.user !== null
+						{this.state.user_profile !== null
 							? <>
-								{this.state.user.first_name !== null && this.state.user.last_name !== null
-									&& <div>
-										{this.state.user.first_name} {this.state.user.last_name}
-									</div>
-								}
-								<User
-									id={this.state.user.id}
-									email={this.state.user.email}
-								/>
+								<RequestViewUser user_profile={this.state.user_profile}/>
 							</>
-							: <Loading
+							: <Message
+								text={"No user in this request"}
 								height={50}
 							/>
 						}

@@ -38,7 +38,7 @@ class Login(MethodResource, Resource):
         if len(data) < 1 or not check_password_hash(data[0].password, kwargs['password']):
             return "", "401 Wrong email/password combination"
 
-        if data[0].status == "NEW":
+        if not data[0].is_admin and data[0].status == "NEW":
             return "", "401 This account is not active. Please check your email for an activation link."
 
         access_token_expires = datetime.timedelta(days=1)

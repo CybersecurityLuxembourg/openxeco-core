@@ -162,23 +162,6 @@ export default class RequestEntityAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"Description"}
-								type={"textarea"}
-								value={this.props.data.description}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Trade register number"}
-								value={this.props.data.trade_register_number}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Creation Date"}
-								type={"date"}
-								value={this.props.data.creation_date}
-								disabled={true}
-							/>
-							<FormLine
 								label={"Address Line 1"}
 								value={this.props.data.address_1}
 								disabled={true}
