@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+## [1.13.7] - 2022-10-19
+
+### Fixed
+
+- ISSUE#48 FIX: Urgent: Change password is not working
+
 ## [1.13.6] - 2022-10-12
 
 ### Fixed
