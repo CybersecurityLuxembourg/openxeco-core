@@ -1,3 +1,4 @@
+import json
 from flask import request, render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
@@ -71,6 +72,21 @@ class CreateAccount(MethodResource, Resource):
                 raise ObjectAlreadyExisting
             raise e
 
+        try:
+            self.db.insert({
+                "entity_type": "User",
+                "entity_id": user.id,
+                "action": "Create User Account",
+                "values_before": "{}",
+                "values_after": json.dumps({
+                    "id": user.id,
+                    "email": user.email,
+                }),
+                "user_id": user.id,
+            }, self.db.tables["AuditRecord"])
+        except Exception as err:
+            # We don't want the app to error if we can't log the action
+            print(err)
         # Send email
         token = generate_confirmation_token(user.email)
         try:

@@ -1,3 +1,4 @@
+import json
 from flask import request, render_template
 from flask_apispec import MethodResource
 from flask_apispec import doc
@@ -43,10 +44,29 @@ class VerifyAccount(MethodResource, Resource):
         # Set user to active
         data = self.db.get(self.db.tables["User"], {"email": email})
         user = data[0]
+        values_before = {
+            "status": user.status
+        }
         if user.status != "NEW":
             return "", "422 The verification link is invalid."
+
         user.status = "VERIFIED"
+        values_after = {
+            "status": user.status
+        }
         self.db.merge(user, self.db.tables["User"])
+        try:
+            self.db.insert({
+                "entity_type": "User",
+                "entity_id": user.id,
+                "action": "Verify User Email",
+                "values_before": json.dumps(values_before),
+                "values_after": json.dumps(values_after),
+                "user_id": user.id,
+            }, self.db.tables["AuditRecord"])
+        except Exception as err:
+            # We don't want the app to error if we can't log the action
+            print(err)
 
         # Send email
         try:

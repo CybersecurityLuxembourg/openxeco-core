@@ -33,6 +33,7 @@ from resource.address.get_all_addresses import GetAllAddresses
 from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
 from resource.address.update_address import UpdateAddress
+from resource.audit.get_audit_logs import GetAuditLogs
 from resource.notification.get_notifications import GetNotifications
 from resource.communication.get_communications import GetCommunications
 from resource.communication.send_communication import SendCommunication
