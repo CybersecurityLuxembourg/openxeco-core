@@ -1,6 +1,7 @@
+import json
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 
@@ -53,6 +54,26 @@ class UpdateEntity(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
+        data = self.db.get(self.db.tables["Entity"], {"id": kwargs["id"]})
+
         self.db.merge(kwargs, self.db.tables["Entity"])
+
+        try:
+            data_dict = data[0].__dict__
+            values_before = {
+                key: data_dict[key]
+                for key in kwargs.keys()
+            }
+            self.db.insert({
+                "entity_type": "Entity",
+                "entity_id": kwargs["id"],
+                "action": "Update Entity",
+                "values_before": json.dumps(values_before),
+                "values_after": json.dumps(kwargs),
+                "user_id": get_jwt_identity(),
+            }, self.db.tables["AuditRecord"])
+        except Exception as err:
+            # We don't want the app to error if we can't log the action
+            print(err)
 
         return "", "200 "

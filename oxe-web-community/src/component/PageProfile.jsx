@@ -262,12 +262,6 @@ export default class PageProfile extends React.Component {
 										onChange={(v) => this.updateCurrentVcard("fn", v)}
 										fullWidth={true}
 									/>
-									<FormLine
-										label={"Title"}
-										value={this.getVcardValue("title")}
-										onChange={(v) => this.updateCurrentVcard("title", v)}
-										fullWidth={true}
-									/>
 								</div>
 							</div>
 
