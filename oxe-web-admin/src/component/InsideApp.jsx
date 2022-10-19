@@ -16,6 +16,7 @@ import PageEmail from "./PageEmail.jsx";
 import PageForm from "./PageForm.jsx";
 import PageMedia from "./PageMedia.jsx";
 import PageSettings from "./PageSettings.jsx";
+import PageAuditLogs from "./PageAuditLogs.jsx";
 import PageProfile from "./PageProfile.jsx";
 import Loading from "./box/Loading.jsx";
 
@@ -85,7 +86,8 @@ export default class InsideApp extends React.Component {
 							{...props}
 							settings={this.state.settings}
 							refreshSettings={this.refreshSettings}
-						/>}/>
+						/>} />
+						<Route path="/audit" render={(props) => <PageAuditLogs {...props} />} />
 						<Route path="/profile" render={(props) => <PageProfile {...props} />}/>
 						<Route path="/task" render={(props) => <PageTask
 							{...props}
