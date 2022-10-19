@@ -61,7 +61,7 @@ class App extends React.Component {
 						<h3>We have detected a small screen usage</h3>
 						<p>
 							This application is a content management platform.
-							Hence, the functionnalities and the user interfaces
+							Hence, the functionalities and the user interfaces
 							are not optimized for mobile terminals.
 						</p>
 						<p>
