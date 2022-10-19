@@ -1,6 +1,25 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+## [1.13.7] - 2022-10-19
+
+### Fixed
+
+- ISSUE#48 FIX: Urgent: Change password is not working
+
+## [1.13.6] - 2022-10-12
+
+### Fixed
+
+- public/get_public_related_articles API resource 
+
+## [1.13.5] - 2022-10-11
+
+### Fixed
+
+- Taxonomy update for requests on oxe-web-admin
+
 ## [1.13.4] - 2022-09-21
 
 ### Fixed
