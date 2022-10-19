@@ -80,7 +80,6 @@ export default class InsideApp extends React.Component {
 				<Route render={(props) => <Menu
 					selectedMenu={this.state.selectedMenu}
 					changeMenu={this.changeMenu}
-					disconnect={this.props.disconnect}
 					cookies={this.props.cookies}
 					myEntities={this.state.myEntities}
 					notifications={this.state.notifications}
