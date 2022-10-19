@@ -59,7 +59,7 @@ export default class Login extends React.Component {
 			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
 		}
 
-		// Get the token if the user reaches the app though acounnt verification URL
+		// Get the token if the user reaches the app though acount verification URL
 
 		if (getUrlParameter("action") === "verify_account") {
 			getRequest.call(this, "account/verify_account/" + getUrlParameter("token"), () => {
@@ -75,10 +75,12 @@ export default class Login extends React.Component {
 		}
 
 		// Log in the user if there is an existing cookie
-
-		if (this.props.cookies.get("access_token_cookie")) {
-			this.fetchUser();
+		if (getUrlParameter("action") !== "reset_password" && getUrlParameter("action") !== "verify_account") {
+			if (this.props.cookies.get("access_token_cookie")) {
+				this.fetchUser();
+			}
 		}
+
 		// This function to notify if the password has been reset correctly
 		Login.notifyForPasswordReset();
 	}
