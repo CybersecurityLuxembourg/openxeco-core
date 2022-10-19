@@ -56,14 +56,16 @@ export default class Login extends React.Component {
 
 		// Log in the user if there is an existing cookie
 
-		if (this.props.cookies.get("access_token_cookie")) {
-			getRequest.call(this, "private/get_my_user", (data) => {
-				this.props.connect(data.email);
-			}, (response2) => {
-				nm.warning(response2.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
+		if (getUrlParameter("action") !== "reset_password") {
+			if (this.props.cookies.get("access_token_cookie")) {
+				getRequest.call(this, "private/get_my_user", (data) => {
+					this.props.connect(data.email);
+				}, (response2) => {
+					nm.warning(response2.statusText);
+				}, (error) => {
+					nm.error(error.message);
+				});
+			}
 		}
 
 		// This function to notify if the password has been reset correctly
