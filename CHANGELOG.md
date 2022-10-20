@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.13.8] - 2022-10-20
+
+### Fixed
+
+- ISSUE#49 FIX: Urgent: Log Out button not working
+
 ## [1.13.7] - 2022-10-19
 
 ### Fixed

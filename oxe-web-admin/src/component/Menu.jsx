@@ -78,7 +78,7 @@ export default class Menu extends React.Component {
 				className={"fade-in"}
 				onSelect={(selected) => {
 					if (selected === "disconnect") {
-						this.props.cookies.remove("access_token_cookie");
+						this.props.cookies.remove("access_token_cookie", this.getCookieOptions());
 						window.location.replace("/");
 					} else {
 						this.props.changeMenu(selected);
