@@ -10,6 +10,7 @@ export default class RequestIndividualAccountAdd extends Component {
 		super(props);
 
 		this.insertEntity = this.insertEntity.bind(this);
+		this.rejectEntity = this.rejectEntity.bind(this);
 
 		this.state = {
 			expertise: "",
@@ -85,6 +86,21 @@ export default class RequestIndividualAccountAdd extends Component {
 
 		postRequest.call(this, "account/add_profile", params, () => {
 			nm.info("The profile has been created");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	rejectEntity() {
+		const params = {
+			id: this.props.userId,
+			status: "REJECTED",
+		};
+		console.log(params);
+		postRequest.call(this, "user/update_user", params, () => {
+			nm.info("The profile has been set to rejected");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -204,7 +220,13 @@ export default class RequestIndividualAccountAdd extends Component {
 								className={"blue-background"}
 								onClick={this.insertEntity}
 							>
-								<i className="fas fa-plus"/> Add account
+								<i className="fas fa-plus" /> Add account
+							</button>
+							<button
+								className={"grey-background"}
+								onClick={this.rejectEntity}
+							>
+								<i className="fas fa-minus" /> Do not add account
 							</button>
 						</div>
 					</div>

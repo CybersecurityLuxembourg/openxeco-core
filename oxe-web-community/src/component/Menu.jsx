@@ -149,7 +149,7 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 
-					<NavItem
+					{/* <NavItem
 						className="Menu-bug-nav-item"
 						eventKey="contact"
 						active={this.props.selectedMenu === "contact"}
@@ -161,7 +161,7 @@ export default class Menu extends React.Component {
 							Contact us
 						</NavText>
 						{this.getTaskNotificationBlock("/contact")}
-					</NavItem>
+					</NavItem> */}
 					<NavItem
 						className="Menu-log-out-nav-item"
 						eventKey="disconnect"

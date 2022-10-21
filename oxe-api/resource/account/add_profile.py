@@ -40,6 +40,7 @@ class AddProfile(MethodResource, Resource):
             'first_name': kwargs["data"]['first_name'],
             'last_name': kwargs["data"]['last_name'],
             'telephone': kwargs["data"]['telephone'],
+            'is_vcard_public': kwargs["data"]['public'],
             'status': "ACCEPTED",
             'is_active': 1,
         }, self.db.tables["User"])

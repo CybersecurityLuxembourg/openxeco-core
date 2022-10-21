@@ -30,6 +30,9 @@ class UpdateUser(MethodResource, Resource):
         'is_admin': fields.Bool(required=False),
         'is_active': fields.Bool(required=False),
         'accept_communication': fields.Bool(required=False),
+        'status': fields.Str(required=False,
+            validate=lambda x: x in ['NEW', 'VERIFIED', 'REQUESTED', 'ACCEPTED', 'REJECTED']
+        ),
     })
     @jwt_required
     @verify_admin_access

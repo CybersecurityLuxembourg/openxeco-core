@@ -7,7 +7,7 @@ import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
-import DialogHint from "./dialog/DialogHint.jsx";
+// import DialogHint from "./dialog/DialogHint.jsx";
 import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
@@ -227,7 +227,7 @@ export default class Login extends React.Component {
 					}
 				</div>
 
-				<div className="top-left-buttons">
+				{/* <div className="top-left-buttons">
 					<DialogHint
 						content={
 							<div className="row">
@@ -374,7 +374,7 @@ export default class Login extends React.Component {
 						}
 						validateSelection={(value) => this.onChange(value)}
 					/>
-				</div>
+				</div> */}
 
 				<div id="Login-area">
 					<ul className="Login-circles">
