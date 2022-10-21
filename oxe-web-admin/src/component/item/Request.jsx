@@ -76,7 +76,7 @@ export default class Request extends Component {
 				user_profile: data,
 			});
 		}, (response) => {
-			nm.warning(response.statusText);
+			console.log(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});

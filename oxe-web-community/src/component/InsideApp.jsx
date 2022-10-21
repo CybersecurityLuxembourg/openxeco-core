@@ -10,7 +10,7 @@ import PageLogoGenerator from "./PageLogoGenerator.jsx";
 import PageAddEntity from "./PageAddEntity.jsx";
 import PageEntity from "./PageEntity.jsx";
 import PageProfile from "./PageProfile.jsx";
-import PageContact from "./PageContact.jsx";
+// import PageContact from "./PageContact.jsx";
 import { getRequest } from "../utils/request.jsx";
 import PageAddProfile from "./PageAddProfile.jsx";
 
@@ -129,11 +129,11 @@ export default class InsideApp extends React.Component {
 							myEntities={this.state.myEntities}
 							{...props}
 						/>}/>
-						<Route path="/contact" render={(props) => <PageContact
+						{/* <Route path="/contact" render={(props) => <PageContact
 							settings={this.props.settings}
 							getNotifications={this.getNotifications}
 							{...props}
-						/>}/>
+						/>}/> */}
 						<Route path="/" render={(props) => <PageHome
 							settings={this.props.settings}
 							changeMenu={this.changeMenu}
