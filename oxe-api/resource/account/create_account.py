@@ -65,7 +65,7 @@ class CreateAccount(MethodResource, Resource):
             user = self.db.insert({
                 "email": email,
                 "password": generate_password_hash(password),
-                "is_active": 0,
+                "is_active": 1,
             }, self.db.tables["User"])
         except IntegrityError as e:
             if "Duplicate entry" in str(e):

@@ -67,7 +67,7 @@ class RequestEntityForm(MethodResource, Resource):
                     first_name=user["first_name"],
                     url=url,
                 ),
-                file_name="Entity Registration Approval form.pdf",
+                file_name="Entity Registration - Signatory Approval.pdf",
                 file_type="application/pdf",
             )
         except Exception as e:

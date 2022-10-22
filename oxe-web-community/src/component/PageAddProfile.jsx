@@ -113,7 +113,7 @@ export default class PageAddProfile extends React.Component {
 			|| this.state.profession_id === null
 			|| this.state.residency === null
 			|| (
-				(this.isProfession("Student") === false || this.isProfession("Retired") === false)
+				(this.isProfession("Student") === false && this.isProfession("Retired") === false)
 				&& this.sector === null
 				&& this.industry_id === null
 			)
@@ -122,9 +122,14 @@ export default class PageAddProfile extends React.Component {
 			valid = false;
 		}
 		if (malta !== undefined) {
-			if (this.state.nationality_id !== null && this.state.residency !== ""
-				&& this.state.nationality_id !== malta.id && this.state.residency !== "Malta") {
-				nm.warning("This account is only available to Maltese residents or Maltese nationals");
+			if (
+				this.state.nationality_id !== null
+				&& this.state.residency !== ""
+				&& this.state.nationality_id !== malta.id
+				&& this.state.residency !== "Malta"
+				&& this.state.residency !== "Gozo"
+			) {
+				nm.warning("This account is only available to Maltese or Gozo residents and Maltese nationals");
 				valid = false;
 			}
 		}
@@ -233,7 +238,6 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("first_name", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
-							format={validateNotNull}
 						/>
 						<FormLine
 							label="Surname *"
@@ -242,7 +246,6 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.changeState("last_name", v)}
 							autofocus={true}
 							onKeyDown={this.onKeyDown}
-							format={validateNotNull}
 						/>
 						<FormLine
 							label="Gender *"
