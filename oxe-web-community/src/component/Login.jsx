@@ -134,6 +134,14 @@ export default class Login extends React.Component {
 	}
 
 	createAccount() {
+		if (
+			!validateEmail(this.state.createAccountEmail)
+			|| !validatePassword(this.state.password)
+		) {
+			nm.warning("Email address or password is invalid");
+			return;
+		}
+
 		const params = {
 			email: this.state.createAccountEmail,
 			password: this.state.password,
@@ -189,10 +197,6 @@ export default class Login extends React.Component {
 
 	changeState(field, value) {
 		this.setState({ [field]: value });
-	}
-
-	static goToView(view) {
-		window.history.replaceState({}, document.title, "/" + view);
 	}
 
 	render() {
@@ -486,6 +490,7 @@ export default class Login extends React.Component {
 										onChange={(v) => this.changeState("createAccountEmail", v)}
 										autofocus={true}
 										onKeyDown={this.onKeyDown}
+										format={validateEmail}
 									/>
 									<FormLine
 										label="Password"
@@ -510,44 +515,6 @@ export default class Login extends React.Component {
 											</div>
 											<br />
 										</>
-									}
-									{this.props.settings
-										&& this.props.settings.ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION === "TRUE"
-										&& <div>
-											<FormLine
-												labelWidth={8}
-												label="I am part of a entity"
-												type={"checkbox"}
-												value={this.state.partOfEntity}
-												onChange={(v) => this.changeState("partOfEntity", v)}
-												onKeyDown={this.onKeyDown}
-											/>
-											<FormLine
-												labelWidth={4}
-												label="Entity"
-												value={this.state.entity}
-												onChange={(v) => this.changeState("entity", v)}
-												onKeyDown={this.onKeyDown}
-												disabled={!this.state.partOfEntity}
-											/>
-											<FormLine
-												labelWidth={4}
-												label={"Department"}
-												type={"select"}
-												options={[
-													{ label: "TOP MANAGEMENT", value: "TOP MANAGEMENT" },
-													{ label: "HUMAN RESOURCE", value: "HUMAN RESOURCE" },
-													{ label: "MARKETING", value: "MARKETING" },
-													{ label: "FINANCE", value: "FINANCE" },
-													{ label: "OPERATION/PRODUCTION", value: "OPERATION/PRODUCTION" },
-													{ label: "INFORMATION TECHNOLOGY", value: "INFORMATION TECHNOLOGY" },
-													{ label: "OTHER", value: "OTHER" },
-												]}
-												value={this.state.entityDepartment}
-												onChange={(v) => this.changeState("entityDepartment", v)}
-												disabled={!this.state.partOfEntity}
-											/>
-										</div>
 									}
 									<div className="right-buttons">
 										<button
@@ -709,9 +676,9 @@ export default class Login extends React.Component {
 											<br />
 											<button
 												className="link-button"
-												onClick={() => Login.goToView("login")}
+												onClick={() => window.location.replace("/")}
 											>
-												Proceed to Login
+												Back to login
 											</button>
 										</div>
 									</div>
@@ -723,9 +690,9 @@ export default class Login extends React.Component {
 											Account Verification Failed!
 											<button
 												className="link-button"
-												onClick={() => this.changeState("view", "login")}
+												onClick={() => window.location.replace("/")}
 											>
-												Proceed to Login
+												Back to login
 											</button>
 										</div>
 									</div>

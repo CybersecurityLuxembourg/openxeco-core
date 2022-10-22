@@ -7,7 +7,7 @@ import { getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../form/FormLine.jsx";
 import Info from "../box/Info.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
-import DialogHint from "../dialog/DialogHint.jsx";
+// import DialogHint from "../dialog/DialogHint.jsx";
 import Loading from "../box/Loading.jsx";
 import {
 	validateEmail,
@@ -22,6 +22,8 @@ export default class AddEntityRegister extends React.Component {
 		super(props);
 
 		this.onDropForm = this.onDropForm.bind(this);
+		this.formValid = this.formValid.bind(this);
+
 		this.state = {
 			name: "",
 			address_1: "",
@@ -102,6 +104,9 @@ export default class AddEntityRegister extends React.Component {
 	}
 
 	submitCreationRequest() {
+		if (this.formValid() === false) {
+			return;
+		}
 		const reader = new FileReader();
 		reader.onabort = () => nm.error("file reading was aborted");
 		reader.onerror = () => nm.error("An error happened while reading the file");
@@ -202,7 +207,7 @@ export default class AddEntityRegister extends React.Component {
 						<h2>Register an entity</h2>
 					</div>
 
-					<div className="col-md-3 top-title-menu">
+					{/* <div className="col-md-3 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">
@@ -233,7 +238,7 @@ export default class AddEntityRegister extends React.Component {
 								</div>
 							}
 						/>
-					</div>
+					</div> */}
 
 					<div className="col-md-12 row-spaced">
 						<Info

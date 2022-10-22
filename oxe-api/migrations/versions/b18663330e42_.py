@@ -20,7 +20,7 @@ depends_on = None
 def upgrade():
     op.create_table('AuditRecord',
         sa.Column('id', mysql.INTEGER(), autoincrement=True, nullable=False),
-        sa.Column('timestamp', sa.DATE(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
+        sa.Column('timestamp', sa.DATETIME(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
         sa.Column('entity_type', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=110), nullable=False),
         sa.Column('entity_id', mysql.INTEGER(), nullable=False),
         sa.Column('action', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=110), nullable=False),

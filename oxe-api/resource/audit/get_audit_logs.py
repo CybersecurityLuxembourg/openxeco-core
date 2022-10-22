@@ -38,7 +38,7 @@ class GetAuditLogs(MethodResource, Resource):
                            self.db.tables["AuditRecord"].values_before,
                            self.db.tables["AuditRecord"].values_after,
                            self.db.tables["AuditRecord"].user_id) \
-            .order_by(self.db.tables["AuditRecord"].timestamp.asc())
+            .order_by(self.db.tables["AuditRecord"].timestamp.desc())
 
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
         logs = [l._asdict() for l in paginate.items]

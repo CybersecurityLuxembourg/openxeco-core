@@ -16,10 +16,12 @@ export default class PageAuditLogs extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.fetchLogs = this.fetchLogs.bind(this);
+
 		this.state = {
 			pagination: null,
 			page: 1,
-			per_page: 20,
+			per_page: 10,
 			logs: null,
 		};
 	}
@@ -130,7 +132,7 @@ export default class PageAuditLogs extends React.Component {
 								columns={columns}
 								data={this.state.logs}
 								pagination={this.state.pagination}
-								changePage={this.fetchUsers}
+								changePage={this.fetchLogs}
 							/>
 							: <Loading
 								height={500}

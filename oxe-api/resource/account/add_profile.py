@@ -42,7 +42,6 @@ class AddProfile(MethodResource, Resource):
             'telephone': kwargs["data"]['telephone'],
             'is_vcard_public': kwargs["data"]['public'],
             'status': "ACCEPTED",
-            'is_active': 1,
         }, self.db.tables["User"])
         try:
             self.db.insert({
