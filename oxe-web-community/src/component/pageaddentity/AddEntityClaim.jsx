@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 import { NotificationManager as nm } from "react-notifications";
 import Popup from "reactjs-popup";
 import Loading from "../box/Loading.jsx";
-import { validateEmail } from "../../utils/re.jsx";
+import { validateEmail, validateTelephoneNumber } from "../../utils/re.jsx";
 import { getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../form/FormLine.jsx";
 import Message from "../box/Message.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
-import DialogHint from "../dialog/DialogHint.jsx";
+// import DialogHint from "../dialog/DialogHint.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 import Info from "../box/Info.jsx";
 
@@ -135,6 +135,20 @@ export default class PageAddEntity extends React.Component {
 		});
 	}
 
+	formValid() {
+		if (!validateEmail(this.state.email)
+			|| (
+				this.state.work_telephone !== ""
+				&& !validateTelephoneNumber(this.state.telephone)
+			)
+			|| this.state.level === ""
+			|| this.state.department === ""
+		) {
+			return false;
+		}
+		return true;
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -151,7 +165,7 @@ export default class PageAddEntity extends React.Component {
 							<h2>Associate with an entity</h2>
 						</div>
 
-						<div className="col-md-3 top-title-menu">
+						{/* <div className="col-md-3 top-title-menu">
 							<DialogHint
 								content={
 									<div className="row">
@@ -203,7 +217,7 @@ export default class PageAddEntity extends React.Component {
 									</div>
 								}
 							/>
-						</div>
+						</div> */}
 
 						<div className="col-md-12">
 							<Info
@@ -266,7 +280,7 @@ export default class PageAddEntity extends React.Component {
 													{(close) => (
 														<div className="row">
 															<div className="col-md-9 row-spaced">
-																<h3>Select your department in the entity</h3>
+																<h3>Entity Association Details</h3>
 															</div>
 
 															<div className={"col-md-3"}>
@@ -289,6 +303,16 @@ export default class PageAddEntity extends React.Component {
 																	autofocus={true}
 																	onKeyDown={this.onKeyDown}
 																/>
+																{!validateEmail(this.state.email) && this.state.email !== ""
+																	&& <div className="row">
+																		<div className="col-md-6"></div>
+																		<div className="col-md-6">
+																			<div className="validation-error">
+																				Please enter a valid email address
+																			</div>
+																		</div>
+																	</div>
+																}
 																<FormLine
 																	label="Work Telephone Number *"
 																	value={this.state.telephone}
@@ -296,6 +320,16 @@ export default class PageAddEntity extends React.Component {
 																	autofocus={true}
 																	onKeyDown={this.onKeyDown}
 																/>
+																{!validateTelephoneNumber(this.state.telephone) && this.state.telephone !== ""
+																	&& <div className="row">
+																		<div className="col-md-6"></div>
+																		<div className="col-md-6">
+																			<div className="validation-error">
+																				Accepted Format: +1234567891, 1234567891
+																			</div>
+																		</div>
+																	</div>
+																}
 																<FormLine
 																	label={"Seniority Level *"}
 																	type={"select"}
@@ -337,6 +371,7 @@ export default class PageAddEntity extends React.Component {
 																		trigger={
 																			<button
 																				className={"blue-background card-button"}
+																				disabled={this.formValid() === false}
 																			>
 																				Associate...
 																			</button>

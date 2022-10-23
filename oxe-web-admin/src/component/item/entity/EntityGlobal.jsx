@@ -152,43 +152,44 @@ export default class EntityGlobal extends React.Component {
 
 				<div className="col-md-12 row-spaced">
 					<FormLine
-						label={"Headline"}
-						value={this.props.entity.headline}
-						onBlur={(v) => this.saveEntityValue("headline", v)}
-						disabled={!this.props.editable}
+						label={"Name"}
+						value={this.props.entity.name}
+						disabled={true}
 					/>
 					<FormLine
-						label={"Description"}
-						type={"textarea"}
-						value={this.props.entity.description}
-						onBlur={(v) => this.saveEntityValue("description", v)}
-						disabled={!this.props.editable}
+						label={"Entity Type"}
+						value={this.props.entity.entity_type}
+						disabled={true}
 					/>
 					<FormLine
-						label={"Trade register number"}
-						value={this.props.entity.trade_register_number}
-						onBlur={(v) => this.saveEntityValue("trade_register_number", v)}
-						disabled={!this.props.editable}
+						label={"VAT Number"}
+						value={this.props.entity.vat_number}
+						disabled={true}
 					/>
 					<FormLine
 						label={"Website"}
 						value={this.props.entity.website}
-						onBlur={(v) => this.saveEntityValue("website", v)}
-						disabled={!this.props.editable}
+						disabled={true}
 					/>
 					<FormLine
-						label={"Creation date"}
-						type={"date"}
-						value={this.props.entity.creation_date}
-						onChange={(v) => this.saveEntityValue("creation_date", v)}
-						disabled={!this.props.editable}
+						label={"Size"}
+						value={this.props.entity.size}
+						disabled={true}
 					/>
 					<FormLine
-						label={"Is startup"}
-						type={"checkbox"}
-						value={this.props.entity.is_startup}
-						onChange={(v) => this.saveEntityValue("is_startup", v)}
-						disabled={!this.props.editable}
+						label={"Sector"}
+						value={this.props.entity.sector}
+						disabled={true}
+					/>
+					<FormLine
+						label={"Industry"}
+						value={this.props.entity.industry}
+						disabled={true}
+					/>
+					<FormLine
+						label={"Primary involvement"}
+						value={this.props.entity.involvement}
+						disabled={true}
 					/>
 				</div>
 

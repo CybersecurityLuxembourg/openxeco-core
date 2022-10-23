@@ -7,7 +7,7 @@ import Message from "../box/Message.jsx";
 import Info from "../box/Info.jsx";
 import Request from "../item/Request.jsx";
 import FormLine from "../form/FormLine.jsx";
-import DialogHint from "../dialog/DialogHint.jsx";
+// import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class EntityGlobal extends React.Component {
 	constructor(props) {
@@ -62,7 +62,7 @@ export default class EntityGlobal extends React.Component {
 						<h2>Request</h2>
 					</div>
 
-					<div className="col-md-3 top-title-menu">
+					{/* <div className="col-md-3 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">
@@ -98,7 +98,7 @@ export default class EntityGlobal extends React.Component {
 								</div>
 							}
 						/>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={"row row-spaced"}>

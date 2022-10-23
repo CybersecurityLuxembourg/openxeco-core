@@ -78,13 +78,12 @@ class AddRequest(MethodResource, Resource):
                 "size": len(kwargs["uploaded_file"]),
                 "creation_date": datetime.date.today()
             }
-            try:
-                self.db.insert(document, self.db.tables["Document"])
-            except IntegrityError as e:
-                self.db.session.rollback()
-                if "Duplicate entry" in str(e):
-                    return "", "422 A document is already existing with that filename"
-                raise e
+
+            old_document = self.db.get(self.db.tables["Document"], { "filename": filename })
+            if len(old_document) > 0:
+                self.db.delete(self.db.tables["Document"], { "filename": filename })
+            self.db.insert(document, self.db.tables["Document"])
+
             try:
                 decoded_data = base64.b64decode(kwargs["uploaded_file"].split(",")[-1])
             except Exception:

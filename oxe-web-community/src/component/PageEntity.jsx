@@ -20,10 +20,10 @@ export default class PageEntity extends React.Component {
 			tabs: [
 				"global_information",
 				"logo",
-				"address",
-				"taxonomy",
+				// "address",
+				// "taxonomy",
 				"collaborator",
-				"request",
+				// "request",
 			],
 		};
 	}
@@ -97,10 +97,10 @@ export default class PageEntity extends React.Component {
 								labels={[
 									"Global information",
 									"Logo",
-									"Address",
-									"Taxonomy",
-									"Collaborator",
-									"Request",
+									// "Address",
+									// "Taxonomy",
+									// "Collaborator",
+									// "Request",
 								]}
 								notifications={[
 									0,

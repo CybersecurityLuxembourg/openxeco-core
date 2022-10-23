@@ -34,10 +34,11 @@ class GetUserProfile(MethodResource, Resource):
         del user['_sa_instance_state']
 
         profile = self.db.get(self.db.tables["UserProfile"], {"user_id": user_id})
-        if len(profile) == 0:
-            return "", "401 The profile has not been found"
-        profile = profile[0].__dict__
-        del profile['_sa_instance_state']
-        del profile['id']
+        if len(profile) > 0:
+            profile = profile[0].__dict__
+            del profile['_sa_instance_state']
+            del profile['id']
+        else:
+            profile = {}
 
         return {**user, **profile}, "200 "
