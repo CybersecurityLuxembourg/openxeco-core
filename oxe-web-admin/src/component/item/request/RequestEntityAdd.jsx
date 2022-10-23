@@ -91,11 +91,7 @@ export default class RequestEntityAdd extends Component {
 
 	addEntityContact(newId) {
 		const contactParams = {
-			work_email: this.props.data.company_email,
 			name: this.props.data.primary_contact_name,
-			work_telephone: this.props.data.work_telephone,
-			seniority_level: this.props.data.seniority_level,
-			department: this.props.data.department,
 			entity_id: newId,
 			representative: "PHYSICAL PERSON",
 			type: "EMAIL ADDRESS",
@@ -116,6 +112,9 @@ export default class RequestEntityAdd extends Component {
 			user_id: this.props.userId,
 			entity_id: newId,
 			department: this.props.data.department,
+			work_email: this.props.data.company_email,
+			seniority_level: this.props.data.seniority_level,
+			work_telephone: this.props.data.work_telephone,
 		};
 
 		postRequest.call(this, "user/add_user_entity", userEntityParams, () => {

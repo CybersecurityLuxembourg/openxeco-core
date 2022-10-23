@@ -2,7 +2,7 @@ import React from "react";
 import "./EditMetadata.css";
 import FormLine from "../../form/FormLine.jsx";
 import { validateUrlHandle } from "../../../utils/re.jsx";
-import DialogHint from "../DialogHint.jsx";
+// import DialogHint from "../DialogHint.jsx";
 
 export default class EditMetadata extends React.Component {
 	constructor(props) {
@@ -61,7 +61,7 @@ export default class EditMetadata extends React.Component {
 							<h3>
 								Metadata
 
-								<DialogHint
+								{/* <DialogHint
 									content={
 										<div className="row">
 											<div className="col-md-12">
@@ -143,7 +143,7 @@ export default class EditMetadata extends React.Component {
 											</div>
 										</div>
 									}
-								/>
+								/> */}
 							</h3>
 						</div>
 

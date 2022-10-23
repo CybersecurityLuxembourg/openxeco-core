@@ -60,6 +60,9 @@ export default class RequestViewUser extends Component {
 	}
 
 	static getById(list, id) {
+		if (id === undefined) {
+			return "";
+		}
 		const index = list.findIndex((a) => (a.id === id));
 		return list[index].name;
 	}
@@ -72,7 +75,7 @@ export default class RequestViewUser extends Component {
 					<div className={"User"}>
 						<i className="fas fa-user"/>
 						<div className={"User-name"}>
-							View User: {this.props.user_profile.first_name} {this.props.user_profile.last_name}
+							View User: {this.props.user_profile.email}
 						</div>
 					</div>
 				}
@@ -96,28 +99,33 @@ export default class RequestViewUser extends Component {
 
 						<div className="col-md-12">
 							<FormLine
+								label={"Email"}
+								value={this.props.user_profile.email || ""}
+								disabled={true}
+							/>
+							<FormLine
 								label={"Name"}
-								value={this.props.user_profile.first_name}
+								value={this.props.user_profile.first_name || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Surname"}
-								value={this.props.user_profile.last_name}
+								value={this.props.user_profile.last_name || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Gender"}
-								value={this.props.user_profile.gender}
+								value={this.props.user_profile.gender || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Telephone"}
-								value={this.props.user_profile.telephone}
+								value={this.props.user_profile.telephone || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Mobile"}
-								value={this.props.user_profile.mobile}
+								value={this.props.user_profile.mobile || ""}
 								disabled={true}
 							/>
 							<FormLine
@@ -127,7 +135,7 @@ export default class RequestViewUser extends Component {
 							/>
 							<FormLine
 								label={"Sector"}
-								value={this.props.user_profile.sector}
+								value={this.props.user_profile.sector || ""}
 								disabled={true}
 							/>
 							<FormLine
@@ -142,12 +150,12 @@ export default class RequestViewUser extends Component {
 							/>
 							<FormLine
 								label={"Residency"}
-								value={this.props.user_profile.residency}
+								value={this.props.user_profile.residency || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Experience"}
-								value={this.props.user_profile.experience}
+								value={this.props.user_profile.experience || ""}
 								disabled={true}
 							/>
 							<FormLine
@@ -157,12 +165,12 @@ export default class RequestViewUser extends Component {
 							/>
 							<FormLine
 								label={"How did you hear about us?"}
-								value={this.props.user_profile.how_heard}
+								value={this.props.user_profile.how_heard || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Domains of Interest"}
-								value={this.props.user_profile.domains_of_interest}
+								value={this.props.user_profile.domains_of_interest || ""}
 								disabled={true}
 							/>
 							<FormLine

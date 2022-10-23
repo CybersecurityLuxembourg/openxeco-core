@@ -10,7 +10,6 @@ import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 // import DialogHint from "../dialog/DialogHint.jsx";
 import Loading from "../box/Loading.jsx";
 import {
-	validateEmail,
 	validateTelephoneNumber,
 	validateVatNumber,
 	validateWebsite,
@@ -50,12 +49,14 @@ export default class AddEntityRegister extends React.Component {
 			locations: [],
 			sectors: [],
 			industries: null,
+			submitted: false,
 		};
 	}
 
 	componentDidMount() {
 		getRequest.call(this, "private/get_my_user", (data) => {
 			this.setState({ primary_contact_name: data.first_name + " " + data.last_name });
+			this.setState({ company_email: data.work_email });
 		}, (response2) => {
 			nm.warning(response2.statusText);
 		}, (error) => {
@@ -140,7 +141,7 @@ export default class AddEntityRegister extends React.Component {
 			postRequest.call(this, "private/add_request", params, () => {
 				this.props.getNotifications();
 				nm.info("The request has been sent and will be reviewed");
-				this.props.changeMenu("/");
+				this.setState({ submitted: true });
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -177,7 +178,6 @@ export default class AddEntityRegister extends React.Component {
 			|| this.state.entity_type === ""
 			|| !validateVatNumber(this.state.vat_number)
 			|| (this.state.website !== "" && !validateWebsite(this.state.website))
-			|| (this.state.company_email !== "" && !validateEmail(this.state.company_email))
 			|| this.state.size === ""
 			|| this.state.sector === ""
 			|| this.state.industry === ""
@@ -202,361 +202,374 @@ export default class AddEntityRegister extends React.Component {
 	render() {
 		return (
 			<div id="AddEntityRegister" className="max-sized-page row-spaced">
-				<div className={"row row-spaced"}>
-					<div className="col-md-9">
-						<h2>Register an entity</h2>
-					</div>
+				{this.state.submitted === false
+					&& <div className={"row row-spaced"}>
+						<div className="col-md-9">
+							<h2>Register an entity</h2>
+						</div>
 
-					{/* <div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>How to register a new entity?</h2>
+						{/* <div className="col-md-3 top-title-menu">
+							<DialogHint
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How to register a new entity?</h2>
 
-										<p>
-											Fill in the form and select the
-											&quot;Request registration&quot; button.
-										</p>
+											<p>
+												Fill in the form and select the
+												&quot;Request registration&quot; button.
+											</p>
 
-										<img src="/img/hint-request-registration-button.png"/>
+											<img src="/img/hint-request-registration-button.png"/>
 
-										<p>
-											Note that the Name, Website and Creation date fields
-											are mandatory to complete the form.
-										</p>
+											<p>
+												Note that the Name, Website and Creation date fields
+												are mandatory to complete the form.
+											</p>
 
-										<h2>Note</h2>
+											<h2>Note</h2>
 
-										<p>
-											You can follow up your requests by clicking on the
-											icon in the left menu bar as shown below:
-										</p>
+											<p>
+												You can follow up your requests by clicking on the
+												icon in the left menu bar as shown below:
+											</p>
 
-										<img src="/img/hint-contact-menu.png"/>
-									</div>
-								</div>
-							}
-						/>
-					</div> */}
-
-					<div className="col-md-12 row-spaced">
-						<Info
-							content={
-								<div>
-									You can register your entity here.
-									Please fill in the form only if you haven&apos;t
-									found your entity in
-									the <Link to="/add_entity?tab=claim">Claim an entity</Link> tab.
-								</div>
-							}
-						/>
-						<FormLine
-							label={"Have you checked if the entity is in the database?"}
-							type="checkbox"
-							value={this.state.notFoundEntity}
-							onChange={(v) => this.changeState("notFoundEntity", v)}
-							background={false}
-						/>
-					</div>
-
-					<div className="col-md-12">
-						<FormLine
-							label={"Full Legal Name *"}
-							value={this.state.name}
-							onChange={(v) => this.changeState("name", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={"Registered Address Line 1 *"}
-							value={this.state.address_1}
-							onChange={(v) => this.changeState("address_1", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={"Registered Address Line 2"}
-							value={this.state.address_2}
-							onChange={(v) => this.changeState("address_2", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={"Registered Address Post Code *"}
-							value={this.state.postal_code}
-							onChange={(v) => this.changeState("postal_code", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						{ !validatePostcode(this.state.postal_code) && this.state.postal_code !== ""
-							&& <div className="row">
-								<div className="col-md-6"></div>
-								<div className="col-md-6">
-									<div className="validation-error">
-										Accepted Format: ABC 1234
-									</div>
-								</div>
-							</div>
-						}
-						{this.state.locations
-							? <FormLine
-								label={"Registered Address City *"}
-								type={"select"}
-								options={this.state.locations
-									? this.state.locations
-										.map((d) => ({ label: d.name, value: d.name }))
-									: []
-								}
-								value={this.state.city}
-								onChange={(v) => this.setState({ city: v })}
-								disabled={!this.state.notFoundEntity}
-							/>
-							: <Loading
-								height={200}
-							/>
-						}
-						<FormLine
-							label={"Registered Address Country"}
-							value={this.state.country}
-							disabled={true}
-						/>
-						<FormLine
-							label={"Entity type *"}
-							type={"select"}
-							options={[
-								{ value: null, label: "-" },
-								{ value: "Sole Trader", label: "Sole Trader" },
-								{ value: "Partnership", label: "Partnership" },
-								{ value: "Cooperative", label: "Cooperative" },
-								{ value: "Company", label: "Company" },
-								{ value: "Non-profit organisation", label: "Non-profit organisation" },
-							]}
-							value={this.props.entity_type}
-							onChange={(v) => this.setState({ entity_type: v })}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={"VAT Number *"}
-							value={this.state.vat_number}
-							onChange={(v) => this.changeState("vat_number", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						{ !validateVatNumber(this.state.vat_number) && this.state.vat_number !== ""
-							&& <div className="row">
-								<div className="col-md-6"></div>
-								<div className="col-md-6">
-									<div className="validation-error">
-										Accepted Format: MT1234578
-									</div>
-								</div>
-							</div>
-						}
-						<FormLine
-							label={"Website"}
-							value={this.state.website}
-							onChange={(v) => this.changeState("website", v)}
-							disabled={!this.state.notFoundEntity}
-						/>
-						{ !validateWebsite(this.state.website) && this.state.website !== ""
-							&& <div className="row">
-								<div className="col-md-6"></div>
-								<div className="col-md-6">
-									<div className="validation-error">
-										Accepted Formats: something.com.mt, www.something.com.mt
-									</div>
-								</div>
-							</div>
-						}
-						<FormLine
-							label="Company Email *"
-							value={this.state.company_email}
-							onChange={(v) => this.changeState("company_email", v)}
-							autofocus={true}
-							onKeyDown={this.onKeyDown}
-							disabled={!this.state.notFoundEntity}
-						/>
-						<FormLine
-							label={"Size *"}
-							type={"select"}
-							options={[
-								{ value: null, label: "-" },
-								{ value: "Micro", label: "Micro" },
-								{ value: "Small", label: "Small" },
-								{ value: "Medium", label: "Medium" },
-								{ value: "Large", label: "Large" },
-							]}
-							value={this.props.size}
-							onChange={(v) => this.setState({ size: v })}
-							disabled={!this.state.notFoundEntity}
-						/>
-						{this.state.sectors
-							? <FormLine
-								label={"Sector *"}
-								type={"select"}
-								options={this.state.sectors
-									? this.state.sectors
-										.map((d) => ({ label: d.name, value: d.name }))
-									: []
-								}
-								value={this.state.sector}
-								onChange={(v) => this.setIndustries(v)}
-								disabled={!this.state.notFoundEntity}
-							/>
-							: <Loading
-								height={200}
-							/>
-						}
-						<FormLine
-							label={"Industry *"}
-							type={"select"}
-							options={this.state.industries
-								? this.state.industries
-									.map((d) => ({ label: d, value: d }))
-								: []
-							}
-							value={this.state.industry}
-							onChange={(v) => this.setState({ industry: v })}
-							disabled={!this.state.notFoundEntity || !this.state.industries}
-						/>
-						{this.state.involvements
-							? <FormLine
-								label={"Primary involvement of the organisation in/related to cybersecurity *"}
-								type={"select"}
-								options={[{ value: null, label: "-" }].concat(
-									this.state.involvements.map((o) => ({
-										label: (
-											<>
-												<div title={o.description}>{o.name}</div>
-											</>
-										),
-										value: o.name,
-									})),
-								)}
-								value={this.state.involvement}
-								onChange={(v) => this.setState({ involvement: v })}
-								disabled={!this.state.notFoundEntity}
-							/>
-							: <Loading
-								height={200}
-							/>
-						}
-						<FormLine
-							label="Primary Contact Name (auto populated)"
-							value={this.state.primary_contact_name}
-							autofocus={true}
-							disabled={true}
-						/>
-						<FormLine
-							label={"Seniority Level *"}
-							type={"select"}
-							options={[
-								{ value: null, label: "-" },
-								{ value: "Board Member", label: "Board Member" },
-								{ value: "Executive Management", label: "Executive Management" },
-								{ value: "Senior Management", label: "Senior Management" },
-								{ value: "Management", label: "Management" },
-								{ value: "Senior", label: "Senior" },
-								{ value: "Intermediate", label: "Intermediate" },
-								{ value: "Entry-Level", label: "Entry-Level" },
-							]}
-							value={this.state.seniority_level}
-							onChange={(v) => this.setState({ seniority_level: v })}
-							disabled={!this.state.notFoundEntity}
-						/>
-						{this.state.departments
-							? <FormLine
-								label={"Department *"}
-								type={"select"}
-								options={this.state.departments
-									? this.state.departments
-										.map((d) => ({ label: d.name, value: d.name }))
-									: []
-								}
-								value={this.state.department}
-								onChange={(v) => this.setState({ department: v })}
-								disabled={!this.state.notFoundEntity}
-							/>
-							: <Loading
-								height={200}
-							/>
-						}
-						<FormLine
-							label="Work Telephone Number *"
-							value={this.state.work_telephone}
-							onChange={(v) => this.changeState("work_telephone", v)}
-							autofocus={true}
-							onKeyDown={this.onKeyDown}
-							disabled={!this.state.notFoundEntity}
-						/>
-						{ !validateTelephoneNumber(this.state.work_telephone) && this.state.work_telephone !== ""
-							&& <div className="row">
-								<div className="col-md-6"></div>
-								<div className="col-md-6">
-									<div className="validation-error">
-										Accepted Format: +1234567891, 1234567891
-									</div>
-								</div>
-							</div>
-						}
-						<div className="row">
-							<div className="col-md-6">
-								<div className="FormLine-label">
-									Authorisation by Approved Signatory * <br />
-									<span className="font-italic">(Upload the Entity Registration Approval form)</span>
-								</div>
-							</div>
-							<div className="col-md-6">
-								<Dropzone
-									accept=".pdf"
-									disabled={!this.state.notFoundEntity}
-									onDrop={this.onDropForm}
-									maxFiles={1}
-								>
-									{({ getRootProps, getInputProps }) => (
-										<div
-											className={this.state.uploaded_file === null ? "Upload-dragdrop" : "Upload-dragdrop-done"}
-											{...getRootProps()}>
-											<input {...getInputProps()} />
-											<div className="Upload-dragdrop-textContent">
-												{ this.state.uploaded_file === null
-													? <div>
-														Drag & drop the file here, or click to select the file
-													</div>
-													: <div>
-														File: <span className="font-weight-bold">
-															{ this.state.uploaded_file.name }
-														</span>
-													</div>
-												}
-											</div>
+											<img src="/img/hint-contact-menu.png"/>
 										</div>
-									)}
-								</Dropzone>
-							</div>
-						</div>
-						<FormLine
-							label={"I acknowledge that he information submitted about the entity may be made "
-								+ "public on NCC platforms."}
-							type="checkbox"
-							value={this.state.acknowledge}
-							onChange={(v) => this.changeState("acknowledge", v)}
-							background={false}
-						/>
-						<div className={"right-buttons"}>
-							<DialogConfirmation
-								text={"Do you want to submit the entity creation as a request?"}
-								trigger={
-									<button
-										className={"blue-background"}
-										disabled={
-											this.formValid() === false
-										}
-									>
-										<i className="fas fa-save"/> Request registration
-									</button>
+									</div>
 								}
-								afterConfirmation={() => this.submitCreationRequest()}
+							/>
+						</div> */}
+
+						<div className="col-md-12 row-spaced">
+							<Info
+								content={
+									<div>
+										You can register your entity here.
+										Please fill in the form only if you haven&apos;t
+										found your entity in
+										the <Link to="/add_entity?tab=claim">Claim an entity</Link> tab.
+									</div>
+								}
+							/>
+							<FormLine
+								label={"Have you checked if the entity is in the database?"}
+								type="checkbox"
+								value={this.state.notFoundEntity}
+								onChange={(v) => this.changeState("notFoundEntity", v)}
+								background={false}
 							/>
 						</div>
+
+						<div className="col-md-12">
+							<FormLine
+								label={"Full Legal Name *"}
+								value={this.state.name}
+								onChange={(v) => this.changeState("name", v)}
+								disabled={!this.state.notFoundEntity}
+							/>
+							<FormLine
+								label={"Registered Address Line 1 *"}
+								value={this.state.address_1}
+								onChange={(v) => this.changeState("address_1", v)}
+								disabled={!this.state.notFoundEntity}
+							/>
+							<FormLine
+								label={"Registered Address Line 2"}
+								value={this.state.address_2}
+								onChange={(v) => this.changeState("address_2", v)}
+								disabled={!this.state.notFoundEntity}
+							/>
+							<FormLine
+								label={"Registered Address Post Code *"}
+								value={this.state.postal_code}
+								onChange={(v) => this.changeState("postal_code", v)}
+								disabled={!this.state.notFoundEntity}
+							/>
+							{ !validatePostcode(this.state.postal_code) && this.state.postal_code !== ""
+								&& <div className="row">
+									<div className="col-md-6"></div>
+									<div className="col-md-6">
+										<div className="validation-error">
+											Accepted Format: ABC 1234
+										</div>
+									</div>
+								</div>
+							}
+							{this.state.locations
+								? <FormLine
+									label={"Registered Address City *"}
+									type={"select"}
+									options={this.state.locations
+										? this.state.locations
+											.map((d) => ({ label: d.name, value: d.name }))
+										: []
+									}
+									value={this.state.city}
+									onChange={(v) => this.setState({ city: v })}
+									disabled={!this.state.notFoundEntity}
+								/>
+								: <Loading
+									height={200}
+								/>
+							}
+							<FormLine
+								label={"Registered Address Country"}
+								value={this.state.country}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Entity type *"}
+								type={"select"}
+								options={[
+									{ value: null, label: "-" },
+									{ value: "Sole Trader", label: "Sole Trader" },
+									{ value: "Partnership", label: "Partnership" },
+									{ value: "Cooperative", label: "Cooperative" },
+									{ value: "Company", label: "Company" },
+									{ value: "Non-profit organisation", label: "Non-profit organisation" },
+								]}
+								value={this.props.entity_type}
+								onChange={(v) => this.setState({ entity_type: v })}
+								disabled={!this.state.notFoundEntity}
+							/>
+							<FormLine
+								label={"VAT Number *"}
+								value={this.state.vat_number}
+								onChange={(v) => this.changeState("vat_number", v)}
+								disabled={!this.state.notFoundEntity}
+							/>
+							{ !validateVatNumber(this.state.vat_number) && this.state.vat_number !== ""
+								&& <div className="row">
+									<div className="col-md-6"></div>
+									<div className="col-md-6">
+										<div className="validation-error">
+											Accepted Format: MT1234578
+										</div>
+									</div>
+								</div>
+							}
+							<FormLine
+								label={"Website"}
+								value={this.state.website}
+								onChange={(v) => this.changeState("website", v)}
+								disabled={!this.state.notFoundEntity}
+							/>
+							{ !validateWebsite(this.state.website) && this.state.website !== ""
+								&& <div className="row">
+									<div className="col-md-6"></div>
+									<div className="col-md-6">
+										<div className="validation-error">
+											Accepted Formats: something.com.mt, www.something.com.mt
+										</div>
+									</div>
+								</div>
+							}
+							<FormLine
+								label="Company Email"
+								value={this.state.company_email}
+								autofocus={true}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Size *"}
+								type={"select"}
+								options={[
+									{ value: null, label: "-" },
+									{ value: "Micro", label: "Micro" },
+									{ value: "Small", label: "Small" },
+									{ value: "Medium", label: "Medium" },
+									{ value: "Large", label: "Large" },
+								]}
+								value={this.props.size}
+								onChange={(v) => this.setState({ size: v })}
+								disabled={!this.state.notFoundEntity}
+							/>
+							{this.state.sectors
+								? <FormLine
+									label={"Sector *"}
+									type={"select"}
+									options={this.state.sectors
+										? this.state.sectors
+											.map((d) => ({ label: d.name, value: d.name }))
+										: []
+									}
+									value={this.state.sector}
+									onChange={(v) => this.setIndustries(v)}
+									disabled={!this.state.notFoundEntity}
+								/>
+								: <Loading
+									height={200}
+								/>
+							}
+							<FormLine
+								label={"Industry *"}
+								type={"select"}
+								options={this.state.industries
+									? this.state.industries
+										.map((d) => ({ label: d, value: d }))
+									: []
+								}
+								value={this.state.industry}
+								onChange={(v) => this.setState({ industry: v })}
+								disabled={!this.state.notFoundEntity || !this.state.industries}
+							/>
+							{this.state.involvements
+								? <FormLine
+									label={"Primary involvement of the organisation in/related to cybersecurity *"}
+									type={"select"}
+									options={[{ value: null, label: "-" }].concat(
+										this.state.involvements.map((o) => ({
+											label: (
+												<>
+													<div title={o.description}>{o.name}</div>
+												</>
+											),
+											value: o.name,
+										})),
+									)}
+									value={this.state.involvement}
+									onChange={(v) => this.setState({ involvement: v })}
+									disabled={!this.state.notFoundEntity}
+								/>
+								: <Loading
+									height={200}
+								/>
+							}
+							<FormLine
+								label="Primary Contact Name (auto populated)"
+								value={this.state.primary_contact_name}
+								autofocus={true}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Seniority Level *"}
+								type={"select"}
+								options={[
+									{ value: null, label: "-" },
+									{ value: "Board Member", label: "Board Member" },
+									{ value: "Executive Management", label: "Executive Management" },
+									{ value: "Senior Management", label: "Senior Management" },
+									{ value: "Management", label: "Management" },
+									{ value: "Senior", label: "Senior" },
+									{ value: "Intermediate", label: "Intermediate" },
+									{ value: "Entry-Level", label: "Entry-Level" },
+								]}
+								value={this.state.seniority_level}
+								onChange={(v) => this.setState({ seniority_level: v })}
+								disabled={!this.state.notFoundEntity}
+							/>
+							{this.state.departments
+								? <FormLine
+									label={"Department *"}
+									type={"select"}
+									options={this.state.departments
+										? this.state.departments
+											.map((d) => ({ label: d.name, value: d.name }))
+										: []
+									}
+									value={this.state.department}
+									onChange={(v) => this.setState({ department: v })}
+									disabled={!this.state.notFoundEntity}
+								/>
+								: <Loading
+									height={200}
+								/>
+							}
+							<FormLine
+								label="Work Telephone Number *"
+								value={this.state.work_telephone}
+								onChange={(v) => this.changeState("work_telephone", v)}
+								autofocus={true}
+								onKeyDown={this.onKeyDown}
+								disabled={!this.state.notFoundEntity}
+							/>
+							{ !validateTelephoneNumber(this.state.work_telephone) && this.state.work_telephone !== ""
+								&& <div className="row">
+									<div className="col-md-6"></div>
+									<div className="col-md-6">
+										<div className="validation-error">
+											Accepted Format: +1234567891, 1234567891
+										</div>
+									</div>
+								</div>
+							}
+							<div className="row">
+								<div className="col-md-6">
+									<div className="FormLine-label">
+										Authorisation by Approved Signatory * <br />
+										<span className="font-italic">(Upload the Entity Registration Approval form)</span>
+									</div>
+								</div>
+								<div className="col-md-6">
+									<Dropzone
+										accept=".pdf"
+										disabled={!this.state.notFoundEntity}
+										onDrop={this.onDropForm}
+										maxFiles={1}
+									>
+										{({ getRootProps, getInputProps }) => (
+											<div
+												className={this.state.uploaded_file === null ? "Upload-dragdrop" : "Upload-dragdrop-done"}
+												{...getRootProps()}>
+												<input {...getInputProps()} />
+												<div className="Upload-dragdrop-textContent">
+													{ this.state.uploaded_file === null
+														? <div>
+															Drag & drop the file here, or click to select the file
+														</div>
+														: <div>
+															File: <span className="font-weight-bold">
+																{ this.state.uploaded_file.name }
+															</span>
+														</div>
+													}
+												</div>
+											</div>
+										)}
+									</Dropzone>
+								</div>
+							</div>
+							<FormLine
+								label={"I acknowledge that he information submitted about the entity may be made "
+									+ "public on NCC platforms."}
+								type="checkbox"
+								value={this.state.acknowledge}
+								onChange={(v) => this.changeState("acknowledge", v)}
+								background={false}
+							/>
+							<div className={"right-buttons"}>
+								<DialogConfirmation
+									text={"Do you want to submit the entity creation as a request?"}
+									trigger={
+										<button
+											className={"blue-background"}
+											disabled={
+												this.formValid() === false
+											}
+										>
+											<i className="fas fa-save"/> Request registration
+										</button>
+									}
+									afterConfirmation={() => this.submitCreationRequest()}
+								/>
+							</div>
+						</div>
 					</div>
-				</div>
+				}
+				{this.state.submitted === true
+					&& <div className={"row row-spaced"}>
+						<div className="col-md-9">
+							<h2>Registration request submitted</h2>
+							<p>
+								Your entity registration reqest has been submitted.
+							</p>
+							<p>
+								We will send you an email with the outcome.
+							</p>
+						</div>
+					</div>
+				}
 			</div>
 		);
 	}

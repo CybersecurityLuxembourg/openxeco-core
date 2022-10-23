@@ -38,35 +38,15 @@ export default class RequestEntityAccessClaim extends Component {
 		const params = {
 			user_id: this.props.user.id,
 			entity_id: this.props.entity.id,
-			department: this.state.department,
+			department: this.props.data.department,
+			work_email: this.props.data.email,
+			seniority_level: this.props.data.level,
+			work_telephone: this.props.data.telephone,
 		};
 
 		postRequest.call(this, "user/add_user_entity", params, () => {
 			nm.info("The entity has been added to the user");
-			this.addEntityContact();
 			close();
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
-	addEntityContact() {
-		const contactParams = {
-			work_email: this.props.data.email,
-			name: this.props.user.first_name + " " + this.props.user.last_name,
-			work_telephone: this.props.data.telephone,
-			seniority_level: this.props.data.level,
-			department: this.props.data.department,
-			entity_id: this.props.entity.id,
-			representative: "PHYSICAL PERSON",
-			type: "EMAIL ADDRESS",
-			value: this.props.data.email,
-		};
-
-		postRequest.call(this, "contact/add_contact", contactParams, () => {
-			nm.info("The user has been added as the primary contact");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {

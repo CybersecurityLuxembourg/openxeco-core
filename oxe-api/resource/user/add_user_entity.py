@@ -27,7 +27,10 @@ class AddUserEntity(MethodResource, Resource):
     @use_kwargs({
         'user_id': fields.Int(),
         'entity_id': fields.Int(),
-        'department': fields.Str(allow_none=True),
+        'department': fields.Str(required=True, allow_none=False),
+        'seniority_level': fields.Str(required=True, allow_none=False),
+        'work_email': fields.Str(required=True, allow_none=False),
+        'work_telephone': fields.Str(required=True, allow_none=False),
     })
     @jwt_required
     @verify_admin_access

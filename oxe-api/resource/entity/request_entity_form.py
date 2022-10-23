@@ -48,15 +48,23 @@ class RequestEntityForm(MethodResource, Resource):
             return "", "422 The provided email does not have the right format"
 
         # Get user
-        data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
-
-        if len(data) == 0:
+        user = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
+        if len(user) == 0:
             return "", "401 The user has not been found"
+        user = user[0].__dict__
+    
+        self.db.merge(
+            {
+                "id": get_jwt_identity(),
+                "work_email": kwargs["email"]
+            },
+            self.db.tables["User"]
+        )
 
-        user = data[0].__dict__
+
 
         # Send email
-        token = generate_confirmation_token(user["email"])
+        token = generate_confirmation_token(kwargs["email"])
         try:
             url = f"{origin}/add_entity?tab=register&action=verify_register&token={token}"
             send_email_with_attachment(self.mail,
