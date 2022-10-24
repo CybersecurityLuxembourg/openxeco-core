@@ -60,7 +60,7 @@ export default class RequestViewUser extends Component {
 	}
 
 	static getById(list, id) {
-		if (id === undefined) {
+		if (id === undefined || id === null) {
 			return "";
 		}
 		const index = list.findIndex((a) => (a.id === id));
