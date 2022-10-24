@@ -15,7 +15,7 @@ def send_email(mail, subject, recipients, html_body, cc=None, bcc=None):  # pyli
     )
     msg.html = html_body
 
-    with open("resource/static/eccclogo.png", 'rb') as f:
+    with open("resource/static/ncclogo.png", 'rb') as f:
         msg.attach(
             "logo.png",
             "image/png",
@@ -43,7 +43,7 @@ def send_email_with_attachment(mail, subject, recipients, html_body, file_name, 
     )
     msg.html = html_body
 
-    with open("resource/static/eccclogo.png", 'rb') as f:
+    with open("resource/static/ncclogo.png", 'rb') as f:
         msg.attach(
             "logo.png",
             "image/png",
