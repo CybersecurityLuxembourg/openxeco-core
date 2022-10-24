@@ -7,7 +7,7 @@ import { NotificationManager as nm } from "react-notifications";
 import Info from "./box/Info.jsx";
 import FormLine from "./form/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
-import { validatePassword } from "../utils/re.jsx";
+import { validatePassword, validateTelephoneNumber } from "../utils/re.jsx";
 // import { getApiURL } from "../utils/env.jsx";
 import Loading from "./box/Loading.jsx";
 import Message from "./box/Message.jsx";
@@ -163,6 +163,9 @@ export default class PageProfile extends React.Component {
 	}
 
 	updateUser(property, value) {
+		if (property === "telephone" && validateTelephoneNumber(value) === false) {
+			return;
+		}
 		const params = {
 			[property]: value,
 		};
@@ -422,6 +425,7 @@ export default class PageProfile extends React.Component {
 									label={"Telephone"}
 									value={this.state.user.telephone}
 									onBlur={(v) => this.updateUser("telephone", v)}
+									format={validateTelephoneNumber}
 								/>
 								<FormLine
 									label={"Include telephone in my public profile"}

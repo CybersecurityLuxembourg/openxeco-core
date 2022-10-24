@@ -185,7 +185,7 @@ export default class AddEntityRegister extends React.Component {
 			|| (this.state.work_telephone !== ""
 				&& !validateTelephoneNumber(this.state.work_telephone)
 			)
-			|| this.state.level === ""
+			|| this.state.seniority_level === ""
 			|| this.state.department === ""
 			|| this.state.uploaded_file === null
 			|| this.state.acknowledge === false
@@ -531,8 +531,7 @@ export default class AddEntityRegister extends React.Component {
 								</div>
 							</div>
 							<FormLine
-								label={"I acknowledge that the information submitted about the entity may be made "
-									+ "public on NCC platforms."}
+								label={"I acknowledge that the legal name, website, sector, and industry submitted about the entity may be made public on NCC platforms. *"}
 								type="checkbox"
 								value={this.state.acknowledge}
 								onChange={(v) => this.changeState("acknowledge", v)}

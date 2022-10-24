@@ -1,10 +1,10 @@
 import React from "react";
 import "./EntityGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import _ from "lodash";
+// import _ from "lodash";
 import FormLine from "../form/FormLine.jsx";
-import { postRequest } from "../../utils/request.jsx";
-import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import { getRequest, postRequest } from "../../utils/request.jsx";
+// import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Loading from "../box/Loading.jsx";
 // import DialogHint from "../dialog/DialogHint.jsx";
 
@@ -21,17 +21,34 @@ export default class EntityGlobal extends React.Component {
 				name: "Name",
 				headline: "Headline",
 				type: "Type",
-				description: "Description",
-				trade_register_number: "Trade register number",
 				website: "Website",
-				creation_date: "Creation date",
-				is_startup: "Is startup",
 				linkedin_url: "Linkedin URL",
 				twitter_url: "Twitter URL",
 				youtube_url: "Youtube URL",
 				discord_url: "Discord URL",
 			},
+			address: null,
 		};
+	}
+
+	componentDidMount() {
+		this.getAddresses();
+	}
+
+	getAddresses() {
+		this.setState({
+			address: null,
+		});
+
+		getRequest.call(this, "private/get_my_entity_addresses/" + this.props.entity.id, (data) => {
+			this.setState({
+				address: data[0],
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	componentDidUpdate(prevState, prevProps) {
@@ -169,7 +186,41 @@ export default class EntityGlobal extends React.Component {
 						/>
 					</div>
 
-					<div className="col-md-12">
+					{this.state.address !== null
+						&& <>
+							<div className="col-md-12">
+								<h2>Address</h2>
+							</div>
+							<div className="col-md-12">
+								<FormLine
+									label={"Address Line 1"}
+									value={this.state.address.address_1}
+									disabled={true}
+								/>
+								<FormLine
+									label={"Address Line 1"}
+									value={this.state.address.address_2}
+									disabled={true}
+								/>
+								<FormLine
+									label={"Postal Code"}
+									value={this.state.address.postal_code}
+									disabled={true}
+								/>
+								<FormLine
+									label={"City"}
+									value={this.state.address.city}
+									disabled={true}
+								/>
+								<FormLine
+									label={"Country"}
+									value={this.state.address.country}
+									disabled={true}
+								/>
+							</div>
+						</>
+					}
+					{/* <div className="col-md-12">
 						<h2>Social network</h2>
 					</div>
 
@@ -194,9 +245,9 @@ export default class EntityGlobal extends React.Component {
 							value={this.state.entityInfo.discord_url}
 							onBlur={(v) => this.updateEntity("discord_url", v)}
 						/>
-					</div>
+					</div> */}
 
-					<div className="col-md-12">
+					{/* <div className="col-md-12">
 						<div className={"right-buttons"}>
 							<DialogConfirmation
 								text={"Do you want to request modifications for those fields : "
@@ -219,7 +270,7 @@ export default class EntityGlobal extends React.Component {
 								<i className="fas fa-undo-alt"/>
 							</button>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		);

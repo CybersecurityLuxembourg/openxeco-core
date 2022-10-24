@@ -85,7 +85,7 @@ export default class FormLine extends React.Component {
 	}
 
 	getFormatClassName() {
-		if (this.props.format === undefined) {
+		if (this.props.format === undefined || this.props.value === "") {
 			return "";
 		}
 		if (this.props.format(this.state.value)) return "FormLine-right-format";
