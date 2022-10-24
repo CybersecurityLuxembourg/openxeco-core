@@ -120,7 +120,7 @@ export default class TreeTaxonomy extends React.Component {
 				r="14"
 				x="-10"
 				stroke="lightgrey"
-				fill={nodeDatum.active ? "#bcebff" : "#fed7da"}
+				fill={nodeDatum.active ? "rgba(46, 83, 193, 0.123)" : "#fed7da"}
 				onClick={() => this.onNodeClick(nodeDatum)}
 			/>
 			<foreignObject

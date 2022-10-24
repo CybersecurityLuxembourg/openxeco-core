@@ -43,7 +43,7 @@ class VerifyWorkEmail(MethodResource, Resource):
         user = data[0].__dict__
 
         # Set user to active
-        if user["email"] != email:
+        if user["work_email"] != email:
             return "", "422 The verification link is invalid."
 
         return "", "200"

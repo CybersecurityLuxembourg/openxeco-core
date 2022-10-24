@@ -8,7 +8,7 @@ import FormLine from "../../form/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import { getContentFromBlock } from "../../../utils/article.jsx";
-import DialogHint from "../DialogHint.jsx";
+// import DialogHint from "../DialogHint.jsx";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -258,7 +258,7 @@ export default class EditContent extends React.Component {
 								<h3>Body type:</h3>
 							</div>
 
-							<div className="col-md-3 top-title-menu">
+							{/* <div className="col-md-3 top-title-menu">
 								<DialogHint
 									content={
 										<div className="row">
@@ -359,7 +359,7 @@ export default class EditContent extends React.Component {
 										</div>
 									}
 								/>
-							</div>
+							</div> */}
 
 							<div className="col-md-12">
 								<FormLine

@@ -8,7 +8,7 @@ import TreeTaxonomy from "../chart/TreeTaxonomy.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import FormLine from "../form/FormLine.jsx";
-import DialogHint from "../dialog/DialogHint.jsx";
+// import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class EntityTaxonomy extends React.Component {
 	constructor(props) {
@@ -174,7 +174,7 @@ export default class EntityTaxonomy extends React.Component {
 						<h2>Taxonomy</h2>
 					</div>
 
-					<div className="col-md-3 top-title-menu">
+					{/* <div className="col-md-3 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">
@@ -233,7 +233,7 @@ export default class EntityTaxonomy extends React.Component {
 								</div>
 							}
 						/>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={"row row-spaced"}>

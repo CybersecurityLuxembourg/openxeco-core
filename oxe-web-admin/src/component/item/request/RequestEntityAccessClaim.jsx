@@ -3,7 +3,6 @@ import "./RequestEntityAccessClaim.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
-import Loading from "../../box/Loading.jsx";
 import Entity from "../Entity.jsx";
 import User from "../User.jsx";
 import FormLine from "../../button/FormLine.jsx";
@@ -39,7 +38,10 @@ export default class RequestEntityAccessClaim extends Component {
 		const params = {
 			user_id: this.props.user.id,
 			entity_id: this.props.entity.id,
-			department: this.state.department,
+			department: this.props.data.department,
+			work_email: this.props.data.email,
+			seniority_level: this.props.data.level,
+			work_telephone: this.props.data.telephone,
 		};
 
 		postRequest.call(this, "user/add_user_entity", params, () => {
@@ -106,23 +108,26 @@ export default class RequestEntityAccessClaim extends Component {
 
 						<div className="col-md-12">
 							<h3>Details</h3>
-
-							{this.state.departments
-								? <FormLine
-									label={"Department"}
-									type={"select"}
-									options={this.state.departments
-										? this.state.departments
-											.map((d) => ({ label: d.name, value: d.name }))
-										: []
-									}
-									value={this.state.department}
-									onChange={(v) => this.setState({ department: v })}
-								/>
-								: <Loading
-									height={100}
-								/>
-							}
+							<FormLine
+								label={"Company Email"}
+								value={this.props.data.email}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Work Telephone"}
+								value={this.props.data.telephone}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Seniority Level"}
+								value={this.props.data.level}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Department"}
+								value={this.props.data.department}
+								disabled={true}
+							/>
 						</div>
 
 						<div className="col-md-12">

@@ -48,29 +48,34 @@ class RequestEntityForm(MethodResource, Resource):
             return "", "422 The provided email does not have the right format"
 
         # Get user
-        data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
-
-        if len(data) == 0:
+        user = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
+        if len(user) == 0:
             return "", "401 The user has not been found"
+        user = user[0].__dict__
+    
+        self.db.merge(
+            {
+                "id": get_jwt_identity(),
+                "work_email": kwargs["email"]
+            },
+            self.db.tables["User"]
+        )
 
-        user = data[0].__dict__
+
 
         # Send email
-        token = generate_confirmation_token(user["email"])
+        token = generate_confirmation_token(kwargs["email"])
         try:
-            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
-            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
             url = f"{origin}/add_entity?tab=register&action=verify_register&token={token}"
             send_email_with_attachment(self.mail,
-                subject=f"[{project_name}] Entity Registration Request",
+                subject="Entity Registration Request",
                 recipients=[email],
                 html_body=render_template(
                     'entity_registration.html',
                     first_name=user["first_name"],
                     url=url,
-                    project_name=project_name
                 ),
-                file_name="entity_registration_approval.pdf",
+                file_name="Entity Registration - Signatory Approval.pdf",
                 file_type="application/pdf",
             )
         except Exception as e:

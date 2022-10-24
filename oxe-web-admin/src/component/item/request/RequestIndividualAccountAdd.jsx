@@ -10,6 +10,7 @@ export default class RequestIndividualAccountAdd extends Component {
 		super(props);
 
 		this.insertEntity = this.insertEntity.bind(this);
+		this.rejectEntity = this.rejectEntity.bind(this);
 
 		this.state = {
 			expertise: "",
@@ -64,6 +65,9 @@ export default class RequestIndividualAccountAdd extends Component {
 
 	static getById(list, id) {
 		const index = list.findIndex((a) => (a.id === id));
+		if (index < 0) {
+			return "";
+		}
 		return list[index].name;
 	}
 
@@ -85,6 +89,21 @@ export default class RequestIndividualAccountAdd extends Component {
 
 		postRequest.call(this, "account/add_profile", params, () => {
 			nm.info("The profile has been created");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	rejectEntity() {
+		const params = {
+			id: this.props.userId,
+			status: "REJECTED",
+		};
+		console.log(params);
+		postRequest.call(this, "user/update_user", params, () => {
+			nm.info("The profile has been set to rejected");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -122,34 +141,13 @@ export default class RequestIndividualAccountAdd extends Component {
 
 						<div className="col-md-12">
 							<FormLine
-								label={"First Name"}
+								label={"Name"}
 								value={this.props.data.first_name}
 								disabled={true}
 							/>
 							<FormLine
-								label={"Last Name"}
-								type={"textarea"}
+								label={"Surname"}
 								value={this.props.data.last_name}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Telephone"}
-								value={this.props.data.telephone}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Domains of Interest"}
-								value={this.props.data.domains_of_interest}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Experience"}
-								value={this.props.data.experience}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Area of Expertise"}
-								value={this.state.expertise}
 								disabled={true}
 							/>
 							<FormLine
@@ -158,28 +156,33 @@ export default class RequestIndividualAccountAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"How did you hear about us?"}
-								value={this.props.data.how_heard}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Industry"}
-								value={this.state.industry}
+								label={"Telephone"}
+								value={this.props.data.telephone || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Mobile"}
-								value={this.props.data.mobile}
+								value={this.props.data.mobile || ""}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Role/Profession"}
+								value={this.state.profession}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Sector"}
+								value={this.props.data.sector || ""}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Industry"}
+								value={this.state.industry || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Nationality"}
-								value={this.state.nationality}
-								disabled={true}
-							/>
-							<FormLine
-								label={"Profession"}
-								value={this.state.profession}
+								value={this.state.country}
 								disabled={true}
 							/>
 							<FormLine
@@ -188,8 +191,29 @@ export default class RequestIndividualAccountAdd extends Component {
 								disabled={true}
 							/>
 							<FormLine
-								label={"Sector"}
-								value={this.props.data.sector}
+								label={"Experience"}
+								value={this.props.data.experience}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Primary Area of Expertise"}
+								value={this.state.expertise}
+								disabled={true}
+							/>
+							<FormLine
+								label={"How did you hear about us?"}
+								value={this.props.data.how_heard}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Domains of Interest"}
+								value={this.props.data.domains_of_interest}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Profile Public?"}
+								type={"checkbox"}
+								value={this.props.data.public}
 								disabled={true}
 							/>
 						</div>
@@ -199,7 +223,13 @@ export default class RequestIndividualAccountAdd extends Component {
 								className={"blue-background"}
 								onClick={this.insertEntity}
 							>
-								<i className="fas fa-plus"/> Add account
+								<i className="fas fa-plus" /> Add account
+							</button>
+							<button
+								className={"grey-background"}
+								onClick={this.rejectEntity}
+							>
+								<i className="fas fa-minus" /> Do not add account
 							</button>
 						</div>
 					</div>

@@ -153,7 +153,7 @@ export default class EntityTaxonomy extends React.Component {
 					fillColor = "lightgrey";
 				} else if (this.state.entityAssignment
 					.filter((a) => a.taxonomy_value_id === childValues[i].id).length > 0) {
-					fillColor = "#bcebff";
+					fillColor = "rgba(46, 83, 193, 0.123)";
 				} else {
 					fillColor = "#fed7da";
 				}

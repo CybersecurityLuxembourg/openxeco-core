@@ -3,8 +3,8 @@
 :root {
     --default-color: grey;
     --default-light-color: lightgrey;
-    --primary-color: #009fe3;
-    --light-primary-color: #bcebff;
+    --primary-color: #2E52C1;
+    --light-primary-color: rgba(46, 83, 193, 0.123);
     --hovered-primary-color: #8fddff;
     --secondary-color: #e40613;
     --light-secondary-color: #fed7da;
@@ -87,13 +87,13 @@ h4 {
 }
 
 a {
-	color: #009fe3;
+	color: #2E52C1;
 }
 
 /* COLORS */
 
 .blue-font {
-	color: #009fe3 !important;
+	color: #2E52C1 !important;
 }
 
 .red-font {
@@ -190,7 +190,7 @@ button {
 	text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
 	text-align:center;
 	transition: all 0.2s;
-	background-color: #009fe3;
+	background-color: #2E52C1;
 	opacity: .5;
 }
 
@@ -222,7 +222,7 @@ select:disabled {
 }
 
 .blue-button {
-	background-color: #009fe3;
+	background-color: #2E52C1;
 }
 
 .red-button {
@@ -231,7 +231,7 @@ select:disabled {
 
 .link-button {
 	background-color: transparent;
-	color: #009fe3;
+	color: #2E52C1;
 	text-shadow: none;
 	transition: none;
 }
@@ -273,7 +273,7 @@ input::placeholder, textarea::placeholder, select::placeholder {
 }
 
 input:focus, textarea:focus, select:focus {
-	border: 1px solid #009fe3;
+	border: 1px solid #2E52C1;
 }
 
 textarea {
@@ -393,7 +393,7 @@ textarea {
 /* NOTIFICATION */
 
 .notification-info {
-  background-color: #009fe3 !important;
+  background-color: #2E52C1 !important;
 }
 
 .notification-success {
@@ -443,7 +443,7 @@ textarea {
 	min-height: 50px;
 	padding: 5px 10px;
 	margin: 2px 0px;
-	background-color: #bcebff;
+	background-color: rgba(46, 83, 193, 0.123);
     border-radius: 0.4rem;
 }
 

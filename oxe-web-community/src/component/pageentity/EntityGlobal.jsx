@@ -1,12 +1,12 @@
 import React from "react";
 import "./EntityGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import _ from "lodash";
+// import _ from "lodash";
 import FormLine from "../form/FormLine.jsx";
-import { postRequest } from "../../utils/request.jsx";
-import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
+import { getRequest, postRequest } from "../../utils/request.jsx";
+// import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Loading from "../box/Loading.jsx";
-import DialogHint from "../dialog/DialogHint.jsx";
+// import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class EntityGlobal extends React.Component {
 	constructor(props) {
@@ -21,17 +21,52 @@ export default class EntityGlobal extends React.Component {
 				name: "Name",
 				headline: "Headline",
 				type: "Type",
-				description: "Description",
-				trade_register_number: "Trade register number",
 				website: "Website",
-				creation_date: "Creation date",
-				is_startup: "Is startup",
 				linkedin_url: "Linkedin URL",
 				twitter_url: "Twitter URL",
 				youtube_url: "Youtube URL",
 				discord_url: "Discord URL",
 			},
+			address: null,
+			contact: null,
 		};
+	}
+
+	componentDidMount() {
+		this.getAddresses();
+		this.getContacts();
+	}
+
+	getAddresses() {
+		this.setState({
+			address: null,
+		});
+
+		getRequest.call(this, "private/get_my_entity_addresses/" + this.props.entity.id, (data) => {
+			this.setState({
+				address: data[0],
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	getContacts() {
+		this.setState({
+			contact: null,
+		});
+
+		getRequest.call(this, "private/get_my_entity_contacts/" + this.props.entity.id, (data) => {
+			this.setState({
+				contact: data[0],
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	componentDidUpdate(prevState, prevProps) {
@@ -93,7 +128,7 @@ export default class EntityGlobal extends React.Component {
 						<h2>Global information</h2>
 					</div>
 
-					<div className="col-md-3 top-title-menu">
+					{/* <div className="col-md-3 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">
@@ -122,53 +157,127 @@ export default class EntityGlobal extends React.Component {
 								</div>
 							}
 						/>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<FormLine
-							label={this.state.fields.name}
-							value={this.state.entityInfo.name}
-							onChange={(v) => this.updateEntity("name", v)}
+							label={"Name"}
+							value={this.props.entity.name}
+							disabled={true}
 						/>
 						<FormLine
-							label={this.state.fields.headline}
-							value={this.state.entityInfo.headline}
-							onChange={(v) => this.updateEntity("headline", v)}
+							label={"Entity Type"}
+							value={this.props.entity.entity_type}
+							disabled={true}
 						/>
 						<FormLine
-							label={this.state.fields.description}
-							type={"textarea"}
-							value={this.state.entityInfo.description}
-							onChange={(v) => this.updateEntity("description", v)}
+							label={"VAT Number"}
+							value={this.props.entity.vat_number}
+							disabled={true}
 						/>
 						<FormLine
-							label={this.state.fields.trade_register_number}
-							value={this.state.entityInfo.trade_register_number}
-							onChange={(v) => this.updateEntity("trade_register_number", v)}
+							label={"Website"}
+							value={this.props.entity.website}
+							disabled={true}
 						/>
 						<FormLine
-							label={this.state.fields.website}
-							value={this.state.entityInfo.website}
-							onChange={(v) => this.updateEntity("website", v)}
+							label={"Size"}
+							value={this.props.entity.size}
+							disabled={true}
 						/>
 						<FormLine
-							label={this.state.fields.creation_date}
-							type={"date"}
-							value={this.state.entityInfo.creation_date}
-							onChange={(v) => this.updateEntity("creation_date", v)}
+							label={"Sector"}
+							value={this.props.entity.sector}
+							disabled={true}
 						/>
 						<FormLine
-							label={this.state.fields.is_startup}
-							type={"checkbox"}
-							value={this.state.entityInfo.is_startup}
-							onChange={(v) => this.updateEntity("is_startup", v)}
-							background={false}
+							label={"Industry"}
+							value={this.props.entity.industry}
+							disabled={true}
+						/>
+						<FormLine
+							label={"Primary involvement"}
+							value={this.props.entity.involvement}
+							disabled={true}
 						/>
 					</div>
 
-					<div className="col-md-12">
+					{this.state.address !== null
+						&& <>
+							<div className="col-md-12">
+								<h2>Address</h2>
+							</div>
+							<div className="col-md-12">
+								<FormLine
+									label={"Address Line 1"}
+									value={this.state.address.address_1}
+									disabled={true}
+								/>
+								<FormLine
+									label={"Address Line 1"}
+									value={this.state.address.address_2}
+									disabled={true}
+								/>
+								<FormLine
+									label={"Postal Code"}
+									value={this.state.address.postal_code}
+									disabled={true}
+								/>
+								<FormLine
+									label={"City"}
+									value={this.state.address.city}
+									disabled={true}
+								/>
+								<FormLine
+									label={"Country"}
+									value={this.state.address.country}
+									disabled={true}
+								/>
+							</div>
+						</>
+					}
+					{this.state.contact !== null
+						&& <>
+							<div className="col-md-12">
+								<h2>Contact</h2>
+							</div>
+							<div className="col-md-12">
+								<FormLine
+									label={"Name"}
+									value={this.state.contact.name}
+									disabled={true}
+								/>
+								{this.state.contact.type === "EMAIL ADDRESS"
+									? <FormLine
+										label={"Email Address"}
+										value={this.state.contact.value}
+										disabled={true}
+									/>
+									: <FormLine
+										label={"Email Address"}
+										value={""}
+										disabled={true}
+									/>
+								}
+								{this.state.contact.type === "PHONE NUMBER"
+									? <FormLine
+										label={"Phone Number"}
+										value={this.state.contact.value}
+										disabled={true}
+									/>
+									: <FormLine
+										label={"Phone Number"}
+										value={""}
+										disabled={true}
+									/>
+								}
+
+							</div>
+						</>
+					}
+					{/* <div className="col-md-12">
 						<h2>Social network</h2>
 					</div>
 
@@ -193,9 +302,9 @@ export default class EntityGlobal extends React.Component {
 							value={this.state.entityInfo.discord_url}
 							onBlur={(v) => this.updateEntity("discord_url", v)}
 						/>
-					</div>
+					</div> */}
 
-					<div className="col-md-12">
+					{/* <div className="col-md-12">
 						<div className={"right-buttons"}>
 							<DialogConfirmation
 								text={"Do you want to request modifications for those fields : "
@@ -218,7 +327,7 @@ export default class EntityGlobal extends React.Component {
 								<i className="fas fa-undo-alt"/>
 							</button>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		);

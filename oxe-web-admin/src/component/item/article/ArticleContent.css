@@ -57,11 +57,11 @@
 }
 
 .ArticleContent-item-modified {
-    border: #bcebff 1px solid !important;
+    border: rgba(46, 83, 193, 0.123) 1px solid !important;
     background: repeating-linear-gradient(
         135deg,
-        #bcebff,
-        #bcebff 1px,
+        rgba(46, 83, 193, 0.123),
+        rgba(46, 83, 193, 0.123) 1px,
         rgba(0, 0, 0, 0) 1px,
         rgba(0, 0, 0, 0) 4px
     ) !important;

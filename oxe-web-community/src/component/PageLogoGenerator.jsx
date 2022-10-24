@@ -8,7 +8,7 @@ import { getUrlParameter } from "../utils/url.jsx";
 import FormLine from "./form/FormLine.jsx";
 import Message from "./box/Message.jsx";
 import Loading from "./box/Loading.jsx";
-import DialogHint from "./dialog/DialogHint.jsx";
+// import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageLogoGenerator extends React.Component {
 	constructor(props) {
@@ -456,7 +456,7 @@ export default class PageLogoGenerator extends React.Component {
 						<h1>Logo generator</h1>
 					</div>
 
-					<div className="col-md-3 top-title-menu">
+					{/* <div className="col-md-3 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">
@@ -477,7 +477,7 @@ export default class PageLogoGenerator extends React.Component {
 								</div>
 							}
 						/>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={"row row-spaced"}>

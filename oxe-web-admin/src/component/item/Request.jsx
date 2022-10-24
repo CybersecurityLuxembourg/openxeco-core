@@ -3,7 +3,7 @@ import "./Request.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../utils/request.jsx";
-import User from "./User.jsx";
+import RequestViewUser from "./request/RequestViewUser.jsx";
 import Entity from "./Entity.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
@@ -32,9 +32,11 @@ export default class Request extends Component {
 
 		this.state = {
 			user: null,
+			user_profile: null,
 			entity: null,
 			requestStatus: null,
 			settings: null,
+			currentStatus: this.props.info.status,
 		};
 	}
 
@@ -65,6 +67,16 @@ export default class Request extends Component {
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+
+		getRequest.call(this, "user/get_user_profile/" + this.props.info.user_id, (data) => {
+			this.setState({
+				user_profile: data,
+			});
+		}, (response) => {
+			console.log(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -120,7 +132,7 @@ export default class Request extends Component {
 
 				this.setState({ request }, () => {
 					if (prop === "status") {
-						if (value === "ACCEPTED"
+						if ((value === "ACCEPTED" || value === "REJECTED")
 							&& this.state.user !== null) {
 							const element = document.getElementById("Request-send-mail-button");
 							element.click();
@@ -129,6 +141,9 @@ export default class Request extends Component {
 
 					nm.info("The property has been updated");
 				});
+				if (prop === "status") {
+					this.setState({ currentStatus: value });
+				}
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -180,6 +195,26 @@ export default class Request extends Component {
 		return null;
 	}
 
+	static dateStringToLocal(dateString) {
+		const date = new Date(dateString + "Z");
+		return Request.formatTime(date);
+	}
+
+	static formatTime(date) {
+		const yyyy = date.getFullYear();
+		let mm = date.getMonth() + 1; // Months start at 0!
+		let dd = date.getDate();
+		let hh = date.getHours();
+		let ll = date.getMinutes();
+		let ss = date.getSeconds();
+		if (dd < 10) dd = "0" + dd;
+		if (mm < 10) mm = "0" + mm;
+		if (hh < 10) hh = "0" + hh;
+		if (ll < 10) ll = "0" + ll;
+		if (ss < 10) ss = "0" + ss;
+		return yyyy + "-" + mm + "-" + dd + "T" + hh + ":" + ll + ":" + ss;
+	}
+
 	render() {
 		if (this.props.info === undefined || this.props.info === null) {
 			return <Loading
@@ -212,7 +247,7 @@ export default class Request extends Component {
 
 						<div className={"Request-time"}>
 							{this.props.info !== undefined && this.props.info !== null
-								? this.props.info.submission_date
+								? Request.dateStringToLocal(this.props.info.submission_date)
 								: "Unfound request"
 							}
 						</div>
@@ -294,6 +329,7 @@ export default class Request extends Component {
 								data={this.props.info.data ? JSON.parse(this.props.info.data) : null}
 								userId={this.state.user.id}
 								entity={this.state.entity}
+								status={this.state.currentStatus}
 							/>
 						}
 						{this.props.info.type === "ENTITY ADDRESS CHANGE"
@@ -366,12 +402,12 @@ export default class Request extends Component {
 
 					<div className="col-md-6 row-spaced">
 						<h3>User</h3>
-						{this.state.user !== null
-							? <User
-								id={this.state.user.id}
-								email={this.state.user.email}
-							/>
-							: <Loading
+						{this.state.user_profile !== null
+							? <>
+								<RequestViewUser user_profile={this.state.user_profile}/>
+							</>
+							: <Message
+								text={"No user in this request"}
 								height={50}
 							/>
 						}
@@ -427,7 +463,7 @@ export default class Request extends Component {
 						</div>
 					}
 
-					<div className="col-md-12 row-spaced">
+					{/* <div className="col-md-12 row-spaced">
 						<h3>Data</h3>
 						{this.props.info && this.props.info.data
 							? this.props.info.data
@@ -436,7 +472,7 @@ export default class Request extends Component {
 								height={50}
 							/>
 						}
-					</div>
+					</div> */}
 				</div>
 				}
 			</Popup>

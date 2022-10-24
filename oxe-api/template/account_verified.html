@@ -1,12 +1,14 @@
-<p>Dear {{ first_name }},</p>
+<p>Dear {{ email }},</p>
 <p>Your account has been verified.</p>
 
 <p>
     To log in, please go to this link:
-    <a href="{{ url }}">
+    <br><br>
+    <a href="{{ url|safe }}">
         click here
     </a>
 </p>
-<p>It is recommended to change the password from the profile section.</p>
 <p>Sincerely,</p>
-<p>{{ project_name }} Support Team</p>
+<p>
+    <img src="cid:logo" alt="Logo" style="width:200px;">
+</p>

@@ -97,7 +97,8 @@ def create_initial_admin(email, password):
             "email": email,
             "password": bcrypt.generate_password_hash(password),
             "is_active": 1,
-            "is_admin": 1
+            "is_admin": 1,
+            "status": "ACCEPTED",
         },
         f"Initial user {email}"
     )

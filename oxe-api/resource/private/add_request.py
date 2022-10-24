@@ -32,7 +32,8 @@ class AddRequest(MethodResource, Resource):
              "200": {},
              "422.a": {"description": "Impossible to read the image"},
              "422.b": {"description": "Image width and height can't be bigger than 500 pixels"},
-             "422.c": {"description": "Object not found or you don't have the required access to it"}
+             "422.c": {"description": "Object not found or you don't have the required access to it"},
+             "422.d": {"description": "Already exists"},
          })
     @use_kwargs({
         'entity_id': fields.Int(required=False, allow_none=True),
@@ -51,6 +52,11 @@ class AddRequest(MethodResource, Resource):
         user_id = get_jwt_identity()
         # Control image
 
+        if "vat_number" in kwargs["data"]:
+            data = self.db.get(self.db.tables["Entity"], {"vat_number": kwargs["data"]["vat_number"]})
+            if len(data) > 0:
+                return "", "422 The VAT Number you entered has already been registered"
+
         if "image" in kwargs and kwargs["image"] is not None:
             try:
                 image = base64.b64decode(kwargs["image"].split(",")[-1])
@@ -66,19 +72,18 @@ class AddRequest(MethodResource, Resource):
             image = base64.b64decode(kwargs["image"].split(",")[-1])
 
         if "uploaded_file" in kwargs and kwargs["uploaded_file"] is not None:
-            filename = f"entity_registration_approval_{user_id}.pdf"
+            filename = f"entity_registration_approval_{user_id}_{kwargs['data']['vat_number']}.pdf"
             document = {
                 "filename": filename,
                 "size": len(kwargs["uploaded_file"]),
                 "creation_date": datetime.date.today()
             }
-            try:
-                self.db.insert(document, self.db.tables["Document"])
-            except IntegrityError as e:
-                self.db.session.rollback()
-                if "Duplicate entry" in str(e):
-                    return "", "422 A document is already existing with that filename"
-                raise e
+
+            old_document = self.db.get(self.db.tables["Document"], { "filename": filename })
+            if len(old_document) > 0:
+                self.db.delete(self.db.tables["Document"], { "filename": filename })
+            self.db.insert(document, self.db.tables["Document"])
+
             try:
                 decoded_data = base64.b64decode(kwargs["uploaded_file"].split(",")[-1])
             except Exception:

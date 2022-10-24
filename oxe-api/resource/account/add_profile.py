@@ -34,14 +34,16 @@ class AddProfile(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
         user_id = kwargs["user_id"]
+
+        self.db.merge({
+            'id': user_id,
+            'first_name': kwargs["data"]['first_name'],
+            'last_name': kwargs["data"]['last_name'],
+            'telephone': kwargs["data"]['telephone'],
+            'is_vcard_public': kwargs["data"]['public'],
+            'status': "ACCEPTED",
+        }, self.db.tables["User"])
         try:
-            self.db.merge({
-                'id': user_id,
-                'first_name': kwargs["data"]['first_name'],
-                'last_name': kwargs["data"]['last_name'],
-                'telephone': kwargs["data"]['telephone'],
-                'status': "ACCEPTED"
-            }, self.db.tables["User"])
             self.db.insert({
                 'user_id': user_id,
                 'gender': kwargs["data"]['gender'],
@@ -55,6 +57,7 @@ class AddProfile(MethodResource, Resource):
                 'industry_id': kwargs["data"]['industry_id'],
                 'nationality_id': kwargs["data"]['nationality_id'],
                 'expertise_id': kwargs["data"]['expertise_id'],
+                'public': kwargs["data"]['public'],
             }, self.db.tables["UserProfile"])
         except IntegrityError as e:
             self.db.session.rollback()

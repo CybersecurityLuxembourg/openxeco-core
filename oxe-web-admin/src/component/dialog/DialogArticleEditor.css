@@ -69,11 +69,11 @@
 }
 
 .DialogArticleEditor-item-modified {
-    border: #bcebff 1px solid !important;
+    border: rgba(46, 83, 193, 0.123) 1px solid !important;
     background: repeating-linear-gradient(
         135deg,
-        #bcebff,
-        #bcebff 1px,
+        rgba(46, 83, 193, 0.123),
+        rgba(46, 83, 193, 0.123) 1px,
         rgba(0, 0, 0, 0) 1px,
         rgba(0, 0, 0, 0) 4px
     ) !important;
@@ -123,12 +123,12 @@
     height: 100%;
     top: 0;
     left: 0;
-    background: repeating-linear-gradient( 
+    background: repeating-linear-gradient(
         135deg, rgba(150, 150, 150, 0.5), rgba(150, 150, 150, 0.5) 1px, rgba(150, 150, 150, 0.5) 1px, rgba(0, 0, 0, 0.5) 4px );
 }
 
 .DialogArticleEditor .CheckBox-disabled {
-    background-color: #bcebff !important;
+    background-color: rgba(46, 83, 193, 0.123) !important;
 }
 
 .DialogArticleEditor-lock-buttons {

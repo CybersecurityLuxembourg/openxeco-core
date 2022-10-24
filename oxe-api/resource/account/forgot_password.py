@@ -50,12 +50,11 @@ class ForgotPassword(MethodResource, Resource):
         reset_token = create_access_token(str(user.id), expires_delta=expires)
         url = f"{origin}/login?action=reset_password&token={reset_token}"
 
-        pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
-        project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
-
-        send_email(self.mail,
-                   subject=f"[{project_name}] Reset Your Password",
-                   recipients=[user.email],
-                   html_body=render_template('reset_password.html', url=url, project_name=project_name))
+        send_email(
+            self.mail,
+            subject="Reset Your Password",
+            recipients=[user.email],
+            html_body=render_template('reset_password.html', url=url)
+        )
 
         return "", "200 "

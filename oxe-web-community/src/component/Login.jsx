@@ -7,7 +7,7 @@ import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
-import DialogHint from "./dialog/DialogHint.jsx";
+// import DialogHint from "./dialog/DialogHint.jsx";
 import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
@@ -59,7 +59,7 @@ export default class Login extends React.Component {
 			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
 		}
 
-		// Get the token if the user reaches the app though acounnt verification URL
+		// Get the token if the user reaches the app though acount verification URL
 
 		if (getUrlParameter("action") === "verify_account") {
 			getRequest.call(this, "account/verify_account/" + getUrlParameter("token"), () => {
@@ -69,16 +69,20 @@ export default class Login extends React.Component {
 				});
 			}, (response2) => {
 				nm.warning(response2.statusText);
+				this.changeState("view", "login");
 			}, (error) => {
 				nm.error(error.message);
+				this.changeState("view", "login");
 			});
 		}
 
 		// Log in the user if there is an existing cookie
-
-		if (this.props.cookies.get("access_token_cookie")) {
-			this.fetchUser();
+		if (getUrlParameter("action") !== "reset_password" && getUrlParameter("action") !== "verify_account") {
+			if (this.props.cookies.get("access_token_cookie")) {
+				this.fetchUser();
+			}
 		}
+
 		// This function to notify if the password has been reset correctly
 		Login.notifyForPasswordReset();
 	}
@@ -130,6 +134,14 @@ export default class Login extends React.Component {
 	}
 
 	createAccount() {
+		if (
+			!validateEmail(this.state.createAccountEmail)
+			|| !validatePassword(this.state.password)
+		) {
+			nm.warning("Email address or password is invalid");
+			return;
+		}
+
 		const params = {
 			email: this.state.createAccountEmail,
 			password: this.state.password,
@@ -219,7 +231,7 @@ export default class Login extends React.Component {
 					}
 				</div>
 
-				<div className="top-left-buttons">
+				{/* <div className="top-left-buttons">
 					<DialogHint
 						content={
 							<div className="row">
@@ -366,7 +378,7 @@ export default class Login extends React.Component {
 						}
 						validateSelection={(value) => this.onChange(value)}
 					/>
-				</div>
+				</div> */}
 
 				<div id="Login-area">
 					<ul className="Login-circles">
@@ -477,6 +489,7 @@ export default class Login extends React.Component {
 										onChange={(v) => this.changeState("createAccountEmail", v)}
 										autofocus={true}
 										onKeyDown={this.onKeyDown}
+										format={validateEmail}
 									/>
 									<FormLine
 										label="Password"
@@ -486,59 +499,21 @@ export default class Login extends React.Component {
 										onChange={(v) => this.changeState("password", v)}
 										autofocus={true}
 										onKeyDown={this.onKeyDown}
+										format={validatePassword}
 									/>
 									<br />
 									{!validatePassword(this.state.password)
-										&& <div>
+										&& <>
 											<div className="Password-prompt">
-												Your password should:
-												<ul>
-													<li>be between 8 and 20 characters long</li>
-													<li>contain at least one uppercase letter</li>
-													<li>contain at least one lowercase letter</li>
-													<li>contain at least one number</li>
-												</ul>
+												The password must:<br />
+												<li>contain at least 1 lowercase alphabetical character</li>
+												<li>contain at least 1 uppercase alphabetical character</li>
+												<li>contain at least 1 numeric character</li>
+												<li>contain at least 1 special character such as !@#$%^&*</li>
+												<li>be between 8 and 30 characters long</li>
 											</div>
 											<br />
-										</div>
-									}
-									{this.props.settings
-										&& this.props.settings.ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION === "TRUE"
-										&& <div>
-											<FormLine
-												labelWidth={8}
-												label="I am part of a entity"
-												type={"checkbox"}
-												value={this.state.partOfEntity}
-												onChange={(v) => this.changeState("partOfEntity", v)}
-												onKeyDown={this.onKeyDown}
-											/>
-											<FormLine
-												labelWidth={4}
-												label="Entity"
-												value={this.state.entity}
-												onChange={(v) => this.changeState("entity", v)}
-												onKeyDown={this.onKeyDown}
-												disabled={!this.state.partOfEntity}
-											/>
-											<FormLine
-												labelWidth={4}
-												label={"Department"}
-												type={"select"}
-												options={[
-													{ label: "TOP MANAGEMENT", value: "TOP MANAGEMENT" },
-													{ label: "HUMAN RESOURCE", value: "HUMAN RESOURCE" },
-													{ label: "MARKETING", value: "MARKETING" },
-													{ label: "FINANCE", value: "FINANCE" },
-													{ label: "OPERATION/PRODUCTION", value: "OPERATION/PRODUCTION" },
-													{ label: "INFORMATION TECHNOLOGY", value: "INFORMATION TECHNOLOGY" },
-													{ label: "OTHER", value: "OTHER" },
-												]}
-												value={this.state.entityDepartment}
-												onChange={(v) => this.changeState("entityDepartment", v)}
-												disabled={!this.state.partOfEntity}
-											/>
-										</div>
+										</>
 									}
 									<div className="right-buttons">
 										<button
@@ -696,12 +671,13 @@ export default class Login extends React.Component {
 								{this.state.verified === true
 									&& <div className="col-md-12">
 										<div className="left-buttons pl-2">
-											Account Verfied Successfully!
+											Account Verified Successfully!
+											<br />
 											<button
 												className="link-button"
-												onClick={() => this.changeState("view", "login")}
+												onClick={() => window.location.replace("/")}
 											>
-												Proceed to Login
+												Back to login
 											</button>
 										</div>
 									</div>
@@ -713,9 +689,9 @@ export default class Login extends React.Component {
 											Account Verification Failed!
 											<button
 												className="link-button"
-												onClick={() => this.changeState("view", "login")}
+												onClick={() => window.location.replace("/")}
 											>
-												Proceed to Login
+												Back to login
 											</button>
 										</div>
 									</div>

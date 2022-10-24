@@ -1,11 +1,11 @@
 import React from "react";
 import "./EntityCollaborator.css";
 import { NotificationManager as nm } from "react-notifications";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
-import DialogHint from "../dialog/DialogHint.jsx";
+// import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class EntityCollaborator extends React.Component {
 	constructor(props) {
@@ -51,7 +51,7 @@ export default class EntityCollaborator extends React.Component {
 						<h2>Collaborator</h2>
 					</div>
 
-					<div className="col-md-3 top-title-menu">
+					{/* <div className="col-md-3 top-title-menu">
 						<DialogHint
 							content={
 								<div className="row">
@@ -79,7 +79,7 @@ export default class EntityCollaborator extends React.Component {
 								</div>
 							}
 						/>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={"row row-spaced"}>

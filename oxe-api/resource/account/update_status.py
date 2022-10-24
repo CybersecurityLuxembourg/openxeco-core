@@ -1,13 +1,12 @@
+import json
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource
 from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from utils.re import has_password_format
 
 
 class UpdateStatus(MethodResource, Resource):
@@ -39,6 +38,24 @@ class UpdateStatus(MethodResource, Resource):
         if len(data) == 0:
             return "", "401 The user has not been found"
         user = data[0]
+
+        try:
+            user_dict = user.__dict__
+            values_before = {
+                key: user_dict[key]
+                for key in kwargs.keys()
+            }
+            self.db.insert({
+                "entity_type": "User",
+                "entity_id": user.id,
+                "action": "Update User Status",
+                "values_before": json.dumps(values_before),
+                "values_after": json.dumps(kwargs),
+                "user_id": user.id,
+            }, self.db.tables["AuditRecord"])
+        except Exception as err:
+            # We don't want the app to error if we can't log the action
+            print(err)
 
         user.status = kwargs["status"]
 

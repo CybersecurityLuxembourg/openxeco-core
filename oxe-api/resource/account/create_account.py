@@ -1,3 +1,4 @@
+import json
 from flask import request, render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
@@ -64,28 +65,41 @@ class CreateAccount(MethodResource, Resource):
             user = self.db.insert({
                 "email": email,
                 "password": generate_password_hash(password),
-                "is_active": 0,
+                "is_active": 1,
             }, self.db.tables["User"])
         except IntegrityError as e:
             if "Duplicate entry" in str(e):
                 raise ObjectAlreadyExisting
             raise e
 
+        try:
+            self.db.insert({
+                "entity_type": "User",
+                "entity_id": user.id,
+                "action": "Create User Account",
+                "values_before": "{}",
+                "values_after": json.dumps({
+                    "id": user.id,
+                    "email": user.email,
+                }),
+                "user_id": user.id,
+            }, self.db.tables["AuditRecord"])
+        except Exception as err:
+            # We don't want the app to error if we can't log the action
+            print(err)
         # Send email
         token = generate_confirmation_token(user.email)
         try:
-            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
-            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
             url = f"{origin}/login?action=verify_account&token={token}"
             send_email(self.mail,
-                       subject=f"[{project_name}] New account",
-                       recipients=[email],
-                       html_body=render_template(
-                           'new_account.html',
-                           first_name=user.first_name,
-                           url=url,
-                           project_name=project_name)
-                       )
+                subject=f"New account",
+                recipients=[email],
+                html_body=render_template(
+                    'new_account.html',
+                    email=user.email,
+                    url=url,
+                )
+            )
         except Exception as e:
             self.db.session.rollback()
             self.db.delete(self.db.tables["User"], {"id": user.id})

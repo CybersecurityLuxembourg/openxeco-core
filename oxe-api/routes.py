@@ -33,6 +33,7 @@ from resource.address.get_all_addresses import GetAllAddresses
 from resource.address.add_address import AddAddress
 from resource.address.delete_address import DeleteAddress
 from resource.address.update_address import UpdateAddress
+from resource.audit.get_audit_logs import GetAuditLogs
 from resource.notification.get_notifications import GetNotifications
 from resource.communication.get_communications import GetCommunications
 from resource.communication.send_communication import SendCommunication
@@ -111,6 +112,7 @@ from resource.private.get_my_article_content import GetMyArticleContent
 from resource.private.get_my_articles import GetMyArticles
 from resource.private.get_my_entities import GetMyEntities
 from resource.private.get_my_entity_addresses import GetMyEntityAddresses
+from resource.private.get_my_entity_contacts import GetMyEntityContacts
 from resource.private.get_my_entity_collaborators import GetMyEntityCollaborators
 from resource.private.get_my_entity_requests import GetMyEntityRequests
 from resource.private.get_my_entity_taxonomy import GetMyEntityTaxonomy
@@ -192,6 +194,7 @@ from resource.user.get_user_group_assignments import GetUserGroupAssignments
 from resource.user.update_user import UpdateUser
 from resource.user.update_user_entity import UpdateUserEntity
 from resource.user.update_user_group_assignment import UpdateUserGroupAssignment
+from resource.user.get_user_profile import GetUserProfile
 from resource.taxonomy.add_taxonomy_assignment import AddTaxonomyAssignment
 from resource.taxonomy.add_taxonomy_category import AddTaxonomyCategory
 from resource.taxonomy.add_taxonomy_category_hierarchy import AddTaxonomyCategoryHierarchy

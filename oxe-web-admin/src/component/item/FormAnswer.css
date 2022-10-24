@@ -33,14 +33,14 @@
     white-space: nowrap;
     overflow: hidden;
     vertical-align: top;
-    color: #009fe3;
+    color: #2E52C1;
 }
 
 .FormAnswer i {
     display:inline;
     font-size: 14px;
     line-height: 1.2;
-    color: #009fe3;
+    color: #2E52C1;
 }
 
 .FormAnswer-title {

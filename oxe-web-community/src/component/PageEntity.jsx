@@ -2,11 +2,11 @@ import React from "react";
 import "./PageEntity.css";
 import Tab from "./tab/Tab.jsx";
 import EntityGlobal from "./pageentity/EntityGlobal.jsx";
-import EntityLogo from "./pageentity/EntityLogo.jsx";
-import EntityAddress from "./pageentity/EntityAddress.jsx";
-import EntityCollaborator from "./pageentity/EntityCollaborator.jsx";
-import EntityRequest from "./pageentity/EntityRequest.jsx";
-import EntityTaxonomy from "./pageentity/EntityTaxonomy.jsx";
+// import EntityLogo from "./pageentity/EntityLogo.jsx";
+// import EntityAddress from "./pageentity/EntityAddress.jsx";
+// import EntityCollaborator from "./pageentity/EntityCollaborator.jsx";
+// import EntityRequest from "./pageentity/EntityRequest.jsx";
+// import EntityTaxonomy from "./pageentity/EntityTaxonomy.jsx";
 import Loading from "./box/Loading.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 
@@ -17,13 +17,14 @@ export default class PageEntity extends React.Component {
 		this.state = {
 			entity: null,
 			selectedMenu: null,
+			entityContact: null,
 			tabs: [
 				"global_information",
 				"logo",
-				"address",
-				"taxonomy",
+				// "address",
+				// "taxonomy",
 				"collaborator",
-				"request",
+				// "request",
 			],
 		};
 	}
@@ -97,10 +98,10 @@ export default class PageEntity extends React.Component {
 								labels={[
 									"Global information",
 									"Logo",
-									"Address",
-									"Taxonomy",
-									"Collaborator",
-									"Request",
+									// "Address",
+									// "Taxonomy",
+									// "Collaborator",
+									// "Request",
 								]}
 								notifications={[
 									0,
@@ -122,32 +123,32 @@ export default class PageEntity extends React.Component {
 										entity={this.state.entity}
 										key={"EntityGlobal"}
 									/>,
-									<EntityLogo
-										getNotifications={this.props.getNotifications}
-										entity={this.state.entity}
-										key={"EntityLogo"}
-									/>,
-									<EntityAddress
-										getNotifications={this.props.getNotifications}
-										entityId={this.state.entity.id}
-										key={"EntityAddress"}
-									/>,
-									<EntityTaxonomy
-										getNotifications={this.props.getNotifications}
-										entityId={this.state.entity.id}
-										key={"EntityTaxonomy"}
-									/>,
-									<EntityCollaborator
-										entityId={this.state.entity.id}
-										key={"EntityCollaborator"}
-										changeMenu={this.props.changeMenu}
-									/>,
-									<EntityRequest
-										getNotifications={this.props.getNotifications}
-										entityId={this.state.entity.id}
-										entityName={this.state.entity.name}
-										key={"EntityRequest"}
-									/>,
+									// <EntityLogo
+									// 	getNotifications={this.props.getNotifications}
+									// 	entity={this.state.entity}
+									// 	key={"EntityLogo"}
+									// />,
+									// <EntityAddress
+									// 	getNotifications={this.props.getNotifications}
+									// 	entityId={this.state.entity.id}
+									// 	key={"EntityAddress"}
+									// />,
+									// <EntityTaxonomy
+									// 	getNotifications={this.props.getNotifications}
+									// 	entityId={this.state.entity.id}
+									// 	key={"EntityTaxonomy"}
+									// />,
+									// <EntityCollaborator
+									// 	entityId={this.state.entity.id}
+									// 	key={"EntityCollaborator"}
+									// 	changeMenu={this.props.changeMenu}
+									// />,
+									// <EntityRequest
+									// 	getNotifications={this.props.getNotifications}
+									// 	entityId={this.state.entity.id}
+									// 	entityName={this.state.entity.name}
+									// 	key={"EntityRequest"}
+									// />,
 								]}
 							/>
 							: <Loading

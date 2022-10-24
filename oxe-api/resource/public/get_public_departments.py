@@ -25,7 +25,11 @@ class GetPublicDepartments(MethodResource, Resource):
     @catch_exception
     def get(self):
 
-        data = self.db.get(self.db.tables["Department"])
+        # data = self.db.get(self.db.tables["Department"])
+        data = self.db.session \
+            .query(self.db.tables["Department"]) \
+            .order_by(self.db.tables["Department"].id) \
+            .all()
         if len(data) < 1:
             raise ObjectNotFound
         data = Serializer.serialize(data, self.db.tables["Department"])

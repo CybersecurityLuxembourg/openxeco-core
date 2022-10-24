@@ -300,7 +300,7 @@ export default class DashboardGraph extends React.Component {
 						{
 							id: "ent-" + c.id,
 							label: c.name,
-							color: { border: "#8fddff", background: "#bcebff" },
+							color: { border: "#8fddff", background: "rgba(46, 83, 193, 0.123)" },
 							font: { color: "grey" },
 							shape: this.state.shape,
 							icon: {
@@ -416,7 +416,7 @@ export default class DashboardGraph extends React.Component {
 							from: "ent-" + r.entity_id_1,
 							to: "ent-" + r.entity_id_2,
 							label: this.getEntityRelationshipTypeById(r.type).name,
-							color: { color: "#bcebff" },
+							color: { color: "rgba(46, 83, 193, 0.123)" },
 							font: { color: "#8fddff" },
 							width: 2,
 							arrows: {

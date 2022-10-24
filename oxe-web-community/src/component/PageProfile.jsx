@@ -1,14 +1,14 @@
 import React from "react";
 import "./PageProfile.css";
 import vCard from "vcf";
-import QRCode from "react-qr-code";
+// import QRCode from "react-qr-code";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import Info from "./box/Info.jsx";
 import FormLine from "./form/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
-import { validatePassword } from "../utils/re.jsx";
-import { getApiURL } from "../utils/env.jsx";
+import { validatePassword, validateTelephoneNumber } from "../utils/re.jsx";
+// import { getApiURL } from "../utils/env.jsx";
 import Loading from "./box/Loading.jsx";
 import Message from "./box/Message.jsx";
 
@@ -163,6 +163,9 @@ export default class PageProfile extends React.Component {
 	}
 
 	updateUser(property, value) {
+		if (property === "telephone" && validateTelephoneNumber(value) === false) {
+			return;
+		}
 		const params = {
 			[property]: value,
 		};
@@ -215,7 +218,7 @@ export default class PageProfile extends React.Component {
 									<div className="PageProfile-icon centered">
 										<i className="fas fa-user-circle"/>
 
-										{this.state.user.handle
+										{/* {this.state.user.handle
 											&& <Popup
 												className="Popup-small-size"
 												trigger={
@@ -254,19 +257,14 @@ export default class PageProfile extends React.Component {
 													</div>
 												</div>}
 											</Popup>
-										}
+										} */}
 									</div>
 									<FormLine
 										label={"Full name"}
-										value={this.getVcardValue("fn")}
-										onChange={(v) => this.updateCurrentVcard("fn", v)}
+										value={this.state.user.first_name + " " + this.state.user.last_name}
+										// onChange={(v) => this.updateCurrentVcard("fn", v)}
 										fullWidth={true}
-									/>
-									<FormLine
-										label={"Title"}
-										value={this.getVcardValue("title")}
-										onChange={(v) => this.updateCurrentVcard("title", v)}
-										fullWidth={true}
+										disabled={true}
 									/>
 								</div>
 							</div>
@@ -356,7 +354,7 @@ export default class PageProfile extends React.Component {
 										</div>}
 									</Popup>
 
-									<button
+									{/* <button
 										className="blue-button"
 										onClick={() => window.open(
 											getApiURL() + "public/get_public_vcard/" + this.state.user.handle,
@@ -368,7 +366,7 @@ export default class PageProfile extends React.Component {
 										}
 									>
 										Open VCF file
-									</button>
+									</button> */}
 								</div>
 							</div>
 						</div>
@@ -380,7 +378,7 @@ export default class PageProfile extends React.Component {
 								<h3>Communication</h3>
 								<br/>
 								<FormLine
-									label={"Accept communications"}
+									label={"Would you like to receive communications from the NCC?"}
 									type={"checkbox"}
 									value={this.state.user.accept_communication}
 									onChange={(v) => this.updateUser("accept_communication", v)}
@@ -396,7 +394,7 @@ export default class PageProfile extends React.Component {
 									value={this.state.user.is_vcard_public}
 									onChange={(v) => this.updateUser("is_vcard_public", v)}
 								/>
-								<FormLine
+								{/* <FormLine
 									label={"Handle"}
 									disabled={true}
 									value={this.state.user.handle}
@@ -407,7 +405,7 @@ export default class PageProfile extends React.Component {
 										disabled={this.state.value === null}>
 										Generate new handle
 									</button>
-								</div>
+								</div> */}
 							</div>
 							<div className="col-md-12 PageProfile-white-box">
 								<h3>Contact</h3>
@@ -427,6 +425,7 @@ export default class PageProfile extends React.Component {
 									label={"Telephone"}
 									value={this.state.user.telephone}
 									onBlur={(v) => this.updateUser("telephone", v)}
+									format={validateTelephoneNumber}
 								/>
 								<FormLine
 									label={"Include telephone in my public profile"}
@@ -446,7 +445,7 @@ export default class PageProfile extends React.Component {
 											key={i}>
 											<div className="col-md-6">
 												<FormLine
-													label={"Plateform"}
+													label={"Platform"}
 													type={"select"}
 													options={[
 														{ label: "Personal website", value: "Personal website" },

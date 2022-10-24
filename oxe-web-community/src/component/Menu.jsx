@@ -6,6 +6,7 @@ import SideNav, {
 import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { Link } from "react-router-dom";
 import Loading from "./box/Loading.jsx";
+import { getCookieOptions } from "../utils/env.jsx";
 
 export default class Menu extends React.Component {
 	constructor(props) {
@@ -37,7 +38,7 @@ export default class Menu extends React.Component {
 				className={"fade-in"}
 				onSelect={(selected) => {
 					if (selected === "disconnect") {
-						this.props.cookies.remove("access_token_cookie");
+						this.props.cookies.remove("access_token_cookie", getCookieOptions());
 						window.location.replace("/");
 					} else {
 						this.props.changeMenu(selected);
@@ -148,7 +149,7 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 
-					<NavItem
+					{/* <NavItem
 						className="Menu-bug-nav-item"
 						eventKey="contact"
 						active={this.props.selectedMenu === "contact"}
@@ -160,7 +161,7 @@ export default class Menu extends React.Component {
 							Contact us
 						</NavText>
 						{this.getTaskNotificationBlock("/contact")}
-					</NavItem>
+					</NavItem> */}
 					<NavItem
 						className="Menu-log-out-nav-item"
 						eventKey="disconnect"

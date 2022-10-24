@@ -8,6 +8,7 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { Link } from "react-router-dom";
 import { getRequest } from "../utils/request.jsx";
 import { getSettingValue } from "../utils/setting.jsx";
+import { getCookieOptions } from "../utils/env.jsx";
 
 export default class Menu extends React.Component {
 	constructor(props) {
@@ -78,7 +79,7 @@ export default class Menu extends React.Component {
 				className={"fade-in"}
 				onSelect={(selected) => {
 					if (selected === "disconnect") {
-						this.props.cookies.remove("access_token_cookie");
+						this.props.cookies.remove("access_token_cookie", getCookieOptions());
 						window.location.replace("/");
 					} else {
 						this.props.changeMenu(selected);
@@ -217,6 +218,18 @@ export default class Menu extends React.Component {
 						</NavIcon>
 						<NavText>
 							Settings
+						</NavText>
+					</NavItem>
+					<div className="Menu-divider" />
+					<NavItem
+						eventKey="audit"
+						active={this.props.selectedMenu === "audit"}
+						onClick={() => this.props.history.push("/audit")}>
+						<NavIcon>
+							<i className="fas fa-file-alt" style={{ fontSize: "1.75em" }} />
+						</NavIcon>
+						<NavText>
+							Audit Logs
 						</NavText>
 					</NavItem>
 					<NavItem

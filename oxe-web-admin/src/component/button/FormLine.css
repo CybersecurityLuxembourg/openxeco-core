@@ -21,11 +21,11 @@
 }
 
 .FormLine-right-format {
-	border: 2px solid #bcebff !important;
+	border: 2px solid rgba(46, 83, 193, 0.123) !important;
 }
 
 .FormLine-right-format:focus {
-	border: 3px solid #bcebff !important;
+	border: 3px solid rgba(46, 83, 193, 0.123) !important;
 }
 
 .FormLine-chips {
