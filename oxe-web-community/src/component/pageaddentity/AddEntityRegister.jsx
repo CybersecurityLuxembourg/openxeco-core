@@ -323,7 +323,6 @@ export default class AddEntityRegister extends React.Component {
 								label={"Entity type *"}
 								type={"select"}
 								options={[
-									{ value: null, label: "-" },
 									{ value: "Sole Trader", label: "Sole Trader" },
 									{ value: "Partnership", label: "Partnership" },
 									{ value: "Cooperative", label: "Cooperative" },
@@ -375,7 +374,6 @@ export default class AddEntityRegister extends React.Component {
 								label={"Size *"}
 								type={"select"}
 								options={[
-									{ value: null, label: "-" },
 									{ value: "Micro", label: "Micro" },
 									{ value: "Small", label: "Small" },
 									{ value: "Medium", label: "Medium" },
@@ -418,7 +416,7 @@ export default class AddEntityRegister extends React.Component {
 								? <FormLine
 									label={"Primary involvement of the organisation in/related to cybersecurity *"}
 									type={"select"}
-									options={[{ value: null, label: "-" }].concat(
+									options={
 										this.state.involvements.map((o) => ({
 											label: (
 												<>
@@ -426,8 +424,8 @@ export default class AddEntityRegister extends React.Component {
 												</>
 											),
 											value: o.name,
-										})),
-									)}
+										}))
+									}
 									value={this.state.involvement}
 									onChange={(v) => this.setState({ involvement: v })}
 									disabled={!this.state.notFoundEntity}
@@ -445,7 +443,6 @@ export default class AddEntityRegister extends React.Component {
 								label={"Seniority Level *"}
 								type={"select"}
 								options={[
-									{ value: null, label: "-" },
 									{ value: "Board Member", label: "Board Member" },
 									{ value: "Executive Management", label: "Executive Management" },
 									{ value: "Senior Management", label: "Senior Management" },
