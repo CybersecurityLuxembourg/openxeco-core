@@ -112,6 +112,7 @@ from resource.private.get_my_article_content import GetMyArticleContent
 from resource.private.get_my_articles import GetMyArticles
 from resource.private.get_my_entities import GetMyEntities
 from resource.private.get_my_entity_addresses import GetMyEntityAddresses
+from resource.private.get_my_entity_contacts import GetMyEntityContacts
 from resource.private.get_my_entity_collaborators import GetMyEntityCollaborators
 from resource.private.get_my_entity_requests import GetMyEntityRequests
 from resource.private.get_my_entity_taxonomy import GetMyEntityTaxonomy

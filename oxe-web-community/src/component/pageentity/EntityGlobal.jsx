@@ -28,11 +28,13 @@ export default class EntityGlobal extends React.Component {
 				discord_url: "Discord URL",
 			},
 			address: null,
+			contact: null,
 		};
 	}
 
 	componentDidMount() {
 		this.getAddresses();
+		this.getContacts();
 	}
 
 	getAddresses() {
@@ -43,6 +45,22 @@ export default class EntityGlobal extends React.Component {
 		getRequest.call(this, "private/get_my_entity_addresses/" + this.props.entity.id, (data) => {
 			this.setState({
 				address: data[0],
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	getContacts() {
+		this.setState({
+			contact: null,
+		});
+
+		getRequest.call(this, "private/get_my_entity_contacts/" + this.props.entity.id, (data) => {
+			this.setState({
+				contact: data[0],
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -217,6 +235,45 @@ export default class EntityGlobal extends React.Component {
 									value={this.state.address.country}
 									disabled={true}
 								/>
+							</div>
+						</>
+					}
+					{this.state.contact !== null
+						&& <>
+							<div className="col-md-12">
+								<h2>Contact</h2>
+							</div>
+							<div className="col-md-12">
+								<FormLine
+									label={"Name"}
+									value={this.state.contact.name}
+									disabled={true}
+								/>
+								{this.state.contact.type === "EMAIL ADDRESS"
+									? <FormLine
+										label={"Email Address"}
+										value={this.state.contact.value}
+										disabled={true}
+									/>
+									: <FormLine
+										label={"Email Address"}
+										value={""}
+										disabled={true}
+									/>
+								}
+								{this.state.contact.type === "PHONE NUMBER"
+									? <FormLine
+										label={"Phone Number"}
+										value={this.state.contact.value}
+										disabled={true}
+									/>
+									: <FormLine
+										label={"Phone Number"}
+										value={""}
+										disabled={true}
+									/>
+								}
+
 							</div>
 						</>
 					}
