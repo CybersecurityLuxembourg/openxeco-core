@@ -267,6 +267,7 @@ export default class AddEntityRegister extends React.Component {
 								value={this.state.name}
 								onChange={(v) => this.changeState("name", v)}
 								disabled={!this.state.notFoundEntity}
+								autofocus={true}
 							/>
 							<FormLine
 								label={"Registered Address Line 1 *"}
@@ -368,7 +369,6 @@ export default class AddEntityRegister extends React.Component {
 							<FormLine
 								label="Company Email"
 								value={this.state.company_email}
-								autofocus={true}
 								disabled={true}
 							/>
 							<FormLine
@@ -439,7 +439,6 @@ export default class AddEntityRegister extends React.Component {
 							<FormLine
 								label="Primary Contact Name (auto populated)"
 								value={this.state.primary_contact_name}
-								autofocus={true}
 								disabled={true}
 							/>
 							<FormLine
@@ -477,10 +476,9 @@ export default class AddEntityRegister extends React.Component {
 								/>
 							}
 							<FormLine
-								label="Work Telephone Number *"
+								label="Work Telephone Number"
 								value={this.state.work_telephone}
 								onChange={(v) => this.changeState("work_telephone", v)}
-								autofocus={true}
 								onKeyDown={this.onKeyDown}
 								disabled={!this.state.notFoundEntity}
 							/>
@@ -507,6 +505,7 @@ export default class AddEntityRegister extends React.Component {
 										disabled={!this.state.notFoundEntity}
 										onDrop={this.onDropForm}
 										maxFiles={1}
+										maxSize={5242880}
 									>
 										{({ getRootProps, getInputProps }) => (
 											<div
@@ -516,7 +515,8 @@ export default class AddEntityRegister extends React.Component {
 												<div className="Upload-dragdrop-textContent">
 													{ this.state.uploaded_file === null
 														? <div>
-															Drag & drop the file here, or click to select the file
+															Drag & drop the file here, or click to select the file <br />
+															<span className="font-italic">* Max file size 5MB</span>
 														</div>
 														: <div>
 															File: <span className="font-weight-bold">
@@ -531,7 +531,7 @@ export default class AddEntityRegister extends React.Component {
 								</div>
 							</div>
 							<FormLine
-								label={"I acknowledge that he information submitted about the entity may be made "
+								label={"I acknowledge that the information submitted about the entity may be made "
 									+ "public on NCC platforms."}
 								type="checkbox"
 								value={this.state.acknowledge}

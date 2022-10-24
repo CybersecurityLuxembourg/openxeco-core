@@ -146,6 +146,7 @@ export default class PageAddProfile extends React.Component {
 			this.setState({ sector: null });
 			this.setState({ industry_id: null });
 		}
+		this.forceUpdate();
 	}
 
 	isProfession(profession) {
@@ -244,7 +245,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.last_name}
 							onChange={(v) => this.changeState("last_name", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 						/>
 						<FormLine
@@ -261,7 +261,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.gender}
 							onChange={(v) => this.changeState("gender", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
@@ -270,7 +269,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.telephone}
 							onChange={(v) => this.changeState("telephone", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 						/>
 						<FormLine
@@ -278,7 +276,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.mobile}
 							onChange={(v) => this.changeState("mobile", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 						/>
 						<FormLine
@@ -297,7 +294,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.profession_id}
 							onChange={(v) => this.setRole(v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
@@ -312,7 +308,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.sector}
 							onChange={(v) => this.changeState("sector", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							disabled={this.isProfession("Student") || this.isProfession("Retired")}
 							format={validateNotNull}
@@ -326,7 +321,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.industry_id}
 							onChange={(v) => this.changeState("industry_id", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							disabled={this.isProfession("Student") || this.isProfession("Retired")}
 							format={validateNotNull}
@@ -340,7 +334,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.nationality_id}
 							onChange={(v) => this.changeState("nationality_id", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
@@ -356,7 +349,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.residency}
 							onChange={(v) => this.changeState("residency", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
@@ -374,7 +366,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.experience}
 							onChange={(v) => this.changeState("experience", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
@@ -394,7 +385,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.expertise_id}
 							onChange={(v) => this.changeState("expertise_id", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
@@ -413,7 +403,6 @@ export default class PageAddProfile extends React.Component {
 							fullWidth={true}
 							value={this.state.how_heard}
 							onChange={(v) => this.changeState("how_heard", v)}
-							autofocus={true}
 							onKeyDown={this.onKeyDown}
 							format={validateNotNull}
 						/>
