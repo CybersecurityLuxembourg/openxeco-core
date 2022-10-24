@@ -65,6 +65,9 @@ export default class RequestIndividualAccountAdd extends Component {
 
 	static getById(list, id) {
 		const index = list.findIndex((a) => (a.id === id));
+		if (index < 0) {
+			return "";
+		}
 		return list[index].name;
 	}
 
@@ -154,12 +157,12 @@ export default class RequestIndividualAccountAdd extends Component {
 							/>
 							<FormLine
 								label={"Telephone"}
-								value={this.props.data.telephone}
+								value={this.props.data.telephone || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Mobile"}
-								value={this.props.data.mobile}
+								value={this.props.data.mobile || ""}
 								disabled={true}
 							/>
 							<FormLine
@@ -169,12 +172,12 @@ export default class RequestIndividualAccountAdd extends Component {
 							/>
 							<FormLine
 								label={"Sector"}
-								value={this.props.data.sector}
+								value={this.props.data.sector || ""}
 								disabled={true}
 							/>
 							<FormLine
 								label={"Industry"}
-								value={this.state.industry}
+								value={this.state.industry || ""}
 								disabled={true}
 							/>
 							<FormLine

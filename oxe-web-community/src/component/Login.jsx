@@ -671,7 +671,7 @@ export default class Login extends React.Component {
 								{this.state.verified === true
 									&& <div className="col-md-12">
 										<div className="left-buttons pl-2">
-											Account Verfied Successfully!
+											Account Verified Successfully!
 											<br />
 											<button
 												className="link-button"
