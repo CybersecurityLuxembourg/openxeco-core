@@ -23,7 +23,7 @@ export default class PageEntity extends React.Component {
 				"logo",
 				// "address",
 				// "taxonomy",
-				"collaborator",
+				// "collaborator",
 				// "request",
 			],
 		};
@@ -123,11 +123,11 @@ export default class PageEntity extends React.Component {
 										entity={this.state.entity}
 										key={"EntityGlobal"}
 									/>,
-									// <EntityLogo
-									// 	getNotifications={this.props.getNotifications}
-									// 	entity={this.state.entity}
-									// 	key={"EntityLogo"}
-									// />,
+									<EntityLogo
+										getNotifications={this.props.getNotifications}
+										entity={this.state.entity}
+										key={"EntityLogo"}
+									/>,
 									// <EntityAddress
 									// 	getNotifications={this.props.getNotifications}
 									// 	entityId={this.state.entity.id}
