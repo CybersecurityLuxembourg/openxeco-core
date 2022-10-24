@@ -33,7 +33,6 @@ export default class PageAddProfile extends React.Component {
 			professions: [],
 			domains: [],
 			affiliated: false,
-			agree_terms: false,
 			agree_code: false,
 			agree_privacy: false,
 		};
@@ -113,9 +112,8 @@ export default class PageAddProfile extends React.Component {
 			|| this.state.profession_id === null
 			|| this.state.residency === null
 			|| (
-				(this.isProfession("Student") === false && this.isProfession("Retired") === false)
-				&& this.sector === null
-				&& this.industry_id === null
+				this.isStudentOrRetired() === false
+				&& (this.state.sector === null || this.state.industry_id === null)
 			)
 		) {
 			nm.warning("Please fill in all of the required fields");
@@ -142,25 +140,28 @@ export default class PageAddProfile extends React.Component {
 
 	setRole(value) {
 		this.changeState("profession_id", value);
-		if (this.isProfession("Student") === true || this.isProfession("Retired") === true) {
+		const role = this.state.professions.find(
+			(p) => (p.id === value),
+		);
+		if (role !== undefined && (role.name === "Student" || role.name === "Retired")) {
 			this.setState({ sector: null });
 			this.setState({ industry_id: null });
 		}
 		this.forceUpdate();
 	}
 
-	isProfession(profession) {
+	isStudentOrRetired() {
 		const role = this.state.professions.find(
-			(p) => (p.name === profession),
+			(p) => (p.id === this.state.profession_id),
 		);
 		if (role === undefined) {
 			return false;
 		}
-		return this.state.profession_id === role.id;
+		return role.name === "Student" || role.name === "Retired";
 	}
 
 	agreedToAll() {
-		return this.state.agree_code && this.state.agree_privacy && this.state.agree_terms;
+		return this.state.agree_code && this.state.agree_privacy;
 	}
 
 	setDomains(name, value) {
@@ -309,7 +310,7 @@ export default class PageAddProfile extends React.Component {
 							value={this.state.sector}
 							onChange={(v) => this.changeState("sector", v)}
 							onKeyDown={this.onKeyDown}
-							disabled={this.isProfession("Student") || this.isProfession("Retired")}
+							disabled={this.isStudentOrRetired()}
 							format={validateNotNull}
 						/>
 						<FormLine
@@ -322,7 +323,7 @@ export default class PageAddProfile extends React.Component {
 							value={this.state.industry_id}
 							onChange={(v) => this.changeState("industry_id", v)}
 							onKeyDown={this.onKeyDown}
-							disabled={this.isProfession("Student") || this.isProfession("Retired")}
+							disabled={this.isStudentOrRetired()}
 							format={validateNotNull}
 						/>
 						<FormLine
@@ -434,12 +435,17 @@ export default class PageAddProfile extends React.Component {
 						/>
 						<hr />
 						<div className="FormLine-label font-weight-bold">Acknowledgements *</div>
-						<FormLine
-							label={"I acknowledge and agree with the Terms & Conditions"}
-							type={"checkbox"}
-							value={this.state.agree_terms}
-							onChange={(v) => this.setState({ agree_terms: v })}
-						/>
+						<div className={"FormLine"}>
+							<div className="row">
+								<div className="col-md-12">
+									<div className={"FormLine-label"}>
+										Please read and agree to the &nbsp;
+										<a href='https://ncc-mita.gov.mt/community-code-of-conduct/'>Community&apos; s Code of Conduct</a> &amp;&nbsp;
+										<a href='https://ncc-mita.gov.mt/data-protection-policy/'>Privacy Policy and Terms of Use</a>.
+									</div>
+								</div>
+							</div>
+						</div>
 						<FormLine
 							label={"I acknowledge and agree to abide with the Community's Code of Conduct"}
 							type={"checkbox"}
@@ -447,7 +453,7 @@ export default class PageAddProfile extends React.Component {
 							onChange={(v) => this.setState({ agree_code: v })}
 						/>
 						<FormLine
-							label={"I acknowledge and agree with the Privacy Policy and Cookie Policy"}
+							label={"I acknowledge and agree with the Privacy Policy and Terms of Use"}
 							type={"checkbox"}
 							value={this.state.agree_privacy}
 							onChange={(v) => this.setState({ agree_privacy: v })}
