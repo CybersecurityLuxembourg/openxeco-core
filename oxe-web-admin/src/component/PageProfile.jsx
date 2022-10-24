@@ -436,7 +436,7 @@ export default class PageProfile extends React.Component {
 											key={i}>
 											<div className="col-md-6">
 												<FormLine
-													label={"Plateform"}
+													label={"Platform"}
 													type={"select"}
 													options={[
 														{ label: "Personal website", value: "Personal website" },

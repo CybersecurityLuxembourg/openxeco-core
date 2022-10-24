@@ -430,7 +430,6 @@ export default class Login extends React.Component {
 										value={this.state.password}
 										onChange={(v) => this.changeState("password", v)}
 										onKeyDown={this.onKeyDown}
-										format={validatePassword}
 									/>
 
 									<div>

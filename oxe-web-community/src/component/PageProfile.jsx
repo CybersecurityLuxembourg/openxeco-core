@@ -259,8 +259,9 @@ export default class PageProfile extends React.Component {
 									<FormLine
 										label={"Full name"}
 										value={this.state.user.first_name + " " + this.state.user.last_name}
-										onChange={(v) => this.updateCurrentVcard("fn", v)}
+										// onChange={(v) => this.updateCurrentVcard("fn", v)}
 										fullWidth={true}
+										disabled={true}
 									/>
 								</div>
 							</div>
@@ -440,7 +441,7 @@ export default class PageProfile extends React.Component {
 											key={i}>
 											<div className="col-md-6">
 												<FormLine
-													label={"Plateform"}
+													label={"Platform"}
 													type={"select"}
 													options={[
 														{ label: "Personal website", value: "Personal website" },
