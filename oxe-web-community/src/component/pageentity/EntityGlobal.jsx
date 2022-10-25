@@ -46,7 +46,6 @@ export default class EntityGlobal extends React.Component {
 			this.setState({
 				address: data[0],
 			});
-			console.log(this.state.address);
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
