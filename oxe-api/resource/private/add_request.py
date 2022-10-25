@@ -52,10 +52,11 @@ class AddRequest(MethodResource, Resource):
         user_id = get_jwt_identity()
         # Control image
 
-        if "vat_number" in kwargs["data"]:
-            data = self.db.get(self.db.tables["Entity"], {"vat_number": kwargs["data"]["vat_number"]})
-            if len(data) > 0:
-                return "", "422 The VAT Number you entered has already been registered"
+        if "data" in kwargs:
+            if "vat_number" in kwargs["data"]:
+                data = self.db.get(self.db.tables["Entity"], {"vat_number": kwargs["data"]["vat_number"]})
+                if len(data) > 0:
+                    return "", "422 The VAT Number you entered has already been registered"
 
         if "image" in kwargs and kwargs["image"] is not None:
             try:
