@@ -2,7 +2,7 @@ import React from "react";
 import "./PageEntity.css";
 import Tab from "./tab/Tab.jsx";
 import EntityGlobal from "./pageentity/EntityGlobal.jsx";
-// import EntityLogo from "./pageentity/EntityLogo.jsx";
+import EntityLogo from "./pageentity/EntityLogo.jsx";
 // import EntityAddress from "./pageentity/EntityAddress.jsx";
 // import EntityCollaborator from "./pageentity/EntityCollaborator.jsx";
 // import EntityRequest from "./pageentity/EntityRequest.jsx";
