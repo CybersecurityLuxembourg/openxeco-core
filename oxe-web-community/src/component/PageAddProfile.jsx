@@ -441,7 +441,7 @@ export default class PageAddProfile extends React.Component {
 									<div className={"FormLine-label"}>
 										Please read and agree to the &nbsp;
 										<a href='https://ncc-mita.gov.mt/community-code-of-conduct/'>Community&apos; s Code of Conduct</a> &amp;&nbsp;
-										<a href='https://ncc-mita.gov.mt/data-protection-policy/'>Privacy Policy and Terms of Use</a>.
+										<a href='https://ncc-mita.gov.mt/privacy-policy/'>Privacy Policy and Terms of Use</a>.
 									</div>
 								</div>
 							</div>
