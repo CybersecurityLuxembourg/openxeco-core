@@ -334,7 +334,6 @@ export default class PageAddEntity extends React.Component {
 																	label={"Seniority Level *"}
 																	type={"select"}
 																	options={[
-																		{ value: null, label: "-" },
 																		{ value: "Board Member", label: "Board Member" },
 																		{ value: "Executive Management", label: "Executive Management" },
 																		{ value: "Senior Management", label: "Senior Management" },
