@@ -169,43 +169,43 @@ export default class EntityGlobal extends React.Component {
 						/>
 						<FormLine
 							label={"Entity Type"}
-							value={this.props.entity.entity_type}
+							value={this.props.entity.entity_type || ""}
 							disabled={true}
 						/>
 						<FormLine
 							label={"VAT Number"}
-							value={this.props.entity.vat_number}
+							value={this.props.entity.vat_number || ""}
 							disabled={true}
 						/>
 						<FormLine
 							label={"Website"}
-							value={this.props.entity.website}
+							value={this.props.entity.website || ""}
 							disabled={true}
 						/>
 						<FormLine
 							label={"Size"}
-							value={this.props.entity.size}
+							value={this.props.entity.size || ""}
 							disabled={true}
 						/>
 						<FormLine
 							label={"Sector"}
-							value={this.props.entity.sector}
+							value={this.props.entity.sector || ""}
 							disabled={true}
 						/>
 						<FormLine
 							label={"Industry"}
-							value={this.props.entity.industry}
+							value={this.props.entity.industry || ""}
 							disabled={true}
 						/>
 						<FormLine
 							label={"Primary involvement"}
-							value={this.props.entity.involvement}
+							value={this.props.entity.involvement || ""}
 							disabled={true}
 						/>
 					</div>
 
-					{this.state.address !== null
-						&& <>
+					{(this.state.address !== null && this.state.address !== undefined)
+						? <>
 							<div className="col-md-12">
 								<h2>Address</h2>
 							</div>
@@ -237,9 +237,17 @@ export default class EntityGlobal extends React.Component {
 								/>
 							</div>
 						</>
+						: <>
+							<div className="col-md-12">
+								<h2>Address</h2>
+							</div>
+							<div className="col-md-12">
+								No address set
+							</div>
+						</>
 					}
-					{this.state.contact !== null
-						&& <>
+					{(this.state.contact !== null && this.state.contact !== undefined)
+						? <>
 							<div className="col-md-12">
 								<h2>Contact</h2>
 							</div>
@@ -273,7 +281,14 @@ export default class EntityGlobal extends React.Component {
 										disabled={true}
 									/>
 								}
-
+							</div>
+						</>
+						: <>
+							<div className="col-md-12">
+								<h2>Contact</h2>
+							</div>
+							<div className="col-md-12">
+								No contact set
 							</div>
 						</>
 					}
