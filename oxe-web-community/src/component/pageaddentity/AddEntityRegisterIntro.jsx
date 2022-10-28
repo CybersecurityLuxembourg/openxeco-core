@@ -61,7 +61,7 @@ export default class AddEntityRegisterIntro extends React.Component {
 									<p>
 										Please register an entity only if you haven&apos;t
 										found your entity in
-										the <Link to="/add_entity?tab=claim">Claim an entity</Link> tab.
+										the <Link to="/add_entity?tab=claim">Associate with an entity</Link> tab.
 									</p>
 								</div>
 							}
