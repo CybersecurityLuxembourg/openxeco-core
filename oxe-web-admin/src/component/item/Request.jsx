@@ -172,7 +172,7 @@ export default class Request extends Component {
 			case "ENTITY LOGO CHANGE":
 				return "Your request to modify the logo of your entity has been treated.";
 			case "NEW INDIVIDUAL ACCOUNT":
-				return "Your request to create your has been treated.";
+				return "Your request to create your profile has been treated.";
 			default:
 				return "Your request has been treated.";
 			}
