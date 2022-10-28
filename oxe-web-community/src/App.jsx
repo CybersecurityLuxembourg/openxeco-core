@@ -82,8 +82,8 @@ class App extends React.Component {
 
 						{this.state.user_status === "REJECTED"
 							&& <div className="notification-centre">
-								You request to create an account has not been accepted. We have
-								sent you and email explaining the reasons.
+								Your request to create an account has not been accepted. We have
+								sent you an email explaining the reasons.
 							</div>
 						}
 

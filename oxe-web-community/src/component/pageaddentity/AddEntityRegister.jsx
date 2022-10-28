@@ -248,7 +248,7 @@ export default class AddEntityRegister extends React.Component {
 										You can register your entity here.
 										Please fill in the form only if you haven&apos;t
 										found your entity in
-										the <Link to="/add_entity?tab=claim">Claim an entity</Link> tab.
+										the <Link to="/add_entity?tab=claim">Associate with an entity</Link> tab.
 									</div>
 								}
 							/>
