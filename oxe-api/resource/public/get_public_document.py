@@ -36,7 +36,7 @@ class GetPublicDocument(MethodResource, Resource):
             return "", "422 No document found with this filename"
 
         try:
-            f = open(os.path.join(DOCUMENT_FOLDER, str(document.id)), "rb")
+            f = open(os.path.join(DOCUMENT_FOLDER, str(document.filename)), "rb")
         except FileNotFoundError:
             raise DocumentNotFound
 
