@@ -83,7 +83,7 @@ class AddRequest(MethodResource, Resource):
             old_document = self.db.get(self.db.tables["Document"], { "filename": filename })
             if len(old_document) > 0:
                 self.db.delete(self.db.tables["Document"], { "filename": filename })
-            self.db.insert(document, self.db.tables["Document"])
+            document = self.db.insert(document, self.db.tables["Document"])
 
             try:
                 decoded_data = base64.b64decode(kwargs["uploaded_file"].split(",")[-1])
@@ -91,7 +91,7 @@ class AddRequest(MethodResource, Resource):
                 traceback.print_exc()
                 return "", "422 Impossible to read the file"
             try:
-                f = open(os.path.join(DOCUMENT_FOLDER, filename), 'wb')
+                f = open(os.path.join(DOCUMENT_FOLDER,  str(document.id)), 'wb')
                 f.write(decoded_data)
                 f.close()
                 file = filename

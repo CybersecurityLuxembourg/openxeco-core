@@ -24,8 +24,8 @@ ENV MAIL_DEFAULT_SENDER=foo_mail_default_sender@foo.com
 ENV IMAGE_FOLDER=/openxeco_media
 ENV DOCUMENT_FOLDER=/openxeco_document
 
-VOLUME [ "${IMAGE_FOLDER}" ]
-VOLUME [ "${DOCUMENT_FOLDER}" ]
+# VOLUME [ "${IMAGE_FOLDER}" ]
+# VOLUME [ "${DOCUMENT_FOLDER}" ]
 
 WORKDIR /app
 
