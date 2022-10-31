@@ -191,3 +191,9 @@
     top: 20px;
     left: 20px;
 }
+
+.validation-error {
+    color: rgb(167, 63, 63);
+    font-style: italic;
+    font-size: 0.8rem;
+}

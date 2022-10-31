@@ -173,6 +173,12 @@ export default class Login extends React.Component {
 	}
 
 	resetPassword() {
+		if (this.state.password !== this.state.passwordConfirmation
+			|| validatePassword(this.state.password) === false
+			|| validatePassword(this.state.passwordConfirmation) === false
+		) {
+			return;
+		}
 		const params = {
 			new_password: this.state.password,
 		};
@@ -614,9 +620,15 @@ export default class Login extends React.Component {
 									fullWidth={true}
 									value={this.state.passwordConfirmation}
 									onChange={(v) => this.changeState("passwordConfirmation", v)}
-									format={validatePassword}
+									format={() => this.state.password === this.state.passwordConfirmation}
 									onKeyDown={this.onKeyDown}
 								/>
+								{this.state.password !== this.state.passwordConfirmation
+									&& this.state.passwordConfirmation !== ""
+									&& <div className="validation-error">
+										Passwords do not match
+									</div>
+								}
 								<div className="right-buttons">
 									<button
 										className="blue-button"

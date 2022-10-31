@@ -14,6 +14,7 @@ import {
 	validateVatNumber,
 	validateWebsite,
 	validatePostcode,
+	validateEmail,
 } from "../../utils/re.jsx";
 
 export default class AddEntityRegister extends React.Component {
@@ -39,6 +40,7 @@ export default class AddEntityRegister extends React.Component {
 			industry: "",
 			involvement: "",
 			primary_contact_name: "",
+			primary_contact_email: "",
 			work_telephone: "",
 			seniority_level: "",
 			department: "",
@@ -56,7 +58,7 @@ export default class AddEntityRegister extends React.Component {
 	componentDidMount() {
 		getRequest.call(this, "private/get_my_user", (data) => {
 			this.setState({ primary_contact_name: data.first_name + " " + data.last_name });
-			this.setState({ company_email: data.work_email });
+			this.setState({ primary_contact_email: data.work_email });
 		}, (response2) => {
 			nm.warning(response2.statusText);
 		}, (error) => {
@@ -131,6 +133,7 @@ export default class AddEntityRegister extends React.Component {
 					industry: this.state.industry,
 					involvement: this.state.involvement,
 					primary_contact_name: this.state.primary_contact_name,
+					primary_contact_email: this.state.primary_contact_email,
 					work_telephone: this.state.work_telephone,
 					seniority_level: this.state.seniority_level,
 					department: this.state.department,
@@ -162,6 +165,8 @@ export default class AddEntityRegister extends React.Component {
 		const sectorIndustries = sector.industries.split("|");
 		this.changeState("sector", sector.name);
 		this.changeState("industries", sectorIndustries);
+		this.changeState("industry", "");
+		this.forceUpdate();
 	}
 
 	onDropForm(files) {
@@ -178,6 +183,7 @@ export default class AddEntityRegister extends React.Component {
 			|| this.state.entity_type === ""
 			|| !validateVatNumber(this.state.vat_number)
 			|| (this.state.website !== "" && !validateWebsite(this.state.website))
+			|| (this.state.company_email !== "" && !validateEmail(this.state.company_email))
 			|| this.state.size === ""
 			|| this.state.sector === ""
 			|| this.state.industry === ""
@@ -366,9 +372,11 @@ export default class AddEntityRegister extends React.Component {
 								</div>
 							}
 							<FormLine
-								label="Company Email"
+								label="Company Email *"
 								value={this.state.company_email}
-								disabled={true}
+								onChange={(v) => this.setState({ company_email: v })}
+								disabled={!this.state.notFoundEntity}
+								format={validateEmail}
 							/>
 							<FormLine
 								label={"Size *"}
@@ -437,6 +445,11 @@ export default class AddEntityRegister extends React.Component {
 							<FormLine
 								label="Primary Contact Name (auto populated)"
 								value={this.state.primary_contact_name}
+								disabled={true}
+							/>
+							<FormLine
+								label="Primary Contact Email (auto populated)"
+								value={this.state.primary_contact_email}
 								disabled={true}
 							/>
 							<FormLine
