@@ -1,3 +1,4 @@
+from flask import request, render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import get_jwt_identity
@@ -36,6 +37,11 @@ class SendMail(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
+        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
+            origin = request.environ['HTTP_ORIGIN']
+        else:
+            return "", "500 Impossible to find the origin. Please contact the administrator"
+
         cc = None
 
         if 'user_as_cc' in kwargs and kwargs['user_as_cc'] is True:
@@ -50,9 +56,13 @@ class SendMail(MethodResource, Resource):
             cc = [data[0].email]
 
         send_email(self.mail,
-                   subject=kwargs["subject"],
-                   recipients=[kwargs["address"]],
-                   cc=cc,
-                   html_body=kwargs["content"])
+            subject=f"Account verified",
+            recipients=[kwargs["address"]],
+            cc=cc,
+            html_body=render_template(
+                'generic_mail.html',
+                content=kwargs["content"],
+            )
+        )
 
         return "", "200 "
