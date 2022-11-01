@@ -68,16 +68,16 @@ export default class PageAddEntity extends React.Component {
 
 	isFormValid() {
 		if (this.state.department === ""
-			|| this.state.email === ""
-			|| this.state.telephone === ""
+			|| !validateEmail(this.state.email)
+			|| (
+				this.state.telephone !== ""
+				&& !validateTelephoneNumber(this.state.telephone)
+			)
 			|| this.state.level === ""
 		) {
 			return false;
 		}
-		if (validateEmail(this.state.email)) {
-			return true;
-		}
-		return false;
+		return true;
 	}
 
 	submitClaimRequest(entityId, close) {
@@ -138,7 +138,7 @@ export default class PageAddEntity extends React.Component {
 	formValid() {
 		if (!validateEmail(this.state.email)
 			|| (
-				this.state.work_telephone !== ""
+				this.state.telephone !== ""
 				&& !validateTelephoneNumber(this.state.telephone)
 			)
 			|| this.state.level === ""
@@ -376,7 +376,7 @@ export default class PageAddEntity extends React.Component {
 																			</button>
 																		}
 																		disabled={
-																			!this.isFormValid()
+																			this.formValid() === false
 																		}
 																		afterConfirmation={() => this.submitClaimRequest(c.id, close)}
 																	/>
