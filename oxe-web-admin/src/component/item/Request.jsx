@@ -29,6 +29,7 @@ export default class Request extends Component {
 		this.onOpen = this.onOpen.bind(this);
 		this.getMailBody = this.getMailBody.bind(this);
 		this.getSettingValue = this.getSettingValue.bind(this);
+		this.generateMailBody = this.generateMailBody.bind(this);
 
 		this.state = {
 			user: null,
@@ -37,6 +38,8 @@ export default class Request extends Component {
 			requestStatus: null,
 			settings: null,
 			currentStatus: this.props.info.status,
+			email_content: "",
+			user_name: JSON.parse(this.props.info.data).first_name,
 		};
 	}
 
@@ -56,6 +59,7 @@ export default class Request extends Component {
 	}
 
 	onOpen() {
+		console.log(this.state.user_name);
 		this.setState({
 			user: null,
 			settings: null,
@@ -65,6 +69,7 @@ export default class Request extends Component {
 			this.setState({
 				user: data,
 			});
+			this.generateMailBody();
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -75,6 +80,8 @@ export default class Request extends Component {
 			this.setState({
 				user_profile: data,
 			});
+			this.generateMailBody();
+			console.log(this.state.user_full_name);
 		}, (response) => {
 			console.log(response.statusText);
 		}, (error) => {
@@ -130,26 +137,93 @@ export default class Request extends Component {
 				const request = { ...this.props.info };
 				request[prop] = value;
 
+				if (prop === "status") {
+					this.setState({ currentStatus: value });
+					this.generateMailBody();
+				}
+
 				this.setState({ request }, () => {
 					if (prop === "status") {
+						// this.setState({ currentStatus: value });
+						// this.generateMailBody();
 						if ((value === "ACCEPTED" || value === "REJECTED")
 							&& this.state.user !== null) {
 							const element = document.getElementById("Request-send-mail-button");
 							element.click();
 						}
 					}
-
 					nm.info("The property has been updated");
 				});
-				if (prop === "status") {
-					this.setState({ currentStatus: value });
-				}
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
 				nm.error(error.message);
 			});
 		}
+	}
+
+	generateMailBody() {
+		this.setState({ email_content: "" });
+		let body = "Your request has been treated.";
+		if (this.props.info !== undefined && this.props.info !== null) {
+			switch (this.props.info.type) {
+			case "ENTITY ASSOCIATION CLAIM":
+				body = "Your request to access the claimed entity has been treated. Please log in to review the data of your entity.";
+				break;
+			case "ENTITY CHANGE":
+				body = "Your request to modify the entity information has been treated.";
+				break;
+			case "ENTITY ADD":
+				body = "Your request to add the entity in our database has been treated.";
+				break;
+			case "ENTITY ADDRESS CHANGE":
+				body = "Your request to modify the address of your entity has been treated.";
+				break;
+			case "ENTITY ADDRESS ADD":
+				body = "Your request to add an address to your entity has been treated.";
+				break;
+			case "ENTITY ADDRESS DELETION":
+				body = "Your request to remove an address from your entity has been treated.";
+				break;
+			case "ENTITY TAXONOMY CHANGE":
+				body = "Your request to modify the taxonomy of your entity has been treated.";
+				break;
+			case "ENTITY LOGO CHANGE":
+				body = "Your request to modify the logo of your entity has been treated.";
+				break;
+			case "NEW INDIVIDUAL ACCOUNT":
+				if (this.state.currentStatus === "ACCEPTED") {
+					body = "Your registration with "
+						+ this.state.user.email
+						+ " has been successfully approved.We are thrilled to have you on board, and we look forward to your active contribution within the National Cybersecurity Community."
+						+ "You may now fully access the <a href='https://community.ncc-mita.gov.mt/'>Community portal</a>, however, stay tuned for new features and updates in the coming weeks.\n\n"
+						+ "For more information about the Community, the National Coordination Centre(NCC), and other related events and activities, please visit the official "
+						+ "<a href='https://ncc-mita.gov.mt/'>NCC website</a>.";
+				} else {
+					body = "Your request to create your profile has been treated.";
+				}
+				break;
+			default:
+				body = "Your request has been treated.";
+			}
+		}
+
+		let name = "User";
+
+		console.log(this.props.info.data);
+		if (this.state.user_name !== undefined) {
+			name = this.state.user_name;
+		} else if (this.state.user !== undefined) {
+			name = this.state.user.first_name;
+		}
+
+		const content = "Dear " + name + ",\n\n"
+			+ body
+			+ "\n\n"
+			+ "Yours Sincerely,\n"
+			+ "NCC Team";
+
+		this.setState({ email_content: content });
 	}
 
 	getMailBody() {
@@ -172,6 +246,13 @@ export default class Request extends Component {
 			case "ENTITY LOGO CHANGE":
 				return "Your request to modify the logo of your entity has been treated.";
 			case "NEW INDIVIDUAL ACCOUNT":
+				console.log(this.state.currentStatus);
+				if (this.state.currentStatus === "ACCEPTED") {
+					return "Your registration with "
+						+ this.state.user.email
+						+ " has been successfully approved.We are thrilled to have you on board, and we look forward to your active contribution within the National Cybersecurity Community.You may now fully access the < Community portal >, however, stay tuned for new features and updates in the coming weeks.\n\n"
+						+ "For more information about the Community, the National Coordination Centre(NCC), and other related events and activities, please visit the official < NCC website >.\n\n";
+				}
 				return "Your request to create your profile has been treated.";
 			default:
 				return "Your request has been treated.";
@@ -376,7 +457,7 @@ export default class Request extends Component {
 								requestStatus={this.props.info.status}
 							/>
 						}
-						{this.state.user && this.state.settings
+						{this.state.user && this.state.settings && this.state.email_content !== ""
 							? <DialogSendMail
 								trigger={
 									<button
@@ -388,11 +469,7 @@ export default class Request extends Component {
 								email={this.state.user.email}
 								subject={(this.getSettingValue("PROJECT_NAME") !== null
 									? "[" + this.getSettingValue("PROJECT_NAME") + "] " : "") + "Treated request"}
-								content={"Dear user,\n\n"
-									+ this.getMailBody()
-									+ "\n\nSincerely,\n"
-									+ (this.getSettingValue("PROJECT_NAME") !== null
-										? this.getSettingValue("PROJECT_NAME") + " " : "") + "Support Team"}
+								content={this.state.email_content}
 							/>
 							: <Loading
 								height={50}

@@ -183,7 +183,7 @@ export default class AddEntityRegister extends React.Component {
 			|| this.state.entity_type === ""
 			|| !validateVatNumber(this.state.vat_number)
 			|| (this.state.website !== "" && !validateWebsite(this.state.website))
-			|| (this.state.company_email !== "" && !validateEmail(this.state.company_email))
+			|| !validateEmail(this.state.company_email)
 			|| this.state.size === ""
 			|| this.state.sector === ""
 			|| this.state.industry === ""
@@ -378,6 +378,16 @@ export default class AddEntityRegister extends React.Component {
 								disabled={!this.state.notFoundEntity}
 								format={validateEmail}
 							/>
+							{!validateWebsite(this.state.company_email) && this.state.company_email !== ""
+								&& <div className="row">
+									<div className="col-md-6"></div>
+									<div className="col-md-6">
+										<div className="validation-error">
+											Please enter a valid email address
+										</div>
+									</div>
+								</div>
+							}
 							<FormLine
 								label={"Size *"}
 								type={"select"}
