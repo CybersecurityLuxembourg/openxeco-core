@@ -314,7 +314,7 @@ export default class PageAddEntity extends React.Component {
 																	</div>
 																}
 																<FormLine
-																	label="Work Telephone Number *"
+																	label="Work Telephone Number"
 																	value={this.state.telephone}
 																	onChange={(v) => this.changeState("telephone", v)}
 																	autofocus={true}

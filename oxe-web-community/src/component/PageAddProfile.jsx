@@ -127,7 +127,7 @@ export default class PageAddProfile extends React.Component {
 				&& this.state.residency !== "Malta"
 				&& this.state.residency !== "Gozo"
 			) {
-				nm.warning("This account is only available to Maltese or Gozo residents and Maltese nationals");
+				nm.warning("The account is only available to Maltese or Gozo residents or Maltese nationals");
 				valid = false;
 			}
 		}
