@@ -165,9 +165,9 @@ export default class Login extends React.Component {
 
 		postRequest.call(this, "account/forgot_password", params, () => {
 			nm.info("An email has been sent with a link to reset your password");
-		}, (response) => {
+		}, () => {
 			nm.info("An email has been sent with a link to reset your password");
-		}, (error) => {
+		}, () => {
 			nm.info("An email has been sent with a link to reset your password");
 		});
 	}
