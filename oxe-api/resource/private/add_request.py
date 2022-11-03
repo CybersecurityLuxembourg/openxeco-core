@@ -133,4 +133,14 @@ class AddRequest(MethodResource, Resource):
             user.status = "REQUESTED"
             self.db.merge(user, self.db.tables["User"])
 
+        if kwargs["type"] == "ENTITY ASSOCIATION CLAIM":
+            assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
+                "user_id": get_jwt_identity(),
+                "entity_id": kwargs["data"]["entity_id"]
+            })
+            if len(assignments) > 0:
+                return "", "401 You are already associated with this entity"
+
+            self.db.merge(user, self.db.tables["User"])
+
         return "", "200 "

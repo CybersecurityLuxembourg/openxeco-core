@@ -121,6 +121,7 @@ from resource.private.get_my_notifications import GetMyNotifications
 from resource.private.get_my_requests import GetMyRequests
 from resource.private.get_my_user import GetMyUser
 from resource.private.is_logged import IsLogged
+from resource.private.is_primary_contact import IsPrimaryContact
 from resource.private.update_my_article import UpdateMyArticle
 from resource.private.update_my_article_content import UpdateMyArticleContent
 from resource.private.update_my_form_answer import UpdateFormAnswer
