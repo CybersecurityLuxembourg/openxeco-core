@@ -94,6 +94,7 @@ export default class RequestEntityAdd extends Component {
 		const contactParams = {
 			name: this.props.data.primary_contact_name,
 			entity_id: newId,
+			user_id: this.props.userId,
 			representative: "PHYSICAL PERSON",
 			type: "EMAIL ADDRESS",
 			value: this.props.data.primary_contact_email,
