@@ -27,7 +27,6 @@ export default class Request extends Component {
 		this.onClick = this.onClick.bind(this);
 		this.onClose = this.onClose.bind(this);
 		this.onOpen = this.onOpen.bind(this);
-		this.getMailBody = this.getMailBody.bind(this);
 		this.getSettingValue = this.getSettingValue.bind(this);
 		this.generateMailBody = this.generateMailBody.bind(this);
 
@@ -39,7 +38,6 @@ export default class Request extends Component {
 			settings: null,
 			currentStatus: this.props.info.status,
 			email_content: "",
-			user_name: JSON.parse(this.props.info.data).first_name,
 		};
 	}
 
@@ -59,7 +57,6 @@ export default class Request extends Component {
 	}
 
 	onOpen() {
-		console.log(this.state.user_name);
 		this.setState({
 			user: null,
 			settings: null,
@@ -193,14 +190,18 @@ export default class Request extends Component {
 				break;
 			case "NEW INDIVIDUAL ACCOUNT":
 				if (this.state.currentStatus === "ACCEPTED") {
-					body = "Your registration with "
+					body = "Your request to join the local Community with "
 						+ this.state.user.email
-						+ " has been successfully approved.We are thrilled to have you on board, and we look forward to your active contribution within the National Cybersecurity Community."
-						+ "You may now fully access the <a href='https://community.ncc-mita.gov.mt/'>Community portal</a>, however, stay tuned for new features and updates in the coming weeks.\n\n"
-						+ "For more information about the Community, the National Coordination Centre(NCC), and other related events and activities, please visit the official "
-						+ "<a href='https://ncc-mita.gov.mt/'>NCC website</a>.";
-				} else {
-					body = "Your request to create your profile has been treated.";
+						+ " has been reviewed, and we are glad to inform you that it has been accepted.\n\n"
+						+ "We encourage you to follow our <a href='https://ncc-mita.gov.mt/'>website</a>, participate"
+						+ " in our events that will be organised particularly for the community and for the public in general, and keep your details updated.\n\n"
+						+ "Should you have any queries, please do not hesitate to contact us through the Contact Us form.";
+				} else if (this.state.currentStatus === "REJECTED") {
+					body = "Your request to join the local Community with "
+						+ this.state.user.email
+						+ " has been reviewed and unfortunately, it has been rejected, reason being .\n\n"
+						+ "In the meanitme, we encourage you to follow our <a href='https://ncc-mita.gov.mt/'>website</a> and participate in our events organised for the public.\n\n"
+						+ "Should you have any queries, please do not hesitate to contact us through the Contact Us form.";
 				}
 				break;
 			default:
@@ -210,10 +211,9 @@ export default class Request extends Component {
 
 		let name = "User";
 
-		console.log(this.props.info.data);
-		if (this.state.user_name !== undefined) {
-			name = this.state.user_name;
-		} else if (this.state.user !== undefined) {
+		if (this.props.info.type === "NEW INDIVIDUAL ACCOUNT") {
+			name = JSON.parse(this.props.info.data).first_name;
+		} else {
 			name = this.state.user.first_name;
 		}
 
@@ -224,42 +224,6 @@ export default class Request extends Component {
 			+ "NCC Team";
 
 		this.setState({ email_content: content });
-	}
-
-	getMailBody() {
-		if (this.props.info !== undefined && this.props.info !== null) {
-			switch (this.props.info.type) {
-			case "ENTITY ASSOCIATION CLAIM":
-				return "Your request to access the claimed entity has been treated. Please log in to review the data of your entity.";
-			case "ENTITY CHANGE":
-				return "Your request to modify the entity information has been treated.";
-			case "ENTITY ADD":
-				return "Your request to add the entity in our database has been treated.";
-			case "ENTITY ADDRESS CHANGE":
-				return "Your request to modify the address of your entity has been treated.";
-			case "ENTITY ADDRESS ADD":
-				return "Your request to add an address to your entity has been treated.";
-			case "ENTITY ADDRESS DELETION":
-				return "Your request to remove an address from your entity has been treated.";
-			case "ENTITY TAXONOMY CHANGE":
-				return "Your request to modify the taxonomy of your entity has been treated.";
-			case "ENTITY LOGO CHANGE":
-				return "Your request to modify the logo of your entity has been treated.";
-			case "NEW INDIVIDUAL ACCOUNT":
-				console.log(this.state.currentStatus);
-				if (this.state.currentStatus === "ACCEPTED") {
-					return "Your registration with "
-						+ this.state.user.email
-						+ " has been successfully approved.We are thrilled to have you on board, and we look forward to your active contribution within the National Cybersecurity Community.You may now fully access the < Community portal >, however, stay tuned for new features and updates in the coming weeks.\n\n"
-						+ "For more information about the Community, the National Coordination Centre(NCC), and other related events and activities, please visit the official < NCC website >.\n\n";
-				}
-				return "Your request to create your profile has been treated.";
-			default:
-				return "Your request has been treated.";
-			}
-		} else {
-			return "Your request has been treated.";
-		}
 	}
 
 	getSettingValue(property) {
