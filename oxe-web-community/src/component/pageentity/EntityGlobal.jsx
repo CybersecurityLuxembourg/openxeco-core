@@ -183,6 +183,11 @@ export default class EntityGlobal extends React.Component {
 							disabled={true}
 						/>
 						<FormLine
+							label={"Company Email"}
+							value={this.props.entity.email || ""}
+							disabled={true}
+						/>
+						<FormLine
 							label={"Size"}
 							value={this.props.entity.size || ""}
 							disabled={true}

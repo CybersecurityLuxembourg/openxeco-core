@@ -11,8 +11,12 @@ export default class EntityUser extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.getEntityUsers = this.getEntityUsers.bind(this);
+		this.checkForPrimary = this.checkForPrimary.bind(this);
+
 		this.state = {
 			users: null,
+			contact: null,
 		};
 	}
 
@@ -28,9 +32,26 @@ export default class EntityUser extends React.Component {
 			sources: null,
 		});
 
-		getRequest.call(this, "entity/get_entity_users/" + this.props.id, (data) => {
+		this.getEntityUsers(this.props.id);
+	}
+
+	getEntityUsers(entityId) {
+		getRequest.call(this, "entity/get_entity_users/" + entityId, (data) => {
 			this.setState({
 				users: data,
+			});
+			this.checkForPrimary(entityId);
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	checkForPrimary(entityId) {
+		getRequest.call(this, "entity/get_entity_contacts/" + entityId, (data) => {
+			this.setState({
+				users: this.state.users.map((user) => ({ ...user, primary: user.id === data[0].user_id })),
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -63,6 +84,7 @@ export default class EntityUser extends React.Component {
 					<User
 						id={value.id}
 						email={value.email}
+						primary={value.primary}
 					/>
 				),
 			},

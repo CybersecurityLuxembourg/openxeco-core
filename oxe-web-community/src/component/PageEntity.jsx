@@ -20,9 +20,16 @@ export default class PageEntity extends React.Component {
 			entity: null,
 			selectedMenu: null,
 			entityContact: null,
-			tabs: [
+			primary_tabs: [
 				"global_information",
 				"logo",
+			],
+			default_tabs: [
+				"global_information",
+			],
+			tabs: [
+				"global_information",
+				// "logo",
 				// "address",
 				// "taxonomy",
 				// "collaborator",
@@ -55,9 +62,9 @@ export default class PageEntity extends React.Component {
 		getRequest.call(this, "private/is_primary_contact/" + entityId, () => {
 			this.setState({
 				is_primary: true,
+				tabs: this.state.primary_tabs,
 			});
 		}, () => {
-
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -78,6 +85,7 @@ export default class PageEntity extends React.Component {
 				});
 				this.setState({
 					is_primary: false,
+					tabs: this.state.default_tabs,
 				});
 				this.checkIsPrimary(c[0].id);
 			}

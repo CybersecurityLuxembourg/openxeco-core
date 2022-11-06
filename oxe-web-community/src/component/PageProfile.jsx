@@ -10,7 +10,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateTelephoneNumber } from "../utils/re.jsx";
 // import { getApiURL } from "../utils/env.jsx";
 import Loading from "./box/Loading.jsx";
-import Message from "./box/Message.jsx";
+// import Message from "./box/Message.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
@@ -19,11 +19,15 @@ export default class PageProfile extends React.Component {
 		this.refreshProfile = this.refreshProfile.bind(this);
 		this.changePassword = this.changePassword.bind(this);
 		this.generateHandle = this.generateHandle.bind(this);
+		this.updateUser = this.updateUser.bind(this);
 
 		this.state = {
-			user: null,
+			currentUser: null,
 			dbVcard: null,
 			currentVcard: null,
+
+			userChanged: false,
+			socialEmpty: true,
 
 			password: "",
 			newPassword: "",
@@ -42,7 +46,8 @@ export default class PageProfile extends React.Component {
 	refreshProfile() {
 		getRequest.call(this, "private/get_my_user", (data) => {
 			this.setState({
-				user: data,
+				userChanged: false,
+				currentUser: data,
 				/* eslint-disable-next-line new-cap */
 				dbVcard: data.vcard ? new vCard().parse(data.vcard) : new vCard(),
 				/* eslint-disable-next-line new-cap */
@@ -93,6 +98,7 @@ export default class PageProfile extends React.Component {
 	updateCurrentVcard(key, value, params) {
 		if (this.state.currentVcard) {
 			this.state.currentVcard.set(key, value && value.length > 0 ? value : null, params);
+			this.setState({ userChanged: true });
 			this.forceUpdate();
 		}
 	}
@@ -114,6 +120,7 @@ export default class PageProfile extends React.Component {
 			}
 		});
 
+		this.setState({ userChanged: true });
 		this.forceUpdate();
 	}
 
@@ -133,19 +140,19 @@ export default class PageProfile extends React.Component {
 				this.state.currentVcard.add("socialprofile", pos === i ? value : p.valueOf(), { type: p.type });
 			}
 		});
-
+		this.setState({ userChanged: true });
 		this.forceUpdate();
 	}
 
 	addCurrentVcardSocialeProfile() {
 		this.state.currentVcard.add("socialprofile", "", { type: "Personal website" });
+		this.setState({ userChanged: true });
 		this.forceUpdate();
 	}
 
 	deleteSocialeProfile(pos) {
 		let properties = this.state.currentVcard.get("socialprofile");
 		let loop = 0;
-
 		if (!Array.isArray(this.state.currentVcard.get("socialprofile"))) {
 			properties = [properties];
 		}
@@ -162,12 +169,18 @@ export default class PageProfile extends React.Component {
 		this.forceUpdate();
 	}
 
-	updateUser(property, value) {
-		if (property === "telephone" && validateTelephoneNumber(value) === false) {
+	updateUser() {
+		if (validateTelephoneNumber(this.state.currentUser.telephone) === false) {
 			return;
 		}
 		const params = {
-			[property]: value,
+			handle: this.state.currentUser.handle,
+			last_name: this.state.currentUser.last_name,
+			first_name: this.state.currentUser.first_name,
+			telephone: this.state.currentUser.telephone,
+			accept_communication: this.state.currentUser.accept_communication,
+			is_vcard_public: this.state.currentUser.is_vcard_public,
+			vcard: this.state.currentVcard.toString("4.0"),
 		};
 
 		postRequest.call(this, "private/update_my_user", params, () => {
@@ -199,8 +212,17 @@ export default class PageProfile extends React.Component {
 		this.setState({ [field]: value });
 	}
 
+	updateUserDetail(field, value) {
+		const user = this.state.currentUser;
+		if (user[field] !== value) {
+			user[field] = value;
+			this.setState({ currentUser: user });
+			this.setState({ userChanged: true });
+		}
+	}
+
 	render() {
-		if (!this.state.user) {
+		if (!this.state.currentUser) {
 			return <div id={"PageProfile"} className={"page max-sized-page"}>
 				<Loading
 					height={300}
@@ -261,7 +283,7 @@ export default class PageProfile extends React.Component {
 									</div>
 									<FormLine
 										label={"Full name"}
-										value={this.state.user.first_name + " " + this.state.user.last_name}
+										value={this.state.currentUser.first_name + " " + this.state.currentUser.last_name}
 										// onChange={(v) => this.updateCurrentVcard("fn", v)}
 										fullWidth={true}
 										disabled={true}
@@ -380,8 +402,8 @@ export default class PageProfile extends React.Component {
 								<FormLine
 									label={"Would you like to receive communications from the NCC?"}
 									type={"checkbox"}
-									value={this.state.user.accept_communication}
-									onChange={(v) => this.updateUser("accept_communication", v)}
+									value={this.state.currentUser.accept_communication}
+									onChange={(v) => this.updateUserDetail("accept_communication", v)}
 								/>
 							</div>
 							<div className="col-md-12 PageProfile-white-box">
@@ -391,8 +413,8 @@ export default class PageProfile extends React.Component {
 								<FormLine
 									label={"Make my profile public"}
 									type={"checkbox"}
-									value={this.state.user.is_vcard_public}
-									onChange={(v) => this.updateUser("is_vcard_public", v)}
+									value={this.state.currentUser.is_vcard_public}
+									onChange={(v) => this.updateUserDetail("is_vcard_public", v)}
 								/>
 								{/* <FormLine
 									label={"Handle"}
@@ -412,29 +434,40 @@ export default class PageProfile extends React.Component {
 								<br/>
 								<FormLine
 									label={"Email"}
-									value={this.state.user.email}
+									value={this.state.currentUser.email}
+									onChange={(v) => this.updateUserDetail("email", v)}
 									disabled={true}
 								/>
 								<FormLine
 									label={"Include email in my public profile"}
 									type={"checkbox"}
 									value={this.getVcardValue("email") !== null}
-									onChange={(v) => this.updateCurrentVcard("email", v ? this.state.user.email : null)}
+									onChange={(v) => this.updateCurrentVcard("email", v ? this.state.currentUser.email : null)}
 								/>
 								<FormLine
 									label={"Telephone"}
-									value={this.state.user.telephone}
-									onBlur={(v) => this.updateUser("telephone", v)}
+									value={this.state.currentUser.telephone}
+									onChange={(v) => this.updateUserDetail("telephone", v)}
 									format={validateTelephoneNumber}
 								/>
+								{ !validateTelephoneNumber(this.state.currentUser.telephone) && this.state.currentUser.telephone !== ""
+									&& <div className="row">
+										<div className="col-md-6"></div>
+										<div className="col-md-6">
+											<div className="validation-error">
+												Accepted Format: +1234567891, 1234567891
+											</div>
+										</div>
+									</div>
+								}
 								<FormLine
 									label={"Include telephone in my public profile"}
 									type={"checkbox"}
 									value={this.getVcardValue("tel") !== null}
-									onChange={(v) => this.updateCurrentVcard("tel", v ? this.state.user.telephone : null)}
+									onChange={(v) => this.updateCurrentVcard("tel", v ? this.state.currentUser.telephone : null)}
 								/>
 							</div>
-							<div className="col-md-12 PageProfile-white-box">
+							{/* <div className="col-md-12 PageProfile-white-box">
 								<h3>Social media and website</h3>
 								<br/>
 
@@ -493,12 +526,32 @@ export default class PageProfile extends React.Component {
 										<i className="fas fa-plus"/> Add
 									</button>
 								</div>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>
 
-				{((this.state.dbVcard && !this.state.currentVcard)
+				{this.state.userChanged
+					&& <div className="PageProfile-save-button">
+						<div className="row">
+							<div className="col-md-6">
+								<button
+									className={"red-background"}
+									onClick={this.refreshProfile}>
+									<i className="far fa-times-circle" /> Discard changes
+								</button>
+							</div>
+							<div className="col-md-6">
+								<button
+									onClick={this.updateUser}>
+									<i className="fas fa-save" /> Save profile
+								</button>
+							</div>
+						</div>
+					</div>
+				}
+
+				{/* {((this.state.dbVcard && !this.state.currentVcard)
 					|| (!this.state.dbVcard && this.state.currentVcard)
 					|| this.state.dbVcard.toString("4.0") !== this.state.currentVcard.toString("4.0"))
 					&& <div className="PageProfile-save-button">
@@ -518,7 +571,7 @@ export default class PageProfile extends React.Component {
 							</div>
 						</div>
 					</div>
-				}
+				} */}
 			</div>
 		);
 	}

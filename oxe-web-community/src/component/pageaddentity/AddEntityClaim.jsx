@@ -320,7 +320,7 @@ export default class PageAddEntity extends React.Component {
 																	autofocus={true}
 																	onKeyDown={this.onKeyDown}
 																/>
-																{!validateTelephoneNumber(this.state.telephone) && this.state.telephone !== ""
+																{ !validateTelephoneNumber(this.state.telephone) && this.state.telephone !== ""
 																	&& <div className="row">
 																		<div className="col-md-6"></div>
 																		<div className="col-md-6">
