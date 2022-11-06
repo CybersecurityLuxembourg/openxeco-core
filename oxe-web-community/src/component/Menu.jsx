@@ -145,7 +145,7 @@ export default class Menu extends React.Component {
 							/>
 						</NavIcon>
 						<NavText>
-							Claim or register an entity
+							Associate or register an entity
 						</NavText>
 					</NavItem>
 
