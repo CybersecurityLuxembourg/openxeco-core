@@ -21,7 +21,7 @@ export default class UserEntity extends React.Component {
 			selectedEntity: null,
 			selectedDepartment: null,
 			allEntities: null,
-			userEntitiesEnums: null,
+			departments: null,
 		};
 	}
 
@@ -31,9 +31,9 @@ export default class UserEntity extends React.Component {
 	}
 
 	refresh() {
-		getRequest.call(this, "user/get_user_entity_enums", (data) => {
+		getRequest.call(this, "public/get_public_departments", (data) => {
 			this.setState({
-				userEntitiesEnums: data,
+				departments: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -170,7 +170,7 @@ export default class UserEntity extends React.Component {
 								</div>
 								<div className="col-md-12">
 									{this.state.allEntities
-										&& this.state.userEntitiesEnums
+										&& this.state.departments
 										? <div>
 											<FormLine
 												label={"Entity"}
@@ -186,12 +186,11 @@ export default class UserEntity extends React.Component {
 												label={"Department"}
 												type={"select"}
 												value={this.state.selectedDepartment}
-												options={this.state.userEntitiesEnums === null
-													|| this.state.userEntitiesEnums.department === undefined
+												options={this.state.departments === null
 													? []
 													: [{ value: null, label: "-" }].concat(
-														this.state.userEntitiesEnums
-															.department.map((o) => ({ label: o, value: o })),
+														this.state.departments
+															.department.map((o) => ({ label: o.name, value: o.name })),
 													)}
 												onChange={(v) => this.setState({ selectedDepartment: v })}
 											/>
@@ -229,9 +228,9 @@ export default class UserEntity extends React.Component {
 								<FormLine
 									label={"Department"}
 									type={"select"}
-									options={this.state.userEntitiesEnums
-										? this.state.userEntitiesEnums.department
-											.map((d) => ({ label: d, value: d }))
+									options={this.state.departments
+										? this.state.departments
+											.map((d) => ({ label: d.name, value: d.name }))
 										: []
 									}
 									value={c.department} // TODO
