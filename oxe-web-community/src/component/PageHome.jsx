@@ -201,7 +201,7 @@ export default class PageHome extends React.Component {
 						</div>)
 					}
 
-					{/* {this.props.myEntities !== null
+					{this.props.myEntities !== null
 						&& <div
 							className="col-md-6">
 							<a
@@ -215,7 +215,7 @@ export default class PageHome extends React.Component {
 								</Link>
 							</a>
 						</div>
-					} */}
+					}
 				</div>
 			</div>
 		);

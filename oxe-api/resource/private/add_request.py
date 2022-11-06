@@ -141,6 +141,4 @@ class AddRequest(MethodResource, Resource):
             if len(assignments) > 0:
                 return "", "401 You are already associated with this entity"
 
-            self.db.merge(user, self.db.tables["User"])
-
         return "", "200 "

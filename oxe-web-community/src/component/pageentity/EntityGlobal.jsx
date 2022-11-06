@@ -276,12 +276,12 @@ export default class EntityGlobal extends React.Component {
 								}
 								{this.state.contact.type === "PHONE NUMBER"
 									? <FormLine
-										label={"Phone Number"}
+										label={"Work Telephone"}
 										value={this.state.contact.value}
 										disabled={true}
 									/>
 									: <FormLine
-										label={"Phone Number"}
+										label={"Work Telephone"}
 										value={""}
 										disabled={true}
 									/>
