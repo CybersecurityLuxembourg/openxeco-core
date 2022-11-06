@@ -130,7 +130,7 @@ export default class Menu extends React.Component {
 							</NavText>
 						</NavItem>)
 					}
-					<NavItem
+					{/* <NavItem
 						eventKey="/add_entity"
 						active={this.props.selectedMenu === "add_entity"}
 						onClick={() => this.props.history.push("/add_entity")}>
@@ -145,9 +145,9 @@ export default class Menu extends React.Component {
 							/>
 						</NavIcon>
 						<NavText>
-							Claim or register an entity
+							Associate or register an entity
 						</NavText>
-					</NavItem>
+					</NavItem> */}
 
 					{/* <NavItem
 						className="Menu-bug-nav-item"
