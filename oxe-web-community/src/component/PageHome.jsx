@@ -210,7 +210,7 @@ export default class PageHome extends React.Component {
 								<Link to={"/add_entity"}>
 									<div className="PageHome-white-block">
 										<i className="fas fa-plus-circle"/>
-										<h3>Claim or register an entity</h3>
+										<h3>Associate with or register an entity</h3>
 									</div>
 								</Link>
 							</a>

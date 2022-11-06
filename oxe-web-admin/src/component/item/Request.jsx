@@ -27,8 +27,8 @@ export default class Request extends Component {
 		this.onClick = this.onClick.bind(this);
 		this.onClose = this.onClose.bind(this);
 		this.onOpen = this.onOpen.bind(this);
-		this.getMailBody = this.getMailBody.bind(this);
 		this.getSettingValue = this.getSettingValue.bind(this);
+		this.generateMailBody = this.generateMailBody.bind(this);
 
 		this.state = {
 			user: null,
@@ -37,6 +37,7 @@ export default class Request extends Component {
 			requestStatus: null,
 			settings: null,
 			currentStatus: this.props.info.status,
+			email_content: "",
 		};
 	}
 
@@ -65,6 +66,7 @@ export default class Request extends Component {
 			this.setState({
 				user: data,
 			});
+			this.generateMailBody();
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -75,6 +77,8 @@ export default class Request extends Component {
 			this.setState({
 				user_profile: data,
 			});
+			this.generateMailBody();
+			console.log(this.state.user_full_name);
 		}, (response) => {
 			console.log(response.statusText);
 		}, (error) => {
@@ -130,20 +134,23 @@ export default class Request extends Component {
 				const request = { ...this.props.info };
 				request[prop] = value;
 
+				if (prop === "status") {
+					this.setState({ currentStatus: value });
+					this.generateMailBody();
+				}
+
 				this.setState({ request }, () => {
 					if (prop === "status") {
+						// this.setState({ currentStatus: value });
+						// this.generateMailBody();
 						if ((value === "ACCEPTED" || value === "REJECTED")
 							&& this.state.user !== null) {
 							const element = document.getElementById("Request-send-mail-button");
 							element.click();
 						}
 					}
-
 					nm.info("The property has been updated");
 				});
-				if (prop === "status") {
-					this.setState({ currentStatus: value });
-				}
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
@@ -152,33 +159,71 @@ export default class Request extends Component {
 		}
 	}
 
-	getMailBody() {
+	generateMailBody() {
+		this.setState({ email_content: "" });
+		let body = "Your request has been treated.";
 		if (this.props.info !== undefined && this.props.info !== null) {
 			switch (this.props.info.type) {
 			case "ENTITY ASSOCIATION CLAIM":
-				return "Your request to access the claimed entity has been treated. Please log in to review the data of your entity.";
+				body = "Your request to access the claimed entity has been treated. Please log in to review the data of your entity.";
+				break;
 			case "ENTITY CHANGE":
-				return "Your request to modify the entity information has been treated.";
+				body = "Your request to modify the entity information has been treated.";
+				break;
 			case "ENTITY ADD":
-				return "Your request to add the entity in our database has been treated.";
+				body = "Your request to add the entity in our database has been treated.";
+				break;
 			case "ENTITY ADDRESS CHANGE":
-				return "Your request to modify the address of your entity has been treated.";
+				body = "Your request to modify the address of your entity has been treated.";
+				break;
 			case "ENTITY ADDRESS ADD":
-				return "Your request to add an address to your entity has been treated.";
+				body = "Your request to add an address to your entity has been treated.";
+				break;
 			case "ENTITY ADDRESS DELETION":
-				return "Your request to remove an address from your entity has been treated.";
+				body = "Your request to remove an address from your entity has been treated.";
+				break;
 			case "ENTITY TAXONOMY CHANGE":
-				return "Your request to modify the taxonomy of your entity has been treated.";
+				body = "Your request to modify the taxonomy of your entity has been treated.";
+				break;
 			case "ENTITY LOGO CHANGE":
-				return "Your request to modify the logo of your entity has been treated.";
+				body = "Your request to modify the logo of your entity has been treated.";
+				break;
 			case "NEW INDIVIDUAL ACCOUNT":
-				return "Your request to create your has been treated.";
+				if (this.state.currentStatus === "ACCEPTED") {
+					body = "Your request to join the local Community with "
+						+ this.state.user.email
+						+ " has been reviewed, and we are glad to inform you that it has been accepted.\n\n"
+						+ "We encourage you to follow our <a href='https://ncc-mita.gov.mt/'>website</a>, participate"
+						+ " in our events that will be organised particularly for the community and for the public in general, and keep your details updated.\n\n"
+						+ "Should you have any queries, please do not hesitate to contact us through the Contact Us form.";
+				} else if (this.state.currentStatus === "REJECTED") {
+					body = "Your request to join the local Community with "
+						+ this.state.user.email
+						+ " has been reviewed and unfortunately, it has been rejected, reason being .\n\n"
+						+ "In the meanitme, we encourage you to follow our <a href='https://ncc-mita.gov.mt/'>website</a> and participate in our events organised for the public.\n\n"
+						+ "Should you have any queries, please do not hesitate to contact us through the Contact Us form.";
+				}
+				break;
 			default:
-				return "Your request has been treated.";
+				body = "Your request has been treated.";
 			}
-		} else {
-			return "Your request has been treated.";
 		}
+
+		let name = "User";
+
+		if (this.props.info.type === "NEW INDIVIDUAL ACCOUNT") {
+			name = JSON.parse(this.props.info.data).first_name;
+		} else {
+			name = this.state.user.first_name;
+		}
+
+		const content = "Dear " + name + ",\n\n"
+			+ body
+			+ "\n\n"
+			+ "Yours Sincerely,\n"
+			+ "NCC Team";
+
+		this.setState({ email_content: content });
 	}
 
 	getSettingValue(property) {
@@ -376,7 +421,7 @@ export default class Request extends Component {
 								requestStatus={this.props.info.status}
 							/>
 						}
-						{this.state.user && this.state.settings
+						{this.state.user && this.state.settings && this.state.email_content !== ""
 							? <DialogSendMail
 								trigger={
 									<button
@@ -388,11 +433,7 @@ export default class Request extends Component {
 								email={this.state.user.email}
 								subject={(this.getSettingValue("PROJECT_NAME") !== null
 									? "[" + this.getSettingValue("PROJECT_NAME") + "] " : "") + "Treated request"}
-								content={"Dear user,\n\n"
-									+ this.getMailBody()
-									+ "\n\nSincerely,\n"
-									+ (this.getSettingValue("PROJECT_NAME") !== null
-										? this.getSettingValue("PROJECT_NAME") + " " : "") + "Support Team"}
+								content={this.state.email_content}
 							/>
 							: <Loading
 								height={50}

@@ -69,17 +69,15 @@ class VerifyAccount(MethodResource, Resource):
             print(err)
 
         # Send email
-        try:
-            send_email(self.mail,
-                subject=f"Account verified",
-                recipients=[email],
-                html_body=render_template(
-                    'account_verified.html',
-                    email=user.email,
-                    url=f"{origin}/login"
-                )
+        send_email(self.mail,
+            subject=f"Account verified",
+            recipients=[email],
+            html_body=render_template(
+                'account_verified.html',
+                email=user.email,
+                url=f"{origin}/login"
             )
-        except Exception as e:
-            pass
+        )
+
 
         return "", "200"

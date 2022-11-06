@@ -23,6 +23,7 @@ class AddContact(MethodResource, Resource):
          })
     @use_kwargs({
         'entity_id': fields.Int(),
+        'user_id': fields.Int(),
         'type': fields.Str(),
         'representative': fields.Str(required=False, allow_none=True),
         'name': fields.Str(required=False, allow_none=True),
@@ -38,6 +39,11 @@ class AddContact(MethodResource, Resource):
 
         if len(entity) == 0:
             return "", "422 Provided entity not existing"
+
+        contacts = self.db.get(self.db.tables["EntityContact"], {"entity_id": kwargs["entity_id"]})
+
+        if len(contacts) > 0:
+            return "", "422 This entity already has a contact"
 
         # Insert
         self.db.insert(kwargs, self.db.tables["EntityContact"])

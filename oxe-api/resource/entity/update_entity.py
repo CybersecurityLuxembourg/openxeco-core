@@ -48,6 +48,7 @@ class UpdateEntity(MethodResource, Resource):
         'sector': fields.Str(required=False, allow_none=True),
         'industry': fields.Str(required=False, allow_none=True),
         'involvement': fields.Str(required=False, allow_none=True),
+        'email': fields.Str(required=False, allow_none=True),
     })
     @jwt_required
     @verify_admin_access

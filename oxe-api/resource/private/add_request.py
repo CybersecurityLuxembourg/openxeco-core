@@ -83,7 +83,7 @@ class AddRequest(MethodResource, Resource):
             old_document = self.db.get(self.db.tables["Document"], { "filename": filename })
             if len(old_document) > 0:
                 self.db.delete(self.db.tables["Document"], { "filename": filename })
-            self.db.insert(document, self.db.tables["Document"])
+            document = self.db.insert(document, self.db.tables["Document"])
 
             try:
                 decoded_data = base64.b64decode(kwargs["uploaded_file"].split(",")[-1])
@@ -91,7 +91,7 @@ class AddRequest(MethodResource, Resource):
                 traceback.print_exc()
                 return "", "422 Impossible to read the file"
             try:
-                f = open(os.path.join(DOCUMENT_FOLDER, filename), 'wb')
+                f = open(os.path.join(DOCUMENT_FOLDER,  str(document.id)), 'wb')
                 f.write(decoded_data)
                 f.close()
                 file = filename
@@ -131,6 +131,16 @@ class AddRequest(MethodResource, Resource):
                 return "", "401 The user has not been found"
             user = data[0]
             user.status = "REQUESTED"
+            self.db.merge(user, self.db.tables["User"])
+
+        if kwargs["type"] == "ENTITY ASSOCIATION CLAIM":
+            assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
+                "user_id": get_jwt_identity(),
+                "entity_id": kwargs["data"]["entity_id"]
+            })
+            if len(assignments) > 0:
+                return "", "401 You are already associated with this entity"
+
             self.db.merge(user, self.db.tables["User"])
 
         return "", "200 "

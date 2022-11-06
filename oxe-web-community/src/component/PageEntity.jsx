@@ -1,5 +1,7 @@
 import React from "react";
 import "./PageEntity.css";
+import { NotificationManager as nm } from "react-notifications";
+import { getRequest } from "../utils/request.jsx";
 import Tab from "./tab/Tab.jsx";
 import EntityGlobal from "./pageentity/EntityGlobal.jsx";
 import EntityLogo from "./pageentity/EntityLogo.jsx";
@@ -18,14 +20,22 @@ export default class PageEntity extends React.Component {
 			entity: null,
 			selectedMenu: null,
 			entityContact: null,
-			tabs: [
+			primary_tabs: [
 				"global_information",
 				"logo",
+			],
+			default_tabs: [
+				"global_information",
+			],
+			tabs: [
+				"global_information",
+				// "logo",
 				// "address",
 				// "taxonomy",
 				// "collaborator",
 				// "request",
 			],
+			is_primary: false,
 		};
 	}
 
@@ -48,6 +58,18 @@ export default class PageEntity extends React.Component {
 		}
 	}
 
+	checkIsPrimary(entityId) {
+		getRequest.call(this, "private/is_primary_contact/" + entityId, () => {
+			this.setState({
+				is_primary: true,
+				tabs: this.state.primary_tabs,
+			});
+		}, () => {
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
 	selectEntity() {
 		if (this.props.myEntities === null
 			|| this.props.match.params.id === null) {
@@ -61,6 +83,11 @@ export default class PageEntity extends React.Component {
 					entity: c[0],
 					selectedMenu: c[0].id,
 				});
+				this.setState({
+					is_primary: false,
+					tabs: this.state.default_tabs,
+				});
+				this.checkIsPrimary(c[0].id);
 			}
 		}
 	}
@@ -95,14 +122,19 @@ export default class PageEntity extends React.Component {
 								selectedMenu={this.state.selectedMenu}
 								onMenuClick={(m) => this.onMenuClick(m)}
 								keys={this.state.tabs}
-								labels={[
-									"Global information",
-									"Logo",
-									// "Address",
-									// "Taxonomy",
-									// "Collaborator",
-									// "Request",
-								]}
+								labels={this.state.is_primary
+									? [
+										"Global information",
+										"Logo",
+										// "Address",
+										// "Taxonomy",
+										// "Collaborator",
+										// "Request",
+									]
+									: [
+										"Global information",
+									]
+								}
 								notifications={[
 									0,
 									0,

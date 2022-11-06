@@ -94,6 +94,9 @@ export default class User extends Component {
 						<i className="fas fa-user"/>
 						<div className={"User-name"}>
 							{this.props.email}
+							{this.props.primary
+								&& <span> (primary)</span>
+							}
 						</div>
 					</div>
 				}

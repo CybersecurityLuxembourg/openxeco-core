@@ -58,6 +58,7 @@ export default class RequestEntityAdd extends Component {
 			sector: this.props.data.sector,
 			industry: this.props.data.industry,
 			involvement: this.props.data.involvement,
+			email: this.props.data.company_email,
 			id: newId,
 		};
 
@@ -93,9 +94,10 @@ export default class RequestEntityAdd extends Component {
 		const contactParams = {
 			name: this.props.data.primary_contact_name,
 			entity_id: newId,
+			user_id: this.props.userId,
 			representative: "PHYSICAL PERSON",
 			type: "EMAIL ADDRESS",
-			value: this.props.data.company_email,
+			value: this.props.data.primary_contact_email,
 		};
 
 		postRequest.call(this, "contact/add_contact", contactParams, () => {
@@ -112,7 +114,7 @@ export default class RequestEntityAdd extends Component {
 			user_id: this.props.userId,
 			entity_id: newId,
 			department: this.props.data.department,
-			work_email: this.props.data.company_email,
+			work_email: this.props.data.primary_contact_email,
 			seniority_level: this.props.data.seniority_level,
 			work_telephone: this.props.data.work_telephone,
 		};
@@ -228,6 +230,11 @@ export default class RequestEntityAdd extends Component {
 							<FormLine
 								label={"Primary Contact Name"}
 								value={this.props.data.primary_contact_name}
+								disabled={true}
+							/>
+							<FormLine
+								label={"Primary Contact Email"}
+								value={this.props.data.primary_contact_email}
 								disabled={true}
 							/>
 							<FormLine
