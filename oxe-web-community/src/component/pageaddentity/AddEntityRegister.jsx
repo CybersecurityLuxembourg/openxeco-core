@@ -378,7 +378,7 @@ export default class AddEntityRegister extends React.Component {
 								disabled={!this.state.notFoundEntity}
 								format={validateEmail}
 							/>
-							{!validateWebsite(this.state.company_email) && this.state.company_email !== ""
+							{!validateEmail(this.state.company_email) && this.state.company_email !== ""
 								&& <div className="row">
 									<div className="col-md-6"></div>
 									<div className="col-md-6">
@@ -392,10 +392,10 @@ export default class AddEntityRegister extends React.Component {
 								label={"Size *"}
 								type={"select"}
 								options={[
-									{ value: "Micro", label: "Micro" },
-									{ value: "Small", label: "Small" },
-									{ value: "Medium", label: "Medium" },
-									{ value: "Large", label: "Large" },
+									{ value: "Micro", label: (<div title="Staff headcount of less than 10. Turnover or Balance sheet total of €2m or less.">Micro</div>) },
+									{ value: "Small", label: (<div title="Staff headcount of less than 50. Turnover or Balance sheet total of €10m or less.">Small</div>) },
+									{ value: "Medium", label: (<div title="Staff headcount of less than 250. Turnover of €50m or less OR Balance sheet total of €43m or less.">Medium</div>) },
+									{ value: "Large", label: (<div title="Staff headcount of 250 or more. Turnover of more than €50m OR Balance sheet total of more than €43m.">Large</div>) },
 								]}
 								value={this.props.size}
 								onChange={(v) => this.setState({ size: v })}
