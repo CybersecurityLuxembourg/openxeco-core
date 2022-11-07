@@ -170,7 +170,7 @@ export default class PageProfile extends React.Component {
 	}
 
 	updateUser() {
-		if (validateTelephoneNumber(this.state.currentUser.telephone) === false) {
+		if (this.state.currentUser.telephone !== "" && validateTelephoneNumber(this.state.currentUser.telephone) === false) {
 			return;
 		}
 		const params = {
