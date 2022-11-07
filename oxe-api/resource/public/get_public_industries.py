@@ -33,6 +33,4 @@ class GetPublicIndustries(MethodResource, Resource):
         if len(data) < 1:
             raise ObjectNotFound
         data = Serializer.serialize(data, self.db.tables["Industry"])
-        for item in data:
-            print(item)
         return data, "200 "
