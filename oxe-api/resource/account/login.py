@@ -39,6 +39,9 @@ class Login(MethodResource, Resource):
             return "", "401 Wrong email/password combination"
 
         if not data[0].is_active:
+            return "", "401 This account is has been disabled."
+
+        if not data[0].is_admin and data[0].status == "NEW":
             return "", "401 This account is not active. Please check your email for an activation link."
 
         access_token_expires = datetime.timedelta(days=1)
