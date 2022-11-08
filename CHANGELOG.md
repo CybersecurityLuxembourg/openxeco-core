@@ -16,6 +16,24 @@ All notable changes to this project will be documented in this file.
 - Fields "reference" on forms and questions on oxe-web-admin
 - "TEXTAREA" question type on forms
 
+## [1.13.9] - 2022-10-20
+
+### Fixed
+
+- ISSUE#49 FIX2: Urgent: Log Out button not working
+
+## [1.13.8] - 2022-10-20
+
+### Fixed
+
+- ISSUE#49 FIX: Urgent: Log Out button not working
+
+## [1.13.7] - 2022-10-19
+
+### Fixed
+
+- ISSUE#48 FIX: Urgent: Change password is not working
+
 ## [1.13.6] - 2022-10-12
 
 ### Fixed
