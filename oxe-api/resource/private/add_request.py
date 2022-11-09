@@ -129,6 +129,14 @@ class AddRequest(MethodResource, Resource):
             data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
             if len(data) == 0:
                 return "", "401 The user has not been found"
+
+            request = self.db.get(self.db.tables["UserRequest"], {
+                "user_id": get_jwt_identity(),
+                "type": "NEW INDIVIDUAL ACCOUNT"
+            })
+            if len(request) > 0:
+                return "", "401 You have already submitted your profile for review"
+
             user = data[0]
             user.status = "REQUESTED"
             self.db.merge(user, self.db.tables["User"])

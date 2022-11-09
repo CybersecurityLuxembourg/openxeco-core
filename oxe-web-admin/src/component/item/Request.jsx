@@ -307,7 +307,7 @@ export default class Request extends Component {
 					<div className="col-md-12">
 						<h2>
 							{this.props.info !== undefined && this.props.info !== null
-								? "Request " + this.props.info.submission_date
+								? "Request " + Request.dateStringToLocal(this.props.info.submission_date)
 								: "Unfound request"
 							}
 						</h2>

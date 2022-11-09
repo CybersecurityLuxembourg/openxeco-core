@@ -1,7 +1,7 @@
 import React from "react";
 import "./PageHome.css";
 import { Link } from "react-router-dom";
-// import Loading from "./box/Loading.jsx";
+import Loading from "./box/Loading.jsx";
 // import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageHome extends React.Component {
@@ -172,7 +172,7 @@ export default class PageHome extends React.Component {
 					</div>
 				</div>
 
-				{/* <div className={"row row-spaced"}>
+				<div className={"row row-spaced"}>
 					<div className="col-md-12">
 						<h2>My entities</h2>
 					</div>
@@ -216,7 +216,7 @@ export default class PageHome extends React.Component {
 							</a>
 						</div>
 					}
-				</div> */}
+				</div>
 			</div>
 		);
 	}
