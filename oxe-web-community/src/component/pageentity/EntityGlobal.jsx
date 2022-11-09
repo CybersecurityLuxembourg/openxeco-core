@@ -29,12 +29,13 @@ export default class EntityGlobal extends React.Component {
 			},
 			address: null,
 			contact: null,
+			user: null,
 		};
 	}
 
 	componentDidMount() {
 		this.getAddresses();
-		this.getContacts();
+		this.getContact();
 	}
 
 	getAddresses() {
@@ -53,14 +54,14 @@ export default class EntityGlobal extends React.Component {
 		});
 	}
 
-	getContacts() {
+	getContact() {
 		this.setState({
 			contact: null,
 		});
 
 		getRequest.call(this, "private/get_my_entity_contacts/" + this.props.entity.id, (data) => {
 			this.setState({
-				contact: data[0],
+				contact: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -262,29 +263,38 @@ export default class EntityGlobal extends React.Component {
 									value={this.state.contact.name}
 									disabled={true}
 								/>
-								{this.state.contact.type === "EMAIL ADDRESS"
-									? <FormLine
-										label={"Email Address"}
-										value={this.state.contact.value}
-										disabled={true}
-									/>
-									: <FormLine
-										label={"Email Address"}
-										value={""}
-										disabled={true}
-									/>
-								}
-								{this.state.contact.type === "PHONE NUMBER"
-									? <FormLine
-										label={"Work Telephone"}
-										value={this.state.contact.value}
-										disabled={true}
-									/>
-									: <FormLine
-										label={"Work Telephone"}
-										value={""}
-										disabled={true}
-									/>
+
+								<FormLine
+									label={"Email Address"}
+									value={this.state.contact.work_email}
+									disabled={true}
+								/>
+
+								<FormLine
+									label={"Work Telephone"}
+									value={this.state.contact.work_telephone}
+									disabled={true}
+								/>
+
+								{this.state.contact.primary
+									&& <>
+										<FormLine
+											label={"Department"}
+											value={this.state.contact.department}
+											disabled={true}
+										/>
+
+										<FormLine
+											label={"Seniority Level"}
+											value={this.state.contact.seniority_level}
+											disabled={true}
+										/>
+										<FormLine
+											label={"Acknowledged"}
+											value={this.state.contact.acknowledged}
+											disabled={true}
+										/>
+									</>
 								}
 							</div>
 						</>
