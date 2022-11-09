@@ -112,29 +112,16 @@ class AddRequest(MethodResource, Resource):
             except NoResultFound:
                 return "", "422 Object not found or you don't have the required access to it"
 
-        # Insert request
-        user_request = {
-            "user_id": int(user_id),
-            "entity_id": kwargs["entity_id"] if "entity_id" in kwargs else None,
-            "request": kwargs["request"],
-            "type": kwargs["type"] if "type" in kwargs else None,
-            "data": json.dumps(kwargs["data"]) if "data" in kwargs else None,
-            "image": image,
-            "file": file,
-        }
-
-        self.db.insert(user_request, self.db.tables["UserRequest"])
-
         if kwargs["type"] == "NEW INDIVIDUAL ACCOUNT":
             data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
             if len(data) == 0:
                 return "", "401 The user has not been found"
 
-            request = self.db.get(self.db.tables["UserRequest"], {
+            user_check = self.db.get(self.db.tables["UserRequest"], {
                 "user_id": get_jwt_identity(),
                 "type": "NEW INDIVIDUAL ACCOUNT"
             })
-            if len(request) > 0:
+            if len(user_check) > 0:
                 return "", "401 You have already submitted your profile for review"
 
             user = data[0]
@@ -148,5 +135,19 @@ class AddRequest(MethodResource, Resource):
             })
             if len(assignments) > 0:
                 return "", "401 You are already associated with this entity"
+
+
+        # Insert request
+        user_request = {
+            "user_id": int(user_id),
+            "entity_id": kwargs["entity_id"] if "entity_id" in kwargs else None,
+            "request": kwargs["request"],
+            "type": kwargs["type"] if "type" in kwargs else None,
+            "data": json.dumps(kwargs["data"]) if "data" in kwargs else None,
+            "image": image,
+            "file": file,
+        }
+
+        self.db.insert(user_request, self.db.tables["UserRequest"])
 
         return "", "200 "
