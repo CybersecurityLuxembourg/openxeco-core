@@ -112,6 +112,31 @@ class AddRequest(MethodResource, Resource):
             except NoResultFound:
                 return "", "422 Object not found or you don't have the required access to it"
 
+        if kwargs["type"] == "NEW INDIVIDUAL ACCOUNT":
+            data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
+            if len(data) == 0:
+                return "", "401 The user has not been found"
+
+            user_check = self.db.get(self.db.tables["UserRequest"], {
+                "user_id": get_jwt_identity(),
+                "type": "NEW INDIVIDUAL ACCOUNT"
+            })
+            if len(user_check) > 0:
+                return "", "401 You have already submitted your profile for review"
+
+            user = data[0]
+            user.status = "REQUESTED"
+            self.db.merge(user, self.db.tables["User"])
+
+        if kwargs["type"] == "ENTITY ASSOCIATION CLAIM":
+            assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
+                "user_id": get_jwt_identity(),
+                "entity_id": kwargs["data"]["entity_id"]
+            })
+            if len(assignments) > 0:
+                return "", "401 You are already associated with this entity"
+
+
         # Insert request
         user_request = {
             "user_id": int(user_id),
@@ -124,21 +149,5 @@ class AddRequest(MethodResource, Resource):
         }
 
         self.db.insert(user_request, self.db.tables["UserRequest"])
-
-        if kwargs["type"] == "NEW INDIVIDUAL ACCOUNT":
-            data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
-            if len(data) == 0:
-                return "", "401 The user has not been found"
-            user = data[0]
-            user.status = "REQUESTED"
-            self.db.merge(user, self.db.tables["User"])
-
-        if kwargs["type"] == "ENTITY ASSOCIATION CLAIM":
-            assignments = self.db.get(self.db.tables["UserEntityAssignment"], {
-                "user_id": get_jwt_identity(),
-                "entity_id": kwargs["data"]["entity_id"]
-            })
-            if len(assignments) > 0:
-                return "", "401 You are already associated with this entity"
 
         return "", "200 "

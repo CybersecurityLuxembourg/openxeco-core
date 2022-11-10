@@ -581,7 +581,7 @@ export default class AddEntityRegister extends React.Component {
 						<div className="col-md-9">
 							<h2>Registration request submitted</h2>
 							<p>
-								Your entity registration reqest has been submitted.
+								Your entity registration request has been submitted.
 							</p>
 							<p>
 								We will send you an email with the outcome.

@@ -35,12 +35,22 @@ class GetMyEntityContacts(MethodResource, Resource):
         except NoResultFound:
             return "", "422 Object not found or you don't have the required access to it"
 
-        data = Serializer.serialize(
-            self.db.session
-                .query(self.db.tables["EntityContact"])
-                .filter(self.db.tables["EntityContact"].entity_id == int(id_))
-                .all(),
-            self.db.tables["EntityContact"]
-        )
+        contact = self.db.get(self.db.tables["EntityContact"], {"entity_id": int(id_)})[0]
+        user = self.db.get(self.db.tables["UserEntityAssignment"], {
+            "user_id": contact.user_id,
+            "entity_id": int(id_),
+        })[0]
+
+        is_primary = int(get_jwt_identity()) == contact.user_id
+
+        data = {
+            "name": contact.name,
+            "work_email": user.work_email,
+            "work_telephone": user.work_telephone,
+            "seniority_level": user.seniority_level if is_primary else "",
+            "department": user.department if is_primary else "",
+            "acknowledged": "Yes" if is_primary else "",
+            "primary": int(get_jwt_identity()) == contact.user_id,
+        }
 
         return data, "200 "

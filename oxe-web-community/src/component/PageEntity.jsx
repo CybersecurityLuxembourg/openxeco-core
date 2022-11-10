@@ -154,6 +154,7 @@ export default class PageEntity extends React.Component {
 										getNotifications={this.props.getNotifications}
 										entity={this.state.entity}
 										key={"EntityGlobal"}
+										primary={this.state.primary}
 									/>,
 									<EntityLogo
 										getNotifications={this.props.getNotifications}
