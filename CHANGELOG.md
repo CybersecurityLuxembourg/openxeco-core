@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.13.10] - 2022-11-11
+
+### Fixed
+
+- Fix image buttons bug on Entity and Article items on oxe-web-admin
+
 ## [1.13.9] - 2022-10-20
 
 ### Fixed
