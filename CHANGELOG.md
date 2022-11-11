@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix image buttons bug on Entity and Article items on oxe-web-admin
+- Fix "Social media and website" deletion on profile page of oxe-web-admin and oxe-web-community
 
 ## [1.13.9] - 2022-10-20
 
