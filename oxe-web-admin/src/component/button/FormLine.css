@@ -43,15 +43,21 @@
 }
 
 .Formline-image-display-wrapper {
+	display: block !important;
 	text-align: center;
 	min-height: 500px;
-	display:flex;
+	display: flex;
 	align-items:center;
 	justify-content:center;
 }
 
 .Formline-image-display-wrapper .NoImage {
 	position: absolute;
+}
+
+.Formline-image-wrapper .centered-buttons {
+	position: relative;
+	padding: 5px 0px;
 }
 
 .Formline-frame-wrapper {

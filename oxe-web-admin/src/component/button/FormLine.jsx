@@ -214,7 +214,7 @@ export default class FormLine extends React.Component {
 					}
 				</div>
 				{!this.props.disabled
-					&& <div>
+					&& <div className={"centered-buttons"}>
 						<button
 							className={"red-background"}
 							value={this.state.value}
