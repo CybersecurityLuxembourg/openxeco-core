@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - form/get_forms API resource
 - form/update_form API resource
 - form/update_form_question API resource
+- Set textarea field instead of medium field on forms of oxe-web-community
 
 ### Added
 

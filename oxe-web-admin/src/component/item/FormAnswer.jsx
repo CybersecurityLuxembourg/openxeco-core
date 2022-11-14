@@ -122,7 +122,7 @@ export default class FormAnswer extends Item {
 								{this.getAnswerOfQuestion(q.id) && this.getAnswerOfQuestion(q.id).value
 									? <div dangerouslySetInnerHTML={{
 										__html:
-										dompurify.sanitize(this.getAnswerOfQuestion(q.id).value),
+										dompurify.sanitize(this.getAnswerOfQuestion(q.id).value.replaceAll("\n", "<br/>")),
 									}} />
 									: <Message
 										text="No answer found"

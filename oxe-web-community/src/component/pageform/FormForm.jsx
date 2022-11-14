@@ -155,7 +155,7 @@ export default class FormForm extends React.Component {
 			{q.type === "TEXTAREA"
 				&& <div className="col-md-12 row-spaced">
 					<FormLine
-						type={"editor"}
+						type={"textarea"}
 						label={""}
 						fullWidth={true}
 						value={this.getAnswer(q) ? this.getAnswer(q).value : ""}
