@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Communication functionality into Campaign
 - form/get_forms API resource
 - form/update_form API resource
 - form/update_form_question API resource
