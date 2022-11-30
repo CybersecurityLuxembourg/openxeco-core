@@ -103,6 +103,7 @@ class DB:
                 self.session.commit()
 
             return count
+        return None
 
     def delete_by_id(self, id_, table):
         self.session.query(table).filter(table.id == id_).delete()

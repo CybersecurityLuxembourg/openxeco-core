@@ -22,8 +22,10 @@ def upgrade():
     op.drop_column('Campaign', 'addresses')
     op.add_column('Campaign', sa.Column('template_id', mysql.INTEGER(), nullable=True))
     op.add_column('Campaign', sa.Column('execution_date', mysql.DATETIME(), nullable=True))
-    op.add_column('Campaign', sa.Column('name', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=200), nullable=True))
-    op.alter_column('Campaign', 'subject', type_=mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=200), nullable=True)
+    op.add_column('Campaign', sa.Column('name', mysql.VARCHAR(collation='utf8mb4_unicode_ci', length=200),
+                                        nullable=True))
+    op.alter_column('Campaign', 'subject', type_=mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci',
+                                                               length=200), nullable=True)
     op.alter_column('Campaign', 'body', type_=mysql.TEXT(collation='utf8mb4_unicode_ci'), nullable=True)
 
     op.create_table(
@@ -53,7 +55,8 @@ def upgrade():
         mysql_engine='InnoDB'
     )
 
-    op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'TEXTAREA', 'CHECKBOX', 'OPTIONS', 'SELECT'), server_default=sa.text("'TEXT'"), nullable=False)
+    op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'TEXTAREA', 'CHECKBOX', 'OPTIONS', 'SELECT'),
+                    server_default=sa.text("'TEXT'"), nullable=False)
 
 
 def downgrade():
@@ -61,12 +64,13 @@ def downgrade():
     op.drop_column('Campaign', 'execution_date')
     op.drop_column('Campaign', 'name')
     op.add_column('Campaign', sa.Column('addresses', mysql.TEXT(collation='utf8mb4_unicode_ci'), nullable=True))
-    op.alter_column('Campaign', 'subject', type_=mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=255), nullable=False)
+    op.alter_column('Campaign', 'subject', type_=mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci',
+                                                               length=255), nullable=False)
     op.alter_column('Campaign', 'body', type_=mysql.TEXT(collation='utf8mb4_unicode_ci'), nullable=False)
     op.rename_table('Campaign', 'Communication')
 
     op.drop_table('CampaignTemplate')
     op.drop_table('CampaignAddress')
 
-    op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'CHECKBOX', 'OPTIONS', 'SELECT'), server_default=sa.text("'TEXT'"), nullable=False)
-
+    op.alter_column('FormQuestion', 'type', type_=mysql.ENUM('TEXT', 'CHECKBOX', 'OPTIONS', 'SELECT'),
+                    server_default=sa.text("'TEXT'"), nullable=False)
