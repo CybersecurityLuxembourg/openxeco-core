@@ -17,6 +17,10 @@ All notable changes to this project will be documented in this file.
 - Fields "reference" on forms and questions on oxe-web-admin
 - "TEXTAREA" question type on forms
 
+### Fixed
+
+- Password regex function on oxe-web-admin and oxe-web-community
+
 ## [1.13.10] - 2022-11-11
 
 ### Fixed
