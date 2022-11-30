@@ -10,7 +10,7 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.mail import send_email
 
 
-class SendCommunication(MethodResource, Resource):
+class SendCampaign(MethodResource, Resource):
 
     def __init__(self, db, mail):
         self.db = db
@@ -34,11 +34,10 @@ class SendCommunication(MethodResource, Resource):
     def post(self, **kwargs):
 
         self.db.insert({
-            "addresses": ",".join(kwargs["addresses"]),
             "subject": kwargs["subject"],
             "body": kwargs["body"],
             "status": "PROCESSED",
-        }, self.db.tables["Communication"], commit=False)
+        }, self.db.tables["Campaign"], commit=False)
 
         send_email(self.mail,
                    recipients="",

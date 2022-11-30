@@ -3,7 +3,7 @@ import datetime
 from test.BaseCase import BaseCase
 
 
-class TestGetCommunications(BaseCase):
+class TestGetCampaigns(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
@@ -13,11 +13,10 @@ class TestGetCommunications(BaseCase):
             "id": 2,
             "subject": "My subject",
             "body": "My mail body",
-            "addresses": "add@1.com,add@2.com",
             "sys_date": time
-        }, self.db.tables["Communication"])
+        }, self.db.tables["Campaign"])
 
-        response = self.application.get('/communication/get_communications',
+        response = self.application.get('/campaign/get_campaigns',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)
@@ -31,11 +30,13 @@ class TestGetCommunications(BaseCase):
             "items": [
                 {
                     "id": 2,
+                    "execution_date": None,
+                    "name": None,
                     "status": "DRAFT",
                     "subject": "My subject",
                     "body": "My mail body",
-                    "addresses": "add@1.com,add@2.com",
-                    "sys_date": str(time).replace(" ", "T")
+                    "sys_date": str(time).replace(" ", "T"),
+                    "template_id": None
                 },
             ]
         }, response.json)
