@@ -44,7 +44,7 @@ from resource.campaign.get_campaign_templates import GetCampaignTemplates
 from resource.campaign.get_campaigns import GetCampaigns
 from resource.campaign.update_campaign import UpdateCampaign
 from resource.campaign.update_campaign_template import UpdateCampaignTemplate
-from resource.campaign.send_campaign import SendCommunication
+from resource.campaign.send_campaign import SendCampaign
 from resource.entity.extract_entities import ExtractEntities
 from resource.entity.get_entities import GetEntities
 from resource.entity.get_entity import GetEntity
@@ -65,6 +65,7 @@ from resource.cron.run_database_compliance import RunDatabaseCompliance
 from resource.datacontrol.get_data_controls import GetDataControls
 from resource.datacontrol.delete_data_control import DeleteDataControl
 from resource.form.add_form import AddForm
+from resource.form.add_form_answer import AddFormAnswer
 from resource.form.add_form_question import AddFormQuestion
 from resource.form.delete_form import DeleteForm
 from resource.form.delete_form_question import DeleteFormQuestion
@@ -75,6 +76,7 @@ from resource.form.get_form_question_enums import GetFormQuestionEnums
 from resource.form.get_form_questions import GetFormQuestions
 from resource.form.get_forms import GetForms
 from resource.form.update_form import UpdateForm
+from resource.form.update_form_answer import UpdateFormAnswer
 from resource.form.update_form_question import UpdateFormQuestion
 from resource.form.update_form_question_order import UpdateFormQuestionOrder
 from resource.healthz import Healthz
@@ -104,7 +106,7 @@ from resource.note.delete_note import DeleteNote
 from resource.note.get_notes import GetNotes
 from resource.note.update_note import UpdateNote
 from resource.private.add_my_article import AddMyArticle
-from resource.private.add_my_form_answer import AddFormAnswer
+from resource.private.add_my_form_answer import AddMyFormAnswer
 from resource.private.add_request import AddRequest
 from resource.private.delete_my_article import DeleteMyArticle
 from resource.private.delete_my_form_answer import DeleteMyFormAnswer
@@ -128,7 +130,7 @@ from resource.private.get_my_user import GetMyUser
 from resource.private.is_logged import IsLogged
 from resource.private.update_my_article import UpdateMyArticle
 from resource.private.update_my_article_content import UpdateMyArticleContent
-from resource.private.update_my_form_answer import UpdateFormAnswer
+from resource.private.update_my_form_answer import UpdateMyFormAnswer
 from resource.private.update_my_user import UpdateMyUser
 from resource.public.get_public_article_content import GetPublicArticleContent
 from resource.public.get_public_article_enums import GetArticleEnums

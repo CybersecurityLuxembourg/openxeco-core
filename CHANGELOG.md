@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file.
 - Column "reference" on FormQuestion table of the database structure
 - Fields "reference" on forms and questions on oxe-web-admin
 - "TEXTAREA" question type on forms
+- form/add_form_answer resource
+- form/update_form_answer resource
 
 ### Fixed
 
