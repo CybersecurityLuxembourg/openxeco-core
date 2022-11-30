@@ -43,6 +43,13 @@ class GetAuditLogs(MethodResource, Resource):
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
         logs = [l._asdict() for l in paginate.items]
 
+        for log in logs:
+            user = self.db.get(self.db.tables["User"], {"id": log["user_id"]})[0]
+            if user.first_name is None and user.last_name is None:
+                log["username"] = "Not set"
+            else:
+                log["username"] = f"{user.first_name} {user.last_name}"
+
         return {
             "pagination": {
                 "page": kwargs['page'],

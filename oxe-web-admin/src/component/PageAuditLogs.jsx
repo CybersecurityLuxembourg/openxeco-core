@@ -73,12 +73,12 @@ export default class PageAuditLogs extends React.Component {
 				width: 60,
 			},
 			{
-				Header: "User ID",
+				Header: "User Name",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					value.user_id
+					value.username
 				),
-				width: 20,
+				width: 30,
 			},
 			{
 				Header: "Type",
