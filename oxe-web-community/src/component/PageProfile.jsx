@@ -157,6 +157,11 @@ export default class PageProfile extends React.Component {
 			properties = [properties];
 		}
 
+		if (this.state.currentVcard && this.state.currentVcard.data
+			&& this.state.currentVcard.data.socialprofile) {
+			delete this.state.currentVcard.data.socialprofile;
+		}
+
 		properties.filter((p, i) => i !== pos).forEach((p) => {
 			if (loop === 0) {
 				this.state.currentVcard.set("socialprofile", p.valueOf(), { type: p.type });
