@@ -1,0 +1,13 @@
+<p>Dear {{ email }},</p>
+<p>To complete your login, please enter the following One Time Pin:</p>
+
+<p style="background: #fefefe; padding: 10px; border-radius: 5px; font-size: 20px;">
+    {{ token|safe }}
+</p>
+
+<span style="font-style: italic; font-size: 0.8rem;">This code expires in 10 minutes.</span>
+
+<p>Sincerely,</p>
+<p>
+    <img src="cid:logo" alt="Logo" style="width:200px;">
+</p>
