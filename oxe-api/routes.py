@@ -9,6 +9,7 @@ from resource.account.reset_password import ResetPassword
 from resource.account.verify_account import VerifyAccount
 from resource.account.update_status import UpdateStatus
 from resource.account.add_profile import AddProfile
+from resource.account.verify_login import VerifyLogin
 from resource.analytics.get_ecosystem_activity import GetEcosystemActivity
 from resource.article.copy_article_version import CopyArticleVersion
 from resource.article.get_articles import GetArticles
