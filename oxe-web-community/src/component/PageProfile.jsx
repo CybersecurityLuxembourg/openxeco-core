@@ -10,7 +10,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateTelephoneNumber } from "../utils/re.jsx";
 // import { getApiURL } from "../utils/env.jsx";
 import Loading from "./box/Loading.jsx";
-// import Message from "./box/Message.jsx";
+import Message from "./box/Message.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
@@ -472,7 +472,7 @@ export default class PageProfile extends React.Component {
 									onChange={(v) => this.updateCurrentVcard("tel", v ? this.state.currentUser.telephone : null)}
 								/>
 							</div>
-							{/* <div className="col-md-12 PageProfile-white-box">
+							<div className="col-md-12 PageProfile-white-box">
 								<h3>Social media and website</h3>
 								<br/>
 
@@ -531,7 +531,7 @@ export default class PageProfile extends React.Component {
 										<i className="fas fa-plus"/> Add
 									</button>
 								</div>
-							</div> */}
+							</div>
 						</div>
 					</div>
 				</div>
