@@ -10,7 +10,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateTelephoneNumber } from "../utils/re.jsx";
 // import { getApiURL } from "../utils/env.jsx";
 import Loading from "./box/Loading.jsx";
-// import Message from "./box/Message.jsx";
+import Message from "./box/Message.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
