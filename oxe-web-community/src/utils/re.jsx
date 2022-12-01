@@ -59,3 +59,9 @@ export function validatePostcode(postcode) {
 	const re = /^[-a-zA-Z]{3}(\s)?[0-9]{4}$/;
 	return re.test(String(postcode).toUpperCase()) || !postcode;
 }
+
+export function validateOtp(otp) {
+	if (otp === null || typeof otp === "undefined" || otp.length === 0) return false;
+	const re = /^[0-9]{6}$/;
+	return re.test(String(otp).toUpperCase()) || !otp;
+}
