@@ -492,7 +492,7 @@ export default class PageProfile extends React.Component {
 														{ label: "Instragram", value: "Instragram" },
 														{ label: "Medium", value: "Medium" },
 														{ label: "GitHub", value: "GitHub" },
-														{ label: "BitBucket", value: "BitBucket" },
+														// { label: "BitBucket", value: "BitBucket" },
 														{ label: "Other", value: "Other" },
 													]}
 													value={s.type}
