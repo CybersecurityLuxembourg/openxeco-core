@@ -150,7 +150,6 @@ export default class Login extends React.Component {
 			this.fetchUser();
 		}, (response) => {
 			nm.warning(response.statusText);
-			this.setState({ verifyLogin: false });
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -496,7 +495,7 @@ export default class Login extends React.Component {
 								}
 
 								{this.state.verifyLogin === true
-									&& <div>
+									&& <div className="col-md-12">
 										<div className="Login-title">
 											Verify Login
 										</div>
@@ -510,18 +509,34 @@ export default class Login extends React.Component {
 											format={validateOtp}
 										/>
 
-										<div className="right-buttons">
-											<button
-												className="blue-button"
-												onClick={this.verifyLogin}
-											>
-												Submit
-											</button>
+										<div>
+											<div className="right-buttons">
+												<button
+													className="blue-button"
+													onClick={this.verifyLogin}
+												>
+													Submit
+												</button>
+											</div>
+											<div className="left-buttons">
+												<button
+													className="link-button"
+													onClick={this.login}
+												>
+													Resend Code
+												</button>
+											</div>
+											<div className="left-buttons">
+												<button
+													className="link-button"
+													onClick={() => this.changeState("verifyLogin", false)}
+												>
+													Back to login
+												</button>
+											</div>
 										</div>
-
 									</div>
 								}
-
 							</div>
 						}
 
