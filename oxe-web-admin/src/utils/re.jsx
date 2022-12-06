@@ -42,3 +42,9 @@ export function extractEmails(text) {
 
 	return items;
 }
+
+export function validateOtp(otp) {
+	if (otp === null || typeof otp === "undefined" || otp.length === 0) return false;
+	const re = /^[0-9]{6}$/;
+	return re.test(String(otp).toUpperCase()) || !otp;
+}

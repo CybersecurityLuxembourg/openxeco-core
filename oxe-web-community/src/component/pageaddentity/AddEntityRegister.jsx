@@ -333,6 +333,7 @@ export default class AddEntityRegister extends React.Component {
 									{ value: "Partnership", label: "Partnership" },
 									{ value: "Cooperative", label: "Cooperative" },
 									{ value: "Company", label: "Company" },
+									{ value: "Authority", label: "Authority" },
 									{ value: "Non-profit organisation", label: "Non-profit organisation" },
 								]}
 								value={this.props.entity_type}
