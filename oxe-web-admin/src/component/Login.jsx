@@ -3,7 +3,7 @@ import "./Login.css";
 import { NotificationManager as nm } from "react-notifications";
 import FormLine from "./button/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
-import { validatePassword } from "../utils/re.jsx";
+import { validatePassword, validateOtp } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions, getApiURL } from "../utils/env.jsx";
@@ -18,6 +18,7 @@ export default class Login extends React.Component {
 		this.requestReset = this.requestReset.bind(this);
 		this.resetPassword = this.resetPassword.bind(this);
 		this.onKeyDown = this.onKeyDown.bind(this);
+		this.verifyLogin = this.verifyLogin.bind(this);
 
 		this.state = {
 			settings: null,
@@ -25,6 +26,8 @@ export default class Login extends React.Component {
 			password: "",
 			passwordConfirmation: "",
 			view: getUrlParameter("action") === "reset_password" ? "reset" : "login",
+			verifyLogin: false,
+			user: null,
 		};
 	}
 
@@ -98,7 +101,27 @@ export default class Login extends React.Component {
 
 		postRequest.call(this, "account/login", params, (response) => {
 			// TODO use httponly cookies
+			this.setState({ verifyLogin: true });
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	verifyLogin() {
+		if (!validateOtp(this.state.otp)) {
+			nm.warning("Invalid OTP");
+			return;
+		}
+		const params = {
+			email: this.state.email,
+			token: this.state.otp,
+		};
+		postRequest.call(this, "account/verify_login", params, (response) => {
+			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
+			this.props.connect(this.state.email);
 
 			getRequest.call(this, "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
@@ -182,52 +205,99 @@ export default class Login extends React.Component {
 					<div id="Login-inner-box">
 						{this.state.view === "login"
 							&& <div>
-								<div className="Login-title">
-									<h1>
-										{this.state.settings !== null
-											&& this.state.settings.ADMIN_PLATFORM_NAME !== undefined
-											? "Welcome to " + this.state.settings.ADMIN_PLATFORM_NAME
-											: "Welcome"}
-										<div className={"Login-title-small"}>
-											{this.state.settings !== null
-												&& this.state.settings.PROJECT_NAME !== undefined
-												? "Administration platform of " + this.state.settings.PROJECT_NAME
-												: "Administration platform"}
+								{this.state.verifyLogin === false
+									&& <>
+										<div className="Login-title">
+											<h1>
+												{this.state.settings !== null
+													&& this.state.settings.ADMIN_PLATFORM_NAME !== undefined
+													? "Welcome to " + this.state.settings.ADMIN_PLATFORM_NAME
+													: "Welcome"}
+												<div className={"Login-title-small"}>
+													{this.state.settings !== null
+														&& this.state.settings.PROJECT_NAME !== undefined
+														? "Administration platform of " + this.state.settings.PROJECT_NAME
+														: "Administration platform"}
+												</div>
+											</h1>
 										</div>
-									</h1>
-								</div>
-								<FormLine
-									label="Email"
-									fullWidth={true}
-									value={this.state.email}
-									onChange={(v) => this.changeState("email", v)}
-									autofocus={true}
-									onKeyDown={this.onKeyDown}
-								/>
-								<FormLine
-									label="Password"
-									type={"password"}
-									fullWidth={true}
-									value={this.state.password}
-									onChange={(v) => this.changeState("password", v)}
-									onKeyDown={this.onKeyDown}
-								/>
-								<div className="bottom-right-buttons">
-									<button
-										className="blue-button"
-										onClick={this.login}
-									>
-										Login
-									</button>
-								</div>
-								<div className="bottom-left-buttons">
-									<button
-										className="link-button"
-										onClick={() => this.changeState("view", "forgot")}
-									>
-										I forgot my password
-									</button>
-								</div>
+										<FormLine
+											label="Email"
+											fullWidth={true}
+											value={this.state.email}
+											onChange={(v) => this.changeState("email", v)}
+											autofocus={true}
+											onKeyDown={this.onKeyDown}
+										/>
+										<FormLine
+											label="Password"
+											type={"password"}
+											fullWidth={true}
+											value={this.state.password}
+											onChange={(v) => this.changeState("password", v)}
+											onKeyDown={this.onKeyDown}
+										/>
+										<div className="bottom-right-buttons">
+											<button
+												className="blue-button"
+												onClick={this.login}
+											>
+												Login
+											</button>
+										</div>
+										<div className="bottom-left-buttons">
+											<button
+												className="link-button"
+												onClick={() => this.changeState("view", "forgot")}
+											>
+												I forgot my password
+											</button>
+										</div>
+									</>
+								}
+								{this.state.verifyLogin === true
+									&& <div className="col-md-12">
+										<div className="Login-title">
+											Verify Login
+										</div>
+										<FormLine
+											label="Please enter the One Time Pin you received via email"
+											fullWidth={true}
+											value={this.state.otp}
+											onChange={(v) => this.changeState("otp", v)}
+											autofocus={true}
+											onKeyDown={this.onKeyDown}
+											format={validateOtp}
+										/>
+
+										<div>
+											<div className="right-buttons">
+												<button
+													className="blue-button"
+													onClick={this.verifyLogin}
+												>
+													Submit
+												</button>
+											</div>
+											<div className="left-buttons">
+												<button
+													className="link-button"
+													onClick={this.login}
+												>
+													Resend Code
+												</button>
+											</div>
+											<div className="left-buttons">
+												<button
+													className="link-button"
+													onClick={() => this.changeState("verifyLogin", false)}
+												>
+													Back to login
+												</button>
+											</div>
+										</div>
+									</div>
+								}
 							</div>
 						}
 
