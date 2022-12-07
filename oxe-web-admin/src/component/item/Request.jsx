@@ -33,6 +33,7 @@ export default class Request extends Component {
 			entity: null,
 			requestStatus: null,
 			settings: null,
+			subject: null,
 		};
 	}
 
@@ -97,6 +98,9 @@ export default class Request extends Component {
 		getRequest.call(this, "public/get_public_settings", (data) => {
 			this.setState({
 				settings: data,
+				subject: (this.getSettingValue("PROJECT_NAME")
+					? "[" + this.getSettingValue("PROJECT_NAME") + "] " : "")
+				+ "Treated request",
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -336,8 +340,7 @@ export default class Request extends Component {
 									</button>
 								}
 								email={this.state.user.email}
-								subject={(this.getSettingValue("PROJECT_NAME") !== null
-									? "[" + this.getSettingValue("PROJECT_NAME") + "] " : "") + "Treated request"}
+								subject={this.state.subject}
 								content={"Dear user,\n\n"
 									+ this.getMailBody()
 									+ "\n\nSincerely,\n"
