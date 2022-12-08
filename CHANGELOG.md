@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - form/update_form_answer resource
 - Checkbox to filter out "REJECTED" requests on oxe-web-admin
 - Email subject field for Requests on oxe-web-admin
+- Button to remove a Form on oxe-web-admin
 
 ### Fixed
 
