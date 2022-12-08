@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Password regex function on oxe-web-admin and oxe-web-community
+- Page change on table of Form page on oxe-web-admin
 
 ## [1.13.10] - 2022-11-11
 
