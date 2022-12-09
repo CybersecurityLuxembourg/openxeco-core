@@ -1,248 +1,230 @@
 import React from "react";
 import "./CampaignSend.css";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest, getForeignRequest, postRequest } from "../../../utils/request.jsx";
-import FormLine from "../../button/FormLine.jsx";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
 import Loading from "../../box/Loading.jsx";
-import { validateUrlHandle } from "../../../utils/re.jsx";
-import DialogAddImage from "../../dialog/DialogAddImage.jsx";
+import Warning from "../../box/Warning.jsx";
+import Info from "../../box/Info.jsx";
+import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 
 export default class CampaignSend extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			articleEnums: null,
-			showOptionalFields: false,
+			addresses: null,
+			user: null,
+			template: null,
 		};
 	}
 
 	componentDidMount() {
-		this.getArticleEnums();
+		this.fetchAddresses();
+		this.getMyUser();
+		this.getTemplate();
 	}
 
-	getArticleEnums() {
-		if (this.props.node && this.props.node.api_endpoint) {
-			const url = this.props.node.api_endpoint + "/public/get_public_article_enums";
+	componentDidUpdate(prevProps) {
+		if (prevProps.campaign !== this.props.campaign) {
+			this.getTemplate();
+		}
+	}
 
-			getForeignRequest.call(this, url, (data2) => {
+	fetchAddresses() {
+		getRequest.call(this, "campaign/get_campaign_addresses?campaign_id=" + this.props.campaign.id, (data) => {
+			this.setState({
+				addresses: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	getMyUser() {
+		getRequest.call(this, "private/get_my_user", (data) => {
+			this.setState({
+				user: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	getTemplate() {
+		if (this.props.campaign) {
+			getRequest.call(this, "campaign/get_campaign_template/" + this.props.campaign.id, (data) => {
 				this.setState({
-					articleEnums: data2,
+					template: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
 				nm.error(error.message);
 			});
+		}
+	}
+
+	sendDraft() {
+		let content = null;
+
+		if (!this.props.campaign.template_id) {
+			content = this.props.campaign.body;
 		} else {
-			getRequest.call(this, "public/get_public_article_enums", (data2) => {
-				this.setState({
-					articleEnums: data2,
-				});
-			}, (response) => {
-				nm.warning(response.statusText);
-			}, (error) => {
-				nm.error(error.message);
-			});
+			if (!this.state.template) {
+				nm.warning("Cannot send the draft as the template is not loaded");
+				return;
+			}
+			if (!this.state.template.content) {
+				nm.warning("Cannot send the draft as the template has no content");
+				return;
+			}
+
+			content = this.state.template.content
+				.replace("[CAMPAIGN CONTENT]", this.props.campaign.body);
 		}
+
+		const params = {
+			address: this.state.user.email,
+			subject: this.props.campaign.subject,
+			content,
+		};
+
+		postRequest.call(this, "mail/send_mail", params, () => {
+			nm.info("The draft has been sent");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
-	saveArticleValue(prop, value) {
-		if (this.props.article[prop] !== value) {
-			const params = {
-				id: this.props.id,
-				[prop]: value,
-			};
+	sendCommunication() {
+		const params = {
+			addresses: this.getSelectedAddresses(),
+			subject: this.state.subject,
+			body: this.state.body,
+		};
 
-			postRequest.call(this, "article/update_article", params, () => {
-				this.props.refresh();
-				nm.info("The property has been updated");
-			}, (response) => {
-				this.props.refresh();
-				nm.warning(response.statusText);
-			}, (error) => {
-				this.props.refresh();
-				nm.error(error.message);
+		postRequest.call(this, "communication/send_communication", params, () => {
+			nm.info("The communication has been sent");
+
+			this.setState({
+				...this.state.defaultState,
 			});
-		}
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	render() {
-		if (!this.props.article || !this.state.articleEnums) {
+		if (!this.props.campaign || !this.state.addresses) {
 			return <Loading height={300} />;
 		}
 
 		return (
-			<div id="CampaignSend" className={"row"}>
-				{this.props.editable
-					&& <div className="Article-action-buttons-wrapper">
-						<div className={"Article-action-buttons"}>
-							<h3>Quick actions</h3>
-							<div>
-								<DialogAddImage
-									trigger={
-										<button
-											className={"blue-background"}
-											data-hover="Filter">
-											<i className="fas fa-plus"/> Add image
-										</button>
-									}
-								/>
-							</div>
+			<div id="CampaignSend" >
+				<div className={"row"}>
+					<div className="col-md-12">
+						<h2>Verify and send</h2>
+					</div>
+
+					<div className="col-md-12">
+						<Info
+							content={"The recipients are set as BCC. So they won't be able to see each others."}
+						/>
+
+						{(this.props.campaign.subject === null || this.props.campaign.subject.length === 0)
+							&& <Warning
+								content={"You cannot sent the communication as the subject of the mail is empty"}
+							/>
+						}
+
+						{(this.props.campaign.body === null || this.props.campaign.body.length === 0)
+							&& <Warning
+								content={"You cannot sent the communication as the body of the mail is empty"}
+							/>
+						}
+
+						{!this.props.campaign.template_id
+							&& <Info
+								content={"No campaign template selected"}
+							/>
+						}
+
+						{this.props.campaign.template_id && this.state.template
+							&& <Info
+								content={"Selected template: " + this.state.template.name}
+							/>
+						}
+
+						{this.props.campaign.template_id && !this.state.template
+							&& <Warning
+								content={"The template has not been loaded successfully"}
+							/>
+						}
+
+						{this.props.campaign.template_id && this.state.template
+							&& !this.state.template.content
+							&& <Warning
+								content={"The content of the template is empty"}
+							/>
+						}
+
+						{this.props.campaign.template_id && this.state.template
+							&& this.state.template.content
+							&& !this.state.template.content.includes("[CAMPAIGN CONTENT]")
+							&& <Warning
+								content={"The template does not contain '[CAMPAIGN CONTENT]'"}
+							/>
+						}
+
+						{this.state.addresses.length === 0
+							? <Warning
+								content={"You cannot send the communication as "
+									+ "you have not selected any address"}
+							/>
+							: <Info
+								content={this.state.addresses.length + " email addresses selected"}
+							/>
+						}
+					</div>
+
+					<div className="col-md-12 row-spaced">
+						<div className="right-buttons">
+							<button
+								onClick={() => this.sendDraft()}
+								disabled={!this.state.user}>
+								<i className="fas fa-stethoscope"/>&nbsp;
+								{this.state.user
+									? "Send a draft to " + this.state.user.email
+									: "Send a draft to myself"
+								}
+							</button>
+							<DialogConfirmation
+								text={"Are you sure you want to send the communication?"}
+								trigger={
+									<button
+										disabled={
+											this.state.addresses.length === 0
+											|| this.props.campaign.subject === null
+											|| this.props.campaign.subject.length === 0
+											|| this.props.campaign.body === null
+											|| this.props.campaign.body.length === 0
+										}
+									>
+										<i className="far fa-paper-plane"/> Send the communication...
+									</button>
+								}
+								afterConfirmation={() => this.sendCommunication()}
+							/>
 						</div>
 					</div>
-				}
-
-				<div className="col-md-12">
-					<h2>Global</h2>
-				</div>
-
-				<div className="col-md-12">
-					<h3>Identity</h3>
-				</div>
-
-				<div className="col-md-6 row-spaced">
-					<FormLine
-						type={"image"}
-						label={""}
-						value={this.props.article.image}
-						onChange={(v) => this.saveArticleValue("image", v)}
-						height={160}
-						disabled={!this.props.editable}
-						fullWidth={true}
-					/>
-				</div>
-
-				<div className="col-md-6">
-					<FormLine
-						label={"ID"}
-						value={this.props.article.id}
-						disabled={true}
-					/>
-					<FormLine
-						label={"Status"}
-						type={"select"}
-						value={this.props.article.status}
-						options={this.state.articleEnums === null
-							|| typeof this.state.articleEnums.status === "undefined" ? []
-							: this.state.articleEnums.status.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveArticleValue("status", v)}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						label={"Title"}
-						value={this.props.article.title}
-						onBlur={(v) => this.saveArticleValue("title", v)}
-						disabled={!this.props.editable}
-						fullWidth={true}
-					/>
-				</div>
-
-				<div className="col-md-12">
-					<h3>Definition</h3>
-				</div>
-
-				<div className="col-md-12">
-					<FormLine
-						label={"Type"}
-						type={"select"}
-						value={this.props.article.type}
-						options={this.state.articleEnums === null
-							|| typeof this.state.articleEnums.type === "undefined" ? []
-							: this.state.articleEnums.type.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveArticleValue("type", v)}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						label={"Handle"}
-						value={this.props.article.handle}
-						onBlur={(v) => this.saveArticleValue("handle", v)}
-						format={validateUrlHandle}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						type="editor"
-						label={"Abstract"}
-						value={this.props.article.abstract}
-						onBlur={(v) => this.saveArticleValue("abstract", v)}
-						format={(v) => !v || v.length < 500}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
-						type={"datetime"}
-						label={"Publication date"}
-						value={this.props.article.publication_date}
-						onBlur={(v) => this.saveArticleValue(
-							"publication_date",
-							typeof v === "string"
-								? this.props.article.start_date
-								: v.format("yyyy-MM-DDTHH:mm"),
-						)}
-						disabled={!this.props.editable}
-					/>
-				</div>
-
-				<div className="col-md-12">
-					{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
-						&& <div className="right-buttons">
-							<button
-								className="link-button"
-								onClick={() => this.setState({
-									showOptionalFields: !this.state.showOptionalFields,
-								})}>
-								{this.state.showOptionalFields ? "Hide" : "Show"}
-								&nbsp;optional fields for {this.props.article.type.toLowerCase()}
-							</button>
-						</div>}
-				</div>
-
-				<div className="col-md-12">
-					{(["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"Link"}
-							value={this.props.article.link}
-							onBlur={(v) => this.saveArticleValue("link", v)}
-							disabled={!this.props.editable}
-						/>}
-
-					{(this.props.article.type === "EVENT"
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"Start date"}
-							type={"datetime"}
-							value={this.props.article.start_date}
-							onBlur={(v) => this.saveArticleValue(
-								"start_date",
-								typeof v === "string" || v === null
-									? this.props.article.start_date
-									: v.format("yyyy-MM-DDTHH:mm"),
-							)}
-							disabled={!this.props.editable}
-						/>}
-
-					{(this.props.article.type === "EVENT"
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"End date"}
-							type={"datetime"}
-							value={this.props.article.end_date}
-							onBlur={(v) => this.saveArticleValue(
-								"end_date",
-								typeof v === "string" || v === null
-									? this.props.article.start_date
-									: v.format("yyyy-MM-DDTHH:mm"),
-							)}
-							disabled={!this.props.editable}
-						/>}
-
-					{(this.props.article.type === "JOB OFFER"
-						|| this.state.showOptionalFields)
-						&& <FormLine
-							label={"External reference"}
-							value={this.props.article.external_reference}
-							disabled={true}
-						/>}
 				</div>
 			</div>
 		);

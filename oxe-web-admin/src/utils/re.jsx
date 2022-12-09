@@ -35,7 +35,7 @@ export function validateUrl(value) {
 }
 
 export function extractEmails(text) {
-	const items = text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+	const items = text.match(/([a-zA-Z0-9-_.]+@[a-zA-Z0-9-_.]+)/gi);
 	if (!items) {
 		return [];
 	}
