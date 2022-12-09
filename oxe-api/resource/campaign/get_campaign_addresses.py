@@ -33,7 +33,7 @@ class GetCampaignAddresses(MethodResource, Resource):
         if len(campaigns) == 0:
             return "", "422 Provided campaign does not exist"
 
-        address_objects = self.db.get(self.db.tables["CampaignAddress"], {"id": kwargs["campaign_id"]})
+        address_objects = self.db.get(self.db.tables["CampaignAddress"], {"campaign_id": kwargs["campaign_id"]})
         data = Serializer.serialize(address_objects, self.db.tables["CampaignAddress"])
 
         return data, "200 "
