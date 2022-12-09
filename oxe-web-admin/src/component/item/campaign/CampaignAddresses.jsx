@@ -37,7 +37,7 @@ export default class CampaignAddresses extends React.Component {
 		});
 	}
 
-	addAddresses(addresses) {
+	addAddresses(addresses, close) {
 		const params = {
 			campaign_id: this.props.campaign.id,
 			addresses,
@@ -45,6 +45,9 @@ export default class CampaignAddresses extends React.Component {
 
 		postRequest.call(this, "campaign/add_campaign_addresses", params, () => {
 			this.fetchAddresses();
+			if (close) {
+				close();
+			}
 			nm.info("The addresses has been added");
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -53,10 +56,9 @@ export default class CampaignAddresses extends React.Component {
 		});
 	}
 
-	deleteAddresses(addresses) {
+	deleteAddresses(addressId) {
 		const params = {
-			campaign_id: this.props.campaign.id,
-			addresses,
+			ids: addressId,
 		};
 
 		postRequest.call(this, "campaign/delete_campaign_addresses", params, () => {
@@ -77,6 +79,10 @@ export default class CampaignAddresses extends React.Component {
 		return [];
 	}
 
+	changeState(field, value) {
+		this.setState({ [field]: value });
+	}
+
 	render() {
 		if (!this.state.addresses || !this.props.campaign) {
 			return <Loading height={300} />;
@@ -94,7 +100,7 @@ export default class CampaignAddresses extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<button
 						className={"small-button red-button"}
-						onClick={() => this.removeAddress(value.email)}>
+						onClick={() => this.deleteAddresses(value.id)}>
 						<i className="fas fa-trash-alt"/>
 					</button>
 				),
@@ -161,7 +167,7 @@ export default class CampaignAddresses extends React.Component {
 								<div className={"col-md-12"}>
 									<div className="right-buttons">
 										<button
-											onClick={() => this.addAddresses(this.getAddressesFromText())}
+											onClick={() => this.addAddresses(this.getAddressesFromText(), close)}
 											disabled={this.getAddressesFromText().length === 0}>
 											<i className="fas fa-plus"/> Add addresses
 										</button>
