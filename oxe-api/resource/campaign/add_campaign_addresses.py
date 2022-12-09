@@ -16,7 +16,7 @@ class AddCampaignAddresses(MethodResource, Resource):
         self.db = db
 
     @log_request
-    @doc(tags=['contact'],
+    @doc(tags=['campaign'],
          description='Add addresses related to a campaign',
          responses={
              "200": {},
