@@ -37,7 +37,6 @@ export default class DialogSendMail extends React.Component {
 	}
 
 	onOpen() {
-		console.log(this.props.subject);
 		this.setState({
 			subject: this.props.subject ? this.props.subject : null,
 		});
