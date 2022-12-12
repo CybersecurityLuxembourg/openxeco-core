@@ -3,11 +3,13 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
+from sqlalchemy.orm.exc import NoResultFound
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.re import has_mail_format
+from exception.object_not_found import ObjectNotFound
 
 
 class AddCampaignAddresses(MethodResource, Resource):
@@ -20,7 +22,8 @@ class AddCampaignAddresses(MethodResource, Resource):
          description='Add addresses related to a campaign',
          responses={
              "200": {},
-             "422": {"description": "Provided campaign does not exist"},
+             "422.a": {"description": "Object not found: Campaign"},
+             "422.b": {"description": "Cannot modify a campaign that does not have the 'DRAFT' status"},
          })
     @use_kwargs({
         'campaign_id': fields.Int(),
@@ -33,10 +36,16 @@ class AddCampaignAddresses(MethodResource, Resource):
 
         # Checking campaign
 
-        entity = self.db.get(self.db.tables["Campaign"], {"id": kwargs["campaign_id"]})
+        try:
+            campaign = self.db.session \
+                .query(self.db.tables["Campaign"]) \
+                .filter(self.db.tables["Campaign"].id == kwargs["campaign_id"]) \
+                .one()
+        except NoResultFound:
+            raise ObjectNotFound("Campaign")
 
-        if len(entity) == 0:
-            return "", "422 Provided campaign does not exist"
+        if campaign.status != "DRAFT":
+            return "", "422 Cannot modify a campaign that does not have the 'DRAFT' status"
 
         # Insert
 

@@ -58,7 +58,7 @@ export default class CampaignAddresses extends React.Component {
 
 	deleteAddresses(addressId) {
 		const params = {
-			ids: addressId,
+			ids: [addressId],
 		};
 
 		postRequest.call(this, "campaign/delete_campaign_addresses", params, () => {

@@ -3,10 +3,12 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields
+from sqlalchemy.orm.exc import NoResultFound
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from exception.object_not_found import ObjectNotFound
 
 
 class UpdateCampaign(MethodResource, Resource):
@@ -21,7 +23,8 @@ class UpdateCampaign(MethodResource, Resource):
          description='Update a campaign specified by its ID',
          responses={
              "200": {},
-             "422": {"description": "Provided campaign does not exist"},
+             "422.a": {"description": "Object not found: Campaign"},
+             "422.b": {"description": "Cannot modify a campaign that does not have the 'DRAFT' status"},
          })
     @use_kwargs({
         'id': fields.Int(),
@@ -36,10 +39,16 @@ class UpdateCampaign(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        campaigns = self.db.get(self.db.tables["Campaign"], {"id": kwargs["id"]})
+        try:
+            campaign = self.db.session \
+                .query(self.db.tables["Campaign"]) \
+                .filter(self.db.tables["Campaign"].id == kwargs["id"]) \
+                .one()
+        except NoResultFound:
+            raise ObjectNotFound("Campaign")
 
-        if len(campaigns) == 0:
-            return "", "422 Provided campaign does not exist"
+        if campaign.status != "DRAFT":
+            return "", "422 Cannot modify a campaign that does not have the 'DRAFT' status"
 
         self.db.merge(kwargs, self.db.tables["Campaign"])
 
