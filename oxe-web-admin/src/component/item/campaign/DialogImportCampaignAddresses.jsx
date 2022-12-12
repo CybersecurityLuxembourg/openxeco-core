@@ -1,37 +1,43 @@
 import React from "react";
-import "./DialogImportCommunicationAddresses.css";
+import "./DialogImportCampaignAddresses.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../../utils/request.jsx";
 import DynamicTable from "../../table/DynamicTable.jsx";
 import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
 import Chip from "../../button/Chip.jsx";
 import { dictToURI } from "../../../utils/url.jsx";
 
-export default class DialogImportCommunicationAddresses extends React.Component {
+export default class DialogImportCampaignAddresses extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.fetchCommunications = this.fetchCommunications.bind(this);
-		this.onConfirmation = this.onConfirmation.bind(this);
-
 		this.state = {
-			communications: null,
-			selectedCommunication: null,
+			campaigns: null,
+			selectedCampaign: null,
+			selectedAddresses: [],
 			pagination: null,
 			page: 1,
 		};
 	}
 
-	fetchCommunications(page) {
+	componentDidUpdate(_, prevState) {
+		if (prevState.selectedCampaign !== this.state.selectedCampaign
+			&& this.state.selectedCampaign) {
+			this.fetchAddresses();
+		}
+	}
+
+	fetchCampaigns(page) {
 		const filters = {
 			page: Number.isInteger(page) ? page : this.state.page,
 			per_page: 10,
 		};
 
-		getRequest.call(this, "communication/get_communications?" + dictToURI(filters), (data) => {
+		getRequest.call(this, "campaign/get_campaigns?" + dictToURI(filters), (data) => {
 			this.setState({
-				communications: data.items,
+				campaigns: data.items,
 				pagination: data.pagination,
 				page,
 			});
@@ -42,24 +48,25 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 		});
 	}
 
-	getSelectedAddresses() {
-		if (this.state.selectedCommunication && this.state.selectedCommunication.addresses) {
-			return this.state.selectedCommunication.addresses
-				.replaceAll(" ", "")
-				.split(",")
-				.map((a) => ({
-					email: a,
-					information: "",
-					source: "PREVIOUS COMMUNICATION",
-				}));
-		}
+	fetchAddresses() {
+		const filters = {
+			campaign_id: this.state.selectedCampaign,
+		};
 
-		return [];
+		getRequest.call(this, "campaign/get_campaign_addresses?" + dictToURI(filters), (data) => {
+			this.setState({
+				selectedAddresses: data.map((a) => a.value),
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	onConfirmation(close) {
 		if (typeof this.props.onConfirmation === "function") {
-			this.props.onConfirmation(this.getSelectedAddresses());
+			this.props.onConfirmation(this.state.selectedAddresses);
 		}
 
 		close();
@@ -93,7 +100,7 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 				Cell: ({ cell: { value } }) => (
 					<button
 						className={"small-button"}
-						onClick={() => this.setState({ selectedCommunication: value })}>
+						onClick={() => this.setState({ selectedCampaign: value.id })}>
 						<i className="far fa-check-circle"/>
 					</button>
 				),
@@ -109,12 +116,12 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 						<i className="fas fa-history"/> Import from prev. campaign...
 					</button>
 				}
-				onOpen={this.fetchCommunications}
+				onOpen={() => this.fetchCampaigns()}
 				modal
 			>
 				{(close) => <div className="row">
 					<div className={"col-md-9 row-spaced"}>
-						<h3>Import addresses from prev. campaign...</h3>
+						<h2>Import addresses from prev. campaign...</h2>
 					</div>
 					<div className={"col-md-3"}>
 						<div className="right-buttons">
@@ -129,10 +136,10 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 					</div>
 
 					<div className={"col-md-12 row-spaced"}>
-						{this.state.communications
+						{this.state.campaigns
 							? <DynamicTable
 								columns={columns}
-								data={this.state.communications}
+								data={this.state.campaigns}
 								pagination={this.state.pagination}
 								changePage={this.fetchDataControls}
 							/>
@@ -143,21 +150,30 @@ export default class DialogImportCommunicationAddresses extends React.Component 
 					</div>
 
 					<div className={"col-md-12 row-spaced"}>
-						<h3>{this.getSelectedAddresses().length} addresse{this.getSelectedAddresses().length > 1 && "s"} selected</h3>
+						<h3>{this.state.selectedAddresses.length} addresse{this.state.selectedAddresses.length > 1 && "s"} selected</h3>
 
-						{this.getSelectedAddresses().map((a) => (
-							<Chip
-								key={a.email}
-								label={a.email}
+						{this.state.selectedAddresses.length === 0
+							&& <Message
+								text={"No address selected"}
+								height={150}
 							/>
-						))}
+						}
+
+						{this.state.selectedAddresses.length > 0
+							&& this.state.selectedAddresses.map((a) => (
+								<Chip
+									key={a}
+									label={a}
+								/>
+							))
+						}
 					</div>
 
 					<div className="col-md-12 row-spaced">
 						<div className="right-buttons">
 							<button
 								onClick={() => this.onConfirmation(close)}
-								disabled={this.getSelectedAddresses().length === 0}>
+								disabled={this.state.selectedAddresses.length === 0}>
 								<i className="fas fa-upload"/> Import addresses
 							</button>
 						</div>

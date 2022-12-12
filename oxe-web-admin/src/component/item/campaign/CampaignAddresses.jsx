@@ -5,7 +5,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
-import DialogImportCommunicationAddresses from "./DialogImportCommunicationAddresses.jsx";
+import DialogImportCampaignAddresses from "./DialogImportCampaignAddresses.jsx";
 import DialogImportDatabaseAddresses from "./DialogImportDatabaseAddresses.jsx";
 import Table from "../../table/Table.jsx";
 import { extractEmails } from "../../../utils/re.jsx";
@@ -116,7 +116,7 @@ export default class CampaignAddresses extends React.Component {
 
 				<div className="col-md-12">
 					<div className="right-buttons">
-						<DialogImportCommunicationAddresses
+						<DialogImportCampaignAddresses
 							onConfirmation={(addresses) => this.addAddresses(addresses)}
 						/>
 						<DialogImportDatabaseAddresses
