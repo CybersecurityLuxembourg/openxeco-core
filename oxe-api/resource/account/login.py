@@ -35,7 +35,13 @@ class Login(MethodResource, Resource):
 
         data = self.db.get(self.db.tables["User"], {"email": kwargs["email"]})
 
-        if len(data) < 1 or not check_password_hash(data[0].password, kwargs['password']):
+        # If the user is not found, we simulate the whole process with a blank password.
+        # This is done to limit the time discrepancy factor against the user enumeration exploit
+        # CF: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+
+        password = data[0].password if len(data) > 0 else "Imp0ssiblePassword~~"
+
+        if not check_password_hash(password, kwargs['password']):
             return "", "401 Wrong email/password combination"
 
         if not data[0].is_active:
