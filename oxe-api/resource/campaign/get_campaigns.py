@@ -3,6 +3,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields, validate
+from decorator.verify_admin_access import verify_admin_access
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -26,6 +27,7 @@ class GetCampaigns(MethodResource, Resource):
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
     }, location="query")
     @jwt_required
+    @verify_admin_access
     @catch_exception
     def get(self, **kwargs):
 
