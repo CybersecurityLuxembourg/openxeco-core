@@ -102,19 +102,13 @@ export default class CampaignSend extends React.Component {
 		});
 	}
 
-	sendCommunication() {
+	sendCampaign() {
 		const params = {
-			addresses: this.getSelectedAddresses(),
-			subject: this.state.subject,
-			body: this.state.body,
+			id: this.props.campaign.id,
 		};
 
-		postRequest.call(this, "communication/send_communication", params, () => {
-			nm.info("The communication has been sent");
-
-			this.setState({
-				...this.state.defaultState,
-			});
+		postRequest.call(this, "campaign/send_campaign", params, () => {
+			nm.info("The campaign has been sent");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -221,7 +215,7 @@ export default class CampaignSend extends React.Component {
 										<i className="far fa-paper-plane"/> Send the communication...
 									</button>
 								}
-								afterConfirmation={() => this.sendCommunication()}
+								afterConfirmation={() => this.sendCampaign()}
 							/>
 						</div>
 					</div>
