@@ -28,6 +28,8 @@ All notable changes to this project will be documented in this file.
 - Password regex function on oxe-web-admin and oxe-web-community
 - Page change on table of Form page on oxe-web-admin
 - Improve security against user enumeration considering time discrepancy factor
+- Set a default INITIAL_ADMIN_PASSWORD respecting pass criterias to allow change password
+- Remove password check on "Current password" when changing password
 
 ## [1.13.10] - 2022-11-11
 
