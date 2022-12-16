@@ -1,7 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.14.0] - 2022-XX-XX
+## [1.14.1] - 2022-12-16
+
+### Fixed
+
+- Login with the reset password token when clicking "Back to login" on oxe-web-admin and oxe-web-community
+
+## [1.14.0] - 2022-12-16
 
 ### Changed
 

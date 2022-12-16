@@ -151,6 +151,11 @@ export default class Login extends React.Component {
 		});
 	}
 
+	backToLogin() {
+		this.props.cookies.remove("access_token_cookie");
+		window.location.replace("/");
+	}
+
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
 		if (event.key === "Enter" || event.code === "NumpadEnter") {
 			if (this.state.view === "login") this.login();
@@ -514,7 +519,7 @@ export default class Login extends React.Component {
 									<div className="left-buttons">
 										<button
 											className="link-button"
-											onClick={() => this.changeState("view", "login")}
+											onClick={() => this.backToLogin()}
 										>
 											Back to login
 										</button>
@@ -549,7 +554,7 @@ export default class Login extends React.Component {
 								<div className="left-buttons">
 									<button
 										className="link-button"
-										onClick={() => this.changeState("view", "login")}
+										onClick={() => this.backToLogin()}
 									>
 										Back to login
 									</button>
@@ -609,7 +614,7 @@ export default class Login extends React.Component {
 								<div className="left-buttons">
 									<button
 										className="link-button"
-										onClick={() => window.location.replace("/")}
+										onClick={() => this.backToLogin()}
 									>
 										Back to login
 									</button>
