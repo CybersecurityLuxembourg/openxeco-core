@@ -1,6 +1,42 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.14.1] - 2022-12-16
+
+### Fixed
+
+- Login with the reset password token when clicking "Back to login" on oxe-web-admin and oxe-web-community
+
+## [1.14.0] - 2022-12-16
+
+### Changed
+
+- Communication functionality into Campaign
+- form/get_forms API resource
+- form/update_form API resource
+- form/update_form_question API resource
+- Set textarea field instead of medium field on forms of oxe-web-community
+
+### Added
+
+- Column "reference" on Form table of the database structure
+- Column "reference" on FormQuestion table of the database structure
+- Fields "reference" on forms and questions on oxe-web-admin
+- "TEXTAREA" question type on forms
+- form/add_form_answer resource
+- form/update_form_answer resource
+- Checkbox to filter out "REJECTED" requests on oxe-web-admin
+- Email subject field for Requests on oxe-web-admin
+- Button to remove a Form on oxe-web-admin
+
+### Fixed
+
+- Password regex function on oxe-web-admin and oxe-web-community
+- Page change on table of Form page on oxe-web-admin
+- Improve security against user enumeration considering time discrepancy factor
+- Set a default INITIAL_ADMIN_PASSWORD respecting pass criterias to allow change password
+- Remove password check on "Current password" when changing password
+
 ## [1.13.10] - 2022-11-11
 
 ### Fixed

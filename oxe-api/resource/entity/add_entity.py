@@ -19,7 +19,7 @@ class AddEntity(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Add a entity. Return a dictionary with the data of the new object',
+         description='Add an entity. Return a dictionary with the data of the new object',
          responses={
              "200": {},
              "422": {"description": "A entity is already existing with that name"},

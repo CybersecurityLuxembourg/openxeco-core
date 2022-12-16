@@ -462,8 +462,8 @@ export default class DashboardCommunity extends React.Component {
 					<div className="col-md-6">
 						<h3>Legal status</h3>
 
-						{this.state.filteredEntities && this.state.filteredEntities
-							? <Doughnut
+						{this.state.filteredEntities && this.state.filteredEntities.length > 0
+							&& <Doughnut
 								data={{
 									labels: [...new Set(this.state.filteredEntities
 										.map((c) => c.legal_status))],
@@ -499,8 +499,18 @@ export default class DashboardCommunity extends React.Component {
 									},
 								}}
 							/>
-							: <Loading
-								height={300}
+						}
+
+						{this.state.filteredEntities && this.state.filteredEntities.length === 0
+							&& <Message
+								text={"No data found"}
+								height={200}
+							/>
+						}
+
+						{!this.state.filteredEntities
+							&& <Loading
+								height={200}
 							/>
 						}
 					</div>
@@ -508,8 +518,8 @@ export default class DashboardCommunity extends React.Component {
 					<div className="col-md-6">
 						<h3>Status</h3>
 
-						{this.state.filteredEntities && this.state.filteredEntities
-							? <Doughnut
+						{this.state.filteredEntities && this.state.filteredEntities.length > 0
+							&& <Doughnut
 								data={{
 									labels: [...new Set(this.state.filteredEntities
 										.map((c) => c.status))],
@@ -546,8 +556,18 @@ export default class DashboardCommunity extends React.Component {
 									},
 								}}
 							/>
-							: <Loading
-								height={300}
+						}
+
+						{this.state.filteredEntities && this.state.filteredEntities.length === 0
+							&& <Message
+								text={"No data found"}
+								height={200}
+							/>
+						}
+
+						{!this.state.filteredEntities
+							&& <Loading
+								height={200}
 							/>
 						}
 					</div>
@@ -628,6 +648,13 @@ export default class DashboardCommunity extends React.Component {
 					<div className="col-md-12">
 						<h2>Taxonomy</h2>
 					</div>
+
+					{this.getEntityTaxonomyCategory().length === 0
+						&& <Message
+							text={"No data found"}
+							height={300}
+						/>
+					}
 
 					{this.state.filteredEntities !== null
 						? this.getEntityTaxonomyCategory()

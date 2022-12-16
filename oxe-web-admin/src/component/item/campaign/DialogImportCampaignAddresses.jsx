@@ -1,38 +1,43 @@
 import React from "react";
-import "./DialogImportCommunicationContent.css";
+import "./DialogImportCampaignAddresses.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
-import { getRequest } from "../../utils/request.jsx";
-import DynamicTable from "../table/DynamicTable.jsx";
-import Communication from "../item/Communication.jsx";
-import Loading from "../box/Loading.jsx";
-import { dictToURI } from "../../utils/url.jsx";
+import { getRequest } from "../../../utils/request.jsx";
+import DynamicTable from "../../table/DynamicTable.jsx";
+import Loading from "../../box/Loading.jsx";
+import Message from "../../box/Message.jsx";
+import Chip from "../../button/Chip.jsx";
+import { dictToURI } from "../../../utils/url.jsx";
 
-export default class DialogImportCommunicationContent extends React.Component {
+export default class DialogImportCampaignAddresses extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			communications: null,
-			selectedCommunication: null,
+			campaigns: null,
+			selectedCampaign: null,
+			selectedAddresses: [],
 			pagination: null,
 			page: 1,
 		};
 	}
 
-	componentDidMount() {
-		this.fetchCommunications();
+	componentDidUpdate(_, prevState) {
+		if (prevState.selectedCampaign !== this.state.selectedCampaign
+			&& this.state.selectedCampaign) {
+			this.fetchAddresses();
+		}
 	}
 
-	fetchCommunications(page) {
+	fetchCampaigns(page) {
 		const filters = {
 			page: Number.isInteger(page) ? page : this.state.page,
 			per_page: 10,
 		};
 
-		getRequest.call(this, "communication/get_communications?" + dictToURI(filters), (data) => {
+		getRequest.call(this, "campaign/get_campaigns?" + dictToURI(filters), (data) => {
 			this.setState({
-				communications: data.items,
+				campaigns: data.items,
 				pagination: data.pagination,
 				page,
 			});
@@ -43,12 +48,25 @@ export default class DialogImportCommunicationContent extends React.Component {
 		});
 	}
 
+	fetchAddresses() {
+		const filters = {
+			campaign_id: this.state.selectedCampaign,
+		};
+
+		getRequest.call(this, "campaign/get_campaign_addresses?" + dictToURI(filters), (data) => {
+			this.setState({
+				selectedAddresses: data.map((a) => a.value),
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
 	onConfirmation(close) {
 		if (typeof this.props.onConfirmation === "function") {
-			this.props.onConfirmation(
-				this.state.selectedCommunication.subject,
-				this.state.selectedCommunication.body,
-			);
+			this.props.onConfirmation(this.state.selectedAddresses);
 		}
 
 		close();
@@ -64,9 +82,7 @@ export default class DialogImportCommunicationContent extends React.Component {
 				Header: "Subject",
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<Communication
-						info={value}
-					/>
+					value.name
 				),
 				width: 300,
 			},
@@ -84,7 +100,7 @@ export default class DialogImportCommunicationContent extends React.Component {
 				Cell: ({ cell: { value } }) => (
 					<button
 						className={"small-button"}
-						onClick={() => this.setState({ selectedCommunication: value })}>
+						onClick={() => this.setState({ selectedCampaign: value.id })}>
 						<i className="far fa-check-circle"/>
 					</button>
 				),
@@ -97,14 +113,15 @@ export default class DialogImportCommunicationContent extends React.Component {
 				className="Popup-full-size"
 				trigger={
 					<button>
-						<i className="fas fa-upload"/> Import from previous communication...
+						<i className="fas fa-history"/> Import from prev. campaign...
 					</button>
 				}
+				onOpen={() => this.fetchCampaigns()}
 				modal
 			>
 				{(close) => <div className="row">
 					<div className={"col-md-9 row-spaced"}>
-						<h3>Import addresses from previous communication...</h3>
+						<h2>Import addresses from prev. campaign...</h2>
 					</div>
 					<div className={"col-md-3"}>
 						<div className="right-buttons">
@@ -119,10 +136,10 @@ export default class DialogImportCommunicationContent extends React.Component {
 					</div>
 
 					<div className={"col-md-12 row-spaced"}>
-						{this.state.communications
+						{this.state.campaigns
 							? <DynamicTable
 								columns={columns}
-								data={this.state.communications}
+								data={this.state.campaigns}
 								pagination={this.state.pagination}
 								changePage={this.fetchDataControls}
 							/>
@@ -132,24 +149,32 @@ export default class DialogImportCommunicationContent extends React.Component {
 						}
 					</div>
 
-					{this.state.selectedCommunication
-						&& <div className={"col-md-12 row-spaced"}>
-							<h3>{this.state.selectedCommunication.subject}</h3>
+					<div className={"col-md-12 row-spaced"}>
+						<h3>{this.state.selectedAddresses.length} addresse{this.state.selectedAddresses.length > 1 && "s"} selected</h3>
 
-							<div>
-								{this.state.selectedCommunication.body}
-							</div>
-						</div>
-					}
+						{this.state.selectedAddresses.length === 0
+							&& <Message
+								text={"No address selected"}
+								height={150}
+							/>
+						}
+
+						{this.state.selectedAddresses.length > 0
+							&& this.state.selectedAddresses.map((a) => (
+								<Chip
+									key={a}
+									label={a}
+								/>
+							))
+						}
+					</div>
 
 					<div className="col-md-12 row-spaced">
 						<div className="right-buttons">
 							<button
 								onClick={() => this.onConfirmation(close)}
-								disabled={!this.state.selectedCommunication
-									|| !this.state.selectedCommunication.subject
-									|| !this.state.selectedCommunication.body}>
-								<i className="fas fa-upload"/> Import content
+								disabled={this.state.selectedAddresses.length === 0}>
+								<i className="fas fa-upload"/> Import addresses
 							</button>
 						</div>
 					</div>

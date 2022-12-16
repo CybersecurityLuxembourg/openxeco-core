@@ -154,7 +154,7 @@ export default class FormForms extends React.Component {
 										columns={columns}
 										data={this.state.forms.items}
 										pagination={this.state.forms.pagination}
-										changePage={this.fetchForms}
+										changePage={(p) => this.fetchForms(p)}
 									/>
 								</div>
 							</div>

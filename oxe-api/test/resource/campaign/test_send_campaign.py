@@ -3,11 +3,11 @@ from unittest.mock import patch
 from test.BaseCase import BaseCase
 
 
-class TestSendCommunication(BaseCase):
+class TestSendCampaign(BaseCase):
 
     @BaseCase.login
-    @BaseCase.grant_access("/communication/send_communication")
-    @patch('resource.communication.send_communication.send_email')
+    @BaseCase.grant_access("/campaign/send_campaign")
+    @patch('resource.campaign.send_campaign.send_email')
     def test_ok(self, mock_send_mail, token):
         mock_send_mail.return_value = None
 
@@ -17,11 +17,13 @@ class TestSendCommunication(BaseCase):
             "body": "Mail content",
         }
 
-        response = self.application.post('/communication/send_communication',
+        response = self.application.post('/campaign/send_campaign',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        communications = self.db.get(self.db.tables["Communication"])
+        communications = self.db.get(self.db.tables["Campaign"])
+
+        print(response.status)
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(communications), 1)

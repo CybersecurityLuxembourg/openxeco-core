@@ -125,7 +125,7 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/forgot_password", params, () => {
-			nm.info("An email has been sent with a link to reset your password");
+			nm.info("If that email address is in our database, we will send you an email to reset your password");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -145,6 +145,11 @@ export default class Login extends React.Component {
 		}, (error) => {
 			nm.error(error.message);
 		});
+	}
+
+	backToLogin() {
+		this.props.cookies.remove("access_token_cookie");
+		window.location.replace("/");
 	}
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -257,7 +262,7 @@ export default class Login extends React.Component {
 								<div className="bottom-left-buttons">
 									<button
 										className="link-button"
-										onClick={() => this.changeState("view", "login")}
+										onClick={() => this.backToLogin()}
 									>
 										Back to login
 									</button>
@@ -318,7 +323,7 @@ export default class Login extends React.Component {
 								<div className="bottom-left-buttons">
 									<button
 										className="link-button"
-										onClick={() => window.location.replace("/")}
+										onClick={() => this.backToLogin()}
 									>
 										Back to login
 									</button>

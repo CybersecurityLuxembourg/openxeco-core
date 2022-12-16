@@ -16,7 +16,7 @@ class AddContact(MethodResource, Resource):
 
     @log_request
     @doc(tags=['contact'],
-         description='Add a contact related to a entity',
+         description='Add a contact related to an entity',
          responses={
              "200": {},
              "422": {"description": "Provided entity not existing"},

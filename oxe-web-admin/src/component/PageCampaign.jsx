@@ -1,11 +1,11 @@
 import React from "react";
 import "./PageArticle.css";
 import Tab from "./tab/Tab.jsx";
-import EmailSend from "./pageemail/EmailSend.jsx";
-import EmailHistory from "./pageemail/EmailHistory.jsx";
+import CampaignList from "./pagecampaign/CampaignList.jsx";
+import CampaignTemplates from "./pagecampaign/CampaignTemplates.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 
-export default class PageEmail extends React.Component {
+export default class PageCampaign extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -14,8 +14,8 @@ export default class PageEmail extends React.Component {
 		this.state = {
 			selectedMenu: null,
 			tabs: [
-				"communication",
-				"history",
+				"list",
+				"template",
 			],
 		};
 	}
@@ -39,21 +39,21 @@ export default class PageEmail extends React.Component {
 
 	render() {
 		return (
-			<div id="PageEmail" className="page max-sized-page">
+			<div id="PageCampaign" className="page max-sized-page">
 				<Tab
 					labels={[
-						"Send a communication",
-						"History",
+						"Campaigns",
+						"Templates",
 					]}
 					selectedMenu={this.state.selectedMenu}
 					onMenuClick={this.onMenuClick}
 					keys={this.state.tabs}
 					content={[
-						<EmailSend
-							key={"send"}
+						<CampaignList
+							key={this.state.tabs[0]}
 						/>,
-						<EmailHistory
-							key={"history"}
+						<CampaignTemplates
+							key={this.state.tabs[1]}
 						/>,
 					]}
 				/>

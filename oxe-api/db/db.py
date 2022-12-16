@@ -97,10 +97,13 @@ class DB:
                     q = q.filter(getattr(table, attr).in_(value))
                 else:
                     q = q.filter(getattr(table, attr) == value)
-            q.delete()
+            count = q.delete()
 
             if commit:
                 self.session.commit()
+
+            return count
+        return None
 
     def delete_by_id(self, id_, table):
         self.session.query(table).filter(table.id == id_).delete()

@@ -23,11 +23,11 @@ class ForgotPassword(MethodResource, Resource):
 
     @log_request
     @doc(tags=['account'],
-         description='Request a password change with a temporary link sent via email',
+         description='Request a password change with a temporary link sent via email. '
+                     'The resource return a 200 response code for all inputs to avoid user enumeration exploit.',
          responses={
              "200": {},
-             "500.a": {"description": "Impossible to find the origin. Please contact the administrator"},
-             "500.b": {"description": "The user has not been found"},
+             "500": {"description": "Impossible to find the origin. Please contact the administrator"},
          })
     @use_kwargs({
         'email': fields.Str(),
@@ -35,17 +35,22 @@ class ForgotPassword(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
+        # Check HTTP_ORIGIN
+
         if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
             origin = request.environ['HTTP_ORIGIN']
         else:
             return "", "500 Impossible to find the origin. Please contact the administrator"
 
+        # Build content
+
+        # If the user is not found, we simulate the whole process with a blank user.
+        # this is done to limit the time discrepancy factor against the user enumeration exploit
+        # CF: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+
         data = self.db.get(self.db.tables["User"], {"email": kwargs["email"]})
 
-        if len(data) < 1:
-            return "", "500 The user has not been found"
-
-        user = data[0]
+        user = data[0] if len(data) > 0 else self.db.tables["User"](id=-1, email="trash@example.com")
         expires = datetime.timedelta(minutes=15)
         reset_token = create_access_token(str(user.id), expires_delta=expires)
         url = f"{origin}/login?action=reset_password&token={reset_token}"
@@ -53,9 +58,11 @@ class ForgotPassword(MethodResource, Resource):
         pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
         project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
 
+        # Send email
+
         send_email(self.mail,
                    subject=f"[{project_name}] Reset Your Password",
                    recipients=[user.email],
                    html_body=render_template('reset_password.html', url=url, project_name=project_name))
 
-        return "", "200 "
+        return "", "200 If that email address is in our database, we will send you an email to reset your password"

@@ -3,6 +3,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import jwt_required
 from flask_restful import Resource
 from webargs import fields, validate
+from decorator.verify_admin_access import verify_admin_access
 
 from db.db import DB
 from decorator.catch_exception import catch_exception
@@ -10,14 +11,14 @@ from decorator.log_request import log_request
 from utils.serializer import Serializer
 
 
-class GetCommunications(MethodResource, Resource):
+class GetCampaigns(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
 
     @log_request
-    @doc(tags=['communication'],
-         description='Get communications',
+    @doc(tags=['campaign'],
+         description='Get campaigns',
          responses={
              "200": {},
          })
@@ -26,14 +27,15 @@ class GetCommunications(MethodResource, Resource):
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
     }, location="query")
     @jwt_required
+    @verify_admin_access
     @catch_exception
     def get(self, **kwargs):
 
         query = self.db.session \
-            .query(self.db.tables["Communication"]) \
-            .order_by(self.db.tables["Communication"].id.desc())
+            .query(self.db.tables["Campaign"]) \
+            .order_by(self.db.tables["Campaign"].id.desc())
         paginate = query.paginate(kwargs['page'], kwargs['per_page'])
-        communications = Serializer.serialize(paginate.items, self.db.tables["Communication"])
+        campaigns = Serializer.serialize(paginate.items, self.db.tables["Campaign"])
 
         return {
             "pagination": {
@@ -42,5 +44,5 @@ class GetCommunications(MethodResource, Resource):
                 "per_page": kwargs['per_page'],
                 "total": paginate.total,
             },
-            "items": communications,
+            "items": campaigns,
         }, "200 "

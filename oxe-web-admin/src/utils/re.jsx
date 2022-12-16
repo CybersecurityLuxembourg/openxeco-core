@@ -6,7 +6,7 @@ export function validateEmail(mail) {
 
 export function validatePassword(password) {
 	if (password === null || typeof password === "undefined" || password.length === 0) return false;
-	return password.match(/^((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*])).{8,30}$/);
+	return password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,30}$/);
 }
 
 export function validateNotNull(value) {
@@ -35,7 +35,7 @@ export function validateUrl(value) {
 }
 
 export function extractEmails(text) {
-	const items = text.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi);
+	const items = text.match(/(?<name>[\w.]+)@(?<domain>\w+\.\w+)(\.\w+)?/gi);
 	if (!items) {
 		return [];
 	}
