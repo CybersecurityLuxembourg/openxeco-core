@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.14.2] - 2022-12-19
+
+### Changed
+
+- Send an email to the provided one on "reset password", even if the user does not exist
+
 ## [1.14.1] - 2022-12-16
 
 ### Fixed
