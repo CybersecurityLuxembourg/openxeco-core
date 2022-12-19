@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Send an email to the provided one on "reset password", even if the user does not exist
+- Force articles from "public/get_public_related_articles" to have the same type then the provided one
 
 ## [1.14.1] - 2022-12-16
 
