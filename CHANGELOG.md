@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.14.3] - 2022-12-20
+
+### Changed
+
+- Add "--preload" param to gunicorn to be more verbose
+
+### Fixed
+
+- Fix numpy version to avoid openpyxl bug
+
 ## [1.14.2] - 2022-12-19
 
 ### Changed
