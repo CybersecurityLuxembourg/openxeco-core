@@ -8,22 +8,16 @@ class TestSendCampaign(BaseCase):
     @BaseCase.login
     @BaseCase.grant_access("/campaign/send_campaign")
     @patch('resource.campaign.send_campaign.send_email')
-    def test_ok(self, mock_send_mail, token):
+    def test_ko_not_found(self, mock_send_mail, token):
+        print(mock_send_mail, token)
         mock_send_mail.return_value = None
 
         payload = {
-            "subject": "TEST",
-            "addresses": ["test@cy.lu", "test2@cy.lu"],
-            "body": "Mail content",
+            "id": 1,
         }
 
         response = self.application.post('/campaign/send_campaign',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        communications = self.db.get(self.db.tables["Campaign"])
-
-        print(response.status)
-
-        self.assertEqual(200, response.status_code)
-        self.assertEqual(len(communications), 1)
+        self.assertEqual("422 Object not found : Campaign", response.status)

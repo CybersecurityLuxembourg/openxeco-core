@@ -29,7 +29,7 @@ class TestForgotPassword(BaseCase):
         mock_get.return_value = []
 
         payload = {
-            "email": "test@openxeco.org",
+            "email": "fake-test@openxeco.org",
         }
 
         response = self.application.post('/account/forgot_password',
@@ -37,5 +37,5 @@ class TestForgotPassword(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
-        mock_send_mail.assert_called_once_with(ANY, subject=ANY, recipients=["trash@example.com"], html_body=ANY)
+        mock_send_mail.assert_called_once_with(ANY, subject=ANY, recipients=["fake-test@openxeco.org"], html_body=ANY)
 
