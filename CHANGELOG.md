@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.14.4] - 2022-12-22
+
+### Fixed
+
+- Fix password regex on backend side
+
 ## [1.14.3] - 2022-12-20
 
 ### Changed
