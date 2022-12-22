@@ -47,7 +47,7 @@ export default class Login extends React.Component {
 					if (data.is_admin === 1) {
 						this.props.connect(data.id);
 					} else {
-						this.props.cookies.remove("access_token_cookie");
+						this.props.cookies.remove("access_token_cookie", getCookieOptions());
 						nm.warning("This user is not an admin");
 					}
 				}, (response2) => {
@@ -104,7 +104,7 @@ export default class Login extends React.Component {
 				if (data.is_admin === 1) {
 					this.props.connect(response.user);
 				} else {
-					this.props.cookies.remove("access_token_cookie");
+					this.props.cookies.remove("access_token_cookie", getCookieOptions());
 					nm.warning("This user is not an admin");
 				}
 			}, (response2) => {
@@ -148,7 +148,7 @@ export default class Login extends React.Component {
 	}
 
 	backToLogin() {
-		this.props.cookies.remove("access_token_cookie");
+		this.props.cookies.remove("access_token_cookie", getCookieOptions());
 		window.location.replace("/");
 	}
 

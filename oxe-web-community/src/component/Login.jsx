@@ -152,7 +152,7 @@ export default class Login extends React.Component {
 	}
 
 	backToLogin() {
-		this.props.cookies.remove("access_token_cookie");
+		this.props.cookies.remove("access_token_cookie", getCookieOptions());
 		window.location.replace("/");
 	}
 

@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix password regex on backend side
+- Fix cookie deletion on "Back to login" click on oxe-web-admin and oxe-web-community
 
 ## [1.14.3] - 2022-12-20
 
