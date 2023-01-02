@@ -82,9 +82,10 @@ from resource.form.update_form_question_order import UpdateFormQuestionOrder
 from resource.healthz import Healthz
 from resource.log.get_logs import GetLogs
 from resource.log.get_update_article_version_logs import GetUpdateArticleVersionLogs
+from resource.mail.delete_template import DeleteTemplate
 from resource.mail.get_mail_addresses import GetMailAddresses
-from resource.mail.get_mail_content import GetMailContent
-from resource.mail.save_template import SaveTemplate
+from resource.mail.get_template import GetTemplate
+from resource.mail.update_template import UpdateTemplate
 from resource.mail.send_mail import SendMail
 from resource.media.add_image import AddImage
 from resource.media.add_document import AddDocument
