@@ -8,7 +8,7 @@ class TestGetMailContent(BaseCase):
     @BaseCase.login
     @patch("builtins.open", mock_open(read_data="data"))
     def test_ok(self, token):
-        response = self.application.get('/mail/get_mail_content/new_account',
+        response = self.application.get('/mail/get_mail_content/account_creation',
                                         headers=self.get_standard_header(token))
 
         self.assertEqual(200, response.status_code)

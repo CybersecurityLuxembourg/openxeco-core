@@ -17,7 +17,7 @@ class GetMailContent(MethodResource, Resource):
 
     @log_request
     @doc(tags=['mail'],
-         description='Get the HTML content of the specified mail template name (new_account or reset_password)',
+         description='Get the HTML content of the specified mail template name (account_creation or password_reset)',
          responses={
              "200": {},
              "404": {"description": "This mail template does not exist"},
@@ -27,7 +27,7 @@ class GetMailContent(MethodResource, Resource):
     @catch_exception
     def get(self, name):
 
-        if name in ["new_account", "reset_password"]:
+        if name in ["account_creation", "password_reset"]:
             with open(os.path.join(os.path.dirname(__file__), "..", "..", "template", f"{name}.html"), "r") as f:
                 data = f.read()
         else:

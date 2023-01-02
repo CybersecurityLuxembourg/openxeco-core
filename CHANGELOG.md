@@ -1,6 +1,21 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.15.0] - XXXX-XX-XX
+
+### Changed
+
+- Persistence of email templates in the database
+
+### Added
+
+- Email notification to administrators on new request
+- Default template for new request notification email
+
+### Fixed
+
+- 
+
 ## [1.14.4] - 2022-12-22
 
 ### Fixed

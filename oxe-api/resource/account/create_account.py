@@ -100,7 +100,7 @@ class CreateAccount(MethodResource, Resource):
                        subject=f"[{project_name}] New account",
                        recipients=[email],
                        html_body=render_template(
-                           'new_account.html',
+                           'account_creation.html',
                            url=origin + "/login",
                            password=generated_password,
                            project_name=project_name)

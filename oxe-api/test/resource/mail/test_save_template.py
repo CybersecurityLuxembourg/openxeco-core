@@ -11,7 +11,7 @@ class TestSaveTemplate(BaseCase):
     def test_ok(self, token):
 
         payload = {
-            "name": "new_account",
+            "name": "account_creation",
             "content": "<h1>data</h1>"
         }
 

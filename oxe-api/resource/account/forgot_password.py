@@ -63,6 +63,6 @@ class ForgotPassword(MethodResource, Resource):
         send_email(self.mail,
                    subject=f"[{project_name}] Reset Your Password",
                    recipients=[user.email],
-                   html_body=render_template('reset_password.html', url=url, project_name=project_name))
+                   html_body=render_template('password_reset.html', url=url, project_name=project_name))
 
         return "", "200 If that email address is in our database, we will send you an email to reset your password"

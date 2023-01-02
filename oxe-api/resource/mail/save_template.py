@@ -18,7 +18,7 @@ class SaveTemplate(MethodResource, Resource):
 
     @log_request
     @doc(tags=['mail'],
-         description='Save the HTML content of the specified mail template name (new_account or reset_password)',
+         description='Save the HTML content of the specified mail template name (account_creation or password_reset)',
          responses={
              "200": {},
              "404": {"description": "This mail template does not exist"},
@@ -32,7 +32,7 @@ class SaveTemplate(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        if kwargs['name'] in ["new_account", "reset_password"]:
+        if kwargs['name'] in ["account_creation", "password_reset"]:
             name = kwargs['name']
             with open(os.path.join(os.path.dirname(__file__), "..", "..", "template", f"{name}.html"), "r+") as f:
                 f.read()
