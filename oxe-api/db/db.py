@@ -341,8 +341,14 @@ class DB:
         if "min_start_date" in filters:
             query = query.filter(self.tables["Article"].start_date >= filters["min_start_date"])
 
+        if "max_start_date" in filters:
+            query = query.filter(self.tables["Article"].start_date <= filters["max_start_date"])
+
         if "min_end_date" in filters:
             query = query.filter(self.tables["Article"].end_date >= filters["min_end_date"])
+
+        if "max_end_date" in filters:
+            query = query.filter(self.tables["Article"].end_date <= filters["max_end_date"])
 
         if "order_by" in filters:
             if "order" in filters and filters["order"] == "asc":
