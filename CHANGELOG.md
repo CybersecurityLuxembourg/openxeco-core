@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.14.5] - 2023-01-02
+
+### Added
+
+- "max_start_date" parameter on article/get_articles resource
+- "max_end_date" parameter on article/get_articles resource
+- "max_start_date" parameter on public/get_public_articles resource
+- "max_end_date" parameter on public/get_public_articles resource
+
 ## [1.14.4] - 2022-12-22
 
 ### Fixed
