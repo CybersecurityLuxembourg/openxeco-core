@@ -36,10 +36,10 @@ class UpdateTemplate(MethodResource, Resource):
             try:
                 template = self.db.session \
                     .query(self.db.tables["EmailTemplate"]) \
-                    .filter(self.db.tables["EmailTemplate"].id == kwargs["name"]) \
+                    .filter(self.db.tables["EmailTemplate"].name == kwargs["name"]) \
                     .one()
                 template.content = kwargs["content"]
-                template.update()
+                self.db.session.commit()
             except NoResultFound:
                 self.db.insert(kwargs, self.db.tables["EmailTemplate"])
         else:

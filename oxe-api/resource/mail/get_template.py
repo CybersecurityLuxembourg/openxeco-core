@@ -27,7 +27,7 @@ class GetTemplate(MethodResource, Resource):
          })
     @use_kwargs({
         'name': fields.Str(),
-    })
+    }, location="query")
     @jwt_required
     @verify_admin_access
     @catch_exception
