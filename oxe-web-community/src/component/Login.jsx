@@ -137,7 +137,7 @@ export default class Login extends React.Component {
 
 	verifyLogin() {
 		if (!validateOtp(this.state.otp)) {
-			nm.warning("Invalid OTP");
+			nm.warning("This one time pin is invalid.");
 			return;
 		}
 		const params = {
@@ -216,7 +216,8 @@ export default class Login extends React.Component {
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
 		if (event.key === "Enter" || event.code === "NumpadEnter") {
-			if (this.state.view === "login") this.login();
+			if (this.state.view === "login" && !this.state.verifyLogin) this.login();
+			if (this.state.view === "login" && this.state.verifyLogin) this.verifyLogin();
 			if (this.state.view === "create") this.createAccount();
 			if (this.state.view === "forgot") this.requestReset();
 			if (this.state.view === "reset") this.resetPassword();

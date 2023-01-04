@@ -101,6 +101,7 @@ export default class Login extends React.Component {
 
 		postRequest.call(this, "account/login", params, (response) => {
 			// TODO use httponly cookies
+			nm.info("Please check your email for the One Time Pin");
 			this.setState({ verifyLogin: true });
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 		}, (response) => {
@@ -112,7 +113,7 @@ export default class Login extends React.Component {
 
 	verifyLogin() {
 		if (!validateOtp(this.state.otp)) {
-			nm.warning("Invalid OTP");
+			nm.warning("This one time pin is invalid.");
 			return;
 		}
 		const params = {
@@ -172,7 +173,8 @@ export default class Login extends React.Component {
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
 		if (event.key === "Enter" || event.code === "NumpadEnter") {
-			if (this.state.view === "login") this.login();
+			if (this.state.view === "login" && !this.state.verifyLogin) this.login();
+			if (this.state.view === "login" && this.state.verifyLogin) this.verifyLogin();
 			if (this.state.view === "forgot") this.requestReset();
 			if (this.state.view === "reset") this.resetPassword();
 		}
