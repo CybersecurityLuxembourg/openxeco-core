@@ -19,6 +19,7 @@ export default class SettingMail extends React.Component {
 			],
 			selectedTab: "ACCOUNT_CREATION",
 			template: null,
+			editedTemplate: null,
 			content: null,
 			emailDescription: [
 				{
@@ -80,10 +81,10 @@ export default class SettingMail extends React.Component {
 		});
 	}
 
-	updateTemplate(name) {
+	updateTemplate() {
 		const params = {
-			name,
-			content: this.state.content,
+			name: this.state.selectedTab,
+			content: this.state.editedTemplate,
 		};
 
 		postRequest.call(this, "mail/update_template", params, () => {
@@ -96,9 +97,9 @@ export default class SettingMail extends React.Component {
 		});
 	}
 
-	deleteTemplate(name) {
+	deleteTemplate() {
 		const params = {
-			name,
+			name: this.state.selectedTab,
 		};
 
 		postRequest.call(this, "mail/delete_template", params, () => {
@@ -144,16 +145,16 @@ export default class SettingMail extends React.Component {
 						<div className="col-md-12">
 							<div className="right-buttons">
 								<button
-									onClick={() => this.saveTemplate("new_account")}
+									onClick={() => this.refresh()}
 									disabled={this.state.template === this.state.editedTemplate}>
 									<i className="far fa-times-circle"/> Discard modifications...
 								</button>
 								<button
-									onClick={() => this.saveTemplate("new_account")}>
+									onClick={() => this.deleteTemplate()}>
 									<i className="fas fa-trash-alt"/> Delete template...
 								</button>
 								<button
-									onClick={() => this.saveTemplate("new_account")}
+									onClick={() => this.updateTemplate()}
 									disabled={this.state.template === this.state.editedTemplate}>
 									<i className="fas fa-save"/> Save template
 								</button>
@@ -166,6 +167,14 @@ export default class SettingMail extends React.Component {
 				}
 			</div>
 		</div>;
+	}
+
+	onMenuClick(m) {
+		this.setState({
+			template: null,
+			editedTemplate: null,
+			selectedTab: m,
+		});
 	}
 
 	changeState(field, value) {
@@ -181,7 +190,7 @@ export default class SettingMail extends React.Component {
 					labels={this.state.tabs.map((n) => n.replace("_", " "))}
 					keys={this.state.tabs}
 					selectedMenu={this.state.selectedTab}
-					onMenuClick={(m) => this.setState({ selectedTab: m })}
+					onMenuClick={(m) => this.onMenuClick(m)}
 					fullWidth={true}
 					content={[
 						this.getTabContent(this.state.emailDescription[0]),
