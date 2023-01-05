@@ -382,6 +382,17 @@ export default class PageProfile extends React.Component {
 					<div className="col-md-8">
 						<div className={"row row-spaced"}>
 							<div className="col-md-12 PageProfile-white-box">
+								<h3>Administration</h3>
+								<br/>
+								<FormLine
+									label={"Accept request notification"}
+									type={"checkbox"}
+									value={this.state.user.accept_request_notification}
+									onChange={(v) => this.updateUser("accept_request_notification", v)}
+								/>
+							</div>
+
+							<div className="col-md-12 PageProfile-white-box">
 								<div className={"row"}>
 									<div className="col-md-12">
 										<h3>Accessibility</h3>

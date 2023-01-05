@@ -28,6 +28,10 @@ def upgrade():
         mysql_engine='InnoDB'
     )
 
+    op.add_column('User', sa.Column('accept_request_notification', mysql.BOOLEAN(), default=True, nullable=False))
+
 
 def downgrade():
     op.drop_table('EmailTemplate')
+
+    op.drop_column('User', 'accept_request_notification')

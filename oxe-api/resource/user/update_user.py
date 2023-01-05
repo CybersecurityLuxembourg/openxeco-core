@@ -30,6 +30,7 @@ class UpdateUser(MethodResource, Resource):
         'is_admin': fields.Bool(required=False),
         'is_active': fields.Bool(required=False),
         'accept_communication': fields.Bool(required=False),
+        'accept_request_notification': fields.Bool(required=False),
     })
     @jwt_required
     @verify_admin_access
