@@ -47,13 +47,6 @@ export default class Login extends React.Component {
 
 	// eslint-disable-next-line class-methods-use-this
 	componentDidMount() {
-		// Get the token if the user reaches the app though a password reset URL
-
-		if (getUrlParameter("action") === "reset_password") {
-			// TODO use httponly cookies
-			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
-		}
-
 		// Log in the user if there is an existing cookie
 
 		if (getUrlParameter("action") !== "reset_password") {
@@ -97,8 +90,7 @@ export default class Login extends React.Component {
 			password: this.state.password,
 		};
 
-		postRequest.call(this, "account/login", params, (response) => {
-			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
+		postRequest.call(this, "account/login", params, () => {
 			this.props.connect(this.state.email);
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -153,6 +145,7 @@ export default class Login extends React.Component {
 
 	backToLogin() {
 		this.props.cookies.remove("access_token_cookie", getCookieOptions());
+		this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
 		window.location.replace("/");
 	}
 

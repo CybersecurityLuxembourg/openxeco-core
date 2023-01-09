@@ -32,13 +32,6 @@ export default class Login extends React.Component {
 	componentDidMount() {
 		this.getSettings();
 
-		// Get the token if the user reaches the app though a password reset URL
-
-		if (getUrlParameter("action") === "reset_password") {
-			// TODO use httponly cookies
-			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
-		}
-
 		// Log in the user if there is an existing cookie
 
 		if (getUrlParameter("action") !== "reset_password") {
@@ -48,6 +41,7 @@ export default class Login extends React.Component {
 						this.props.connect(data.id);
 					} else {
 						this.props.cookies.remove("access_token_cookie", getCookieOptions());
+						this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
 						nm.warning("This user is not an admin");
 					}
 				}, (response2) => {
@@ -97,14 +91,12 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/login", params, (response) => {
-			// TODO use httponly cookies
-			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-
 			getRequest.call(this, "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
 					this.props.connect(response.user);
 				} else {
 					this.props.cookies.remove("access_token_cookie", getCookieOptions());
+					this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
 					nm.warning("This user is not an admin");
 				}
 			}, (response2) => {
@@ -149,6 +141,7 @@ export default class Login extends React.Component {
 
 	backToLogin() {
 		this.props.cookies.remove("access_token_cookie", getCookieOptions());
+		this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
 		window.location.replace("/");
 	}
 

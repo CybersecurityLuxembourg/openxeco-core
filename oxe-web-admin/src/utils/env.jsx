@@ -7,7 +7,7 @@ export function getApiURL() {
 
 export function getCookieOptions() {
 	if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "") {
-		return { domain: "localhost", path: "/" };
+		return { domain: "localhost", path: "/", secure: true };
 	}
 	return {
 		secure: true,

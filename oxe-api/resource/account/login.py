@@ -1,5 +1,6 @@
 import datetime
 
+from flask import request, make_response
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_bcrypt import check_password_hash
@@ -9,6 +10,7 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from config.config import ENVIRONMENT
 
 
 class Login(MethodResource, Resource):
@@ -52,8 +54,26 @@ class Login(MethodResource, Resource):
         access_token = create_access_token(identity=str(data[0].id), expires_delta=access_token_expires)
         refresh_token = create_refresh_token(identity=str(data[0].id), expires_delta=refresh_token_expires)
 
-        return {
+        response = make_response({
             "user": data[0].id,
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-        }, "200 "
+        })
+
+        response.set_cookie(
+            "access_token_cookie",
+            value=access_token,
+            path="/",
+            domain=None if ENVIRONMENT == "dev"
+            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            secure=True,
+        )
+
+        response.set_cookie(
+            "refresh_token_cookie",
+            value=refresh_token,
+            path="/",
+            domain=None if ENVIRONMENT == "dev"
+            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            secure=True,
+        )
+
+        return response

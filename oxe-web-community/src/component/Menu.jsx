@@ -39,6 +39,7 @@ export default class Menu extends React.Component {
 				onSelect={(selected) => {
 					if (selected === "disconnect") {
 						this.props.cookies.remove("access_token_cookie", getCookieOptions());
+						this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
 						window.location.replace("/");
 					} else {
 						this.props.changeMenu(selected);
