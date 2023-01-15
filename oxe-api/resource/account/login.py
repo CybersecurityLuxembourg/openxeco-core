@@ -6,7 +6,7 @@ from flask_apispec import use_kwargs, doc
 from flask_bcrypt import check_password_hash
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_restful import Resource
-from utils.token import generate_otp
+from utils.token import generate_otp, hash_otp
 from utils.mail import send_email
 from webargs import fields
 
@@ -55,8 +55,9 @@ class Login(MethodResource, Resource):
             self.db.delete(self.db.tables["UserOtp"], {"user_id": data[0].id})
 
         # create new otp
-        otp = self.db.insert({
-            "token":  generate_otp(),
+        otp = generate_otp()
+        self.db.insert({
+            "token":  hash_otp(otp),
             "user_id": data[0].id,
         }, self.db.tables["UserOtp"])
 
@@ -66,7 +67,7 @@ class Login(MethodResource, Resource):
             recipients=[kwargs["email"]],
             html_body=render_template(
                 'login_otp.html',
-                token=otp.token,
+                token=otp,
             )
         )
 
