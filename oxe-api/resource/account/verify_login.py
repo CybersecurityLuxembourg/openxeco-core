@@ -5,6 +5,7 @@ from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token, create_refresh_token
 from webargs import fields
+from utils.token import verify_otp
 
 from decorator.catch_exception import catch_exception
 
@@ -43,7 +44,7 @@ class VerifyLogin(MethodResource, Resource):
             return "", "422 This one time pin is invalid."
 
         # Verify token
-        if otp[0].token != kwargs["token"]:
+        if not verify_otp(kwargs["token"], otp[0].token):
             return "", "422 This one time pin is invalid."
         token_timestamp = otp[0].timestamp.timestamp()
         now_timestamp = datetime.datetime.now().timestamp()
