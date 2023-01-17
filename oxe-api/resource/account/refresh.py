@@ -44,6 +44,7 @@ class Refresh(MethodResource, Resource):
             domain=None if ENVIRONMENT == "dev"
             else (request.host[len("api"):] if request.host.startswith("api") else request.host),
             secure=True,
+            httponly=True
         )
 
         return response
