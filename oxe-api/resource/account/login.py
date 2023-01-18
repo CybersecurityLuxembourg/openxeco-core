@@ -10,7 +10,6 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from config.config import ENVIRONMENT, CORS_DOMAINS
 from utils.cookie import set_cookie
 
 

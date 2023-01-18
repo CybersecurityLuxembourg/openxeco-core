@@ -8,7 +8,6 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_refresh_token_required
 from flask_restful import Resource
 
-from config.config import ENVIRONMENT, CORS_DOMAINS
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from utils.cookie import set_cookie
