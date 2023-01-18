@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 
 from flask import make_response, request
 from flask_apispec import MethodResource
@@ -49,8 +49,8 @@ class Login(MethodResource, Resource):
         if not data[0].is_active:
             return "", "401 The account is not active. Please contact the administrator"
 
-        access_token_expires = datetime.timedelta(days=1)
-        refresh_token_expires = datetime.timedelta(days=365)
+        access_token_expires = timedelta(days=1)
+        refresh_token_expires = timedelta(days=365)
         access_token = create_access_token(identity=str(data[0].id), expires_delta=access_token_expires)
         refresh_token = create_refresh_token(identity=str(data[0].id), expires_delta=refresh_token_expires)
 
@@ -58,7 +58,9 @@ class Login(MethodResource, Resource):
             "user": data[0].id,
         })
 
-        response = set_cookie(request, response, "access_token_cookie", access_token, 24 * 60 * 60)  # 1d
-        response = set_cookie(request, response, "refresh_token_cookie", refresh_token, 12 * 30 * 24 * 60 * 60)  # 1y
+        now = datetime.now()
+
+        response = set_cookie(request, response, "access_token_cookie", access_token, now + timedelta(days=1))
+        response = set_cookie(request, response, "refresh_token_cookie", refresh_token, now + timedelta(days=365))
 
         return response

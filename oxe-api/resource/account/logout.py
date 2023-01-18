@@ -28,7 +28,7 @@ class Logout(MethodResource, Resource):
 
         response = make_response({})
 
-        response = set_cookie(request, response, "access_token_cookie", None, 0)  # 1d
-        response = set_cookie(request, response, "refresh_token_cookie", None, 0)  # 1y
+        response = set_cookie(request, response, "access_token_cookie", "", 0)
+        response = set_cookie(request, response, "refresh_token_cookie", "", 0)
 
         return response

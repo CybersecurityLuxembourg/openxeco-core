@@ -37,6 +37,8 @@ class Refresh(MethodResource, Resource):
             "user": get_jwt_identity(),
         })
 
-        response = set_cookie(request, response, "access_token_cookie", access_token)
+        now = datetime.datetime.now()
+
+        response = set_cookie(request, response, "access_token_cookie", access_token, now + datetime.timedelta(days=1))
 
         return response
