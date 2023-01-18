@@ -49,7 +49,7 @@ export default class Login extends React.Component {
 					nm.warning("This user is not an admin");
 				}
 			}, (response2) => {
-				if (response2.status !== 401) {
+				if (response2.status !== 401 && response2.status !== 422) {
 					nm.warning(response2.statusText);
 				}
 			}, (error) => {
