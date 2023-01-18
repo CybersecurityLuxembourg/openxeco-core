@@ -6,7 +6,7 @@ from flask_restful import Resource
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from config.config import ENVIRONMENT
+from config.config import ENVIRONMENT, CORS_DOMAINS
 
 
 class Logout(MethodResource, Resource):
@@ -31,8 +31,7 @@ class Logout(MethodResource, Resource):
         response.set_cookie(
             "access_token_cookie",
             path="/",
-            domain=None if ENVIRONMENT == "dev"
-            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            domain=None if ENVIRONMENT == "dev" else CORS_DOMAINS,
             secure=True,
             httponly=True,
             expires=0
@@ -41,8 +40,7 @@ class Logout(MethodResource, Resource):
         response.set_cookie(
             "refresh_token_cookie",
             path="/",
-            domain=None if ENVIRONMENT == "dev"
-            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            domain=None if ENVIRONMENT == "dev" else CORS_DOMAINS,
             secure=True,
             httponly=True,
             expires=0

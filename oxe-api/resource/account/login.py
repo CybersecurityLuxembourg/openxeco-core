@@ -1,6 +1,6 @@
 import datetime
 
-from flask import request, make_response
+from flask import make_response
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_bcrypt import check_password_hash
@@ -10,7 +10,7 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from config.config import ENVIRONMENT
+from config.config import ENVIRONMENT, CORS_DOMAINS
 
 
 class Login(MethodResource, Resource):
@@ -62,8 +62,7 @@ class Login(MethodResource, Resource):
             "access_token_cookie",
             value=access_token,
             path="/",
-            domain=None if ENVIRONMENT == "dev"
-            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            domain=None if ENVIRONMENT == "dev" else CORS_DOMAINS,
             secure=True,
             httponly=True
         )
@@ -72,8 +71,7 @@ class Login(MethodResource, Resource):
             "refresh_token_cookie",
             value=refresh_token,
             path="/",
-            domain=None if ENVIRONMENT == "dev"
-            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            domain=None if ENVIRONMENT == "dev" else CORS_DOMAINS,
             secure=True,
             httponly=True
         )

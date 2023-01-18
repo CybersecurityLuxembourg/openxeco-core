@@ -55,5 +55,5 @@ CORS_DOMAINS        = _getenv('CORS_DOMAINS',    mandatory=ENVIRONMENT != "dev",
 
 # remove extra spaces, remove empty items
 domains = filter(len, map(str.strip, CORS_DOMAINS.split(",")))
-# pylint: disable=unnecessary-lambda
+# pylint: disable=unnecessary-lambdadata luxembourg
 CORS_ORIGINS = list(map(lambda d: r'((http|https)://)?(.*\.)?{}'.format(d), domains))

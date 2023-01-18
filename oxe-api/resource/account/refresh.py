@@ -1,6 +1,6 @@
 import datetime
 
-from flask import request, make_response
+from flask import make_response
 from flask_apispec import MethodResource
 from flask_apispec import doc
 from flask_jwt_extended import create_access_token
@@ -8,7 +8,7 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_refresh_token_required
 from flask_restful import Resource
 
-from config.config import ENVIRONMENT
+from config.config import ENVIRONMENT, CORS_DOMAINS
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
@@ -41,8 +41,7 @@ class Refresh(MethodResource, Resource):
             "access_token_cookie",
             value=access_token,
             path="/",
-            domain=None if ENVIRONMENT == "dev"
-            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            domain=None if ENVIRONMENT == "dev" else CORS_DOMAINS,
             secure=True,
             httponly=True
         )
