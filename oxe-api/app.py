@@ -46,7 +46,9 @@ app.config['MAIL_USE_TLS'] = config.MAIL_USE_TLS == "True"
 app.config['MAIL_USE_SSL'] = config.MAIL_USE_SSL == "True"
 app.config['MAIL_DEFAULT_SENDER'] = config.MAIL_DEFAULT_SENDER
 
-app.config['PROPAGATE_EXCEPTIONS'] = config.ENVIRONMENT == "dev"
+app.config['PROPAGATE_EXCEPTIONS'] = True
+
+app.config['SESSION_COOKIE_SECURE'] = True
 
 app.config['SCHEDULER_API_ENABLED'] = False
 

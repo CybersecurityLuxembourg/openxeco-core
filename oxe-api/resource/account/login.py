@@ -1,5 +1,6 @@
-import datetime
+from datetime import datetime, timedelta
 
+from flask import make_response, request
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_bcrypt import check_password_hash
@@ -9,6 +10,7 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from utils.cookie import set_cookie
 
 
 class Login(MethodResource, Resource):
@@ -20,7 +22,7 @@ class Login(MethodResource, Resource):
 
     @log_request
     @doc(tags=['account'],
-         description='Request a password change with a temporary link sent via email',
+         description='Create an access and a refresh cookie by log in with an email and a password',
          responses={
              "200": {},
              "401.a": {"description": "Wrong email/password combination"},
@@ -47,13 +49,18 @@ class Login(MethodResource, Resource):
         if not data[0].is_active:
             return "", "401 The account is not active. Please contact the administrator"
 
-        access_token_expires = datetime.timedelta(days=1)
-        refresh_token_expires = datetime.timedelta(days=365)
+        access_token_expires = timedelta(days=1)
+        refresh_token_expires = timedelta(days=365)
         access_token = create_access_token(identity=str(data[0].id), expires_delta=access_token_expires)
         refresh_token = create_refresh_token(identity=str(data[0].id), expires_delta=refresh_token_expires)
 
-        return {
+        response = make_response({
             "user": data[0].id,
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-        }, "200 "
+        })
+
+        now = datetime.now()
+
+        response = set_cookie(request, response, "access_token_cookie", access_token, now + timedelta(days=1))
+        response = set_cookie(request, response, "refresh_token_cookie", refresh_token, now + timedelta(days=365))
+
+        return response

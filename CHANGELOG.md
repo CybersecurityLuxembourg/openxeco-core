@@ -16,6 +16,16 @@ All notable changes to this project will be documented in this file.
 
 - 
 
+## [1.14.6] - 2023-01-18
+
+### Changes
+
+- Use HttpOnly cookies with access and refresh tokens
+
+### Added
+
+- account/logout API resource
+
 ## [1.14.5] - 2023-01-02
 
 ### Added

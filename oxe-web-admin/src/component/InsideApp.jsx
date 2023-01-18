@@ -66,8 +66,8 @@ export default class InsideApp extends React.Component {
 				<Route render={(props) => <Menu
 					selectedMenu={this.state.selectedMenu}
 					changeMenu={(v) => this.changeState("selectedMenu", v)}
-					cookies={this.props.cookies}
 					settings={this.state.settings}
+					logout={this.props.logout}
 					{...props}
 				/>}/>
 				<div id="InsideApp-content">

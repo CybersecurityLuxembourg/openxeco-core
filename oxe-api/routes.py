@@ -4,6 +4,7 @@ from resource.account.change_password import ChangePassword
 from resource.account.create_account import CreateAccount
 from resource.account.forgot_password import ForgotPassword
 from resource.account.login import Login
+from resource.account.logout import Logout
 from resource.account.refresh import Refresh
 from resource.account.reset_password import ResetPassword
 from resource.analytics.get_ecosystem_activity import GetEcosystemActivity
