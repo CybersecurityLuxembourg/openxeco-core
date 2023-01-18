@@ -22,7 +22,7 @@ class Login(MethodResource, Resource):
 
     @log_request
     @doc(tags=['account'],
-         description='Request a password change with a temporary link sent via email',
+         description='Create an access and a refresh cookie by log in with an email and a password',
          responses={
              "200": {},
              "401.a": {"description": "Wrong email/password combination"},

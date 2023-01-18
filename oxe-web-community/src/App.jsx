@@ -8,15 +8,12 @@ import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
 import { getApiURL } from "./utils/env.jsx";
-import { getRequest } from "./utils/request.jsx";
+import { getRequest, postRequest } from "./utils/request.jsx";
 import DialogMessage from "./component/dialog/DialogMessage.jsx";
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.connect = this.connect.bind(this);
-		this.getSettings = this.getSettings.bind(this);
 
 		this.state = {
 			settings: null,
@@ -58,6 +55,19 @@ class App extends React.Component {
 		});
 	}
 
+	logout() {
+		postRequest.call(this, "account/logout", null, () => {
+			this.setState({
+				email: null,
+				logged: false,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
 	render() {
 		return (
 			<div id="App">
@@ -66,12 +76,13 @@ class App extends React.Component {
 						<InsideApp
 							settings={this.state.settings}
 							email={this.state.email}
-							cookies={this.props.cookies}
+							logout={() => this.logout()}
 						/>
 					</BrowserRouter>
 					: <Login
 						settings={this.state.settings}
-						connect={this.connect}
+						connect={(e) => this.connect(e)}
+						logout={() => this.logout()}
 						cookies={this.props.cookies}
 					/>
 				}

@@ -6,7 +6,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getCookieOptions, getApiURL } from "../utils/env.jsx";
+import { getApiURL } from "../utils/env.jsx";
 import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
@@ -32,24 +32,29 @@ export default class Login extends React.Component {
 	componentDidMount() {
 		this.getSettings();
 
+		// Get the token if the user reaches the app though a password reset URL
+
+		if (getUrlParameter("action") === "reset_password") {
+			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), {});
+		}
+
 		// Log in the user if there is an existing cookie
 
 		if (getUrlParameter("action") !== "reset_password") {
-			if (this.props.cookies.get("access_token_cookie")) {
-				getRequest.call(this, "private/get_my_user", (data) => {
-					if (data.is_admin === 1) {
-						this.props.connect(data.id);
-					} else {
-						this.props.cookies.remove("access_token_cookie", getCookieOptions());
-						this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
-						nm.warning("This user is not an admin");
-					}
-				}, (response2) => {
+			getRequest.call(this, "private/get_my_user", (data) => {
+				if (data.is_admin === 1) {
+					this.props.connect(data.id);
+				} else {
+					this.props.logout();
+					nm.warning("This user is not an admin");
+				}
+			}, (response2) => {
+				if (response2.status !== 401) {
 					nm.warning(response2.statusText);
-				}, (error) => {
-					nm.error(error.message);
-				});
-			}
+				}
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}
 
 		// This function to notify if the password has been reset correctly
@@ -95,8 +100,7 @@ export default class Login extends React.Component {
 				if (data.is_admin === 1) {
 					this.props.connect(response.user);
 				} else {
-					this.props.cookies.remove("access_token_cookie", getCookieOptions());
-					this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
+					this.props.logout();
 					nm.warning("This user is not an admin");
 				}
 			}, (response2) => {
@@ -131,6 +135,7 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/reset_password", params, () => {
+			this.props.cookies.remove("access_token_cookie", {});
 			document.location.href = "/?reset_password=true";
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -140,9 +145,9 @@ export default class Login extends React.Component {
 	}
 
 	backToLogin() {
-		this.props.cookies.remove("access_token_cookie", getCookieOptions());
-		this.props.cookies.remove("refresh_token_cookie", getCookieOptions());
-		window.location.replace("/");
+		this.props.cookies.remove("access_token_cookie", {});
+		this.setState({ view: "login" });
+		window.history.pushState({ path: "/login" }, "", "/login");
 	}
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
