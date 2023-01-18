@@ -6,7 +6,7 @@ from flask_restful import Resource
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from config.config import ENVIRONMENT, CORS_DOMAINS
+from utils.cookie import set_cookie
 
 
 class Logout(MethodResource, Resource):
@@ -28,22 +28,7 @@ class Logout(MethodResource, Resource):
 
         response = make_response({})
 
-        response.set_cookie(
-            "access_token_cookie",
-            path="/",
-            domain=None if ENVIRONMENT == "dev" else CORS_DOMAINS,
-            secure=True,
-            httponly=True,
-            expires=0
-        )
-
-        response.set_cookie(
-            "refresh_token_cookie",
-            path="/",
-            domain=None if ENVIRONMENT == "dev" else CORS_DOMAINS,
-            secure=True,
-            httponly=True,
-            expires=0
-        )
+        response = set_cookie(request, response, "access_token_cookie", None, 0)  # 1d
+        response = set_cookie(request, response, "refresh_token_cookie", None, 0)  # 1y
 
         return response
