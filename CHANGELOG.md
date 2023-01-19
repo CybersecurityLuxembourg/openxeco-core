@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Persistence of email templates in the database
+- user/update_user resource: allow email modification
 
 ### Added
 
