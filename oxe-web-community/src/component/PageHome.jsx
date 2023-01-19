@@ -158,18 +158,21 @@ export default class PageHome extends React.Component {
 						</div>
 					}
 
-					<div className="col-md-6">
-						<a
-							onClick={() => this.props.changeMenu("form")}
-						>
-							<Link to="/form">
-								<div className="PageHome-white-block">
-									<i className="fas fa-poll-h"/>
-									<h3>FORMS</h3>
-								</div>
-							</Link>
-						</a>
-					</div>
+					{this.props.settings
+						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_FORM === "TRUE"
+						&& <div className="col-md-6">
+							<a
+								onClick={() => this.props.changeMenu("form")}
+							>
+								<Link to="/form">
+									<div className="PageHome-white-block">
+										<i className="fas fa-poll-h"/>
+										<h3>FORMS</h3>
+									</div>
+								</Link>
+							</a>
+						</div>
+					}
 				</div>
 
 				<div className={"row row-spaced"}>

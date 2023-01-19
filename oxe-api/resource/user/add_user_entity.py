@@ -19,7 +19,7 @@ class AddUserEntity(MethodResource, Resource):
 
     @log_request
     @doc(tags=['user'],
-         description='Add an assignment of a user to a entity',
+         description='Add an assignment of a user to an entity',
          responses={
              "200": {},
              "422.a": {"description": "Object already existing"},
