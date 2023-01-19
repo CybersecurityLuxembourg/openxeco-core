@@ -11,13 +11,6 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background: repeating-linear-gradient(
-      135deg,
-      rgba(0, 0, 0, 0.05),
-      rgba(0, 0, 0, 0.05) 10px,
-      rgba(0, 0, 0, 0) 10px,
-      rgba(0, 0, 0, 0) 20px
-    );
 }
 
 .TreeTaxonomy-button {

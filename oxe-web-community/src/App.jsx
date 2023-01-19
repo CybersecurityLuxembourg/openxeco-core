@@ -8,7 +8,7 @@ import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
 import { getApiURL } from "./utils/env.jsx";
-import { getRequest, postRequest } from "./utils/request.jsx";
+import { getRequest } from "./utils/request.jsx";
 import DialogMessage from "./component/dialog/DialogMessage.jsx";
 import PageAddProfile from "./component/PageAddProfile.jsx";
 
@@ -64,19 +64,6 @@ class App extends React.Component {
 	setUserStatus(status) {
 		this.setState({
 			user_status: status,
-		})
-	}
-
-	logout() {
-		postRequest.call(this, "account/logout", null, () => {
-			this.setState({
-				email: null,
-				logged: false,
-			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
 		});
 	}
 

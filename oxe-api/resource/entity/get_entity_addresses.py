@@ -17,7 +17,7 @@ class GetEntityAddresses(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Get the list of addresses of an entity specified by its ID',
+         description='Get the list of addresses of a entity specified by its ID',
          responses={
              "200": {},
          })

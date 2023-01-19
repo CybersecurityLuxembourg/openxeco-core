@@ -17,7 +17,7 @@ class DeleteUserEntity(MethodResource, Resource):
 
     @log_request
     @doc(tags=['user'],
-         description='Delete an entity assignment to a user',
+         description='Delete a entity assignment to a user',
          responses={
              "200": {},
              "422": {"description": "Object not found"}

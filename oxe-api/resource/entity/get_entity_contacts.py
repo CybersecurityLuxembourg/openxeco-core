@@ -17,7 +17,7 @@ class GetEntityContacts(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Get the list of contacts of an entity specified by its ID',
+         description='Get the list of contacts of a entity specified by its ID',
          responses={
              "200": {},
          })

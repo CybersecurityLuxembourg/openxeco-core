@@ -7,7 +7,6 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
-from utils.re import has_mail_format
 
 
 class UpdateUser(MethodResource, Resource):
@@ -19,13 +18,12 @@ class UpdateUser(MethodResource, Resource):
 
     @log_request
     @doc(tags=['user'],
-         description='Update user. Password update is not accepted on this resource',
+         description='Update user. Password and email updated is not accepted on this resource',
          responses={
              "200": {},
          })
     @use_kwargs({
         'id': fields.Int(),
-        'email': fields.Str(required=False, allow_none=False, validate=lambda x: has_mail_format(x) is not None),
         'last_name': fields.Str(required=False, allow_none=True),
         'first_name': fields.Str(required=False, allow_none=True),
         'telephone': fields.Str(required=False, allow_none=True),
@@ -35,7 +33,6 @@ class UpdateUser(MethodResource, Resource):
         'status': fields.Str(required=False,
             validate=lambda x: x in ['NEW', 'VERIFIED', 'REQUESTED', 'ACCEPTED', 'REJECTED']
         ),
-        'accept_request_notification': fields.Bool(required=False),
     })
     @jwt_required
     @verify_admin_access

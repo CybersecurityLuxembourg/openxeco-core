@@ -144,18 +144,7 @@ export default class FormForm extends React.Component {
 			{q.type === "TEXT"
 				&& <div className="col-md-12 row-spaced">
 					<FormLine
-						label={""}
-						fullWidth={true}
-						value={this.getAnswer(q) ? this.getAnswer(q).value : ""}
-						onBlur={(v) => this.updateAnswer(q.id, this.getAnswer(q), v)}
-					/>
-				</div>
-			}
-
-			{q.type === "TEXTAREA"
-				&& <div className="col-md-12 row-spaced">
-					<FormLine
-						type={"textarea"}
+						type={"editor"}
 						label={""}
 						fullWidth={true}
 						value={this.getAnswer(q) ? this.getAnswer(q).value : ""}
@@ -250,11 +239,9 @@ export default class FormForm extends React.Component {
 				{this.state.questions
 					? <div className={"row"}>
 						<div className="col-md-12">
-							{this.state.questions
-								.sort((a, b) => a.position - b.position)
-								.map((q) => (
-									this.getQuestionAndAnswer(q)
-								))}
+							{this.state.questions.map((q) => (
+								this.getQuestionAndAnswer(q)
+							))}
 						</div>
 					</div>
 					: <div className={"row"}>

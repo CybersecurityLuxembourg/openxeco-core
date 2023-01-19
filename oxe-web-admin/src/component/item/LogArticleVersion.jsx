@@ -1,13 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import "./LogArticleVersion.css";
 import Popup from "reactjs-popup";
 import dompurify from "dompurify";
 import FormLine from "../button/FormLine.jsx";
 import Message from "../box/Message.jsx";
 import { getApiURL } from "../../utils/env.jsx";
-import Item from "./Item.jsx";
 
-export default class LogArticleVersion extends Item {
+export default class LogArticleVersion extends Component {
 	constructor(props) {
 		super(props);
 
@@ -41,9 +40,9 @@ export default class LogArticleVersion extends Item {
 			<Popup
 				className="Popup-small-size"
 				trigger={
-					<div className={"Item LogArticleVersion"}>
+					<div className={"LogArticleVersion"}>
 						<i className="fas fa-history"/>
-						<div className={"name"}>
+						<div className={"LogArticleVersion-name"}>
 							{this.props.log !== undefined && this.props.log !== null
 								? "Log " + this.props.log.sys_date
 								: "Unfound log"
@@ -59,7 +58,6 @@ export default class LogArticleVersion extends Item {
 				<div className="row">
 					<div className="col-md-12">
 						<h2>
-							<i className="fas fa-history"/>&nbsp;
 							{this.props.log !== undefined && this.props.log !== null
 								? "Log " + this.props.log.sys_date
 								: "Unfound log"

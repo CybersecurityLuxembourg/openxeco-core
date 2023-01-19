@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+import datetime
 
 from flask import session, render_template
 from flask_apispec import MethodResource
@@ -12,7 +12,6 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from utils.cookie import set_cookie
 
 
 class Login(MethodResource, Resource):
@@ -26,7 +25,7 @@ class Login(MethodResource, Resource):
 
     @log_request
     @doc(tags=['account'],
-         description='Create an access and a refresh cookie by log in with an email and a password',
+         description='Request a password change with a temporary link sent via email',
          responses={
              "200": {},
              "401.a": {"description": "Wrong email/password combination"},
@@ -41,13 +40,7 @@ class Login(MethodResource, Resource):
 
         data = self.db.get(self.db.tables["User"], {"email": kwargs["email"]})
 
-        # If the user is not found, we simulate the whole process with a blank password.
-        # This is done to limit the time discrepancy factor against the user enumeration exploit
-        # CF: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
-
-        password = data[0].password if len(data) > 0 else "Imp0ssiblePassword~~"
-
-        if not check_password_hash(password, kwargs['password']):
+        if len(data) < 1 or not check_password_hash(data[0].password, kwargs['password']):
             return "", "401 Wrong email/password combination"
 
         if not data[0].is_active:

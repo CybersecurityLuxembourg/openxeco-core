@@ -16,7 +16,7 @@ class GetEntityUsers(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Get the users assigned to an entity specified by its ID',
+         description='Get the users assigned to a entity specified by its ID',
          responses={
              "200": {},
          })
