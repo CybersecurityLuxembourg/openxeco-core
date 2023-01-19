@@ -1,6 +1,6 @@
 {
   "name": "oxe-web-admin",
-  "version": "1.13.2",
+  "version": "1.14.0",
   "private": true,
   "dependencies": {
     "@babel/eslint-parser": "^7.5.4",
@@ -10,6 +10,7 @@
     "@projectstorm/react-diagrams": "^6.6.1",
     "@projectstorm/react-diagrams-routing": "^6.6.1",
     "@trendmicro/react-sidenav": "^0.5.0",
+    "@uiw/react-textarea-code-editor": "^2.0.3",
     "chart.js": "^2.9.4",
     "chartjs-chart-treemap": "^0.2.3",
     "cropperjs": "^1.5.11",

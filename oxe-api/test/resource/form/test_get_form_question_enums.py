@@ -12,5 +12,5 @@ class TestGetFormQuestionEnums(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual({
             'status': ['ACTIVE', 'INACTIVE', 'DELETED'],
-            'type': ['TEXT', 'CHECKBOX', 'OPTIONS', 'SELECT']
+            'type': ['TEXT', 'TEXTAREA', 'CHECKBOX', 'OPTIONS', 'SELECT']
         }, response.json)

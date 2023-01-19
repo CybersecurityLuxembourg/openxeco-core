@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./User.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
@@ -9,8 +9,9 @@ import UserGlobal from "./user/UserGlobal.jsx";
 import UserEntity from "./user/UserEntity.jsx";
 import UserNote from "./user/UserNote.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
+import Item from "./Item.jsx";
 
-export default class User extends Component {
+export default class User extends Item {
 	constructor(props) {
 		super(props);
 
@@ -90,9 +91,9 @@ export default class User extends Component {
 			<Popup
 				className="Popup-full-size"
 				trigger={
-					<div className={"User"}>
+					<div className={"Item User"}>
 						<i className="fas fa-user"/>
-						<div className={"User-name"}>
+						<div className={"name"}>
 							{this.props.email}
 							{this.props.primary
 								&& <span> (primary)</span>
@@ -106,8 +107,14 @@ export default class User extends Component {
 				onOpen={this.onOpen}
 			>
 				{(close) => <div className="row">
-					<div className="col-md-12">
-						<div className={"top-right-buttons"}>
+					<div className="col-md-9">
+						<h1>
+							<i className="fas fa-user"/> {this.props.email}
+						</h1>
+					</div>
+
+					<div className="col-md-3">
+						<div className={"right-buttons"}>
 							<DialogConfirmation
 								text={"Are you sure you want to delete this user?"}
 								trigger={
@@ -127,10 +134,9 @@ export default class User extends Component {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
-						<h1 className="User-title">
-							{this.props.email}
-						</h1>
+					</div>
 
+					<div className="col-md-12">
 						<Tab
 							labels={["Global", "Entity", "Notes"]}
 							selectedMenu={this.state.selectedMenu}

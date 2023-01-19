@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import "./Taxonomy.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
@@ -14,8 +14,9 @@ import TaxonomySync from "./taxonomy/TaxonomySync.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 import { getCategory } from "../../utils/taxonomy.jsx";
 import FormLine from "../button/FormLine.jsx";
+import Item from "./Item.jsx";
 
-export default class Taxonomy extends Component {
+export default class Taxonomy extends Item {
 	constructor(props) {
 		super(props);
 
@@ -121,9 +122,9 @@ export default class Taxonomy extends Component {
 			<Popup
 				className="Popup-full-size"
 				trigger={
-					<div className={"Taxonomy"}>
+					<div className={"Item Taxonomy"}>
 						<i className="fas fa-project-diagram"/>
-						<div className={"Taxonomy-name"}>
+						<div className={"name"}>
 							{this.props.name}
 						</div>
 					</div>
@@ -133,8 +134,14 @@ export default class Taxonomy extends Component {
 				onOpen={() => this.fetchTaxonomy()}
 			>
 				{(close) => <div className="Taxonomy-content row row-spaced">
-					<div className="col-md-12">
-						<div className={"top-right-buttons"}>
+					<div className="col-md-9">
+						<h1>
+							<i className="fas fa-project-diagram"/> {this.props.name}
+						</h1>
+					</div>
+
+					<div className="col-md-3">
+						<div className={"right-buttons"}>
 							{this.props.node
 								&& getCategory(this.state.taxonomy, this.props.name)
 								&& <Popup
@@ -214,36 +221,36 @@ export default class Taxonomy extends Component {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
+					</div>
 
-						<h1 className="Taxonomy-title">
-							<i className="fas fa-project-diagram"/> {this.props.name}
+					<div className="col-md-12">
+						{this.props.node
+							? <Chip
+								label={"Remote"}
+							/>
+							: <Chip
+								label={"Local"}
+							/>
+						}
 
-							{this.props.node
-								? <Chip
-									label={"Remote"}
-								/>
-								: <Chip
-									label={"Local"}
-								/>
-							}
+						{getCategory(this.state.taxonomy, this.props.name)
+							&& getCategory(this.state.taxonomy, this.props.name).sync_node
+							&& <Chip
+								label={"Synchronized"}
+							/>
+						}
 
-							{getCategory(this.state.taxonomy, this.props.name)
-								&& getCategory(this.state.taxonomy, this.props.name).sync_node
-								&& <Chip
-									label={"Synchronized"}
-								/>
-							}
+						{getCategory(this.state.taxonomy, this.props.name)
+							&& getCategory(this.state.taxonomy, this.props.name).sync_node
+							&& getCategory(this.state.taxonomy, this.props.name).sync_status
+							&& <Chip
+								label={"SYNC STATUS: "
+									+ getCategory(this.state.taxonomy, this.props.name).sync_status}
+							/>
+						}
+					</div>
 
-							{getCategory(this.state.taxonomy, this.props.name)
-								&& getCategory(this.state.taxonomy, this.props.name).sync_node
-								&& getCategory(this.state.taxonomy, this.props.name).sync_status
-								&& <Chip
-									label={"SYNC STATUS: "
-										+ getCategory(this.state.taxonomy, this.props.name).sync_status}
-								/>
-							}
-						</h1>
-
+					<div className="col-md-12">
 						<Tab
 							labels={["Global", "Values", "Hierarchy", "Notes", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}

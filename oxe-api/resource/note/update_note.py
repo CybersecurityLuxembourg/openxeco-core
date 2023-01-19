@@ -19,7 +19,7 @@ class UpdateNote(MethodResource, Resource):
 
     @log_request
     @doc(tags=['note'],
-         description='Update content of a note on a entity, an article, a taxonomy category or a user',
+         description='Update content of a note on an entity, an article, a taxonomy category or a user',
          responses={
              "200": {},
              "422.a": {"description": "Object not found"},

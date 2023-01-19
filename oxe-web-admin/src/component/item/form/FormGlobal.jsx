@@ -73,6 +73,12 @@ export default class FormGlobal extends React.Component {
 									onBlur={(v) => this.updateForm("name", v)}
 								/>
 								<FormLine
+									label={"Reference"}
+									value={this.props.form.reference}
+									disabled={this.props.form.status === "DELETED"}
+									onBlur={(v) => this.updateForm("reference", v)}
+								/>
+								<FormLine
 									type="editor"
 									label={"Description"}
 									value={this.props.form.description}

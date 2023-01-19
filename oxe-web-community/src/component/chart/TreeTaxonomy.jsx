@@ -63,18 +63,24 @@ export default class TreeTaxonomy extends React.Component {
 			};
 
 			if (parentLevel + 2 === levels.length) {
-				let active;
+				let fillColor = null;
 
 				if (this.props.selectedValues === null) {
-					active = undefined;
+					fillColor = "lightgrey";
 				} else if (this.props.selectedValues
 					.filter((a) => a === childValues[i].id).length > 0) {
-					active = true;
+					fillColor = "#bcebff";
 				} else {
-					active = false;
+					fillColor = "#fed7da";
 				}
 
-				child.active = active;
+				child.nodeSvgShape = {
+					shape: "circle",
+					shapeProps: {
+						r: 10,
+						fill: fillColor,
+					},
+				};
 			}
 
 			children.push(child);
@@ -197,10 +203,38 @@ export default class TreeTaxonomy extends React.Component {
 						x: 20,
 						y: 0,
 					}}
+					styles={{
+						links: {
+							stroke: "lightgrey",
+							strokeWidth: 2,
+						},
+						nodes: {
+							node: {
+								circle: {
+									stroke: "lightgrey",
+									fill: "lightgrey",
+								},
+								name: {
+									stroke: "gray",
+								},
+								attributes: {},
+							},
+							leafNode: {
+								circle: {
+									stroke: "lightgrey",
+									fill: "lightgrey",
+								},
+								name: {
+									stroke: "gray",
+								},
+								attributes: {},
+							},
+						},
+					}}
+					onClick={(i, e) => this.onNodeClick(i, e)}
 					rootNodeClassName="TreeTaxonomy__root"
 					branchNodeClassName="TreeTaxonomy__branch"
 					leafNodeClassName="TreeTaxonomy__leaf"
-					renderCustomNodeElement={(rd3tProps) => this.renderRectSvgNode({ ...rd3tProps })}
 				/>
 			</div>
 		);
