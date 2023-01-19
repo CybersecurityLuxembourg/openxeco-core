@@ -7,6 +7,7 @@ Create Date: 2023-01-04 12:09:18.547169
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy.sql import true
 from sqlalchemy.dialects import mysql
 
 
@@ -28,7 +29,7 @@ def upgrade():
         mysql_engine='InnoDB'
     )
 
-    op.add_column('User', sa.Column('accept_request_notification', mysql.BOOLEAN(), default=True, nullable=False))
+    op.add_column('User', sa.Column('accept_request_notification', mysql.BOOLEAN(), server_default=true(), nullable=False))
 
 
 def downgrade():
