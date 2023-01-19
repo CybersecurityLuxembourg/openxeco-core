@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 - Email notification to administrators on new request
 - Default template for new request notification email
+- Docker compose for development environment
 
 ### Fixed
 
