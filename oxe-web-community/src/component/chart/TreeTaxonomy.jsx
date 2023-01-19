@@ -63,18 +63,24 @@ export default class TreeTaxonomy extends React.Component {
 			};
 
 			if (parentLevel + 2 === levels.length) {
-				let active;
+				let fillColor = null;
 
 				if (this.props.selectedValues === null) {
-					active = undefined;
+					fillColor = "lightgrey";
 				} else if (this.props.selectedValues
 					.filter((a) => a === childValues[i].id).length > 0) {
-					active = true;
+					fillColor = "#bcebff";
 				} else {
-					active = false;
+					fillColor = "#fed7da";
 				}
 
-				child.active = active;
+				child.nodeSvgShape = {
+					shape: "circle",
+					shapeProps: {
+						r: 10,
+						fill: fillColor,
+					},
+				};
 			}
 
 			children.push(child);
@@ -112,27 +118,6 @@ export default class TreeTaxonomy extends React.Component {
 
 			this.props.updateSelection(newValues);
 		}
-	}
-
-	renderRectSvgNode({ nodeDatum }) {
-		return (<g>
-			<circle
-				r="14"
-				x="-10"
-				stroke="lightgrey"
-				fill={nodeDatum.active ? "#bcebff" : "#fed7da"}
-				onClick={() => this.onNodeClick(nodeDatum)}
-			/>
-			<foreignObject
-				className="TreeTaxonomy-node-text"
-				x="25"
-				y="-12"
-				width={nodeDatum.children === undefined ? "500px" : "220px"}
-				height="150px"
-			>
-				<span xmlns="http://www.w3.org/1999/xhtml">{nodeDatum.name}</span>
-			</foreignObject>
-		</g>);
 	}
 
 	render() {
@@ -197,10 +182,38 @@ export default class TreeTaxonomy extends React.Component {
 						x: 20,
 						y: 0,
 					}}
+					styles={{
+						links: {
+							stroke: "lightgrey",
+							strokeWidth: 2,
+						},
+						nodes: {
+							node: {
+								circle: {
+									stroke: "lightgrey",
+									fill: "lightgrey",
+								},
+								name: {
+									stroke: "gray",
+								},
+								attributes: {},
+							},
+							leafNode: {
+								circle: {
+									stroke: "lightgrey",
+									fill: "lightgrey",
+								},
+								name: {
+									stroke: "gray",
+								},
+								attributes: {},
+							},
+						},
+					}}
+					onClick={(i, e) => this.onNodeClick(i, e)}
 					rootNodeClassName="TreeTaxonomy__root"
 					branchNodeClassName="TreeTaxonomy__branch"
 					leafNodeClassName="TreeTaxonomy__leaf"
-					renderCustomNodeElement={(rd3tProps) => this.renderRectSvgNode({ ...rd3tProps })}
 				/>
 			</div>
 		);
