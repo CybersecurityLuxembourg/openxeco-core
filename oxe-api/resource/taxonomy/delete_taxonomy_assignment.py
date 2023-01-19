@@ -19,7 +19,7 @@ class DeleteTaxonomyAssignment(MethodResource, Resource):
 
     @log_request
     @doc(tags=['taxonomy'],
-         description='Delete a taxonomy assignment to an entity',
+         description='Delete a taxonomy assignment to a entity',
          responses={
              "200": {},
              "422": {"description": "Object not found"},

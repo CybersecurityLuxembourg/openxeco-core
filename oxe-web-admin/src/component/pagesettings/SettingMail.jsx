@@ -5,52 +5,18 @@ import { getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import Info from "../box/Info.jsx";
-import Tab from "../tab/Tab.jsx";
 
 export default class SettingMail extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.refresh = this.refresh.bind(this);
+		this.saveTemplate = this.saveTemplate.bind(this);
+		this.changeState = this.changeState.bind(this);
+
 		this.state = {
-			tabs: [
-				"ACCOUNT_CREATION",
-				"PASSWORD_RESET",
-				"REQUEST_NOTIFICATION",
-			],
-			selectedTab: "ACCOUNT_CREATION",
-			template: null,
-			editedTemplate: null,
-			content: null,
-			emailDescription: [
-				{
-					description: "This email is sent when you create a new user from the \"Users\" page. "
-						+ "The recipient of the email is the provided email address in the form. "
-						+ "The email notify the new user of his/her account and his/her provisory password.",
-					information: [
-						"{{password}} will be replaced by the provided provisory password",
-						"{{url}} will be replaced by the URL that leads to the login page",
-						"{{project_name}} will be replaced by the project name defined in the global setting page",
-					],
-				},
-				{
-					description: "This email is sent when a user has forgotten his/her password. "
-						+ "The recipient of the email is the provided email address in the \"I forgot my password\" from the login page. "
-						+ "The email contains a URL leading to a form to define a new password.",
-					information: [
-						"{{url}} will be replaced by the URL that leads to the change password form",
-						"{{project_name}} will be replaced by the project name defined in the global setting page",
-					],
-				},
-				{
-					description: "This email is sent when a user issue a request. "
-						+ "The recipients of the email are the administrators that accepts to receive these type of communications. "
-						+ "Each administrator can choose to receive or not these emails via their profile page on the admin portal.",
-					information: [
-						"{{url}} will be replaced by the URL that leads to the request page of the admin portal",
-						"{{project_name}} will be replaced by the project name defined in the global setting page",
-					],
-				},
-			],
+			newAccountMail: null,
+			resetPasswordMail: null,
 		};
 	}
 
@@ -58,21 +24,25 @@ export default class SettingMail extends React.Component {
 		this.refresh();
 	}
 
-	componentDidUpdate(_, prevState) {
-		if (prevState.selectedTab !== this.state.selectedTab) {
-			this.refresh();
-		}
-	}
-
 	refresh() {
-		this.getTemplate();
-	}
+		this.setState({
+			newAccountMail: null,
+			resetPasswordMail: null,
+		});
 
-	getTemplate() {
-		getRequest.call(this, "mail/get_template?name=" + this.state.selectedTab, (data) => {
+		getRequest.call(this, "mail/get_mail_content/new_account", (data) => {
 			this.setState({
-				template: data,
-				editedTemplate: data,
+				newAccountMail: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+
+		getRequest.call(this, "mail/get_mail_content/reset_password", (data) => {
+			this.setState({
+				resetPasswordMail: data,
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -81,99 +51,19 @@ export default class SettingMail extends React.Component {
 		});
 	}
 
-	updateTemplate() {
+	saveTemplate(name) {
 		const params = {
-			name: this.state.selectedTab,
-			content: this.state.editedTemplate,
+			name,
+			content: name === "new_account" ? this.state.newAccountMail : this.state.resetPasswordMail,
 		};
 
-		postRequest.call(this, "mail/update_template", params, () => {
+		postRequest.call(this, "mail/save_template", params, () => {
 			this.refresh();
-			nm.info("The template has been updated");
+			nm.info("The template has been saved");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
-		});
-	}
-
-	deleteTemplate() {
-		const params = {
-			name: this.state.selectedTab,
-		};
-
-		postRequest.call(this, "mail/delete_template", params, () => {
-			this.refresh();
-			nm.info("The template has been deleted");
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
-	getTabContent(description) {
-		return <div className={"row row-spaced"}>
-			<div className={"col-md-12 row-spaced"}/>
-
-			<div className="col-md-6 row-spaced">
-				{description.description}
-			</div>
-			<div className="col-md-6 row-spaced">
-				{description.information
-					&& description.information.map((t, i) => (
-						<Info
-							key={i}
-							content={t}
-						/>
-					))
-				}
-			</div>
-
-			<div className="col-md-12">
-				{this.state.template
-					? <div className="row">
-						<div className="col-md-12">
-							<FormLine
-								label={"Content"}
-								type={"textarea"}
-								value={this.state.editedTemplate}
-								onChange={(v) => this.changeState("editedTemplate", v)}
-								fullWidth={true}
-							/>
-						</div>
-						<div className="col-md-12">
-							<div className="right-buttons">
-								<button
-									onClick={() => this.refresh()}
-									disabled={this.state.template === this.state.editedTemplate}>
-									<i className="far fa-times-circle"/> Discard modifications...
-								</button>
-								<button
-									onClick={() => this.deleteTemplate()}>
-									<i className="fas fa-trash-alt"/> Delete template...
-								</button>
-								<button
-									onClick={() => this.updateTemplate()}
-									disabled={this.state.template === this.state.editedTemplate}>
-									<i className="fas fa-save"/> Save template
-								</button>
-							</div>
-						</div>
-					</div>
-					: <Loading
-						height={300}
-					/>
-				}
-			</div>
-		</div>;
-	}
-
-	onMenuClick(m) {
-		this.setState({
-			template: null,
-			editedTemplate: null,
-			selectedTab: m,
 		});
 	}
 
@@ -184,20 +74,96 @@ export default class SettingMail extends React.Component {
 	render() {
 		return (
 			<div id="SettingMail" className="max-sized-page fade-in">
-				<h1>Email</h1>
-
-				<Tab
-					labels={this.state.tabs.map((n) => n.replace("_", " "))}
-					keys={this.state.tabs}
-					selectedMenu={this.state.selectedTab}
-					onMenuClick={(m) => this.onMenuClick(m)}
-					fullWidth={true}
-					content={[
-						this.getTabContent(this.state.emailDescription[0]),
-						this.getTabContent(this.state.emailDescription[1]),
-						this.getTabContent(this.state.emailDescription[2]),
-					]}
-				/>
+				<div className={"row"}>
+					<div className="col-md-12">
+						<h1>Mail</h1>
+						<div className="top-right-buttons">
+							<button
+								onClick={() => this.refresh()}>
+								<i className="fas fa-redo-alt"/>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
+						<h2>New account mail</h2>
+					</div>
+					<div className="col-md-6">
+						This mail is sent when you create a new user from the &#39;Users&#39; page.
+						The recipient of the mail is the provided email address in the form.
+						The mail notify the new user of his/her account and his/her provisory password.
+					</div>
+					<div className="col-md-6">
+						<Info
+							content={
+								"{{password}} will be replaced by the provided provisory password"
+							}
+						/>
+					</div>
+				</div>
+				<div className={"row row-spaced"}>
+					{this.state.newAccountMail !== null
+						? <div className="col-md-12">
+							<FormLine
+								label={"Content"}
+								type={"textarea"}
+								value={this.state.newAccountMail}
+								onChange={(v) => this.changeState("newAccountMail", v)}
+								fullWidth={true}
+							/>
+							<div className="right-buttons">
+								<button
+									onClick={() => this.saveTemplate("new_account")}>
+									Save template
+								</button>
+							</div>
+						</div>
+						: <Loading
+							height={300}
+						/>
+					}
+				</div>
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
+						<h2>Reset password mail</h2>
+					</div>
+					<div className="col-md-6">
+						This mail is sent when a user has forgotten his/her password.
+						{// eslint-disable-next-line
+						}The recipient of the mail is the provided email address in the "I forgot my password" from the login page.
+						The mail contains a URL leading to a form to define a new password.
+					</div>
+					<div className="col-md-6">
+						<Info
+							content={
+								"{{url}} will be replaced by the URL that leads to the change password form"
+							}
+						/>
+					</div>
+				</div>
+				<div className={"row row-spaced"}>
+					{this.state.resetPasswordMail !== null
+						? <div className="col-md-12">
+							<FormLine
+								label={"Content"}
+								type={"textarea"}
+								value={this.state.resetPasswordMail}
+								onChange={(v) => this.changeState("resetPasswordMailreset_password", v)}
+								fullWidth={true}
+							/>
+							<div className="right-buttons">
+								<button
+									onClick={() => this.saveTemplate("reset_password")}>
+									Save template
+								</button>
+							</div>
+						</div>
+						: <Loading
+							height={300}
+						/>
+					}
+				</div>
 			</div>
 		);
 	}

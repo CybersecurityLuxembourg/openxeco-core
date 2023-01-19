@@ -18,7 +18,7 @@ class AddTaxonomyTag(MethodResource, Resource):
 
     @log_request
     @doc(tags=['article'],
-         description='Add an entity tag to an article',
+         description='Add a entity tag to an article',
          responses={
              "200": {},
              "422.a": {"description": "The provided article does not exist"},

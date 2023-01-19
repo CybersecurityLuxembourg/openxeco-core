@@ -17,7 +17,7 @@ class GetMyEntityAddresses(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Get the list of addresses of an entity assigned to the user authenticated by the token',
+         description='Get the list of addresses of a entity assigned to the user authenticated by the token',
          responses={
              "200": {},
              "422": {"description": "Object not found or you don't have the required access to it"},

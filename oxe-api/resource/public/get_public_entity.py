@@ -15,7 +15,7 @@ class GetPublicEntity(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get full information of an entity.'
+         description='Get full information of a entity.'
                      'Only entities with those following status are accessible: ACTIVE, INACTIVE',
          responses={
              "200": {},

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./FormAnswer.css";
 import { NotificationManager as nm } from "react-notifications";
 import dompurify from "dompurify";
@@ -7,9 +7,8 @@ import Message from "../box/Message.jsx";
 import Loading from "../box/Loading.jsx";
 import User from "./User.jsx";
 import { getRequest } from "../../utils/request.jsx";
-import Item from "./Item.jsx";
 
-export default class FormAnswer extends Item {
+export default class FormAnswer extends Component {
 	constructor(props) {
 		super(props);
 
@@ -55,9 +54,9 @@ export default class FormAnswer extends Item {
 			<Popup
 				className="Popup-small-size"
 				trigger={
-					<div className={"Item FormAnswer"}>
+					<div className={"FormAnswer"}>
 						<i className="fas fa-edit"/>
-						<div className={"name"}>
+						<div className={"FormAnswer-name"}>
 							Answers to {this.props.form.name}
 						</div>
 					</div>
@@ -67,14 +66,8 @@ export default class FormAnswer extends Item {
 				onOpen={() => this.onOpen()}
 			>
 				{(close) => <div className="FormAnswer-content row row-spaced">
-					<div className="col-md-9">
-						<h1>
-							<i className="fas fa-edit"/> Answers to {this.props.form.name}
-						</h1>
-					</div>
-
-					<div className="col-md-3">
-						<div className={"right-buttons"}>
+					<div className="col-md-12">
+						<div className={"top-right-buttons"}>
 							<button
 								className={"grey-background"}
 								data-hover="Close"
@@ -83,6 +76,10 @@ export default class FormAnswer extends Item {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
+
+						<h1 className="FormAnswer-title">
+							<i className="fas fa-edit"/> Answers to {this.props.form.name}
+						</h1>
 					</div>
 
 					<div className="col-md-12">
@@ -122,7 +119,7 @@ export default class FormAnswer extends Item {
 								{this.getAnswerOfQuestion(q.id) && this.getAnswerOfQuestion(q.id).value
 									? <div dangerouslySetInnerHTML={{
 										__html:
-										dompurify.sanitize(this.getAnswerOfQuestion(q.id).value.replaceAll("\n", "<br/>")),
+										dompurify.sanitize(this.getAnswerOfQuestion(q.id).value),
 									}} />
 									: <Message
 										text="No answer found"

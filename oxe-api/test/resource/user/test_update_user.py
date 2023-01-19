@@ -15,8 +15,7 @@ class TestUpdateUser(BaseCase):
 
         payload = {
             "id": 14,
-            "is_admin": True,
-            "email": "mynewemail@test.lu"
+            "is_admin": True
         }
 
         response = self.application.post('/user/update_user',
@@ -28,7 +27,6 @@ class TestUpdateUser(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(users), 1)
         self.assertEqual(users[0].is_admin, 1)
-        self.assertEqual(users[0].email, "mynewemail@test.lu")
 
     @BaseCase.login
     @BaseCase.grant_access("/user/update_user")
@@ -57,7 +55,7 @@ class TestUpdateUser(BaseCase):
 
     @BaseCase.login
     @BaseCase.grant_access("/user/update_user")
-    def test_ko_with_wrong_email(self, token):
+    def test_ko_email_param(self, token):
         self.db.insert({
             "id": 2,
             "email": "myemail@test.lu",
@@ -68,7 +66,7 @@ class TestUpdateUser(BaseCase):
         payload = {
             "id": 2,
             "is_admin": True,
-            "email": "myemaildeded@dde@dedde"
+            "email": "myemail@test.lu"
         }
 
         response = self.application.post('/user/update_user',
@@ -79,4 +77,3 @@ class TestUpdateUser(BaseCase):
 
         self.assertEqual("422 UNPROCESSABLE ENTITY", response.status)
         self.assertEqual(users[0].is_admin, 0)
-        self.assertEqual(users[0].email, "myemail@test.lu")

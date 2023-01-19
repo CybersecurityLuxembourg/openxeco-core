@@ -8,7 +8,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 
 
-class AddMyFormAnswer(MethodResource, Resource):
+class AddFormAnswer(MethodResource, Resource):
 
     db = None
 

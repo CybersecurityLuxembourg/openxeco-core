@@ -27,7 +27,7 @@ export default class SettingGlobal extends React.Component {
 				"EMAIL_ADDRESS",
 				"PHONE_NUMBER",
 				"POSTAL_ADDRESS",
-				"SHOW_CAMPAIGN_PAGE",
+				"SHOW_COMMUNICATION_PAGE",
 				"SHOW_FORM_PAGE",
 				"SHOW_NETWORK_PAGE",
 				"ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION",
@@ -226,20 +226,11 @@ export default class SettingGlobal extends React.Component {
 					<div className="col-md-12 row-spaced">
 						<FormLine
 							type={"checkbox"}
-							label={"Show network page"}
-							value={getSettingValue(this.props.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							label={"Show communication page"}
+							value={getSettingValue(this.props.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"}
 							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Show email campaign page"}
-							value={getSettingValue(this.props.settings, "SHOW_CAMPAIGN_PAGE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("SHOW_CAMPAIGN_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_CAMPAIGN_PAGE")
+								? this.addSetting("SHOW_COMMUNICATION_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_COMMUNICATION_PAGE")
 							)}
 						/>
 						<FormLine
@@ -249,6 +240,15 @@ export default class SettingGlobal extends React.Component {
 							onChange={(v) => (v
 								? this.addSetting("SHOW_FORM_PAGE", "TRUE")
 								: this.deleteSetting("SHOW_FORM_PAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Show network page"}
+							value={getSettingValue(this.props.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+								: this.deleteSetting("SHOW_NETWORK_PAGE")
 							)}
 						/>
 					</div>
@@ -493,15 +493,13 @@ export default class SettingGlobal extends React.Component {
 							value={this.state.newValue}
 							onChange={(v) => this.changeState("newValue", v)}
 						/>
-						<div className="col-xl-12">
-							<div className="right-buttons">
-								<button
-									className={"blue-background"}
-									onClick={() => this.addSetting(this.state.newProperty, this.state.newValue)}
-									disabled={this.state.newProperty === null || this.state.newValue === null}>
-									<i className="fas fa-plus"/> Add setting
-								</button>
-							</div>
+						<div className="col-xl-12 right-buttons">
+							<button
+								className={"blue-background"}
+								onClick={() => this.addSetting(this.state.newProperty, this.state.newValue)}
+								disabled={this.state.newProperty === null || this.state.newValue === null}>
+								<i className="fas fa-plus"/> Add setting
+							</button>
 						</div>
 					</div>
 

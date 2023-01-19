@@ -31,29 +31,14 @@ export default class Tab extends React.Component {
 		this.setState({ selectedMenu: key });
 	}
 
-	getElementClassName(isSelected) {
-		if (isSelected) {
-			if (this.props.fullWidth) {
-				return "Tab-menu-el-fw Tab-menu-el-selected-fw";
-			}
-			return "Tab-menu-el Tab-menu-el-selected";
-		}
-
-		if (this.props.fullWidth) {
-			return "Tab-menu-el-fw";
-		}
-
-		return "Tab-menu-el";
-	}
-
 	render() {
 		return (
 			<div className="Tab max-sized-page">
 				<div className={"row"}>
-					<div className={this.props.fullWidth ? "col-md-12" : "col-md-2"}>
+					<div className="col-md-2">
 						<div className={"row"}>
-							<div className="col-md-12">
-								<div className={this.props.fullWidth ? "Tab-menu-fw" : "Tab-menu"}>
+							<div className="col-md-2">
+								<div className="Tab-menu">
 									{this.props.keys.map((k, i) => {
 										if (k === null) {
 											return (
@@ -66,11 +51,18 @@ export default class Tab extends React.Component {
 										return (
 											<div
 												key={k}
-												className={this.getElementClassName(this.state.selectedMenu === k)}
+												className={this.state.selectedMenu === k ? "Tab-menu-el Tab-menu-el-selected" : "Tab-menu-el"}
 												onClick={() => this.onMenuClick(k)}>
 												<div dangerouslySetInnerHTML={{
 													__html: dompurify.sanitize(this.props.labels[i]),
 												}}/>
+												{this.props.notifications !== undefined
+													&& this.props.notifications[i] !== undefined
+													&& this.props.notifications[i] > 0
+													&& <div className={"Tab-notification"}>
+														{this.props.notifications[i]}
+													</div>
+												}
 											</div>
 										);
 									})}
@@ -78,7 +70,7 @@ export default class Tab extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className={this.props.fullWidth ? "col-md-12 Tab-content-fw" : "col-md-10 Tab-content"}>
+					<div className="col-md-10 Tab-content">
 						{this.props.keys.indexOf(this.state.selectedMenu) >= 0
 							? this.props.content[this.props.keys.indexOf(this.state.selectedMenu)]
 							: ""}

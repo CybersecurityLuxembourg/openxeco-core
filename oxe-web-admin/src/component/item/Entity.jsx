@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./Entity.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
@@ -17,9 +17,8 @@ import EntitySync from "./entity/EntitySync.jsx";
 import FormLine from "../button/FormLine.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 import Chip from "../button/Chip.jsx";
-import Item from "./Item.jsx";
 
-export default class Entity extends Item {
+export default class Entity extends Component {
 	constructor(props) {
 		super(props);
 
@@ -122,19 +121,6 @@ export default class Entity extends Item {
 		});
 	}
 
-	getIcon() {
-		if (this.props.legalStatus === "JURIDICAL PERSON") {
-			return <i className="fas fa-building"/>;
-		}
-		if (this.props.legalStatus === "NATURAL PERSON") {
-			return <i className="fas fa-address-card"/>;
-		}
-		if (this.props.legalStatus === "OTHER") {
-			return <i className="fas fa-circle"/>;
-		}
-		return <i className="fas fa-question"/>;
-	}
-
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -144,9 +130,20 @@ export default class Entity extends Item {
 			<Popup
 				className="Popup-full-size"
 				trigger={
-					<div className={"Item Entity"}>
-						{this.getIcon()}
-						<div className={"name"}>
+					<div className={"Entity"}>
+						{this.props.legalStatus === "JURIDICAL PERSON"
+							&& <i className="fas fa-building"/>
+						}
+						{this.props.legalStatus === "NATURAL PERSON"
+							&& <i className="fas fa-address-card"/>
+						}
+						{this.props.legalStatus === "OTHER"
+							&& <i className="fas fa-circle"/>
+						}
+						{!this.props.legalStatus
+							&& <i className="fas fa-question"/>
+						}
+						<div className={"Entity-name"}>
 							{this.props.name}
 						</div>
 					</div>
@@ -156,14 +153,8 @@ export default class Entity extends Item {
 				onOpen={() => this.fetchEntity()}
 			>
 				{(close) => <div className="row row-spaced">
-					<div className="col-md-9">
-						<h1>
-							{this.getIcon()} {this.props.name}
-						</h1>
-					</div>
-
-					<div className="col-md-3">
-						<div className={"right-buttons"}>
+					<div className="col-md-12">
+						<div className={"top-right-buttons"}>
 							{this.props.node
 								&& this.state.entity
 								&& <Popup
@@ -239,35 +230,34 @@ export default class Entity extends Item {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
-					</div>
+						<h1 className="Entity-title">
+							<i className="fas fa-building"/> {this.props.name}
 
-					<div className="col-md-12">
-						{this.props.node
-							? <Chip
-								label={"Remote"}
-							/>
-							: <Chip
-								label={"Local"}
-							/>
-						}
+							{this.props.node
+								? <Chip
+									label={"Remote"}
+								/>
+								: <Chip
+									label={"Local"}
+								/>
+							}
 
-						{this.state.entity
-							&& this.state.entity.sync_node
-							&& <Chip
-								label={"Synchronized"}
-							/>
-						}
+							{this.state.entity
+								&& this.state.entity.sync_node
+								&& <Chip
+									label={"Synchronized"}
+								/>
+							}
 
-						{this.state.entity
-							&& this.state.entity.sync_node
-							&& this.state.entity.sync_status
-							&& <Chip
-								label={"SYNC STATUS: " + this.state.entity.sync_status}
-							/>
-						}
-					</div>
+							{this.state.entity
+								&& this.state.entity.sync_node
+								&& this.state.entity.sync_status
+								&& <Chip
+									label={"SYNC STATUS: " + this.state.entity.sync_status}
+								/>
+							}
+						</h1>
 
-					<div className="col-md-12">
 						<Tab
 							labels={["Global", "Contact", "Address", "User", "Relationship",
 								"Taxonomy", "Workforce", "Notes", "Synchronization"]}

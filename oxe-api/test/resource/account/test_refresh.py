@@ -9,19 +9,18 @@ class TestRefresh(BaseCase):
             "password": "12345678"
         }
 
-        r = self.application.post('/account/login',
+        response = self.application.post('/account/login',
                                          headers=self.get_standard_post_header(None),
                                          json=payload)
 
-        cookie_content = [c for c in r.headers.getlist("Set-Cookie") if c.startswith("refresh_token_cookie")][0]
-        refresh_token = cookie_content.split(";")[0].split("=")[1]
+        tokens = response.json
 
         payload = {
-            "refresh_token": refresh_token,
+            "refresh_token": tokens["refresh_token"],
         }
 
         response = self.application.post('/account/refresh',
-                                         headers=self.get_standard_post_header(refresh_token),
+                                         headers=self.get_standard_post_header(tokens["refresh_token"]),
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
