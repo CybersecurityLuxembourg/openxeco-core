@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- 
+- Dependabot alerts
 
 ## [1.14.6] - 2023-01-18
 
