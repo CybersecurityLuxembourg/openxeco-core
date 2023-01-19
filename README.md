@@ -137,6 +137,11 @@ $ docker run -d -p 5000:5000 \
     ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
 ```
 
+### Install the app for dev with use docker-compose
+
+- Run `docker-compose up`. Optionally can be used `-d` option to run as daemon.
+
+
 ### Enjoy the solution
 
 Access the administrator interface:
