@@ -38,7 +38,9 @@ class GetArticles(MethodResource, Resource):
             required=False,
         ),
         'min_start_date': fields.Str(required=False),
+        'max_start_date': fields.Str(required=False),
         'min_end_date': fields.Str(required=False),
+        'max_end_date': fields.Str(required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access

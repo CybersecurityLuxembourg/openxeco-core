@@ -16,7 +16,7 @@ class AddAddress(MethodResource, Resource):
 
     @log_request
     @doc(tags=['address'],
-         description='Add an address related to a entity',
+         description='Add an address related to an entity',
          responses={
              "200": {},
              "422": {"description": "Provided entity not existing"},

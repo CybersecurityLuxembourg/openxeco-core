@@ -20,7 +20,7 @@ class AddWorkforce(MethodResource, Resource):
 
     @log_request
     @doc(tags=['user'],
-         description='Add workforce information to a entity',
+         description='Add workforce information to an entity',
          responses={
              "200": {},
              "422.a": {"description": "Provided date does not have the right format (expected: YYYY-mm-dd)"},

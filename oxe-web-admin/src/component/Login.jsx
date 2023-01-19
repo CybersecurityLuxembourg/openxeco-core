@@ -6,7 +6,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateOtp } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getCookieOptions, getApiURL } from "../utils/env.jsx";
+import { getApiURL } from "../utils/env.jsx";
 import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
@@ -38,27 +38,26 @@ export default class Login extends React.Component {
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
-			// TODO use httponly cookies
-			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
+			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), {});
 		}
 
 		// Log in the user if there is an existing cookie
 
 		if (getUrlParameter("action") !== "reset_password") {
-			if (this.props.cookies.get("access_token_cookie")) {
-				getRequest.call(this, "private/get_my_user", (data) => {
-					if (data.is_admin === 1) {
-						this.props.connect(data.id);
-					} else {
-						this.props.cookies.remove("access_token_cookie");
-						nm.warning("This user is not an admin");
-					}
-				}, (response2) => {
+			getRequest.call(this, "private/get_my_user", (data) => {
+				if (data.is_admin === 1) {
+					this.props.connect(data.id);
+				} else {
+					this.props.logout();
+					nm.warning("This user is not an admin");
+				}
+			}, (response2) => {
+				if (response2.status !== 401 && response2.status !== 422) {
 					nm.warning(response2.statusText);
-				}, (error) => {
-					nm.error(error.message);
-				});
-			}
+				}
+			}, (error) => {
+				nm.error(error.message);
+			});
 		}
 
 		// This function to notify if the password has been reset correctly
@@ -101,6 +100,7 @@ export default class Login extends React.Component {
 
 		postRequest.call(this, "account/login", params, (response) => {
 			// TODO use httponly cookies
+			nm.info("Please check your email for the One Time Pin");
 			this.setState({ verifyLogin: true });
 			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 		}, (response) => {
@@ -112,7 +112,7 @@ export default class Login extends React.Component {
 
 	verifyLogin() {
 		if (!validateOtp(this.state.otp)) {
-			nm.warning("Invalid OTP");
+			nm.warning("This one time pin is invalid.");
 			return;
 		}
 		const params = {
@@ -127,7 +127,7 @@ export default class Login extends React.Component {
 				if (data.is_admin === 1) {
 					this.props.connect(response.user);
 				} else {
-					this.props.cookies.remove("access_token_cookie");
+					this.props.logout();
 					nm.warning("This user is not an admin");
 				}
 			}, (response2) => {
@@ -148,7 +148,7 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/forgot_password", params, () => {
-			nm.info("An email has been sent with a link to reset your password");
+			nm.info("If that email address is in our database, we will send you an email to reset your password");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -162,6 +162,7 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/reset_password", params, () => {
+			this.props.cookies.remove("access_token_cookie", {});
 			document.location.href = "/?reset_password=true";
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -170,9 +171,16 @@ export default class Login extends React.Component {
 		});
 	}
 
+	backToLogin() {
+		this.props.cookies.remove("access_token_cookie", {});
+		this.setState({ view: "login" });
+		window.history.pushState({ path: "/login" }, "", "/login");
+	}
+
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
 		if (event.key === "Enter" || event.code === "NumpadEnter") {
-			if (this.state.view === "login") this.login();
+			if (this.state.view === "login" && !this.state.verifyLogin) this.login();
+			if (this.state.view === "login" && this.state.verifyLogin) this.verifyLogin();
 			if (this.state.view === "forgot") this.requestReset();
 			if (this.state.view === "reset") this.resetPassword();
 		}
@@ -327,7 +335,7 @@ export default class Login extends React.Component {
 								<div className="bottom-left-buttons">
 									<button
 										className="link-button"
-										onClick={() => this.changeState("view", "login")}
+										onClick={() => this.backToLogin()}
 									>
 										Back to login
 									</button>
@@ -388,7 +396,7 @@ export default class Login extends React.Component {
 								<div className="bottom-left-buttons">
 									<button
 										className="link-button"
-										onClick={() => window.location.replace("/")}
+										onClick={() => this.backToLogin()}
 									>
 										Back to login
 									</button>
