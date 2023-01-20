@@ -3,7 +3,6 @@ import "./DashboardRecentActivity.css";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
-import Message from "../box/Message.jsx";
 import Entity from "../item/Entity.jsx";
 import Article from "../item/Article.jsx";
 import Note from "../item/Note.jsx";
@@ -68,8 +67,8 @@ export default class DashboardRecentActivity extends React.Component {
 			</h3>
 
 			<div>
-				{this.state[stateVar] && this.state[stateVar].items.length > 0
-					&& this.state[stateVar].items.map((o) => (
+				{this.state[stateVar]
+					? this.state[stateVar].items.map((o) => (
 						<Article
 							key={o.id}
 							id={o.id}
@@ -77,17 +76,7 @@ export default class DashboardRecentActivity extends React.Component {
 							afterDeletion={() => this.refresh()}
 						/>
 					))
-				}
-
-				{this.state[stateVar] && this.state[stateVar].items.length === 0
-					&& <Message
-						text={"No data found"}
-						height={160}
-					/>
-				}
-
-				{!this.state[stateVar]
-					&& <Loading
+					: <Loading
 						height={160}
 					/>
 				}
@@ -119,8 +108,8 @@ export default class DashboardRecentActivity extends React.Component {
 					</div>
 					<div className="col-md-12 row-spaced">
 						<div>
-							{this.props.entities && this.props.entities.length > 0
-								&& this.props.entities
+							{this.props.entities
+								? this.props.entities
 									.slice(Math.max(this.props.entities.length - 10, 0))
 									.reverse()
 									.map((o) => (
@@ -131,17 +120,7 @@ export default class DashboardRecentActivity extends React.Component {
 											legalStatus={o.legal_status}
 										/>
 									))
-							}
-
-							{this.props.entities && this.props.entities.length === 0
-								&& <Message
-									text={"No data found"}
-									height={160}
-								/>
-							}
-
-							{!this.props.entities
-								&& <Loading
+								: <Loading
 									height={160}
 								/>
 							}
@@ -165,8 +144,8 @@ export default class DashboardRecentActivity extends React.Component {
 
 					<div className="col-md-12 row-spaced">
 						<div>
-							{this.state.notes && this.state.notes.pagination.total > 0
-								&& this.state.notes.items
+							{this.state.notes
+								? this.state.notes.items
 									.map((o) => (
 										<div key={o.id}>
 											{o.entity
@@ -199,17 +178,7 @@ export default class DashboardRecentActivity extends React.Component {
 											/>
 										</div>
 									))
-							}
-
-							{this.state.notes && this.state.notes.pagination.total === 0
-								&& <Message
-									text={"No data found"}
-									height={160}
-								/>
-							}
-
-							{!this.state.notes
-								&& <Loading
+								: <Loading
 									height={160}
 								/>
 							}

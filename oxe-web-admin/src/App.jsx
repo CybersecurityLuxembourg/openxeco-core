@@ -1,19 +1,20 @@
 import React from "react";
 import "./App.css";
 import "./css/medium-editor.css";
-import { NotificationContainer, NotificationManager as nm } from "react-notifications";
+import { NotificationContainer } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { BrowserRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
 import { getApiURL } from "./utils/env.jsx";
-import { postRequest } from "./utils/request.jsx";
 import DialogMessage from "./component/dialog/DialogMessage.jsx";
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.connect = this.connect.bind(this);
 
 		this.state = {
 			user: null,
@@ -36,32 +37,18 @@ class App extends React.Component {
 		});
 	}
 
-	logout() {
-		postRequest.call(this, "account/logout", null, () => {
-			this.setState({
-				user: null,
-				logged: false,
-			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
-	}
-
 	render() {
 		return (
 			<div id="App">
 				{this.state.logged
 					? <BrowserRouter>
 						<InsideApp
+							cookies={this.props.cookies}
 							user={this.state.user}
-							logout={() => this.logout()}
 						/>
 					</BrowserRouter>
 					: <Login
-						connect={() => this.connect()}
-						logout={() => this.logout()}
+						connect={this.connect}
 						cookies={this.props.cookies}
 					/>
 				}

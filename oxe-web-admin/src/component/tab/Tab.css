@@ -1,37 +1,27 @@
 
-@media (min-width: 0px) {
-    .Tab-menu, .Tab-menu-fw {
-        padding: 20px 0px;
-    }
+.Tab {
+}
 
-    .Tab-menu-el-selected-fw {
-        border-left: 4px solid #e40613;
+@media (min-width: 0px) {
+    .Tab-menu {
+    	padding: 20px 0px;
+        z-index: 0;
     }
 }
 
 @media (min-width: 768px) {
     .Tab-menu {
-        position: absolute;
-    }
-
-    .Tab-menu, .Tab-menu-fw {
+        position: fixed;
         padding: 20px 0px;
         margin-left: 0px;
-    }
-
-    .Tab-menu-el-fw {
-        float: left;
-    }
-
-    .Tab-menu-el-selected-fw {
-        border-left: none;
-        border-bottom: 4px solid #e40613;
+        z-index: 0;
     }
 }
 
-.Tab-menu-el, .Tab-menu-el-fw {
-    cursor: pointer;
-    color: #010101;
+.Tab-menu-el {
+    position: relative;
+	cursor: pointer;
+	color: #010101;
     text-transform: uppercase;
     font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
@@ -40,15 +30,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 14px;
+    width: 100%;
+    max-width:inherit;
 }
 
-.Tab-menu-el {
-    width: inherit;
-    max-width: inherit;
-}
-
-.Tab-menu-el:hover, .Tab-menu-el-fw:hover {
-    background-color: rgba(0, 159, 227, 0.05);
+.Tab-menu-el:hover {
+	background-color: rgba(0, 159, 227, 0.05);
+    color: black !important;
 }
 
 .Tab-menu-el-selected {
@@ -73,9 +61,4 @@
     border-radius: 20px;
     background-color: #e40613;
     padding: 3px 7px;
-    border-left: 4px solid #e40613;
-}
-
-.Tab-menu-el-empty {
-    height: 15px;
 }

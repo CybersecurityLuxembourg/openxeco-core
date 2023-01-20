@@ -18,7 +18,7 @@ class UpdateAddress(MethodResource, Resource):
 
     @log_request
     @doc(tags=['address'],
-         description='Update an address related to an entity',
+         description='Update an address related to a entity',
          responses={
              "200": {},
          })

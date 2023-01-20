@@ -1,4 +1,0 @@
-!.docker/*/.gitkeep
-.docker/mariadb/data/*
-.docker/documnets/*
-.docker/media/*

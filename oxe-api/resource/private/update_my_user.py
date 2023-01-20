@@ -28,7 +28,6 @@ class UpdateMyUser(MethodResource, Resource):
         'first_name': fields.Str(required=False, allow_none=True),
         'telephone': fields.Str(required=False, allow_none=True),
         'accept_communication': fields.Bool(required=False),
-        'accept_request_notification': fields.Bool(required=False),
         'vcard': fields.Str(required=False, allow_none=True),
         'is_vcard_public': fields.Bool(required=False),
     })

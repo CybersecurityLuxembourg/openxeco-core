@@ -61,7 +61,7 @@ class GetPublicRelatedArticles(MethodResource, Resource):
             .filter(self.db.tables["Article"].id.in_(article_ids)) \
             .filter(self.db.tables["Article"].status == "PUBLIC") \
             .filter(self.db.tables["Article"].publication_date <= datetime.datetime.now()) \
-            .filter(self.db.tables["Article"].type == article[0].type)
+            .filter(self.db.tables["Article"].type == "NEWS")
 
         related_articles = query \
             .order_by(desc(self.db.tables["Article"].publication_date)) \

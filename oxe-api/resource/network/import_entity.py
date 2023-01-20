@@ -24,7 +24,7 @@ class ImportEntity(MethodResource, Resource):
 
     @log_request
     @doc(tags=['network'],
-         description='Import an entity from a network node',
+         description='Import a entity from a network node',
          responses={
              "200": {},
              "422.a": {"description": "Object not found: Network node"},

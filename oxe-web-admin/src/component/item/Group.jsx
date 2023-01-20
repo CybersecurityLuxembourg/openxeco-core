@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./Group.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
@@ -7,9 +7,8 @@ import { getRequest, postRequest } from "../../utils/request.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
-import Item from "./Item.jsx";
 
-export default class Group extends Item {
+export default class Group extends Component {
 	constructor(props) {
 		super(props);
 
@@ -168,9 +167,9 @@ export default class Group extends Item {
 			<Popup
 				className="Popup-full-size"
 				trigger={
-					<div className={"Item Group"}>
+					<div className={"Group"}>
 						<i className="fas fa-users"/>
-						<div className={"name"}>
+						<div className={"Group-name"}>
 							{this.props.name}
 						</div>
 					</div>
@@ -181,14 +180,8 @@ export default class Group extends Item {
 				onOpen={this.onOpen}
 			>
 				{(close) => <div className="Group-popup row">
-					<div className="col-md-9">
-						<h1>
-							<i className="fas fa-users"/> {this.state.group !== null ? this.state.group.name : this.props.id}
-						</h1>
-					</div>
-
-					<div className="col-md-3">
-						<div className={"right-buttons"}>
+					<div className="col-md-12">
+						<div className={"top-right-buttons"}>
 							<DialogConfirmation
 								text={"Are you sure you want to delete this group?"}
 								trigger={
@@ -208,6 +201,9 @@ export default class Group extends Item {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
+						<h1 className="Group-title">
+							{this.state.group !== null ? this.state.group.name : this.props.id}
+						</h1>
 					</div>
 
 					<div className="col-md-12">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./Article.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
@@ -14,9 +14,8 @@ import ArticleSync from "./article/ArticleSync.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
 import FormLine from "../button/FormLine.jsx";
 import Chip from "../button/Chip.jsx";
-import Item from "./Item.jsx";
 
-export default class Article extends Item {
+export default class Article extends Component {
 	constructor(props) {
 		super(props);
 
@@ -124,9 +123,9 @@ export default class Article extends Item {
 			<Popup
 				className="Popup-full-size"
 				trigger={
-					<div className={"Item Article"}>
+					<div className={"Article"}>
 						<i className="fas fa-feather-alt"/>
-						<div className={"name"}>
+						<div className={"Article-name"}>
 							{this.props.name}
 						</div>
 					</div>
@@ -136,14 +135,8 @@ export default class Article extends Item {
 				onOpen={() => this.fetchArticle()}
 			>
 				{(close) => <div className="row row-spaced">
-					<div className="col-md-9">
-						<h1>
-							<i className="fas fa-feather-alt"/> {this.props.name}
-						</h1>
-					</div>
-
-					<div className="col-md-3">
-						<div className={"right-buttons"}>
+					<div className="col-md-12">
+						<div className={"top-right-buttons"}>
 							{this.props.node
 								&& this.state.article
 								&& <Popup
@@ -217,35 +210,34 @@ export default class Article extends Item {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
-					</div>
+						<h1 className="Article-title">
+							<i className="fas fa-feather-alt"/> {this.props.name}
 
-					<div className="col-md-12">
-						{this.props.node
-							? <Chip
-								label={"Remote"}
-							/>
-							: <Chip
-								label={"Local"}
-							/>
-						}
+							{this.props.node
+								? <Chip
+									label={"Remote"}
+								/>
+								: <Chip
+									label={"Local"}
+								/>
+							}
 
-						{this.state.article
-							&& this.state.article.sync_node
-							&& <Chip
-								label={"Synchronized"}
-							/>
-						}
+							{this.state.article
+								&& this.state.article.sync_node
+								&& <Chip
+									label={"Synchronized"}
+								/>
+							}
 
-						{this.state.article
-							&& this.state.article.sync_node
-							&& this.state.article.sync_status
-							&& <Chip
-								label={"SYNC STATUS: " + this.state.article.sync_status}
-							/>
-						}
-					</div>
+							{this.state.article
+								&& this.state.article.sync_node
+								&& this.state.article.sync_status
+								&& <Chip
+									label={"SYNC STATUS: " + this.state.article.sync_status}
+								/>
+							}
+						</h1>
 
-					<div className="col-md-12">
 						<Tab
 							labels={["Global", "Version", "Content", "Tag", "Notes", "Synchronization"]}
 							selectedMenu={this.state.selectedMenu}
