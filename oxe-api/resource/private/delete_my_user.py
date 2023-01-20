@@ -17,7 +17,7 @@ class DeleteMyUser(MethodResource, Resource):
 
     @log_request
     @doc(tags=['private'],
-         description='Delete the user authenticated by the token',
+         description='Delete the user identified by the token',
          responses={
              "200": {},
              "422": {"description": "Object not found"}
