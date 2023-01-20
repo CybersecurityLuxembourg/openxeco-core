@@ -7,7 +7,7 @@ Create Date: 2023-01-04 12:09:18.547169
 """
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.sql import true
+from sqlalchemy.sql import true, false
 from sqlalchemy.dialects import mysql
 
 
@@ -30,9 +30,11 @@ def upgrade():
     )
 
     op.add_column('User', sa.Column('accept_request_notification', mysql.BOOLEAN(), server_default=true(), nullable=False))
+    op.add_column('User', sa.Column('accept_terms_and_conditions', mysql.BOOLEAN(), server_default=false(), nullable=False))
 
 
 def downgrade():
     op.drop_table('EmailTemplate')
 
     op.drop_column('User', 'accept_request_notification')
+    op.drop_column('User', 'accept_terms_and_conditions')

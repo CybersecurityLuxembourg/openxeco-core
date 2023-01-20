@@ -405,10 +405,10 @@ export default class PageProfile extends React.Component {
 					<div className="col-md-8">
 						<div className={"row row-spaced"}>
 							<div className="col-md-12 PageProfile-white-box">
-								<h3>Communication</h3>
+								<h3>Notification</h3>
 								<br/>
 								<FormLine
-									label={"Accept communications"}
+									label={"Accept to receive communications"}
 									type={"checkbox"}
 									value={this.state.user.accept_communication}
 									onChange={(v) => this.updateUser("accept_communication", v)}

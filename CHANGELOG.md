@@ -7,12 +7,17 @@ All notable changes to this project will be documented in this file.
 
 - Persistence of email templates in the database
 - user/update_user resource: allow email modification
+- Restrict field modification to admins on resource user/update_user
 
 ### Added
 
 - Email notification to administrators on new request
 - Default template for new request notification email
 - Docker compose for development environment
+- Database: accept_request_notification columns on User table
+- Database: accept_terms_and_conditions columns on User table
+- T&C settings on oxe-web-admin for oxe-web-community
+- Delete account button oxe-web-community
 
 ### Fixed
 
