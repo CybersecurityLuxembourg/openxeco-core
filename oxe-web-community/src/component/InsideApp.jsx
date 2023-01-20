@@ -88,7 +88,10 @@ export default class InsideApp extends React.Component {
 				/>}/>
 				<div id="InsideApp-content">
 					<Switch>
-						<Route path="/profile" render={(props) => <PageProfile {...props} />}/>
+						<Route path="/profile" render={(props) => <PageProfile
+							logout={this.props.logout}
+							{...props}
+						/>}/>
 						{this.props.settings !== undefined
 							&& this.props.settings !== null
 							&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
