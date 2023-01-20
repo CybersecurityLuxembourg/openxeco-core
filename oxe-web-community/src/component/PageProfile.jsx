@@ -5,6 +5,7 @@ import QRCode from "react-qr-code";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import Info from "./box/Info.jsx";
+import DialogConfirmation from "./dialog/DialogConfirmation.jsx";
 import FormLine from "./form/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword } from "../utils/re.jsx";
@@ -182,6 +183,17 @@ export default class PageProfile extends React.Component {
 		});
 	}
 
+	deleteUser() {
+		postRequest.call(this, "private/delete_my_user", {}, () => {
+			this.props.logout();
+			nm.info("The account has been deleted");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
 	generateHandle(property, value) {
 		const params = {
 			[property]: value,
@@ -286,7 +298,7 @@ export default class PageProfile extends React.Component {
 											<button className="blue-button"
 												onClick={this.resetPassword}
 											>
-												Change password
+												Change password...
 											</button>
 										}
 										onClose={() => {
@@ -374,6 +386,17 @@ export default class PageProfile extends React.Component {
 									>
 										Open VCF file
 									</button>
+
+									<DialogConfirmation
+										text={"Are you sure you want to delete this account? The data related to the account won't be retrievable."}
+										trigger={
+											<button
+												className={"red-background"}>
+												Delete account...
+											</button>
+										}
+										afterConfirmation={() => this.deleteUser()}
+									/>
 								</div>
 							</div>
 						</div>
