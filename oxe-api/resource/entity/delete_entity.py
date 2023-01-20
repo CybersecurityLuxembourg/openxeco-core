@@ -19,7 +19,7 @@ class DeleteEntity(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Delete an entity by its ID',
+         description='Delete a entity by its ID',
          responses={
              "200": {},
              "422": {"description": "Object not found"},

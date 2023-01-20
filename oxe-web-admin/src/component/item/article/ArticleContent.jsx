@@ -6,7 +6,7 @@ import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import LogArticleVersion from "../LogArticleVersion.jsx";
-import DialogArticleEditor from "./DialogArticleEditor.jsx";
+import DialogArticleEditor from "../../dialog/DialogArticleEditor.jsx";
 import { getContentFromBlock } from "../../../utils/article.jsx";
 
 export default class ArticleContent extends React.Component {

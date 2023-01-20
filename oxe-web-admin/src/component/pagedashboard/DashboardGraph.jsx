@@ -169,27 +169,21 @@ export default class DashboardGraph extends React.Component {
 	}
 
 	getEntityRelationship(entityIds) {
-		if (entityIds.length > 0) {
-			const params = dictToURI({
-				ids: entityIds,
-			});
+		const params = dictToURI({
+			ids: entityIds,
+		});
 
-			this.setState({ entityRelationships: null }, () => {
-				getRequest.call(this, "public/get_public_entity_relationships?" + params, (data) => {
-					this.setState({
-						entityRelationships: data,
-					});
-				}, (response) => {
-					nm.warning(response.statusText);
-				}, (error) => {
-					nm.error(error.message);
+		this.setState({ entityRelationships: null }, () => {
+			getRequest.call(this, "public/get_public_entity_relationships?" + params, (data) => {
+				this.setState({
+					entityRelationships: data,
 				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
 			});
-		} else {
-			this.setState({
-				entityRelationships: [],
-			});
-		}
+		});
 	}
 
 	getEntityRelationshipTypes() {

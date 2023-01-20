@@ -5,7 +5,6 @@ import os
 import traceback
 import json
 
-from flask import request, render_template
 from PIL import Image
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
@@ -13,19 +12,18 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restful import Resource
 from sqlalchemy.orm.exc import NoResultFound
 from webargs import fields
+from sqlalchemy.exc import IntegrityError
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from config.config import DOCUMENT_FOLDER
 from exception.error_while_saving_file import ErrorWhileSavingFile
-from utils.mail import send_email
 
 
 class AddRequest(MethodResource, Resource):
 
-    def __init__(self, db, mail):
+    def __init__(self, db):
         self.db = db
-        self.mail = mail
 
     @log_request
     @doc(tags=['private'],
@@ -36,7 +34,6 @@ class AddRequest(MethodResource, Resource):
              "422.b": {"description": "Image width and height can't be bigger than 500 pixels"},
              "422.c": {"description": "Object not found or you don't have the required access to it"},
              "422.d": {"description": "Already exists"},
-             "500": {"description": "Impossible to find the origin. Please contact the administrator"}
          })
     @use_kwargs({
         'entity_id': fields.Int(required=False, allow_none=True),
@@ -60,10 +57,6 @@ class AddRequest(MethodResource, Resource):
                 data = self.db.get(self.db.tables["Entity"], {"vat_number": kwargs["data"]["vat_number"]})
                 if len(data) > 0:
                     return "", "422 The VAT Number you entered has already been registered"
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         if "image" in kwargs and kwargs["image"] is not None:
             try:
@@ -156,32 +149,5 @@ class AddRequest(MethodResource, Resource):
         }
 
         self.db.insert(user_request, self.db.tables["UserRequest"])
-
-        # Get email addresses to send notification
-
-        addresses = self.db.session \
-            .query(self.db.tables["User"]) \
-            .with_entities(self.db.tables["User"].email) \
-            .filter(self.db.tables["User"].is_admin.is_(True)) \
-            .filter(self.db.tables["User"].is_active.is_(True)) \
-            .filter(self.db.tables["User"].accept_request_notification.is_(True)) \
-            .all()
-        print(addresses)
-        addresses = [a[0] for a in addresses]
-
-        # Send notification email
-
-        if len(addresses) > 0:
-            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
-            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
-
-            send_email(self.mail,
-                       subject=f"[{project_name}] New request",
-                       recipients=addresses,
-                       html_body=render_template(
-                           'request_notification.html',
-                           url=origin.replace("community.", "admin.") + "/task?tab=request",
-                           project_name=project_name)
-                       )
 
         return "", "200 "

@@ -14,7 +14,7 @@ class GetPublicEntityAddresses(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get the addresses of an entity designated by its ID',
+         description='Get the addresses of a entity designated by its ID',
          responses={
              "200": {},
          })

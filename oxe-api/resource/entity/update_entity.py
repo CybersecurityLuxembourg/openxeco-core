@@ -19,7 +19,7 @@ class UpdateEntity(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Update an entity specified by its ID',
+         description='Update a entity specified by its ID',
          responses={
              "200": {},
          })

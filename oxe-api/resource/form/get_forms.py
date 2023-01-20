@@ -23,7 +23,6 @@ class GetForms(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
-        'reference': fields.Str(required=False, allow_none=True),
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
     }, location="query")
@@ -33,10 +32,6 @@ class GetForms(MethodResource, Resource):
     def get(self, **kwargs):
 
         query = self.db.session.query(self.db.tables["Form"])
-
-        if "reference" in kwargs:
-            query = query.filter(self.db.tables["Form"].reference == kwargs["reference"])
-
         paginate = query.paginate(kwargs["page"], kwargs["per_page"])
         forms = Serializer.serialize(paginate.items, self.db.tables["Form"])
 
