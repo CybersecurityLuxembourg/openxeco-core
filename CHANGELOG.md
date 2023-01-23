@@ -6,10 +6,11 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Persistence of email templates in the database
-- user/update_user resource: allow email modification
-- Restrict field modification to admins on resource user/update_user
+- user/update_user API resource: allow email modification
 - public/get_public_document API resource: Add possibility to retrieve document by its ID
+- user/update_user API resource: restrict field modification to admins
 - UI on contact details of contact page of oxe-web-community
+- UI/UX on "global" section of setting page of oxe-web-admin
 
 ### Added
 
