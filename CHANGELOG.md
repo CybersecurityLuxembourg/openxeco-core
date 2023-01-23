@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - user/update_user resource: allow email modification
 - Restrict field modification to admins on resource user/update_user
 - public/get_public_document API resource: Add possibility to retrieve document by its ID
+- UI on contact details of contact page of oxe-web-community
 
 ### Added
 
