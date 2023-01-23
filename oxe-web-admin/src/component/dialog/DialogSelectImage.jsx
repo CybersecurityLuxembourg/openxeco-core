@@ -160,7 +160,7 @@ export default class DialogSelectImage extends React.Component {
 
 						{this.state.images !== null && this.state.images.length === 0
 							&& <Message
-								text={"No media in the library"}
+								text={"No image in the library"}
 								height={300}
 							/>
 						}
