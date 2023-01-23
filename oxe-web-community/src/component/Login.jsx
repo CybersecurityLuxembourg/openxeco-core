@@ -6,7 +6,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateEmail, validateOtp } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
+import { getGlobalAppURL, getApiURL } from "../utils/env.jsx";
 // import DialogHint from "./dialog/DialogHint.jsx";
 import Version from "./box/Version.jsx";
 
@@ -144,8 +144,8 @@ export default class Login extends React.Component {
 			email: this.state.email,
 			token: this.state.otp,
 		};
-		postRequest.call(this, "account/verify_login", params, (response) => {
-			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
+		postRequest.call(this, "account/verify_login", params, () => {
+			// this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 			this.props.connect(this.state.email);
 			this.fetchUser();
 		}, (response) => {

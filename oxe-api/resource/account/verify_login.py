@@ -1,11 +1,12 @@
-import datetime
-from flask import request
+from datetime import datetime, timedelta
+from flask import make_response, request
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token, create_refresh_token
 from webargs import fields
 from utils.token import verify_otp
+from utils.cookie import set_cookie
 
 from decorator.catch_exception import catch_exception
 
@@ -47,20 +48,25 @@ class VerifyLogin(MethodResource, Resource):
         if not verify_otp(kwargs["token"], otp[0].token):
             return "", "422 This one time pin is invalid."
         token_timestamp = otp[0].timestamp.timestamp()
-        now_timestamp = datetime.datetime.now().timestamp()
+        now_timestamp = datetime.now().timestamp()
         if now_timestamp - token_timestamp > 600:
             return "", "422 This one time pin has expired."
 
         # delete token if valid
         self.db.delete(self.db.tables["UserOtp"], {"id": otp[0].id})
 
-        access_token_expires = datetime.timedelta(days=1)
-        refresh_token_expires = datetime.timedelta(days=365)
+        access_token_expires = timedelta(days=1)
+        refresh_token_expires = timedelta(days=365)
         access_token = create_access_token(identity=str(user[0].id), expires_delta=access_token_expires)
         refresh_token = create_refresh_token(identity=str(user[0].id), expires_delta=refresh_token_expires)
 
-        return {
+        response = make_response({
             "user": user[0].id,
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-        }, "200 "
+        })
+
+        now = datetime.now()
+
+        response = set_cookie(request, response, "access_token_cookie", access_token, now + timedelta(days=1))
+        response = set_cookie(request, response, "refresh_token_cookie", refresh_token, now + timedelta(days=365))
+
+        return response
