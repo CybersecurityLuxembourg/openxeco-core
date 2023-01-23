@@ -431,8 +431,7 @@ export default class Request extends Component {
 									</button>
 								}
 								email={this.state.user.email}
-								subject={(this.getSettingValue("PROJECT_NAME") !== null
-									? "[" + this.getSettingValue("PROJECT_NAME") + "] " : "") + "Treated request"}
+								subject={this.state.subject}
 								content={this.state.email_content}
 							/>
 							: <Loading
