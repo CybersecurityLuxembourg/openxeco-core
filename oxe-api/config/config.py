@@ -47,7 +47,7 @@ MAIL_DEFAULT_SENDER = _getenv('MAIL_DEFAULT_SENDER', mandatory=True)
 HTTP_PROXY          = _getenv('HTTP_PROXY', mandatory=False)
 
 INITIAL_ADMIN_EMAIL =       _getenv('INITIAL_ADMIN_EMAIL',      mandatory=False)
-INITIAL_ADMIN_PASSWORD =    _getenv('INITIAL_ADMIN_PASSWORD',   default="password")
+INITIAL_ADMIN_PASSWORD =    _getenv('INITIAL_ADMIN_PASSWORD',   default="Passw0rd!")
 
 IMAGE_FOLDER        = _getenv('IMAGE_FOLDER',    default="/openxeco_image")
 DOCUMENT_FOLDER     = _getenv('DOCUMENT_FOLDER', default="/openxeco_document")

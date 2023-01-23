@@ -10,12 +10,10 @@ export default class DialogSendMail extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.sendMail = this.sendMail.bind(this);
-
 		this.state = {
-			email: props.email !== undefined ? props.email : null,
-			subject: props.subject !== undefined ? props.subject : null,
-			content: props.content !== undefined ? props.content : null,
+			email: props.email ? props.email : null,
+			subject: props.subject ? props.subject : null,
+			content: props.content ? props.content : null,
 			userAsCc: true,
 		};
 	}
@@ -38,6 +36,12 @@ export default class DialogSendMail extends React.Component {
 		});
 	}
 
+	onOpen() {
+		this.setState({
+			subject: this.props.subject ? this.props.subject : null,
+		});
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -48,6 +52,7 @@ export default class DialogSendMail extends React.Component {
 				trigger={this.props.trigger}
 				modal
 				closeOnDocumentClick
+				onOpen={() => this.onOpen()}
 				className={"DialogSendMail"}
 			>
 				{(close) => (
@@ -68,6 +73,11 @@ export default class DialogSendMail extends React.Component {
 								type={"checkbox"}
 								value={this.state.userAsCc}
 								onChange={() => this.changeState("userAsCc", !this.state.userAsCc)}
+							/>
+							<FormLine
+								label={"Subject"}
+								value={this.state.subject}
+								onChange={(s) => this.changeState("subject", s)}
 							/>
 							<FormLine
 								label={"Mail content"}

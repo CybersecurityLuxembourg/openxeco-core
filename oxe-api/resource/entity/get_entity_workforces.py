@@ -17,7 +17,7 @@ class GetEntityWorkforces(MethodResource, Resource):
 
     @log_request
     @doc(tags=['entity'],
-         description='Get the workforce of a entity specified by its ID',
+         description='Get the workforce of an entity specified by its ID',
          responses={
              "200": {},
          })
