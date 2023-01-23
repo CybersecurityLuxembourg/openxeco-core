@@ -4,16 +4,6 @@
 	height: 100%;
 }
 
-.DialogSelectDocument-content-image {
-	text-align: center;
-}
-
-.DialogSelectDocument-content-close-button {
-	position: absolute;
-	bottom: 25px;
-	right: 25px;
-}
-
 .DialogSelectDocument-buttons {
 	width: 100%;
 	text-align: right;
