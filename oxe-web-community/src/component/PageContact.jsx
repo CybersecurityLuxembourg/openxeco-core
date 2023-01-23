@@ -138,35 +138,44 @@ export default class PageContact extends React.Component {
 					}
 				</div>
 
-				<div className={"row row-spaced"}>
-					{this.props.settings !== null && this.props.settings.EMAIL_ADDRESS !== undefined
+				<div className={"PageContact-details row row-spaced"}>
+					{this.props.settings && this.props.settings.EMAIL_ADDRESS
 						&& <div className="col-lg-6 col-xl-4">
 							<h2>Email</h2>
 
 							<Message
-								text={this.props.settings.EMAIL_ADDRESS}
+								text={<div>
+									<i className="fas fa-at"/>
+									<br/>{this.props.settings.EMAIL_ADDRESS}
+								</div>}
 								height={150}
 							/>
 						</div>
 					}
 
-					{this.props.settings !== null && this.props.settings.POSTAL_ADDRESS !== undefined
+					{this.props.settings && this.props.settings.POSTAL_ADDRESS
 						&& <div className="col-lg-6 col-xl-4">
 							<h2>Postal address</h2>
 
 							<Message
-								text={this.props.settings.POSTAL_ADDRESS}
+								text={<div>
+									<i className="fas fa-envelope-open-text"/>
+									<br/>{this.props.settings.POSTAL_ADDRESS}
+								</div>}
 								height={150}
 							/>
 						</div>
 					}
 
-					{this.props.settings !== null && this.props.settings.PHONE_NUMBER !== undefined
+					{this.props.settings && this.props.settings.PHONE_NUMBER
 						&& <div className="col-lg-6 col-xl-4">
 							<h2>Phone</h2>
 
 							<Message
-								text={this.props.settings.PHONE_NUMBER}
+								text={<div>
+									<i className="fas fa-phone"/>
+									<br/>{this.props.settings.PHONE_NUMBER}
+								</div>}
 								height={150}
 							/>
 						</div>

@@ -3,3 +3,8 @@
 	width: 100%;
 	text-align: center;
 }
+
+#PageContact .PageContact-details i {
+	font-size: 40px;
+	margin-bottom: 10px;
+}
