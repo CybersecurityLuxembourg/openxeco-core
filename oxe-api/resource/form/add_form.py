@@ -7,6 +7,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils.serializer import Serializer
 
 
 class AddForm(MethodResource, Resource):
@@ -30,6 +31,6 @@ class AddForm(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        self.db.insert(kwargs, self.db.tables["Form"])
+        form = self.db.insert(kwargs, self.db.tables["Form"])
 
-        return "", "200 "
+        return Serializer.serialize(form, self.db.tables["Form"]), "200 "

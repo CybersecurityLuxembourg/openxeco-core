@@ -190,6 +190,14 @@ export default class FormQuestions extends React.Component {
 						/>
 					</div>
 				}
+				<div className="col-md-12">
+					<FormLine
+						label={"Reference"}
+						value={question.reference}
+						onBlur={(v) => this.updateQuestion(question.id, "reference", v)}
+						labelWidth={3}
+					/>
+				</div>
 				<div className="col-md-6">
 					<FormLine
 						type={"select"}

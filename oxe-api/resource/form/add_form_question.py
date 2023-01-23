@@ -7,6 +7,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
+from utils.serializer import Serializer
 
 
 class AddFormQuestion(MethodResource, Resource):
@@ -40,9 +41,9 @@ class AddFormQuestion(MethodResource, Resource):
         if len(questions) > 0:
             biggest_pos = max([q.position for q in questions])
 
-        self.db.insert({
+        question = self.db.insert({
             **{"position": biggest_pos + 1},
             **kwargs,
         }, self.db.tables["FormQuestion"])
 
-        return "", "200 "
+        return Serializer.serialize(question, self.db.tables["FormQuestion"]), "200 "

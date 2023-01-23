@@ -1,0 +1,48 @@
+
+.Item {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 15px;
+    width: 100%;
+    height: 22px;
+    overflow: visible;
+    margin: 2px 0px;
+    padding: 3px 5px 3px 7px;
+    line-height: 1.0;
+    animation: halfFixedPopEffect 0.5s ease;
+    -moz-animation: halfFixedPopEffect 0.5s ease;
+    -webkit-animation: halfFixedPopEffect 0.5s ease;
+    -o-animation: halfFixedPopEffect 0.5s ease;
+}
+
+.Item:hover {
+    background-color: rgba(0, 159, 227, 0.05);
+}
+
+.Item-disabled i, .Item-disabled .name {
+    color: grey !important;
+    cursor: default !important;
+}
+
+.Item-disabled:hover {
+    background-color: rgba(0, 159, 227, 0);
+}
+
+.Item .name {
+    display:inline-block;
+    width: calc(100% - 20px);
+    padding: 1px 0px 0px 7px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: top;
+    color: #2E52C1;
+}
+
+.Item i {
+    display:inline;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #2E52C1;
+}

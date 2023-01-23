@@ -8,7 +8,6 @@ import "@trendmicro/react-sidenav/dist/react-sidenav.css";
 import { Link } from "react-router-dom";
 import { getRequest } from "../utils/request.jsx";
 import { getSettingValue } from "../utils/setting.jsx";
-import { getCookieOptions } from "../utils/env.jsx";
 
 export default class Menu extends React.Component {
 	constructor(props) {
@@ -79,8 +78,7 @@ export default class Menu extends React.Component {
 				className={"fade-in"}
 				onSelect={(selected) => {
 					if (selected === "disconnect") {
-						this.props.cookies.remove("access_token_cookie", getCookieOptions());
-						window.location.replace("/");
+						this.props.logout();
 					} else {
 						this.props.changeMenu(selected);
 					}
@@ -108,7 +106,7 @@ export default class Menu extends React.Component {
 							<i className="fas fa-shapes" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							Entity
+							Entities
 						</NavText>
 					</NavItem>
 					<NavItem
@@ -147,16 +145,16 @@ export default class Menu extends React.Component {
 						</NavItem>
 					}
 					<div className="Menu-divider"/>
-					{getSettingValue(this.props.settings, "SHOW_COMMUNICATION_PAGE") === "TRUE"
+					{getSettingValue(this.props.settings, "SHOW_CAMPAIGN_PAGE") === "TRUE"
 						&& <NavItem
-							eventKey="communication"
-							active={this.props.selectedMenu === "communication"}
-							onClick={() => this.props.history.push("/communication")}>
+							eventKey="campaign"
+							active={this.props.selectedMenu === "campaign"}
+							onClick={() => this.props.history.push("/campaign")}>
 							<NavIcon>
-								<i className="fas fa-bullhorn" style={{ fontSize: "1.75em" }} />
+								<i className="fas fa-mail-bulk" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								Communication via email
+								Email Campaigns
 							</NavText>
 						</NavItem>
 					}
@@ -169,7 +167,7 @@ export default class Menu extends React.Component {
 								<i className="fas fa-poll-h" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								Form
+								Forms
 							</NavText>
 							{this.getFormNotificationBlock()}
 						</NavItem>
@@ -182,7 +180,7 @@ export default class Menu extends React.Component {
 							<i className="fas fa-photo-video" style={{ fontSize: "1.75em" }} />
 						</NavIcon>
 						<NavText>
-							Media
+							Images & Documents
 						</NavText>
 					</NavItem>
 					<div className="Menu-divider"/>

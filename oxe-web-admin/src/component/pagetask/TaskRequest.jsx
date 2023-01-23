@@ -22,6 +22,7 @@ export default class TaskRequest extends React.Component {
 			showNew: true,
 			showInProcess: true,
 			showProcessed: false,
+			showRejected: false,
 
 			today: new Date().toJSON().slice(0, 10),
 			yesterday: new Date(today.valueOf() - (1 * 24 * 60 * 60 * 1000)).toJSON().slice(0, 10),
@@ -40,7 +41,8 @@ export default class TaskRequest extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.showNew !== this.state.showNew
 			|| prevState.showInProcess !== this.state.showInProcess
-			|| prevState.showProcessed !== this.state.showProcessed) {
+			|| prevState.showProcessed !== this.state.showProcessed
+			|| prevState.showRejected !== this.state.showRejected) {
 			this.refresh();
 		}
 	}
@@ -64,6 +66,7 @@ export default class TaskRequest extends React.Component {
 		if (this.state.showNew) filters.status.push("NEW");
 		if (this.state.showInProcess) filters.status.push("IN PROCESS");
 		if (this.state.showProcessed) filters.status.push("ACCEPTED");
+		if (this.state.showRejected) filters.status.push("REJECTED");
 
 		getRequest.call(this, "request/get_requests?" + dictToURI(filters), (data) => {
 			this.setState({
@@ -114,6 +117,11 @@ export default class TaskRequest extends React.Component {
 								label={"ACCEPTED"}
 								value={this.state.showProcessed}
 								onClick={() => this.changeState("showProcessed", !this.state.showProcessed)}
+							/>
+							<CheckBox
+								label={"REJECTED"}
+								value={this.state.showRejected}
+								onClick={() => this.changeState("showRejected", !this.state.showRejected)}
 							/>
 						</div>
 					</div>

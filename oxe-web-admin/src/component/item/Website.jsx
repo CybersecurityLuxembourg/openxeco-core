@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import "./Website.css";
+import Item from "./Item.jsx";
 
-export default class Website extends Component {
+export default class Website extends Item {
 	constructor(props) {
 		super(props);
 
@@ -16,10 +17,10 @@ export default class Website extends Component {
 				className={this.props.url && this.props.url.length > 0 ? "" : "Website-link-disabled"}
 				href={(this.props.url && (this.props.url.startsWith("/") || this.props.url.startsWith("http")) ? "" : "https://") + this.props.url}
 				target="_blank">
-				<div className={"Website "
-                    + (this.props.url && this.props.url.length > 0 ? "" : "Website-disabled")}>
+				<div className={"Item Website "
+                    + (this.props.url && this.props.url.length > 0 ? "" : "Item-disabled")}>
 					<i className="fas fa-globe-europe"/>
-					<div className={"Website-name"}>
+					<div className={"name"}>
 						{this.props.url && this.props.url.length > 0
 							? this.props.url
 							: "No website"
