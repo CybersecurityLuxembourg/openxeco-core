@@ -18,22 +18,28 @@ class GetPublicDocument(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get document from the media library. Accept the filename as a parameter',
+         description='Get document from the media library. Accept the filename or the ID as a parameter',
          responses={
              "200": {},
-             "422.a": {"description": "No document found with this filename"},
+             "422.a": {"description": "No document found with this filename or this ID"},
              "422.b": {"description": "Document not found"},
          })
     @catch_exception
-    def get(self, filename_):
+    def get(self, filename_or_id_):
 
         try:
-            document = self.db.session \
-                .query(self.db.tables["Document"]) \
-                .filter(self.db.tables["Document"].filename == filename_) \
-                .one()
+            if filename_or_id_.isdigit():
+                document = self.db.session \
+                    .query(self.db.tables["Document"]) \
+                    .filter(self.db.tables["Document"].id == int(filename_or_id_)) \
+                    .one()
+            else:
+                document = self.db.session \
+                    .query(self.db.tables["Document"]) \
+                    .filter(self.db.tables["Document"].filename == filename_or_id_) \
+                    .one()
         except NoResultFound:
-            return "", "422 No document found with this filename"
+            return "", "422 No document found with this filename or this ID"
 
         try:
             f = open(os.path.join(DOCUMENT_FOLDER, str(document.id)), "rb")

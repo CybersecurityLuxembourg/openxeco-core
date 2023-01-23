@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Persistence of email templates in the database
 - user/update_user resource: allow email modification
 - Restrict field modification to admins on resource user/update_user
+- public/get_public_document API resource: Add possibility to retrieve document by its ID
 
 ### Added
 
@@ -16,7 +17,8 @@ All notable changes to this project will be documented in this file.
 - Docker compose for development environment
 - Database: accept_request_notification columns on User table
 - Database: accept_terms_and_conditions columns on User table
-- T&C settings on oxe-web-admin for oxe-web-community
+- T&C/PP settings on oxe-web-admin for oxe-web-community
+- T&C/PP dialog when not accepted on oxe-web-community
 - Delete account button oxe-web-community
 
 ### Fixed
