@@ -436,11 +436,7 @@ export default class Request extends Component {
 								}
 								email={this.state.user.email}
 								subject={this.state.subject}
-								content={"Dear user,\n\n"
-									+ this.getMailBody()
-									+ "\n\nSincerely,\n"
-									+ (this.getSettingValue("PROJECT_NAME") !== null
-										? this.getSettingValue("PROJECT_NAME") + " " : "") + "Support Team"}
+								content={this.state.email_content}
 							/>
 							: <Loading
 								height={50}
