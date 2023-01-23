@@ -119,3 +119,13 @@
 .FormLine .Formline-datetime input[disabled] + button {
 	cursor: default !important;
 }
+
+.FormLine .FormLine-document {
+	position: relative;
+}
+
+.FormLine .FormLine-document .right-buttons {
+	position: absolute;
+	top: 0px;
+	right: 10px;
+}

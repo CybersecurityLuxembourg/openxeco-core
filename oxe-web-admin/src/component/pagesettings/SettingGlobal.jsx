@@ -1,13 +1,13 @@
 import React from "react";
 import "./SettingGlobal.css";
 import { NotificationManager as nm } from "react-notifications";
-import { Link } from "react-router-dom";
 import Info from "../box/Info.jsx";
 import { postRequest } from "../../utils/request.jsx";
 import { getSettingValue } from "../../utils/setting.jsx";
 import FormLine from "../button/FormLine.jsx";
 import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Table from "../table/Table.jsx";
+import Tab from "../tab/Tab.jsx";
 import Loading from "../box/Loading.jsx";
 
 export default class SettingGlobal extends React.Component {
@@ -19,6 +19,15 @@ export default class SettingGlobal extends React.Component {
 		this.updateSetting = this.updateSetting.bind(this);
 
 		this.state = {
+			labels: ["Branding", "Contact details", "Admin portal", "Private space", "Additional settings"],
+			tabs: [
+				"branding",
+				"contact-details",
+				"admin-portal",
+				"private-space",
+				"additional-setting",
+			],
+			selectedMenu: null,
 			settings: null,
 			defaultProperties: [
 				"PROJECT_NAME",
@@ -169,360 +178,237 @@ export default class SettingGlobal extends React.Component {
 					</div>
 				</div>
 
-				<div className={"row row-spaced"}>
-					<div className="col-md-12">
-						<h2>Project and app names</h2>
-					</div>
-
-					<div className="col-md-12 row-spaced">
-						<FormLine
-							label={"Project name"}
-							value={getSettingValue(this.props.settings, "PROJECT_NAME")}
-							onBlur={(v) => this.updateSetting("PROJECT_NAME", v)}
-						/>
-						<FormLine
-							label={"Admin platform name"}
-							value={getSettingValue(this.props.settings, "ADMIN_PLATFORM_NAME")}
-							onBlur={(v) => this.updateSetting("ADMIN_PLATFORM_NAME", v)}
-						/>
-						<FormLine
-							label={"Private space platform name"}
-							value={getSettingValue(this.props.settings, "PRIVATE_SPACE_PLATFORM_NAME")}
-							onBlur={(v) => this.updateSetting("PRIVATE_SPACE_PLATFORM_NAME", v)}
-						/>
-					</div>
-
-					<div className="col-md-12">
-						<h2>Contact details</h2>
-					</div>
-
-					<div className="col-md-12 row-spaced">
-						<FormLine
-							label={"Email address"}
-							value={getSettingValue(this.props.settings, "EMAIL_ADDRESS")}
-							onBlur={(v) => this.updateSetting("EMAIL_ADDRESS", v)}
-						/>
-						<FormLine
-							label={"Phone number"}
-							value={getSettingValue(this.props.settings, "PHONE_NUMBER")}
-							onBlur={(v) => this.updateSetting("PHONE_NUMBER", v)}
-						/>
-						<FormLine
-							label={"Postal address"}
-							value={getSettingValue(this.props.settings, "POSTAL_ADDRESS")}
-							onBlur={(v) => this.updateSetting("POSTAL_ADDRESS", v)}
-						/>
-					</div>
-
-					<div className="col-md-12">
-						<h2>
-							Administration platform
-							{getSettingValue(this.props.settings, "ADMIN_PLATFORM_NAME")
-								? " - " + getSettingValue(this.props.settings, "ADMIN_PLATFORM_NAME")
-								: ""}
-						</h2>
-					</div>
-
-					<div className="col-md-12 row-spaced">
-						<FormLine
-							type={"checkbox"}
-							label={"Show network page"}
-							value={getSettingValue(this.props.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_NETWORK_PAGE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Show email campaign page"}
-							value={getSettingValue(this.props.settings, "SHOW_CAMPAIGN_PAGE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("SHOW_CAMPAIGN_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_CAMPAIGN_PAGE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Show form page"}
-							value={getSettingValue(this.props.settings, "SHOW_FORM_PAGE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("SHOW_FORM_PAGE", "TRUE")
-								: this.deleteSetting("SHOW_FORM_PAGE")
-							)}
-						/>
-					</div>
-
-					<div className="col-md-12">
-						<h2>
-							Private space platform
-							{getSettingValue(this.props.settings, "PRIVATE_SPACE_PLATFORM_NAME")
-								? " - " + getSettingValue(this.props.settings, "PRIVATE_SPACE_PLATFORM_NAME")
-								: ""}
-						</h2>
-					</div>
-
-					<div className="col-md-12 row-spaced">
-						<h3>Subscription</h3>
-						<FormLine
-							type={"checkbox"}
-							label={"Allow entity request on subscription"}
-							value={getSettingValue(this.props.settings, "ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION", "TRUE")
-								: this.deleteSetting("ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION")
-							)}
-						/>
-						<br/>
-						<h3>Article edition</h3>
-						<FormLine
-							type={"checkbox"}
-							label={"Allow article edition"}
-							value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "TRUE")
-								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Allow article content edition"}
-							value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "TRUE")
-								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Deactivate review on ecosystem articles"}
-							value={getSettingValue(this.props.settings, "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE", "TRUE")
-								: this.deleteSetting("DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE")
-							)}
-						/>
-						<FormLine
-							label={"Authorized article types"}
-							value={getSettingValue(this.props.settings, "AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM")}
-							onBlur={(v) => this.updateSetting("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM", v)}
-						/>
-						<br/>
-						<h3>pages</h3>
-						<FormLine
-							type={"checkbox"}
-							label={"Show form page"}
-							value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_FORM") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_FORM", "TRUE")
-								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_FORM")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Show logo generator page"}
-							value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_LOGO") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO", "TRUE")
-								: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO")
-							)}
-						/>
-					</div>
-
-					<div className="col-md-12">
-						<h2>
-							Data control
-						</h2>
-					</div>
-
-					<div className="col-md-12">
-						<div>Go to the <Link to="/task?tab=data_control">data control page</Link></div>
-						<br/>
-					</div>
-
-					<div className="col-md-12 row-spaced">
-						<h3>Entities</h3>
-
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight entities without image"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_IMAGE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_IMAGE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_IMAGE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight entities without website"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight entities without postal address"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight entities with postal address missing geolocation"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight entities without phone number"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight entities without email address"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight entities without creation date"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE")
-							)}
-						/>
-						<br/>
-						<h3>Articles</h3>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight articles without title"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_TITLE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_TITLE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_TITLE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight articles without handle"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_HANDLE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_HANDLE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_HANDLE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight articles without publication date"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight articles without content"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_CONTENT") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_CONTENT", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_CONTENT")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight events without start date"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_START_DATE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_START_DATE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_START_DATE")
-							)}
-						/>
-						<FormLine
-							type={"checkbox"}
-							label={"Highlight events without end date"}
-							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_END_DATE") === "TRUE"}
-							onChange={(v) => (v
-								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_END_DATE", "TRUE")
-								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_END_DATE")
-							)}
-						/>
-					</div>
-
-					<div className="col-md-12">
-						<h2>
-							Additional settings
-						</h2>
-					</div>
-
-					<div className="col-md-12 row-spaced">
-						<Info
-							content={<div>
-								<div>
-									You can then manage additional settings for customized usage.
-									Please remain aware that those settings will be available publicly
-									via the resource public/get_public_settings.
-								</div>
-							</div>}
-						/>
-					</div>
-
-					<div className="col-md-12 row-spaced">
-						<FormLine
-							label={"Property"}
-							value={this.state.newProperty}
-							onChange={(v) => this.changeState("newProperty", v)}
-						/>
-						<FormLine
-							label={"Value"}
-							value={this.state.newValue}
-							onChange={(v) => this.changeState("newValue", v)}
-						/>
-						<div className="col-xl-12">
-							<div className="right-buttons">
-								<button
-									className={"blue-background"}
-									onClick={() => this.addSetting(this.state.newProperty, this.state.newValue)}
-									disabled={this.state.newProperty === null || this.state.newValue === null}>
-									<i className="fas fa-plus"/> Add setting
-								</button>
+				<Tab
+					labels={this.state.labels}
+					selectedMenu={this.state.selectedMenu}
+					keys={this.state.tabs}
+					fullWidth={true}
+					content={[
+						<div className={"row row-spaced"} key={this.state.labels[0]}>
+							<div className="col-md-12 row-spaced">
+								<FormLine
+									label={"Project name"}
+									value={getSettingValue(this.props.settings, "PROJECT_NAME")}
+									onBlur={(v) => this.updateSetting("PROJECT_NAME", v)}
+								/>
+								<FormLine
+									label={"Admin platform name"}
+									value={getSettingValue(this.props.settings, "ADMIN_PLATFORM_NAME")}
+									onBlur={(v) => this.updateSetting("ADMIN_PLATFORM_NAME", v)}
+								/>
+								<FormLine
+									label={"Private space platform name"}
+									value={getSettingValue(this.props.settings, "PRIVATE_SPACE_PLATFORM_NAME")}
+									onBlur={(v) => this.updateSetting("PRIVATE_SPACE_PLATFORM_NAME", v)}
+								/>
 							</div>
-						</div>
-					</div>
+						</div>,
+						<div className={"row row-spaced"} key={this.state.labels[1]}>
+							<div className="col-md-12 row-spaced">
+								<FormLine
+									label={"Email address"}
+									value={getSettingValue(this.props.settings, "EMAIL_ADDRESS")}
+									onBlur={(v) => this.updateSetting("EMAIL_ADDRESS", v)}
+								/>
+								<FormLine
+									label={"Phone number"}
+									value={getSettingValue(this.props.settings, "PHONE_NUMBER")}
+									onBlur={(v) => this.updateSetting("PHONE_NUMBER", v)}
+								/>
+								<FormLine
+									label={"Postal address"}
+									value={getSettingValue(this.props.settings, "POSTAL_ADDRESS")}
+									onBlur={(v) => this.updateSetting("POSTAL_ADDRESS", v)}
+								/>
+							</div>
+						</div>,
+						<div className={"row row-spaced"} key={this.state.labels[2]}>
+							<div className="col-md-12 row-spaced">
+								<FormLine
+									type={"checkbox"}
+									label={"Show network page"}
+									value={getSettingValue(this.props.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
+										: this.deleteSetting("SHOW_NETWORK_PAGE")
+									)}
+								/>
+								<FormLine
+									type={"checkbox"}
+									label={"Show email campaign page"}
+									value={getSettingValue(this.props.settings, "SHOW_CAMPAIGN_PAGE") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("SHOW_CAMPAIGN_PAGE", "TRUE")
+										: this.deleteSetting("SHOW_CAMPAIGN_PAGE")
+									)}
+								/>
+								<FormLine
+									type={"checkbox"}
+									label={"Show form page"}
+									value={getSettingValue(this.props.settings, "SHOW_FORM_PAGE") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("SHOW_FORM_PAGE", "TRUE")
+										: this.deleteSetting("SHOW_FORM_PAGE")
+									)}
+								/>
+							</div>
+						</div>,
+						<div className={"row row-spaced"} key={this.state.labels[3]}>
+							<div className="col-md-12 row-spaced">
+								<h4>Pages</h4>
+								<FormLine
+									type={"checkbox"}
+									label={"Show form page"}
+									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_FORM") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_FORM", "TRUE")
+										: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_FORM")
+									)}
+								/>
+								<FormLine
+									type={"checkbox"}
+									label={"Show logo generator page"}
+									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_LOGO") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO", "TRUE")
+										: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO")
+									)}
+								/>
+								<br/>
+								<h4>Article edition</h4>
+								<FormLine
+									type={"checkbox"}
+									label={"Allow article edition"}
+									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "TRUE")
+										: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE")
+									)}
+								/>
+								<FormLine
+									type={"checkbox"}
+									label={"Allow article content edition"}
+									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "TRUE")
+										: this.deleteSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT")
+									)}
+								/>
+								<FormLine
+									type={"checkbox"}
+									label={"Deactivate review on ecosystem articles"}
+									value={getSettingValue(this.props.settings, "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE", "TRUE")
+										: this.deleteSetting("DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE")
+									)}
+								/>
+								<FormLine
+									label={"Authorized article types"}
+									value={getSettingValue(this.props.settings, "AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM")}
+									onBlur={(v) => this.updateSetting("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM", v)}
+								/>
+								<br/>
+								<h4>Legal and usage</h4>
+								<FormLine
+									type={"checkbox"}
+									label={"Activate privacy policy"}
+									value={getSettingValue(this.props.settings, "ACTIVATE_PRIVACY_POLICY") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("ACTIVATE_PRIVACY_POLICY", "TRUE")
+										: this.deleteSetting("ACTIVATE_PRIVACY_POLICY")
+									)}
+								/>
+								<FormLine
+									type={"document"}
+									label={"Privacy policy document"}
+									value={getSettingValue(this.props.settings, "PRIVACY_POLICY_DOCUMENT")}
+									onChange={(v) => this.updateSetting("PRIVACY_POLICY_DOCUMENT", v ? v.toString() : v)}
+								/>
+								<FormLine
+									type={"checkbox"}
+									label={"Activate terms and conditions"}
+									value={getSettingValue(this.props.settings, "ACTIVATE_TERMS_AND_CONDITIONS") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("ACTIVATE_TERMS_AND_CONDITIONS", "TRUE")
+										: this.deleteSetting("ACTIVATE_TERMS_AND_CONDITIONS")
+									)}
+								/>
+								<FormLine
+									type={"document"}
+									label={"Terms and conditions document"}
+									value={getSettingValue(this.props.settings, "TERMS_AND_CONDITIONS_DOCUMENT")}
+									onChange={(v) => this.updateSetting("TERMS_AND_CONDITIONS_DOCUMENT", v ? v.toString() : v)}
+								/>
+								<br/>
+								<h4>Subscription</h4>
+								<FormLine
+									type={"checkbox"}
+									label={"Allow entity request on subscription"}
+									value={getSettingValue(this.props.settings, "ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION") === "TRUE"}
+									onChange={(v) => (v
+										? this.addSetting("ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION", "TRUE")
+										: this.deleteSetting("ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION")
+									)}
+								/>
+							</div>
+						</div>,
+						<div className={"row row-spaced"} key={this.state.labels[4]}>
+							<div className="col-md-12 row-spaced">
+								<Info
+									content={<div>
+										<div>
+											You can then manage additional settings for customized usage.
+											Please remain aware that those settings will be available publicly
+											via the resource public/get_public_settings.
+										</div>
+									</div>}
+								/>
+							</div>
 
-					<div className="col-md-12 row-spaced">
-						{this.props.settings
-							&& <Table
-								columns={columns}
-								data={
-									this.props.settings
-										.filter((v) => this.state.defaultProperties.indexOf(v.property) < 0)
+							<div className="col-md-12 row-spaced">
+								<FormLine
+									label={"Property"}
+									value={this.state.newProperty}
+									onChange={(v) => this.changeState("newProperty", v)}
+								/>
+								<FormLine
+									label={"Value"}
+									value={this.state.newValue}
+									onChange={(v) => this.changeState("newValue", v)}
+								/>
+								<div className="col-xl-12">
+									<div className="right-buttons">
+										<button
+											className={"blue-background"}
+											onClick={() => this.addSetting(this.state.newProperty, this.state.newValue)}
+											disabled={this.state.newProperty === null || this.state.newValue === null}>
+											<i className="fas fa-plus"/> Add setting
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div className="col-md-12 row-spaced">
+								{this.props.settings
+									&& <Table
+										columns={columns}
+										data={
+											this.props.settings
+												.filter((v) => this.state.defaultProperties.indexOf(v.property) < 0)
+										}
+									/>
 								}
-							/>
-						}
 
-						{!this.props.settings
-							&& <Loading
-								height={300}
-							/>
-						}
-					</div>
-				</div>
+								{!this.props.settings
+									&& <Loading
+										height={300}
+									/>
+								}
+							</div>
+						</div>,
+					]}
+				/>
 			</div>
 		);
 	}

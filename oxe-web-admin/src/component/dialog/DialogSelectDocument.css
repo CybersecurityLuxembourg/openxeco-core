@@ -1,0 +1,30 @@
+
+.DialogSelectDocument-overlay > .DialogSelectDocument-content {
+	width: 80% !important;
+	height: 100%;
+}
+
+.DialogSelectDocument-content-image {
+	text-align: center;
+}
+
+.DialogSelectDocument-content-close-button {
+	position: absolute;
+	bottom: 25px;
+	right: 25px;
+}
+
+.DialogSelectDocument-buttons {
+	width: 100%;
+	text-align: right;
+	margin: 15px 0px;
+}
+
+.DialogSelectDocument-buttons > div {
+	margin: 0px 2px;
+	display: inline;
+}
+
+.DialogSelectDocument-select-button {
+	text-align: center;
+}

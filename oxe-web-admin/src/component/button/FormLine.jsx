@@ -12,6 +12,7 @@ import Chip from "./Chip.jsx";
 import CheckBox from "./CheckBox.jsx";
 import NoImage from "../box/NoImage.jsx";
 import { getApiURL } from "../../utils/env.jsx";
+import DialogSelectDocument from "../dialog/DialogSelectDocument.jsx";
 
 function getSelectStyle() {
 	return {
@@ -232,6 +233,39 @@ export default class FormLine extends React.Component {
 						/>
 					</div>
 				}
+			</div>;
+		case "document":
+			return <div className={"FormLine-document"}>
+				<input
+					className={this.getFormatClassName()}
+					value={this.state.value ? "ID: " + this.state.value : "No document selected"}
+					disabled={true}
+				/>
+				<div className={"right-buttons"}>
+					<button
+						className={"small-button red-background"}
+						value={this.state.value}
+						onClick={() => this.onChange(null)}
+						disabled={this.props.disabled || this.state.value === null}>
+						<i className="fas fa-trash-alt"/>
+					</button>
+					<button
+						className={"small-button"}
+						onClick={() => window.open(getApiURL() + "public/get_public_document/" + this.state.value, "_blank")}
+						disabled={this.state.value === null}>
+						<i className="fas fa-eye"/>
+					</button>
+					<DialogSelectDocument
+						trigger={
+							<button
+								className="small-button"
+								disabled={this.props.disabled}>
+								<i className="fas fa-mouse-pointer"/>
+							</button>
+						}
+						validateSelection={(value) => this.onChange(value)}
+					/>
+				</div>
 			</div>;
 		default:
 			return <input

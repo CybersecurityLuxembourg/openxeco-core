@@ -2,6 +2,7 @@
 @media (min-width: 0px) {
     .Tab-menu, .Tab-menu-fw {
         padding: 20px 0px;
+        margin-bottom: 50px;
     }
 
     .Tab-menu-el-selected-fw {
