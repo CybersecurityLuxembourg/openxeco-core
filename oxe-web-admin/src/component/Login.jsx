@@ -98,11 +98,10 @@ export default class Login extends React.Component {
 			password: this.state.password,
 		};
 
-		postRequest.call(this, "account/login", params, (response) => {
+		postRequest.call(this, "account/login", params, () => {
 			// TODO use httponly cookies
 			nm.info("Please check your email for the One Time Pin");
 			this.setState({ verifyLogin: true });
-			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -120,8 +119,7 @@ export default class Login extends React.Component {
 			token: this.state.otp,
 		};
 		postRequest.call(this, "account/verify_login", params, (response) => {
-			this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-			this.props.connect(this.state.email);
+			// this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
 
 			getRequest.call(this, "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
