@@ -106,7 +106,7 @@ export default class SettingGlobal extends React.Component {
 	}
 
 	updateSetting(property, value) {
-		if (getSettingValue(this.props.settings, property)) {
+		if (getSettingValue(this.props.settings, property) !== null) {
 			const params = {
 				property,
 			};

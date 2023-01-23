@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Dependabot alerts
+- Setting changes when value is empty on oxe-web-admin
 
 ## [1.14.6] - 2023-01-18
 
