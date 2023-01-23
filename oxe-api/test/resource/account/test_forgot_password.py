@@ -1,4 +1,4 @@
-from unittest.mock import patch, ANY
+from unittest.mock import patch
 
 from test.BaseCase import BaseCase
 
@@ -19,23 +19,18 @@ class TestForgotPassword(BaseCase):
                                          json=payload)
 
         self.assertEqual(200, response.status_code)
-        mock_send_mail.assert_called_once_with(ANY, subject=ANY, recipients=["test@openxeco.org"], html_body=ANY)
 
     @BaseCase.login
     @patch('db.db.DB.get')
-    @patch('resource.account.forgot_password.send_email')
-    def test_user_not_found(self, mock_send_mail, mock_get, token):
-        mock_send_mail.return_value = None
+    def test_user_not_found(self, mock_get, token):
         mock_get.return_value = []
 
         payload = {
-            "email": "fake-test@openxeco.org",
+            "email": "test@openxeco.org",
         }
 
         response = self.application.post('/account/forgot_password',
                                          headers=self.get_standard_post_header(token),
                                          json=payload)
 
-        self.assertEqual(200, response.status_code)
-        mock_send_mail.assert_called_once_with(ANY, subject=ANY, recipients=["fake-test@openxeco.org"], html_body=ANY)
-
+        self.assertEqual("500 The user has not been found", response.status)

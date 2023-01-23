@@ -1,20 +1,20 @@
-import React from "react";
+import React, { Component } from "react";
 import "./Form.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { postRequest } from "../../utils/request.jsx";
 import Tab from "../tab/Tab.jsx";
-import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import FormGlobal from "./form/FormGlobal.jsx";
 import FormQuestions from "./form/FormQuestions.jsx";
 import FormAnswers from "./form/FormAnswers.jsx";
 import FormExport from "./form/FormExport.jsx";
 import { getUrlParameter } from "../../utils/url.jsx";
-import Item from "./Item.jsx";
 
-export default class Form extends Item {
+export default class Form extends Component {
 	constructor(props) {
 		super(props);
+
+		this.confirmDeletion = this.confirmDeletion.bind(this);
 
 		this.state = {
 			selectedMenu: null,
@@ -51,13 +51,14 @@ export default class Form extends Item {
 
 	confirmDeletion(close) {
 		const params = {
-			id: this.props.form.id,
+			category: this.props.name,
 		};
 
 		postRequest.call(this, "form/delete_form", params, () => {
+			document.elementFromPoint(100, 0).click();
 			nm.info("The form has been deleted");
 			close();
-			if (this.props.afterDeletion) this.props.afterDeletion();
+			if (typeof this.props.afterDeletion !== "undefined") this.props.afterDeletion();
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -74,9 +75,9 @@ export default class Form extends Item {
 			<Popup
 				className="Popup-full-size"
 				trigger={
-					<div className={"Item Form"}>
+					<div className={"Form"}>
 						<i className="fas fa-poll-h"/>
-						<div className={"name"}>
+						<div className={"Form-name"}>
 							{this.props.form.name}
 						</div>
 					</div>
@@ -85,24 +86,8 @@ export default class Form extends Item {
 				closeOnDocumentClick={false}
 			>
 				{(close) => <div className="Form-content row row-spaced">
-					<div className="col-md-9">
-						<h1 className="title">
-							<i className="fas fa-poll-h"/> {this.props.form.name}
-						</h1>
-					</div>
-
-					<div className="col-md-3">
-						<div className={"right-buttons"}>
-							<DialogConfirmation
-								text={"Are you sure you want to delete this form?"}
-								trigger={
-									<button
-										className={"red-background"}>
-										<i className="fas fa-trash-alt"/>
-									</button>
-								}
-								afterConfirmation={() => this.confirmDeletion(close)}
-							/>
+					<div className="col-md-12">
+						<div className={"top-right-buttons"}>
 							<button
 								className={"grey-background"}
 								data-hover="Close"
@@ -111,9 +96,11 @@ export default class Form extends Item {
 								<span><i className="far fa-times-circle"/></span>
 							</button>
 						</div>
-					</div>
 
-					<div className="col-md-12">
+						<h1 className="Form-title">
+							<i className="fas fa-poll-h"/> {this.props.form.name}
+						</h1>
+
 						<Tab
 							labels={["Global", "Questions", "Answers", "Export"]}
 							selectedMenu={this.state.selectedMenu}

@@ -21,7 +21,7 @@ class SendMail(MethodResource, Resource):
 
     @log_request
     @doc(tags=['mail'],
-         description='Save the HTML content of the specified mail template name (account_creation or password_reset)',
+         description='Save the HTML content of the specified mail template name (new_account or reset_password)',
          responses={
              "200": {},
              "404": {"description": "This mail template does not exist"},

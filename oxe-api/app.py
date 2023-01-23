@@ -30,7 +30,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["ERROR_404_HELP"] = False
 
 app.config["JWT_SECRET_KEY"] = config.JWT_SECRET_KEY
-app.config["JWT_TOKEN_LOCATION"] = ['headers', 'cookies', 'query_string']
+app.config["JWT_TOKEN_LOCATION"] = ['headers', 'cookies']
 app.config["JWT_COOKIE_SECURE"] = config.ENVIRONMENT != "dev"
 app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
@@ -46,9 +46,7 @@ app.config['MAIL_USE_TLS'] = config.MAIL_USE_TLS == "True"
 app.config['MAIL_USE_SSL'] = config.MAIL_USE_SSL == "True"
 app.config['MAIL_DEFAULT_SENDER'] = config.MAIL_DEFAULT_SENDER
 
-app.config['PROPAGATE_EXCEPTIONS'] = True
-
-app.config['SESSION_COOKIE_SECURE'] = True
+app.config['PROPAGATE_EXCEPTIONS'] = config.ENVIRONMENT == "dev"
 
 app.config['SCHEDULER_API_ENABLED'] = False
 
@@ -56,7 +54,7 @@ app.config['APISPEC_SWAGGER_URL'] = '/doc/json'
 app.config['APISPEC_SWAGGER_UI_URL'] = '/doc'
 app.config['APISPEC_SPEC'] = APISpec(
     title='openXeco API',
-    version='v1.15',
+    version='v1.13',
     plugins=[MarshmallowPlugin()],
     openapi_version='2.0.0'
 )

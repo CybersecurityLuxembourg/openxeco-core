@@ -2,7 +2,7 @@ import re
 
 
 def has_password_format(value):
-    return re.fullmatch(r'(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%^&+=!])[A-Za-z0-9@#$%^&+=!*]{8,30}', value)
+    return re.fullmatch(r'(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#$%^&+=!])[A-Za-z0-9@#$%^&+=!]{8,30}', value)
 
 
 def has_mail_format(value):

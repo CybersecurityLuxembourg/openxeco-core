@@ -19,7 +19,7 @@ class DeleteContact(MethodResource, Resource):
 
     @log_request
     @doc(tags=['contact'],
-         description='Delete a contact related to an entity',
+         description='Delete an address related to a entity',
          responses={
              "200": {},
              "422": {"description": "Object not found"},

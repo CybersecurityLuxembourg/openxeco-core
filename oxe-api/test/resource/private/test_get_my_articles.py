@@ -7,8 +7,6 @@ class TestGetMyArticles(BaseCase):
 
     @BaseCase.login
     def test_ok(self, token):
-        today = datetime.date.today()
-
         self.db.insert({"id": 14, "name": "My entity"}, self.db.tables["Entity"])
         self.db.insert({"user_id": 1, "entity_id": 14}, self.db.tables["UserEntityAssignment"])
         self.db.insert({
@@ -22,14 +20,14 @@ class TestGetMyArticles(BaseCase):
             "title": "TITLE2",
             "handle": "handle-2",
             "status": "PUBLIC",
-            "publication_date": datetime.datetime.combine(today, datetime.time(2, 0))
+            "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
         self.db.insert({
             "id": 3,
             "title": "TITLE3",
             "handle": "handle-3",
             "status": "PUBLIC",
-            "publication_date": datetime.datetime.combine(today, datetime.time(3, 0))
+            "publication_date": datetime.datetime.strptime('01-22-2021', '%m-%d-%Y').date()
         }, self.db.tables["Article"])
         self.db.insert({"article_id": 2, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
         self.db.insert({"article_id": 3, "entity_id": 14}, self.db.tables["ArticleEntityTag"])
@@ -56,7 +54,7 @@ class TestGetMyArticles(BaseCase):
                     'image': None,
                     'is_created_by_admin': 0,
                     'link': None,
-                    'publication_date': f'{today.strftime("%Y-%m-%d")}T03:00:00',
+                    'publication_date': '2021-01-22T00:00:00',
                     'start_date': None,
                     'status': 'PUBLIC',
                     'sync_content': None,
@@ -78,7 +76,7 @@ class TestGetMyArticles(BaseCase):
                     'image': None,
                     'is_created_by_admin': 0,
                     'link': None,
-                    'publication_date': f'{today.strftime("%Y-%m-%d")}T02:00:00',
+                    'publication_date': '2021-01-22T00:00:00',
                     'start_date': None,
                     'status': 'PUBLIC',
                     'sync_content': None,

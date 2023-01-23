@@ -6,7 +6,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateOtp } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getApiURL } from "../utils/env.jsx";
+import { getCookieOptions, getApiURL } from "../utils/env.jsx";
 import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
@@ -38,26 +38,27 @@ export default class Login extends React.Component {
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
-			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), {});
+			// TODO use httponly cookies
+			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
 		}
 
 		// Log in the user if there is an existing cookie
 
 		if (getUrlParameter("action") !== "reset_password") {
-			getRequest.call(this, "private/get_my_user", (data) => {
-				if (data.is_admin === 1) {
-					this.props.connect(data.id);
-				} else {
-					this.props.logout();
-					nm.warning("This user is not an admin");
-				}
-			}, (response2) => {
-				if (response2.status !== 401 && response2.status !== 422) {
+			if (this.props.cookies.get("access_token_cookie")) {
+				getRequest.call(this, "private/get_my_user", (data) => {
+					if (data.is_admin === 1) {
+						this.props.connect(data.id);
+					} else {
+						this.props.cookies.remove("access_token_cookie");
+						nm.warning("This user is not an admin");
+					}
+				}, (response2) => {
 					nm.warning(response2.statusText);
-				}
-			}, (error) => {
-				nm.error(error.message);
-			});
+				}, (error) => {
+					nm.error(error.message);
+				});
+			}
 		}
 
 		// This function to notify if the password has been reset correctly
@@ -125,7 +126,7 @@ export default class Login extends React.Component {
 				if (data.is_admin === 1) {
 					this.props.connect(response.user);
 				} else {
-					this.props.logout();
+					this.props.cookies.remove("access_token_cookie");
 					nm.warning("This user is not an admin");
 				}
 			}, (response2) => {
@@ -146,7 +147,7 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/forgot_password", params, () => {
-			nm.info("If that email address is in our database, we will send you an email to reset your password");
+			nm.info("An email has been sent with a link to reset your password");
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
@@ -160,19 +161,12 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/reset_password", params, () => {
-			this.props.cookies.remove("access_token_cookie", {});
 			document.location.href = "/?reset_password=true";
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
-	}
-
-	backToLogin() {
-		this.props.cookies.remove("access_token_cookie", {});
-		this.setState({ view: "login" });
-		window.history.pushState({ path: "/login" }, "", "/login");
 	}
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -333,7 +327,7 @@ export default class Login extends React.Component {
 								<div className="bottom-left-buttons">
 									<button
 										className="link-button"
-										onClick={() => this.backToLogin()}
+										onClick={() => this.changeState("view", "login")}
 									>
 										Back to login
 									</button>
@@ -394,7 +388,7 @@ export default class Login extends React.Component {
 								<div className="bottom-left-buttons">
 									<button
 										className="link-button"
-										onClick={() => this.backToLogin()}
+										onClick={() => window.location.replace("/")}
 									>
 										Back to login
 									</button>

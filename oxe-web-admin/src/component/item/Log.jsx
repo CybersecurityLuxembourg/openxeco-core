@@ -1,12 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import "./Log.css";
 import Popup from "reactjs-popup";
 import FormLine from "../button/FormLine.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
-import Item from "./Item.jsx";
 
-export default class Log extends Item {
+export default class Log extends Component {
 	constructor(props) {
 		super(props);
 
@@ -40,9 +39,9 @@ export default class Log extends Item {
 			<Popup
 				className="Popup-small-size"
 				trigger={
-					<div className={"Item Log"}>
+					<div className={"Log"}>
 						<i className="fas fa-history"/>
-						<div className={"name"}>
+						<div className={"Log-name"}>
 							{this.props.info !== undefined && this.props.info !== null
 								? this.props.info.request + " " + this.props.info.sys_date
 								: "Unfound log"
@@ -58,7 +57,6 @@ export default class Log extends Item {
 				<div className="row">
 					<div className="col-md-12">
 						<h2>
-							<i className="fas fa-history"/>&nbsp;
 							{this.props.info !== undefined && this.props.info !== null
 								? "Log " + this.props.info.sys_date
 								: "Unfound log"

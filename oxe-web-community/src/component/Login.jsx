@@ -58,7 +58,8 @@ export default class Login extends React.Component {
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
-			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), {});
+			// TODO use httponly cookies
+			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
 		}
 
 		// Get the token if the user reaches the app though acount verification URL
@@ -94,9 +95,7 @@ export default class Login extends React.Component {
 			this.props.connect(data.email);
 			this.props.setUserStatus(data.status);
 		}, (response2) => {
-			if (response2.status !== 401 && response2.status !== 422) {
-				nm.warning(response2.statusText);
-			}
+			nm.warning(response2.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -187,11 +186,11 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/forgot_password", params, () => {
-			nm.info("If that email address is in our database, we will send you an email to reset your password");
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
+			nm.info("An email has been sent with a link to reset your password");
+		}, () => {
+			nm.info("An email has been sent with a link to reset your password");
+		}, () => {
+			nm.info("An email has been sent with a link to reset your password");
 		});
 	}
 
@@ -207,19 +206,12 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/reset_password", params, () => {
-			this.props.cookies.remove("access_token_cookie", {});
 			document.location.href = "/?reset_password=true";
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
 			nm.error(error.message);
 		});
-	}
-
-	backToLogin() {
-		this.props.cookies.remove("access_token_cookie", {});
-		this.setState({ view: "login" });
-		window.history.pushState({ path: "/login" }, "", "/login");
 	}
 
 	onKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
@@ -624,7 +616,7 @@ export default class Login extends React.Component {
 									<div className="left-buttons">
 										<button
 											className="link-button"
-											onClick={() => this.backToLogin()}
+											onClick={() => this.changeState("view", "login")}
 										>
 											Back to login
 										</button>
@@ -659,7 +651,7 @@ export default class Login extends React.Component {
 								<div className="left-buttons">
 									<button
 										className="link-button"
-										onClick={() => this.backToLogin()}
+										onClick={() => this.changeState("view", "login")}
 									>
 										Back to login
 									</button>
@@ -725,7 +717,7 @@ export default class Login extends React.Component {
 								<div className="left-buttons">
 									<button
 										className="link-button"
-										onClick={() => this.backToLogin()}
+										onClick={() => window.location.replace("/")}
 									>
 										Back to login
 									</button>

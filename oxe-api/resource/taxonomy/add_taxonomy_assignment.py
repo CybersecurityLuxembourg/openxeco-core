@@ -21,7 +21,7 @@ class AddTaxonomyAssignment(MethodResource, Resource):
 
     @log_request
     @doc(tags=['taxonomy'],
-         description='Add a taxonomy assignment to an entity',
+         description='Add a taxonomy assignment to a entity',
          responses={
              "200": {},
              "422": {"description": "This assignment is already existing"}

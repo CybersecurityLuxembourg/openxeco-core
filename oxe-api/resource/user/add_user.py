@@ -70,6 +70,6 @@ class AddUser(MethodResource, Resource):
         send_email(self.mail,
                    subject=f"[{project_name}] New account",
                    recipients=[kwargs["email"]],
-                   html_body=render_template('account_creation.html', url=origin, password=old_password, project_name=project_name))
+                   html_body=render_template('new_account.html', url=origin, password=old_password, project_name=project_name))
 
         return "", "200 "

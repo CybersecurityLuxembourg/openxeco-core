@@ -38,7 +38,6 @@ export default class Request extends Component {
 			settings: null,
 			currentStatus: this.props.info.status,
 			email_content: "",
-			subject: null,
 		};
 	}
 
@@ -116,9 +115,6 @@ export default class Request extends Component {
 		getRequest.call(this, "public/get_public_settings", (data) => {
 			this.setState({
 				settings: data,
-				subject: (this.getSettingValue("PROJECT_NAME")
-					? "[" + this.getSettingValue("PROJECT_NAME") + "] " : "")
-				+ "Treated request",
 			});
 		}, (response) => {
 			nm.warning(response.statusText);

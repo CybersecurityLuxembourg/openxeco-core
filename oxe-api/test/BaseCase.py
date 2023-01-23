@@ -52,8 +52,7 @@ class BaseCase(unittest.TestCase):
             r = getattr(self, "application")\
                 .post('/account/login', headers={"Content-Type": "application/json"}, data=json.dumps(user_payload))
 
-            cookie_content = [c for c in r.headers.getlist("Set-Cookie") if c.startswith("access_token_cookie")][0]
-            f(self, token=cookie_content.split(";")[0].split("=")[1], *args, **kwargs)
+            f(self, token=r.json['access_token'], *args, **kwargs)
 
         return wrapper
 

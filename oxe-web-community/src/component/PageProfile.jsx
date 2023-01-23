@@ -338,6 +338,7 @@ export default class PageProfile extends React.Component {
 													label={"Current password"}
 													value={this.state.password}
 													onChange={(v) => this.changeState("password", v)}
+													format={validatePassword}
 													type={"password"}
 												/>
 												<Info
@@ -366,12 +367,11 @@ export default class PageProfile extends React.Component {
 													format={validatePassword}
 													type={"password"}
 												/>
-											</div>
-											<div className="col-md-12">
 												<div className="right-buttons">
 													<button
 														onClick={() => this.changePassword(close)}
-														disabled={!validatePassword(this.state.newPassword)
+														disabled={!validatePassword(this.state.password)
+															|| !validatePassword(this.state.newPassword)
 															|| !validatePassword(this.state.newPasswordConfirmation)
 															|| this.state.newPassword !== this.state.newPasswordConfirmation}>
 														Change password

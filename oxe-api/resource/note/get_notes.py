@@ -18,7 +18,7 @@ class GetNotes(MethodResource, Resource):
 
     @log_request
     @doc(tags=['note'],
-         description='Get notes from an entity, an article, a taxonomy category or a user',
+         description='Get notes from a entity, an article, a taxonomy category or a user',
          responses={
              "200": {},
              "422": {"description": "Maximum one params should be set amongst those: entity, article, "
