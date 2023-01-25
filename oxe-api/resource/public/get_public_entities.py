@@ -50,7 +50,7 @@ class GetPublicEntities(MethodResource, Resource):
         else:
             entities = c.id, c.name, c.headline, c.legal_status, c.is_startup, c.is_cybersecurity_core_business, \
                 c.trade_register_number, c.creation_date, c.description, c.website, c.image, c.status, c.linkedin_url, \
-                c.twitter_url, c.youtube_url, c.discord_url, c.sync_node, c.sync_id, c.sync_global, c.sync_address, \
+                c.twitter_url, c.youtube_url, c.discord_url, c.github_url, c.mastodon_url, c.sync_node, c.sync_id, c.sync_global, c.sync_address, \
                 c.sync_status
 
             response = [o._asdict() for o in self.db.get_filtered_entities(kwargs, entities).all()]

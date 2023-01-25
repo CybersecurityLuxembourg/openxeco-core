@@ -30,6 +30,8 @@ export default class EntityGlobal extends React.Component {
 				twitter_url: "Twitter URL",
 				youtube_url: "Youtube URL",
 				discord_url: "Discord URL",
+				github_url: "GitHub URL",
+				mastodon_url: "Mastodon URL",
 			},
 		};
 	}
@@ -192,6 +194,16 @@ export default class EntityGlobal extends React.Component {
 							label={this.state.fields.discord_url}
 							value={this.state.entityInfo.discord_url}
 							onBlur={(v) => this.updateEntity("discord_url", v)}
+						/>
+						<FormLine
+							label={this.state.fields.github_url}
+							value={this.state.entityInfo.github_url}
+							onBlur={(v) => this.updateEntity("github_url", v)}
+						/>
+						<FormLine
+							label={this.state.fields.mastodon_url}
+							value={this.state.entityInfo.mastodon_url}
+							onBlur={(v) => this.updateEntity("mastodon_url", v)}
 						/>
 					</div>
 

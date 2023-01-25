@@ -221,6 +221,18 @@ export default class EntityGlobal extends React.Component {
 						onBlur={(v) => this.saveEntityValue("discord_url", v)}
 						disabled={!this.props.editable}
 					/>
+					<FormLine
+						label={"GitHub URL"}
+						value={this.props.entity.github_url}
+						onBlur={(v) => this.saveEntityValue("github_url", v)}
+						disabled={!this.props.editable}
+					/>
+					<FormLine
+						label={"Mastodon URL"}
+						value={this.props.entity.mastodon_url}
+						onBlur={(v) => this.saveEntityValue("mastodon_url", v)}
+						disabled={!this.props.editable}
+					/>
 				</div>
 			</div>
 		);

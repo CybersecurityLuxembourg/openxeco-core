@@ -22,6 +22,8 @@ All notable changes to this project will be documented in this file.
 - T&C/PP settings on oxe-web-admin for oxe-web-community
 - T&C/PP dialog when not accepted on oxe-web-community
 - Delete account button oxe-web-community
+- GitHub url field for entites
+- Mastodon url field for entities
 
 ### Fixed
 

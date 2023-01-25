@@ -33,6 +33,9 @@ def upgrade():
     op.add_column('User', sa.Column('accept_terms_and_conditions', mysql.BOOLEAN(), server_default=false(), nullable=False))
     op.add_column('User', sa.Column('accept_privacy_policy', mysql.BOOLEAN(), server_default=false(), nullable=False))
 
+    op.add_column('Entity', sa.Column('github_url', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=150), nullable=True))
+    op.add_column('Entity', sa.Column('mastodon_url', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=150), nullable=True))
+
 
 def downgrade():
     op.drop_table('EmailTemplate')
@@ -40,3 +43,6 @@ def downgrade():
     op.drop_column('User', 'accept_request_notification')
     op.drop_column('User', 'accept_terms_and_conditions')
     op.drop_column('User', 'accept_privacy_policy')
+
+    op.drop_column('Entity', 'github_url')
+    op.drop_column('Entity', 'mastodon_url')
