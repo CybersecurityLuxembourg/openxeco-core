@@ -40,6 +40,8 @@ class UpdateEntity(MethodResource, Resource):
         'twitter_url': fields.Str(required=False, allow_none=True),
         'youtube_url': fields.Str(required=False, allow_none=True),
         'discord_url': fields.Str(required=False, allow_none=True),
+        'github_url': fields.Str(required=False, allow_none=True),
+        'mastodon_url': fields.Str(required=False, allow_none=True),
     })
     @jwt_required
     @verify_admin_access
