@@ -43,7 +43,9 @@ class TestGetArticleTags(BaseCase):
                     'trade_register_number': None,
                     'twitter_url': None,
                     'website': None,
-                    'youtube_url': None
+                    'youtube_url': None,
+                    'github_url': None,
+                    'mastodon_url': None
                 },
                 {
                     'creation_date': None,
@@ -66,7 +68,9 @@ class TestGetArticleTags(BaseCase):
                     'trade_register_number': None,
                     'twitter_url': None,
                     'website': None,
-                    'youtube_url': None
+                    'youtube_url': None,
+                    'github_url': None,
+                    'mastodon_url': None
                 }],
             'taxonomy_tags': [
                 {

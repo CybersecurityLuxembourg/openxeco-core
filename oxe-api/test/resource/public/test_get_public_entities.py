@@ -36,7 +36,9 @@ class TestGetPublicEntities(BaseCase):
                 'linkedin_url': None,
                 'discord_url': None,
                 'twitter_url': None,
-                'youtube_url': None
+                'youtube_url': None,
+                'github_url': None,
+                'mastodon_url': None
             },
             {
                 'id': 3,
@@ -59,7 +61,9 @@ class TestGetPublicEntities(BaseCase):
                 'linkedin_url': None,
                 'discord_url': None,
                 'twitter_url': None,
-                'youtube_url': None
+                'youtube_url': None,
+                'github_url': None,
+                'mastodon_url': None
             }
         ])
 
@@ -96,7 +100,9 @@ class TestGetPublicEntities(BaseCase):
                 'linkedin_url': None,
                 'discord_url': None,
                 'twitter_url': None,
-                'youtube_url': None
+                'youtube_url': None,
+                'github_url': None,
+                'mastodon_url': None
             },
             {
                 'id': 3,
@@ -119,7 +125,9 @@ class TestGetPublicEntities(BaseCase):
                 'linkedin_url': None,
                 'discord_url': None,
                 'twitter_url': None,
-                'youtube_url': None
+                'youtube_url': None,
+                'github_url': None,
+                'mastodon_url': None
             },
             {
                 'id': 4,
@@ -142,6 +150,8 @@ class TestGetPublicEntities(BaseCase):
                 'linkedin_url': None,
                 'discord_url': None,
                 'twitter_url': None,
-                'youtube_url': None
+                'youtube_url': None,
+                'github_url': None,
+                'mastodon_url': None
             }
         ])

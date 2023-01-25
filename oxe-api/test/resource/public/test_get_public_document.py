@@ -25,7 +25,7 @@ class TestGetPublicDocument(BaseCase):
     def test_ko_missing_record(self):
         response = self.application.get('/public/get_public_document/empty_pdf.pdf')
 
-        self.assertEqual("422 No document found with this filename", response.status)
+        self.assertEqual("422 No document found with this filename or this ID", response.status)
 
     @patch('resource.public.get_public_document.DOCUMENT_FOLDER', os.path.join(os.path.dirname(os.path.realpath(__file__)),
                                                                          "test_get_public_document"))

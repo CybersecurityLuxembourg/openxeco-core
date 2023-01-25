@@ -32,7 +32,9 @@ class TestGetPublicEntity(BaseCase):
             'linkedin_url': None,
             'discord_url': None,
             'twitter_url': None,
-            'youtube_url': None
+            'youtube_url': None,
+            'github_url': None,
+            'mastodon_url': None
         })
 
     @BaseCase.login
@@ -65,7 +67,9 @@ class TestGetPublicEntity(BaseCase):
             'linkedin_url': None,
             'discord_url': None,
             'twitter_url': None,
-            'youtube_url': None
+            'youtube_url': None,
+            'github_url': None,
+            'mastodon_url': None
         })
 
     @BaseCase.login
