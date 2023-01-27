@@ -64,7 +64,7 @@ class App extends React.Component {
 	setUserStatus(status) {
 		this.setState({
 			user_status: status,
-		})
+		});
 	}
 
 	logout() {
