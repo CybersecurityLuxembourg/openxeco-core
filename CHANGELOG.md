@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.14.7] - 2023-01-27
+
+### Changes
+
+- Review optional field appearance for Article on owe-web-admin
+
 ## [1.14.6] - 2023-01-18
 
 ### Changes

@@ -183,31 +183,29 @@ export default class ArticleGlobal extends React.Component {
 				</div>
 
 				<div className="col-md-12">
-					{["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
-						&& <div className="right-buttons">
-							<button
-								className="link-button"
-								onClick={() => this.setState({
-									showOptionalFields: !this.state.showOptionalFields,
-								})}>
-								{this.state.showOptionalFields ? "Hide" : "Show"}
-								&nbsp;optional fields for {this.props.article.type.toLowerCase()}
-							</button>
-						</div>}
+					<div className="right-buttons">
+						<button
+							className="link-button"
+							onClick={() => this.setState({
+								showOptionalFields: !this.state.showOptionalFields,
+							})}>
+							{this.state.showOptionalFields ? "Hide" : "Show"}
+							&nbsp;optional fields for {this.props.article.type.toLowerCase()}
+						</button>
+					</div>
 				</div>
 
 				<div className="col-md-12">
-					{(["NEWS", "EVENT", "JOB OFFER", "TOOL", "SERVICE"].indexOf(this.props.article.type) >= 0
-						|| this.state.showOptionalFields)
+					{this.state.showOptionalFields
 						&& <FormLine
 							label={"Link"}
 							value={this.props.article.link}
 							onBlur={(v) => this.saveArticleValue("link", v)}
 							disabled={!this.props.editable}
-						/>}
+						/>
+					}
 
-					{(this.props.article.type === "EVENT"
-						|| this.state.showOptionalFields)
+					{this.props.article.type === "EVENT" && this.state.showOptionalFields
 						&& <FormLine
 							label={"Start date"}
 							type={"datetime"}
@@ -221,8 +219,7 @@ export default class ArticleGlobal extends React.Component {
 							disabled={!this.props.editable}
 						/>}
 
-					{(this.props.article.type === "EVENT"
-						|| this.state.showOptionalFields)
+					{this.props.article.type === "EVENT" && this.state.showOptionalFields
 						&& <FormLine
 							label={"End date"}
 							type={"datetime"}
@@ -236,13 +233,13 @@ export default class ArticleGlobal extends React.Component {
 							disabled={!this.props.editable}
 						/>}
 
-					{(this.props.article.type === "JOB OFFER"
-						|| this.state.showOptionalFields)
+					{this.state.showOptionalFields
 						&& <FormLine
 							label={"External reference"}
 							value={this.props.article.external_reference}
 							disabled={true}
-						/>}
+						/>
+					}
 				</div>
 			</div>
 		);
