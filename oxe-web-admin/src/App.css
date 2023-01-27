@@ -167,6 +167,13 @@ a {
 	margin-left: 5px;
 }
 
+.right-buttons {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: right;
+}
+
 .right-buttons > button {
 	margin: 7px 2px;
 	float: right;

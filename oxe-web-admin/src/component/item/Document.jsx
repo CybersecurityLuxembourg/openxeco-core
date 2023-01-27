@@ -140,13 +140,13 @@ export default class Document extends Component {
 			>
 				{(close) => <div className="row">
 					<div className="col-md-9">
-						<h1 className="Document-title">
-                            Document
+						<h1>
+							<i className="fas fa-file"/> Document
 						</h1>
 					</div>
 
 					<div className={"col-md-3"}>
-						<div className="top-right-buttons">
+						<div className="right-buttons">
 							<DialogConfirmation
 								text={"Are you sure you want to delete this document?"}
 								trigger={

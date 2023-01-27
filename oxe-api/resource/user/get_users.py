@@ -19,7 +19,7 @@ class GetUsers(MethodResource, Resource):
     @log_request
     @doc(tags=['user'],
          description='Get users. The request returns a restricted amount of information '
-                     '(id, name, is_admin, is_active, accept_communication)',
+                     '(id, email, is_admin, is_active, accept_communication)',
          responses={
              "200": {},
          })

@@ -105,6 +105,12 @@ export default class UserGlobal extends React.Component {
 							value={this.state.user.accept_communication}
 							disabled={true}
 						/>
+						<FormLine
+							label="Accept to receive request notifications (only for active admins)"
+							type={"checkbox"}
+							value={this.state.user.accept_request_notification}
+							disabled={true}
+						/>
 					</div>
 					: <Loading/>
 				}
