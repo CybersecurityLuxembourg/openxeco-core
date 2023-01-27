@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import "./Geolocation.css";
+import Item from "./Item.jsx";
 
-export default class Geolocation extends Component {
+export default class Geolocation extends Item {
 	constructor(props) {
 		super(props);
 
@@ -19,11 +20,11 @@ export default class Geolocation extends Component {
 	render() {
 		return (
 			<div
-				className={"Geolocation" + (this.props.selected ? " Geolocation-selected" : "")}
+				className={"Item Geolocation" + (this.props.selected ? " Geolocation-selected" : "")}
 				onClick={() => this.onClick()}
 			>
 				<i className="fas fa-map-marker-alt"/>
-				<div className={"Geolocation-name"}>
+				<div className={"name"}>
 					{this.props.lat} - {this.props.lon}
 				</div>
 			</div>

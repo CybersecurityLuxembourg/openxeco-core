@@ -25,6 +25,7 @@ class UpdateForm(MethodResource, Resource):
     @use_kwargs({
         'id': fields.Int(),
         'name': fields.Str(required=False, allow_none=True),
+        'reference': fields.Str(required=False, allow_none=True, validate=lambda x: x is None or len(x) <= 20),
         'description': fields.Str(required=False, allow_none=True),
         'status': fields.Str(required=False, validate=lambda x: x in ['ACTIVE', 'INACTIVE', 'DELETED']),
     })

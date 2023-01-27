@@ -19,7 +19,7 @@ class AddNote(MethodResource, Resource):
 
     @log_request
     @doc(tags=['note'],
-         description='Add a note on a entity, an article, a taxonomy category or a user',
+         description='Add a note on an entity, an article, a taxonomy category or a user',
          responses={
              "200": {},
              "422.a": {"description": "At least one of those params should be set: entity, article, "
