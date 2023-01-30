@@ -9,7 +9,7 @@ from webargs import fields
 from db.db import DB
 from decorator.catch_exception import catch_exception
 from utils.serializer import Serializer
-from utils.response import build_no_cors_response
+from utils.response import build_no_cors_response, build_no_cors_response_with_type
 
 
 class GetPublicArticleContent(MethodResource, Resource):
@@ -18,7 +18,8 @@ class GetPublicArticleContent(MethodResource, Resource):
         self.db = db
 
     @doc(tags=['public'],
-         description='Get content of article by ID',
+         description='Get content of an article by ID\n'
+            + "The format can be 'json', 'markdown' or 'html'. 'json' being the default value.",
          responses={
              "200": {},
              "422.a": {"description": "The provided article ID does not exist or is not accessible"},
@@ -58,9 +59,9 @@ class GetPublicArticleContent(MethodResource, Resource):
 
         if "format" in kwargs:
             if kwargs["format"] == "markdown":
-                return self.build_markdown(article, article_content), "200 "
+                return self.build_markdown(article, article_content)
             if kwargs["format"] == "html":
-                return self.build_html(article, article_content), "200 "
+                return self.build_html(article, article_content)
 
         data = {
             "title": article[0].title,
@@ -88,54 +89,62 @@ class GetPublicArticleContent(MethodResource, Resource):
 
     def build_markdown(self, article, article_content):
         tags = Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables['TaxonomyValue'])
-        data = "---\n"
-        data += f"title: {article[0].title}\n"
-        data += f"type: {article[0].type}\n"
-        data += f"date: {article[0].publication_date}\n"
-        data += f"abstract: {article[0].abstract}\n"
-        data += f"tag: {', '.join([t.name for t in tags])}\n"
-        data += "---\n"
+        data = "---\n\r"
+        data += f"title: {article[0].title}\n\r"
+        data += f"type: {article[0].type}\n\r"
+        data += f"date: {article[0].publication_date}\n\r"
+        data += f"abstract: {article[0].abstract}\n\r"
+        data += f"tag: {', '.join([t['name'] for t in tags])}\n\r"
+        data += "---\n\r"
 
         for c in article_content:
-            if c.type == "TITLE1":
-                data += f"#{c.content}\n"
-            elif c.type == "TITLE2":
-                data += f"##{c.content}\n"
-            elif c.type == "TITLE3":
-                data += f"###{c.content}\n"
-            elif c.type == "PARAGRAPH":
-                data += f"{html2markdown.convert(c.content)}\n"
-            elif c.type == "IMAGE":
-                data += f"![sample image](http://localhost:5000/public/get_image/{c.content})\n"
-            elif c.type == "FRAME":
-                data += f"{c.content}\n"
+            if c.content is not None:
+                if c.type == "TITLE1":
+                    data += f"# {c.content}\n\r"
+                elif c.type == "TITLE2":
+                    data += f"## {c.content}\n\r"
+                elif c.type == "TITLE3":
+                    data += f"### {c.content}\n\r"
+                elif c.type == "PARAGRAPH":
+                    data += f"{html2markdown.convert(c.content)}\n\r"
+                elif c.type == "IMAGE":
+                    data += f"![image](http://localhost:5000/public/get_public_image/{c.content})\n\r"
+                elif c.type == "FRAME":
+                    data += f"{c.content}\n\r"
 
-        return data
+        return build_no_cors_response_with_type(data, "text/markdown; charset=UTF-8")
 
     def build_html(self, article, article_content):
         data = "<article>"
 
         if article[0].image is not None:
-            data += f"<div class='Article-content-cover'><img src='http://localhost:5000/public/get_image/" \
-                    f"{article[0].image}'/></div>"
+            data += f"<div class='Article-content-cover'>" \
+                    f"<img src='http://localhost:5000/public/get_public_image/{article[0].image}'/>" \
+                    f"</div>"
 
         data += f"<h1>{article[0].title}</h1>"
 
         for c in article_content:
-            if c.type == "TITLE1":
-                data += f"<h2>{c.content}</h2>"
-            elif c.type == "TITLE2":
-                data += f"<h3>{c.content}</h3>"
-            elif c.type == "TITLE3":
-                data += f"<h4>{c.content}</h4>"
-            elif c.type == "PARAGRAPH":
-                data += f"{c.content}"
-            elif c.type == "IMAGE":
-                data += f"<div class='Article-content-image'><img src='http://localhost:5000/public/" \
-                        f"get_image/{c.content}'/></div>"
-            elif c.type == "FRAME":
-                data += f"{c.content}"
+            if c.content is not None:
+                if c.type == "TITLE1":
+                    data += f"<h2>{c.content}</h2>"
+                elif c.type == "TITLE2":
+                    data += f"<h3>{c.content}</h3>"
+                elif c.type == "TITLE3":
+                    data += f"<h4>{c.content}</h4>"
+                elif c.type == "PARAGRAPH":
+                    data += "<div class='Article-content-paragraph'>" \
+                            f"{c.content}" \
+                            "</div>"
+                elif c.type == "IMAGE":
+                    data += f"<div class='Article-content-image'>" \
+                            f"<img src='http://localhost:5000/public/get_public_image/{c.content}'/>" \
+                            f"</div>"
+                elif c.type == "FRAME":
+                    data += f"<div class='Article-content-frame'>" \
+                            f"{c.content}" \
+                            f"</div>"
 
         data += "</article>"
 
-        return data
+        return build_no_cors_response_with_type(data, "text/html; charset=utf-8")
