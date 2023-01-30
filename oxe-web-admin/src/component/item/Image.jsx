@@ -251,7 +251,7 @@ export default class Image extends Component {
 										onClick={() => this.addKeyword(this.state.word)}
 										disabled={!validateWords(this.state.word)}
 									>
-										Add keyword
+										Add keywords
 									</button>
 								</div>
 

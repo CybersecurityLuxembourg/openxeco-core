@@ -224,7 +224,7 @@ export default class DialogAddDocument extends React.Component {
 										onClick={() => this.addKeyword(this.state.word)}
 										disabled={!validateWords(this.state.word)}
 									>
-										Add keyword
+										Add keywords
 									</button>
 								</div>
 
@@ -246,16 +246,16 @@ export default class DialogAddDocument extends React.Component {
 								<div className={"col-md-12"}>
 									<div className={"right-buttons"}>
 										<button
-											data-hover="Validate keywords"
-											data-active=""
-											onClick={() => this.onKeywordsValidate()}>
-											<span><i className="far fa-check-circle"/> Validate keywords</span>
-										</button>
-										<button
 											className={"grey-background"}
 											data-active=""
 											onClick={() => this.setState({ ...this.state.initState })}>
 											<span><i className="far fa-arrow-alt-circle-left"/> Back to document selection</span>
+										</button>
+										<button
+											data-hover="Validate keywords"
+											data-active=""
+											onClick={() => this.onKeywordsValidate()}>
+											<span><i className="far fa-check-circle"/> Validate keywords</span>
 										</button>
 									</div>
 								</div>
@@ -281,12 +281,6 @@ export default class DialogAddDocument extends React.Component {
 								<div className={"col-md-12"}>
 									<div className={"right-buttons"}>
 										<button
-											data-hover="Validate image"
-											data-active=""
-											onClick={() => this.onValidate(close)}>
-											<span><i className="far fa-check-circle"/> Upload</span>
-										</button>
-										<button
 											className={"grey-background"}
 											data-active=""
 											onClick={() => this.setState({
@@ -294,6 +288,12 @@ export default class DialogAddDocument extends React.Component {
 												word: "",
 											})}>
 											<span><i className="far fa-arrow-alt-circle-left"/> Back to keyword selection</span>
+										</button>
+										<button
+											data-hover="Validate image"
+											data-active=""
+											onClick={() => this.onValidate(close)}>
+											<span><i className="far fa-check-circle"/> Upload</span>
 										</button>
 									</div>
 								</div>

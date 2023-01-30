@@ -313,7 +313,7 @@ export default class DialogAddImage extends React.Component {
 										onClick={() => this.addKeyword(this.state.word)}
 										disabled={!validateWords(this.state.word)}
 									>
-										Add keyword
+										Add keywords
 									</button>
 								</div>
 
@@ -347,17 +347,17 @@ export default class DialogAddImage extends React.Component {
 						&& !this.state.areKeywordsDefined
 						&& <div className={"right-buttons"}>
 							<button
-								data-hover="Validate keywords"
-								data-active=""
-								onClick={() => this.onKeywordSelectionValidation()}>
-								<span><i className="far fa-check-circle"/> Validate keywords</span>
-							</button>
-							<button
 								className={"grey-background"}
 								data-hover="Back to image cropping"
 								data-active=""
 								onClick={this.backToImageCropping}>
 								<span><i className="far fa-arrow-alt-circle-left"/> Back to image cropping</span>
+							</button>
+							<button
+								data-hover="Validate keywords"
+								data-active=""
+								onClick={() => this.onKeywordSelectionValidation()}>
+								<span><i className="far fa-check-circle"/> Validate keywords</span>
 							</button>
 						</div>
 					}
@@ -366,17 +366,17 @@ export default class DialogAddImage extends React.Component {
 						&& this.state.areKeywordsDefined
 						&& <div className={"right-buttons"}>
 							<button
-								data-hover="Validate image"
-								data-active=""
-								onClick={() => this.onValidate(close)}>
-								<span><i className="far fa-check-circle"/> Upload</span>
-							</button>
-							<button
 								className={"grey-background"}
 								data-hover="Back to keyword selection"
 								data-active=""
 								onClick={this.backToKeywordSelection}>
 								<span><i className="far fa-arrow-alt-circle-left"/> Back to keyword selection</span>
+							</button>
+							<button
+								data-hover="Validate image"
+								data-active=""
+								onClick={() => this.onValidate(close)}>
+								<span><i className="far fa-check-circle"/> Upload</span>
 							</button>
 						</div>
 					}
@@ -385,17 +385,17 @@ export default class DialogAddImage extends React.Component {
 						&& this.state.imageContent !== null
 						&& <div className={"right-buttons"}>
 							<button
-								data-hover="Crop image"
-								data-active=""
-								onClick={this.onCrop}>
-								<span><i className="far fa-check-circle"/> Crop</span>
-							</button>
-							<button
 								className={"grey-background"}
 								data-hover="Back to image selection"
 								data-active=""
 								onClick={this.backToImageSelection}>
 								<span><i className="far fa-arrow-alt-circle-left"/> Back to image selection</span>
+							</button>
+							<button
+								data-hover="Crop image"
+								data-active=""
+								onClick={this.onCrop}>
+								<span><i className="far fa-check-circle"/> Crop</span>
 							</button>
 						</div>
 					}
