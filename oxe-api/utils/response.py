@@ -11,5 +11,5 @@ def build_no_cors_response(json):
 def build_no_cors_response_with_type(data, content_type):
     response = make_response(data)
     response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Content-Type", content_type)
+    response.headers["Content-Type"] = content_type
     return response

@@ -122,18 +122,20 @@ class TestGetPublicArticleContent(BaseCase):
         response = self.application.get('/public/get_public_article_content/title?format=html')
 
         self.assertEqual(200, response.status_code)
+        self.assertEqual("text/html; charset=utf-8", response.headers['content-type'])
         self.assertEqual(
             bs4.BeautifulSoup("""<article>
-                <div class='Article-content-cover'><img src='http://localhost:5000/public/get_image/50'/></div>
+                <div class='Article-content-cover'><img src='http://localhost:5000/public/get_public_image/50'/></div>
                 <h1>TITLE</h1>
                 <h2>title 1</h2>
                 <h3>title 2</h3>
                 <h4>title 3</h4>
-                paragraph
-                <div class='Article-content-image'><img src='http://localhost:5000/public/get_image/45'/></div>
-                Frame
+                <div class='Article-content-paragraph'>paragraph</div>
+                <div class='Article-content-image'><img src='http://localhost:5000/public/get_public_image/45'/></div>
+                <div class='Article-content-frame'>Frame</div>
             </article>""", features="html.parser").prettify().encode('utf-8'),
-            bs4.BeautifulSoup(response.json, features="html.parser").prettify().encode('utf-8'))
+            bs4.BeautifulSoup(response.data, features="html.parser").prettify().encode('utf-8')
+        )
 
     def test_ok_markdown(self):
         self.db.insert({
@@ -149,13 +151,15 @@ class TestGetPublicArticleContent(BaseCase):
         response = self.application.get('/public/get_public_article_content/title?format=markdown')
 
         self.assertEqual(200, response.status_code)
+        self.assertEqual("text/markdown; charset=utf-8", response.headers['content-type'])
         self.assertEqual(
             open(
                 os.path.join(
                     os.path.dirname(os.path.realpath(__file__)),
                     "test_get_article_content",
-                    "test_ok_markdown_expected_result.md"), "r").read(),
-            response.json
+                    "test_ok_markdown_expected_result.md"), "r").read()
+                    .replace("\r\n", "\n").replace("\r", "\n"),
+            response.data.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
         )
 
     def test_ko_later_publication_date(self):

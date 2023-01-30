@@ -89,30 +89,30 @@ class GetPublicArticleContent(MethodResource, Resource):
 
     def build_markdown(self, article, article_content):
         tags = Serializer.serialize(self.db.get_tags_of_article(article[0].id), self.db.tables['TaxonomyValue'])
-        data = "---\n\r"
-        data += f"title: {article[0].title}\n\r"
-        data += f"type: {article[0].type}\n\r"
-        data += f"date: {article[0].publication_date}\n\r"
-        data += f"abstract: {article[0].abstract}\n\r"
-        data += f"tag: {', '.join([t['name'] for t in tags])}\n\r"
-        data += "---\n\r"
+        data = "---\r\n\r\n"
+        data += f"title: {article[0].title}\r\n\r\n"
+        data += f"type: {article[0].type}\r\n\r\n"
+        data += f"date: {article[0].publication_date}\r\n\r\n"
+        data += f"abstract: {article[0].abstract}\r\n\r\n"
+        data += f"tag: {', '.join([t['name'] for t in tags])}\r\n\r\n"
+        data += "---\r\n\r\n"
 
         for c in article_content:
             if c.content is not None:
                 if c.type == "TITLE1":
-                    data += f"# {c.content}\n\r"
+                    data += f"# {c.content}\r\n\r\n"
                 elif c.type == "TITLE2":
-                    data += f"## {c.content}\n\r"
+                    data += f"## {c.content}\r\n\r\n"
                 elif c.type == "TITLE3":
-                    data += f"### {c.content}\n\r"
+                    data += f"### {c.content}\r\n\r\n"
                 elif c.type == "PARAGRAPH":
-                    data += f"{html2markdown.convert(c.content)}\n\r"
+                    data += f"{html2markdown.convert(c.content)}\r\n\r\n"
                 elif c.type == "IMAGE":
-                    data += f"![image](http://localhost:5000/public/get_public_image/{c.content})\n\r"
+                    data += f"![image](http://localhost:5000/public/get_public_image/{c.content})\r\n\r\n"
                 elif c.type == "FRAME":
-                    data += f"{c.content}\n\r"
+                    data += f"{c.content}\r\n\r\n"
 
-        return build_no_cors_response_with_type(data, "text/markdown; charset=UTF-8")
+        return build_no_cors_response_with_type(data, "text/markdown; charset=utf-8")
 
     def build_html(self, article, article_content):
         data = "<article>"
