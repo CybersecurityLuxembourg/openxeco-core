@@ -48,6 +48,7 @@ export default class PageUser extends React.Component {
 					content={[
 						<UserUser
 							key={"user"}
+							user={this.props.user}
 						/>,
 						<UserGroup
 							key={"group"}

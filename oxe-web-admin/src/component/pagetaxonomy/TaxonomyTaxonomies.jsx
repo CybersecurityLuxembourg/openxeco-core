@@ -71,6 +71,7 @@ export default class TaxonomyTaxonomies extends React.Component {
 						name={value.name}
 						editable={true}
 						afterDeletion={() => this.refresh()}
+						user={this.props.user}
 					/>
 				),
 			},

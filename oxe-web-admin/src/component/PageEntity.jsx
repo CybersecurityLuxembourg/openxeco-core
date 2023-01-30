@@ -91,6 +91,7 @@ export default class PageEntity extends React.Component {
 							refreshEntities={() => this.refreshEntities()}
 							filters={this.state.filters}
 							applyFilter={(f) => this.applyFilter(f)}
+							user={this.props.user}
 							{...this.props}
 						/>,
 						<EntityMap

@@ -47,6 +47,7 @@ export default class PageTaxonomy extends React.Component {
 					content={[
 						<TaxonomyTaxonomies
 							key={"taxonomies"}
+							user={this.props.user}
 						/>,
 					]}
 				/>

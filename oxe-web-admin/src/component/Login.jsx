@@ -43,7 +43,7 @@ export default class Login extends React.Component {
 		if (getUrlParameter("action") !== "reset_password") {
 			getRequest.call(this, "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
-					this.props.connect(data.id);
+					this.props.connect(data);
 				} else {
 					this.props.logout();
 					nm.warning("This user is not an admin");
@@ -95,10 +95,10 @@ export default class Login extends React.Component {
 			password: this.state.password,
 		};
 
-		postRequest.call(this, "account/login", params, (response) => {
+		postRequest.call(this, "account/login", params, () => {
 			getRequest.call(this, "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
-					this.props.connect(response.user);
+					this.props.connect(data);
 				} else {
 					this.props.logout();
 					nm.warning("This user is not an admin");

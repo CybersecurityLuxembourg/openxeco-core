@@ -106,6 +106,7 @@ export default class UserUser extends React.Component {
 						id={value.id}
 						email={value.email}
 						afterDeletion={() => this.refresh()}
+						user={this.props.user}
 					/>
 				),
 			},

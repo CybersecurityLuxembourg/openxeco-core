@@ -56,6 +56,7 @@ export default class EntityEntities extends React.Component {
 						onOpen={() => this.props.history.push("/entities/" + value.id)}
 						onClose={() => this.props.history.push("/entities")}
 						open={value.id.toString() === this.props.match.params.id}
+						user={this.props.user}
 					/>
 				),
 			},

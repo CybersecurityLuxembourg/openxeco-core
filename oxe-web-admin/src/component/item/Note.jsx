@@ -91,7 +91,7 @@ export default class Note extends Component {
 						}}/>
 
 						{this.props.user
-							&& this.props.user === this.props.note.admin
+							&& this.props.user.id === this.props.note.admin
 							&& <div className="Note-delete-button">
 								<Popup
 									className="Popup-small-size"

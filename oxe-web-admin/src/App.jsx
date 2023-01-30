@@ -60,7 +60,7 @@ class App extends React.Component {
 						/>
 					</BrowserRouter>
 					: <Login
-						connect={() => this.connect()}
+						connect={(u) => this.connect(u)}
 						logout={() => this.logout()}
 						cookies={this.props.cookies}
 					/>
