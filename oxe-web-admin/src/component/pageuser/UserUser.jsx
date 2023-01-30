@@ -146,7 +146,7 @@ export default class UserUser extends React.Component {
 								}
 								modal
 							>
-								{(close) => <div className={"row row-spaced"}>
+								{(close) => <div className={"row"}>
 									<div className={"col-md-9"}>
 										<h2>Add a new user</h2>
 									</div>
@@ -196,6 +196,9 @@ export default class UserUser extends React.Component {
 												</div>
 											}
 										/>
+									</div>
+
+									<div className="col-md-12">
 										<div className="right-buttons">
 											<button
 												onClick={() => this.addUser(close)}

@@ -29,6 +29,8 @@ All notable changes to this project will be documented in this file.
 
 - Dependabot alerts
 - Setting changes when value is empty on oxe-web-admin
+- Note update and modification button appearances on oxe-web-admin
+- Miscellanous UI on oxe-web-admin
 
 ## [1.14.7] - 2023-01-27
 
