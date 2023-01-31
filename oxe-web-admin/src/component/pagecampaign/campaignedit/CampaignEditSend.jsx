@@ -75,13 +75,13 @@ export default class CampaignEditSend extends React.Component {
 
 						{(this.state.subject === null || this.state.subject.length === 0)
 							&& <Warning
-								content={"You cannot sent the communication as the subject of the mail is empty"}
+								content={"You cannot send the communication as the subject of the mail is empty"}
 							/>
 						}
 
 						{(this.state.body === null || this.state.body.length === 0)
 							&& <Warning
-								content={"You cannot sent the communication as the body of the mail is empty"}
+								content={"You cannot send the communication as the body of the mail is empty"}
 							/>
 						}
 					</div>

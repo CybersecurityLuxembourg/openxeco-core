@@ -133,18 +133,6 @@ export default class CampaignSend extends React.Component {
 							content={"The recipients are set as BCC. So they won't be able to see each others."}
 						/>
 
-						{(this.props.campaign.subject === null || this.props.campaign.subject.length === 0)
-							&& <Warning
-								content={"You cannot sent the communication as the subject of the mail is empty"}
-							/>
-						}
-
-						{(this.props.campaign.body === null || this.props.campaign.body.length === 0)
-							&& <Warning
-								content={"You cannot sent the communication as the body of the mail is empty"}
-							/>
-						}
-
 						{!this.props.campaign.template_id
 							&& <Info
 								content={"No campaign template selected"}
@@ -154,6 +142,28 @@ export default class CampaignSend extends React.Component {
 						{this.props.campaign.template_id && this.state.template
 							&& <Info
 								content={"Selected template: " + this.state.template.name}
+							/>
+						}
+
+						{this.state.addresses.length === 0
+							? <Warning
+								content={"You cannot send the communication as "
+									+ "you have not selected any address"}
+							/>
+							: <Info
+								content={this.state.addresses.length + " email addresses selected"}
+							/>
+						}
+
+						{(this.props.campaign.subject === null || this.props.campaign.subject.length === 0)
+							&& <Warning
+								content={"You cannot send the communication as the subject of the mail is empty"}
+							/>
+						}
+
+						{(this.props.campaign.body === null || this.props.campaign.body.length === 0)
+							&& <Warning
+								content={"You cannot send the communication as the body of the mail is empty"}
 							/>
 						}
 
@@ -175,16 +185,6 @@ export default class CampaignSend extends React.Component {
 							&& !this.state.template.content.includes("[CAMPAIGN CONTENT]")
 							&& <Warning
 								content={"The template does not contain '[CAMPAIGN CONTENT]'"}
-							/>
-						}
-
-						{this.state.addresses.length === 0
-							? <Warning
-								content={"You cannot send the communication as "
-									+ "you have not selected any address"}
-							/>
-							: <Info
-								content={this.state.addresses.length + " email addresses selected"}
 							/>
 						}
 					</div>
