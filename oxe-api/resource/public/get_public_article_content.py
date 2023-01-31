@@ -1,6 +1,7 @@
 import datetime
 
 import html2markdown
+from flask import request
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
@@ -108,7 +109,7 @@ class GetPublicArticleContent(MethodResource, Resource):
                 elif c.type == "PARAGRAPH":
                     data += f"{html2markdown.convert(c.content)}\r\n\r\n"
                 elif c.type == "IMAGE":
-                    data += f"![image](http://localhost:5000/public/get_public_image/{c.content})\r\n\r\n"
+                    data += f"![image]({request.url_root}get_public_image/{c.content})\r\n\r\n"
                 elif c.type == "FRAME":
                     data += f"{c.content}\r\n\r\n"
 
@@ -119,7 +120,7 @@ class GetPublicArticleContent(MethodResource, Resource):
 
         if article[0].image is not None:
             data += f"<div class='Article-content-cover'>" \
-                    f"<img src='http://localhost:5000/public/get_public_image/{article[0].image}'/>" \
+                    f"<img src='{request.url_root}public/get_public_image/{article[0].image}'/>" \
                     f"</div>"
 
         data += f"<h1>{article[0].title}</h1>"
@@ -138,7 +139,7 @@ class GetPublicArticleContent(MethodResource, Resource):
                             "</div>"
                 elif c.type == "IMAGE":
                     data += f"<div class='Article-content-image'>" \
-                            f"<img src='http://localhost:5000/public/get_public_image/{c.content}'/>" \
+                            f"<img src='{request.url_root}public/get_public_image/{c.content}'/>" \
                             f"</div>"
                 elif c.type == "FRAME":
                     data += f"<div class='Article-content-frame'>" \
