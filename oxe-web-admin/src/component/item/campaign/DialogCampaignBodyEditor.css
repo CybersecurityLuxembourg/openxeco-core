@@ -49,3 +49,7 @@
 .DialogCampaignBodyEditor-preview-box * {
     all: revert;
 }
+
+.DialogCampaignBodyEditor-customised .Info ul {
+    margin-bottom: 0px;
+}

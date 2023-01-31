@@ -5,8 +5,10 @@ import { NotificationManager as nm } from "react-notifications";
 import dompurify from "dompurify";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import Message from "../../box/Message.jsx";
+import Info from "../../box/Info.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
+import { getApiURL } from "../../../utils/env.jsx";
 
 export default class DialogCampaignBodyEditor extends React.Component {
 	constructor(props) {
@@ -16,12 +18,23 @@ export default class DialogCampaignBodyEditor extends React.Component {
 			body: null,
 			user: null,
 			template: null,
+			articles: null,
+			entities: null,
+			articleRegex: /\[ARTICLE\s\d*\]/g,
+			entityRegex: /\[ENTITY\s\d*\]/g,
 		};
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.campaign !== this.props.campaign && this.props.campaign) {
 			this.setState({ body: this.props.campaign.body });
+		}
+
+		if (prevState.body !== this.state.body && prevState.body) {
+			if (Array.from(prevState.body.matchAll(this.state.articleRegex), (m) => m[0])
+				!== Array.from(this.state.body.matchAll(this.state.articleRegex), (m) => m[0])) {
+				console.log("DIFF", Array.from(this.state.body.matchAll(this.state.articleRegex), (m) => m[0]));
+			}
 		}
 	}
 
@@ -89,13 +102,48 @@ export default class DialogCampaignBodyEditor extends React.Component {
 
 	getCampaignBody() {
 		if (this.state.template && this.state.template.content) {
-			return this.state.template.content.replace(
-				"[CAMPAIGN CONTENT]",
-				this.state.body || "",
-			);
+			return this.state.template.content
+				.replaceAll("[CAMPAIGN CONTENT]", this.state.body || "")
+				.replaceAll(this.state.articleRegex, (m) => this.getArticleContent(m))
+				.replaceAll(this.state.entityRegex, (m) => this.getEntityContent(m))
+				.replaceAll("[LOGO]", "<img"
+					+ " style='max-width: 100%; max-height: 100%;'"
+					+ " src='" + getApiURL() + "public/get_public_image/logo.png'/>");
 		}
 
 		return this.state.body || "";
+	}
+
+	getArticleContent(m) {
+		const id = m.match(/\d+/g);
+
+		if (this.state.articles) {
+			const ids = this.state.article.map((a) => a.id);
+
+			if (ids.includes(id)) {
+				return "FOUNDDDDD";
+			}
+
+			return `[ARTICLE ${id} NOT FOUND]`;
+		}
+
+		return `[LOADING ARTICLE ${id}...]`;
+	}
+
+	getEntityContent(m) {
+		const id = m.match(/\d+/g);
+
+		if (this.state.articles) {
+			const ids = this.state.article.map((a) => a.id);
+
+			if (ids.includes(id)) {
+				return "FOUNDDDDD";
+			}
+
+			return `[ENTITY ${id} NOT FOUND]`;
+		}
+
+		return `[LOADING ENTITY ${id}...]`;
 	}
 
 	changeState(field, value) {
@@ -170,6 +218,21 @@ export default class DialogCampaignBodyEditor extends React.Component {
 										<div className={"row"}>
 											<div className="col-md-12">
 												<h2>Content</h2>
+											</div>
+
+											<div className="col-md-12">
+												<Info
+													content={<div>
+														You can include these elements:
+														<ul>
+															<li>[LOGO] to integrate the logo of the project</li>
+															<li>[ARTICLE 12] to integrate the article with the ID 12</li>
+															<li>[ENTITY 24] to integrate the entity with the ID 24</li>
+															<li>[UNSUBSCRIPTION LINK] to integrate the link in
+															order to &quot;Unsubscribe&quot;</li>
+														</ul>
+													</div>}
+												/>
 											</div>
 
 											<div className="col-md-12">
