@@ -20,6 +20,7 @@ class GetPublicArticles(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
+        'ids': fields.DelimitedList(fields.Int(), required=False),
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
         'title': fields.Str(required=False),

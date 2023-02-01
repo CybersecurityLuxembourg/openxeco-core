@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Delete account button oxe-web-community
 - GitHub url field for entites
 - Mastodon url field for entities
+- public/get_public_articles resource: add IDs filtering parameter
 
 ### Fixed
 

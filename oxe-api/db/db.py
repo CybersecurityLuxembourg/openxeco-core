@@ -227,6 +227,9 @@ class DB:
 
         query = self.session.query(self.tables["Article"])
 
+        if "ids" in filters and filters['ids'] is not None:
+            query = query.filter(self.tables["Article"].id.in_(filters['ids']))
+
         if "title" in filters and filters['title'] is not None:
             elements = filters['title'].lower().split(" ")
             for word in elements:
