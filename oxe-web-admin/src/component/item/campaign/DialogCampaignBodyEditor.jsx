@@ -9,6 +9,7 @@ import Info from "../../box/Info.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import { getApiURL } from "../../../utils/env.jsx";
+import { dictToURI } from "../../../utils/url.jsx";
 
 export default class DialogCampaignBodyEditor extends React.Component {
 	constructor(props) {
@@ -20,8 +21,8 @@ export default class DialogCampaignBodyEditor extends React.Component {
 			template: null,
 			articles: null,
 			entities: null,
-			articleRegex: /\[ARTICLE\s\d*\]/g,
-			entityRegex: /\[ENTITY\s\d*\]/g,
+			articleRegex: /\[ARTICLE\s\d+\]/g,
+			entityRegex: /\[ENTITY\s\d+\]/g,
 		};
 	}
 
@@ -30,10 +31,13 @@ export default class DialogCampaignBodyEditor extends React.Component {
 			this.setState({ body: this.props.campaign.body });
 		}
 
-		if (prevState.body !== this.state.body && prevState.body) {
-			if (Array.from(prevState.body.matchAll(this.state.articleRegex), (m) => m[0])
-				!== Array.from(this.state.body.matchAll(this.state.articleRegex), (m) => m[0])) {
-				console.log("DIFF", Array.from(this.state.body.matchAll(this.state.articleRegex), (m) => m[0]));
+		if (prevState.body !== this.state.body) {
+			if (this.getArticleIds(prevState.body) !== this.getArticleIds(this.state.body)) {
+				this.fetchArticles();
+			}
+
+			if (this.getEntityIds(prevState.body) !== this.getEntityIds(this.state.body)) {
+				this.fetchEntities();
 			}
 		}
 	}
@@ -48,10 +52,10 @@ export default class DialogCampaignBodyEditor extends React.Component {
 		}
 
 		if (!this.state.user) {
-			this.getMyUser();
+			this.fetchMyUser();
 		}
 
-		this.getTemplate();
+		this.fetchTemplate();
 	}
 
 	sendDraft() {
@@ -59,7 +63,7 @@ export default class DialogCampaignBodyEditor extends React.Component {
 			const params = {
 				address: this.state.user.email,
 				subject: "[DRAFT] Campaign test",
-				content: this.getCampaignBody(),
+				content: this.buildCampaignBody(),
 			};
 
 			postRequest.call(this, "mail/send_mail", params, () => {
@@ -74,7 +78,7 @@ export default class DialogCampaignBodyEditor extends React.Component {
 		}
 	}
 
-	getTemplate() {
+	fetchTemplate() {
 		if (this.props.campaign && this.props.campaign.template_id) {
 			getRequest.call(this, "campaign/get_campaign_template/" + this.props.campaign.template_id, (data) => {
 				this.setState({
@@ -88,7 +92,7 @@ export default class DialogCampaignBodyEditor extends React.Component {
 		}
 	}
 
-	getMyUser() {
+	fetchMyUser() {
 		getRequest.call(this, "private/get_my_user", (data) => {
 			this.setState({
 				user: data,
@@ -100,10 +104,43 @@ export default class DialogCampaignBodyEditor extends React.Component {
 		});
 	}
 
-	getCampaignBody() {
+	fetchArticles() {
+		const params = {
+			ids: this.getArticleIds(this.state.body),
+		};
+
+		getRequest.call(this, "public/get_public_articles?" + dictToURI(params), (data) => {
+			this.setState({
+				articles: data.items,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	fetchEntities() {
+		const params = {
+			ids: this.getEntityIds(this.state.body),
+		};
+
+		getRequest.call(this, "public/get_public_entities?" + dictToURI(params), (data) => {
+			this.setState({
+				entities: data,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	buildCampaignBody() {
 		if (this.state.template && this.state.template.content) {
 			return this.state.template.content
 				.replaceAll("[CAMPAIGN CONTENT]", this.state.body || "")
+				.replaceAll("[UNSUBSCRIPTION LINK]", "<a href='https://google.com'>Unsubscribe</a>")
 				.replaceAll(this.state.articleRegex, (m) => this.getArticleContent(m))
 				.replaceAll(this.state.entityRegex, (m) => this.getEntityContent(m))
 				.replaceAll("[LOGO]", "<img"
@@ -115,13 +152,36 @@ export default class DialogCampaignBodyEditor extends React.Component {
 	}
 
 	getArticleContent(m) {
-		const id = m.match(/\d+/g);
+		const id = parseInt(m.match(/\d+/g)[0], 10);
 
 		if (this.state.articles) {
-			const ids = this.state.article.map((a) => a.id);
+			const ids = this.state.articles.map((a) => a.id);
 
 			if (ids.includes(id)) {
-				return "FOUNDDDDD";
+				const a = this.state.articles.filter((ar) => ar.id === id).pop();
+
+				const img = a.image
+					? `<img src="${getApiURL()}public/get_public_image/${a.image.toString()}" style="max-width: 100%;"/>`
+					: "<div style='background-color: lightgrey; max-width: 100%;'/>";
+
+				return `
+					<table
+						class="article"
+						border=""
+						cellpadding="20"
+						cellspacing="20"
+					>
+						<tr>
+							<td class="image" style="width: 40%;">
+								${img}
+							</td>
+							<td class="content">
+								<div class="title">${a.title}</div>
+								<button>Read more</button>
+							</td>
+						</tr>
+					</table>
+				`;
 			}
 
 			return `[ARTICLE ${id} NOT FOUND]`;
@@ -131,19 +191,64 @@ export default class DialogCampaignBodyEditor extends React.Component {
 	}
 
 	getEntityContent(m) {
-		const id = m.match(/\d+/g);
+		const id = parseInt(m.match(/\d+/g)[0], 10);
 
-		if (this.state.articles) {
-			const ids = this.state.article.map((a) => a.id);
+		if (this.state.entities) {
+			const ids = this.state.entities.map((a) => a.id);
 
 			if (ids.includes(id)) {
-				return "FOUNDDDDD";
+				const e = this.state.entities.filter((en) => en.id === id).pop();
+
+				const img = e.image
+					? `<img src="${getApiURL()}public/get_public_image/${e.image.toString()}" style="max-width: 100%;"/>`
+					: "<div style='background-color: lightgrey;'/>";
+
+				return `
+					<table
+						class="entity"
+						border=""
+						cellpadding="20"
+						cellspacing="20"
+					>
+						<tr>
+							<td class="image" style="width: 40%;">
+								${img}
+							</td>
+							<td class="content">
+								<div class="title">${e.name}</div>
+								<button>Read more</button>
+							</td>
+						</tr>
+					</table>
+				`;
 			}
 
 			return `[ENTITY ${id} NOT FOUND]`;
 		}
 
 		return `[LOADING ENTITY ${id}...]`;
+	}
+
+	getArticleIds(body) {
+		if (body) {
+			return Array.from(
+				body.matchAll(this.state.articleRegex),
+				(m) => m[0],
+			).map((t) => t.match(/\d+/g)[0]);
+		}
+
+		return [];
+	}
+
+	getEntityIds(body) {
+		if (body) {
+			return Array.from(
+				body.matchAll(this.state.entityRegex),
+				(m) => m[0],
+			).map((t) => t.match(/\d+/g)[0]);
+		}
+
+		return [];
 	}
 
 	changeState(field, value) {
@@ -265,7 +370,7 @@ export default class DialogCampaignBodyEditor extends React.Component {
 														className="DialogCampaignBodyEditor-preview-box"
 														dangerouslySetInnerHTML={{
 															__html: dompurify.sanitize(
-																this.getCampaignBody(),
+																this.buildCampaignBody(),
 															),
 														}}>
 													</div>

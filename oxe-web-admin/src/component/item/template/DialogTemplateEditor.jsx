@@ -8,6 +8,7 @@ import Message from "../../box/Message.jsx";
 import Info from "../../box/Info.jsx";
 import DialogConfirmation from "../../dialog/DialogConfirmation.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
+import { getApiURL } from "../../../utils/env.jsx";
 
 export default class DialogTemplateEditor extends React.Component {
 	constructor(props) {
@@ -72,27 +73,32 @@ export default class DialogTemplateEditor extends React.Component {
 	}
 
 	getTemplateContent() {
-		return this.state.content.replace(
-			"[CAMPAIGN CONTENT]",
-			"<div"
-				+ " class='DialogTemplateEditor-campaign-content'"
-				+ " style='width: 100%;"
-				+ " min-height: 500px;"
-				+ " display: flex;"
-				+ " align-items:center;"
-				+ " justify-content:center;"
-				+ " font-weight: bold;"
-				+ " border: solid 2px lightgrey;"
-				+ " background: repeating-linear-gradient("
-				+ "   135deg,"
-				+ "   lightgrey,"
-				+ "   lightgrey 10px,"
-				+ "   rgba(0, 0, 0, 0) 10px,"
-				+ "   rgba(0, 0, 0, 0) 20px"
-				+ " )'>"
-				+ "CAMPAIGN CONTENT"
-				+ "</div>",
-		);
+		return this.state.content
+			.replace(
+				"[CAMPAIGN CONTENT]",
+				"<div"
+					+ " class='DialogTemplateEditor-campaign-content'"
+					+ " style='width: 100%;"
+					+ " min-height: 500px;"
+					+ " display: flex;"
+					+ " align-items:center;"
+					+ " justify-content:center;"
+					+ " font-weight: bold;"
+					+ " border: solid 2px lightgrey;"
+					+ " background: repeating-linear-gradient("
+					+ "   135deg,"
+					+ "   lightgrey,"
+					+ "   lightgrey 10px,"
+					+ "   rgba(0, 0, 0, 0) 10px,"
+					+ "   rgba(0, 0, 0, 0) 20px"
+					+ " )'>"
+					+ "CAMPAIGN CONTENT"
+					+ "</div>",
+			)
+			.replaceAll("[UNSUBSCRIPTION LINK]", "<a href='https://google.com'>Unsubscribe</a>")
+			.replaceAll("[LOGO]", "<img"
+				+ " style='max-width: 100%; max-height: 100%;'"
+				+ " src='" + getApiURL() + "public/get_public_image/logo.png'/>");
 	}
 
 	changeState(field, value) {
@@ -172,6 +178,16 @@ export default class DialogTemplateEditor extends React.Component {
 											<div className="col-md-12">
 												<Info
 													content={"The content of the campaign should by defined in the template with the following statement: [CAMPAIGN CONTENT]"}
+												/>
+												<Info
+													content={<div>
+														You can include these elements:
+														<ul>
+															<li>[LOGO] to integrate the logo of the project</li>
+															<li>[UNSUBSCRIPTION LINK] to integrate the link in
+															order to &quot;Unsubscribe&quot;</li>
+														</ul>
+													</div>}
 												/>
 											</div>
 
