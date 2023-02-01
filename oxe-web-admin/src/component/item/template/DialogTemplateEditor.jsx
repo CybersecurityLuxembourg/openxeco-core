@@ -95,7 +95,7 @@ export default class DialogTemplateEditor extends React.Component {
 					+ "CAMPAIGN CONTENT"
 					+ "</div>",
 			)
-			.replaceAll("[UNSUBSCRIPTION LINK]", "<a href='https://google.com'>Unsubscribe</a>")
+			.replaceAll("[UNSUBSCRIPTION LINK]", `<a href='${getApiURL()}account/unsubscribe'>Unsubscribe</a>`)
 			.replaceAll("[LOGO]", "<img"
 				+ " style='max-width: 100%; max-height: 100%;'"
 				+ " src='" + getApiURL() + "public/get_public_image/logo.png'/>");

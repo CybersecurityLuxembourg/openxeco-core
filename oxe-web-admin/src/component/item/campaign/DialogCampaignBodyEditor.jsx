@@ -140,7 +140,7 @@ export default class DialogCampaignBodyEditor extends React.Component {
 		if (this.state.template && this.state.template.content) {
 			return this.state.template.content
 				.replaceAll("[CAMPAIGN CONTENT]", this.state.body || "")
-				.replaceAll("[UNSUBSCRIPTION LINK]", "<a href='https://google.com'>Unsubscribe</a>")
+				.replaceAll("[UNSUBSCRIPTION LINK]", `<a href='${getApiURL()}account/unsubscribe'>Unsubscribe</a>`)
 				.replaceAll(this.state.articleRegex, (m) => this.getArticleContent(m))
 				.replaceAll(this.state.entityRegex, (m) => this.getEntityContent(m))
 				.replaceAll("[LOGO]", "<img"
@@ -161,22 +161,19 @@ export default class DialogCampaignBodyEditor extends React.Component {
 				const a = this.state.articles.filter((ar) => ar.id === id).pop();
 
 				const img = a.image
-					? `<img src="${getApiURL()}public/get_public_image/${a.image.toString()}" style="max-width: 100%;"/>`
-					: "<div style='background-color: lightgrey; max-width: 100%;'/>";
+					? `<img src="${getApiURL()}public/get_public_image/${a.image.toString()}"/>`
+					: "<div class='no-image'/>";
 
 				return `
-					<table
-						class="article"
-						border=""
-						cellpadding="20"
-						cellspacing="20"
-					>
+					<table class="article">
 						<tr>
-							<td class="image" style="width: 40%;">
+							<td class="image">
 								${img}
 							</td>
 							<td class="content">
+								<div class="type">${a.type}</div>
 								<div class="title">${a.title}</div>
+								<div class="abstract">${a.abstract}</div>
 								<button>Read more</button>
 							</td>
 						</tr>
@@ -200,22 +197,17 @@ export default class DialogCampaignBodyEditor extends React.Component {
 				const e = this.state.entities.filter((en) => en.id === id).pop();
 
 				const img = e.image
-					? `<img src="${getApiURL()}public/get_public_image/${e.image.toString()}" style="max-width: 100%;"/>`
-					: "<div style='background-color: lightgrey;'/>";
+					? `<img src="${getApiURL()}public/get_public_image/${e.image.toString()}"/>`
+					: "<div class='no-image'/>";
 
 				return `
-					<table
-						class="entity"
-						border=""
-						cellpadding="20"
-						cellspacing="20"
-					>
+					<table class="entity">
 						<tr>
-							<td class="image" style="width: 40%;">
+							<td class="image">
 								${img}
 							</td>
 							<td class="content">
-								<div class="title">${e.name}</div>
+								<div class="name">${e.name}</div>
 								<button>Read more</button>
 							</td>
 						</tr>
