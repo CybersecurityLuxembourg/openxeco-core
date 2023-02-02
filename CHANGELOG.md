@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - user/update_user API resource: restrict field modification to admins
 - UI on contact details of contact page of oxe-web-community
 - UI/UX on "global" section of setting page of oxe-web-admin
+- rename API module utils.re to utils.regex
 
 ### Added
 
@@ -25,6 +26,8 @@ All notable changes to this project will be documented in this file.
 - GitHub url field for entites
 - Mastodon url field for entities
 - public/get_public_articles resource: add IDs filtering parameter
+- account/unsubscribe resource
+- campaign/send_campaign_draft resource
 
 ### Fixed
 

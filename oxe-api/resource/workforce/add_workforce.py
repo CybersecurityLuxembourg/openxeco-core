@@ -8,7 +8,7 @@ from datetime import datetime
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
-from utils.re import has_date_format
+from utils.regex import has_date_format
 
 
 class AddWorkforce(MethodResource, Resource):

@@ -8,7 +8,7 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from utils.re import has_password_format
+from utils.regex import has_password_format
 
 
 class ResetPassword(MethodResource, Resource):

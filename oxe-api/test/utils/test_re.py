@@ -1,5 +1,5 @@
 from test.BaseCase import BaseCase
-from utils.re import has_password_format, has_mail_format, has_date_format
+from utils.regex import has_password_format, has_mail_format, has_date_format
 
 
 class TestGetUser(BaseCase):

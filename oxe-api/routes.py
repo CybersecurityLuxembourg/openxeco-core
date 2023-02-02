@@ -7,6 +7,7 @@ from resource.account.login import Login
 from resource.account.logout import Logout
 from resource.account.refresh import Refresh
 from resource.account.reset_password import ResetPassword
+from resource.account.unsubscribe import Unsubscribe
 from resource.analytics.get_ecosystem_activity import GetEcosystemActivity
 from resource.article.copy_article_version import CopyArticleVersion
 from resource.article.get_articles import GetArticles
@@ -46,6 +47,7 @@ from resource.campaign.get_campaigns import GetCampaigns
 from resource.campaign.update_campaign import UpdateCampaign
 from resource.campaign.update_campaign_template import UpdateCampaignTemplate
 from resource.campaign.send_campaign import SendCampaign
+from resource.campaign.send_campaign_draft import SendCampaignDraft
 from resource.entity.extract_entities import ExtractEntities
 from resource.entity.get_entities import GetEntities
 from resource.entity.get_entity import GetEntity

@@ -177,10 +177,17 @@ export default class DialogTemplateEditor extends React.Component {
 
 											<div className="col-md-12">
 												<Info
-													content={"The content of the campaign should by defined in the template with the following statement: [CAMPAIGN CONTENT]"}
+													content={<div>
+														You can retrieve some example of templates <a
+															href="https://github.com/CybersecurityLuxembourg/openxeco-templates/tree/master/campaign_template"
+															target="_blank"
+															rel="noreferrer">here</a>
+													</div>}
 												/>
 												<Info
 													content={<div>
+														The content of the campaign should by defined with the following
+														statement: [CAMPAIGN CONTENT]<br/><br/>
 														You can include these elements:
 														<ul>
 															<li>[LOGO] to integrate the logo of the project</li>

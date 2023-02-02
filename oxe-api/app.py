@@ -9,7 +9,7 @@ from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask_apispec.extension import FlaskApiSpec
 
-from utils.re import has_mail_format
+from utils.regex import has_mail_format
 from utils.resource import get_admin_post_resources
 
 from db.db import DB

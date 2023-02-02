@@ -11,7 +11,7 @@ from decorator.log_request import log_request
 from exception.object_already_existing import ObjectAlreadyExisting
 from utils.mail import send_email
 from utils.password import generate_password
-from utils.re import has_mail_format
+from utils.regex import has_mail_format
 
 
 class CreateAccount(MethodResource, Resource):

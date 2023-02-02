@@ -9,7 +9,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.mail import send_email
-from utils.re import has_mail_format
+from utils.regex import has_mail_format
 
 
 class SendMail(MethodResource, Resource):

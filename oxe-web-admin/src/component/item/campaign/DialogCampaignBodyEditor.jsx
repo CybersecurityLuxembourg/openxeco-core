@@ -61,12 +61,10 @@ export default class DialogCampaignBodyEditor extends React.Component {
 	sendDraft() {
 		if (this.state.user) {
 			const params = {
-				address: this.state.user.email,
-				subject: "[DRAFT] Campaign test",
-				content: this.buildCampaignBody(),
+				id: this.props.campaign.id,
 			};
 
-			postRequest.call(this, "mail/send_mail", params, () => {
+			postRequest.call(this, "campaign/send_campaign_draft", params, () => {
 				nm.info("The draft of the template has been sent");
 			}, (response) => {
 				nm.warning(response.statusText);
