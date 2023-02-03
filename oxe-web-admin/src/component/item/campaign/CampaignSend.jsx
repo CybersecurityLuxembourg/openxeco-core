@@ -69,37 +69,21 @@ export default class CampaignSend extends React.Component {
 	}
 
 	sendDraft() {
-		let content = null;
+		if (this.state.user) {
+			const params = {
+				id: this.props.campaign.id,
+			};
 
-		if (!this.props.campaign.template_id) {
-			content = this.props.campaign.body;
+			postRequest.call(this, "campaign/send_campaign_draft", params, () => {
+				nm.info("The draft of the template has been sent");
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
 		} else {
-			if (!this.state.template) {
-				nm.warning("Cannot send the draft as the template is not loaded");
-				return;
-			}
-			if (!this.state.template.content) {
-				nm.warning("Cannot send the draft as the template has no content");
-				return;
-			}
-
-			content = this.state.template.content
-				.replace("[CAMPAIGN CONTENT]", this.props.campaign.body);
+			nm.warning("The user email has not been found");
 		}
-
-		const params = {
-			address: this.state.user.email,
-			subject: this.props.campaign.subject,
-			content,
-		};
-
-		postRequest.call(this, "mail/send_mail", params, () => {
-			nm.info("The draft has been sent");
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
 	}
 
 	sendCampaign() {
@@ -194,11 +178,7 @@ export default class CampaignSend extends React.Component {
 							<button
 								onClick={() => this.sendDraft()}
 								disabled={!this.state.user}>
-								<i className="fas fa-stethoscope"/>&nbsp;
-								{this.state.user
-									? "Send a draft to " + this.state.user.email
-									: "Send a draft to myself"
-								}
+								<i className="fas fa-stethoscope"/> Send draft to myself
 							</button>
 							<DialogConfirmation
 								text={"Are you sure you want to send the communication?"}

@@ -143,7 +143,7 @@ export default class DialogTemplateEditor extends React.Component {
 								className={"blue-background"}
 								disabled={!this.state.content || !this.state.user}
 								onClick={() => this.sendDraft()}>
-								<span><i className="fas fa-paper-plane"/> Send draft to myself</span>
+								<span><i className="fas fa-stethoscope"/> Send draft to myself</span>
 							</button>
 
 							<DialogConfirmation
