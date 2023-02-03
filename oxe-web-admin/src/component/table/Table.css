@@ -46,6 +46,12 @@ table td:last {
     padding-bottom: 16px !important;
 }
 
+.Table-content {
+  width: 100%;
+  overflow-x: scroll;
+	padding-bottom: 0.5rem;
+}
+
 .Table-pagination {
 	padding: 0.5rem;
   height: 50px;

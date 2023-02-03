@@ -11,7 +11,7 @@ from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
 
 
-class GetRequests(MethodResource, Resource):
+class GetRequestsExport(MethodResource, Resource):
 
     def __init__(self, db: DB):
         self.db = db
@@ -59,16 +59,16 @@ class GetRequests(MethodResource, Resource):
         else:
             query = query.order_by(self.db.tables["UserRequest"].submission_date.asc())
             
-        # pagination
-        pagination = query.paginate(kwargs['page'], kwargs['per_page'])
-        data = Serializer.serialize(pagination.items, self.db.tables["UserRequest"])
+        # get
+        requests = query.with_entities(
+            self.db.tables["Country"].name,
+            self.db.tables["Profession"].name,
+            self.db.tables["Industry"].name,
+            self.db.tables["Expertise"].name,
+        ).get()
+        # requests = Serializer.serialize(requests, self.db.tables["UserRequest"])
+        
+        breakpoint()
+        
 
-        return {
-            "pagination": {
-                "page": kwargs['page'],
-                "pages": pagination.pages,
-                "per_page": kwargs['per_page'],
-                "total": pagination.total,
-            },
-            "items": data,
-        }, "200 "
+        return {}, "200 "

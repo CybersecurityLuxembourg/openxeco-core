@@ -183,6 +183,7 @@ from resource.relationship.update_relationship_type import UpdateRelationshipTyp
 from resource.request.get_requests import GetRequests
 from resource.request.get_request_enums import GetRequestEnums
 from resource.request.update_request import UpdateRequest
+from resource.request.get_requests_export import GetRequestsExport
 from resource.resource.get_resources import GetResources
 from resource.rss.add_rss_feed import AddRssFeed
 from resource.rss.delete_rss_feed import DeleteRssFeed
@@ -201,6 +202,8 @@ from resource.user.delete_user_entity import DeleteUserEntity
 from resource.user.delete_user_group import DeleteUserGroup
 from resource.user.delete_user_group_right import DeleteUserGroupRight
 from resource.user.get_users import GetUsers
+from resource.user.get_accepted_users import GetAcceptedUsers
+from resource.user.get_accepted_users_export import GetAcceptedUsersExport
 from resource.user.get_user import GetUser
 from resource.user.get_user_entities import GetUserEntities
 from resource.user.get_user_entity_assignments import GetUserEntityAssignments

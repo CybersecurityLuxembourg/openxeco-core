@@ -19,6 +19,7 @@ import PageSettings from "./PageSettings.jsx";
 import PageAuditLogs from "./PageAuditLogs.jsx";
 import PageProfile from "./PageProfile.jsx";
 import Loading from "./box/Loading.jsx";
+import PageAcceptedUsers from "./PageAcceptedUsers.jsx";
 
 export default class InsideApp extends React.Component {
 	constructor(props) {
@@ -88,6 +89,7 @@ export default class InsideApp extends React.Component {
 							refreshSettings={this.refreshSettings}
 						/>} />
 						<Route path="/audit" render={(props) => <PageAuditLogs {...props} />} />
+						<Route path="/user_requests" render={(props) => <PageAcceptedUsers {...props} />} />
 						<Route path="/profile" render={(props) => <PageProfile {...props} />}/>
 						<Route path="/task" render={(props) => <PageTask
 							{...props}
