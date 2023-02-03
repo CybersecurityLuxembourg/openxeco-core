@@ -23,8 +23,9 @@ class GetMailAddresses(MethodResource, Resource):
     @use_kwargs({
         'entities': fields.List(fields.Str(), required=False),
         'taxonomies': fields.List(fields.Str(), required=False),
-        'include_contacts': fields.Bool(required=False, allow_none=True, missing=True),
-        'include_users': fields.Bool(required=False, allow_none=True, missing=True),
+        'include_contacts': fields.Bool(required=False, missing=False),
+        'include_users': fields.Bool(required=False, missing=False),
+        'consider_communication_acceptance': fields.Bool(required=False, missing=False),
     }, location="query")
     @fresh_jwt_required
     @verify_admin_access
@@ -76,6 +77,9 @@ class GetMailAddresses(MethodResource, Resource):
 
             if filtered_users is not None:
                 filters["id"] = filtered_users
+
+            if kwargs["consider_communication_acceptance"] is True:
+                filters["accept_communication"] = True
 
             users = self.db.get(
                 self.db.tables["User"],

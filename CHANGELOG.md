@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - public/get_public_articles resource: add IDs filtering parameter
 - account/unsubscribe resource
 - campaign/send_campaign_draft resource
+- mail/get_mail_addresses: add consider_communication_acceptance param
 
 ### Fixed
 
