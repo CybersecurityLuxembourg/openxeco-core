@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - UI on contact details of contact page of oxe-web-community
 - UI/UX on "global" section of setting page of oxe-web-admin
 - rename API module utils.re to utils.regex
+- Require a "fresh" access token for all resources but account/unsubscribe
 
 ### Added
 
