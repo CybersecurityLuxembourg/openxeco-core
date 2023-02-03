@@ -22,8 +22,7 @@ class SendCampaignDraft(MethodResource, Resource):
 
     @log_request
     @doc(tags=['campaign'],
-         description='Send a mail to a list of email addresses as BCCs. The recipients cannot see each others address. '
-                     'The information is stored in the "Campaign" and the "CampaignAddress tables. '
+         description='Send a draft of a campaign to the user identified by the token. '
                      'The status of the campaign should be the following: DRAFT.',
          responses={
              "200": {},
@@ -31,8 +30,8 @@ class SendCampaignDraft(MethodResource, Resource):
              "422.a": {"description": "Object not found : Campaign"},
              "422.b": {"description": "Cannot process a campaign draft without the status 'DRAFT'"},
              "422.c": {"description": "Cannot process a campaign draft with an empty body"},
-             "422.e": {"description": "Cannot process a campaign with a template with empty content"},
-             "422.f": {"description": "Cannot process a campaign with a template without [CAMPAIGN CONTENT] tag"},
+             "422.d": {"description": "Cannot process a campaign with a template with empty content"},
+             "422.e": {"description": "Cannot process a campaign with a template without [CAMPAIGN CONTENT] tag"},
          })
     @use_kwargs({
         'id': fields.Int(),
