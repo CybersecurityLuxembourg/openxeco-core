@@ -1,3 +1,4 @@
+from flask import request
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import fresh_jwt_required
@@ -10,6 +11,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.mail import send_email
+from utils.campaign import build_body
 from exception.object_not_found import ObjectNotFound
 
 
@@ -70,6 +72,8 @@ class SendCampaign(MethodResource, Resource):
 
         # Build body
 
+        template = None
+
         if campaign.template_id is not None:
             template = self.db.session \
                 .query(self.db.tables["CampaignTemplate"]) \
@@ -81,19 +85,21 @@ class SendCampaign(MethodResource, Resource):
             if "[CAMPAIGN CONTENT]" not in template.content:
                 return "", "422 Cannot process a campaign with a template without [CAMPAIGN CONTENT] tag"
 
-            body = template.content.replace("[CAMPAIGN CONTENT]", campaign.body)
-        else:
-            body = campaign.body
+        body = build_body(self.db, campaign, template, request.url_root)
 
         # Send campaign
 
+        # TODO Consider [UNSUBSCRIPTION LINK]
+
         send_email(
             self.mail,
-            recipients="",
+            recipients=[],
             bcc=[a.value for a in addresses],
             subject=campaign.subject,
             html_body=body
         )
+
+        # Close campaign
 
         campaign.status = "PROCESSED"
         campaign.execution_date = datetime.datetime.now()
