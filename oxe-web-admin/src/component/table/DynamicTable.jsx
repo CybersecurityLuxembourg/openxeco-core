@@ -32,29 +32,31 @@ export default function Table({
 
 	return (
 		<div>
-			<table {...getTableProps()}>
-				<thead>
-					{headerGroups.map((headerGroup, i) => (
-						<tr {...headerGroup.getHeaderGroupProps()} key={i}>
-							{headerGroup.headers.map((column) => (
-								<th {...column.getHeaderProps()} key={i}>{column.render("Header")}</th>
-							))}
-						</tr>
-					))}
-				</thead>
-				<tbody {...getTableBodyProps()}>
-					{page.map((row, i) => {
-						prepareRow(row);
-						return (
-							<tr {...row.getRowProps()} key={i}>
-								{row.cells.map((cell) => <td {...cell.getCellProps()} key={i}>
-									{cell.render("Cell")}
-								</td>)}
+			<div className="Table-content">
+				<table {...getTableProps()}>
+					<thead>
+						{headerGroups.map((headerGroup, i) => (
+							<tr {...headerGroup.getHeaderGroupProps()} key={i}>
+								{headerGroup.headers.map((column) => (
+									<th {...column.getHeaderProps()} key={i}>{column.render("Header")}</th>
+								))}
 							</tr>
-						);
-					})}
-				</tbody>
-			</table>
+						))}
+					</thead>
+					<tbody {...getTableBodyProps()}>
+						{page.map((row, i) => {
+							prepareRow(row);
+							return (
+								<tr {...row.getRowProps()} key={i}>
+									{row.cells.map((cell) => <td {...cell.getCellProps()} key={i}>
+										{cell.render("Cell")}
+									</td>)}
+								</tr>
+							);
+						})}
+					</tbody>
+				</table>
+			</div>
 			<div className="Table-pagination">
 				<div className="Table-pagination-center">
 					<span>

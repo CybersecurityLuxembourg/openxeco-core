@@ -231,6 +231,17 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 					<NavItem
+						eventKey="audit"
+						active={this.props.selectedMenu === "audit"}
+						onClick={() => this.props.history.push("/user_requests")}>
+						<NavIcon>
+							<i className="fas fa-file-alt" style={{ fontSize: "1.75em" }} />
+						</NavIcon>
+						<NavText>
+							User Requests
+						</NavText>
+					</NavItem>
+					<NavItem
 						eventKey="profile"
 						active={this.props.selectedMenu === "profile"}
 						className="Menu-profile-nav-item"
