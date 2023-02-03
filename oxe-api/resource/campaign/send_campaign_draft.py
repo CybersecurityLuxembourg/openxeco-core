@@ -1,6 +1,7 @@
+from flask import request
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 from sqlalchemy.orm.exc import NoResultFound
@@ -36,7 +37,7 @@ class SendCampaignDraft(MethodResource, Resource):
     @use_kwargs({
         'id': fields.Int(),
     })
-    @jwt_required
+    @fresh_jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
@@ -81,8 +82,8 @@ class SendCampaignDraft(MethodResource, Resource):
             if "[CAMPAIGN CONTENT]" not in template.content:
                 return "", "422 Cannot process a campaign with a template without [CAMPAIGN CONTENT] tag"
 
-        body = build_body(self.db, campaign, template)
-        body = manage_unsubscription_link(body, get_jwt_identity())
+        body = build_body(self.db, campaign, template, request.url_root)
+        body = manage_unsubscription_link(body, get_jwt_identity(), request.url_root)
 
         # Send campaign
 

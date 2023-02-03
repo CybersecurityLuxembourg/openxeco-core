@@ -1,3 +1,4 @@
+from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import doc
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -5,6 +6,7 @@ from flask_restful import Resource
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
+from utils.response import build_no_cors_response_with_type
 
 
 class Unsubscribe(MethodResource, Resource):
@@ -22,7 +24,7 @@ class Unsubscribe(MethodResource, Resource):
          })
     @jwt_required
     @catch_exception
-    def post(self):
+    def get(self):
 
         data = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
 
@@ -36,4 +38,7 @@ class Unsubscribe(MethodResource, Resource):
 
         self.db.merge(params, self.db.tables["User"])
 
-        return "", "200 "
+        return build_no_cors_response_with_type(
+            render_template("success_unsubscription.html"),
+            "text/html; charset=utf-8"
+        )
