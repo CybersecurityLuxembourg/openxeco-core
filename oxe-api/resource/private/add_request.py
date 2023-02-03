@@ -102,7 +102,7 @@ class AddRequest(MethodResource, Resource):
             .filter(self.db.tables["User"].is_active.is_(True)) \
             .filter(self.db.tables["User"].accept_request_notification.is_(True)) \
             .all()
-        print(addresses)
+
         addresses = [a[0] for a in addresses]
 
         # Send notification email

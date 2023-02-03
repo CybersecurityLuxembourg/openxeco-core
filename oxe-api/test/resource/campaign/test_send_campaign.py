@@ -9,7 +9,6 @@ class TestSendCampaign(BaseCase):
     @BaseCase.grant_access("/campaign/send_campaign")
     @patch('resource.campaign.send_campaign.send_email')
     def test_ko_not_found(self, mock_send_mail, token):
-        print(mock_send_mail, token)
         mock_send_mail.return_value = None
 
         payload = {
