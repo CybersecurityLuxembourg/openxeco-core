@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 import base64
@@ -61,7 +61,7 @@ class UpdateMyArticle(MethodResource, Resource):
         'link': fields.Str(required=False, allow_none=True),
         'image': fields.Str(required=False, allow_none=True),
     })
-    @jwt_required
+    @fresh_jwt_required
     @catch_exception
     def post(self, **kwargs):
 

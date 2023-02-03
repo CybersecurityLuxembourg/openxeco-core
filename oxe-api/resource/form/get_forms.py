@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import fresh_jwt_required
 from flask_restful import Resource
 from webargs import fields, validate
 
@@ -27,7 +27,7 @@ class GetForms(MethodResource, Resource):
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
     }, location="query")
-    @jwt_required
+    @fresh_jwt_required
     @verify_admin_access
     @catch_exception
     def get(self, **kwargs):

@@ -52,7 +52,7 @@ class ForgotPassword(MethodResource, Resource):
 
         user = data[0] if len(data) > 0 else self.db.tables["User"](id=-1, email=kwargs["email"])
         expires = datetime.timedelta(minutes=15 if len(data) > 0 else 0)
-        reset_token = create_access_token(str(user.id), expires_delta=expires)
+        reset_token = create_access_token(str(user.id), expires_delta=expires, fresh=True)
         url = f"{origin}/login?action=reset_password&token={reset_token}"
 
         pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})

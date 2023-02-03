@@ -6,7 +6,7 @@ import pandas as pd
 from flask import Response
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import fresh_jwt_required
 from flask_restful import Resource
 from openpyxl.styles import PatternFill, Color, Font
 from webargs import fields
@@ -45,7 +45,7 @@ class ExtractEntities(MethodResource, Resource):
         'corebusiness_only': fields.Bool(required=False),
         'taxonomy_values': fields.DelimitedList(fields.Int(), required=False),
     }, location="query")
-    @jwt_required
+    @fresh_jwt_required
     @verify_admin_access
     @catch_exception  # pylint: disable=too-many-branches,too-many-statements
     def get(self, **kwargs):  # noqa: MC0001

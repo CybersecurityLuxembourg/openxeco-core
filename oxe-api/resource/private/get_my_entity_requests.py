@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import doc
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask_restful import Resource
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -22,7 +22,7 @@ class GetMyEntityRequests(MethodResource, Resource):
              "200": {},
              "422": {"description": "Object not found or you don't have the required access to it"},
          })
-    @jwt_required
+    @fresh_jwt_required
     @catch_exception
     def get(self, id_):
 

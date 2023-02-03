@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields, validate
 
@@ -29,7 +29,7 @@ class GetMyArticles(MethodResource, Resource):
         'taxonomy_values': fields.DelimitedList(fields.Int(), required=False),
         'include_tags': fields.Bool(required=False),
     }, location="query")
-    @jwt_required
+    @fresh_jwt_required
     @catch_exception
     def get(self, **kwargs):
 

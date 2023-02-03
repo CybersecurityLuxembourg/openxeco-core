@@ -1,6 +1,6 @@
 from flask_apispec import use_kwargs, doc
 from flask_apispec.views import MethodResource
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import fresh_jwt_required
 from flask_restful import Resource
 from webargs import fields
 
@@ -24,7 +24,7 @@ class AddRelationshipType(MethodResource, Resource):
     @use_kwargs({
         'name': fields.Str(required=True, allow_none=False),
     })
-    @jwt_required
+    @fresh_jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):

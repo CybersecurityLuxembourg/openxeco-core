@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import fresh_jwt_required
 from flask_restful import Resource
 
 from decorator.catch_exception import catch_exception
@@ -20,7 +20,7 @@ class GetTaxonomyValueHierarchy(MethodResource, Resource):
          responses={
              "200": {},
          })
-    @jwt_required
+    @fresh_jwt_required
     @verify_admin_access
     @catch_exception
     def get(self):

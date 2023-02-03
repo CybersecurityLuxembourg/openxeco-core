@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import fresh_jwt_required
 from flask_restful import Resource
 from webargs import fields
 
@@ -33,7 +33,7 @@ class UpdateUserEntity(MethodResource, Resource):
             validate=lambda x: x in ['TOP MANAGEMENT', 'HUMAN RESOURCE', 'MARKETING', 'FINANCE', 'OPERATION/PRODUCTION',
                                      'INFORMATION TECHNOLOGY', 'OTHER', None]),
     })
-    @jwt_required
+    @fresh_jwt_required
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):

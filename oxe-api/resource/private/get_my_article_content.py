@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import doc
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask_restful import Resource
 
 from db.db import DB
@@ -26,7 +26,7 @@ class GetMyArticleContent(MethodResource, Resource):
              "422.5": {"description": "Article main version not found. Please contact the administrator"},
              "422.6": {"description": "Too much main version found. Please contact the administrator"},
          })
-    @jwt_required
+    @fresh_jwt_required
     @catch_exception
     def get(self, id_):
 

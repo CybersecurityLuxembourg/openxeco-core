@@ -1,6 +1,6 @@
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
 
@@ -34,7 +34,7 @@ class UpdateMyUser(MethodResource, Resource):
         'vcard': fields.Str(required=False, allow_none=True),
         'is_vcard_public': fields.Bool(required=False),
     })
-    @jwt_required
+    @fresh_jwt_required
     @catch_exception
     def post(self, **kwargs):
 

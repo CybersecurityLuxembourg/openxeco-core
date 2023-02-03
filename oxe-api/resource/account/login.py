@@ -51,7 +51,7 @@ class Login(MethodResource, Resource):
 
         access_token_expires = timedelta(days=1)
         refresh_token_expires = timedelta(days=365)
-        access_token = create_access_token(identity=str(data[0].id), expires_delta=access_token_expires)
+        access_token = create_access_token(identity=str(data[0].id), expires_delta=access_token_expires, fresh=True)
         refresh_token = create_refresh_token(identity=str(data[0].id), expires_delta=refresh_token_expires)
 
         response = make_response({

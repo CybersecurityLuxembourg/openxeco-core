@@ -31,7 +31,7 @@ class Refresh(MethodResource, Resource):
     def post(self):
 
         access_token_expires = datetime.timedelta(days=1)
-        access_token = create_access_token(identity=get_jwt_identity(), expires_delta=access_token_expires, fresh=False)
+        access_token = create_access_token(identity=get_jwt_identity(), expires_delta=access_token_expires, fresh=True)
 
         response = make_response({
             "user": get_jwt_identity(),
