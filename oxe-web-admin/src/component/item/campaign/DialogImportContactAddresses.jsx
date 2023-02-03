@@ -1,5 +1,5 @@
 import React from "react";
-import "./DialogImportDatabaseAddresses.css";
+import "./DialogImportContactAddresses.css";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import { getRequest } from "../../../utils/request.jsx";
@@ -9,24 +9,18 @@ import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
 import { dictToURI } from "../../../utils/url.jsx";
 
-export default class DialogImportDatabaseAddresses extends React.Component {
+export default class DialogImportContactAddresses extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.refresh = this.refresh.bind(this);
-		this.onOpen = this.onOpen.bind(this);
-
 		const defaultState = {
-			includeContacts: false,
-			includeUsers: false,
-
 			taxonomyCategories: null,
 			taxonomyValues: null,
 			entities: null,
 			selectedEntities: [],
 			selectedTaxonomyValues: [],
 
-			addresses: null,
+			addresses: [],
 		};
 
 		this.state = {
@@ -36,9 +30,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		if (prevState.includeContacts !== this.state.includeContacts
-			|| prevState.includeUsers !== this.state.includeUsers
-			|| prevState.selectedEntities !== this.state.selectedEntities
+		if (prevState.selectedEntities !== this.state.selectedEntities
 			|| prevState.selectedTaxonomyValues !== this.state.selectedTaxonomyValues) {
 			this.getAddresses();
 		}
@@ -87,12 +79,11 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 
 	getAddresses() {
 		this.setState({
-			addresses: null,
+			addresses: [],
 		});
 
 		const params = {
-			include_users: this.state.includeUsers,
-			include_contacts: this.state.includeContacts,
+			include_contacts: true,
 			entities: this.state.selectedEntities,
 			taxonomies: this.state.selectedTaxonomyValues,
 		};
@@ -136,18 +127,18 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 	render() {
 		return (
 			<Popup
-				className="Popup-full-size"
+				className="Popup-small-size"
 				trigger={
 					<button>
-						<i className="fas fa-address-book"/> Import from contacts and users...
+						<i className="fas fa-address-book"/> Import from contacts...
 					</button>
 				}
-				onOpen={this.onOpen}
+				onOpen={() => this.onOpen()}
 				modal
 			>
 				{(close) => <div className="row">
 					<div className={"col-md-9"}>
-						<h2>Import from database...</h2>
+						<h2><i className="fas fa-address-book"/> Import from entity contacts</h2>
 					</div>
 					<div className={"col-md-3"}>
 						<div className="right-buttons">
@@ -162,18 +153,6 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 					</div>
 
 					<div className={"col-md-12 row-spaced"}>
-						<FormLine
-							label={"Include contacts from entities"}
-							type={"checkbox"}
-							value={this.state.includeContacts}
-							onChange={(v) => this.changeState("includeContacts", v)}
-						/>
-						<FormLine
-							label={"Include active users"}
-							type={"checkbox"}
-							value={this.state.includeUsers}
-							onChange={(v) => this.changeState("includeUsers", v)}
-						/>
 						{this.state.taxonomyValues && this.state.taxonomyCategories
 							? <FormLine
 								label={"Filter by taxonomy value"}
@@ -203,7 +182,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 					</div>
 
 					<div className="col-md-12">
-						<h3>Selected addresses</h3>
+						<h3>{this.state.addresses.length} address{this.state.addresses.length > 1 && "es"} selected</h3>
 					</div>
 
 					<div className="col-md-12 row-spaced">
@@ -221,7 +200,7 @@ export default class DialogImportDatabaseAddresses extends React.Component {
 						{this.state.addresses && this.state.addresses.length === 0
 							&& <Message
 								text={"No address selected"}
-								height={150}
+								height={100}
 							/>
 						}
 

@@ -110,7 +110,7 @@ export default class DialogImportCampaignAddresses extends React.Component {
 
 		return (
 			<Popup
-				className="Popup-full-size"
+				className="Popup-small-size"
 				trigger={
 					<button>
 						<i className="fas fa-history"/> Import from prev. campaign...
@@ -121,7 +121,7 @@ export default class DialogImportCampaignAddresses extends React.Component {
 			>
 				{(close) => <div className="row">
 					<div className={"col-md-9 row-spaced"}>
-						<h2>Import addresses from prev. campaign...</h2>
+						<h2><i className="fas fa-history"/> Import from previous campaign</h2>
 					</div>
 					<div className={"col-md-3"}>
 						<div className="right-buttons">
@@ -144,18 +144,18 @@ export default class DialogImportCampaignAddresses extends React.Component {
 								changePage={this.fetchDataControls}
 							/>
 							: <Loading
-								height={250}
+								height={150}
 							/>
 						}
 					</div>
 
 					<div className={"col-md-12 row-spaced"}>
-						<h3>{this.state.selectedAddresses.length} addresse{this.state.selectedAddresses.length > 1 && "s"} selected</h3>
+						<h3>{this.state.selectedAddresses.length} address{this.state.selectedAddresses.length > 1 && "es"} selected</h3>
 
 						{this.state.selectedAddresses.length === 0
 							&& <Message
 								text={"No address selected"}
-								height={150}
+								height={100}
 							/>
 						}
 

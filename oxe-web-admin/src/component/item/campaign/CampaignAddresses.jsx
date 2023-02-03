@@ -6,7 +6,8 @@ import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import DialogImportCampaignAddresses from "./DialogImportCampaignAddresses.jsx";
-import DialogImportDatabaseAddresses from "./DialogImportDatabaseAddresses.jsx";
+import DialogImportContactAddresses from "./DialogImportContactAddresses.jsx";
+import DialogImportUserAddresses from "./DialogImportUserAddresses.jsx";
 import Table from "../../table/Table.jsx";
 import { extractEmails } from "../../../utils/re.jsx";
 import Chip from "../../button/Chip.jsx";
@@ -119,7 +120,10 @@ export default class CampaignAddresses extends React.Component {
 						<DialogImportCampaignAddresses
 							onConfirmation={(addresses) => this.addAddresses(addresses)}
 						/>
-						<DialogImportDatabaseAddresses
+						<DialogImportUserAddresses
+							onConfirmation={(addresses) => this.addAddresses(addresses)}
+						/>
+						<DialogImportContactAddresses
 							onConfirmation={(addresses) => this.addAddresses(addresses)}
 						/>
 						<Popup
@@ -134,7 +138,7 @@ export default class CampaignAddresses extends React.Component {
 						>
 							{(close) => <div className="row">
 								<div className={"col-md-9"}>
-									<h2>Add manually...</h2>
+									<h2><i className="fas fa-keyboard"/> Add manually</h2>
 								</div>
 								<div className={"col-md-3"}>
 									<div className="right-buttons">
