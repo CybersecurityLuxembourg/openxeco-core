@@ -35,6 +35,7 @@ def upgrade():
 
     op.add_column('Entity', sa.Column('github_url', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=150), nullable=True))
     op.add_column('Entity', sa.Column('mastodon_url', mysql.VARCHAR(charset='utf8mb4', collation='utf8mb4_unicode_ci', length=150), nullable=True))
+    op.add_column('Entity', sa.Column('closure_date', sa.DATE(), nullable=True))
 
 
 def downgrade():
@@ -46,3 +47,4 @@ def downgrade():
 
     op.drop_column('Entity', 'github_url')
     op.drop_column('Entity', 'mastodon_url')
+    op.drop_column('Entity', 'closure_date')

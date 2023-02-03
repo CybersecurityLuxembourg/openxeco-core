@@ -25,6 +25,7 @@ export default class EntityGlobal extends React.Component {
 				trade_register_number: "Trade register number",
 				website: "Website",
 				creation_date: "Creation date",
+				closure_date: "Closure date",
 				is_startup: "Is startup",
 				linkedin_url: "Linkedin URL",
 				twitter_url: "Twitter URL",
@@ -160,6 +161,12 @@ export default class EntityGlobal extends React.Component {
 							type={"date"}
 							value={this.state.entityInfo.creation_date}
 							onChange={(v) => this.updateEntity("creation_date", v)}
+						/>
+						<FormLine
+							label={this.state.fields.closure_date}
+							type={"date"}
+							value={this.state.entityInfo.closure_date}
+							onChange={(v) => this.updateEntity("closure_date", v)}
 						/>
 						<FormLine
 							label={this.state.fields.is_startup}

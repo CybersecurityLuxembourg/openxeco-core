@@ -29,9 +29,9 @@ class GetPublicEntity(MethodResource, Resource):
 
         c = self.db.tables["Entity"]
         entities = c.id, c.name, c.headline, c.legal_status, c.is_startup, c.is_cybersecurity_core_business, \
-            c.trade_register_number, c.creation_date, c.description, c.website, c.image, c.status, c.linkedin_url, \
-            c.twitter_url, c.youtube_url, c.discord_url, c.github_url, c.mastodon_url, c.sync_node, c.sync_id, c.sync_global, c.sync_address, \
-            c.sync_status
+            c.trade_register_number, c.creation_date, c.closure_date, c.description, c.website, c.image, c.status, \
+            c.linkedin_url, c.twitter_url, c.youtube_url, c.discord_url, c.github_url, c.mastodon_url, c.sync_node, \
+            c.sync_id, c.sync_global, c.sync_address, c.sync_status
         data = [o._asdict() for o in self.db.get(c, {"id": id_, "status": ["ACTIVE", "INACTIVE"]}, entities)]
 
         if len(data) < 1:

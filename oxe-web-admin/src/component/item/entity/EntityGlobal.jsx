@@ -184,6 +184,13 @@ export default class EntityGlobal extends React.Component {
 						disabled={!this.props.editable}
 					/>
 					<FormLine
+						label={"Closure date"}
+						type={"date"}
+						value={this.props.entity.closure_date}
+						onChange={(v) => this.saveEntityValue("closure_date", v)}
+						disabled={!this.props.editable}
+					/>
+					<FormLine
 						label={"Is startup"}
 						type={"checkbox"}
 						value={this.props.entity.is_startup}
