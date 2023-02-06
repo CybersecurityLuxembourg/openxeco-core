@@ -12,6 +12,7 @@ class TestImportEntity(BaseCase):
     def test_ok(self, mock_get_request, token):
         mock_get_request.side_effect = [
             json.dumps({
+                "closure_date": None,
                 "creation_date": None,
                 "description": None,
                 "id": 1,
@@ -47,6 +48,7 @@ class TestImportEntity(BaseCase):
         self.assertEqual(
             Serializer.serialize(entities, self.db.tables["Entity"]),
             [{
+                "closure_date": None,
                 'creation_date': None,
                 'description': None,
                 'discord_url': None,
@@ -79,6 +81,7 @@ class TestImportEntity(BaseCase):
     def test_ok_with_param_and_address(self, mock_get_request, token):
         mock_get_request.side_effect = [
             json.dumps({
+                "closure_date": None,
                 "creation_date": None,
                 "description": None,
                 'github_url': None,
@@ -131,6 +134,7 @@ class TestImportEntity(BaseCase):
         self.assertEqual(
             Serializer.serialize(entities, self.db.tables["Entity"]),
             [{
+                "closure_date": None,
                 'creation_date': None,
                 'description': None,
                 'discord_url': None,

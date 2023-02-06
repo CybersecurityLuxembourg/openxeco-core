@@ -109,7 +109,7 @@ class GetPublicArticleContent(MethodResource, Resource):
                 elif c.type == "PARAGRAPH":
                     data += f"{html2markdown.convert(c.content)}\r\n\r\n"
                 elif c.type == "IMAGE":
-                    data += f"![image]({request.url_root}get_public_image/{c.content})\r\n\r\n"
+                    data += f"![image]({request.url_root}public/get_public_image/{c.content})\r\n\r\n"
                 elif c.type == "FRAME":
                     data += f"{c.content}\r\n\r\n"
 

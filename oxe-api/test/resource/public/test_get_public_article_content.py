@@ -125,13 +125,13 @@ class TestGetPublicArticleContent(BaseCase):
         self.assertEqual("text/html; charset=utf-8", response.headers['content-type'])
         self.assertEqual(
             bs4.BeautifulSoup("""<article>
-                <div class='Article-content-cover'><img src='http://localhost:5000/public/get_public_image/50'/></div>
+                <div class='Article-content-cover'><img src='http://localhost/public/get_public_image/50'/></div>
                 <h1>TITLE</h1>
                 <h2>title 1</h2>
                 <h3>title 2</h3>
                 <h4>title 3</h4>
                 <div class='Article-content-paragraph'>paragraph</div>
-                <div class='Article-content-image'><img src='http://localhost:5000/public/get_public_image/45'/></div>
+                <div class='Article-content-image'><img src='http://localhost/public/get_public_image/45'/></div>
                 <div class='Article-content-frame'>Frame</div>
             </article>""", features="html.parser").prettify().encode('utf-8'),
             bs4.BeautifulSoup(response.data, features="html.parser").prettify().encode('utf-8')
@@ -158,7 +158,7 @@ class TestGetPublicArticleContent(BaseCase):
                     os.path.dirname(os.path.realpath(__file__)),
                     "test_get_article_content",
                     "test_ok_markdown_expected_result.md"), "r").read()
-                    .replace("\r\n", "\n").replace("\r", "\n"),
+            .replace("\r\n", "\n").replace("\r", "\n"),
             response.data.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
         )
 

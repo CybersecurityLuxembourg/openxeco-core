@@ -23,6 +23,7 @@ class TestGetArticleTags(BaseCase):
         self.assertEqual({
             'entity_tags': [
                 {
+                    'closure_date': None,
                     'creation_date': None,
                     'description': None,
                     'discord_url': None,
@@ -48,6 +49,7 @@ class TestGetArticleTags(BaseCase):
                     'mastodon_url': None
                 },
                 {
+                    'closure_date': None,
                     'creation_date': None,
                     'description': None,
                     'discord_url': None,

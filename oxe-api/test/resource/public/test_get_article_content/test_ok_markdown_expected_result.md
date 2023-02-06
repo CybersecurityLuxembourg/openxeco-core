@@ -20,7 +20,7 @@ tag:
 
 paragraph
 
-![image](http://localhost:5000/public/get_public_image/45)
+![image](http://localhost/public/get_public_image/45)
 
 Frame
 
