@@ -110,4 +110,3 @@ def _manage_logo(body, api_url):
         />
         """,
     )
-
