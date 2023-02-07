@@ -15,7 +15,7 @@ services:
     expose:
       - '3366'
     volumes:
-      - ./.docker/mariadb/data:/var/lib/mariadb/data
+      - ./.docker/mariadb/data:/var/lib/mysql
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 5s
@@ -23,12 +23,6 @@ services:
 
   smtp:
     image: reachfive/fake-smtp-server
-    environment:
-      MAIL_SERVER: "smtp"
-      MAIL_PORT: "1025"
-      MAIL_USE_TLS: "True"
-      MAIL_USE_SSL: "False"
-      MAIL_DEFAULT_SENDER: "my-default-sender@example.org"
     ports:
       - "1025:1025"
       - "1080:1080"
@@ -101,7 +95,7 @@ services:
       IMAGE_FOLDER: "/usr/app/media"
       DOCUMENT_FOLDER: "/usr/app/documents"
       MAIL_DEFAULT_SENDER: "openxeco@localhost.localdomain"
-      INITIAL_ADMIN_EMAIL: "your.email@localhost.localdomain"
+      INITIAL_ADMIN_EMAIL: "admin@localhost.localdomain"
     depends_on:
       mariadb:
         condition: service_healthy
