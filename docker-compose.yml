@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   mariadb:
-    image: mariadb:latest
+    image: mariadb:10.7.3
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MARIADB_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=openxeco
-      - MYSQL_USER=openxeco
-      - MYSQL_PASSWORD=openxeco-pwd
+      MYSQL_ROOT_PASSWORD: "root"
+      MARIADB_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "openxeco"
+      MYSQL_USER: "openxeco"
+      MYSQL_PASSWORD: "openxeco-pwd"
     ports:
       - '3366:3306'
     expose:
@@ -17,23 +17,24 @@ services:
     volumes:
       - ./.docker/mariadb/data:/var/lib/mariadb/data
     healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 5s
       retries: 10
 
   smtp:
     image: reachfive/fake-smtp-server
     environment:
-      - MAIL_SERVER=smtp
-      - MAIL_PORT=1025
-      - MAIL_USE_TLS=True
-      - MAIL_USE_SSL=False
-      - MAIL_DEFAULT_SENDER=my-default-sender@example.org
+      MAIL_SERVER: "smtp"
+      MAIL_PORT: "1025"
+      MAIL_USE_TLS: "True"
+      MAIL_USE_SSL: "False"
+      MAIL_DEFAULT_SENDER: "my-default-sender@example.org"
     ports:
       - "1025:1025"
       - "1080:1080"
 
   oxe-web-admin:
+    image: openxeco-core_oxe-web-admin:local
     build:
       context: .
       dockerfile: oxe-web-admin/.docker/Dockerfile
@@ -51,6 +52,7 @@ services:
         condition: service_healthy
 
   oxe-web-community:
+    image: openxeco-core_oxe-web-community:local
     build:
       context: .
       dockerfile: oxe-web-community/.docker/Dockerfile
@@ -68,9 +70,10 @@ services:
         condition: service_healthy
 
   oxe-api:
+    image: openxeco-core_oxe-api:local
     build:
       context: .
-      dockerfile: .docker/Dockerfile
+      dockerfile: oxe-api/.docker/Dockerfile
     restart: always
     volumes:
       - ./.docker/media:/usr/app/media
@@ -81,24 +84,24 @@ services:
     expose:
       - '5000'
     environment:
-      - DEBUG=true
-      - DB_HOSTNAME=mariadb
-      - DB_NAME=openxeco
-      - DB_USERNAME=openxeco
-      - DB_PASSWORD=openxeco-pwd
-      - DB_PORT=3306
-      - DB_DRIVER=mysql+pymysql
-      - JWT_SECRET_KEY=some_random_secret
-      - MAIL_SERVER=foo_mail_server
-      - MAIL_PORT=foo_mail_port
-      - MAIL_USERNAME=foo_mail_username
-      - MAIL_PASSWORD=foo_mail_password
-      - MAIL_USE_TLS=True
-      - MAIL_USE_SSL=True
-      - IMAGE_FOLDER=/usr/app/media
-      - DOCUMENT_FOLDER=/usr/app/documents
-      - MAIL_DEFAULT_SENDER=openxeco@localhost.localdomain
-      - INITIAL_ADMIN_EMAIL=your.email@localhost.localdomain
+      DEBUG: "true"
+      DB_HOSTNAME: "mariadb"
+      DB_NAME: "openxeco"
+      DB_USERNAME: "openxeco"
+      DB_PASSWORD: "openxeco-pwd"
+      DB_PORT: "3306"
+      DB_DRIVER: "mysql+pymysql"
+      JWT_SECRET_KEY: "some_random_secret"
+      MAIL_SERVER: "foo_mail_server"
+      MAIL_PORT: "foo_mail_port"
+      MAIL_USERNAME: "foo_mail_username"
+      MAIL_PASSWORD: "foo_mail_password"
+      MAIL_USE_TLS: "True"
+      MAIL_USE_SSL: "True"
+      IMAGE_FOLDER: "/usr/app/media"
+      DOCUMENT_FOLDER: "/usr/app/documents"
+      MAIL_DEFAULT_SENDER: "openxeco@localhost.localdomain"
+      INITIAL_ADMIN_EMAIL: "your.email@localhost.localdomain"
     depends_on:
       mariadb:
         condition: service_healthy

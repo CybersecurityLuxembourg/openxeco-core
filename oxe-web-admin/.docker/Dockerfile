@@ -1,10 +1,9 @@
-FROM node:latest
+FROM node:16.17.0
 
 WORKDIR /usr/app
 
 COPY ./oxe-web-admin/package.json .
-COPY ./oxe-web-admin/package-lock.json .
 
 RUN npm install --quiet
 
-COPY . .
+CMD npm start

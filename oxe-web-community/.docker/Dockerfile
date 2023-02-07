@@ -1,10 +1,9 @@
-FROM node:latest
+FROM node:16.17.0
 
 WORKDIR /usr/app
 
 COPY ./oxe-web-community/package.json .
-COPY ./oxe-web-community/package-lock.json .
 
 RUN npm install --quiet
 
-COPY . .
+CMD npm start
