@@ -751,7 +751,8 @@ export default class DashboardCommunity extends React.Component {
 										onDelete={() => this.manageFilter(axis, value, false)}
 									/>
 								))
-								:									<Filter
+								: <Filter
+									key={axis}
 									content={axis + " : " + this.state.filters[axis]}
 									onDelete={() => this.manageFilter(axis, null, false)}
 								/>
