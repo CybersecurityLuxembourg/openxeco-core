@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mariadb:
-    image: mariadb:10.7.3
+    image: mysql:8.0.32
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: "root"
@@ -17,7 +17,7 @@ services:
     volumes:
       - ./.docker/mariadb/data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "--silent" ]
       timeout: 5s
       retries: 10
 
