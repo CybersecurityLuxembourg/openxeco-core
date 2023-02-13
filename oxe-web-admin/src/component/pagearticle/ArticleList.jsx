@@ -95,7 +95,7 @@ export default class ArticleList extends React.Component {
 				width: 350,
 			},
 			{
-				Header: "TYPE",
+				Header: "Type",
 				accessor: "type",
 				width: 100,
 			},

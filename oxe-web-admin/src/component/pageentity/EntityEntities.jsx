@@ -61,6 +61,21 @@ export default class EntityEntities extends React.Component {
 				),
 			},
 			{
+				Header: "Legal status",
+				accessor: "legal_status",
+				width: 50,
+			},
+			{
+				Header: "Creat. date",
+				accessor: "creation_date",
+				width: 50,
+			},
+			{
+				Header: "Clos. date",
+				accessor: "closure_date",
+				width: 50,
+			},
+			{
 				Header: "Website",
 				accessor: "website",
 				Cell: ({ cell: { value } }) => (
@@ -68,6 +83,12 @@ export default class EntityEntities extends React.Component {
 						url={value}
 					/>
 				),
+				width: 50,
+			},
+			{
+				Header: "Status",
+				accessor: "status",
+				width: 40,
 			},
 		];
 
