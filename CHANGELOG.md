@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - campaign/send_campaign_draft resource
 - mail/get_mail_addresses: add consider_communication_acceptance param
 - Closing date for entity on DB, API resources, oxe-web-admin and oxe-web-community
+- Columns on Entity list of Entity page of oxe-web-admin
 
 ### Fixed
 
