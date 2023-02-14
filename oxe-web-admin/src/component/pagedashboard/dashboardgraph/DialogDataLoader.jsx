@@ -31,9 +31,17 @@ export default class DialogDataLoader extends React.Component {
 						<div className="col-md-10">
 							<FormLine
 								label="ENTITIES"
-								value={"ALL LOADED"}
+								value={`${Math.min(this.props.parentState.entityNumberToShow, this.props.entities.length)} / ${this.props.entities.length}`}
 								disabled={true}
 							/>
+						</div>
+
+						<div className="col-md-2">
+							<button
+								disabled={this.props.entities.length <= this.props.parentState.entityNumberToShow}
+								onClick={() => this.props.addEntities()}>
+								<span><i className="fas fa-plus-circle"/></span>
+							</button>
 						</div>
 
 						<div className="col-md-10">

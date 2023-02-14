@@ -13,6 +13,7 @@ export default class DashboardGraph extends React.Component {
 		super(props);
 
 		this.state = {
+			entityNumberToShow: 50,
 			entityRelationships: null,
 			entityRelationshipTypes: null,
 			users: [],
@@ -302,22 +303,24 @@ export default class DashboardGraph extends React.Component {
 			nodes: [
 				...this.state.filters.hideEntities
 					? []
-					: this.props.entities.map((c) => (
-						{
-							id: "ent-" + c.id,
-							label: c.name,
-							color: { border: "#8fddff", background: "#bcebff" },
-							font: { color: "grey" },
-							shape: this.state.shape,
-							icon: {
-								face: '"Font Awesome 5 Free"',
-								code: this.getEntityIcon(c),
-								color: "#8fddff",
-								weight: 900,
-								size: 40,
-							},
-						}
-					)),
+					: this.props.entities
+						.slice(0, this.state.entityNumberToShow)
+						.map((c) => (
+							{
+								id: "ent-" + c.id,
+								label: c.name,
+								color: { border: "#8fddff", background: "#bcebff" },
+								font: { color: "grey" },
+								shape: this.state.shape,
+								icon: {
+									face: '"Font Awesome 5 Free"',
+									code: this.getEntityIcon(c),
+									color: "#8fddff",
+									weight: 900,
+									size: 40,
+								},
+							}
+						)),
 				...this.state.filters.hideTaxonomyCategories
 					? []
 					: this.props.analytics.taxonomy_categories
@@ -619,8 +622,10 @@ export default class DashboardGraph extends React.Component {
 									</button>
 								}
 								parentState={this.state}
+								entities={this.props.entities}
 								getArticles={(t, p) => this.getArticles(t, p)}
 								getUsers={(p) => this.getUsers(p)}
+								addEntities={() => this.setState({ entityNumberToShow: this.state.entityNumberToShow + 50 })}
 							/>
 							<DialogGraphFilter
 								trigger={

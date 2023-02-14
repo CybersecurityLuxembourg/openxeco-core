@@ -40,6 +40,7 @@ All notable changes to this project will be documented in this file.
 - Note update and modification button appearances on oxe-web-admin
 - Miscellanous UI on oxe-web-admin
 - public/get_public_article_content for html and markdown
+- Limit the number of entities initially shown to avoid browser interruption on dashboard of oxe-web-admin
 
 ## [1.14.7] - 2023-01-27
 
