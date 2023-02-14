@@ -625,7 +625,9 @@ export default class DashboardGraph extends React.Component {
 								entities={this.props.entities}
 								getArticles={(t, p) => this.getArticles(t, p)}
 								getUsers={(p) => this.getUsers(p)}
-								addEntities={() => this.setState({ entityNumberToShow: this.state.entityNumberToShow + 50 })}
+								addEntities={() => this.setState({
+									entityNumberToShow: this.state.entityNumberToShow + 50,
+								})}
 							/>
 							<DialogGraphFilter
 								trigger={
