@@ -1,10 +1,7 @@
-from datetime import datetime, timedelta
-
-from flask import session, render_template
+from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_bcrypt import check_password_hash
-from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_restful import Resource
 from utils.token import generate_otp, hash_otp
 from utils.mail import send_email
@@ -12,7 +9,6 @@ from webargs import fields
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from utils.cookie import set_cookie
 
 
 class Login(MethodResource, Resource):
@@ -77,10 +73,5 @@ class Login(MethodResource, Resource):
                 token=otp,
             )
         )
-
-        # access_token_expires = datetime.timedelta(days=1)
-        # refresh_token_expires = datetime.timedelta(days=365)
-        # access_token = create_access_token(identity=str(data[0].id), expires_delta=access_token_expires)
-        # refresh_token = create_refresh_token(identity=str(data[0].id), expires_delta=refresh_token_expires)
 
         return {}, "200 "

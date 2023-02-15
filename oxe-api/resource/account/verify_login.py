@@ -33,11 +33,6 @@ class VerifyLogin(MethodResource, Resource):
     @catch_exception
     def post(self, **kwargs):
 
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
-
         user = self.db.get(self.db.tables["User"], {"email": kwargs["email"]})
         otp = self.db.get(self.db.tables["UserOtp"], {"user_id": user[0].id})
 
