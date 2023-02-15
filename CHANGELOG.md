@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.15.2] - 2023-02-15
+
+### Fixed
+
+- Cookie for password reseting on server instance on oxe-web-admin and oxe-web-community
+
+
 ## [1.15.1] - 2023-02-15
 
 ### Changed

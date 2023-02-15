@@ -6,7 +6,7 @@ import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateEmail } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
-import { getGlobalAppURL, getApiURL } from "../utils/env.jsx";
+import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
 import DialogHint from "./dialog/DialogHint.jsx";
 import Version from "./box/Version.jsx";
 
@@ -50,7 +50,7 @@ export default class Login extends React.Component {
 		// Get the token if the user reaches the app though a password reset URL
 
 		if (getUrlParameter("action") === "reset_password") {
-			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), {});
+			this.props.cookies.set("access_token_cookie", getUrlParameter("token"), getCookieOptions());
 		}
 
 		// Log in the user if there is an existing cookie
