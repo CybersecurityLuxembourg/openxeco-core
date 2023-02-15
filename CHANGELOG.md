@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- SMTP credentials for the develoment environment
+- SMTP credentials for the development environment
 
 ## [1.15.0] - 2023-02-14
 
