@@ -8,7 +8,7 @@ import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
 import { getApiURL } from "./utils/env.jsx";
-import { getRequest, postRequest } from "./utils/request.jsx";
+import { postRequest } from "./utils/request.jsx";
 import DialogMessage from "./component/dialog/DialogMessage.jsx";
 import PageAddProfile from "./component/PageAddProfile.jsx";
 
@@ -17,7 +17,6 @@ class App extends React.Component {
 		super(props);
 
 		this.connect = this.connect.bind(this);
-		this.getSettings = this.getSettings.bind(this);
 		this.setUserStatus = this.setUserStatus.bind(this);
 
 		this.state = {
@@ -33,25 +32,6 @@ class App extends React.Component {
 	// eslint-disable-next-line class-methods-use-this
 	componentDidMount() {
 		document.getElementById("favicon").href = getApiURL() + "public/get_public_image/favicon.ico";
-		this.getSettings();
-	}
-
-	getSettings() {
-		getRequest.call(this, "public/get_public_settings", (data) => {
-			const settings = {};
-
-			data.forEach((d) => {
-				settings[d.property] = d.value;
-			});
-
-			this.setState({
-				settings,
-			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
 	}
 
 	connect(email) {
@@ -90,6 +70,7 @@ class App extends React.Component {
 								settings={this.state.settings}
 								email={this.state.email}
 								cookies={this.props.cookies}
+								logout={() => this.logout()}
 							/>
 						}
 
@@ -120,6 +101,7 @@ class App extends React.Component {
 						connect={this.connect}
 						setUserStatus={this.setUserStatus}
 						cookies={this.props.cookies}
+						logout={() => this.logout()}
 					/>
 				}
 				<NotificationContainer/>
