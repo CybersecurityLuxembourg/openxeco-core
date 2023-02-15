@@ -60,7 +60,27 @@
 
 # Set up an instance
 
-## For development
+## For developers
+
+### With Docker (easy mode)
+
+It required to have docker installed: [Get Docker](https://docs.docker.com/get-docker/)
+
+This is compatible with Windows and Unix distributions (including MacOS). The web apps and the API containers handle the hot reloading for a better development expetience.
+
+- Clone the project
+- Change Dir to the freshly cloned project
+- Run these commands:
+
+```
+$ docker network create openxeco
+$ docker compose up
+```
+
+This process might require several minutes at first idue to the Docker images setup.
+
+
+### Without Docker (hard mode)
 
 To set up the dev environment, please see those sub-project README files:
 
@@ -75,19 +95,6 @@ If you want to set up a local instance to test the project, please follow these 
 ### Install docker
 
 [Get Docker](https://docs.docker.com/get-docker/)
-
-Linux:
-
-```
-$ sudo mkdir -p /etc/apt/keyrings/
-$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-$ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-$ sudo apt update && sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-$ sudo adduser <your-oxe-user> docker
-$ newgrp docker
-# If you want to verify your docker install run: docker run hello-world
-```
 
 ### Install and run the openXeco containers and its dependencies
 
@@ -133,14 +140,9 @@ $ docker run -d -p 5000:5000 \
     -e MAIL_DEFAULT_SENDER=my-default-sender@example.org \
     -e IMAGE_FOLDER=/image_folder \
     -e DOCUMENT_FOLDER=/document_folder \
-    -e INITIAL_ADMIN_EMAIL=my-default-admin@example.org \
+    -e INITIAL_ADMIN_EMAIL=admin@localhost.localdomain \
     ghcr.io/cybersecurityluxembourg/openxeco-core-oxe-api:latest
 ```
-
-### Install the app for dev with use docker-compose
-
-- Run `docker-compose up`. Optionally can be used `-d` option to run as daemon.
-
 
 ### Enjoy the solution
 
@@ -156,8 +158,8 @@ Access the API documentation:
 Access the emails sent on the SMTP mock:
 - http://localhost:1080
 
-An initial account is created with the following email: "my-default-admin@example.org"
-And a default password: "password"
+An initial account is created with the following email: "admin@localhost.localdomain"
+And a default password: "Passw0rd!"
 
 ## For production server
 

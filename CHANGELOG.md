@@ -1,7 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.15.0] - XXXX-XX-XX
+## [1.15.1] - 2023-02-15
+
+### Changed
+
+- Documentation on the main README for the developers
+
+### Fixed
+
+- SMTP credentials for the develoment environment
+
+## [1.15.0] - 2023-02-14
 
 ### Changed
 

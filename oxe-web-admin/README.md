@@ -11,7 +11,7 @@ $ npm update
 
 # Install the dependencies
 ```
-$ cd ~/project/openxeco/oxe-web-admin
+$ cd ~/project/openxeco-core/oxe-web-admin
 $ npm install
 ```
 

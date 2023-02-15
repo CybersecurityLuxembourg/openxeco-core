@@ -5,11 +5,18 @@ All the versions mentioned are the recommended ones
 With the following link: https://nodejs.org/en/download/
 
 # Update the package manager
->npm update
+```
+$ npm update
+```
 
 # Install the dependencies
->cd ~/project/openxeco/oxe-web-community
->npm install
+```
+$ cd ~/project/openxeco-core/oxe-web-community
+$ npm install
+```
 
 # Run the project
->npm start
+
+```
+$ npm start
+```
