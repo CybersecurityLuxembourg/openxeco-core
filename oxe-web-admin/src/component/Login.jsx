@@ -118,12 +118,11 @@ export default class Login extends React.Component {
 			email: this.state.email,
 			token: this.state.otp,
 		};
-		postRequest.call(this, "account/verify_login", params, (response) => {
+		postRequest.call(this, "account/verify_login", params, () => {
 			// this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-
 			getRequest.call(this, "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
-					this.props.connect(response.user);
+					this.props.connect(data);
 				} else {
 					this.props.logout();
 					nm.warning("This user is not an admin");

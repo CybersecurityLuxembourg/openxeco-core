@@ -147,7 +147,7 @@ export default class Login extends React.Component {
 		};
 		postRequest.call(this, "account/verify_login", params, () => {
 			// this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-			this.props.connect(this.state.email);
+			// this.props.connect(this.state.email);
 			this.fetchUser();
 		}, (response) => {
 			nm.warning(response.statusText);
