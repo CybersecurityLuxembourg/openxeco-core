@@ -5,7 +5,7 @@ The functional settings is to configure at the environment level. They can be de
 - a dotenv (.env) file defined in the oxe-api directory
 - the system environment variable of the host machine
 - Docker with an "environment" value in a Compose file (for example, see: [docker-compose.yml](../docker-compose.yml))
-- Docker with "-e" argument in a container creation via "docker run" (for example, see: [doc/INSTALL_SERVER.yml](INSTALL_SERVER.yml))
+- Docker with "-e" argument in a container creation via "docker run" (for example, see: [doc/INSTALL_SERVER.yml](INSTALL_SERVER.md))
 
 More details via the Python configuration loader at the API level:
 
@@ -19,7 +19,7 @@ You can find deeper information of the usage of these settings by:
 - analyzing the [oxe-api/app.py](../oxe-api/app.py) file
 - Doing a research of the setting name in the whole oxe-api folder
 
-## ENVIRONMENT
+## Environment variable: "ENVIRONMENT"
 
 Use "dev" value if the instance is deployed in a local development envivonment. Any other value can be used in a server environment.
 
@@ -28,11 +28,11 @@ A non-"dev" environment will have these additional features:
 - Disable debug mode of the API
 - Consider CORS_ORIGINS provided env variable instead of allowing localhost web apps only.
 
-## PORT
+## Environment variable: "PORT"
 
 The port serving of the API. The default value being "5000".
 
-## JWT_SECRET_KEY
+## ENV VAR: "JWT_SECRET_KEY"
 
 This value is used by the "flask-jwt-extended" library in order to encode and decode JWTs. JWTs are used by the API to respond the authentication and authorization requirements.
 
@@ -69,7 +69,7 @@ MAIL_DEFAULT_SENDER
 
 You can find the original documentation [here](https://pythonhosted.org/Flask-Mail/).
 
-## HTTP_PROXY
+## Environment variable: "HTTP_PROXY"
 
 There is a possibiity to configure a proxy for the GET request that are executed by the API.
 
