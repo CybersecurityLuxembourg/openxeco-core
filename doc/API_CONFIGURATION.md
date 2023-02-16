@@ -4,19 +4,19 @@
 The functional settings is to configure at the environment level. They can be defined via:
 - a dotenv (.env) file defined in the oxe-api directory
 - the system environment variable of the host machine
-- Docker with an "environment" value in a Compose file (for example, see: [docker-compose.yml](docker-compose.yml))
-- Docker with "-e" argument in a container creation via "docker run" (for example, see: [doc/INSTALL_SERVER.yml](doc/INSTALL_SERVER.yml))
+- Docker with an "environment" value in a Compose file (for example, see: [docker-compose.yml](../docker-compose.yml))
+- Docker with "-e" argument in a container creation via "docker run" (for example, see: [doc/INSTALL_SERVER.yml](INSTALL_SERVER.yml))
 
 More details via the Python configuration loader at the API level:
 
-[oxe-api/config/config.py](oxe-api/config/config.py)
+[oxe-api/config/config.py](../oxe-api/config/config.py)
 
 In this file, you can retrieve additional information regarding a setting:
 - Mandatoryness: note that the API won't start if a mandatory setting is missing
 - Default value: value given to the setting if no environment value is provided
 
 You can find deeper information of the usage of these settings by:
-- analyzing the [oxe-api/app.py](oxe-api/app.py) file
+- analyzing the [oxe-api/app.py](../oxe-api/app.py) file
 - Doing a research of the setting name in the whole oxe-api folder
 
 ## ENVIRONMENT
