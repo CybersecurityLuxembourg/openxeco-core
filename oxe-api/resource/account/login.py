@@ -70,6 +70,7 @@ class Login(MethodResource, Resource):
             recipients=[kwargs["email"]],
             html_body=render_template(
                 'login_otp.html',
+                email=kwargs["email"],
                 token=otp,
             )
         )
