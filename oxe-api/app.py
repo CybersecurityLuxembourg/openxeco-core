@@ -111,13 +111,6 @@ def create_initial_admin(email, password):
         "'Administrator' user group"
     )
 
-    for resource in get_admin_post_resources(api):
-        create_row_if_not_exists(
-            db.tables["UserGroupRight"],
-            {"group_id": user_group.id, "resource": resource},
-            "User group right '/user/add_user_group_right'"
-        )
-
     create_row_if_not_exists(
         db.tables["UserGroupAssignment"],
         {"user_id": admin.id, "group_id": user_group.id},
@@ -125,6 +118,19 @@ def create_initial_admin(email, password):
     )
 
     app.logger.warning(f"The initial admin has been created with the following password: {password}")
+
+
+def create_admin_rights():
+    user_group = db.get(db.tables["UserGroup"], {"name": "Administrator"})[0]
+
+    for resource in get_admin_post_resources(api):
+        create_row_if_not_exists(
+            db.tables["UserGroupRight"],
+            {"group_id": user_group.id, "resource": resource},
+            "User group right '/user/add_user_group_right'"
+        )
+
+    app.logger.warning(f"Admin rights have been updated")
 
 
 def create_row_if_not_exists(table, row, log_base):
@@ -182,6 +188,8 @@ if __name__ in ('app', '__main__'):
 
     if config.INITIAL_ADMIN_EMAIL:
         create_initial_admin(config.INITIAL_ADMIN_EMAIL, config.INITIAL_ADMIN_PASSWORD)
+
+    create_admin_rights()
 
     seed_initial_data()
 
