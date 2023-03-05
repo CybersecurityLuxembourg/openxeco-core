@@ -37,6 +37,13 @@ export default class PageAcceptedUsers extends React.Component {
 		this.fetchUsers();
 	}
 
+	static toDateString(date) {
+		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
+		return year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
+	}
+
 	fetchUsers() {
 		const filters = {
 			page: this.state.page,
@@ -46,11 +53,11 @@ export default class PageAcceptedUsers extends React.Component {
 		console.log(this.state.date_from);
 
 		if (this.state.date_from !== null) {
-			filters.date_from = this.state.date_from.toLocaleDateString();
+			filters.date_from = PageAcceptedUsers.toDateString(this.state.date_from) + " 00:00:00";
 		}
 
 		if (this.state.date_to) {
-			filters.date_to = this.state.date_to.toLocaleDateString();
+			filters.date_to = PageAcceptedUsers.toDateString(this.state.date_to) + " 23:59:59";
 		}
 
 		getRequest.call(this, "user/get_accepted_users?" + dictToURI(filters), (data) => {
@@ -74,11 +81,11 @@ export default class PageAcceptedUsers extends React.Component {
 		console.log(this.state.date_from);
 
 		if (this.state.date_from !== null) {
-			filters.date_from = this.state.date_from.toLocaleDateString();
+			filters.date_from = PageAcceptedUsers.toDateString(this.state.date_from) + " 00:00:00";
 		}
 
 		if (this.state.date_to) {
-			filters.date_to = this.state.date_to.toLocaleDateString();
+			filters.date_to = PageAcceptedUsers.toDateString(this.state.date_to) + " 23:59:59";
 		}
 
 		getBlobRequest.call(this, "user/get_accepted_users_export?" + dictToURI(filters), (blob) => {
