@@ -56,7 +56,7 @@ class SendMail(MethodResource, Resource):
             cc = [data[0].email]
 
         send_email(self.mail,
-            subject=f"Account verified",
+            subject=kwargs["subject"],
             recipients=[kwargs["address"]],
             cc=cc,
             html_body=render_template(
