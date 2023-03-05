@@ -26,31 +26,31 @@ class GetAcceptedUsers(MethodResource, Resource):
     @use_kwargs({
         'page': fields.Int(required=False, missing=1, validate=validate.Range(min=1)),
         'per_page': fields.Int(required=False, missing=50, validate=validate.Range(min=1, max=50)),
-        'date_from': fields.DateTime(format="%d/%m/%Y", required=False),
-        'date_to': fields.DateTime(format="%d/%m/%Y", required=False),
+        'date_from': fields.DateTime(format="%Y-%m-%d %H:%M:%S", required=False),
+        'date_to': fields.DateTime(format="%Y-%m-%d %H:%M:%S", required=False),
     }, location="query")
     @jwt_required
     @verify_admin_access
     @catch_exception
     def get(self, **kwargs):
-        
+
         request_query = self.db.session.query(self.db.tables["UserRequest"])
         request_query = request_query.filter(self.db.tables["UserRequest"].status == "ACCEPTED")
         request_query = request_query.filter(self.db.tables["UserRequest"].type == "NEW INDIVIDUAL ACCOUNT")
-        
+
         # date filter
         if "date_from" in kwargs:
             request_query = request_query.filter(self.db.tables["UserRequest"].submission_date >= kwargs["date_from"])
 
         if "date_to" in kwargs:
-            request_query = request_query.filter(self.db.tables["UserRequest"].submission_date <= kwargs["date_to"])
-            
+            request_query = request_query.filter(self.db.tables["UserRequest"].submission_date <= kwargs['date_to'])
+
         requests = request_query.all()
         user_ids = {
             request.user_id
             for request in requests
         }
-        
+
         query = self.db.session.query(
             self.db.tables["UserProfile"]
         ).filter(
@@ -63,7 +63,7 @@ class GetAcceptedUsers(MethodResource, Resource):
             self.db.tables["Expertise"],
             self.db.tables["UserRequest"],
         )
-        
+
         paginate = query.with_entities(
             self.db.tables["User"],
             self.db.tables["UserProfile"],
