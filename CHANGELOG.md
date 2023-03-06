@@ -3,10 +3,6 @@ All notable changes to this project will be documented in this file.
 
 ## [1.15.3] - XXXX-XX-XX
 
-### Fixed
-
-- Cookie for password reseting on server instance on oxe-web-admin and oxe-web-community
-
 ### Changed
 
 - "cryptography" package version for oxe-api
