@@ -1,13 +1,13 @@
 
 .DialogHint-icon {
 	font-size: 30px;
-	color: #F1C40F;
+	color: #009fe3;
 }
 
 .DialogHint-icon:hover {
 	cursor: pointer;
 	animation: swing 1s infinite;
-  	-webkit-animation: swing 1s infinite;
+  -webkit-animation: swing 1s infinite;
 }
 
 .DialogHint-inside-icon-wrapper {
@@ -18,9 +18,9 @@
 .DialogHint-inside-icon {
 	display: block;
 	font-size: 70px;
-	color: #F1C40F;
+	color: #009fe3;
 	animation: swing 1s;
-  	-webkit-animation: swing 1s;
+  -webkit-animation: swing 1s;
 }
 
 .DialogHint-overlay {
