@@ -172,6 +172,7 @@ export default class EntityGlobal extends React.Component {
 					/>
 					<FormLine
 						label={"Website"}
+						type={"url"}
 						value={this.props.entity.website}
 						onBlur={(v) => this.saveEntityValue("website", v)}
 						disabled={!this.props.editable}
@@ -205,36 +206,42 @@ export default class EntityGlobal extends React.Component {
 
 				<div className="col-md-12">
 					<FormLine
+						type={"url"}
 						label={"Linkedin URL"}
 						value={this.props.entity.linkedin_url}
 						onBlur={(v) => this.saveEntityValue("linkedin_url", v)}
 						disabled={!this.props.editable}
 					/>
 					<FormLine
+						type={"url"}
 						label={"Twitter URL"}
 						value={this.props.entity.twitter_url}
 						onBlur={(v) => this.saveEntityValue("twitter_url", v)}
 						disabled={!this.props.editable}
 					/>
 					<FormLine
+						type={"url"}
 						label={"Youtube URL"}
 						value={this.props.entity.youtube_url}
 						onBlur={(v) => this.saveEntityValue("youtube_url", v)}
 						disabled={!this.props.editable}
 					/>
 					<FormLine
+						type={"url"}
 						label={"Discord URL"}
 						value={this.props.entity.discord_url}
 						onBlur={(v) => this.saveEntityValue("discord_url", v)}
 						disabled={!this.props.editable}
 					/>
 					<FormLine
+						type={"url"}
 						label={"GitHub URL"}
 						value={this.props.entity.github_url}
 						onBlur={(v) => this.saveEntityValue("github_url", v)}
 						disabled={!this.props.editable}
 					/>
 					<FormLine
+						type={"url"}
 						label={"Mastodon URL"}
 						value={this.props.entity.mastodon_url}
 						onBlur={(v) => this.saveEntityValue("mastodon_url", v)}
