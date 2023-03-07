@@ -1,18 +1,19 @@
 
 @media (min-width: 0px) {
+    .Tab-menu {
+        width: 100%;
+    }
+
     .Tab-menu, .Tab-menu-fw {
         padding: 20px 0px;
         margin-bottom: 50px;
-    }
-
-    .Tab-menu-el-selected-fw {
-        border-left: 4px solid #e40613;
     }
 }
 
 @media (min-width: 768px) {
     .Tab-menu {
         position: absolute;
+        width: calc(100% - 10px);
     }
 
     .Tab-menu, .Tab-menu-fw {
@@ -22,11 +23,6 @@
 
     .Tab-menu-el-fw {
         float: left;
-    }
-
-    .Tab-menu-el-selected-fw {
-        border-left: none;
-        border-bottom: 4px solid #e40613;
     }
 }
 
@@ -49,11 +45,16 @@
 }
 
 .Tab-menu-el:hover, .Tab-menu-el-fw:hover {
-    background-color: rgba(0, 159, 227, 0.05);
+    background-color: var(--light-primary-color);
 }
 
 .Tab-menu-el-selected {
-    border-left: 4px solid #e40613;
+    border-left: 4px solid var(--primary-color);
+    background-color: var(--light-primary-color);
+}
+
+.Tab-menu-el-selected:hover {
+    background-color: var(--hovered-primary-color);
 }
 
 .Tab-menu-el-empty {
