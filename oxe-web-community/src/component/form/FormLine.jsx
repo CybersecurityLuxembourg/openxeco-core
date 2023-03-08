@@ -10,8 +10,10 @@ import _ from "lodash";
 /* import DialogSelectImage from "../dialog/DialogSelectImage.jsx"; */
 import Chip from "./Chip.jsx";
 import CheckBox from "./CheckBox.jsx";
+import { validateUrl } from "../../utils/re.jsx";
 /* import NoImage from "../box/NoImage.jsx";
 import { getApiURL } from "../../utils/env.jsx"; */
+import DialogError from "../dialog/DialogError.jsx";
 
 function getSelectStyle() {
 	return {
@@ -125,6 +127,46 @@ export default class FormLine extends React.Component {
 				onChange={(v) => this.onChange(v.value)}
 				isDisabled={this.props.disabled}
 			/>;
+		case "url":
+			return <div className={"FormLine-url"}>
+				<input
+					className={this.state.value && !validateUrl(this.state.value) && " FormLine-wrong-format"}
+					type="url"
+					value={this.state.value}
+					onChange={(v) => this.onChange(v.target.value)}
+					onBlur={(v) => this.onBlur(v.target.value)}
+					disabled={this.props.disabled}
+					autoFocus={this.props.autofocus}
+					onKeyDown={this.props.onKeyDown}
+				/>
+				{this.state.value && !validateUrl(this.state.value)
+					&& <DialogError
+						content={
+							<div>
+								<h2>The URL format is not correct</h2>
+
+								<div>Here are some examples of valid URLs:</div>
+
+								<ul>
+									<li>http://example.com/</li>
+									<li>http://example.com/?test</li>
+									<li>http://example.com/carrot#question</li>
+									<li>https://example.com/</li>
+									<li>https://example.com/?test</li>
+									<li>https://example.com/carrot#question</li>
+								</ul>
+
+								<div>
+									The URL should comply to the W3C URLs format for HTML5. More details <a
+										href="https://www.w3.org/TR/2011/WD-html5-20110525/urls.html"
+										target="_blank"
+										rel="noreferrer">here</a>.
+								</div>
+							</div>
+						}
+					/>
+				}
+			</div>;
 		case "multiselect":
 			return <div>
 				<Select

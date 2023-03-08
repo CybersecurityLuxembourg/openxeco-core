@@ -23,3 +23,8 @@ export function validateArticleTitle(value) {
 	if (typeof value === "undefined" || value === null || value.length === 0) return false;
 	return value.length > 5 && value.length < 255;
 }
+
+export function validateUrl(value) {
+	if (typeof value === "undefined" || value === null || value.length === 0) return false;
+	return value.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/);
+}

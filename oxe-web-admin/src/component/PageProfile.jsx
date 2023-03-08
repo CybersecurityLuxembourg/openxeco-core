@@ -487,6 +487,7 @@ export default class PageProfile extends React.Component {
 													<div className="col-md-6">
 														<FormLine
 															label={"Link"}
+															type={"url"}
 															value={s.valueOf() ? s.valueOf() : ""}
 															onChange={(v) => this.updateSocialeProfileLink(i, v)}
 															fullWidth={true}

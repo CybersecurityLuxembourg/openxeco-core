@@ -1,8 +1,8 @@
 import React from "react";
-import "./DialogHint.css";
+import "./DialogError.css";
 import Popup from "reactjs-popup";
 
-export default class DialogHint extends React.Component {
+export default class DialogError extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -12,15 +12,15 @@ export default class DialogHint extends React.Component {
 	render() {
 		return (
 			<Popup
-				trigger={<i className="DialogHint-icon fas fa-question-circle"/>}
+				trigger={<i className="DialogError-icon fas fa-exclamation-circle"/>}
 				closeOnDocumentClick
 				modal
-				className={"DialogHint Popup-small-size"}
+				className={"DialogError Popup-small-size"}
 			>
 				{(close) => (
-					<div className={"DialogHint-wrapper"}>
-						<div className="DialogHint-inside-icon-wrapper">
-							<i className="DialogHint-inside-icon fas fa-question-circle"/>
+					<div className={"DialogError-wrapper"}>
+						<div className="DialogError-inside-icon-wrapper">
+							<i className="DialogError-inside-icon fas fa-exclamation-circle"/>
 						</div>
 
 						{this.props.content}

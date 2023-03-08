@@ -316,6 +316,7 @@ export default class ArticleRssFeed extends React.Component {
 									<div className="col-md-12">
 										<FormLine
 											label={"Add a RSS Feed"}
+											type={"url"}
 											value={this.state.rssFeedField}
 											onChange={(v) => this.changeState("rssFeedField", v)}
 										/>

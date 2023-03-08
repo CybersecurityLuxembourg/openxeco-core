@@ -1,29 +1,29 @@
 
-.DialogHint-icon {
+.DialogError-icon {
 	font-size: 30px;
-	color: #009fe3;
+	color: #e40613;
 }
 
-.DialogHint-icon:hover {
+.DialogError-icon:hover {
 	cursor: pointer;
 	animation: swing 1s infinite;
-  -webkit-animation: swing 1s infinite;
+  	-webkit-animation: swing 1s infinite;
 }
 
-.DialogHint-inside-icon-wrapper {
+.DialogError-inside-icon-wrapper {
 	text-align: center;
 	margin: 10px 0px;
 }
 
-.DialogHint-inside-icon {
+.DialogError-inside-icon {
 	display: block;
 	font-size: 70px;
-	color: #009fe3;
+	color: #e40613;
 	animation: swing 1s;
-  -webkit-animation: swing 1s;
+  	-webkit-animation: swing 1s;
 }
 
-.DialogHint-overlay {
+.DialogError-overlay {
 	display: block;
 	z-index: 1080 !important;
 	margin: initial;
@@ -35,14 +35,14 @@
 	overflow-y: auto;
 }
 
-.DialogHint-content {
+.DialogError-content {
 	z-index: 1080 !important;
 	padding: 30px 20px 30px 20px !important;
 	color: grey !important;
 	line-height: 1.5 !important;
 }
 
-.DialogHint-wrapper {
+.DialogError-wrapper {
     max-height: 100%;
     text-align: left;
     font-size: initial;
@@ -52,24 +52,24 @@
     line-height: 1.5;
 }
 
-.DialogHint-wrapper img {
+.DialogError-wrapper img {
 	margin: 20px auto;
 	display: block;
 	max-width: 100%;
 	box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
-.DialogHint-trigger {
+.DialogError-trigger {
 	cursor: pointer;
 }
 
-.DialogHint-content p { 
+.DialogError-content p { 
     text-overflow: unset !important;
     white-space: normal !important;
     overflow: show !important;
 }
 
-.DialogHint-content button {
+.DialogError-content button {
 	position: relative !important;
 	width: auto !important;
 	bottom: 0 !important;
