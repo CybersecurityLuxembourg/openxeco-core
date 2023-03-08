@@ -1,0 +1,31 @@
+
+.FormList .FormList-white-block {
+    background: white;
+    text-align: center;
+    font-family: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 30px 10px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+}
+
+.FormList .FormList-white-block img {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+	opacity: 0.3;
+}
+
+.FormList .FormList-white-block i {
+	font-size: 180px;
+    color: #ccc;
+}
+
+.FormList .FormList-white-block:hover {
+    background-color: rgba(0, 159, 227, 0.05);
+    cursor: pointer;
+}
+
+.FormList a {
+    text-decoration: none;
+}

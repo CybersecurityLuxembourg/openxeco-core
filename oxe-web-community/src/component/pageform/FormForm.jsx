@@ -232,7 +232,7 @@ export default class FormForm extends React.Component {
 			<div id="FormForm" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-12">
-						<h1>{this.props.form.name}</h1>
+						<h2>{this.props.form.name}</h2>
 					</div>
 				</div>
 

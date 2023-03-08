@@ -1,12 +1,12 @@
 import React from "react";
 import "./PageForm.css";
 import { NotificationManager as nm } from "react-notifications";
+import FormList from "./pageform/FormList.jsx";
 import FormForm from "./pageform/FormForm.jsx";
 import Tab from "./tab/Tab.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getRequest } from "../utils/request.jsx";
 import Loading from "./box/Loading.jsx";
-import Message from "./box/Message.jsx";
 
 export default class PageForm extends React.Component {
 	constructor(props) {
@@ -17,6 +17,7 @@ export default class PageForm extends React.Component {
 		this.state = {
 			forms: null,
 			selectedMenu: null,
+			inc: 0,
 		};
 	}
 
@@ -30,6 +31,7 @@ export default class PageForm extends React.Component {
 	}
 
 	componentDidUpdate() {
+		console.log(this.state.selectedMenu, getUrlParameter("tab"));
 		if (this.state.selectedMenu !== getUrlParameter("tab")
 			&& this.state.forms
 			&& this.state.forms.map((f) => f.id.toString()).indexOf(getUrlParameter("tab")) >= 0) {
@@ -55,6 +57,7 @@ export default class PageForm extends React.Component {
 
 	onMenuClick(m) {
 		this.props.history.push("?tab=" + m);
+		this.setState({ selectedMenu: m });
 	}
 
 	render() {
@@ -66,30 +69,28 @@ export default class PageForm extends React.Component {
 			</div>;
 		}
 
-		if (this.state.forms.length === 0) {
-			return <div id="PageForm" className="page max-sized-page">
-				<Message
-					height={300}
-					text={"No form found"}
-				/>
-			</div>;
-		}
-
 		return (
 			<div id="PageForm" className="page max-sized-page">
 				<h1>Forms</h1>
 
 				<Tab
-					labels={this.state.forms.map((f) => f.name)}
+					labels={["Available forms"].concat(this.state.forms.map((f) => f.name))}
 					selectedMenu={this.state.selectedMenu}
-					onMenuClick={this.onMenuClick}
-					keys={this.state.forms.map((f) => f.id.toString())}
-					content={this.state.forms.map((f) => (
+					onMenuClick={(m) => this.onMenuClick(m)}
+					keys={["forms"].concat(this.state.forms.map((f) => f.id.toString()))}
+					content={[
+						<FormList
+							key="forms"
+							forms={this.state.forms}
+							keys={this.state.forms.map((f) => f.id.toString())}
+							selectForm={(m) => this.onMenuClick(m)}
+						/>,
+					].concat(this.state.forms.map((f) => (
 						<FormForm
 							key={f.name}
 							form={f}
 						/>
-					))}
+					)))}
 				/>
 			</div>
 		);
