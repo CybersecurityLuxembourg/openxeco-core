@@ -1,0 +1,10 @@
+
+#ContactList .Message-text {
+	width: 100%;
+	text-align: center;
+}
+
+#ContactList .ContactList-details i {
+	font-size: 40px;
+	margin-bottom: 10px;
+}

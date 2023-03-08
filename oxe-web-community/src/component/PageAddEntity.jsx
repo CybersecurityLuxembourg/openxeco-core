@@ -9,8 +9,6 @@ export default class PageAddEntity extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.onMenuClick = this.onMenuClick.bind(this);
-
 		this.state = {
 			selectedMenu: null,
 			tabs: [
@@ -48,7 +46,7 @@ export default class PageAddEntity extends React.Component {
 						"Register an entity",
 					]}
 					selectedMenu={this.state.selectedMenu}
-					onMenuClick={this.onMenuClick}
+					onMenuClick={(m) => this.onMenuClick(m)}
 					keys={this.state.tabs}
 					content={[
 						<AddEntityClaim
