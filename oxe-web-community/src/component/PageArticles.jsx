@@ -302,7 +302,7 @@ export default class PageArticles extends React.Component {
 					&& <Message
 						text={<div>
 							<p>
-								You are not assign to any entity. You need to have access to
+								You are not assigned to any entity. You need to have access to
 								an entity to edit articles and publish on behalf of it.
 							</p>
 							<p>

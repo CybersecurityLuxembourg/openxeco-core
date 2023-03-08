@@ -81,7 +81,8 @@ export default class AddEntityRegister extends React.Component {
 										<img src="/img/hint-request-registration-button.png"/>
 
 										<p>
-											Note that the Name, Website and Creation date fields
+											Note that the &quot;Name&quot;, &quot;Website&quot;
+											and &quot;Creation date&quot; fields
 											are mandatory to complete the form.
 										</p>
 

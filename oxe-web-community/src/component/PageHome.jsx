@@ -45,14 +45,14 @@ export default class PageHome extends React.Component {
 												? " " + this.props.settings.PROJECT_NAME
 												: ""
 											} portal to
-											manage your contribution to the ecosystem.
+											manage your contribution to the community.
 										</p>
 
 										<p>
 											After creating a personal account, you will be able to
 											register your entity and manage its information at any time.
 											You will also have the opportunity to share your entity’s
-											latest news with the cybersecurity ecosystem in Luxembourg and beyond.
+											latest news with the community.
 										</p>
 
 										<h3>
@@ -60,11 +60,11 @@ export default class PageHome extends React.Component {
 												&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
 												? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
 												: "This portal"
-											} is divided into 3 sections:
+											} is divided into 4 sections:
 										</h3>
 
 										<h4>
-											My profile
+											<i className="fas fa-user"/> Profile
 										</h4>
 
 										<p>
@@ -79,17 +79,7 @@ export default class PageHome extends React.Component {
 										</p>
 
 										<h4>
-											My entities
-										</h4>
-
-										<p>
-											Register and edit the information of your entity. Use
-											this section to present and promote your entity’s expertise
-											within the cybersecurity community and beyond.
-										</p>
-
-										<h4>
-											My articles
+											<i className="fas fa-feather-alt"/> My articles
 										</h4>
 
 										<p>
@@ -101,6 +91,24 @@ export default class PageHome extends React.Component {
 											To ease the process as much as possible, all you have to do
 											is reference the link to the article already published on
 											your website.
+										</p>
+
+										<h4>
+											<i className="fas fa-poll-h"/> Forms
+										</h4>
+
+										<p>
+											Answer the questions from the forms published by the organisation.
+										</p>
+
+										<h4>
+											<i className="fas fa-building"/> My entities
+										</h4>
+
+										<p>
+											Register and edit the information of your entity. Use
+											this section to present and promote your entity’s expertise
+											within the community and beyond.
 										</p>
 
 										<h2>Hint & tips</h2>

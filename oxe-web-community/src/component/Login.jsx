@@ -226,7 +226,7 @@ export default class Login extends React.Component {
 											? " " + this.props.settings.PROJECT_NAME
 											: ""
 										} portal to
-										manage your contribution to the ecosystem.
+										manage your contribution to the community.
 									</p>
 
 									<p>
