@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.15.3] - XXXX-XX-XX
+## [1.15.3] - 2023-03-09
 
 ### Changed
 
@@ -10,6 +10,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Documentation of the configuration of the API
+
+### Fixed
+
+- Contact message creation on oxe-web-community
 
 ## [1.15.2] - 2023-02-15
 

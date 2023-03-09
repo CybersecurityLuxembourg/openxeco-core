@@ -46,7 +46,7 @@ def upgrade():
     op.alter_column('TaxonomyAssignment', 'company', new_column_name='entity_id', existing_type=mysql.INTEGER(), existing_nullable=False)
     op.alter_column('TaxonomyAssignment', 'taxonomy_value', new_column_name='taxonomy_value_id', existing_type=mysql.INTEGER(), existing_nullable=False)
     op.alter_column('UserEntityAssignment', 'company_id', new_column_name='entity_id', existing_type=mysql.INTEGER(), existing_nullable=False)
-    op.alter_column('UserRequest', 'company_id', new_column_name='entity_id', existing_type=mysql.INTEGER(), existing_nullable=False)
+    op.alter_column('UserRequest', 'company_id', new_column_name='entity_id', existing_type=mysql.INTEGER(), existing_nullable=True, nullable=True)
     op.alter_column('Workforce', 'company', new_column_name='entity_id', existing_type=mysql.INTEGER(), existing_nullable=False)
 
 
@@ -71,7 +71,7 @@ def downgrade():
     op.alter_column('TaxonomyAssignment', 'entity_id', new_column_name='company', existing_type=mysql.INTEGER(), existing_nullable=False)
     op.alter_column('TaxonomyAssignment', 'taxonomy_value_id', new_column_name='taxonomy_value', existing_type=mysql.INTEGER(), existing_nullable=False)
     op.alter_column('UserEntityAssignment', 'entity_id', new_column_name='company_id', existing_type=mysql.INTEGER(), existing_nullable=False)
-    op.alter_column('UserRequest', 'entity_id', new_column_name='company_id', existing_type=mysql.INTEGER(), existing_nullable=False)
+    op.alter_column('UserRequest', 'entity_id', new_column_name='company_id', existing_type=mysql.INTEGER(), existing_nullable=True, nullable=True)
     op.alter_column('Workforce', 'entity_id', new_column_name='company', existing_type=mysql.INTEGER(), existing_nullable=False)
 
     op.rename_table('Entity', 'Company')
