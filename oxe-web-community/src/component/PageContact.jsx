@@ -51,10 +51,12 @@ export default class PageContact extends React.Component {
 					content={[
 						<ContactSend
 							key={"send"}
+							getNotifications={this.props.getNotifications}
 							settings={this.props.settings}
 						/>,
 						<ContactList
 							key={"ongoing"}
+							getNotifications={this.props.getNotifications}
 						/>,
 					]}
 				/>

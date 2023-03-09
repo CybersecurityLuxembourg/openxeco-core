@@ -20,11 +20,10 @@ export default class ContactSend extends React.Component {
 		};
 
 		postRequest.call(this, "private/add_request", params, () => {
-			this.refresh();
-			this.props.getNotifications();
 			this.setState({
 				text: null,
 			});
+			this.props.getNotifications();
 			nm.info("The request has been submitted");
 		}, (response) => {
 			nm.warning(response.statusText);
