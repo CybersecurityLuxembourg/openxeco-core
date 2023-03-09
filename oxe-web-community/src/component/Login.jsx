@@ -245,32 +245,7 @@ export default class Login extends React.Component {
 									</h3>
 
 									<h4>
-										My profile
-									</h4>
-
-									<p>
-										Edit your personal profile. You will be the contact person
-										for the entity to which you are assigned. Your personal
-										information will not be made public on the
-										{this.props.settings !== null
-											&& this.props.settings.PROJECT_NAME !== undefined
-											? " " + this.props.settings.PROJECT_NAME
-											: ""
-										} portal. Learn more by visiting this section.
-									</p>
-
-									<h4>
-										My entities
-									</h4>
-
-									<p>
-										Register and edit the information of your entity. Use
-										this section to present and promote your entity’s expertise
-										within the cybersecurity community and beyond.
-									</p>
-
-									<h4>
-										My articles
+										<i className="fas fa-feather-alt"/> Articles
 									</h4>
 
 									<p>
@@ -282,6 +257,39 @@ export default class Login extends React.Component {
 										To ease the process as much as possible, all you have to do
 										is reference the link to the article already published on
 										your website.
+									</p>
+
+									<h4>
+										<i className="fas fa-poll-h"/> Forms
+									</h4>
+
+									<p>
+										Answer the questions from the forms published by the organisation.
+									</p>
+
+									<h4>
+										<i className="fas fa-building"/> Entities
+									</h4>
+
+									<p>
+										Register and edit the information of your entity. Use
+										this section to present and promote your entity’s expertise
+										within the community and beyond.
+									</p>
+
+									<h4>
+										<i className="fas fa-user-circle"/> Profile
+									</h4>
+
+									<p>
+										Edit your personal profile. You will be the contact person
+										for the entity to which you are assigned. Your personal
+										information will not be made public on the
+										{this.props.settings !== null
+											&& this.props.settings.PROJECT_NAME !== undefined
+											? " " + this.props.settings.PROJECT_NAME
+											: ""
+										} portal. Learn more by visiting this section.
 									</p>
 
 									<h2>How do I start?</h2>
@@ -334,7 +342,7 @@ export default class Login extends React.Component {
 									</p>
 
 									<div style={{ textAlign: "center" }}>
-										<i className="DialogHint-icon far fa-question-circle"/>
+										<i className="DialogHint-icon fas fa-question-circle"/>
 									</div>
 
 									<br/>
