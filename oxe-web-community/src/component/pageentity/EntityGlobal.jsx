@@ -153,6 +153,7 @@ export default class EntityGlobal extends React.Component {
 						/>
 						<FormLine
 							label={this.state.fields.website}
+							type={"url"}
 							value={this.state.entityInfo.website}
 							onChange={(v) => this.updateEntity("website", v)}
 						/>
@@ -184,31 +185,37 @@ export default class EntityGlobal extends React.Component {
 					<div className="col-md-12">
 						<FormLine
 							label={this.state.fields.linkedin_url}
+							type={"url"}
 							value={this.state.entityInfo.linkedin_url}
 							onBlur={(v) => this.updateEntity("linkedin_url", v)}
 						/>
 						<FormLine
 							label={this.state.fields.twitter_url}
+							type={"url"}
 							value={this.state.entityInfo.twitter_url}
 							onBlur={(v) => this.updateEntity("twitter_url", v)}
 						/>
 						<FormLine
 							label={this.state.fields.youtube_url}
+							type={"url"}
 							value={this.state.entityInfo.youtube_url}
 							onBlur={(v) => this.updateEntity("youtube_url", v)}
 						/>
 						<FormLine
 							label={this.state.fields.discord_url}
+							type={"url"}
 							value={this.state.entityInfo.discord_url}
 							onBlur={(v) => this.updateEntity("discord_url", v)}
 						/>
 						<FormLine
 							label={this.state.fields.github_url}
+							type={"url"}
 							value={this.state.entityInfo.github_url}
 							onBlur={(v) => this.updateEntity("github_url", v)}
 						/>
 						<FormLine
 							label={this.state.fields.mastodon_url}
+							type={"url"}
 							value={this.state.entityInfo.mastodon_url}
 							onBlur={(v) => this.updateEntity("mastodon_url", v)}
 						/>
