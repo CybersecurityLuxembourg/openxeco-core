@@ -185,7 +185,7 @@ export default class Login extends React.Component {
 								? this.props.settings.PROJECT_NAME
 								: "the"
 							}
-							&nbsp;portal <i className="fa fa-shield-alt"/>
+							&nbsp;portal <i className="fas fa-chevron-circle-right"/>
 						</a>
 					</div>
 
