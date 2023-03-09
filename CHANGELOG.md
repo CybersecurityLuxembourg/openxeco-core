@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - DialogHint component on oxe-web-admin
 - DialogError on oxe-web-admin and oxe-web-community
 - Default logo and favicon
+- API resources: setting/delete_favicon and setting/delete_favicon
 
 ### Fixed
 

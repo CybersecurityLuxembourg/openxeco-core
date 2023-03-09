@@ -172,6 +172,8 @@ from resource.rss.delete_rss_feed import DeleteRssFeed
 from resource.rss.get_rss_feeds import GetRssFeeds
 from resource.rss.update_rss_feed import UpdateRssFeed
 from resource.setting.add_setting import AddSetting
+from resource.setting.delete_logo import DeleteLogo
+from resource.setting.delete_favicon import DeleteFavicon
 from resource.setting.delete_setting import DeleteSetting
 from resource.setting.upload_favicon import UploadFavicon
 from resource.setting.upload_logo import UploadLogo
