@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Control on URL fields on oxe-web-admin and oxe-web-community
 - DialogHint component on oxe-web-admin
 - DialogError on oxe-web-admin and oxe-web-community
+- Default logo and favicon
 
 ### Fixed
 

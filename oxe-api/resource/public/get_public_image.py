@@ -1,4 +1,5 @@
 import os
+import sys
 
 from flask import send_file
 from flask_apispec import MethodResource
@@ -30,6 +31,15 @@ class GetPublicImage(MethodResource, Resource):
             try:
                 f = open(os.path.join(IMAGE_FOLDER, id_), "rb")
             except FileNotFoundError:
+                if id_ == "favicon.ico":
+                    path = os.path.join(os.path.realpath("."), "template", "default_favicon.ico")
+                    f = open(path, "rb")
+                    return send_file(f, attachment_filename=id_, mimetype='image/x-icon')
+                if id_ == "logo.png":
+                    path = os.path.join(os.path.realpath("."), "template", "default_logo.png")
+                    f = open(path, "rb")
+                    return send_file(f, attachment_filename=id_, mimetype='image/PNG')
+
                 raise ImageNotFound
 
             if id_ == "favicon.ico":
