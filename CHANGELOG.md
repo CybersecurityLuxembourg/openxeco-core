@@ -1,6 +1,27 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.16.0] - XXXX-XX-XX
+
+### Changed
+
+- Review UI on Contact page of oxe-web-community
+- Review UI on Formm page of oxe-web-community
+- Color style for Tab component on oxe-web-admin and oxe-web-community
+- Improve color management in styling of oxe-web-community
+
+### Added
+
+- "url" field type on oxe-web-admin and oxe-web-community
+- Control on URL fields on oxe-web-admin and oxe-web-community
+- DialogHint component on oxe-web-admin
+- DialogError on oxe-web-admin and oxe-web-community
+
+### Fixed
+
+- Typo and text on documentation of owe-web-community
+- Contact message creation on oxe-web-community by correcting database structure via migration
+
 ## [1.15.3] - 2023-03-09
 
 ### Changed
