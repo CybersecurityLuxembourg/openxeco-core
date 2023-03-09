@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { postRequest } from "../../utils/request.jsx";
 import FormLine from "../form/FormLine.jsx";
 import Message from "../box/Message.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class ContactSend extends React.Component {
 	constructor(props) {
@@ -41,7 +42,20 @@ export default class ContactSend extends React.Component {
 			<div id={"ContactSend"} className={"max-sized-page"}>
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h2>Send a message</h2>
+						<h2>
+							Send a message&nbsp;
+
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>Why sending a message?</h2>
+										</div>
+									</div>
+								}
+							/>
+						</h2>
 
 						<FormLine
 							label={"Message"}

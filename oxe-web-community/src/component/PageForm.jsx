@@ -7,6 +7,7 @@ import Tab from "./tab/Tab.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getRequest } from "../utils/request.jsx";
 import Loading from "./box/Loading.jsx";
+import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageForm extends React.Component {
 	constructor(props) {
@@ -71,7 +72,20 @@ export default class PageForm extends React.Component {
 
 		return (
 			<div id="PageForm" className="page max-sized-page">
-				<h1>Forms</h1>
+				<h1>
+					Forms&nbsp;
+
+					<DialogHint
+						small={true}
+						content={
+							<div className="row">
+								<div className="col-md-12">
+									<h2>What are the forms?</h2>
+								</div>
+							</div>
+						}
+					/>
+				</h1>
 
 				<Tab
 					labels={["Available forms"].concat(this.state.forms.map((f) => f.name))}

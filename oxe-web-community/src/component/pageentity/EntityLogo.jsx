@@ -81,62 +81,63 @@ export default class EntityGlobal extends React.Component {
 			<div id="EntityLogo" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-9">
-						<h2>Logo</h2>
-					</div>
+						<h2>
+							Logo&nbsp;
 
-					<div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>How can I modify the logo of my entity?</h2>
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How can I modify the logo of my entity?</h2>
 
-										<p>
-											You can modify the logo by:
-										</p>
+											<p>
+												You can modify the logo by:
+											</p>
 
-										<ul>
-											<li>
-												Clicking on the Drag and Drop box and
-												choose an image from your computer
-											</li>
-											<li>
-												Choose an image on your computer, drag
-												it onto the Drag and drop field and drop it to the box
-											</li>
-										</ul>
+											<ul>
+												<li>
+													Clicking on the Drag and Drop box and
+													choose an image from your computer
+												</li>
+												<li>
+													Choose an image on your computer, drag
+													it onto the Drag and drop field and drop it to the box
+												</li>
+											</ul>
 
-										<img src="/img/hint-drag-and-drop-logo.png"/>
+											<img src="/img/hint-drag-and-drop-logo.png"/>
 
-										<p>
-											Once finished, click on the active &quot;Request logo change&quot;
-											button to confirm your action:
-										</p>
+											<p>
+												Once finished, click on the active &quot;Request logo change&quot;
+												button to confirm your action:
+											</p>
 
-										<img src="/img/hint-request-logo-button.png"/>
+											<img src="/img/hint-request-logo-button.png"/>
 
-										<p>
-											Please consider
-											that the image must be .jpg, .jpeg or .png. The width and the
-											height also cannot be higher than 500px.
-										</p>
+											<p>
+												Please consider
+												that the image must be .jpg, .jpeg or .png. The width and the
+												height also cannot be higher than 500px.
+											</p>
 
-										<p>
-											This will send a request to the administration team, who will
-											either accept or reject your request.
-										</p>
+											<p>
+												This will send a request to the administration team, who will
+												either accept or reject your request.
+											</p>
 
-										<h2>Note</h2>
+											<h2>Note</h2>
 
-										<p>
-											You can follow up your requests by going on this menu:
-										</p>
+											<p>
+												You can follow up your requests by going on this menu:
+											</p>
 
-										<img src="/img/hint-request-menu.png"/>
+											<img src="/img/hint-request-menu.png"/>
+										</div>
 									</div>
-								</div>
-							}
-						/>
+								}
+							/>
+						</h2>
 					</div>
 				</div>
 
@@ -149,7 +150,7 @@ export default class EntityGlobal extends React.Component {
 						{this.state.entityInfo.image === null
 							? <Message
 								text={"No logo found for this entity"}
-								height={300}
+								height={200}
 							/>
 							: <img
 								src={getApiURL() + "public/get_public_image/" + this.state.entityInfo.image}

@@ -38,7 +38,7 @@ export default class PageContact extends React.Component {
 	render() {
 		return (
 			<div id="PageContact" className="page max-sized-page">
-				<h1>Contact us</h1>
+				<h1>Contact</h1>
 
 				<Tab
 					labels={[

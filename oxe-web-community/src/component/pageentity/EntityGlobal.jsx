@@ -93,43 +93,44 @@ export default class EntityGlobal extends React.Component {
 			<div id="EntityGlobal" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-9">
-						<h2>Global information</h2>
-					</div>
+						<h2>
+							Global information&nbsp;
 
-					<div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>How can I modify the global information of my entity?</h2>
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How can I modify the global information of my entity?</h2>
 
-										<p>
-											You can modify the fields and select the following button:
-										</p>
+											<p>
+												You can modify the fields and select the following button:
+											</p>
 
-										<img src="/img/hint-request-global-modification.png"/>
+											<img src="/img/hint-request-global-modification.png"/>
 
-										<p>
-											Your request will be sent to the administration team, who will
-											either accept or reject your suggestion.
-										</p>
+											<p>
+												Your request will be sent to the administration team, who will
+												either accept or reject your suggestion.
+											</p>
 
-										<h2>Note</h2>
+											<h2>Note</h2>
 
-										<p>
-											You can follow up your requests by going on this menu:
-										</p>
+											<p>
+												You can follow up your requests by going on this menu:
+											</p>
 
-										<img src="/img/hint-request-menu.png"/>
+											<img src="/img/hint-request-menu.png"/>
+										</div>
 									</div>
-								</div>
-							}
-						/>
+								}
+							/>
+						</h2>
 					</div>
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+					<div className="col-md-12 row-spaced">
 						<FormLine
 							label={this.state.fields.name}
 							value={this.state.entityInfo.name}
@@ -179,7 +180,7 @@ export default class EntityGlobal extends React.Component {
 					</div>
 
 					<div className="col-md-12">
-						<h2>Social network</h2>
+						<h3>Social network</h3>
 					</div>
 
 					<div className="col-md-12">

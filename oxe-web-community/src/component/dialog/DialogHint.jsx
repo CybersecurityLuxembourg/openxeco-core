@@ -12,7 +12,10 @@ export default class DialogHint extends React.Component {
 	render() {
 		return (
 			<Popup
-				trigger={<i className="DialogHint-icon fas fa-question-circle"/>}
+				trigger={<i
+					className={"DialogHint-icon fas fa-question-circle "
+						+ (this.props.small && "DialogHint-icon-small")}
+				/>}
 				closeOnDocumentClick
 				modal
 				className={"DialogHint Popup-small-size"}

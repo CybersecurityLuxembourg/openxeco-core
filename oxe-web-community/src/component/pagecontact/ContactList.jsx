@@ -5,6 +5,7 @@ import { getRequest } from "../../utils/request.jsx";
 import Loading from "../box/Loading.jsx";
 import Message from "../box/Message.jsx";
 import Request from "../item/Request.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class ContactList extends React.Component {
 	constructor(props) {
@@ -49,7 +50,20 @@ export default class ContactList extends React.Component {
 			<div id={"ContactList"} className={"max-sized-page"}>
 				<div className={"row row-spaced"}>
 					<div className="col-md-9">
-						<h2>My ongoing messages</h2>
+						<h2>
+							My ongoing messages&nbsp;
+
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>What are my ongoing messages?</h2>
+										</div>
+									</div>
+								}
+							/>
+						</h2>
 					</div>
 
 					<div className="col-md-3 top-title-menu">

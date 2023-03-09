@@ -171,68 +171,69 @@ export default class EntityTaxonomy extends React.Component {
 			<div id="EntityTaxonomy" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-9">
-						<h2>Taxonomy</h2>
-					</div>
+						<h2>
+							Taxonomy&nbsp;
 
-					<div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>How can I modify the taxonomy of my entity?</h2>
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How can I modify the taxonomy of my entity?</h2>
 
-										<p>
-											Select the taxonomy category from the drop-down menu:
-										</p>
+											<p>
+												Select the taxonomy category from the drop-down menu:
+											</p>
 
-										<img src="/img/hint-taxonomy-select.png"/>
+											<img src="/img/hint-taxonomy-select.png"/>
 
-										<p>
-											You can see the taxonomy tree with the current selection.
-											A blue circle means that the entity is assigned to
-											the value and a red circle means that it is not.
-										</p>
+											<p>
+												You can see the taxonomy tree with the current selection.
+												A blue circle means that the entity is assigned to
+												the value and a red circle means that it is not.
+											</p>
 
-										<img src="/img/hint-taxonomy-tree.png"/>
+											<img src="/img/hint-taxonomy-tree.png"/>
 
-										<p>
-											If you want to change the selection, unlock the diagram
-											by clicking on the top right button:
-										</p>
+											<p>
+												If you want to change the selection, unlock the diagram
+												by clicking on the top right button:
+											</p>
 
-										<img src="/img/hint-taxonomy-lock-button.png"/>
+											<img src="/img/hint-taxonomy-lock-button.png"/>
 
-										<p>
-											By clicking on the coloured circles, you will modify the
-											selection. Once done, you can consult the differencies
-											at the bottom of the tree.
-										</p>
+											<p>
+												By clicking on the coloured circles, you will modify the
+												selection. Once done, you can consult the differencies
+												at the bottom of the tree.
+											</p>
 
-										<img src="/img/hint-taxonomy-differences.png"/>
+											<img src="/img/hint-taxonomy-differences.png"/>
 
-										<p>
-											You will complete the modifications by selecting the
-											following button.
-										</p>
+											<p>
+												You will complete the modifications by selecting the
+												following button.
+											</p>
 
-										<img src="/img/hint-taxonomy-modif-button.png"/>
+											<img src="/img/hint-taxonomy-modif-button.png"/>
 
-										<p>
-											This will send a request to the administration team, who will
-											either accept or reject your request.
-										</p>
+											<p>
+												This will send a request to the administration team, who will
+												either accept or reject your request.
+											</p>
 
-										<h2>Note</h2>
+											<h2>Note</h2>
 
-										<p>
-											You can follow up your requests by going on this menu:
-										</p>
+											<p>
+												You can follow up your requests by going on this menu:
+											</p>
 
-										<img src="/img/hint-request-menu.png"/>
+											<img src="/img/hint-request-menu.png"/>
+										</div>
 									</div>
-								</div>
-							}
-						/>
+								}
+							/>
+						</h2>
 					</div>
 				</div>
 

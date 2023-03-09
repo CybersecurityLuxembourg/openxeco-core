@@ -63,41 +63,42 @@ export default class AddEntityRegister extends React.Component {
 			<div id="AddEntityRegister" className="max-sized-page row-spaced">
 				<div className={"row row-spaced"}>
 					<div className="col-md-9">
-						<h2>Register an entity</h2>
-					</div>
+						<h2>
+							Register an entity&nbsp;
 
-					<div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>How to register a new entity?</h2>
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How to register a new entity?</h2>
 
-										<p>
-											Fill in the form and select the
-											&quot;Request registration&quot; button.
-										</p>
+											<p>
+												Fill in the form and select the
+												&quot;Request registration&quot; button.
+											</p>
 
-										<img src="/img/hint-request-registration-button.png"/>
+											<img src="/img/hint-request-registration-button.png"/>
 
-										<p>
-											Note that the &quot;Name&quot;, &quot;Website&quot;
-											and &quot;Creation date&quot; fields
-											are mandatory to complete the form.
-										</p>
+											<p>
+												Note that the &quot;Name&quot;, &quot;Website&quot;
+												and &quot;Creation date&quot; fields
+												are mandatory to complete the form.
+											</p>
 
-										<h2>Note</h2>
+											<h2>Note</h2>
 
-										<p>
-											You can follow up your requests by clicking on the
-											icon in the left menu bar as shown below:
-										</p>
+											<p>
+												You can follow up your requests by clicking on the
+												icon in the left menu bar as shown below:
+											</p>
 
-										<img src="/img/hint-contact-menu.png"/>
+											<img src="/img/hint-contact-menu.png"/>
+										</div>
 									</div>
-								</div>
-							}
-						/>
+								}
+							/>
+						</h2>
 					</div>
 
 					<div className="col-md-12 row-spaced">

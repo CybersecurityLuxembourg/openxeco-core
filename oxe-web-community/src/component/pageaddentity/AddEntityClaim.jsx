@@ -128,62 +128,63 @@ export default class PageAddEntity extends React.Component {
 						height={200}
 					/>
 					: <div className={"row row-spaced"}>
-						<div className="col-md-9">
-							<h2>Claim an entity</h2>
-						</div>
+						<div className="col-md-12">
+							<h2>
+								Claim an entity&nbsp;
 
-						<div className="col-md-3 top-title-menu">
-							<DialogHint
-								content={
-									<div className="row">
-										<div className="col-md-12">
-											<h2>Why claiming access to an entity?</h2>
+								<DialogHint
+									small={true}
+									content={
+										<div className="row">
+											<div className="col-md-12">
+												<h2>Why claiming access to an entity?</h2>
 
-											<p>
-												If assigned to an entity, you can request
-												a change to its global information,
-												logo, addresses and taxonomy.
-											</p>
+												<p>
+													If assigned to an entity, you can request
+													a change to its global information,
+													logo, addresses and taxonomy.
+												</p>
 
-											<p>
-												Administrators can contact you to verify
-												that you can be legitimately assigned to the entity.
-											</p>
+												<p>
+													Administrators can contact you to verify
+													that you can be legitimately assigned to the entity.
+												</p>
 
-											<h2>How to claim access to an entity?</h2>
+												<h2>How to claim access to an entity?</h2>
 
-											<p>
-												Type the entity name in the text field shown below.
-												You need to type at least 2 characters to perform the search.
-											</p>
+												<p>
+													Type the entity name in the text field shown below.
+													You need to type at least 2 characters to perform the search.
+												</p>
 
-											<img src="/img/hint-search-claim-entity.png"/>
+												<img src="/img/hint-search-claim-entity.png"/>
 
-											<p>
-												Then, you will see the list of entities matching
-												your search. By clicking on the &quot;Claim access&quot;
-												button, you have claimed the assignment to the chosen entity.
-											</p>
+												<p>
+													Then, you will see the list of entities matching
+													your search. By clicking on the &quot;Claim access&quot;
+													button, you have claimed the assignment to the chosen entity.
+												</p>
 
-											<img src="/img/hint-entity-claim-button.png"/>
+												<img src="/img/hint-entity-claim-button.png"/>
 
-											<p>
-												This will send a request to the administration team,
-												who will either accept or reject your request.
-											</p>
+												<p>
+													This will send a request to the administration team,
+													who will either accept or reject your request.
+												</p>
 
-											<h2>Note</h2>
+												<h2>Note</h2>
 
-											<p>
-												You can follow up your requests by clicking on
-												the icon in the left menu bar as shown below:
-											</p>
+												<p>
+													You can follow up your requests by clicking on
+													the icon in the left menu bar as shown below:
+												</p>
 
-											<img src="/img/hint-contact-menu.png"/>
+												<img src="/img/hint-contact-menu.png"/>
+											</div>
 										</div>
-									</div>
-								}
-							/>
+									}
+								/>
+							</h2>
 						</div>
 
 						<div className="col-md-12">

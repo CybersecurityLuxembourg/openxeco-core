@@ -59,45 +59,46 @@ export default class EntityGlobal extends React.Component {
 			<div id="EntityGlobal" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-9">
-						<h2>Request</h2>
-					</div>
+						<h2>
+							Request&nbsp;
 
-					<div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>What&apos;s on this page?</h2>
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>What&apos;s on this page?</h2>
 
-										<p>
-											You will find all the active requests related to the
-											entity mentioned at the top of the page. The status is
-											&quot;NEW&quot; or &quot;IN PROCESS&quot;. The processed
-											requests will not appear in this list.
-										</p>
+											<p>
+												You will find all the active requests related to the
+												entity mentioned at the top of the page. The status is
+												&quot;NEW&quot; or &quot;IN PROCESS&quot;. The processed
+												requests will not appear in this list.
+											</p>
 
-										<h2>How can I delete a request?</h2>
+											<h2>How can I delete a request?</h2>
 
-										<p>
-											You can delete a request by clicking the following
-											button:
-										</p>
+											<p>
+												You can delete a request by clicking the following
+												button:
+											</p>
 
-										<img src="/img/hint-request-delete-button.png"/>
+											<img src="/img/hint-request-delete-button.png"/>
 
-										<h2>How can I issue an open request regarding my entity?</h2>
+											<h2>How can I issue an open request regarding my entity?</h2>
 
-										<p>
-											You can issue an open request regarding your entity by
-											completing this field and clicking on
-											&quot;Submit request&quot;:
-										</p>
+											<p>
+												You can issue an open request regarding your entity by
+												completing this field and clicking on
+												&quot;Submit request&quot;:
+											</p>
 
-										<img src="/img/hint-request-issue.png"/>
+											<img src="/img/hint-request-issue.png"/>
+										</div>
 									</div>
-								</div>
-							}
-						/>
+								}
+							/>
+						</h2>
 					</div>
 				</div>
 

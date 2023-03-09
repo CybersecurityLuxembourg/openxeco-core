@@ -133,72 +133,73 @@ export default class EntityAddress extends React.Component {
 		return (
 			<div id="EntityAddress" className="max-sized-page fade-in">
 				<div className={"row"}>
-					<div className="col-md-9">
-						<h2>Address</h2>
-					</div>
+					<div className="col-md-12">
+						<h2>
+							Address&nbsp;
 
-					<div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>How can I add an address to my entity?</h2>
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>How can I add an address to my entity?</h2>
 
-										<p>
-											You can add an address by completing the following form and
-											selecting the &quot;Request add&quot; button:
-										</p>
+											<p>
+												You can add an address by completing the following form and
+												selecting the &quot;Request add&quot; button:
+											</p>
 
-										<img src="/img/hint-add-address.png"/>
+											<img src="/img/hint-add-address.png"/>
 
-										<p>
-											Note that the Street, City and Country fields are mandatory
-											to complete the form.
-										</p>
+											<p>
+												Note that the Street, City and Country fields are mandatory
+												to complete the form.
+											</p>
 
-										<p>
-											This will send a request to the administration team, who will
-											either accept or reject your request.
-										</p>
+											<p>
+												This will send a request to the administration team, who will
+												either accept or reject your request.
+											</p>
 
-										<h2>How can I delete an address of my entity?</h2>
+											<h2>How can I delete an address of my entity?</h2>
 
-										<p>
-											You can delete an address of your entity by clicking the
-											red button:
-										</p>
+											<p>
+												You can delete an address of your entity by clicking the
+												red button:
+											</p>
 
-										<img src="/img/hint-delete-address-button.png"/>
+											<img src="/img/hint-delete-address-button.png"/>
 
-										<p>
-											This will send a request to the administration team, who will
-											either accept or reject your request.
-										</p>
+											<p>
+												This will send a request to the administration team, who will
+												either accept or reject your request.
+											</p>
 
-										<h2>How can I modify an address of my entity?</h2>
+											<h2>How can I modify an address of my entity?</h2>
 
-										<p>
-											You can modify the fields and select the following button:
-										</p>
+											<p>
+												You can modify the fields and select the following button:
+											</p>
 
-										<img src="/img/hint-modify-address-button.png"/>
+											<img src="/img/hint-modify-address-button.png"/>
 
-										<p>
-											This will send a request to the administration team, who will
-											either accept or reject your request.
-										</p>
+											<p>
+												This will send a request to the administration team, who will
+												either accept or reject your request.
+											</p>
 
-										<h2>Note</h2>
+											<h2>Note</h2>
 
-										<p>
-											You can follow up your requests by going on this menu:
-										</p>
+											<p>
+												You can follow up your requests by going on this menu:
+											</p>
 
-										<img src="/img/hint-request-menu.png"/>
+											<img src="/img/hint-request-menu.png"/>
+										</div>
 									</div>
-								</div>
-							}
-						/>
+								}
+							/>
+						</h2>
 					</div>
 				</div>
 

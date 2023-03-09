@@ -64,22 +64,7 @@ export default class PageHome extends React.Component {
 										</h3>
 
 										<h4>
-											<i className="fas fa-user"/> Profile
-										</h4>
-
-										<p>
-											Edit your personal profile. You will be the contact person
-											for the entity to which you are assigned. Your personal
-											information will not be made public on the
-											{this.props.settings !== null
-												&& this.props.settings.PROJECT_NAME !== undefined
-												? " " + this.props.settings.PROJECT_NAME
-												: ""
-											} portal. Learn more by visiting this section.
-										</p>
-
-										<h4>
-											<i className="fas fa-feather-alt"/> My articles
+											<i className="fas fa-feather-alt"/> Articles
 										</h4>
 
 										<p>
@@ -102,13 +87,28 @@ export default class PageHome extends React.Component {
 										</p>
 
 										<h4>
-											<i className="fas fa-building"/> My entities
+											<i className="fas fa-building"/> Entities
 										</h4>
 
 										<p>
 											Register and edit the information of your entity. Use
 											this section to present and promote your entity’s expertise
 											within the community and beyond.
+										</p>
+
+										<h4>
+											<i className="fas fa-user-circle"/> Profile
+										</h4>
+
+										<p>
+											Edit your personal profile. You will be the contact person
+											for the entity to which you are assigned. Your personal
+											information will not be made public on the
+											{this.props.settings !== null
+												&& this.props.settings.PROJECT_NAME !== undefined
+												? " " + this.props.settings.PROJECT_NAME
+												: ""
+											} portal. Learn more by visiting this section.
 										</p>
 
 										<h2>Hint & tips</h2>
@@ -119,7 +119,7 @@ export default class PageHome extends React.Component {
 										</p>
 
 										<div style={{ textAlign: "center" }}>
-											<i className="DialogHint-icon far fa-question-circle"/>
+											<i className="DialogHint-icon fas fa-question-circle"/>
 										</div>
 
 										<br/>
@@ -162,21 +162,21 @@ export default class PageHome extends React.Component {
 								<Link to="/form">
 									<div className="PageHome-white-block">
 										<i className="fas fa-poll-h"/>
-										<h3>FORMS</h3>
+										<h3>Answer the available forms</h3>
 									</div>
 								</Link>
 							</a>
 						</div>
 					}
 
-					<div className="col-md-12">
+					<div className="col-md-6">
 						<a
 							onClick={() => this.props.changeMenu("contact")}
 						>
 							<Link to="/contact">
 								<div className="PageHome-white-block">
 									<i className="fas fa-headset"/>
-									<h3>Contact and messages</h3>
+									<h3>Contact us</h3>
 								</div>
 							</Link>
 						</a>
@@ -240,8 +240,8 @@ export default class PageHome extends React.Component {
 						>
 							<Link to="/profile">
 								<div className="PageHome-white-block">
-									<i className="fas fa-user"/>
-									<h3>Profile: {this.props.email.split("@")[0]}</h3>
+									<i className="fas fa-user-circle"/>
+									<h3>Review and modify your profile</h3>
 								</div>
 							</Link>
 						</a>

@@ -48,37 +48,38 @@ export default class EntityCollaborator extends React.Component {
 			<div id="EntityCollaborator" className="max-sized-page fade-in">
 				<div className={"row"}>
 					<div className="col-md-9">
-						<h2>Collaborator</h2>
-					</div>
+						<h2>
+							Collaborator&nbsp;
 
-					<div className="col-md-3 top-title-menu">
-						<DialogHint
-							content={
-								<div className="row">
-									<div className="col-md-12">
-										<h2>What&apos;s on this page?</h2>
+							<DialogHint
+								small={true}
+								content={
+									<div className="row">
+										<div className="col-md-12">
+											<h2>What&apos;s on this page?</h2>
 
-										<p>
-											This page shows the list of collaborators of the entity.
-											Each collaborator can request changes.
-											If a collaborator does not seem to be legitimate on this
-											list, please contact the administrators.
-										</p>
+											<p>
+												This page shows the list of collaborators of the entity.
+												Each collaborator can request changes.
+												If a collaborator does not seem to be legitimate on this
+												list, please contact the administrators.
+											</p>
 
-										<p>
-											To contact the administration team, please go to&nbsp;
-											<a
-												onClick={() => this.props.changeMenu("contact")}
-											>
-												<Link to="/contact">
-													this page
-												</Link>
-											</a>.
-										</p>
+											<p>
+												To contact the administration team, please go to&nbsp;
+												<a
+													onClick={() => this.props.changeMenu("contact")}
+												>
+													<Link to="/contact">
+														this page
+													</Link>
+												</a>.
+											</p>
+										</div>
 									</div>
-								</div>
-							}
-						/>
+								}
+							/>
+						</h2>
 					</div>
 				</div>
 

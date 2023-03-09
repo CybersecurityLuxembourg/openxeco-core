@@ -4,6 +4,10 @@
 	color: #009fe3;
 }
 
+.DialogHint-icon-small {
+  font-size: 15px !important;
+}
+
 .DialogHint-icon:hover {
 	cursor: pointer;
 	animation: swing 1s infinite;
@@ -50,6 +54,8 @@
     font-family: sans-serif;
     color: grey;
     line-height: 1.5;
+    white-space: normal !important;
+    text-transform: none !important;
 }
 
 .DialogHint-wrapper img {
