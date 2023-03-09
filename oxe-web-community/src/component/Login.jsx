@@ -233,7 +233,7 @@ export default class Login extends React.Component {
 										After creating a personal account, you will be able to
 										register your entity and manage its information at any time.
 										You will also have the opportunity to share your entity’s
-										latest news with the cybersecurity ecosystem in Luxembourg and beyond.
+										latest news with the ecosystem and beyond.
 									</p>
 
 									<h3>
