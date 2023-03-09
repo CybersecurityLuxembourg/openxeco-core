@@ -57,17 +57,6 @@ export default class Menu extends React.Component {
 						</NavText>
 					</NavItem>
 					<div className="Menu-divider"/>
-					<NavItem
-						eventKey="profile"
-						active={this.props.selectedMenu === "profile"}
-						onClick={() => this.props.history.push("/profile")}>
-						<NavIcon>
-							<i className="fas fa-user-circle" style={{ fontSize: "1.75em" }}/>
-						</NavIcon>
-						<NavText>
-							Profile
-						</NavText>
-					</NavItem>
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <NavItem
@@ -78,7 +67,7 @@ export default class Menu extends React.Component {
 								<i className="fas fa-feather-alt" style={{ fontSize: "1.75em" }} />
 							</NavIcon>
 							<NavText>
-								My articles
+								Articles
 							</NavText>
 						</NavItem>
 					}
@@ -96,6 +85,18 @@ export default class Menu extends React.Component {
 							</NavText>
 						</NavItem>
 					}
+					<NavItem
+						eventKey="contact"
+						active={this.props.selectedMenu === "contact"}
+						onClick={() => this.props.history.push("/contact")}>
+						<NavIcon>
+							<i className="fas fa-headset" style={{ fontSize: "1.75em" }} />
+						</NavIcon>
+						<NavText>
+							Contact
+						</NavText>
+						{this.getTaskNotificationBlock("/contact")}
+					</NavItem>
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_LOGO === "TRUE"
 						&& <NavItem
@@ -148,17 +149,16 @@ export default class Menu extends React.Component {
 					</NavItem>
 
 					<NavItem
-						className="Menu-bug-nav-item"
-						eventKey="contact"
-						active={this.props.selectedMenu === "contact"}
-						onClick={() => this.props.history.push("/contact")}>
+						className="Menu-profile-nav-item"
+						eventKey="profile"
+						active={this.props.selectedMenu === "profile"}
+						onClick={() => this.props.history.push("/profile")}>
 						<NavIcon>
-							<i className="fas fa-headset" style={{ fontSize: "1.75em" }} />
+							<i className="fas fa-user-circle" style={{ fontSize: "1.75em" }}/>
 						</NavIcon>
 						<NavText>
-							Contact us
+							Profile
 						</NavText>
-						{this.getTaskNotificationBlock("/contact")}
 					</NavItem>
 					<NavItem
 						className="Menu-log-out-nav-item"

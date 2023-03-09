@@ -17,7 +17,7 @@ export default class PageHome extends React.Component {
 			<div className={"PageHome page max-sized-page row-spaced"}>
 				<div className={"row"}>
 					<div className="col-md-10">
-						<h1>My activity</h1>
+						<h1>Home</h1>
 					</div>
 
 					<div className="col-md-2 top-title-menu">
@@ -137,19 +137,6 @@ export default class PageHome extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-6">
-						<a
-							onClick={() => this.props.changeMenu("profile")}
-						>
-							<Link to="/profile">
-								<div className="PageHome-white-block">
-									<i className="fas fa-user"/>
-									<h3>Profile: {this.props.email.split("@")[0]}</h3>
-								</div>
-							</Link>
-						</a>
-					</div>
-
 					{this.props.settings
 						&& this.props.settings.ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE === "TRUE"
 						&& <div className="col-md-6">
@@ -181,6 +168,19 @@ export default class PageHome extends React.Component {
 							</a>
 						</div>
 					}
+
+					<div className="col-md-12">
+						<a
+							onClick={() => this.props.changeMenu("contact")}
+						>
+							<Link to="/contact">
+								<div className="PageHome-white-block">
+									<i className="fas fa-headset"/>
+									<h3>Contact and messages</h3>
+								</div>
+							</Link>
+						</a>
+					</div>
 				</div>
 
 				<div className={"row row-spaced"}>
@@ -227,6 +227,25 @@ export default class PageHome extends React.Component {
 							</a>
 						</div>
 					}
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
+						<h2>My profile</h2>
+					</div>
+
+					<div className="col-md-12">
+						<a
+							onClick={() => this.props.changeMenu("profile")}
+						>
+							<Link to="/profile">
+								<div className="PageHome-white-block">
+									<i className="fas fa-user"/>
+									<h3>Profile: {this.props.email.split("@")[0]}</h3>
+								</div>
+							</Link>
+						</a>
+					</div>
 				</div>
 			</div>
 		);
