@@ -133,6 +133,32 @@ export default class SettingLogo extends React.Component {
 		}
 	}
 
+	deleteLogo() {
+		postRequest.call(this, "setting/delete_logo", {}, () => {
+			nm.info("The logo has been deleted");
+			this.getLogo();
+		}, (response) => {
+			this.refresh();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.refresh();
+			nm.error(error.message);
+		});
+	}
+
+	deleteFavicon() {
+		postRequest.call(this, "setting/delete_favicon", {}, () => {
+			nm.info("The favicon has been deleted");
+			this.getFavicon();
+		}, (response) => {
+			this.refresh();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.refresh();
+			nm.error(error.message);
+		});
+	}
+
 	changeState(field, value) {
 		this.setState({ [field]: value });
 	}
@@ -153,9 +179,21 @@ export default class SettingLogo extends React.Component {
 				</div>
 
 				<div className={"row row-spaced"}>
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h2>Main logo</h2>
+					</div>
 
+					<div className="col-md-3">
+						<div className="right-buttons">
+							<button
+								className={"red-button"}
+								onClick={() => this.deleteLogo()}>
+								<i className="fas fa-trash-alt"/> Delete logo
+							</button>
+						</div>
+					</div>
+
+					<div className="col-md-12">
 						<Dropzone
 							accept=".png"
 							disabled={false}
@@ -177,9 +215,21 @@ export default class SettingLogo extends React.Component {
 						</Dropzone>
 					</div>
 
-					<div className="col-md-12">
+					<div className="col-md-9">
 						<h2>Favicon</h2>
+					</div>
 
+					<div className="col-md-3">
+						<div className="right-buttons">
+							<button
+								className={"red-button"}
+								onClick={() => this.deleteFavicon()}>
+								<i className="fas fa-trash-alt"/> Delete favicon
+							</button>
+						</div>
+					</div>
+
+					<div className="col-md-12">
 						<Dropzone
 							accept=".ico"
 							disabled={false}

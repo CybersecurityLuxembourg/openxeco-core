@@ -13,9 +13,14 @@ from decorator.verify_admin_access import verify_admin_access
 
 class DeleteFavicon(MethodResource, Resource):
 
+    db = None
+
+    def __init__(self, db):
+        self.db = db
+
     @log_request
     @doc(tags=['setting'],
-         description='Delete favicon of the project if exists. '
+         description='Delete favicon of the project if exists.'
                      'Note: the default favicon is then applied to the project.',
          responses={
              "200": {},
