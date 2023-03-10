@@ -9,6 +9,7 @@ import DialogConfirmation from "../dialog/DialogConfirmation.jsx";
 import Table from "../table/Table.jsx";
 import Tab from "../tab/Tab.jsx";
 import Loading from "../box/Loading.jsx";
+import DialogHint from "../dialog/DialogHint.jsx";
 
 export default class SettingGlobal extends React.Component {
 	constructor(props) {
@@ -191,17 +192,62 @@ export default class SettingGlobal extends React.Component {
 						<div className={"row row-spaced"} key={this.state.labels[0]}>
 							<div className="col-md-12 row-spaced">
 								<FormLine
-									label={"Project name"}
+									label={<div>
+										Project name&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Project name</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "PROJECT_NAME")}
 									onBlur={(v) => this.updateSetting("PROJECT_NAME", v)}
 								/>
 								<FormLine
-									label={"Admin platform name"}
+									label={<div>
+										Admin platform name&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Admin platform name</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ADMIN_PLATFORM_NAME")}
 									onBlur={(v) => this.updateSetting("ADMIN_PLATFORM_NAME", v)}
 								/>
 								<FormLine
-									label={"Private space platform name"}
+									label={<div>
+										Private space platform name&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Private space platform name</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "PRIVATE_SPACE_PLATFORM_NAME")}
 									onBlur={(v) => this.updateSetting("PRIVATE_SPACE_PLATFORM_NAME", v)}
 								/>
@@ -210,17 +256,62 @@ export default class SettingGlobal extends React.Component {
 						<div className={"row row-spaced"} key={this.state.labels[1]}>
 							<div className="col-md-12 row-spaced">
 								<FormLine
-									label={"Email address"}
+									label={<div>
+										Email address&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Email address</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "EMAIL_ADDRESS")}
 									onBlur={(v) => this.updateSetting("EMAIL_ADDRESS", v)}
 								/>
 								<FormLine
-									label={"Phone number"}
+									label={<div>
+										Phone number&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Phone number</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "PHONE_NUMBER")}
 									onBlur={(v) => this.updateSetting("PHONE_NUMBER", v)}
 								/>
 								<FormLine
-									label={"Postal address"}
+									label={<div>
+										Postal address&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Postal address</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "POSTAL_ADDRESS")}
 									onBlur={(v) => this.updateSetting("POSTAL_ADDRESS", v)}
 								/>
@@ -230,7 +321,22 @@ export default class SettingGlobal extends React.Component {
 							<div className="col-md-12 row-spaced">
 								<FormLine
 									type={"checkbox"}
-									label={"Show network page"}
+									label={<div>
+										Show network page&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Show network page</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "SHOW_NETWORK_PAGE") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("SHOW_NETWORK_PAGE", "TRUE")
@@ -239,7 +345,22 @@ export default class SettingGlobal extends React.Component {
 								/>
 								<FormLine
 									type={"checkbox"}
-									label={"Show email campaign page"}
+									label={<div>
+										Show email campaign page&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Show email campaign page</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "SHOW_CAMPAIGN_PAGE") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("SHOW_CAMPAIGN_PAGE", "TRUE")
@@ -248,7 +369,22 @@ export default class SettingGlobal extends React.Component {
 								/>
 								<FormLine
 									type={"checkbox"}
-									label={"Show form page"}
+									label={<div>
+										Show form page&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Show form page</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "SHOW_FORM_PAGE") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("SHOW_FORM_PAGE", "TRUE")
@@ -262,7 +398,22 @@ export default class SettingGlobal extends React.Component {
 								<h4>Pages</h4>
 								<FormLine
 									type={"checkbox"}
-									label={"Show form page"}
+									label={<div>
+										Show form page&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Show form page</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_FORM") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_FORM", "TRUE")
@@ -271,7 +422,22 @@ export default class SettingGlobal extends React.Component {
 								/>
 								<FormLine
 									type={"checkbox"}
-									label={"Show logo generator page"}
+									label={<div>
+										Show logo generator page&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Show logo generator page</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_LOGO") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_LOGO", "TRUE")
@@ -282,7 +448,22 @@ export default class SettingGlobal extends React.Component {
 								<h4>Article edition</h4>
 								<FormLine
 									type={"checkbox"}
-									label={"Allow article edition"}
+									label={<div>
+										Allow article edition&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Allow article edition</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "TRUE")
@@ -291,7 +472,22 @@ export default class SettingGlobal extends React.Component {
 								/>
 								<FormLine
 									type={"checkbox"}
-									label={"Allow article content edition"}
+									label={<div>
+										Allow article content edition&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Allow article content edition</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE_CONTENT", "TRUE")
@@ -300,7 +496,22 @@ export default class SettingGlobal extends React.Component {
 								/>
 								<FormLine
 									type={"checkbox"}
-									label={"Deactivate review on ecosystem articles"}
+									label={<div>
+										Deactivate review on ecosystem articles&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Deactivate review on ecosystem articles</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("DEACTIVATE_REVIEW_ON_ECOSYSTEM_ARTICLE", "TRUE")
@@ -308,7 +519,22 @@ export default class SettingGlobal extends React.Component {
 									)}
 								/>
 								<FormLine
-									label={"Authorized article types"}
+									label={<div>
+										Authorized article types&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Authorized article types</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM")}
 									onBlur={(v) => this.updateSetting("AUTHORIZED_ARTICLE_TYPES_FOR_ECOSYSTEM", v)}
 								/>
@@ -316,7 +542,22 @@ export default class SettingGlobal extends React.Component {
 								<h4>Legal and usage</h4>
 								<FormLine
 									type={"checkbox"}
-									label={"Activate privacy policy"}
+									label={<div>
+										Activate privacy policy&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Activate privacy policy</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ACTIVATE_PRIVACY_POLICY") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("ACTIVATE_PRIVACY_POLICY", "TRUE")
@@ -325,13 +566,43 @@ export default class SettingGlobal extends React.Component {
 								/>
 								<FormLine
 									type={"document"}
-									label={"Privacy policy document"}
+									label={<div>
+										Privacy policy document&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Privacy policy document</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "PRIVACY_POLICY_DOCUMENT")}
 									onChange={(v) => this.updateSetting("PRIVACY_POLICY_DOCUMENT", v ? v.toString() : v)}
 								/>
 								<FormLine
 									type={"checkbox"}
-									label={"Activate terms and conditions"}
+									label={<div>
+										Activate terms and conditions&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Activate terms and conditions</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ACTIVATE_TERMS_AND_CONDITIONS") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("ACTIVATE_TERMS_AND_CONDITIONS", "TRUE")
@@ -340,7 +611,22 @@ export default class SettingGlobal extends React.Component {
 								/>
 								<FormLine
 									type={"document"}
-									label={"Terms and conditions document"}
+									label={<div>
+										Terms and conditions document&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Terms and conditions document</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "TERMS_AND_CONDITIONS_DOCUMENT")}
 									onChange={(v) => this.updateSetting("TERMS_AND_CONDITIONS_DOCUMENT", v ? v.toString() : v)}
 								/>
@@ -348,7 +634,22 @@ export default class SettingGlobal extends React.Component {
 								<h4>Subscription</h4>
 								<FormLine
 									type={"checkbox"}
-									label={"Allow entity request on subscription"}
+									label={<div>
+										Allow entity request on subscription&nbsp;
+
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Setting: Allow entity request on subscription</h2>
+
+														<div>ddd</div>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									value={getSettingValue(this.props.settings, "ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION") === "TRUE"}
 									onChange={(v) => (v
 										? this.addSetting("ALLOW_ENTITY_REQUEST_ON_SUBSCRIPTION", "TRUE")

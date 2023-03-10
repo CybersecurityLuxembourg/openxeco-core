@@ -1,45 +1,49 @@
 
 .DialogHint-icon {
-	font-size: 30px;
-	color: #009fe3;
+  font-size: 30px;
+  color: #009fe3;
+}
+
+.DialogHint-icon-small {
+  font-size: 15px !important;
 }
 
 .DialogHint-icon:hover {
-	cursor: pointer;
-	animation: swing 1s infinite;
+  cursor: pointer;
+  animation: swing 1s infinite;
   -webkit-animation: swing 1s infinite;
 }
 
 .DialogHint-inside-icon-wrapper {
-	text-align: center;
-	margin: 10px 0px;
+  text-align: center;
+  margin: 10px 0px;
 }
 
 .DialogHint-inside-icon {
-	display: block;
-	font-size: 70px;
-	color: #009fe3;
-	animation: swing 1s;
+  display: block;
+  font-size: 70px;
+  color: #009fe3;
+  animation: swing 1s;
   -webkit-animation: swing 1s;
 }
 
 .DialogHint-overlay {
-	display: block;
-	z-index: 1080 !important;
-	margin: initial;
-	font-size: initial;
-	font-variant: initial;
-	font-weight: initial;
-	width: initial;
-	text-align: initial;
-	overflow-y: auto;
+  display: block;
+  z-index: 1080 !important;
+  margin: initial;
+  font-size: initial;
+  font-variant: initial;
+  font-weight: initial;
+  width: initial;
+  text-align: initial;
+  overflow-y: auto;
 }
 
 .DialogHint-content {
-	z-index: 1080 !important;
-	padding: 30px 20px 30px 20px !important;
-	color: grey !important;
-	line-height: 1.5 !important;
+  z-index: 1080 !important;
+  padding: 30px 20px 30px 20px !important;
+  color: grey !important;
+  line-height: 1.5 !important;
 }
 
 .DialogHint-wrapper {
@@ -50,17 +54,19 @@
     font-family: sans-serif;
     color: grey;
     line-height: 1.5;
+    white-space: normal !important;
+    text-transform: none !important;
 }
 
 .DialogHint-wrapper img {
-	margin: 20px auto;
-	display: block;
-	max-width: 100%;
-	box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+  margin: 20px auto;
+  display: block;
+  max-width: 100%;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
 .DialogHint-trigger {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .DialogHint-content p { 
@@ -70,10 +76,10 @@
 }
 
 .DialogHint-content button {
-	position: relative !important;
-	width: auto !important;
-	bottom: 0 !important;
-	right: 0 !important;
+  position: relative !important;
+  width: auto !important;
+  bottom: 0 !important;
+  right: 0 !important;
 }
 
 @-webkit-keyframes swing {
