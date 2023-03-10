@@ -50,6 +50,13 @@
 
 .Tab-menu-el-selected {
     border-left: 4px solid var(--primary-color);
+    border-bottom: none !important;
+    background-color: var(--light-primary-color);
+}
+
+.Tab-menu-el-selected-fw {
+    border-bottom: 4px solid var(--primary-color);
+    border-left: none !important;
     background-color: var(--light-primary-color);
 }
 
