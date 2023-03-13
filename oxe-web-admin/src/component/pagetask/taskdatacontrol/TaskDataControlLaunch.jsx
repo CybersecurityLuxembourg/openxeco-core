@@ -1,13 +1,13 @@
 import React from "react";
-import "./SettingCron.css";
+import "./TaskDataControlLaunch.css";
 import { NotificationManager as nm } from "react-notifications";
-import Loading from "../box/Loading.jsx";
-import { getRequest, postRequest } from "../../utils/request.jsx";
-import Log from "../item/Log.jsx";
-import Message from "../box/Message.jsx";
-import { dictToURI } from "../../utils/url.jsx";
+import Loading from "../../box/Loading.jsx";
+import { getRequest, postRequest } from "../../../utils/request.jsx";
+import Log from "../../item/Log.jsx";
+import Message from "../../box/Message.jsx";
+import { dictToURI } from "../../../utils/url.jsx";
 
-export default class SettingCron extends React.Component {
+export default class TaskDataControlLaunch extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -126,11 +126,10 @@ export default class SettingCron extends React.Component {
 
 	render() {
 		return (
-			<div id="SettingCron" className="fade-in">
+			<div id="TaskDataControlLaunch" className="fade-in">
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h1>Scheduled task</h1>
-						<h2>Run task</h2>
+						<h2>Launch scan</h2>
 					</div>
 
 					{this.state.resources !== null
@@ -160,7 +159,7 @@ export default class SettingCron extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
-						<h2>Task logs</h2>
+						<h2>Scan logs</h2>
 
 						<div className="top-right-buttons">
 							<button
@@ -181,7 +180,7 @@ export default class SettingCron extends React.Component {
 						}
 						{this.state.logs !== null && this.state.logs.length === 0
 							&& <Message
-								text={"No log found for the scheduled tasks"}
+								text={"No log found for the scan"}
 								height={150}
 							/>
 						}

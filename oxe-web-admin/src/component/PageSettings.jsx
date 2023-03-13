@@ -3,7 +3,6 @@ import "./PageSettings.css";
 import SettingGlobal from "./pagesettings/SettingGlobal.jsx";
 import SettingLogo from "./pagesettings/SettingLogo.jsx";
 import SettingMail from "./pagesettings/SettingMail.jsx";
-import SettingCron from "./pagesettings/SettingCron.jsx";
 import Tab from "./tab/Tab.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 
@@ -19,7 +18,6 @@ export default class PageSettings extends React.Component {
 				"global",
 				"logo",
 				"email",
-				"scheduled_task",
 			],
 		};
 	}
@@ -46,7 +44,7 @@ export default class PageSettings extends React.Component {
 		return (
 			<div id="PageSettings" className="page max-sized-page">
 				<Tab
-					labels={["Global", "Logo", "Email", "Scheduled task"]}
+					labels={["Global", "Logo", "Email"]}
 					selectedMenu={this.state.selectedMenu}
 					onMenuClick={this.onMenuClick}
 					keys={this.state.tabs}
@@ -61,9 +59,6 @@ export default class PageSettings extends React.Component {
 						/>,
 						<SettingMail
 							key={"email"}
-						/>,
-						<SettingCron
-							key={"cron"}
 						/>,
 					]}
 				/>
