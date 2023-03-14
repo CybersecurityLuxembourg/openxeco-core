@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Color style for Tab component on oxe-web-admin and oxe-web-community
 - Improve color management in styling of oxe-web-community
 - Review UI of logo management on oxe-web-admin
+- Move the "Scheduled tasks" to "Tasks" page as "Launch scan" on oxe-web-admin
 
 ### Added
 
@@ -19,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - DialogError on oxe-web-admin and oxe-web-community
 - Default logo and favicon
 - API resources: setting/delete_favicon and setting/delete_favicon
+- Documentation on "Settings" page on oxe-web-admin
 
 ### Fixed
 
