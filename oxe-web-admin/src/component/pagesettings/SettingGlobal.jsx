@@ -202,7 +202,32 @@ export default class SettingGlobal extends React.Component {
 													<div className="col-md-12">
 														<h2>Setting: Project name</h2>
 
-														<div>ddd</div>
+														<p>
+															The project name is the name of the organisation
+															that leads this openXeco instance.
+														</p>
+
+														<p>
+															The value of this config is used for several situations:
+														</p>
+
+														<ul>
+															<li>In the subject and the signature of triggered by a request
+															of password reset</li>
+															<li>In the subject and the signature of the email triggered
+															by an account creation</li>
+															<li>In the subject and the signature of the email triggered
+															by a new incoming request (only into destination of
+															administrators)</li>
+															<li>In the network page of the administration panel when
+															another openXeco instance
+															connects to your instance</li>
+															<li>On the login page of the private space portal</li>
+														</ul>
+
+														<p>
+															The key of the setting is the following one: &quot;PROJECT_NAME&quot;.
+														</p>
 													</div>
 												</div>
 											}
@@ -222,7 +247,25 @@ export default class SettingGlobal extends React.Component {
 													<div className="col-md-12">
 														<h2>Setting: Admin platform name</h2>
 
-														<div>ddd</div>
+														<p>
+															The admin platform name is the name given to the administration
+															portal.
+														</p>
+
+														<p>
+															The value of this config is used for several situations:
+														</p>
+
+														<ul>
+															<li>On the login page of the administration
+															portal, &quot;ADMINISTRATION PLATFORM&quot;
+															being used in the value is not set</li>
+														</ul>
+
+														<p>
+															The key of the setting is the following
+															one: &quot;ADMIN_PLATFORM_NAME&quot;.
+														</p>
 													</div>
 												</div>
 											}
@@ -242,7 +285,26 @@ export default class SettingGlobal extends React.Component {
 													<div className="col-md-12">
 														<h2>Setting: Private space platform name</h2>
 
-														<div>ddd</div>
+														<p>
+															The private space platform name is the name given to
+															the private space
+															portal.
+														</p>
+
+														<p>
+															The value of this config is used for several situations:
+														</p>
+
+														<ul>
+															<li>On the login page of the private space
+															portal, &quot;PRIVATE SPACE&quot;
+															being used in the value is not set</li>
+														</ul>
+
+														<p>
+															The key of the setting is the following
+															one: &quot;PRIVATE_SPACE_PLATFORM_NAME&quot;.
+														</p>
 													</div>
 												</div>
 											}
@@ -266,7 +328,29 @@ export default class SettingGlobal extends React.Component {
 													<div className="col-md-12">
 														<h2>Setting: Email address</h2>
 
-														<div>ddd</div>
+														<p>
+															This email address is the contact point of
+															the organisation via email.
+														</p>
+
+														<p>
+															The value of this config is used for several situations:
+														</p>
+
+														<ul>
+															<li>The email address is accessible on the login page of
+															the private space portal</li>
+															<li>The email address is accessible on the contact page
+															of the private space portal</li>
+															<li>The email address is accessible on the public API
+															resource gathering key information of openXeco
+															project (CF. /public/get_public_node_information)</li>
+														</ul>
+
+														<p>
+															The key of the setting is the following
+															one: &quot;EMAIL_ADDRESS&quot;.
+														</p>
 													</div>
 												</div>
 											}
@@ -286,7 +370,27 @@ export default class SettingGlobal extends React.Component {
 													<div className="col-md-12">
 														<h2>Setting: Phone number</h2>
 
-														<div>ddd</div>
+														<p>
+															This phone number is the contact point of
+															the organisation via phone.
+														</p>
+
+														<p>
+															The value of this config is used for several situations:
+														</p>
+
+														<ul>
+															<li>The phone number is accessible on the contact page
+															of the private space portal</li>
+															<li>The phone number is accessible on the public API
+															resource gathering key information of openXeco
+															project (CF. /public/get_public_node_information)</li>
+														</ul>
+
+														<p>
+															The key of the setting is the following
+															one: &quot;PHONE_NUMBER&quot;.
+														</p>
 													</div>
 												</div>
 											}
@@ -306,7 +410,27 @@ export default class SettingGlobal extends React.Component {
 													<div className="col-md-12">
 														<h2>Setting: Postal address</h2>
 
-														<div>ddd</div>
+														<p>
+															This postal address is the contact point of
+															the organisation via post.
+														</p>
+
+														<p>
+															The value of this config is used for several situations:
+														</p>
+
+														<ul>
+															<li>The postal address is accessible on the contact page
+															of the private space portal</li>
+															<li>The postal address is accessible on the public API
+															resource gathering key information of openXeco
+															project (CF. /public/get_public_node_information)</li>
+														</ul>
+
+														<p>
+															The key of the setting is the following
+															one: &quot;POSTAL_ADDRESS&quot;.
+														</p>
 													</div>
 												</div>
 											}
@@ -331,7 +455,27 @@ export default class SettingGlobal extends React.Component {
 													<div className="col-md-12">
 														<h2>Setting: Show network page</h2>
 
-														<div>ddd</div>
+														<p>
+															This postal address is the contact point of
+															the organisation via post.
+														</p>
+
+														<p>
+															The value of this config is used for several situations:
+														</p>
+
+														<ul>
+															<li>The postal address is accessible on the contact page
+															of the private space portal</li>
+															<li>The postal address is accessible on the public API
+															resource gathering key information of openXeco
+															project (CF. /public/get_public_node_information)</li>
+														</ul>
+
+														<p>
+															The key of the setting is the following
+															one: &quot;POSTAL_ADDRESS&quot;.
+														</p>
 													</div>
 												</div>
 											}

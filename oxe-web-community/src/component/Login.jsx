@@ -241,7 +241,7 @@ export default class Login extends React.Component {
 											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
 											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
 											: "This portal"
-										} is divided into 3 sections:
+										} is divided into 4 sections:
 									</h3>
 
 									<h4>
