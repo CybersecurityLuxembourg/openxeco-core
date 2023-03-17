@@ -42,6 +42,8 @@ export default class TaskDataControl extends React.Component {
 						/>,
 						<TaskDataControlLaunch
 							key={"launch"}
+							settings={this.props.settings}
+							refreshSettings={this.props.refreshSettings}
 						/>,
 					]}
 				/>

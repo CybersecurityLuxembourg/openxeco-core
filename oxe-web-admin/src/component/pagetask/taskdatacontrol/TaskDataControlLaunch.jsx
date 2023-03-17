@@ -5,15 +5,13 @@ import Loading from "../../box/Loading.jsx";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import Log from "../../item/Log.jsx";
 import Message from "../../box/Message.jsx";
+import FormLine from "../../button/FormLine.jsx";
 import { dictToURI } from "../../../utils/url.jsx";
+import { getSettingValue } from "../../../utils/setting.jsx";
 
 export default class TaskDataControlLaunch extends React.Component {
 	constructor(props) {
 		super(props);
-
-		this.getResources = this.getResources.bind(this);
-		this.refreshLogs = this.refreshLogs.bind(this);
-		this.getLogs = this.getLogs.bind(this);
 
 		this.state = {
 			resources: null,
@@ -53,6 +51,41 @@ export default class TaskDataControlLaunch extends React.Component {
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	addSetting(property, value) {
+		const params = {
+			property,
+			value,
+		};
+
+		postRequest.call(this, "setting/add_setting", params, () => {
+			this.props.refreshSettings();
+			nm.info("The setting has been added");
+		}, (response) => {
+			this.props.refreshSettings();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.props.refreshSettings();
+			nm.error(error.message);
+		});
+	}
+
+	deleteSetting(property) {
+		const params = {
+			property,
+		};
+
+		postRequest.call(this, "setting/delete_setting", params, () => {
+			this.props.refreshSettings();
+			nm.info("The setting has been deleted");
+		}, (response) => {
+			this.props.refreshSettings();
+			nm.warning(response.statusText);
+		}, (error) => {
+			this.props.refreshSettings();
 			nm.error(error.message);
 		});
 	}
@@ -159,11 +192,140 @@ export default class TaskDataControlLaunch extends React.Component {
 
 				<div className={"row row-spaced"}>
 					<div className="col-md-12">
+						<h2>Database compliance settings</h2>
+
+						<h3>Entities</h3>
+
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without image"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_IMAGE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_IMAGE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_IMAGE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without website"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_WEBSITE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without postal address"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_POSTAL_ADDRESS")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities with postal address missing geolocation"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITH_POSTAL_ADDRESS_MISSING_GEOLOCATION")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without phone number"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_PHONE_NUMBER")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without email address"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_EMAIL_ADDRESS")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight entities without creation date"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ENTITIES_WITHOUT_CREATION_DATE")
+							)}
+						/>
+						<br/>
+
+						<h3>Articles</h3>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without title"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_TITLE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_TITLE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_TITLE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without handle"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_HANDLE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_HANDLE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_HANDLE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without publication date"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_PUBLICATION_DATE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight articles without content"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_CONTENT") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_CONTENT", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_CONTENT")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight events without start date"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_START_DATE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_START_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_START_DATE")
+							)}
+						/>
+						<FormLine
+							type={"checkbox"}
+							label={"Highlight events without end date"}
+							value={getSettingValue(this.props.settings, "HIGHLIGHT_ARTICLE_WITHOUT_END_DATE") === "TRUE"}
+							onChange={(v) => (v
+								? this.addSetting("HIGHLIGHT_ARTICLE_WITHOUT_END_DATE", "TRUE")
+								: this.deleteSetting("HIGHLIGHT_ARTICLE_WITHOUT_END_DATE")
+							)}
+						/>
+					</div>
+				</div>
+
+				<div className={"row row-spaced"}>
+					<div className="col-md-12">
 						<h2>Scan logs</h2>
 
 						<div className="top-right-buttons">
 							<button
-								onClick={this.refreshLogs}>
+								onClick={() => this.refreshLogs()}>
 								<i className="fas fa-redo-alt"/>
 							</button>
 						</div>

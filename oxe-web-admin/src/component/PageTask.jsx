@@ -104,6 +104,8 @@ export default class PageTask extends React.Component {
 					/>,
 					<TaskDataControl
 						key={"datacontrol"}
+						settings={this.props.settings}
+						refreshSettings={this.props.refreshSettings}
 					/>,
 				],
 			});
@@ -127,6 +129,8 @@ export default class PageTask extends React.Component {
 					/>,
 					<TaskDataControl
 						key={"datacontrol"}
+						settings={this.props.settings}
+						refreshSettings={this.props.refreshSettings}
 					/>,
 				],
 			});
