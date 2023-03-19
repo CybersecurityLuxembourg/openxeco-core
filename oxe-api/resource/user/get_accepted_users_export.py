@@ -54,8 +54,6 @@ class GetAcceptedUsersExport(MethodResource, Resource):
 
         query = self.db.session.query(
             self.db.tables["UserProfile"]
-        ).filter(
-            self.db.tables["UserProfile"].user_id.in_(user_ids)
         ).join(
             self.db.tables["User"],
             self.db.tables["Country"],
@@ -63,6 +61,10 @@ class GetAcceptedUsersExport(MethodResource, Resource):
             self.db.tables["Industry"],
             self.db.tables["Expertise"],
             self.db.tables["UserRequest"],
+        ).filter(
+            self.db.tables["UserProfile"].user_id.in_(user_ids),
+            self.db.tables["UserRequest"].type == "NEW INDIVIDUAL ACCOUNT",
+            self.db.tables["UserRequest"].status == "ACCEPTED",
         )
 
         db_users = query.with_entities(
