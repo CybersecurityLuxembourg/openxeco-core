@@ -4,6 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
+import { validateEmail } from "../../../utils/re.jsx";
 
 export default class UserGlobal extends React.Component {
 	constructor(props) {
@@ -73,7 +74,8 @@ export default class UserGlobal extends React.Component {
 						<FormLine
 							label={"Email"}
 							value={this.state.user.email}
-							disabled={true}
+							onBlur={(s) => this.saveUserValue("email", s)}
+							format={validateEmail}
 						/>
 						<FormLine
 							label={"First name"}
