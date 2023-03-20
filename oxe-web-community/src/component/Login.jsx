@@ -596,8 +596,9 @@ export default class Login extends React.Component {
 												<li>contain at least 1 lowercase alphabetical character</li>
 												<li>contain at least 1 uppercase alphabetical character</li>
 												<li>contain at least 1 numeric character</li>
-												<li>contain at least 1 special character such as !@#$%^&*</li>
+												<li>contain at least 1 special character being !@#$%^&*</li>
 												<li>be between 8 and 30 characters long</li>
+												<li>not contain any part of a name, surname or both</li>
 											</div>
 											<br />
 										</>
@@ -680,8 +681,9 @@ export default class Login extends React.Component {
 											<li>contain at least 1 lowercase alphabetical character</li>
 											<li>contain at least 1 uppercase alphabetical character</li>
 											<li>contain at least 1 numeric character</li>
-											<li>contain at least 1 special character such as !@#$%^&*</li>
+											<li>contain at least 1 special character being !@#$%^&*</li>
 											<li>be between 8 and 30 characters long</li>
+											<li>not contain any part of a name, surname or both</li>
 										</div>
 									}
 								/>
