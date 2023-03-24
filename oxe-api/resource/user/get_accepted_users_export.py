@@ -35,39 +35,27 @@ class GetAcceptedUsersExport(MethodResource, Resource):
     @catch_exception
     # @stream_with_context
     def get(self, **kwargs):
-        request_query = self.db.session.query(self.db.tables["UserRequest"])
-        request_query = request_query.filter(self.db.tables["UserRequest"].status == "ACCEPTED")
-        request_query = request_query.filter(self.db.tables["UserRequest"].type == "NEW INDIVIDUAL ACCOUNT")
+        request_query = (
+            self.db.session.query( self.db.tables["UserRequest"])
+            .join(self.db.tables["User"])
+            .join(self.db.tables["UserProfile"], self.db.tables["UserRequest"].user_id == self.db.tables["UserProfile"].user_id)
+            .join(self.db.tables["Country"])
+            .join(self.db.tables["Profession"])
+            .join(self.db.tables["Industry"])
+            .join(self.db.tables["Expertise"])
+            .filter(
+                self.db.tables["UserRequest"].type == "NEW INDIVIDUAL ACCOUNT",
+                self.db.tables["UserRequest"].status == "ACCEPTED",
+            )
+        )
 
-        # date filter
         if "date_from" in kwargs:
             request_query = request_query.filter(self.db.tables["UserRequest"].submission_date >= kwargs["date_from"])
 
         if "date_to" in kwargs:
             request_query = request_query.filter(self.db.tables["UserRequest"].submission_date <= kwargs['date_to'])
 
-        requests = request_query.all()
-        user_ids = {
-            request.user_id
-            for request in requests
-        }
-
-        query = self.db.session.query(
-            self.db.tables["UserProfile"]
-        ).join(
-            self.db.tables["User"],
-            self.db.tables["Country"],
-            self.db.tables["Profession"],
-            self.db.tables["Industry"],
-            self.db.tables["Expertise"],
-            self.db.tables["UserRequest"],
-        ).filter(
-            self.db.tables["UserProfile"].user_id.in_(user_ids),
-            self.db.tables["UserRequest"].type == "NEW INDIVIDUAL ACCOUNT",
-            self.db.tables["UserRequest"].status == "ACCEPTED",
-        )
-
-        db_users = query.with_entities(
+        db_users = request_query.with_entities(
             self.db.tables["User"],
             self.db.tables["UserProfile"],
             self.db.tables["Country"],

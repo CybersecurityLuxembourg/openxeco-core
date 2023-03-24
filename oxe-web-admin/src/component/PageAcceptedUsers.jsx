@@ -26,15 +26,11 @@ export default class PageAcceptedUsers extends React.Component {
 			users: null,
 			date_from: null,
 			date_to: null,
-			expertise: null,
-			industries: null,
-			countries: null,
-			professions: null,
 		};
 	}
 
 	componentDidMount() {
-		this.fetchUsers();
+		this.fetchUsers(1);
 	}
 
 	static toDateString(date) {
@@ -44,9 +40,9 @@ export default class PageAcceptedUsers extends React.Component {
 		return year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
 	}
 
-	fetchUsers() {
+	fetchUsers(page) {
 		const filters = {
-			page: this.state.page,
+			page: Number.isInteger(page) ? page : this.state.page,
 			per_page: this.state.per_page,
 		};
 
@@ -309,7 +305,7 @@ export default class PageAcceptedUsers extends React.Component {
 								columns={columns}
 								data={this.state.users}
 								pagination={this.state.pagination}
-								changePage={this.fetchRequests}
+								changePage={this.fetchUsers}
 							/>
 							: <Loading
 								height={500}
