@@ -4,6 +4,7 @@ import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { getRequest, postRequest } from "../../../utils/request.jsx";
+import Mermaid from "../../../utils/mermaid.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import Message from "../../box/Message.jsx";
@@ -426,7 +427,17 @@ export default class DialogArticleEditor extends React.Component {
 														onClick={() => this.addBox("FRAME")}>
 														<i className="fab fa-youtube"/>
 													</button>
+													<button
+														onClick={() => this.addBox("MERMAID")}>
+														<i className="fas fa-image"/>
+													</button>
 												</div>
+												<Mermaid
+													chart={"graph LR;"
+														+ "A --- B;"
+														+ "B-->C[fa:fa-ban forbidden];"
+														+ "B-->D(fa:fa-spinner);"}
+												/>
 											</div>
 										}
 
