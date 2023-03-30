@@ -1,5 +1,5 @@
 import React from "react";
-import mermaid from "mermaid";
+import Mermaid from "react-mermaid";
 
 export default class Mermaid extends React.Component {
 	constructor(props) {

@@ -1,5 +1,6 @@
 import React from "react";
 import dompurify from "dompurify";
+import Mermaid from "react-mermaid2";
 import { getApiURL } from "./env.jsx";
 
 export function getContentFromBlock(b) {
@@ -32,6 +33,12 @@ export function getContentFromBlock(b) {
 					}
 				} />
 			</div>;
+		}
+	} else if (b.type === "MERMAID") {
+		if (b.content !== null) {
+			el = <Mermaid
+				chart={b.content}
+			/>;
 		}
 	}
 
