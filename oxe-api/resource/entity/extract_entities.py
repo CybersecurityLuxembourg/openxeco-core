@@ -175,7 +175,7 @@ class ExtractEntities(MethodResource, Resource):
 
     def include_taxonomy(self, entity_ids, df):
         assignments = self.db.get(self.db.tables["TaxonomyAssignment"],
-                                  {"entity": entity_ids} if entity_ids is not None else {})
+                                  {"entity_id": entity_ids} if entity_ids is not None else {})
 
         categories = self.db.get(self.db.tables["TaxonomyCategory"])
         values = self.db.get(self.db.tables["TaxonomyValue"])
