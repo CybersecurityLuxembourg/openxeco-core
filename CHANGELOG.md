@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.15.3] - 2023-03-30
+
+### Fixed
+
+- Fix entity extraction API resource
+
 ## [1.15.3] - 2023-03-09
 
 ### Changed
@@ -20,7 +26,6 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Cookie for password reseting on server instance on oxe-web-admin and oxe-web-community
-
 
 ## [1.15.1] - 2023-02-15
 
