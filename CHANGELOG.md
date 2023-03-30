@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.15.3] - 2023-03-30
+## [1.15.4] - 2023-03-30
 
 ### Fixed
 
