@@ -17,9 +17,11 @@ depends_on = None
 
 
 def upgrade():
+    op.alter_column('ArticleBox', 'type', type_=mysql.ENUM('PARAGRAPH', 'TITLE1', 'TITLE2', 'TITLE3', 'IMAGE', 'FRAME', 'MERMAID'), server_default=sa.text("'PARAGRAPH'"), nullable=False)
+
     # Fix column nullable status
     op.alter_column('UserRequest', 'entity_id', existing_type=mysql.INTEGER(), nullable=True)
 
 
 def downgrade():
-    pass
+    op.alter_column('ArticleBox', 'type', type_=mysql.ENUM('PARAGRAPH', 'TITLE1', 'TITLE2', 'TITLE3', 'IMAGE', 'FRAME'), server_default=sa.text("'PARAGRAPH'"), nullable=False)
