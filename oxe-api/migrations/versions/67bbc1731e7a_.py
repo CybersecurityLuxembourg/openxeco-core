@@ -6,6 +6,7 @@ Create Date: 2023-03-09 08:41:40.116004
 
 """
 from alembic import op
+import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
 
 
