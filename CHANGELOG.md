@@ -28,6 +28,18 @@ All notable changes to this project will be documented in this file.
 - Contact message creation on oxe-web-community by correcting database structure via migration
 - Allow modification of user email via oxe-web-admin
 
+## [1.15.5] - 2023-04-04
+
+### Fixed
+
+- Dockerized API init
+
+## [1.15.4] - 2023-03-30
+
+### Fixed
+
+- Fix entity extraction API resource
+
 ## [1.15.3] - 2023-03-09
 
 ### Changed
