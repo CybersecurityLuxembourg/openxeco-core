@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 - DialogError on oxe-web-admin and oxe-web-community
 - Default logo and favicon
 - API resource: setting/delete_favicon
-- API resource: setting/delete_favicon
+- API resource: setting/delete_logo
 - API resource: public/add_public_request - in order to handle public contact forms
 - Documentation on "Settings" page on oxe-web-admin
 
