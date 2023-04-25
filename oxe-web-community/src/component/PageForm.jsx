@@ -32,7 +32,6 @@ export default class PageForm extends React.Component {
 	}
 
 	componentDidUpdate() {
-		console.log(this.state.selectedMenu, getUrlParameter("tab"));
 		if (this.state.selectedMenu !== getUrlParameter("tab")
 			&& this.state.forms
 			&& this.state.forms.map((f) => f.id.toString()).indexOf(getUrlParameter("tab")) >= 0) {
