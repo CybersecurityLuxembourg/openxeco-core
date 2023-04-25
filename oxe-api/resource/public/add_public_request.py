@@ -29,6 +29,7 @@ class AddPublicRequest(MethodResource, Resource):
         'full_name': fields.Str(required=False, allow_none=True),
         'email': fields.Str(required=True, allow_none=False, validate=lambda x: has_mail_format(x) is not None),
         'message': fields.Str(required=True, allow_none=False, validate=lambda x: x is not None and len(x) <= 500),
+        'parameters': fields.Dict(required=False, allow_none=False, missing={}),
     })
     @catch_exception
     def post(self, **kwargs):
@@ -45,8 +46,11 @@ class AddPublicRequest(MethodResource, Resource):
         r["type"] = "CONTACT FORM"
         r["request"] = kwargs["message"]
         r["data"] = json.dumps({
-            "email": kwargs["email"],
-            "full_name": kwargs["full_name"],
+            **kwargs["parameters"],
+            **{
+                "email": kwargs["email"],
+                "full_name": kwargs["full_name"],
+            },
         })
 
         # Insert request
