@@ -3,6 +3,7 @@ from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
 from webargs import fields
+import json
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -43,10 +44,10 @@ class AddPublicRequest(MethodResource, Resource):
 
         r["type"] = "CONTACT FORM"
         r["request"] = kwargs["message"]
-        r["data"] = {
-            "email": kwargs["message"],
+        r["data"] = json.dumps({
+            "email": kwargs["email"],
             "full_name": kwargs["full_name"],
-        }
+        })
 
         # Insert request
 
@@ -59,7 +60,7 @@ class AddPublicRequest(MethodResource, Resource):
 
         send_email(self.mail,
                    subject=f"[{project_name}] New contact form submission",
-                   recipients=kwargs["email"],
+                   recipients=[kwargs["email"]],
                    html_body=render_template(
                        'contact_form_notification.html',
                        url=origin.replace("community.", "admin.") + "/task?tab=request",
