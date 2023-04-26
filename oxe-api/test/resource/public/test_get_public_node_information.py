@@ -14,7 +14,7 @@ class TestGetPublicNodeInformation(BaseCase):
             'phone_number': None,
             'postal_address': None,
             'project_name': None,
-            'version': 'v1.15'
+            'version': 'v1.16'
         }, response.json)
 
     @BaseCase.login
@@ -33,5 +33,5 @@ class TestGetPublicNodeInformation(BaseCase):
             'phone_number': "my phone",
             'postal_address': "my address",
             'project_name': "my project",
-            'version': 'v1.15'
+            'version': 'v1.16'
         }, response.json)

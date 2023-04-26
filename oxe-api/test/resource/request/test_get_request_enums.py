@@ -20,7 +20,8 @@ class TestGetRequestEnums(BaseCase):
                 'ENTITY ADDRESS ADD',
                 'ENTITY ADDRESS DELETION',
                 'ENTITY TAXONOMY CHANGE',
-                'ENTITY LOGO CHANGE'
+                'ENTITY LOGO CHANGE',
+                'CONTACT FORM'
             ]
         })
 
