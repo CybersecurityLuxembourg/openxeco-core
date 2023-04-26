@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - Typo and text on documentation of owe-web-community
 - Contact message creation on oxe-web-community by correcting database structure via migration
 - Allow modification of user email via oxe-web-admin
+- SQL querying requiring GROUP BY with the dockerized madiadb
 
 ## [1.15.5] - 2023-04-04
 
