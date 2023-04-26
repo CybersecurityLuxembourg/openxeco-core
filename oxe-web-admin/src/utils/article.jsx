@@ -1,6 +1,6 @@
 import React from "react";
 import dompurify from "dompurify";
-import Mermaid from "react-mermaid2";
+import Mermaid from "./mermaid.jsx";
 import { getApiURL } from "./env.jsx";
 
 export function getContentFromBlock(b) {

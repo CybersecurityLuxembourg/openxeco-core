@@ -1,49 +1,42 @@
 import React from "react";
-import Mermaid from "react-mermaid";
+import mermaid from "mermaid";
+import _ from "lodash";
+
+mermaid.initialize({
+	startOnLoad: true,
+});
 
 export default class Mermaid extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			chart: this.props.chart || "",
+			className: _.uniqueId("mermaid-"),
 		};
-
-		mermaid.initialize({
-			mermaid: {
-				startOnLoad: false,
-			},
-		});
-
-		this.mermaidRef = React.createRef();
 	}
 
-	mermaidUpdate() {
-		const cb = (svgGraph) => {
-			this.mermaidRef.current.innerHTML = svgGraph;
-		};
-
-		mermaid.mermaidAPI.render("id0", this.state.chart, cb.bind(this));
-	}
-
+	// eslint-disable-next-line class-methods-use-this
 	componentDidMount() {
-		this.mermaidUpdate();
+		mermaid.contentLoaded();
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.chart !== prevProps.chart) {
-			this.setState({ chart: this.props.chart }, () => {
-				this.mermaidUpdate();
-			});
+		if (prevProps.chart !== this.props.chart) {
+			const elements = document.getElementsByClassName(this.state.className);
+
+			for (let i = 0; i < elements.length; i++) {
+				elements[i].removeAttribute("data-processed");
+			}
+
+			mermaid.contentLoaded();
 		}
 	}
 
 	render() {
-		return <div
-			ref={this.mermaidRef}
-			className="mermaid"
-		>
-			{this.state.chart}
-		</div>;
+		return (
+			<div id="mermaid-chart" className={"mermaid " + this.state.className}>
+				{this.props.chart}
+			</div>
+		);
 	}
 }
