@@ -74,7 +74,7 @@ export default class DialogAddDocument extends React.Component {
 
 				close();
 				this.setState({ ...this.state.initState });
-				nm.info("The keywords has been added");
+				nm.info("The keywords have been added");
 			}, (response) => {
 				nm.warning(response.statusText);
 			}, (error) => {
