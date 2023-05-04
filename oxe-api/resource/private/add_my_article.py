@@ -1,5 +1,6 @@
 import re
 
+from flask import request, render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
@@ -12,14 +13,16 @@ from decorator.log_request import log_request
 from exception.object_not_found import ObjectNotFound
 from exception.user_not_assign_to_entity import UserNotAssignedToEntity
 from exception.deactivated_article_edition import DeactivatedArticleEdition
+from utils.mail import send_email
 
 
 class AddMyArticle(MethodResource, Resource):
 
     db = None
 
-    def __init__(self, db):
+    def __init__(self, db, mail):
         self.db = db
+        self.mail = mail
 
     @log_request
     @doc(tags=['private'],
@@ -38,6 +41,11 @@ class AddMyArticle(MethodResource, Resource):
     @fresh_jwt_required
     @catch_exception
     def post(self, **kwargs):
+
+        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
+            origin = request.environ['HTTP_ORIGIN']
+        else:
+            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         # Check if the functionality is allowed
 
@@ -97,5 +105,32 @@ class AddMyArticle(MethodResource, Resource):
             },
             self.db.tables["ArticleEntityTag"]
         )
+
+        # Get email addresses to send notification
+
+        addresses = self.db.session \
+            .query(self.db.tables["User"]) \
+            .with_entities(self.db.tables["User"].email) \
+            .filter(self.db.tables["User"].is_admin.is_(True)) \
+            .filter(self.db.tables["User"].is_active.is_(True)) \
+            .filter(self.db.tables["User"].accept_request_notification.is_(True)) \
+            .all()
+
+        addresses = [a[0] for a in addresses]
+
+        # Send new community article notification email
+
+        if len(addresses) > 0:
+            pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
+            project_name = pj_settings[0].value if len(pj_settings) > 0 else ""
+
+            send_email(self.mail,
+                       subject=f"[{project_name}] New article from the community",
+                       recipients=addresses,
+                       html_body=render_template(
+                           'new_community_article_notification.html',
+                           url=origin.replace("community.", "admin.") + "/task?tab=request",
+                           project_name=project_name)
+                       )
 
         return "", "200 "
