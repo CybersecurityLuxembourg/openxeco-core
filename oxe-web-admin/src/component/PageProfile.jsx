@@ -11,6 +11,7 @@ import { validatePassword } from "../utils/re.jsx";
 import { getApiURL } from "../utils/env.jsx";
 import Loading from "./box/Loading.jsx";
 import Message from "./box/Message.jsx";
+import DialogHint from "./dialog/DialogHint.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
@@ -391,7 +392,34 @@ export default class PageProfile extends React.Component {
 									onChange={(v) => this.updateUser("accept_communication", v)}
 								/>
 								<FormLine
-									label={"Accept request notifications (for admins only)"}
+									label={<div>
+										Accept system notifications (for admins only)&nbsp;
+										<DialogHint
+											small={true}
+											content={
+												<div className="row">
+													<div className="col-md-12">
+														<h2>Profile: Accept system notifications</h2>
+
+														<p>
+															By activating this field, you will receive notifications
+															on your profile&apos;s email address. The notification types are
+															the following ones:
+														</p>
+
+														<ul>
+															<li>Request notification: notification of a new request triggered
+															by a user via the community portal</li>
+															<li>Contact notification: notification of a new message from a
+															contact form that does not require authentication</li>
+															<li>New article notification: notification from an article
+															creation by a user via the community portal</li>
+														</ul>
+													</div>
+												</div>
+											}
+										/>
+									</div>}
 									type={"checkbox"}
 									value={this.state.user.accept_request_notification}
 									onChange={(v) => this.updateUser("accept_request_notification", v)}
