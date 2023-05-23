@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Review UI on Contact page of oxe-web-community
-- Review UI on Formm page of oxe-web-community
+- Review UI on Form page of oxe-web-community
 - Color style for Tab component on oxe-web-admin and oxe-web-community
 - Improve color management in styling of oxe-web-community
 - Review UI of logo management on oxe-web-admin
