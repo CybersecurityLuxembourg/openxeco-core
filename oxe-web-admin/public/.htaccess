@@ -1,2 +1,3 @@
 DirectoryIndex index.html
 ErrorDocument 404 /
+Options All -Indexes
