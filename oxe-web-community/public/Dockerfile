@@ -12,4 +12,7 @@ RUN echo "RewriteRule ^ - [L]" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "RewriteRule ^ index.html [L]" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "</Directory>" >> /usr/local/apache2/conf/httpd.conf
 
+RUN echo "ServerTokens Prod" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "ServerSignature Off" >> /usr/local/apache2/conf/httpd.conf
+
 EXPOSE 80
