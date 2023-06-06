@@ -36,12 +36,12 @@ class GetAcceptedUsers(MethodResource, Resource):
 
         request_query = (
             self.db.session.query( self.db.tables["UserRequest"])
-            .join(self.db.tables["User"])
-            .join(self.db.tables["UserProfile"], self.db.tables["UserRequest"].user_id == self.db.tables["UserProfile"].user_id)
-            .join(self.db.tables["Country"])
-            .join(self.db.tables["Profession"])
-            .join(self.db.tables["Industry"])
-            .join(self.db.tables["Expertise"])
+            .join(self.db.tables["User"], self.db.tables["User"].id == self.db.tables["UserRequest"].user_id)
+            .join(self.db.tables["UserProfile"], self.db.tables["UserProfile"].user_id == self.db.tables["UserRequest"].user_id)
+            .join(self.db.tables["Country"], self.db.tables["Country"].id == self.db.tables["UserProfile"].nationality_id, isouter=True)
+            .join(self.db.tables["Profession"], self.db.tables["Profession"].id == self.db.tables["UserProfile"].profession_id, isouter=True)
+            .join(self.db.tables["Industry"], self.db.tables["Industry"].id == self.db.tables["UserProfile"].industry_id, isouter=True)
+            .join(self.db.tables["Expertise"], self.db.tables["Expertise"].id == self.db.tables["UserProfile"].expertise_id, isouter=True)
             .filter(
                 self.db.tables["UserRequest"].type == "NEW INDIVIDUAL ACCOUNT",
                 self.db.tables["UserRequest"].status == "ACCEPTED",
@@ -79,10 +79,10 @@ class GetAcceptedUsers(MethodResource, Resource):
                 "domains_of_interest": user_profile.domains_of_interest,
                 "how_heard": user_profile.how_heard,
                 "public": "Yes" if user_profile.public == 1 else "No",
-                "profession": profession.name,
-                "industry": industry.name,
-                "nationality": country.name,
-                "expertise": expertise.name,
+                "profession": profession.name if profession else "",
+                "industry": industry.name if industry else "",
+                "nationality": country.name if country else "",
+                "expertise": expertise.name if expertise else "",
                 "submission_date": request.submission_date.strftime("%Y-%m-%d %H:%M:%S"),
             }
             for (user, user_profile, country, profession, industry, expertise, request) in paginate.items
