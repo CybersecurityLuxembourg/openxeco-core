@@ -14,5 +14,6 @@ RUN echo "</Directory>" >> /usr/local/apache2/conf/httpd.conf
 
 RUN echo "ServerTokens Prod" >> /usr/local/apache2/conf/httpd.conf
 RUN echo "ServerSignature Off" >> /usr/local/apache2/conf/httpd.conf
+RUN echo "AllowOverride All" >> /usr/local/apache2/conf/httpd.conf
 
 EXPOSE 80
