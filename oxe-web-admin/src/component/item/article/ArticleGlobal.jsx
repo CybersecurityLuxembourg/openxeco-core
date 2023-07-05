@@ -205,7 +205,7 @@ export default class ArticleGlobal extends React.Component {
 						/>
 					}
 
-					{this.props.article.type === "EVENT" && this.state.showOptionalFields
+					{this.state.showOptionalFields
 						&& <FormLine
 							label={"Start date"}
 							type={"datetime"}
@@ -219,7 +219,7 @@ export default class ArticleGlobal extends React.Component {
 							disabled={!this.props.editable}
 						/>}
 
-					{this.props.article.type === "EVENT" && this.state.showOptionalFields
+					{this.state.showOptionalFields
 						&& <FormLine
 							label={"End date"}
 							type={"datetime"}
