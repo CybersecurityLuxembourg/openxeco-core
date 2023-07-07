@@ -6,3 +6,6 @@
 # VS Code
 .lh
 .history
+
+# JetBrains
+.idea/
