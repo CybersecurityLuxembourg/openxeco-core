@@ -22,6 +22,8 @@ services:
       retries: 10
 
   smtp:
+    # MacBook Pro chip M1: smtp The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+    platform: linux/x86_64
     image: reachfive/fake-smtp-server
     environment:
       - MAIL_SERVER=smtp
