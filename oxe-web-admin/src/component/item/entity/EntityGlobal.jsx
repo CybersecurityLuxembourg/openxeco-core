@@ -128,16 +128,6 @@ export default class EntityGlobal extends React.Component {
 						disabled={!this.props.editable}
 					/>
 					<FormLine
-						label={"Legal status"}
-						type={"select"}
-						value={this.props.entity.legal_status}
-						options={this.state.entityEnums === null
-							|| typeof this.state.entityEnums.legal_status === "undefined" ? []
-							: this.state.entityEnums.legal_status.map((o) => ({ label: o, value: o }))}
-						onChange={(v) => this.saveEntityValue("legal_status", v)}
-						disabled={!this.props.editable}
-					/>
-					<FormLine
 						label={"Name"}
 						value={this.props.entity.name}
 						onBlur={(v) => this.saveEntityValue("name", v)}
