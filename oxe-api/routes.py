@@ -143,6 +143,7 @@ from resource.public.get_public_article import GetPublicArticle
 from resource.public.get_public_articles import GetPublicArticles
 from resource.public.get_public_related_articles import GetPublicRelatedArticles
 from resource.public.get_public_analytics import GetPublicAnalytics
+from resource.public.get_public_object_count import GetPublicObjectCount
 from resource.public.get_public_entities import GetPublicEntities
 from resource.public.get_public_entity_addresses import GetPublicEntityAddresses
 from resource.public.get_public_entity_enums import GetPublicEntityEnums

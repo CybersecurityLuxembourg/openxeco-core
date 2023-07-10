@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - API resource: setting/delete_favicon
 - API resource: setting/delete_logo
 - API resource: public/add_public_request - in order to handle public contact forms
+- API resource: public/get_public_object_count
 - Documentation on "Settings" page on oxe-web-admin
 - Documentation on "Profile" page for notification system on oxe-web-admin
 - Email notification to admins on new community article (private/add_article)

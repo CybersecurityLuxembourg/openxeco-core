@@ -222,10 +222,13 @@ class DB:
     # ARTICLE     #
     ###############
 
-    def get_filtered_article_query(self, filters=None, user_id=None):  # noqa: disable=MC0001
+    def get_filtered_article_query(self, filters=None, user_id=None, entities=None):  # noqa: disable=MC0001
         filters = {} if filters is None else filters
 
         query = self.session.query(self.tables["Article"])
+
+        if entities is not None:
+            query = query.with_entities(*entities)
 
         if "ids" in filters and filters['ids'] is not None:
             query = query.filter(self.tables["Article"].id.in_(filters['ids']))
@@ -237,7 +240,7 @@ class DB:
                                          func.lower(self.tables["Article"].abstract).like("%" + word + "%")))
 
         if "status" in filters:
-            query = query.filter(self.tables["Article"].status == filters["status"])
+            query = query.filter(self.tables["Article"].status.in_(filters["status"]))
 
         if "type" in filters:
             elements = filters["type"] if isinstance(filters["type"], list) else filters["type"].split(",")
