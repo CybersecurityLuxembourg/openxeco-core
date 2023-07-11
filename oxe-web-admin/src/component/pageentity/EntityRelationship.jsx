@@ -99,7 +99,7 @@ export default class EntityRelationship extends React.Component {
 			},
 			{
 				id: 2,
-				Header: <div align="center">Is directional</div>,
+				Header: <div className="centered">Is directional</div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
 					<CheckBox

@@ -81,10 +81,10 @@ export default class FormForms extends React.Component {
 			},
 			{
 				id: "125",
-				Header: <div align="center">Status</div>,
+				Header: <div className="centered">Status</div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<div align="center">{value.status}</div>
+					<div className="centered">{value.status}</div>
 				),
 				width: 40,
 			},

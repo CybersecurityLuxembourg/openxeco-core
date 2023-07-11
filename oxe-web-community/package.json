@@ -1,6 +1,6 @@
 {
   "name": "oxe-web-community",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "private": true,
   "dependencies": {
     "@babel/eslint-parser": "^7.5.4",

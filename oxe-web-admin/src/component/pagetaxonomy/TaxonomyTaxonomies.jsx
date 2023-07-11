@@ -77,38 +77,38 @@ export default class TaxonomyTaxonomies extends React.Component {
 			},
 			{
 				id: "124",
-				Header: <div align="center"><i className="fas fa-building"/></div>,
+				Header: <div className="centered"><i className="fas fa-building"/></div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<div align="center">{value.active_on_entities ? "Yes" : "No"}</div>
+					<div className="centered">{value.active_on_entities ? "Yes" : "No"}</div>
 				),
 				width: 40,
 			},
 			{
 				id: "123",
-				Header: <div align="center"><i className="fas fa-feather-alt"/></div>,
+				Header: <div className="centered"><i className="fas fa-feather-alt"/></div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => {
 					if (value.active_on_articles) {
 						if (value.accepted_article_types
 							&& value.accepted_article_types.split(",")
 								.filter((w) => w.trim().length > 0).length > 0) {
-							return <div align="center">Partially</div>;
+							return <div className="centered">Partially</div>;
 						}
 
-						return <div align="center">Yes</div>;
+						return <div className="centered">Yes</div>;
 					}
 
-					return <div align="center">No</div>;
+					return <div className="centered">No</div>;
 				},
 				width: 40,
 			},
 			{
 				id: "125",
-				Header: <div align="center">Standard</div>,
+				Header: <div className="centered">Standard</div>,
 				accessor: (x) => x,
 				Cell: ({ cell: { value } }) => (
-					<div align="center">{value.is_standard ? "Yes" : "No"}</div>
+					<div className="centered">{value.is_standard ? "Yes" : "No"}</div>
 				),
 				width: 40,
 			},

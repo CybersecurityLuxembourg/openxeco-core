@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.16.1] - 2023-07-11
+
+### Fixed
+
+- Package building for oxe-web-admin
+
+### Changed
+
+- Updated the package-lock.json for oxe-web-admin and oxe-web-community
+
 ## [1.16.0] - 2023-07-11
 
 ### Changed
