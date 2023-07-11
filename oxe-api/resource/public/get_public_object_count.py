@@ -38,7 +38,6 @@ class GetPublicObjectCount(MethodResource, Resource):
     def get(self, **kwargs):
 
         ta = self.db.tables["TaxonomyAssignment"]
-        tv = self.db.tables["TaxonomyValue"]
         att = self.db.tables["ArticleTaxonomyTag"]
 
         data = {
@@ -49,24 +48,28 @@ class GetPublicObjectCount(MethodResource, Resource):
 
         # Manage entities
 
-        cols = self.db.tables["Entity"].id,
-        entities = self.db.get_filtered_entities({
-            "name": kwargs["name"],
-            "status": ["ACTIVE"],
-            "taxonomy_values": kwargs["taxonomy_values"],
-        }, cols)
+        entities = self.db.get_filtered_entities(
+            {
+                "name": kwargs["name"],
+                "status": ["ACTIVE"],
+                "taxonomy_values": kwargs["taxonomy_values"],
+            },
+            (self.db.tables["Entity"].id, )
+        )
 
         if kwargs["include_entities"]:
             data["entity"]["total"] = entities.count()
 
         # Manage articles
 
-        cols = self.db.tables["Article"].id, self.db.tables["Article"].type,
-        articles = self.db.get_filtered_article_query({
-            "title": kwargs["name"],
-            "status": ["PUBLIC"],
-            "taxonomy_values": kwargs["taxonomy_values"],
-        }, entities=cols).all()
+        articles = self.db.get_filtered_article_query(
+            {
+                "title": kwargs["name"],
+                "status": ["PUBLIC"],
+                "taxonomy_values": kwargs["taxonomy_values"],
+            },
+            entities=(self.db.tables["Article"].id, self.db.tables["Article"].type, )
+        ).all()
 
         if kwargs["include_articles"]:
             data["article"]["total"] = len(articles)
@@ -80,7 +83,7 @@ class GetPublicObjectCount(MethodResource, Resource):
         if kwargs["include_taxonomy_categories"]:
             # Fetch and sort taxonomy values
 
-            values = self.db.get(tv, {"category": kwargs["include_taxonomy_categories"]})
+            values = self.db.get(self.db.tables["TaxonomyValue"], {"category": kwargs["include_taxonomy_categories"]})
             values_per_category = collections.defaultdict(list)
 
             for v in values:
