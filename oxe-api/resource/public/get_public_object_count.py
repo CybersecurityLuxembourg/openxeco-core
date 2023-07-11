@@ -21,14 +21,13 @@ class GetPublicObjectCount(MethodResource, Resource):
                      'The count values can be distributed through entities, articles, ' +
                      'articles by types, taxonomy values (see "include_*" params).<br/><br/>' +
                      'The count values can be filtered with taxonomy values ' +
-                     '(see "taxonomy_values" and "taxonomy_value_operator" params).',
+                     '(see "taxonomy_values" param).',
          responses={
              "200": {},
          })
     @use_kwargs({
         'name': fields.Str(required=False),
-        'taxonomy_values': fields.DelimitedList(fields.Int(), required=False),
-        'taxonomy_value_operator': fields.Str(required=False, validate=lambda x: x in ["AND", "OR"], missing="AND"),
+        'taxonomy_values': fields.DelimitedList(fields.Int(), required=False, missing=[]),
 
         'include_entities': fields.Bool(required=False, missing=True),
         'include_articles': fields.Bool(required=False, missing=True),
@@ -53,7 +52,8 @@ class GetPublicObjectCount(MethodResource, Resource):
         cols = self.db.tables["Entity"].id,
         entities = self.db.get_filtered_entities({
             "name": kwargs["name"],
-            "status": ["ACTIVE"]
+            "status": ["ACTIVE"],
+            "taxonomy_values": kwargs["taxonomy_values"],
         }, cols)
 
         if kwargs["include_entities"]:
@@ -65,6 +65,7 @@ class GetPublicObjectCount(MethodResource, Resource):
         articles = self.db.get_filtered_article_query({
             "title": kwargs["name"],
             "status": ["PUBLIC"],
+            "taxonomy_values": kwargs["taxonomy_values"],
         }, entities=cols).all()
 
         if kwargs["include_articles"]:
@@ -93,6 +94,7 @@ class GetPublicObjectCount(MethodResource, Resource):
                 .join(self.db.tables["Entity"],
                       self.db.tables["Entity"].id == ta.entity_id) \
                 .filter(self.db.tables["Entity"].status == "PUBLIC") \
+                .filter(self.db.tables["Entity"].id.in_([a[0] for a in entities])) \
                 .filter(ta.taxonomy_value_id.in_([v.id for v in values])) \
                 .group_by(ta.taxonomy_value_id)
 
@@ -111,6 +113,7 @@ class GetPublicObjectCount(MethodResource, Resource):
                 .join(self.db.tables["Article"],
                       self.db.tables["Article"].id == att.article_id) \
                 .filter(self.db.tables["Article"].status == "PUBLIC") \
+                .filter(self.db.tables["Article"].id.in_([a[0] for a in articles])) \
                 .filter(att.taxonomy_value_id.in_([v.id for v in values])) \
                 .group_by(att.taxonomy_value_id)
 
@@ -122,10 +125,10 @@ class GetPublicObjectCount(MethodResource, Resource):
                     filtered_assignments = [a for a in assignments if a[0] == v.id]
 
                     if v in data["taxonomy"][k]:
-                        data["taxonomy"][k][v.name] += filtered_assignments.pop()[1]\
+                        data["taxonomy"][k][v.name] += filtered_assignments.pop()[1] \
                             if len(filtered_assignments) > 0 else 0
                     else:
-                        data["taxonomy"][k][v.name] = filtered_assignments.pop()[1]\
+                        data["taxonomy"][k][v.name] = filtered_assignments.pop()[1] \
                             if len(filtered_assignments) > 0 else 0
 
         return build_no_cors_response(data)
