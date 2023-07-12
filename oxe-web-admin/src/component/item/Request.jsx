@@ -58,15 +58,21 @@ export default class Request extends Component {
 			settings: null,
 		});
 
-		getRequest.call(this, "user/get_user/" + this.props.info.user_id, (data) => {
-			this.setState({
-				user: data,
+		if (this.props.info.user_id) {
+			getRequest.call(this, "user/get_user/" + this.props.info.user_id, (data) => {
+				this.setState({
+					user: data,
+				});
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
 			});
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+		} else {
+			this.setState({
+				user: "No user",
+			});
+		}
 
 		getRequest.call(this, "request/get_request_enums", (data) => {
 			this.setState({
@@ -330,8 +336,10 @@ export default class Request extends Component {
 							/>
 						}
 
-						{this.state.user && this.state.settings
-							? <DialogSendMail
+						{this.state.user
+							&& this.state.user !== "No user"
+							&& this.state.settings
+							&& <DialogSendMail
 								trigger={
 									<button
 										className={"blue-background"}
@@ -347,7 +355,20 @@ export default class Request extends Component {
 									+ (this.getSettingValue("PROJECT_NAME") !== null
 										? this.getSettingValue("PROJECT_NAME") + " " : "") + "Support Team"}
 							/>
-							: <Loading
+						}
+
+						{this.state.user
+							&& this.state.user === "No user"
+							&& this.state.settings
+							&& <Message
+								text="No action available"
+								height={50}
+							/>
+						}
+
+						{(!this.state.user
+							|| !this.state.settings)
+							&& <Loading
 								height={50}
 							/>
 						}
@@ -355,12 +376,23 @@ export default class Request extends Component {
 
 					<div className="col-md-6 row-spaced">
 						<h3>User</h3>
-						{this.state.user !== null
-							? <User
+
+						{this.state.user === null
+							&& <Loading
+								height={50}
+							/>
+						}
+
+						{this.state.user !== null && this.state.user !== "No user"
+							&& <User
 								id={this.state.user.id}
 								email={this.state.user.email}
 							/>
-							: <Loading
+						}
+
+						{this.state.user !== null && this.state.user === "No user"
+							&& <Message
+								text="No user identified in this request"
 								height={50}
 							/>
 						}

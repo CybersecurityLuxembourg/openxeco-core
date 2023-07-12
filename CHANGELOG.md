@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.16.3] - 2023-07-XX
+
+### Fixed
+
+- Request item display when no user ID on oxe-web-admin
+
 ## [1.16.2] - 2023-07-12
 
 ### Fixed
