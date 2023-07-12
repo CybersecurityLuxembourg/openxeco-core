@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.16.2] - 2023-07-12
+
+### Fixed
+
+- Entity counting per taxonomy value on public/get_public_object_count resource
+
 ## [1.16.1] - 2023-07-11
 
 ### Fixed

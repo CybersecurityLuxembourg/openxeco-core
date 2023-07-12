@@ -26,7 +26,7 @@ class GetPublicObjectCount(MethodResource, Resource):
              "200": {},
          })
     @use_kwargs({
-        'name': fields.Str(required=False),
+        'name': fields.Str(required=False, missing=None),
         'taxonomy_values': fields.DelimitedList(fields.Int(), required=False, missing=[]),
 
         'include_entities': fields.Bool(required=False, missing=True),
@@ -40,11 +40,7 @@ class GetPublicObjectCount(MethodResource, Resource):
         ta = self.db.tables["TaxonomyAssignment"]
         att = self.db.tables["ArticleTaxonomyTag"]
 
-        data = {
-            "entity": {},
-            "article": {},
-            "taxonomy": {},
-        }
+        data = {}
 
         # Manage entities
 
@@ -58,6 +54,7 @@ class GetPublicObjectCount(MethodResource, Resource):
         )
 
         if kwargs["include_entities"]:
+            data["entity"] = {}
             data["entity"]["total"] = entities.count()
 
         # Manage articles
@@ -71,16 +68,21 @@ class GetPublicObjectCount(MethodResource, Resource):
             entities=(self.db.tables["Article"].id, self.db.tables["Article"].type, )
         ).all()
 
-        if kwargs["include_articles"]:
-            data["article"]["total"] = len(articles)
+        if kwargs["include_articles"] or kwargs["include_article_types"]:
+            data["article"] = {}
 
-        if kwargs["include_article_types"]:
-            for t in self.db.tables["Article"].__table__.columns["type"].type.enums:
-                data["article"][t.lower()] = len([a for a in articles if a[1] == t])
+            if kwargs["include_articles"]:
+                data["article"]["total"] = len(articles)
+
+            if kwargs["include_article_types"]:
+                for t in self.db.tables["Article"].__table__.columns["type"].type.enums:
+                    data["article"][t.lower()] = len([a for a in articles if a[1] == t])
 
         # Manage taxonomy
 
         if kwargs["include_taxonomy_categories"]:
+            data["taxonomy"] = {}
+
             # Fetch and sort taxonomy values
 
             values = self.db.get(self.db.tables["TaxonomyValue"], {"category": kwargs["include_taxonomy_categories"]})
@@ -96,18 +98,23 @@ class GetPublicObjectCount(MethodResource, Resource):
                 .query(ta.taxonomy_value_id, func.count(ta.taxonomy_value_id)) \
                 .join(self.db.tables["Entity"],
                       self.db.tables["Entity"].id == ta.entity_id) \
-                .filter(self.db.tables["Entity"].status == "PUBLIC") \
                 .filter(self.db.tables["Entity"].id.in_([a[0] for a in entities])) \
                 .filter(ta.taxonomy_value_id.in_([v.id for v in values])) \
-                .group_by(ta.taxonomy_value_id)
+                .group_by(ta.taxonomy_value_id) \
+                .all()
 
             for k, vs in values_per_category.items():
                 if k not in data["taxonomy"]:
                     data["taxonomy"][k] = dict()
 
                 for v in vs:
-                    filtered_assignments = [a for a in assignments if a[0] == v.id]
-                    data["taxonomy"][k][v.name] = filtered_assignments.pop()[1] if len(filtered_assignments) > 0 else 0
+                    if v.name not in data["taxonomy"][k]:
+                        data["taxonomy"][k][v.name] = 0
+
+                    filtered_assignment = [a for a in assignments if a[0] == v.id]
+
+                    if len(filtered_assignment) > 0:
+                        data["taxonomy"][k][v.name] += filtered_assignment[0][1]
 
             # Fetch and count article assignments for sorted taxonomy values
 
@@ -125,13 +132,12 @@ class GetPublicObjectCount(MethodResource, Resource):
                     data["taxonomy"][k] = dict()
 
                 for v in vs:
-                    filtered_assignments = [a for a in assignments if a[0] == v.id]
+                    if v.name not in data["taxonomy"][k]:
+                        data["taxonomy"][k][v.name] = 0
 
-                    if v in data["taxonomy"][k]:
-                        data["taxonomy"][k][v.name] += filtered_assignments.pop()[1] \
-                            if len(filtered_assignments) > 0 else 0
-                    else:
-                        data["taxonomy"][k][v.name] = filtered_assignments.pop()[1] \
-                            if len(filtered_assignments) > 0 else 0
+                    filtered_assignment = [a for a in assignments if a[0] == v.id]
+
+                    if len(filtered_assignment) > 0:
+                        data["taxonomy"][k][v.name] += filtered_assignment[0][1]
 
         return build_no_cors_response(data)
