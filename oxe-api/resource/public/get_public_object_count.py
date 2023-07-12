@@ -37,9 +37,6 @@ class GetPublicObjectCount(MethodResource, Resource):
     @catch_exception
     def get(self, **kwargs):
 
-        ta = self.db.tables["TaxonomyAssignment"]
-        att = self.db.tables["ArticleTaxonomyTag"]
-
         data = {}
 
         # Manage entities
@@ -94,50 +91,57 @@ class GetPublicObjectCount(MethodResource, Resource):
 
             # Fetch and count entity assignments for sorted taxonomy values
 
-            assignments = self.db.session \
-                .query(ta.taxonomy_value_id, func.count(ta.taxonomy_value_id)) \
-                .join(self.db.tables["Entity"],
-                      self.db.tables["Entity"].id == ta.entity_id) \
-                .filter(self.db.tables["Entity"].id.in_([a[0] for a in entities])) \
-                .filter(ta.taxonomy_value_id.in_([v.id for v in values])) \
-                .group_by(ta.taxonomy_value_id) \
-                .all()
-
-            for k, vs in values_per_category.items():
-                if k not in data["taxonomy"]:
-                    data["taxonomy"][k] = dict()
-
-                for v in vs:
-                    if v.name not in data["taxonomy"][k]:
-                        data["taxonomy"][k][v.name] = 0
-
-                    filtered_assignment = [a for a in assignments if a[0] == v.id]
-
-                    if len(filtered_assignment) > 0:
-                        data["taxonomy"][k][v.name] += filtered_assignment[0][1]
-
-            # Fetch and count article assignments for sorted taxonomy values
-
-            assignments = self.db.session \
-                .query(att.taxonomy_value_id, func.count(att.taxonomy_value_id)) \
-                .join(self.db.tables["Article"],
-                      self.db.tables["Article"].id == att.article_id) \
-                .filter(self.db.tables["Article"].status == "PUBLIC") \
-                .filter(self.db.tables["Article"].id.in_([a[0] for a in articles])) \
-                .filter(att.taxonomy_value_id.in_([v.id for v in values])) \
-                .group_by(att.taxonomy_value_id)
-
-            for k, vs in values_per_category.items():
-                if k not in data["taxonomy"]:
-                    data["taxonomy"][k] = dict()
-
-                for v in vs:
-                    if v.name not in data["taxonomy"][k]:
-                        data["taxonomy"][k][v.name] = 0
-
-                    filtered_assignment = [a for a in assignments if a[0] == v.id]
-
-                    if len(filtered_assignment) > 0:
-                        data["taxonomy"][k][v.name] += filtered_assignment[0][1]
+            self.treat_entity_taxonomy_assignment(data, entities, values, values_per_category)
+            self.treat_article_taxonomy_assignment(data, articles, values, values_per_category)
 
         return build_no_cors_response(data)
+
+    def treat_entity_taxonomy_assignment(self, data, entities, values, values_per_category):
+        ta = self.db.tables["TaxonomyAssignment"]
+
+        assignments = self.db.session \
+            .query(ta.taxonomy_value_id, func.count(ta.taxonomy_value_id)) \
+            .join(self.db.tables["Entity"],
+                  self.db.tables["Entity"].id == ta.entity_id) \
+            .filter(self.db.tables["Entity"].id.in_([a[0] for a in entities])) \
+            .filter(ta.taxonomy_value_id.in_([v.id for v in values])) \
+            .group_by(ta.taxonomy_value_id) \
+            .all()
+
+        for k, vs in values_per_category.items():
+            if k not in data["taxonomy"]:
+                data["taxonomy"][k] = dict()
+
+            for v in vs:
+                if v.name not in data["taxonomy"][k]:
+                    data["taxonomy"][k][v.name] = 0
+
+                filtered_assignment = [a for a in assignments if a[0] == v.id]
+
+                if len(filtered_assignment) > 0:
+                    data["taxonomy"][k][v.name] += filtered_assignment[0][1]
+
+    def treat_article_taxonomy_assignment(self, data, articles, values, values_per_category):
+        att = self.db.tables["ArticleTaxonomyTag"]
+
+        assignments = self.db.session \
+            .query(att.taxonomy_value_id, func.count(att.taxonomy_value_id)) \
+            .join(self.db.tables["Article"],
+                  self.db.tables["Article"].id == att.article_id) \
+            .filter(self.db.tables["Article"].status == "PUBLIC") \
+            .filter(self.db.tables["Article"].id.in_([a[0] for a in articles])) \
+            .filter(att.taxonomy_value_id.in_([v.id for v in values])) \
+            .group_by(att.taxonomy_value_id)
+
+        for k, vs in values_per_category.items():
+            if k not in data["taxonomy"]:
+                data["taxonomy"][k] = dict()
+
+            for v in vs:
+                if v.name not in data["taxonomy"][k]:
+                    data["taxonomy"][k][v.name] = 0
+
+                filtered_assignment = [a for a in assignments if a[0] == v.id]
+
+                if len(filtered_assignment) > 0:
+                    data["taxonomy"][k][v.name] += filtered_assignment[0][1]
