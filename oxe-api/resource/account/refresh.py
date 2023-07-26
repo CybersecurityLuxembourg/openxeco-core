@@ -7,10 +7,10 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_refresh_token_required
 from flask_restful import Resource
+from config.config import ENVIRONMENT
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
-from utils.cookie import set_cookie
 
 
 class Refresh(MethodResource, Resource):
@@ -37,8 +37,13 @@ class Refresh(MethodResource, Resource):
             "user": get_jwt_identity(),
         })
 
-        now = datetime.datetime.now()
-
-        response = set_cookie(request, response, "access_token_cookie", access_token, now + datetime.timedelta(days=1))
+        response.set_cookie(
+            "access_token_cookie",
+            value=access_token,
+            path="/",
+            domain=None if ENVIRONMENT == "dev"
+            else (request.host[len("api"):] if request.host.startswith("api") else request.host),
+            secure=True,
+        )
 
         return response

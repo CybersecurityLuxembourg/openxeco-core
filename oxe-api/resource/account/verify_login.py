@@ -4,9 +4,9 @@ from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
 from flask_jwt_extended import create_access_token, create_refresh_token
+from utils.cookie import set_cookie
 from webargs import fields
 from utils.token import verify_otp
-from utils.cookie import set_cookie
 
 from decorator.catch_exception import catch_exception
 
@@ -60,6 +60,7 @@ class VerifyLogin(MethodResource, Resource):
         })
 
         now = datetime.now()
+
 
         response = set_cookie(request, response, "access_token_cookie", access_token, now + timedelta(days=1))
         response = set_cookie(request, response, "refresh_token_cookie", refresh_token, now + timedelta(days=365))
