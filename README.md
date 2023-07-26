@@ -152,6 +152,7 @@ Access the community interface:
 
 Access the API documentation:
 - http://localhost:5000
+<br /><small>Note: if you are using Mac maybe port 5000 will be already in use. (check [solution](https://medium.com/pythonistas/port-5000-already-in-use-macos-monterey-issue-d86b02edd36c))</small>
 
 Access the emails sent on the SMTP mock:
 - http://localhost:1080

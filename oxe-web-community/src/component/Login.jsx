@@ -7,7 +7,6 @@ import { validatePassword, validateEmail, validateOtp } from "../utils/re.jsx";
 import Info from "./box/Info.jsx";
 import { getUrlParameter } from "../utils/url.jsx";
 import { getCookieOptions, getGlobalAppURL, getApiURL } from "../utils/env.jsx";
-// import DialogHint from "./dialog/DialogHint.jsx";
 import Version from "./box/Version.jsx";
 
 export default class Login extends React.Component {
@@ -80,9 +79,7 @@ export default class Login extends React.Component {
 
 		// Log in the user if there is an existing cookie
 		if (getUrlParameter("action") !== "reset_password" && getUrlParameter("action") !== "verify_account") {
-			if (this.props.cookies.get("access_token_cookie")) {
-				this.fetchUser();
-			}
+			this.fetchUser();
 		}
 
 		// This function to notify if the password has been reset correctly
@@ -146,8 +143,6 @@ export default class Login extends React.Component {
 			token: this.state.otp,
 		};
 		postRequest.call(this, "account/verify_login", params, () => {
-			// this.props.cookies.set("access_token_cookie", response.access_token, getCookieOptions());
-			// this.props.connect(this.state.email);
 			this.fetchUser();
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -267,155 +262,6 @@ export default class Login extends React.Component {
 						</div>
 					}
 				</div>
-
-				{/* <div className="top-left-buttons">
-					<DialogHint
-						content={
-							<div className="row">
-								<div className="col-md-12">
-									<h2>
-										What is&nbsp;
-										{this.props.settings !== null
-											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-											: "this portal"
-										} ?
-									</h2>
-
-									<p>
-										{this.props.settings !== null
-											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-											: "This portal"
-										} is your Private Space of the
-										{this.props.settings !== null
-											&& this.props.settings.PROJECT_NAME !== undefined
-											? " " + this.props.settings.PROJECT_NAME
-											: ""
-										} portal to
-										manage your contribution to the ecosystem.
-									</p>
-
-									<p>
-										After creating a personal account, you will be able to
-										register your entity and manage its information at any time.
-										You will also have the opportunity to share your entity’s
-										latest news with the cybersecurity ecosystem in Luxembourg and beyond.
-									</p>
-
-									<h3>
-										{this.props.settings !== null
-											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-											: "This portal"
-										} is divided into 3 sections:
-									</h3>
-
-									<h4>
-										My profile
-									</h4>
-
-									<p>
-										Edit your personal profile. You will be the contact person
-										for the entity to which you are assigned. Your personal
-										information will not be made public on the
-										{this.props.settings !== null
-											&& this.props.settings.PROJECT_NAME !== undefined
-											? " " + this.props.settings.PROJECT_NAME
-											: ""
-										} portal. Learn more by visiting this section.
-									</p>
-
-									<h4>
-										My entities
-									</h4>
-
-									<p>
-										Register and edit the information of your entity. Use
-										this section to present and promote your entity’s expertise
-										within the cybersecurity community and beyond.
-									</p>
-
-									<h4>
-										My articles
-									</h4>
-
-									<p>
-										Share and promote your entity’s expertise, latest releases
-										and news by regularly publishing articles on the portal.
-									</p>
-
-									<p>
-										To ease the process as much as possible, all you have to do
-										is reference the link to the article already published on
-										your website.
-									</p>
-
-									<h2>How do I start?</h2>
-
-									<h3>
-										Create your account
-									</h3>
-
-									<p>
-										Fill in your email address and click on “Create account”.
-									</p>
-
-									<img src={"img/hint-create-account.png"}/>
-
-									<h3>
-										Get your temporary password
-									</h3>
-
-									<p>
-										You will receive an email at the email address provided that
-										will contain a temporary password. You will need this temporary
-										password to log in for the first time.
-									</p>
-
-									<h3>
-										Log in to {this.props.settings !== null
-											&& this.props.settings.PRIVATE_SPACE_PLATFORM_NAME !== undefined
-											? this.props.settings.PRIVATE_SPACE_PLATFORM_NAME
-											: "the portal"
-										}
-									</h3>
-
-									<p>
-										Use the provided email address and your temporary password
-										to log in for the first time. Click on “login” to connect to
-										your private space.
-									</p>
-
-									<img src={"img/hint-connect.png"}/>
-
-									<p>
-										Once logged in, change your password.
-									</p>
-
-									<h2>Hint & tips</h2>
-
-									<p>
-										Throughout your navigation on your private space, you will see
-										this yellow icon:
-									</p>
-
-									<div style={{ textAlign: "center" }}>
-										<i className="DialogHint-icon far fa-question-circle"/>
-									</div>
-
-									<br/>
-
-									<p>
-										Behind this icon is a lot of useful information to make your
-										experience of using your private space pleasant.
-									</p>
-								</div>
-							</div>
-						}
-						validateSelection={(value) => this.onChange(value)}
-					/>
-				</div> */}
 
 				<div id="Login-area">
 					<ul className="Login-circles">

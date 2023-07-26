@@ -46,7 +46,7 @@ export default class Login extends React.Component {
 		if (getUrlParameter("action") !== "reset_password") {
 			getRequest.call(this, "private/get_my_user", (data) => {
 				if (data.is_admin === 1) {
-					this.props.connect(data.id);
+					this.props.connect(data);
 				} else {
 					this.props.logout();
 					nm.warning("This user is not an admin");
@@ -99,7 +99,6 @@ export default class Login extends React.Component {
 		};
 
 		postRequest.call(this, "account/login", params, () => {
-			// TODO use httponly cookies
 			nm.info("Please check your email for the One Time Pin");
 			this.setState({ verifyLogin: true });
 		}, (response) => {

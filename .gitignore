@@ -2,3 +2,10 @@
 .docker/mariadb/data/*
 .docker/documnets/*
 .docker/media/*
+
+# VS Code
+.lh
+.history
+
+# JetBrains
+.idea/
