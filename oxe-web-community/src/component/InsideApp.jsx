@@ -10,9 +10,9 @@ import PageLogoGenerator from "./PageLogoGenerator.jsx";
 import PageAddEntity from "./PageAddEntity.jsx";
 import PageEntity from "./PageEntity.jsx";
 import PageProfile from "./PageProfile.jsx";
+import PageAddProfile from "./PageAddProfile.jsx";
 // import PageContact from "./PageContact.jsx";
 import { getRequest } from "../utils/request.jsx";
-import PageAddProfile from "./PageAddProfile.jsx";
 
 export default class InsideApp extends React.Component {
 	constructor(props) {
@@ -33,6 +33,8 @@ export default class InsideApp extends React.Component {
 	componentDidMount() {
 		this.getNotifications();
 		this.getMyEntities();
+		this.getMyUser();
+
 		window.onfocus = () => {
 			this.getMyEntities();
 		};
@@ -59,6 +61,18 @@ export default class InsideApp extends React.Component {
 					myEntities: data,
 				});
 			}
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	getMyUser() {
+		getRequest.call(this, "private/get_my_user", (data) => {
+			this.setState({
+				user: data,
+			});
 		}, (response) => {
 			nm.warning(response.statusText);
 		}, (error) => {
