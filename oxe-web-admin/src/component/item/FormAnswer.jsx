@@ -20,7 +20,7 @@ export default class FormAnswer extends Item {
 
 	getUser() {
 		if (this.props.user) {
-			getRequest.call(this, "user/get_user/" + this.props.user.id, (data) => {
+			getRequest.call(this, "user/get_user/" + this.props.user, (data) => {
 				this.setState({
 					user: data,
 				});
