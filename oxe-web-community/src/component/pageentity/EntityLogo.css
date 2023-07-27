@@ -6,6 +6,12 @@
     border: 7px dashed lightgrey;
     border-radius: 8px;
     display: table;
+    margin-bottom: 24px;
+}
+
+
+.EntityLogo-dragdrop i {
+	font-size: 48px;
 }
 
 .EntityLogo-dragdrop-textContent {
@@ -17,12 +23,22 @@
 	vertical-align: middle;
 }
 
+.EntityLogo-logo-change-wrapper {
+	text-align: center;
+	margin-bottom: 24px;
+}
+
 .EntityLogo-logo-change {
-	max-height: 200px;
-	max-width: 200px;
+	max-height: 300px;
+	max-width: 300px;
 	width: 100%;
+	margin: auto;
 }
 
 .EntityLogo-center {
 	text-align: center;
+}
+
+.EntityLogo-center img {
+	max-width: 100%;
 }

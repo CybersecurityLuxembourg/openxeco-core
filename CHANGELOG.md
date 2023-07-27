@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 - Answer deletion when the user provides empty answer on oxe-web-community
 - Typo on oxe-web-community
 
+### Changed
+
+- Minor UI modifications on Entity logo tab on oxe-web-community
+
 ## [1.16.3] - 2023-07-12
 
 ### Fixed

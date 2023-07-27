@@ -186,10 +186,12 @@ export default class EntityGlobal extends React.Component {
 									</div>
 								)}
 							</Dropzone>
-							: <img
-								className="EntityLogo-logo-change"
-								src={this.state.imageContent}
-							/>
+							: <div className="EntityLogo-logo-change-wrapper">
+								<img
+									className="EntityLogo-logo-change"
+									src={this.state.imageContent}
+								/>
+							</div>
 						}
 
 						<div className={"right-buttons block-buttons"}>
