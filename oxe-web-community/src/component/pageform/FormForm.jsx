@@ -73,7 +73,7 @@ export default class FormForm extends React.Component {
 
 	updateAnswer(id, answer, value) {
 		if (answer) {
-			if (value && value.replace(/<\/?[^>]+(>|$)/g, "").replace(/(\r\n|\n|\r)/gm, "").length === 0) {
+			if (!value || value.replace(/<\/?[^>]+(>|$)/g, "").replace(/(\r\n|\n|\r)/gm, "").length === 0) {
 				const params = {
 					id: answer.id,
 				};

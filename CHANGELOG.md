@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - User section on FormAnswer item on owe-web-admin
+- Answer deletion when the user provides empty answer on oxe-web-community
+- Typo on oxe-web-community
 
 ## [1.16.3] - 2023-07-12
 
