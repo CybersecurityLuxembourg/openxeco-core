@@ -47,11 +47,16 @@ class App extends React.Component {
 		});
 	}
 
+	isLoggedIn() {
+		return this.state.logged;
+	}
+
 	logout() {
 		postRequest.call(this, "account/logout", null, () => {
 			this.setState({
 				email: null,
 				logged: false,
+				user_status: "",
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
@@ -70,6 +75,7 @@ class App extends React.Component {
 								settings={this.state.settings}
 								email={this.state.email}
 								cookies={this.props.cookies}
+								isLoggedIn={() => this.isLoggedIn()}
 								logout={() => this.logout()}
 							/>
 						}
