@@ -53,19 +53,21 @@ export default class InsideApp extends React.Component {
 	}
 
 	getMyEntities() {
-		getRequest.call(this, "private/get_my_entities", (data) => {
-			if (!this.state.myEntities
-				|| JSON.stringify(this.state.myEntities.map((e) => e.id))
-					!== JSON.stringify(data.map((e) => e.id))) {
-				this.setState({
-					myEntities: data,
-				});
-			}
-		}, (response) => {
-			nm.warning(response.statusText);
-		}, (error) => {
-			nm.error(error.message);
-		});
+		if (this.props.isLoggedIn() === true) {
+			getRequest.call(this, "private/get_my_entities", (data) => {
+				if (!this.state.myEntities
+					|| JSON.stringify(this.state.myEntities.map((e) => e.id))
+						!== JSON.stringify(data.map((e) => e.id))) {
+					this.setState({
+						myEntities: data,
+					});
+				}
+			}, (response) => {
+				nm.warning(response.statusText);
+			}, (error) => {
+				nm.error(error.message);
+			});
+		}
 	}
 
 	getMyUser() {
