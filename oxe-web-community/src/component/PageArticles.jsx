@@ -148,8 +148,8 @@ export default class PageArticles extends React.Component {
 
 											<p>
 												Every article is edited and published on behalf of an entity.
-												If you are not assigned to any entities, please see
-												&nbsp;<Link to={"/add_entity"}>this page</Link>.
+												If you are not assigned to any entities, please see&nbsp;
+												<Link to={"/add_entity"}>this page</Link>.
 											</p>
 
 											<h2>How can I create an article</h2>
