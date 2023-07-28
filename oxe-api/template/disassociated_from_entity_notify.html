@@ -1,0 +1,10 @@
+<p>Dear {{ email }},</p>
+<p>The following user has been disassociated from {{ entity }}.</p>
+<p>User: <a href="mailto:{{ user_email }}">{{ user_email }}</a></p>
+{% if primary == 'yes' %}
+    <p>NOTE: This user was the primary contact, and has now been removed from the enitity.</p>
+{% endif %}
+<p>Sincerely,</p>
+<p>
+    <img src="cid:logo" alt="Logo" style="width:200px;">
+</p>
