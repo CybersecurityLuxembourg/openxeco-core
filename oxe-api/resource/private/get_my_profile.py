@@ -25,12 +25,23 @@ class GetMyProfile(MethodResource, Resource):
     @jwt_required
     @catch_exception
     def get(self):
-        data = self.db.get(self.db.tables["UserProfile"], {"user_id": get_jwt_identity()})
+        user = self.db.get(self.db.tables["User"], {"id": get_jwt_identity()})
+        profile = self.db.get(self.db.tables["UserProfile"], {"user_id": get_jwt_identity()})
 
-        if len(data) == 0:
+        if len(user) == 0:
             return "", "401 The profile has not been found"
 
-        data = data[0].__dict__
-        del data['_sa_instance_state']
+        if len(profile) == 0:
+            return "", "401 The profile has not been found"
 
-        return data, "200 "
+        user = user[0].__dict__
+        del user['_sa_instance_state']
+
+        profile = profile[0].__dict__
+        del profile['_sa_instance_state']
+
+        profile["first_name"] = user["first_name"]
+        profile["last_name"] = user["last_name"]
+        profile["telephone"] = user["telephone"]
+
+        return profile, "200 "

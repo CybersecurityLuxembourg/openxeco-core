@@ -46,8 +46,6 @@ export default class PageAcceptedUsers extends React.Component {
 			per_page: this.state.per_page,
 		};
 
-		console.log(this.state.date_from);
-
 		if (this.state.date_from !== null) {
 			filters.date_from = PageAcceptedUsers.toDateString(this.state.date_from) + " 00:00:00";
 		}
@@ -73,8 +71,6 @@ export default class PageAcceptedUsers extends React.Component {
 			page: this.state.page,
 			per_page: this.state.per_page,
 		};
-
-		console.log(this.state.date_from);
 
 		if (this.state.date_from !== null) {
 			filters.date_from = PageAcceptedUsers.toDateString(this.state.date_from) + " 00:00:00";
@@ -102,7 +98,6 @@ export default class PageAcceptedUsers extends React.Component {
 	}
 
 	setDateFrom(date) {
-		console.log(date);
 		this.setState({
 			users: null,
 			page: 1,
@@ -113,7 +108,6 @@ export default class PageAcceptedUsers extends React.Component {
 	}
 
 	setDateTo(date) {
-		console.log(date);
 		this.setState({
 			users: null,
 			page: 1,
