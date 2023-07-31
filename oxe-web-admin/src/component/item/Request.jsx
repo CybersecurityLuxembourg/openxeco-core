@@ -79,7 +79,6 @@ export default class Request extends Component {
 				user_profile: data,
 			});
 			this.generateMailBody();
-			console.log(this.state.user_full_name);
 		}, (response) => {
 			console.log(response.statusText);
 		}, (error) => {

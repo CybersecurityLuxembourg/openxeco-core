@@ -99,7 +99,6 @@ export default class PageAddProfile extends React.Component {
 		const malta = this.state.countries.find(
 			(country) => (country.name === "Malta"),
 		);
-		console.log(malta);
 		if (malta === undefined
 			|| this.state.first_name === ""
 			|| this.state.last_name === ""
@@ -174,7 +173,6 @@ export default class PageAddProfile extends React.Component {
 		}
 		if (value === false && domains.includes(name) === true) {
 			const index = domains.indexOf(name);
-			console.log(index);
 			if (index > -1) {
 				domains.splice(index, 1);
 			}

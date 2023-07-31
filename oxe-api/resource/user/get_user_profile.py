@@ -27,18 +27,23 @@ class GetUserProfile(MethodResource, Resource):
     @catch_exception
     def get(self, user_id):
         user = self.db.get(self.db.tables["User"], {"id": user_id})
+        profile = self.db.get(self.db.tables["UserProfile"], {"user_id": user_id})
+
+
         if len(user) == 0:
             return "", "401 The user has not been found"
-        user = user[0].__dict__
-        del user["password"]
-        del user['_sa_instance_state']
 
-        profile = self.db.get(self.db.tables["UserProfile"], {"user_id": user_id})
+        user = user[0].__dict__
+
+
         if len(profile) > 0:
             profile = profile[0].__dict__
             del profile['_sa_instance_state']
-            del profile['id']
         else:
             profile = {}
 
-        return {**user, **profile}, "200 "
+        profile["first_name"] = user["first_name"]
+        profile["last_name"] = user["last_name"]
+        profile["telephone"] = user["telephone"]
+
+        return profile, "200 "

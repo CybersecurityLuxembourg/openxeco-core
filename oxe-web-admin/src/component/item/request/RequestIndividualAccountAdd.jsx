@@ -101,7 +101,6 @@ export default class RequestIndividualAccountAdd extends Component {
 			id: this.props.userId,
 			status: "REJECTED",
 		};
-		console.log(params);
 		postRequest.call(this, "user/update_user", params, () => {
 			nm.info("The profile has been set to rejected");
 		}, (response) => {
