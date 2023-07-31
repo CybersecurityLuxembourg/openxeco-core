@@ -144,6 +144,7 @@ from resource.private.update_my_article_content import UpdateMyArticleContent
 from resource.private.update_my_form_answer import UpdateMyFormAnswer
 from resource.private.update_my_user import UpdateMyUser
 from resource.private.get_my_profile import GetMyProfile
+from resource.private.disassociate_from_entity import DisassociateFromEntity
 from resource.public.get_public_article_content import GetPublicArticleContent
 from resource.public.get_public_article_enums import GetArticleEnums
 from resource.public.get_public_article import GetPublicArticle
