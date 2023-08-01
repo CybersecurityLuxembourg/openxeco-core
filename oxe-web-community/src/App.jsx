@@ -8,7 +8,7 @@ import { withCookies } from "react-cookie";
 import InsideApp from "./component/InsideApp.jsx";
 import Login from "./component/Login.jsx";
 import { getApiURL } from "./utils/env.jsx";
-import { postRequest } from "./utils/request.jsx";
+import { getRequest, postRequest } from "./utils/request.jsx";
 import DialogMessage from "./component/dialog/DialogMessage.jsx";
 import PageAddProfile from "./component/PageAddProfile.jsx";
 
@@ -32,6 +32,25 @@ class App extends React.Component {
 	// eslint-disable-next-line class-methods-use-this
 	componentDidMount() {
 		document.getElementById("favicon").href = getApiURL() + "public/get_public_image/favicon.ico";
+		this.getSettings();
+	}
+
+	getSettings() {
+		getRequest.call(this, "public/get_public_settings", (data) => {
+			const settings = {};
+
+			data.forEach((d) => {
+				settings[d.property] = d.value;
+			});
+
+			this.setState({
+				settings,
+			});
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	connect(email) {
