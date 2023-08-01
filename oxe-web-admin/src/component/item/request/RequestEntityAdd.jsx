@@ -12,6 +12,7 @@ export default class RequestEntityAdd extends Component {
 		this.insertEntity = this.insertEntity.bind(this);
 
 		this.state = {
+			hasVatNo: true,
 		};
 	}
 
@@ -52,7 +53,7 @@ export default class RequestEntityAdd extends Component {
 			creation_date: this.props.data.creation_date,
 			is_startup: this.props.data.is_startup,
 			entity_type: this.props.data.entity_type,
-			vat_number: this.props.data.vat_number,
+			vat_number: this.state.hasVatNo ? this.props.data.vat_number : null,
 			website: this.props.data.website,
 			size: this.props.data.size,
 			sector: this.props.data.sector,
@@ -257,6 +258,13 @@ export default class RequestEntityAdd extends Component {
 								type={"checkbox"}
 								value={this.props.data.acknowledge}
 								disabled={true}
+							/>
+							<hr />
+							<FormLine
+								type={"checkbox"}
+								label={"Company Has VAT Number"}
+								value={this.state.hasVatNo}
+								onChange={(v) => this.setState({ hasVatNo: v })}
 							/>
 						</div>
 
