@@ -1,16 +1,15 @@
 import React from "react";
 import "./PageProfile.css";
 import vCard from "vcf";
-// import QRCode from "react-qr-code";
 import Popup from "reactjs-popup";
 import { NotificationManager as nm } from "react-notifications";
 import Info from "./box/Info.jsx";
 import FormLine from "./form/FormLine.jsx";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import { validatePassword, validateTelephoneNumber, validateNotNull } from "../utils/re.jsx";
-// import { getApiURL } from "../utils/env.jsx";
 import Loading from "./box/Loading.jsx";
 import Message from "./box/Message.jsx";
+import UpdateProfile from "./pageprofile/UpdateProfile.jsx";
 
 export default class PageProfile extends React.Component {
 	constructor(props) {
@@ -20,6 +19,9 @@ export default class PageProfile extends React.Component {
 		this.changePassword = this.changePassword.bind(this);
 		this.generateHandle = this.generateHandle.bind(this);
 		this.updateUser = this.updateUser.bind(this);
+		this.updateProfile = this.updateProfile.bind(this);
+		this.setProfileValues = this.setProfileValues.bind(this);
+		this.updateDetails = this.updateDetails.bind(this);
 
 		this.state = {
 			currentUser: null,
@@ -27,6 +29,9 @@ export default class PageProfile extends React.Component {
 			currentVcard: null,
 
 			userChanged: false,
+			profileChanged: false,
+			userProfile: null,
+
 			socialEmpty: true,
 
 			password: "",
@@ -40,18 +45,46 @@ export default class PageProfile extends React.Component {
 			entityToDelete: "",
 			myEntities: null,
 			passwordForDelete: "",
+
+			countries: [],
+			professions: [],
 		};
 	}
 
 	componentDidMount() {
 		this.refreshProfile();
 		this.getMyEntities();
+
+		getRequest.call(this, "public/get_public_countries", (data) => {
+			this.setState({
+				countries: data,
+			});
+		}, (error) => {
+			nm.warning(error.message);
+		}, (error) => {
+			nm.error(error.message);
+		});
+
+		getRequest.call(this, "public/get_public_professions", (data) => {
+			this.setState({
+				professions: data,
+			});
+		}, (error) => {
+			nm.warning(error.message);
+		}, (error) => {
+			nm.error(error.message);
+		});
 	}
 
 	refreshProfile() {
+		this.setState({
+			userProfile: null,
+			profileChanged: false,
+			userChanged: false,
+		});
+
 		getRequest.call(this, "private/get_my_user", (data) => {
 			this.setState({
-				userChanged: false,
 				currentUser: data,
 				/* eslint-disable-next-line new-cap */
 				dbVcard: data.vcard ? new vCard().parse(data.vcard) : new vCard(),
@@ -60,6 +93,16 @@ export default class PageProfile extends React.Component {
 			});
 		}, (response) => {
 			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+
+		getRequest.call(this, "private/get_my_profile", (data) => {
+			this.setState({
+				userProfile: data,
+			});
+		}, (error) => {
+			nm.warning(error.message);
 		}, (error) => {
 			nm.error(error.message);
 		});
@@ -203,6 +246,82 @@ export default class PageProfile extends React.Component {
 		});
 	}
 
+	isStudentOrRetired() {
+		const role = this.state.professions.find(
+			(p) => (p.id === this.state.userProfile.profession_id),
+		);
+		if (role === undefined) {
+			return false;
+		}
+		return role.name === "Student" || role.name === "Retired";
+	}
+
+	isProfileFormValid() {
+		let valid = true;
+		const malta = this.state.countries.find(
+			(country) => (country.name === "Malta"),
+		);
+		if (malta === undefined
+			|| this.state.userProfile.first_name === ""
+			|| this.state.userProfile.last_name === ""
+			|| this.state.userProfile.domains_of_interest === null
+			|| this.state.userProfile.experience === null
+			|| this.state.userProfile.expertise_id === null
+			|| this.state.userProfile.gender === null
+			|| this.state.userProfile.how_heard === null
+			|| this.state.userProfile.nationality_id === null
+			|| this.state.userProfile.profession_id === null
+			|| this.state.userProfile.residency === null
+			|| (
+				this.isStudentOrRetired() === false
+				&& (this.state.userProfile.sector === null || this.state.userProfile.industry_id === null)
+			)
+		) {
+			nm.warning("Please fill in all of the required fields");
+			valid = false;
+		}
+		if (malta !== undefined) {
+			if (
+				this.state.nationality_id !== null
+				&& this.state.userProfile.nationality_id !== malta.id
+				&& this.state.userProfile.residency !== ""
+				&& this.state.userProfile.residency !== "Malta"
+				&& this.state.userProfile.residency !== "Gozo"
+			) {
+				nm.warning("The account is only available to Maltese or Gozo residents or Maltese nationals");
+				valid = false;
+			}
+		}
+		return valid;
+	}
+
+	updateProfile() {
+		postRequest.call(this, "account/update_my_profile", { data: this.state.userProfile }, () => {
+			nm.info("The information has been updated");
+		}, (response) => {
+			nm.warning(response.statusText);
+		}, (error) => {
+			nm.error(error.message);
+		});
+	}
+
+	updateDetails() {
+		if (this.state.profileChanged && this.state.userProfile !== null && this.isProfileFormValid()) {
+			this.updateProfile();
+		}
+
+		if (this.state.userChanged) {
+			this.updateUser();
+		}
+	}
+
+	setProfileValues(newProfile) {
+		this.setState({
+			userProfile: newProfile,
+			profileChanged: true,
+		});
+	}
+
 	generateHandle(property, value) {
 		const params = {
 			[property]: value,
@@ -248,9 +367,6 @@ export default class PageProfile extends React.Component {
 	}
 
 	disassociateFromEntity(close) {
-		console.log("disassociateFromEntity called");
-		console.log(this.state.entityToDelete);
-
 		const params = {
 			entity_id: this.state.entityToDelete,
 			password: this.state.passwordForDelete,
@@ -598,6 +714,15 @@ export default class PageProfile extends React.Component {
 								/>
 							</div>
 							<div className="col-md-12 PageProfile-white-box">
+								<h3>Details</h3>
+								<br/>
+								{this.state.userProfile != null
+									&& <UpdateProfile
+										userProfile={this.state.userProfile}
+										setProfileValues={this.setProfileValues} />
+								}
+							</div>
+							<div className="col-md-12 PageProfile-white-box">
 								<h3>Social media and website</h3>
 								<br/>
 
@@ -661,7 +786,7 @@ export default class PageProfile extends React.Component {
 					</div>
 				</div>
 
-				{this.state.userChanged
+				{(this.state.userChanged || this.state.profileChanged)
 					&& <div className="PageProfile-save-button">
 						<div className="row">
 							<div className="col-md-6">
@@ -673,7 +798,7 @@ export default class PageProfile extends React.Component {
 							</div>
 							<div className="col-md-6">
 								<button
-									onClick={this.updateUser}>
+									onClick={this.updateDetails}>
 									<i className="fas fa-save" /> Save profile
 								</button>
 							</div>
