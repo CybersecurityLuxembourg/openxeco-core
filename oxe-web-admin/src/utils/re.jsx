@@ -48,3 +48,9 @@ export function validateOtp(otp) {
 	const re = /^[0-9]{6}$/;
 	return re.test(String(otp).toUpperCase()) || !otp;
 }
+
+export function validateTelephoneNumber(number) {
+	if (number === null || typeof number === "undefined" || number.length === 0) return false;
+	const re = /^(\+)?([0-9]){10,16}$/;
+	return re.test(String(number)) || !number;
+}

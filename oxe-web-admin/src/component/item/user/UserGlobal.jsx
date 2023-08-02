@@ -5,6 +5,7 @@ import { getRequest, postRequest } from "../../../utils/request.jsx";
 import FormLine from "../../button/FormLine.jsx";
 import Loading from "../../box/Loading.jsx";
 import UpdateProfile from "./UpdateProfile.jsx";
+import { validateTelephoneNumber } from "../../../utils/re.jsx";
 
 export default class UserGlobal extends React.Component {
 	constructor(props) {
@@ -105,6 +106,17 @@ export default class UserGlobal extends React.Component {
 		const malta = this.state.countries.find(
 			(country) => (country.name === "Malta"),
 		);
+
+		if (this.state.userProfile.telephone !== "" && !validateTelephoneNumber(this.state.userProfile.telephone)) {
+			valid = false;
+			nm.warning("Telephone number is not valid");
+		}
+
+		if (this.state.userProfile.mobile !== "" && !validateTelephoneNumber(this.state.userProfile.mobile)) {
+			valid = false;
+			nm.warning("Mobile number is not valid");
+		}
+
 		if (malta === undefined
 			|| this.state.userProfile.first_name === ""
 			|| this.state.userProfile.last_name === ""
