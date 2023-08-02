@@ -4,7 +4,7 @@ import { NotificationManager as nm } from "react-notifications";
 import { getRequest, postRequest } from "../utils/request.jsx";
 import FormLine from "./form/FormLine.jsx";
 import Loading from "./box/Loading.jsx";
-import { validateNotNull } from "../utils/re.jsx";
+import { validateNotNull, validateTelephoneNumber } from "../utils/re.jsx";
 
 export default class PageAddProfile extends React.Component {
 	constructor(props) {
@@ -99,6 +99,16 @@ export default class PageAddProfile extends React.Component {
 		const malta = this.state.countries.find(
 			(country) => (country.name === "Malta"),
 		);
+		if (this.state.telephone !== "" && !validateTelephoneNumber(this.state.telephone)) {
+			valid = false;
+			nm.warning("Telephone number is not valid");
+		}
+
+		if (this.state.mobile !== "" && !validateTelephoneNumber(this.state.mobile)) {
+			valid = false;
+			nm.warning("Mobile number is not valid");
+		}
+
 		if (malta === undefined
 			|| this.state.first_name === ""
 			|| this.state.last_name === ""
@@ -269,6 +279,7 @@ export default class PageAddProfile extends React.Component {
 							value={this.state.telephone}
 							onChange={(v) => this.changeState("telephone", v)}
 							onKeyDown={this.onKeyDown}
+							format={validateTelephoneNumber}
 						/>
 						<FormLine
 							label="Mobile Number"
@@ -276,6 +287,7 @@ export default class PageAddProfile extends React.Component {
 							value={this.state.mobile}
 							onChange={(v) => this.changeState("mobile", v)}
 							onKeyDown={this.onKeyDown}
+							format={validateTelephoneNumber}
 						/>
 						<FormLine
 							label="Role/Profession *"

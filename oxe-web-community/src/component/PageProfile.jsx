@@ -261,6 +261,17 @@ export default class PageProfile extends React.Component {
 		const malta = this.state.countries.find(
 			(country) => (country.name === "Malta"),
 		);
+
+		if (this.state.userProfile.telephone !== "" && !validateTelephoneNumber(this.state.userProfile.telephone)) {
+			valid = false;
+			nm.warning("Telephone number is not valid");
+		}
+
+		if (this.state.userProfile.mobile !== "" && !validateTelephoneNumber(this.state.userProfile.mobile)) {
+			valid = false;
+			nm.warning("Mobile number is not valid");
+		}
+
 		if (malta === undefined
 			|| this.state.userProfile.first_name === ""
 			|| this.state.userProfile.last_name === ""
@@ -690,22 +701,6 @@ export default class PageProfile extends React.Component {
 									value={this.getVcardValue("email") !== null}
 									onChange={(v) => this.updateCurrentVcard("email", v ? this.state.currentUser.email : null)}
 								/>
-								<FormLine
-									label={"Telephone"}
-									value={this.state.currentUser.telephone}
-									onChange={(v) => this.updateUserDetail("telephone", v)}
-									format={validateTelephoneNumber}
-								/>
-								{ !validateTelephoneNumber(this.state.currentUser.telephone) && this.state.currentUser.telephone !== ""
-									&& <div className="row">
-										<div className="col-md-6"></div>
-										<div className="col-md-6">
-											<div className="validation-error">
-												Accepted Format: +1234567891, 1234567891
-											</div>
-										</div>
-									</div>
-								}
 								<FormLine
 									label={"Include telephone in my public profile"}
 									type={"checkbox"}
