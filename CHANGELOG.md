@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.16.5] - 2023-08-08
+
+### Changed
+
+- API resource: private/update_my_form_answer to consider last_date column
+- API resource: form/update_form_answer to consider last_date column
+
+### Added
+
+- last_date column on FormAnswer table
+
 ## [1.16.4] - 2023-07-27
 
 ### Fixed

@@ -3,6 +3,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import fresh_jwt_required
 from flask_restful import Resource
 from webargs import fields
+from datetime import datetime
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -40,6 +41,8 @@ class UpdateFormAnswer(MethodResource, Resource):
             return "", "422 No answer found with this ID"
 
         answers[0].value = kwargs["value"]
+        answers[0].last_date = datetime.now()
+
         self.db.merge(answers[0], self.db.tables["FormAnswer"])
 
         return "", "200 "

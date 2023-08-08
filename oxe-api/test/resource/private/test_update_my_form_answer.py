@@ -51,3 +51,4 @@ class TestUpdateMyFormAnswer(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(answers), 1)
         self.assertEqual(answers[0].value, "Text2")
+        self.assertNotEqual(answers[0].last_date, answers[0].sys_date)

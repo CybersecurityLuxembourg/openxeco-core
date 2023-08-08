@@ -3,6 +3,7 @@ from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask_restful import Resource
 from webargs import fields
+from datetime import datetime
 
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
@@ -41,6 +42,8 @@ class UpdateMyFormAnswer(MethodResource, Resource):
 
         if len(answers) == 1:
             answers[0].value = kwargs["value"]
+            answers[0].last_date = datetime.now()
+
             self.db.merge(answers[0], self.db.tables["FormAnswer"])
         else:
             return "", "500 Too much answers found for this question"
