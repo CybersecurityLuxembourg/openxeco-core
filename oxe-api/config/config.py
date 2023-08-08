@@ -41,6 +41,7 @@ MAIL_PASSWORD       = _getenv('MAIL_PASSWORD',   mandatory=False)
 MAIL_USE_TLS        = _getenv('MAIL_USE_TLS',    default="True")
 MAIL_USE_SSL        = _getenv('MAIL_USE_SSL',    default="True")
 MAIL_DEFAULT_SENDER = _getenv('MAIL_DEFAULT_SENDER', mandatory=True)
+MAIL_REPLY_TO       = _getenv('MAIL_REPLY_TO',   mandatory=False)
 
 HTTP_PROXY          = _getenv('HTTP_PROXY', mandatory=False)
 

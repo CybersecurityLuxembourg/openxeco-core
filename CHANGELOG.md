@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 
 - last_date column on FormAnswer table
 - last change date and system date on FormAnswer item on oxe-web-admin
+- last change date and system date on FormAnswer item on oxe-web-admin
+- MAIL_REPLY_TO environment variable for oxe-api
 
 ## [1.16.4] - 2023-07-27
 

@@ -65,6 +65,7 @@ MAIL_PASSWORD
 MAIL_USE_TLS
 MAIL_USE_SSL
 MAIL_DEFAULT_SENDER
+MAIL_REPLY_TO
 ```
 
 You can find the original documentation [here](https://pythonhosted.org/Flask-Mail/).
