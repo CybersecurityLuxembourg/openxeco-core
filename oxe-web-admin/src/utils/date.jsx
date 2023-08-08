@@ -50,7 +50,7 @@ export function getStartDate(date, duration) {
 	return null;
 }
 
-export function stringDatetimeToStandardFormat(value) {
+export function getDatetimeToStandardFormat(value) {
 	return value.substring(0, 10) + " " + value.substring(11, 16);
 }
 

@@ -7,6 +7,7 @@ import Message from "../box/Message.jsx";
 import Loading from "../box/Loading.jsx";
 import User from "./User.jsx";
 import { getRequest } from "../../utils/request.jsx";
+import { getDatetimeToStandardFormat } from "../../utils/date.jsx";
 import Item from "./Item.jsx";
 
 export default class FormAnswer extends Item {
@@ -111,22 +112,48 @@ export default class FormAnswer extends Item {
 
 					{this.props.questions.map((q) => (
 						<div className="col-md-12" key={q.id}>
-							<div className="FormAnswer-question">
-								<div dangerouslySetInnerHTML={{
-									__html:
-									dompurify.sanitize(q.value),
-								}} />
-							</div>
+							<div className="row">
+								<div className="col-md-12">
+									<div className="FormAnswer-question">
+										<div dangerouslySetInnerHTML={{
+											__html:
+											dompurify.sanitize(q.value),
+										}} />
+									</div>
+								</div>
 
-							<div className="FormAnswer-answer">
-								{this.getAnswerOfQuestion(q.id) && this.getAnswerOfQuestion(q.id).value
-									? <div dangerouslySetInnerHTML={{
-										__html:
-										dompurify.sanitize(this.getAnswerOfQuestion(q.id).value.replaceAll("\n", "<br/>")),
-									}} />
-									: <Message
-										text="No answer found"
-									/>}
+								<div className="col-md-6">
+									<div className="FormAnswer-date">
+										Creation: {this.getAnswerOfQuestion(q.id)
+											&& this.getAnswerOfQuestion(q.id).sys_date
+											? getDatetimeToStandardFormat(this.getAnswerOfQuestion(q.id).sys_date)
+											: "No date found"
+										}
+									</div>
+								</div>
+
+								<div className="col-md-6">
+									<div className="FormAnswer-date">
+										Last modification: {this.getAnswerOfQuestion(q.id)
+											&& this.getAnswerOfQuestion(q.id).last_date
+											? getDatetimeToStandardFormat(this.getAnswerOfQuestion(q.id).last_date)
+											: "No date found"
+										}
+									</div>
+								</div>
+
+								<div className="col-md-12">
+									<div className="FormAnswer-answer">
+										{this.getAnswerOfQuestion(q.id) && this.getAnswerOfQuestion(q.id).value
+											? <div dangerouslySetInnerHTML={{
+												__html:
+												dompurify.sanitize(this.getAnswerOfQuestion(q.id).value.replaceAll("\n", "<br/>")),
+											}} />
+											: <Message
+												text="No answer found"
+											/>}
+									</div>
+								</div>
 							</div>
 						</div>
 					))}

@@ -11,6 +11,14 @@
 .FormAnswer-question {
     background-color: lightgrey;
     padding: 10px;
+    margin: 10px 0px 0px 0px;
+}
+
+.FormAnswer-date {
+    font-size: 13px;
+    font-style: italic;
+    background-color: #DDD;
+    padding: 10px;
     margin: 10px 0px;
 }
 
