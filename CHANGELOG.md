@@ -1,11 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.16.6] - 2023-08-XX
+## [1.16.6] - 2023-08-09
 
 ### Changed
 
-- Display tab menu with ellipsis and text display on hover on oxe-web-admon and oxe-web-community
+- Display tab menu with ellipsis and text display on hover on oxe-web-admin and oxe-web-community
+- Update package-lock.json on oxe-web-admin
+- Update package-lock.json on oxe-web-admin
+- Update library version requirements on oxe-api
+
+### Fixed
+
+- Treat dependabot pull requests
+- Typo
 
 ## [1.16.5] - 2023-08-08
 
