@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.16.6] - 2023-08-XX
+
+### Changed
+
+- Display tab menu with ellipsis and text display on hover on oxe-web-admon and oxe-web-community
+
 ## [1.16.5] - 2023-08-08
 
 ### Changed

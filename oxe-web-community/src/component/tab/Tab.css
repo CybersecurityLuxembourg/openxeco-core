@@ -44,6 +44,10 @@
     max-width: inherit;
 }
 
+.Tab-menu-el div {
+    display: inline;
+}
+
 .Tab-menu-el:hover, .Tab-menu-el-fw:hover {
     background-color: var(--light-primary-color);
 }

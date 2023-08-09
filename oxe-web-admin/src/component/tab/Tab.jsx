@@ -67,6 +67,7 @@ export default class Tab extends React.Component {
 											<div
 												key={k}
 												className={this.getElementClassName(this.state.selectedMenu === k)}
+												title={this.props.labels[i]}
 												onClick={() => this.onMenuClick(k)}>
 												<div dangerouslySetInnerHTML={{
 													__html: dompurify.sanitize(this.props.labels[i]),
