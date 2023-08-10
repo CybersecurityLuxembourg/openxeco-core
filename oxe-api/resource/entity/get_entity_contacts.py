@@ -26,7 +26,17 @@ class GetEntityContacts(MethodResource, Resource):
     @catch_exception
     def get(self, id_):
 
+        contact = self.db.get(self.db.tables["EntityContact"], {"entity_id": int(id_)})[0]
+        user = self.db.get(self.db.tables["UserEntityAssignment"], {
+            "user_id": contact.user_id,
+            "entity_id": int(id_),
+        })[0]
+
         data = self.db.get(self.db.tables["EntityContact"], {"entity_id": id_})
         data = Serializer.serialize(data, self.db.tables["EntityContact"])
+
+        # Add UserEntityAssignment contact info to first item in EntityContact result
+        data[0]["work_email"] = user.work_email
+        data[0]["work_telephone"] = user.work_telephone
 
         return data, "200 "

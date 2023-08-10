@@ -50,7 +50,7 @@ class GetMyEntityContacts(MethodResource, Resource):
             "seniority_level": user.seniority_level if is_primary else "",
             "department": user.department if is_primary else "",
             "acknowledged": "Yes" if is_primary else "",
-            "primary": int(get_jwt_identity()) == contact.user_id,
+            "primary": is_primary,
         }
 
         return data, "200 "
