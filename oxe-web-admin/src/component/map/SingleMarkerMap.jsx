@@ -1,5 +1,6 @@
 import React from "react";
 import "./SingleMarkerMap.css";
+import L from "leaflet";
 import {
 	Map, TileLayer, Marker,
 } from "react-leaflet";
@@ -21,6 +22,13 @@ export default class SingleMarkerMap extends React.Component {
 	}
 
 	render() {
+		const thisIcon = new L.Icon({
+			iconUrl: "/img/marker-icon-2x.png",
+			iconSize: [24, 36],
+			iconAnchor: [12, 36],
+			popupAnchor: [0, -36],
+		});
+
 		return (
 			<div>
 				<Map
@@ -32,7 +40,10 @@ export default class SingleMarkerMap extends React.Component {
 					style={{ width: "100%", height: "300px" }}
 				>
 					{this.state.lat !== null && this.state.lon !== null
-						? <Marker position={[this.state.lat, this.state.lon]}/>
+						? <Marker
+							position={[this.state.lat, this.state.lon]}
+							icon={thisIcon}
+						/>
 						: ""}
 					<TileLayer
 						attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
