@@ -189,15 +189,15 @@ class ExtractEntities(MethodResource, Resource):
                     # df = df.drop(['Document|X', 'Document|Y', '...'], axis=1)
 
                     # @TODO Bad complexity, need improvement.
-                    df['Signatory Approval|filename'] = pd.Series()  # 1.create new column
+                    df['Signatory Approval|filename'] = pd.Series(dtype='object')
                     for i, vat in df['Global|vat_number'].items():
-                        if vat is None:
+                        if vat is None or len(vat) < 1:
                             continue
                         for doc in documents:
                             filename = doc['filename']
                             # if vat_number in filename: "entity_registration_approval_{user_id}_{vat_number}.pdf"
                             if vat in filename:
-                                df['Signatory Approval|filename'].loc[i] = filename
+                                df.loc[i, 'Signatory Approval|filename'] = filename
                                 break
 
         # Prepare final export
