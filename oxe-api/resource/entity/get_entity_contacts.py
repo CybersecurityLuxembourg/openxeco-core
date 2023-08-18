@@ -25,8 +25,12 @@ class GetEntityContacts(MethodResource, Resource):
     @verify_admin_access
     @catch_exception
     def get(self, id_):
+        contacts = self.db.get(self.db.tables["EntityContact"], {"entity_id": int(id_)})
 
-        contact = self.db.get(self.db.tables["EntityContact"], {"entity_id": int(id_)})[0]
+        if len(contacts) < 1:
+            return "", "404 No Entity Contact"
+
+        contact = contacts[0]
 
         data = Serializer.serialize(contact, self.db.tables["EntityContact"])
 
@@ -35,11 +39,13 @@ class GetEntityContacts(MethodResource, Resource):
             "entity_id": int(id_),
         })
 
-        if len(users) > 0:
-            user = users[0]
+        if len(users) < 1:
+            return data, "200 "
 
-            # Add UserEntityAssignment contact info to first item in EntityContact result
-            data[0]["work_email"] = user.work_email
-            data[0]["work_telephone"] = user.work_telephone
+        user = users[0]
+
+        # Add UserEntityAssignment contact info to first item in EntityContact result
+        data["work_email"] = user.work_email
+        data["work_telephone"] = user.work_telephone
 
         return data, "200 "

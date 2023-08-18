@@ -15,7 +15,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.serializer import Serializer
-
+from sqlalchemy import or_
 
 class ExtractEntities(MethodResource, Resource):
 
@@ -39,6 +39,7 @@ class ExtractEntities(MethodResource, Resource):
         'include_phone': fields.Bool(required=False),
         'include_workforce': fields.Bool(required=False),
         'include_taxonomy': fields.Bool(required=False),
+        'include_authorisation_by_approved_signatory': fields.Bool(required=False),
         'ecosystem_role': fields.DelimitedList(fields.Str(), required=False),
         'entity_type': fields.DelimitedList(fields.Str(), required=False),
         'startup_only': fields.Bool(required=False),
@@ -158,6 +159,46 @@ class ExtractEntities(MethodResource, Resource):
 
         if 'include_taxonomy' in kwargs and kwargs['include_taxonomy'] is True:
             df = self.include_taxonomy(entity_ids, df)
+
+        # Manage Authorisation by Approved Signatory
+        if 'include_authorisation_by_approved_signatory' in kwargs and kwargs['include_authorisation_by_approved_signatory'] is True:
+            vat_numbers = [c["vat_number"] for c in entities] \
+                if len(entities) <= self.db.get_count(self.db.tables["Entity"]) else None
+
+            if vat_numbers is not None:
+                documents = self.db.session.query(self.db.tables["Document"])
+
+                vat_filters = []
+                for vat_number in vat_numbers:
+                    vat_filters.append(self.db.tables["Document"].filename.like(f"%{vat_number}%"))
+
+                # * Spread Operator in Python
+                documents = documents.filter(or_(*vat_filters)).all()
+
+                documents = Serializer.serialize(documents, self.db.tables["Document"])
+
+                # documents = pd.DataFrame(documents)
+                # documents = documents.add_prefix('Signatory Approval|filename|')
+
+                if len(documents) > 0:
+                    # @TODO: Improve this:
+                    # Find away to merge using SQL "like" operator:
+                    #  - self.db.tables["Document"].filename.like(f"%{vat_number}%")
+                    #
+                    # df = df.merge(documents, left_on='Global|vat_number', right_on='Document|filename', how='left')
+                    # df = df.drop(['Document|X', 'Document|Y', '...'], axis=1)
+
+                    # @TODO Bad complexity, need improvement.
+                    df['Signatory Approval|filename'] = pd.Series()  # 1.create new column
+                    for i, vat in df['Global|vat_number'].items():
+                        if vat is None:
+                            continue
+                        for doc in documents:
+                            filename = doc['filename']
+                            # if vat_number in filename: "entity_registration_approval_{user_id}_{vat_number}.pdf"
+                            if vat in filename:
+                                df['Signatory Approval|filename'].loc[i] = filename
+                                break
 
         # Prepare final export
 

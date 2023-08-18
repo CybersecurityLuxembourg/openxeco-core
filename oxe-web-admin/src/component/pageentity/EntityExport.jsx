@@ -21,6 +21,7 @@ export default class EntityExport extends React.Component {
 			include_phone: false,
 			include_taxonomy: false,
 			include_workforce: false,
+			include_authorisation_by_approved_signatory: false,
 		};
 	}
 
@@ -34,6 +35,7 @@ export default class EntityExport extends React.Component {
 			include_phone: this.state.include_phone,
 			include_taxonomy: this.state.include_taxonomy,
 			include_workforce: this.state.include_workforce,
+			include_authorisation_by_approved_signatory: this.state.include_authorisation_by_approved_signatory,
 		};
 
 		if (this.state.filtered_entities_only) params = { ...params, ...this.props.filters };
@@ -130,6 +132,12 @@ export default class EntityExport extends React.Component {
 							type={"checkbox"}
 							value={this.state.include_workforce}
 							onChange={(v) => this.changeState("include_workforce", v)}
+						/>
+						<FormLine
+							label={"Include authorisation by approved signatory"}
+							type={"checkbox"}
+							value={this.state.include_authorisation_by_approved_signatory}
+							onChange={(v) => this.changeState("include_authorisation_by_approved_signatory", v)}
 						/>
 						<div className="right-buttons">
 							<button

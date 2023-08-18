@@ -134,7 +134,7 @@ export default class Entity extends Item {
 
 			getForeignRequest.call(this, url, (data) => {
 				this.setState({
-					entityContacts: data[0],
+					entityContacts: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
@@ -144,7 +144,7 @@ export default class Entity extends Item {
 		} else {
 			getRequest.call(this, "entity/get_entity_contacts/" + this.props.id, (data) => {
 				this.setState({
-					entityContacts: data[0],
+					entityContacts: data,
 				});
 			}, (response) => {
 				nm.warning(response.statusText);
