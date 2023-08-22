@@ -1,6 +1,6 @@
 import re
 
-from flask import request, render_template
+from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
@@ -125,7 +125,7 @@ class AddMyArticle(MethodResource, Resource):
                        recipients=addresses,
                        html_body=render_template(
                            'new_community_article_notification.html',
-                           url=get_admin_portal_url(request) + "/task?tab=request",
+                           url=get_admin_portal_url() + "/task?tab=request",
                            project_name=project_name)
                        )
 

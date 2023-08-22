@@ -1,6 +1,6 @@
 import datetime
 
-from flask import request, render_template
+from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_jwt_extended import create_access_token
@@ -46,7 +46,7 @@ class ForgotPassword(MethodResource, Resource):
         user = data[0] if len(data) > 0 else self.db.tables["User"](id=-1, email=kwargs["email"])
         expires = datetime.timedelta(minutes=15 if len(data) > 0 else 0)
         reset_token = create_access_token(str(user.id), expires_delta=expires, fresh=True)
-        url = f"{get_community_portal_url(request)}/login?action=reset_password&token={reset_token}"
+        url = f"{get_community_portal_url()}/login?action=reset_password&token={reset_token}"
 
         pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
         project_name = pj_settings[0].value if len(pj_settings) > 0 else ""

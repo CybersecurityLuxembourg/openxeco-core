@@ -3,7 +3,7 @@ import io
 import traceback
 import json
 
-from flask import request, render_template
+from flask import render_template
 from PIL import Image
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
@@ -111,7 +111,7 @@ class AddRequest(MethodResource, Resource):
                        recipients=addresses,
                        html_body=render_template(
                            'request_notification.html',
-                           url=get_admin_portal_url(request) + "/task?tab=request",
+                           url=get_admin_portal_url() + "/task?tab=request",
                            project_name=project_name)
                        )
 

@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
@@ -62,7 +62,7 @@ class AddPublicRequest(MethodResource, Resource):
                    recipients=[kwargs["email"]],
                    html_body=render_template(
                        'contact_form_notification.html',
-                       url=get_admin_portal_url(request) + "/task?tab=request",
+                       url=get_admin_portal_url() + "/task?tab=request",
                        project_name=project_name)
                    )
 

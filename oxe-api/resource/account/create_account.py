@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_bcrypt import generate_password_hash
@@ -96,7 +96,7 @@ class CreateAccount(MethodResource, Resource):
                        recipients=[email],
                        html_body=render_template(
                            'account_creation.html',
-                           url=get_community_portal_url(request) + "/login",
+                           url=get_community_portal_url() + "/login",
                            password=generated_password,
                            project_name=project_name)
                        )

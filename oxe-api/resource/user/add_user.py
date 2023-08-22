@@ -1,4 +1,4 @@
-from flask import request, render_template
+from flask import render_template
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_bcrypt import generate_password_hash
@@ -67,7 +67,7 @@ class AddUser(MethodResource, Resource):
                    recipients=[kwargs["email"]],
                    html_body=render_template(
                        'account_creation.html',
-                       url=get_community_portal_url(request),
+                       url=get_community_portal_url(),
                        password=old_password,
                        project_name=project_name)
                    )
