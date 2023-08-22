@@ -59,7 +59,9 @@ class TestAddRequest(BaseCase):
         mock_send_mail.assert_called_once()
 
     @BaseCase.login
-    def test_ok_with_png(self, token):
+    @patch('resource.private.add_request.send_email')
+    def test_ok_with_png(self, mock_send_mail, token):
+        mock_send_mail.return_value = None
 
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_add_request", "small.png")
 
@@ -82,6 +84,7 @@ class TestAddRequest(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(requests), 1)
         self.assertNotEqual(requests[0].image, None)
+        mock_send_mail.assert_called_once()
 
     @BaseCase.login
     def test_ko_with_too_big_image(self, token):
