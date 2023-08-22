@@ -11,6 +11,7 @@ from decorator.log_request import log_request
 from decorator.verify_admin_access import verify_admin_access
 from utils.mail import send_email
 from utils.regex import has_mail_format, has_password_format
+from utils.env import get_community_portal_url
 
 
 class AddUser(MethodResource, Resource):
@@ -30,7 +31,6 @@ class AddUser(MethodResource, Resource):
              "422.a": {"description": "The email does not have the right format"},
              "422.b": {"description": "The password does not have the right format"},
              "422.c": {"description": "This user is already existing"},
-             "500": {"description": "Impossible to find the origin. Please contact the administrator"},
          })
     @use_kwargs({
         'email': fields.Str(),
@@ -40,11 +40,6 @@ class AddUser(MethodResource, Resource):
     @verify_admin_access
     @catch_exception
     def post(self, **kwargs):
-
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         if not has_mail_format(kwargs["email"]):
             return "", "422 The email does not have the right format"
@@ -70,6 +65,11 @@ class AddUser(MethodResource, Resource):
         send_email(self.mail,
                    subject=f"[{project_name}] New account",
                    recipients=[kwargs["email"]],
-                   html_body=render_template('account_creation.html', url=origin, password=old_password, project_name=project_name))
+                   html_body=render_template(
+                       'account_creation.html',
+                       url=get_community_portal_url(request),
+                       password=old_password,
+                       project_name=project_name)
+                   )
 
         return "", "200 "

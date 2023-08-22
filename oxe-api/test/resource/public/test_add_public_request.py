@@ -1,11 +1,14 @@
 import json
 
 from test.BaseCase import BaseCase
+from unittest.mock import patch
 
 
 class TestAddPublicRequest(BaseCase):
 
-    def test_ok(self):
+    @patch('resource.public.add_public_request.send_email')
+    def test_ok(self, mock_send_mail):
+        mock_send_mail.return_value = None
 
         payload = {
             "full_name": "My Full Name",
@@ -26,8 +29,12 @@ class TestAddPublicRequest(BaseCase):
         self.assertEqual(requests[0].type, "CONTACT FORM")
         self.assertEqual(requests[0].request, "Hi guys!")
         self.assertDictEqual(json.loads(requests[0].data), {"email": "test@example.com", "full_name": "My Full Name"})
+        mock_send_mail.assert_called_once()
 
-    def test_ok_with_parameters(self):
+    @patch('resource.public.add_public_request.send_email')
+    def test_ok_with_parameters(self, mock_send_mail):
+        mock_send_mail.return_value = None
+
         payload = {
             "full_name": "My Full Name",
             "email": "test@example.com",
@@ -51,3 +58,4 @@ class TestAddPublicRequest(BaseCase):
             "full_name": "My Full Name",
             "other": "other value"
         })
+        mock_send_mail.assert_called_once()

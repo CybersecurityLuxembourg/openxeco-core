@@ -15,6 +15,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from utils.mail import send_email
+from utils.env import get_admin_portal_url
 
 
 class AddRequest(MethodResource, Resource):
@@ -31,7 +32,6 @@ class AddRequest(MethodResource, Resource):
              "422.a": {"description": "Impossible to read the image"},
              "422.b": {"description": "Image width and height can't be bigger than 500 pixels"},
              "422.c": {"description": "Object not found or you don't have the required access to it"},
-             "500": {"description": "Impossible to find the origin. Please contact the administrator"}
          })
     @use_kwargs({
         'entity_id': fields.Int(required=False, allow_none=True),
@@ -43,11 +43,6 @@ class AddRequest(MethodResource, Resource):
     @fresh_jwt_required
     @catch_exception
     def post(self, **kwargs):
-
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         # Control image
 
@@ -116,7 +111,7 @@ class AddRequest(MethodResource, Resource):
                        recipients=addresses,
                        html_body=render_template(
                            'request_notification.html',
-                           url=origin.replace("community.", "admin.") + "/task?tab=request",
+                           url=get_admin_portal_url(request) + "/task?tab=request",
                            project_name=project_name)
                        )
 

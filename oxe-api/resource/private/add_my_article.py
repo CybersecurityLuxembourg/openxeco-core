@@ -14,6 +14,7 @@ from exception.object_not_found import ObjectNotFound
 from exception.user_not_assign_to_entity import UserNotAssignedToEntity
 from exception.deactivated_article_edition import DeactivatedArticleEdition
 from utils.mail import send_email
+from utils.env import get_admin_portal_url
 
 
 class AddMyArticle(MethodResource, Resource):
@@ -41,11 +42,6 @@ class AddMyArticle(MethodResource, Resource):
     @fresh_jwt_required
     @catch_exception
     def post(self, **kwargs):
-
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         # Check if the functionality is allowed
 
@@ -129,7 +125,7 @@ class AddMyArticle(MethodResource, Resource):
                        recipients=addresses,
                        html_body=render_template(
                            'new_community_article_notification.html',
-                           url=origin.replace("community.", "admin.") + "/task?tab=request",
+                           url=get_admin_portal_url(request) + "/task?tab=request",
                            project_name=project_name)
                        )
 

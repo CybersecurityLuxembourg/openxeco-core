@@ -2,12 +2,15 @@ import base64
 import os
 
 from test.BaseCase import BaseCase
+from unittest.mock import patch
 
 
 class TestAddRequest(BaseCase):
 
     @BaseCase.login
-    def test_ok(self, token):
+    @patch('resource.private.add_request.send_email')
+    def test_ok(self, mock_send_mail, token):
+        mock_send_mail.return_value = None
 
         payload = {
             "request": "My request",
@@ -25,9 +28,12 @@ class TestAddRequest(BaseCase):
         self.assertEqual(len(requests), 1)
         self.assertNotEqual(requests[0].type, None)
         self.assertNotEqual(requests[0].data, None)
+        mock_send_mail.assert_called_once()
 
     @BaseCase.login
-    def test_ok_with_jpg(self, token):
+    @patch('resource.private.add_request.send_email')
+    def test_ok_with_jpg(self, mock_send_mail, token):
+        mock_send_mail.return_value = None
 
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "test_add_request", "small.jpg")
 
@@ -50,6 +56,7 @@ class TestAddRequest(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(len(requests), 1)
         self.assertNotEqual(requests[0].image, None)
+        mock_send_mail.assert_called_once()
 
     @BaseCase.login
     def test_ok_with_png(self, token):

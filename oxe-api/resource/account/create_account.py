@@ -12,6 +12,7 @@ from exception.object_already_existing import ObjectAlreadyExisting
 from utils.mail import send_email
 from utils.password import generate_password
 from utils.regex import has_mail_format
+from utils.env import get_community_portal_url
 
 
 class CreateAccount(MethodResource, Resource):
@@ -31,7 +32,6 @@ class CreateAccount(MethodResource, Resource):
              "422.a": {"description": "The provided email does not have the right format"},
              "422.b": {"description": "An account already exists with this email address"},
              "422.c": {"description": "Object already existing"},
-             "500": {"description": "Impossible to find the origin. Please contact the administrator"},
          })
     @use_kwargs({
         'email': fields.Str(),
@@ -42,11 +42,6 @@ class CreateAccount(MethodResource, Resource):
     def post(self, **kwargs):
 
         email = kwargs["email"].lower()
-
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         if not has_mail_format(email):
             return "", "422 The provided email does not have the right format"
@@ -101,7 +96,7 @@ class CreateAccount(MethodResource, Resource):
                        recipients=[email],
                        html_body=render_template(
                            'account_creation.html',
-                           url=origin + "/login",
+                           url=get_community_portal_url(request) + "/login",
                            password=generated_password,
                            project_name=project_name)
                        )

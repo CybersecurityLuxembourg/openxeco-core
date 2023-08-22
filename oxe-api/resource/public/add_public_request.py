@@ -9,6 +9,7 @@ from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from utils.mail import send_email
 from utils.regex import has_mail_format
+from utils.env import get_admin_portal_url
 
 
 class AddPublicRequest(MethodResource, Resource):
@@ -23,7 +24,6 @@ class AddPublicRequest(MethodResource, Resource):
                      'public contact form. The message field is limited to 500 characters',
          responses={
              "200": {},
-             "500": {"description": "Impossible to find the origin. Please contact the administrator"}
          })
     @use_kwargs({
         'full_name': fields.Str(required=False, allow_none=True),
@@ -33,11 +33,6 @@ class AddPublicRequest(MethodResource, Resource):
     })
     @catch_exception
     def post(self, **kwargs):
-
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         # Build request
 
@@ -67,7 +62,7 @@ class AddPublicRequest(MethodResource, Resource):
                    recipients=[kwargs["email"]],
                    html_body=render_template(
                        'contact_form_notification.html',
-                       url=origin.replace("community.", "admin.") + "/task?tab=request",
+                       url=get_admin_portal_url(request) + "/task?tab=request",
                        project_name=project_name)
                    )
 

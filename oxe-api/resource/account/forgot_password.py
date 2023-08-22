@@ -10,6 +10,7 @@ from webargs import fields
 from decorator.catch_exception import catch_exception
 from decorator.log_request import log_request
 from utils.mail import send_email
+from utils.env import get_community_portal_url
 
 
 class ForgotPassword(MethodResource, Resource):
@@ -27,20 +28,12 @@ class ForgotPassword(MethodResource, Resource):
                      'The resource return a 200 response code for all inputs to avoid user enumeration exploit.',
          responses={
              "200": {},
-             "500": {"description": "Impossible to find the origin. Please contact the administrator"},
          })
     @use_kwargs({
         'email': fields.Str(),
     })
     @catch_exception
     def post(self, **kwargs):
-
-        # Check HTTP_ORIGIN
-
-        if 'HTTP_ORIGIN' in request.environ and request.environ['HTTP_ORIGIN']:
-            origin = request.environ['HTTP_ORIGIN']
-        else:
-            return "", "500 Impossible to find the origin. Please contact the administrator"
 
         # Build content
 
@@ -53,7 +46,7 @@ class ForgotPassword(MethodResource, Resource):
         user = data[0] if len(data) > 0 else self.db.tables["User"](id=-1, email=kwargs["email"])
         expires = datetime.timedelta(minutes=15 if len(data) > 0 else 0)
         reset_token = create_access_token(str(user.id), expires_delta=expires, fresh=True)
-        url = f"{origin}/login?action=reset_password&token={reset_token}"
+        url = f"{get_community_portal_url(request)}/login?action=reset_password&token={reset_token}"
 
         pj_settings = self.db.get(self.db.tables["Setting"], {"property": "PROJECT_NAME"})
         project_name = pj_settings[0].value if len(pj_settings) > 0 else ""

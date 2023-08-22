@@ -1,10 +1,14 @@
 from test.BaseCase import BaseCase
+from unittest.mock import patch
 
 
 class TestAddMyArticle(BaseCase):
 
     @BaseCase.login
-    def test_ok(self, token):
+    @patch('resource.private.add_my_article.send_email')
+    def test_ok(self, mock_send_mail, token):
+        mock_send_mail.return_value = None
+
         self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
         self.db.insert({"user_id": 1, "entity_id": 2}, self.db.tables["UserEntityAssignment"])
         self.db.insert({"property": "ALLOW_ECOSYSTEM_TO_EDIT_ARTICLE", "value": "TRUE"}, self.db.tables["Setting"])
@@ -23,6 +27,7 @@ class TestAddMyArticle(BaseCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(self.db.get_count(self.db.tables["Article"]), 1)
         self.assertEqual(self.db.get_count(self.db.tables["ArticleVersion"]), 1)
+        mock_send_mail.assert_called_once()
 
     @BaseCase.login
     def test_ko_functionality_not_activated(self, token):
