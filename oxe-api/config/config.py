@@ -43,7 +43,7 @@ MAIL_USE_SSL        = _getenv('MAIL_USE_SSL',    default="True")
 MAIL_DEFAULT_SENDER = _getenv('MAIL_DEFAULT_SENDER', mandatory=True)
 MAIL_REPLY_TO       = _getenv('MAIL_REPLY_TO',   mandatory=False)
 
-HTTP_PROXY          = _getenv('HTTP_PROXY', mandatory=False)
+HTTP_PROXY          = _getenv('HTTP_PROXY',      mandatory=False)
 
 INITIAL_ADMIN_EMAIL =       _getenv('INITIAL_ADMIN_EMAIL',      mandatory=False)
 INITIAL_ADMIN_PASSWORD =    _getenv('INITIAL_ADMIN_PASSWORD',   default="Passw0rd!")
@@ -51,6 +51,7 @@ INITIAL_ADMIN_PASSWORD =    _getenv('INITIAL_ADMIN_PASSWORD',   default="Passw0r
 IMAGE_FOLDER        = _getenv('IMAGE_FOLDER',    default="/openxeco_image")
 DOCUMENT_FOLDER     = _getenv('DOCUMENT_FOLDER', default="/openxeco_document")
 
+BASE_DOMAIN         = _getenv('BASE_DOMAIN',     mandatory=ENVIRONMENT != "dev")
 CORS_DOMAINS        = _getenv('CORS_DOMAINS',    mandatory=ENVIRONMENT != "dev",
                               default="localhost:\\d*" if ENVIRONMENT == "dev" else None)
 

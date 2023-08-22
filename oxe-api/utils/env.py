@@ -1,13 +1,13 @@
-from config.config import ENVIRONMENT
+from config.config import ENVIRONMENT, BASE_DOMAIN
 
 
 def get_admin_portal_url(request):
     if ENVIRONMENT == "dev":
         return "http://localhost:3000"
-    return "".join(["https://admin.", request.host])
+    return "".join(["https://admin.", BASE_DOMAIN])
 
 
 def get_community_portal_url(request):
     if ENVIRONMENT == "dev":
         return "http://localhost:3000"
-    return "".join(["https://community.", request.host])
+    return "".join(["https://community.", BASE_DOMAIN])

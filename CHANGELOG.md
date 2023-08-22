@@ -1,6 +1,16 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.16.9] - 2023-08-23
+
+### Added
+
+- BASE_DOMAIN environment variable for oxe-api
+
+### Fixed
+
+- Patch from v1.16.8 that is not working when using reverse proxy
+
 ## [1.16.8] - 2023-08-22
 
 ### Fixed

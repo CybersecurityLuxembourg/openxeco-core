@@ -98,9 +98,26 @@ IMAGE_FOLDER
 DOCUMENT_FOLDER
 ```
 
+## BASE_DOMAIN
+
+In production environment, this setting is set to define the base domain that is used by the openXeco instance.
+
+Example of value:
+
+```
+openxeco.org
+```
+
+This value is used within the API to build URLs referring to the admin and the community portals, mainly used in the automatic emailing.
+
+With the example above, the built links will look as such:
+
+- admin portal url: https://admin.openxeco.org
+- community portal url: https://community.openxeco.org
+
 ## CORS_DOMAINS
 
-This setting is to defined the domains that are allowed by the used browser to request the API.
+This setting is to define the domains that are allowed by the used browser to request the API.
 
 In case of several domain, they have to be separated by a comma (","). All subdomains of the specified domains will be allowed by the browser.
 
