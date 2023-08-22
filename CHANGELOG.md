@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Vulnerability: untrustworthy link injection in automatic email
+
+## [1.16.7] - 2023-08-16
+
+### Fixed
+
 - Fix marker display on address geolocation selector on oxe-web-admin
 
 ## [1.16.6] - 2023-08-10
