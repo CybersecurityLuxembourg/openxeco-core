@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- 
+- API resource public/get_public_object_count: add filters by object type on taxonomy category
 
 ### Added
 

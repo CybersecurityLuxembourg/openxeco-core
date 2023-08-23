@@ -21,7 +21,9 @@ class GetPublicObjectCount(MethodResource, Resource):
                      'The count values can be distributed through entities, articles, ' +
                      'articles by types, taxonomy values (see "include_*" params).<br/><br/>' +
                      'The count values can be filtered with taxonomy values ' +
-                     '(see "taxonomy_values" param).',
+                     '(see "taxonomy_values" param).<br/><br/>'
+                     'The taxonomy category count is also impacted by the "include_entities", "include_articles" and ' +
+                     '"include_article_types" args by filtering out if any of them is not included.',
          responses={
              "200": {},
          })
@@ -29,15 +31,18 @@ class GetPublicObjectCount(MethodResource, Resource):
         'name': fields.Str(required=False, missing=None),
         'taxonomy_values': fields.DelimitedList(fields.Int(), required=False, missing=[]),
 
-        'include_entities': fields.Bool(required=False, missing=True),
-        'include_articles': fields.Bool(required=False, missing=True),
-        'include_article_types': fields.Bool(required=False, missing=True),
+        'include_entities': fields.Bool(required=False, missing=False),
+        'include_articles': fields.Bool(required=False, missing=False),
+        'include_article_types': fields.DelimitedList(fields.Str(), required=False, missing=[]),
+
         'include_taxonomy_categories': fields.DelimitedList(fields.Str(), required=False, missing=[]),
     }, location="query")
     @catch_exception
     def get(self, **kwargs):
 
         data = {}
+        include_article_types = [t for t in self.db.tables["Article"].__table__.columns["type"].type.enums
+                                 if t in kwargs["include_article_types"]]
 
         # Manage entities
 
@@ -65,14 +70,14 @@ class GetPublicObjectCount(MethodResource, Resource):
             entities=(self.db.tables["Article"].id, self.db.tables["Article"].type, )
         ).all()
 
-        if kwargs["include_articles"] or kwargs["include_article_types"]:
+        if kwargs["include_articles"] or len(include_article_types) > 0:
             data["article"] = {}
 
             if kwargs["include_articles"]:
                 data["article"]["total"] = len(articles)
 
-            if kwargs["include_article_types"]:
-                for t in self.db.tables["Article"].__table__.columns["type"].type.enums:
+            if len(include_article_types) > 0:
+                for t in include_article_types:
                     data["article"][t.lower()] = len([a for a in articles if a[1] == t])
 
         # Manage taxonomy
@@ -91,8 +96,15 @@ class GetPublicObjectCount(MethodResource, Resource):
 
             # Fetch and count entity assignments for sorted taxonomy values
 
-            self.treat_entity_taxonomy_assignment(data, entities, values, values_per_category)
-            self.treat_article_taxonomy_assignment(data, articles, values, values_per_category)
+            if kwargs["include_entities"]:
+                self.treat_entity_taxonomy_assignment(data, entities, values, values_per_category)
+
+            if len(include_article_types) > 0:
+                filtered_articles = [a for a in articles if a[1] in include_article_types]
+            else:
+                filtered_articles = articles
+
+            self.treat_article_taxonomy_assignment(data, filtered_articles, values, values_per_category)
 
         return build_no_cors_response(data)
 
