@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - API resource public/get_public_object_count: add filters by object type on taxonomy category
+- Remove docker network as "external" in the general docker compose configuration
 
 ### Added
 
@@ -43,7 +44,7 @@ All notable changes to this project will be documented in this file.
 
 - Display tab menu with ellipsis and text display on hover on oxe-web-admin and oxe-web-community
 - Update package-lock.json on oxe-web-admin
-- Update package-lock.json on oxe-web-admin
+- Update package-lock.json on oxe-web-community
 - Update library version requirements on oxe-api
 
 ### Fixed

@@ -55,8 +55,8 @@ export default class CampaignSend extends React.Component {
 	}
 
 	getTemplate() {
-		if (this.props.campaign) {
-			getRequest.call(this, "campaign/get_campaign_template/" + this.props.campaign.id, (data) => {
+		if (this.props.campaign?.template_id) {
+			getRequest.call(this, "campaign/get_campaign_template/" + this.props.campaign.template_id, (data) => {
 				this.setState({
 					template: data,
 				});
