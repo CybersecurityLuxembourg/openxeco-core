@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- 
+- Campaign template verification on the "Verify and send" tab on oxe-web-admin
 
 ## [1.16.9] - 2023-08-22
 
