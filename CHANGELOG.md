@@ -7,14 +7,16 @@ All notable changes to this project will be documented in this file.
 
 - API resource public/get_public_object_count: add filters by object type on taxonomy category
 - Remove docker network as "external" in the general docker compose configuration
+- Zoom the entity map on Europe instead of Luxembourg on oxe-web-admin
 
 ### Added
 
-- 
+- Forgotten "Accept privacy policy" field on user item on oxe-web-admin
 
 ### Fixed
 
 - Campaign template verification on the "Verify and send" tab on oxe-web-admin
+- Date fields that is fronting the clicks on select field options
 
 ## [1.16.9] - 2023-08-22
 
