@@ -108,6 +108,12 @@ export default class UserGlobal extends React.Component {
 							disabled={true}
 						/>
 						<FormLine
+							label="Accept privacy policy"
+							type={"checkbox"}
+							value={this.state.user.accept_privacy_policy}
+							disabled={true}
+						/>
+						<FormLine
 							label="Accept to receive communications"
 							type={"checkbox"}
 							value={this.state.user.accept_communication}
