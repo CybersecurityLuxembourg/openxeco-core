@@ -30,6 +30,8 @@ function getSelectStyle() {
 			...base,
 			color: "inherit !important",
 		}),
+		menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
+		menu: (provided) => ({ ...provided, zIndex: 9999 }),
 	};
 }
 
