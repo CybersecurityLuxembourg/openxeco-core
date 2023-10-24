@@ -1,13 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.17.0] - 2023-XX-XX
+## [1.17.0] - 2023-10-24
 
 ### Changed
 
 - API resource public/get_public_object_count: add filters by object type on taxonomy category
 - Remove docker network as "external" in the general docker compose configuration
 - Zoom the entity map on Europe instead of Luxembourg on oxe-web-admin
+- Database structure: make the "Form.reference" from 20 to 30 chars long
+- Fix docker image version for API
 
 ### Added
 
