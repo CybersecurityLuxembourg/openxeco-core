@@ -73,7 +73,6 @@ This is compatible with Windows and Unix distributions (including MacOS). The we
 - Run these commands:
 
 ```
-$ docker network create openxeco
 $ docker compose up
 ```
 
