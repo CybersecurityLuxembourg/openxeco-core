@@ -144,6 +144,7 @@ export default class AddEntityRegister extends React.Component {
 							disabled={!this.state.notFoundEntity}
 						/>
 						<FormLine
+							type={"url"}
 							label={this.state.fields.website}
 							value={this.state.newEntityForm.website}
 							onChange={(v) => this.updateNewEntity("website", v)}
