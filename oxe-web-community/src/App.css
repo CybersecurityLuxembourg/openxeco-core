@@ -198,6 +198,7 @@ button:hover {
 button:disabled {
 	background-color: grey !important;
 	cursor: default !important;
+  pointer-events: none;
 }
 
 @media all and (max-width:30em){

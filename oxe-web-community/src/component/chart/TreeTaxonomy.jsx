@@ -145,20 +145,15 @@ export default class TreeTaxonomy extends React.Component {
 					&& <div className={"TreeTaxonomy-cover"}/>
 				}
 
-				<div className={"TreeTaxonomy-button"}>
-					{this.state.activeClick
-						? <button
-							className={"small-button"}
-							onClick={() => this.setState({ activeClick: !this.state.activeClick })}>
-							<i className="fas fa-lock-open"/>
-						</button>
-						: <button
-							className={"small-button"}
-							onClick={() => this.setState({ activeClick: !this.state.activeClick })}>
-							<i className="fas fa-lock"/>
-						</button>
-					}
-				</div>
+        <div className={"TreeTaxonomy-button"}>
+          <button
+            className={"small-button"}
+            onClick={() => this.setState({ activeClick: !this.state.activeClick })}
+            disabled={this.props.category === "SME PACKAGE"}
+          >
+            <i className={`fas ${this.state.activeClick ? "fa-lock-open" : "fa-lock"}`} />
+          </button>
+        </div>
 
 				<Tree
 					data={this.getTreeData()}
