@@ -145,7 +145,7 @@ export default class TreeTaxonomy extends React.Component {
 
 		const getButtonTitle = () => {
 			if (isButtonDisabled) {
-				return "Editing the selected category is reserved to administrators"
+				return "Only administrators can edit this category"
 			} else if (this.state.isLocked) {
 				return "Enable editing"
 			} else {
