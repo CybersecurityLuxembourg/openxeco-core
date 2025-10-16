@@ -190,7 +190,7 @@ button.small-button {
 	font-size: 12px;
 }
 
-button:hover {
+button:hover:not(:disabled) {
 	border-color: rgba(0,0,0,1);
 	opacity: 1;
 }
@@ -198,7 +198,6 @@ button:hover {
 button:disabled {
 	background-color: grey !important;
 	cursor: default !important;
-  pointer-events: none;
 }
 
 @media all and (max-width:30em){
