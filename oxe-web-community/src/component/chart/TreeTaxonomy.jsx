@@ -3,6 +3,8 @@ import "./TreeTaxonomy.css";
 import Tree from "react-d3-tree";
 import Loading from "../box/Loading.jsx";
 
+const READ_ONLY_CATEGORIES = ["SME PACKAGE"];
+
 export default class TreeTaxonomy extends React.Component {
 	constructor(props) {
 		super(props);
@@ -14,7 +16,7 @@ export default class TreeTaxonomy extends React.Component {
 		this.onNodeClick = this.onNodeClick.bind(this);
 
 		this.state = {
-			activeClick: false,
+			isLocked: true,
 		};
 	}
 
@@ -102,6 +104,8 @@ export default class TreeTaxonomy extends React.Component {
 	}
 
 	onNodeClick(info) {
+		if (this.state.isLocked || READ_ONLY_CATEGORIES.includes(this.props.category)) return;
+
 		if (info.children === undefined) {
 			const childId = info.child_id;
 			let newValues = null;
@@ -120,6 +124,10 @@ export default class TreeTaxonomy extends React.Component {
 		}
 	}
 
+	isReadOnly() {
+		return this.state.isLocked || READ_ONLY_CATEGORIES.includes(this.props.category);
+	}
+
 	render() {
 		if (this.props.selectedValues === null
             || this.props.categories === null
@@ -133,6 +141,18 @@ export default class TreeTaxonomy extends React.Component {
 			);
 		}
 
+		const isButtonDisabled = READ_ONLY_CATEGORIES.includes(this.props.category);
+
+		const getButtonTitle = () => {
+			if (isButtonDisabled) {
+				return "Only administrators can edit this category"
+			} else if (this.state.isLocked) {
+				return "Enable editing"
+			} else {
+				return "Disable editing"
+			}
+		}
+
 		return (
 			<div
 				className="TreeTaxonomy"
@@ -141,19 +161,21 @@ export default class TreeTaxonomy extends React.Component {
 						.filter((v) => v.category === this.props.category).length,
 				}}>
 
-				{!this.state.activeClick
-					&& <div className={"TreeTaxonomy-cover"}/>
-				}
+				{this.isReadOnly() && <div className={"TreeTaxonomy-cover"}/>}
 
-        <div className={"TreeTaxonomy-button"}>
-          <button
-            className={"small-button"}
-            onClick={() => this.setState({ activeClick: !this.state.activeClick })}
-            disabled={this.props.category === "SME PACKAGE"}
-          >
-            <i className={`fas ${this.state.activeClick ? "fa-lock-open" : "fa-lock"}`} />
-          </button>
-        </div>
+				<div className={"TreeTaxonomy-button"}>
+					<button
+						className={"small-button"}
+						onClick={() => this.setState({ isLocked: !this.state.isLocked })}
+						disabled={isButtonDisabled}
+						title={getButtonTitle()}
+						aria-label={getButtonTitle()}
+						aria-pressed={this.isReadOnly() ? "false" : "true"}
+						tabIndex={0}
+					>
+						{isButtonDisabled ? "Read-only" : "Edit"} <i className={`fas ml-1 ${this.isReadOnly() ? "fa-lock" : "fa-lock-open"}`} />
+					</button>
+				</div>
 
 				<Tree
 					data={this.getTreeData()}

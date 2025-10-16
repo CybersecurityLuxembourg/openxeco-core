@@ -126,6 +126,7 @@ export default class FormLine extends React.Component {
 				options={this.props.options}
 				onChange={(v) => this.onChange(v.value)}
 				isDisabled={this.props.disabled}
+				aria-labelledby={"FormLine-label"}
 			/>;
 		case "url":
 			return <div className={"FormLine-url"}>
@@ -283,7 +284,7 @@ export default class FormLine extends React.Component {
 			<div className={"FormLine"}>
 				<div className={"row"}>
 					<div className={labelWidth}>
-						<div className={"FormLine-label"}>
+						<div id={"FormLine-label"} className={"FormLine-label"}>
 							{this.props.label}
 						</div>
 					</div>
