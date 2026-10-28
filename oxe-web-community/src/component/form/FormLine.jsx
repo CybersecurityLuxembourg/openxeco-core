@@ -264,6 +264,8 @@ export default class FormLine extends React.Component {
 				disabled={this.props.disabled}
 				autoFocus={this.props.autofocus}
 				onKeyDown={this.props.onKeyDown}
+				id={this.props.id}
+				autoComplete={this.props.autocomplete}
 			/>;
 		}
 	}
