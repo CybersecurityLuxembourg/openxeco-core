@@ -190,7 +190,7 @@ button.small-button {
 	font-size: 12px;
 }
 
-button:hover {
+button:hover:not(:disabled) {
 	border-color: rgba(0,0,0,1);
 	opacity: 1;
 }

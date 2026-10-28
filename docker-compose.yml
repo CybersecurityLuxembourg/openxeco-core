@@ -30,7 +30,6 @@ services:
       - "1080:1080"
 
   oxe-web-admin:
-    image: openxeco-core_oxe-web-admin:local
     build:
       context: .
       dockerfile: oxe-web-admin/.docker/Dockerfile
@@ -45,7 +44,6 @@ services:
       - '3000'
 
   oxe-web-community:
-    image: openxeco-core_oxe-web-community:local
     build:
       context: .
       dockerfile: oxe-web-community/.docker/Dockerfile
@@ -60,7 +58,6 @@ services:
       - '3001'
 
   oxe-api:
-    image: openxeco-core_oxe-api:local
     build:
       context: .
       dockerfile: oxe-api/.docker/Dockerfile
