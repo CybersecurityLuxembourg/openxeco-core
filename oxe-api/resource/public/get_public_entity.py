@@ -1,4 +1,3 @@
-from flask import current_app
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
@@ -47,8 +46,6 @@ class GetPublicEntity(MethodResource, Resource):
             [self.db.tables["EntityContact"].value],
         )
         data["email"] = contacts[0].value if len(contacts) > 0 else None
-        current_app.logger.info(f"Entity {data['id']} email contacts: {[c.value for c in contacts]}, returned email: {data['email']}")
-
 
         data["taxonomy_assignment"] = [v[0] for v in self.db.get(
             self.db.tables["TaxonomyAssignment"],
