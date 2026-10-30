@@ -35,7 +35,8 @@ class TestGetPublicEntity(BaseCase):
             'twitter_url': None,
             'youtube_url': None,
             'github_url': None,
-            'mastodon_url': None
+            'mastodon_url': None,
+            'email': None
         })
 
     @BaseCase.login
@@ -71,8 +72,37 @@ class TestGetPublicEntity(BaseCase):
             'twitter_url': None,
             'youtube_url': None,
             'github_url': None,
-            'mastodon_url': None
+            'mastodon_url': None,
+            'email': None
         })
+
+    @BaseCase.login
+    def test_ok_with_entity_email(self, token):
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"entity_id": 2, "type": "EMAIL ADDRESS", "representative": "PHYSICAL PERSON",
+                        "value": "person@example.org"}, self.db.tables["EntityContact"])
+        self.db.insert({"entity_id": 2, "type": "PHONE NUMBER", "representative": "ENTITY",
+                        "value": "+352 123"}, self.db.tables["EntityContact"])
+        self.db.insert({"entity_id": 2, "type": "EMAIL ADDRESS", "representative": "ENTITY",
+                        "value": "entity@example.org"}, self.db.tables["EntityContact"])
+
+        response = self.application.get('/public/get_public_entity/2',
+                                        headers=self.get_standard_header(token))
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(response.json["email"], "entity@example.org")
+
+    @BaseCase.login
+    def test_ok_without_entity_email(self, token):
+        self.db.insert({"id": 2, "name": "My Entity"}, self.db.tables["Entity"])
+        self.db.insert({"entity_id": 2, "type": "EMAIL ADDRESS", "representative": "PHYSICAL PERSON",
+                        "value": "person@example.org"}, self.db.tables["EntityContact"])
+
+        response = self.application.get('/public/get_public_entity/2',
+                                        headers=self.get_standard_header(token))
+
+        self.assertEqual(200, response.status_code)
+        self.assertIsNone(response.json["email"])
 
     @BaseCase.login
     def test_unexisting_id(self, token):
