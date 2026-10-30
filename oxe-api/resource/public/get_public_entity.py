@@ -1,3 +1,4 @@
+from flask import current_app
 from flask_apispec import MethodResource
 from flask_apispec import use_kwargs, doc
 from flask_restful import Resource
@@ -40,11 +41,19 @@ class GetPublicEntity(MethodResource, Resource):
         data = data[0]
         data["creation_date"] = None if data["creation_date"] is None else str(data["creation_date"])
 
-        if kwargs["include_assignments"]:
-            data["taxonomy_assignment"] = [v[0] for v in self.db.get(
-                self.db.tables["TaxonomyAssignment"],
-                {"entity_id": data['id']},
-                [self.db.tables["TaxonomyAssignment"].taxonomy_value_id],
-            )]
+        contacts = self.db.get(
+            self.db.tables["EntityContact"],
+            {"entity_id": data["id"], "type": "EMAIL ADDRESS", "representative": "ENTITY"},
+            [self.db.tables["EntityContact"].value],
+        )
+        data["email"] = contacts[0].value if len(contacts) > 0 else None
+        current_app.logger.info(f"Entity {data['id']} email contacts: {[c.value for c in contacts]}, returned email: {data['email']}")
+
+
+        data["taxonomy_assignment"] = [v[0] for v in self.db.get(
+            self.db.tables["TaxonomyAssignment"],
+            {"entity_id": data['id']},
+            [self.db.tables["TaxonomyAssignment"].taxonomy_value_id],
+        )]
 
         return build_no_cors_response(data)

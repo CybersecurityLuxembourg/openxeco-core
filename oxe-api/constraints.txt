@@ -1,0 +1,4 @@
+setuptools<81
+marshmallow>=3.0,<3.21
+webargs>=6.0,<8
+apispec>=4.0,<6
