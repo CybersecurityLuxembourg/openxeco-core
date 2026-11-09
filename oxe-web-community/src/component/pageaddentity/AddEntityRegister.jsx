@@ -78,7 +78,7 @@ export default class AddEntityRegister extends React.Component {
 												&quot;Request registration&quot; button.
 											</p>
 
-											<img src="/img/hint-request-registration-button.png"/>
+											<img src="/img/hint-request-registration-button.png" alt={'Request registration button hint'}/>
 
 											<p>
 												Note that the &quot;Name&quot;, &quot;Website&quot;
@@ -93,7 +93,7 @@ export default class AddEntityRegister extends React.Component {
 												icon in the left menu bar as shown below:
 											</p>
 
-											<img src="/img/hint-contact-menu.png"/>
+											<img src="/img/hint-contact-menu.png" alt={'Contact menu icon hint'}/>
 										</div>
 									</div>
 								}
@@ -144,6 +144,7 @@ export default class AddEntityRegister extends React.Component {
 							disabled={!this.state.notFoundEntity}
 						/>
 						<FormLine
+							type={"url"}
 							label={this.state.fields.website}
 							value={this.state.newEntityForm.website}
 							onChange={(v) => this.updateNewEntity("website", v)}
