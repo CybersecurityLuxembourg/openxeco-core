@@ -6,6 +6,9 @@ ARG ENVIRONMENT=dev
 
 WORKDIR /usr/app
 
+COPY oxe-api/constraints.txt constraints.txt
+ENV PIP_CONSTRAINT=constraints.txt
+
 RUN pip install gunicorn[gevent]
 
 COPY oxe-api/.docker/entrypoint.sh /entrypoint.sh
