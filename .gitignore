@@ -2,3 +2,4 @@
 .docker/mariadb/data/*
 .docker/documnets/*
 .docker/media/*
+.idea
