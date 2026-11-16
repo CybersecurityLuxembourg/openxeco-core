@@ -40,11 +40,17 @@ class GetPublicEntity(MethodResource, Resource):
         data = data[0]
         data["creation_date"] = None if data["creation_date"] is None else str(data["creation_date"])
 
-        if kwargs["include_assignments"]:
-            data["taxonomy_assignment"] = [v[0] for v in self.db.get(
-                self.db.tables["TaxonomyAssignment"],
-                {"entity_id": data['id']},
-                [self.db.tables["TaxonomyAssignment"].taxonomy_value_id],
-            )]
+        contacts = self.db.get(
+            self.db.tables["EntityContact"],
+            {"entity_id": data["id"], "type": "EMAIL ADDRESS", "representative": "ENTITY"},
+            [self.db.tables["EntityContact"].value],
+        )
+        data["email"] = contacts[0].value if len(contacts) > 0 else None
+
+        data["taxonomy_assignment"] = [v[0] for v in self.db.get(
+            self.db.tables["TaxonomyAssignment"],
+            {"entity_id": data['id']},
+            [self.db.tables["TaxonomyAssignment"].taxonomy_value_id],
+        )]
 
         return build_no_cors_response(data)

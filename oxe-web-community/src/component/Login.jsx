@@ -400,6 +400,8 @@ export default class Login extends React.Component {
 										onChange={(v) => this.changeState("email", v)}
 										autofocus={true}
 										onKeyDown={this.onKeyDown}
+										id="email-input"
+										autocomplete="email"
 									/>
 									<FormLine
 										label="Password"
